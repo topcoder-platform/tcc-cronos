@@ -10,16 +10,13 @@ import javax.activation.DataHandler;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
-
 import com.topcoder.clients.model.ProjectContestFee;
-import com.topcoder.management.review.data.Comment;
-import com.topcoder.project.service.ScorecardReviewData;
-import com.topcoder.project.service.FullProjectData;
-import com.topcoder.security.TCSubject;
-import com.topcoder.service.specreview.SpecReview;
-
 import com.topcoder.management.project.DesignComponents;
-import com.topcoder.service.facade.contest.ContestPaymentResult;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.project.service.FullProjectData;
+import com.topcoder.project.service.ScorecardReviewData;
+import com.topcoder.security.TCSubject;
+import com.topcoder.service.facade.contest.notification.ProjectNotification;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
@@ -29,6 +26,7 @@ import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
+import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
@@ -131,9 +129,15 @@ import com.topcoder.service.studio.contest.User;
  * Changes in v1.6 (Direct Search Assembly):
  * - Add getProjectData function
  * </p>
+ * 
+ * <p>
+ * Changes in v1.6.1, two public methods are added (BUGR - 3706):
+ * - List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
+ * - updateNotifcationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications)
+ * </p>
  *
- * @author pulky, murphydog, waits, BeBetter
- * @version 1.6
+ * @author pulky, murphydog, waits, BeBetter, hohosky
+ * @version 1.6.1
  */
 public interface ContestServiceFacade {
     /**
@@ -2324,4 +2328,30 @@ public interface ContestServiceFacade {
      * @since 1.2.3
      */
     public boolean isPrivate(TCSubject tcSubject,long contestId, boolean isStudio) throws ContestServiceException;
+    
+    /**
+     * Gets the notification information for the given user id. The notification information will be
+     * returned as a list of ProjectNotification instance.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @return a list of ProjectNotification instances.
+     * @throws ContestServiceExeption if any error occurs, exception from forum EJB service will be
+     *             caught and logged, but no thrown out.
+     * @since 1.6.1
+     */
+    public List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId) throws ContestServiceException;
+    
+    /**
+     * Updates the notifications for the given user, the notifications which need to update are
+     * passed in as a list of ProjectNotification instances.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @param notifications a list of ProjectNotification instances to update.
+     * @throws ContestServiceExeption if any error occurs, exception from forum EJB service will be
+     *             caught and logged, but no thrown out.
+     * @since 1.6.1
+     */
+    public void updateNotificationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications) throws ContestServiceException;
 }

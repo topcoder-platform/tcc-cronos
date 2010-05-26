@@ -22,6 +22,7 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.CreateException;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -31,10 +32,11 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.datatype.Duration;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.jboss.logging.Logger;
 
@@ -60,17 +62,16 @@ import com.topcoder.clients.dao.ProjectDAO;
 import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
-
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.Project;
-import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectPropertyType;
+import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.TCSEmailMessage;
-import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.PhaseStatus;
+import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
@@ -92,6 +93,8 @@ import com.topcoder.service.facade.contest.ContestServiceFilter;
 import com.topcoder.service.facade.contest.ProjectStatusData;
 import com.topcoder.service.facade.contest.ProjectSummaryData;
 import com.topcoder.service.facade.contest.SoftwareContestPaymentResult;
+import com.topcoder.service.facade.contest.notification.ContestNotification;
+import com.topcoder.service.facade.contest.notification.ProjectNotification;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentData;
 import com.topcoder.service.payment.PaymentException;
@@ -147,7 +150,9 @@ import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.user.UserService;
 import com.topcoder.service.user.UserServiceException;
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.Property;
 import com.topcoder.util.errorhandling.BaseException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.file.DocumentGenerator;
@@ -155,12 +160,10 @@ import com.topcoder.util.file.DocumentGeneratorFactory;
 import com.topcoder.util.file.Template;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
-import com.topcoder.web.ejb.user.UserTermsOfUse;
-import com.topcoder.web.ejb.user.UserTermsOfUseHome;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseHome;
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.Property;
+import com.topcoder.web.ejb.user.UserTermsOfUse;
+import com.topcoder.web.ejb.user.UserTermsOfUseHome;
 
 /**
  * <p>
@@ -248,9 +251,14 @@ import com.topcoder.util.config.Property;
  * Changes in v1.6(Direct Search Assembly v1.0): Adds getProjectData method to return project data with aggregate contest
  * information in different status. Change getCommonProjectContestData method to add payment information.
  * </p>
+ * <p>
+ * Changes in v1.6.1, two public methods are added (BUGR - 3706):
+ * - List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
+ * - updateNotifcationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications)
+ * </p>
  *
- * @author snow01, pulky, murphydog, waits, BeBetter
- * @version 1.6
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky
+ * @version 1.6.1
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -285,6 +293,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * Private constant specifying active & public status id.
      */
     private static final long CONTEST_PAYMENT_STATUS_PAID = 1;
+
+    /**
+     * Private contest specifying the notification type of Contest Timeline Notification.
+     */
+    private static final long TIMELINE_NOTIFICATION_TYPE = 1;
 
     /**
      * Private constant specifying active & public status id.
@@ -6930,5 +6943,249 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } finally {
             logger.debug("Exit reOpenSoftwareContest with the new contest " + reOpenContestId);
         }
+    }
+
+    /**
+     * Gets the notification information for the given user id. The notification information will be
+     * returned as a list of ProjectNotification instance.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @return a list of ProjectNotification instances.
+     * @throws ContestServiceExeption if any error occurs, exception from forum EJB service will be
+     *             caught and logged, but no thrown out.
+     * @since 1.6.1 BUGR-3706
+     */
+    public List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
+            throws ContestServiceException {
+        logger.debug("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
+                + "]");
+
+        List<ProjectNotification> result = new ArrayList<ProjectNotification>();
+
+        List<com.topcoder.management.project.SimpleProjectContestData> contests;
+
+        try {
+
+            // Get all the active contests information belongs to this user
+            contests = this.projectServices.getActiveContestsForUser(subject, userId);
+
+            long[] forumIds = new long[contests.size()];
+
+            long[] contestIds = new long[contests.size()];
+
+            for (int i = 0; i < contests.size(); ++i) {
+                forumIds[i] = contests.get(i).getForumId();
+                contestIds[i] = contests.get(i).getContestId();
+            }
+
+            long[] watchedForumIds = new long[0];
+            
+            if (this.createForum) {
+                Forums forums = getForumEJB();
+
+                // get the watched forums Ids of the user
+                watchedForumIds = forums.areCategoriesWatched(userId, forumIds);
+            }
+            
+            
+            // Use a hash set to store watched forum IDs
+            Set<Long> watchedForumsSet = new HashSet<Long>();
+            for (long id : watchedForumIds)
+                watchedForumsSet.add(id);
+
+            // get the IDs of contests of which notifications are on   
+            long[] notifiedContestIds = this.projectServices.getNotificationsForUser(userId,
+                    TIMELINE_NOTIFICATION_TYPE, contestIds);
+            
+            // Use a hash set to store notified contest Ids 
+            Set<Long> notifiedContestsSet = new HashSet<Long>();
+            for (long id : notifiedContestIds)
+                notifiedContestsSet.add(id);
+
+            // create a map to store mapping : project_id <---> ProjectNotification
+            Map<Long, ProjectNotification> map = new HashMap<Long, ProjectNotification>();
+
+            for (com.topcoder.management.project.SimpleProjectContestData c : contests) {
+
+                ProjectNotification pn;
+
+                if (!map.containsKey(c.getProjectId())) {
+                    // does not contain the project, create a new one
+                    pn = new ProjectNotification();
+                    
+                    // initialize with project id and project name
+                    pn.setProjectId(c.getProjectId());
+                    pn.setName(c.getPname());
+                    pn.setContestNotifications(new ArrayList<ContestNotification>());
+                    
+                } else {
+                    // already exists, directly assign it to pn
+                    pn = map.get(c.getProjectId());
+                }
+
+                ContestNotification cn = new ContestNotification();
+
+                cn.setContestId(c.getContestId());
+                cn.setForumId(c.getForumId());
+                cn.setName(c.getCname());
+                cn.setForumNotification(watchedForumsSet.contains(cn.getForumId()));
+                cn.setProjectNotification(notifiedContestsSet.contains(cn.getContestId()));
+
+                // add new ContestNotification into coressponding ProjectNotification
+                pn.getContestNotifications().add(cn);
+
+            }
+
+            result = new ArrayList<ProjectNotification>(map.values());
+
+            return result;
+
+        } catch (ProjectServicesException pse) {
+            logger.error("ProjectServices operation failed in the contest service facade.", pse);
+            throw new ContestServiceException("Error occurs when operating with ProjectServices", pse);
+        } catch (Exception ex) {
+            // forum related exception should be caught and logged but not thrown out
+            logger.error("Operation failed in the contest service facade.", ex);
+            return result;
+        } finally {
+            logger.debug("Exit getNotificationsForUser");
+        }
+
+    }
+
+    /**
+     * Updates the notifications for the given user, the notifications which need to update are
+     * passed in as a list of ProjectNotification instances.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @param notifications a list of ProjectNotification instances to update.
+     * @throws ContestServiceExeption if any error occurs, exception from forum EJB service will be
+     *             caught and logged, but no thrown out.
+     * @since 1.6.1 BUGR-3706
+     */
+    public void updateNotificationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications)
+            throws ContestServiceException {
+
+        logger.debug("updateNotifcationsForUser with arguments [TCSubject " + subject.getUserId() + ", notifications ="
+                + getProjectNotificationsDebugInfo(notifications) + "]");
+
+        try {
+
+            List<Long> watchForumIdList = new ArrayList<Long>();
+            List<Long> unwatchForumIdList = new ArrayList<Long>();
+            List<Long> allContestIdList = new ArrayList<Long>();
+            List<Long> notifyContestIdList = new ArrayList<Long>();
+
+            for (ProjectNotification pn : notifications) {
+                for (ContestNotification cn : pn.getContestNotifications()) {
+
+                    if (cn.isForumNotification()) {
+                        watchForumIdList.add(cn.getForumId());
+                    } else {
+                        unwatchForumIdList.add(cn.getForumId());
+                    }
+
+                    allContestIdList.add(cn.getContestId());
+
+                    if (cn.isProjectNotification()) {
+                        notifyContestIdList.add(cn.getContestId());
+                    }
+
+                }
+            }
+            
+            if (this.createForum) {
+
+                Forums forums = getForumEJB();
+
+                // sets the forum watches using Forum EJB service
+                forums.deleteCategoryWatches(subject.getUserId(), getPrimitiveArray(unwatchForumIdList));
+                forums.createCategoryWatches(subject.getUserId(), getPrimitiveArray(watchForumIdList));
+            }
+
+            // remove notifications of all contests of this user first
+            this.projectServices.removeNotifications(userId, getPrimitiveArray(allContestIdList), String
+                    .valueOf(subject.getUserId()));
+
+            // add notifications
+            this.projectServices.addNotifications(userId, getPrimitiveArray(notifyContestIdList), String
+                    .valueOf(subject.getUserId()));
+
+        } catch (Exception ex) {
+            sessionContext.setRollbackOnly();
+            logger.error("Operation failed in the contest service facade.", ex);
+            if (ex instanceof ProjectServicesException) {
+                // we only throw the exception out if it comes from ProjectServices
+                // exception comes from Forum EJB service is not thrown out
+                throw new ContestServiceException("Operation failed in the contest service facade.", ex);
+            }
+        } finally {
+            logger.debug("Exit updateNotifcationsForUser");
+        }
+
+    }
+    
+    /**
+     * Get the EJB handler for Forum EJB service.
+     * 
+     * @return the forum EJB service handler.
+     * @throws NamingException if a naming exception is encountered.
+     * @throws RemoteException if remote error occurs.
+     * @throws CreateException if error occurs when creating EJB handler
+     * 
+     * @since 1.6.1
+     */
+    private Forums getForumEJB() throws NamingException, RemoteException, CreateException {
+        Properties p = new Properties();
+        p.put(Context.INITIAL_CONTEXT_FACTORY,
+            "org.jnp.interfaces.NamingContextFactory");
+        p.put(Context.URL_PKG_PREFIXES,
+            "org.jboss.naming:org.jnp.interfaces");
+        p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+        Context c = new InitialContext(p);
+        ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+        Forums forums = forumsHome.create();
+        return forums;
+    }
+    
+    /**
+     * Generates a string which contains debug info of a list of ProjectNotification instances.
+     * 
+     * @param notifications the list of ProjectNotification instances.
+     * @return the generated string.
+     * @since 1.6.1
+     */
+    private String getProjectNotificationsDebugInfo(List<ProjectNotification> notifications) {
+        StringBuffer sb = new StringBuffer();
+
+        for (ProjectNotification pn : notifications) {
+            sb.append("Direct Project:" + pn.getProjectId() + " " + pn.getName() + "\n");
+
+            for (ContestNotification cn : pn.getContestNotifications()) {
+                sb.append("\tContest:" + cn.getContestId() + " " + cn.getName() + " contest notification:"
+                        + cn.isProjectNotification() + " forum watch:" + cn.isForumNotification() + "\n");
+            }
+
+        }
+        
+        return sb.toString();
+    }
+    
+    /**
+     * Utility method which coverts a List of Long to primitive long[].
+     * 
+     * @param list a list of Long.
+     * @return converted primitive long[]
+     */
+    private long[] getPrimitiveArray(List<Long> list) {
+        long[] result = new long[list.size()];
+        for(int i = 0; i < result.length; ++i) {
+            result[i] = list.get(i);
+        }
+        return result;
     }
 }
