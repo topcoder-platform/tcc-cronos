@@ -256,13 +256,20 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *    the current permission checking security info.
  * </p>
  * <p>
+ * Changes in v1.4.2 (BUGR - 3706)
+ *  - add method getActiveContestsForUser(TCSubject subject, long userId)
+ *  - add method getNotificationsForUser(long userId, long notificationType, long[] projectIds)
+ *  - add method addNotifications(long userId, long[] projectIds, String operator)
+ *  - add method removeNotifications(long userId, long[] projectIds, String operator)
+ * </p>
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog, waits
- * @version 1.4.1
+ * @author fabrizyo, znyyddf, murphydog, waits, hohosky
+ * @version 1.4.2
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -3673,6 +3680,125 @@ public class ProjectServicesImpl implements ProjectServices {
 		return project;
     }
 
+    
+    /**
+     * Get active contests for the given user, the contest data is stored in
+     * SimpleProjectContestData and the result is returned as a list of SimpleProjectContestData.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @throws ProjectServicesException is any error occrus.
+     * 
+     * @since 1.4.2 BUGR-3706
+     */
+    public List<SimpleProjectContestData> getActiveContestsForUser(TCSubject subject, long userId)
+            throws ProjectServicesException {
 
+        log(Level.INFO, "Enters ProjectServicesImpl#getActiveContestsForUser method.");
+
+        List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
+
+        try {
+            result = projectManager.getActiveContestsForUser(userId);
+            
+            
+        } catch (PersistenceException ex) {
+            log(Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getActiveContestsForUser method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating getSimpleProjectContestDataByUser.", ex);
+        }
+        log(Level.INFO, "Exits ProjectServicesImpl#getActiveContestsForUser method.");
+
+        // an empty list will be returned if fail to get result
+        return result;
+    }
+
+    /**
+     * Get project notifications of the given notification type for the given user.
+     * 
+     * @param userId the id of the user.
+     * @param the id of the notification type.
+     * @param the array of project ids to check.
+     * 
+     * @throws ProjectServicesException if any error occurs.
+     * 
+     * @since 1.4.2 BUGR-3706
+     */
+    public long[] getNotificationsForUser(long userId, long notificationType, long[] projectIds)
+            throws ProjectServicesException {
+
+        log(Level.INFO, "Enters ProjectServicesImpl#getNotificationsForUser method.");
+
+        // initialize the result to an empty array
+        long[] result = new long[0];
+
+        try {
+            result = this.resourceManager.getNotificationsForUser(userId, 1, projectIds);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR,
+                    "ResourcePersistenceException occurred in ProjectServicesImpl#getNotificationsForUser method.");
+            throw new ProjectServicesException(
+                    "ResourcePersistenceException occurred when operating getNotificationsForUser of ResourceManager.",
+                    ex);
+        }
+        log(Level.INFO, "Exits ProjectServicesImpl#getNotificationsForUser method.");
+
+        // an empty array will be returned if fail to get result
+        return result;
+    }
+
+    
+    /**
+     * Add notifications of the given projects IDs to given user.
+     * 
+     *  @param userId the id of the user.
+     *  @param projectIds the array of project IDs.
+     *  @param operator the operator.
+     *  @throws ProjectServicesException if any error occurs.
+     *  @since 1.4.2 BUGR-3706
+     */
+    public void addNotifications(long userId, long[] projectIds, String operator) throws ProjectServicesException {
+        log(Level.INFO, "Enters ProjectServicesImpl#addNotifications method.");
+
+
+        try {
+            this.resourceManager.addNotifications(userId, projectIds, 1, operator);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR,
+                    "ResourcePersistenceException occurred in ProjectServicesImpl#addNotifications method.");
+            throw new ProjectServicesException(
+                    "ResourcePersistenceException occurred when operating addNotifications of ResourceManager.",
+                    ex);
+        }
+        log(Level.INFO, "Exits ProjectServicesImpl#addNotifications method.");
+        
+    }
+
+    /**
+     * Removes the notifications of the given project IDs for the given userId.
+     * 
+     * @param userId the id of the user.
+     * @param projectIds the array of project IDs.
+     * @param operator the operator.
+     * @throws ProjectServicesException if any error occurs.
+     * @since 1.4.2 BUGR-3706
+     */
+    public void removeNotifications(long userId, long[] projectIds, String operator) throws ProjectServicesException {
+        log(Level.INFO, "Enters ProjectServicesImpl#removeNotifications method.");
+
+
+        try {
+            this.resourceManager.removeNotifications(userId, projectIds, 1, operator);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR,
+                    "ResourcePersistenceException occurred in ProjectServicesImpl#removeNotifications method.");
+            throw new ProjectServicesException(
+                    "ResourcePersistenceException occurred when operating removeNotifications of ResourceManager.",
+                    ex);
+        }
+        log(Level.INFO, "Exits ProjectServicesImpl#removeNotifications method.");
+
+    }
 
 }

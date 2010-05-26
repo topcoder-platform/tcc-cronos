@@ -133,13 +133,20 @@ import com.topcoder.util.log.LogManager;
  *    getSimplePipelineData, getDesignComponents these methods add paremeter TCSubject in order to replacing
  *    the current permission checking security info.
  * </p>
+ *  <p>
+ * Changes in BUGR-3706
+ *  - add method getActiveContestsForUser(TCSubject subject, long userId)
+ *  - add method getNotificationsForUser(long userId, long notificationType, long[] projectIds)
+ *  - add method addNotifications(long userId, long[] projectIds, String operator)
+ *  - add method removeNotifications(long userId, long[] projectIds, String operator)
+ * </p>
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is required to be thread
  * safe.
  * </p>
  *
- * @author fabrizyo, znyyddf, pulky, murphydog, waits
- * @version 1.4.1
+ * @author fabrizyo, znyyddf, pulky, murphydog, waits, hohosky
+ * @version 1.4.2
  * @since 1.0
  */
 @Stateless
@@ -1630,6 +1637,110 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
 
         try {
             return getProjectServices().getProject(projectId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * Add notifications of the given projects IDs to given user.
+     * 
+     *  @param userId the id of the user.
+     *  @param projectIds the array of project IDs.
+     *  @param operator the operator.
+     *  @throws ProjectServicesException if any error occurs.
+     *  @since 1.4.2 BUGR-3706
+     */
+    public void addNotifications(long userId, long[] projectIds, String operator) throws ProjectServicesException {
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+        
+        String method = "ProjectServicesBean#addNotifications method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            getProjectServices().addNotifications(userId, projectIds, operator);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+    }
+
+    /**
+     * Get active contests for the given user, the contest data is stored in
+     * SimpleProjectContestData and the result is returned as a list of SimpleProjectContestData.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @throws ProjectServicesException is any error occrus.
+     * 
+     * @since 1.4.2 BUGR-3706
+     */
+    public List<SimpleProjectContestData> getActiveContestsForUser(TCSubject subject, long userId)
+            throws ProjectServicesException {
+        
+        String method = "ProjectServicesBean#getActiveContestsForUser method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getActiveContestsForUser(subject, userId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * Get project notifications of the given notification type for the given user.
+     * 
+     * @param userId the id of the user.
+     * @param the id of the notification type.
+     * @param the array of project ids to check.
+     * 
+     * @throws ProjectServicesException if any error occurs.
+     * 
+     * @since 1.4.2 BUGR-3706
+     */
+    public long[] getNotificationsForUser(long userId, long notificationType, long[] projectIds)
+            throws ProjectServicesException {
+
+        String method = "ProjectServicesBean#getNotificationsForUser method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getNotificationsForUser(userId, notificationType, projectIds);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * Removes the notifications of the given project IDs for the given userId.
+     * 
+     * @param userId the id of the user.
+     * @param projectIds the array of project IDs.
+     * @param operator the operator.
+     * @throws ProjectServicesException if any error occurs.
+     * @since 1.4.2 BUGR-3706
+     */
+    public void removeNotifications(long userId, long[] projectIds, String operator) throws ProjectServicesException {
+        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+
+        String method = "ProjectServicesBean#removeNotifications method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            getProjectServices().removeNotifications(userId, projectIds, operator);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
