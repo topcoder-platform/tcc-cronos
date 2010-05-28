@@ -336,54 +336,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON = "On";
 
-    /**
-     * Private constant specifying resource role manager id
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
-     */
-    private static final long RESOURCE_ROLE_MANAGER_ID = 13;
-
-    /**
-     * Private constant specifying resource role manager name
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
-     */
-    private static final String RESOURCE_ROLE_MANAGER_NAME = "Manger";
-
-    /**
-     * Private constant specifying resource role manager desc
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
-     */
-    private static final String RESOURCE_ROLE_MANAGER_DESC = "Manger";
-
-
-    /**
-     * Private constant specifying resource role manager id
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
-     */
-    private static final long RESOURCE_ROLE_OBSERVER_ID = 12;
-
-    /**
-     * Private constant specifying resource role manager name
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
-     */
-    private static final String RESOURCE_ROLE_OBSERVER_NAME = "Observer";
-
-    /**
-     * Private constant specifying resource role manager desc
-     *
-     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
-     * @deprecated // use constants in com.topcoder.management.resource.ResourceRole
-     */
-    private static final String RESOURCE_ROLE_OBSERVER_DESC = "Observer";
+    
 
     /**
      * Private constant specifying resource ext ref id
@@ -5197,57 +5150,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         // for each OR project, find all observers
                         for (Long pid : projectIds)
                         {
-
-                            com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(pid, RESOURCE_ROLE_OBSERVER_ID);
-
-                            boolean found = false;
-                            // check if user is already a observer
-                            if (resources != null && resources.length > 0)
-                            {
-                                for (com.topcoder.management.resource.Resource resource : resources )
-                                {
-                                    if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
-                                         && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(String.valueOf(per.getUserId())))
-                                    {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // if not found && user agreed terms (if any) && is eligible, add resource
-                            if (!found && checkTerms(pid, per.getUserId(), new int[]{(int)RESOURCE_ROLE_OBSERVER_ID})
-                                 && isEligible(tcSubject, per.getUserId().longValue(), pid.longValue(), false))
-                            {
-
-                                 com.topcoder.management.resource.Resource newRes = new com.topcoder.management.resource.Resource();
-                                 newRes.setId(com.topcoder.management.resource.Resource.UNSET_ID);
-                                 newRes.setProject(pid);
-
-                                 ResourceRole observer_role = new ResourceRole();
-                                 observer_role.setId(RESOURCE_ROLE_OBSERVER_ID);
-                                 observer_role.setName(RESOURCE_ROLE_OBSERVER_NAME);
-                                 observer_role.setDescription(RESOURCE_ROLE_OBSERVER_DESC);
-
-                                 newRes.setResourceRole(observer_role);
-
-                                 newRes.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID,
-                                    String.valueOf(per.getUserId()));
-                                 newRes.setProperty(RESOURCE_INFO_HANDLE,
-                                    String.valueOf(userService.getUserHandle(per.getUserId())));
-                                 newRes.setProperty(RESOURCE_INFO_PAYMENT_STATUS,
-                                    RESOURCE_INFO_PAYMENT_STATUS_NA);
-
-                                 projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
-
-                                 // create forum watch
-                                long forumId = projectServices.getForumId(pid);
-
-                                if (forumId > 0 && createForum)
-                                {
-                                    createForumWatchAndRole(forumId, per.getUserId());
-                                }
-                            }
+                            // delegate to new method added in BUGR-3731
+                            this.assginRole(tcSubject, pid.longValue(), ResourceRole.RESOURCE_ROLE_OBSERVER_ID, per.getUserId().longValue());
 
                         }
 
@@ -5294,7 +5198,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                                 if ((!projectServices.hasContestPermission(pid, toDelete.getUserId()) && isTCProject)
                                      || (!projectServices.checkProjectPermission(projectServices.getTcDirectProject(pid), true, toDelete.getUserId()) && !isTCProject))
                                 {
-                                    com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(pid, RESOURCE_ROLE_OBSERVER_ID);
+                                    com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(pid, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
 
                                     com.topcoder.management.resource.Resource delRes = null;
 
@@ -5334,11 +5238,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             this.permissionService.updatePermissions(permissions);
         }
         catch (PersistenceException e)
-        {
-            sessionContext.setRollbackOnly();
-            throw new PermissionServiceException(e.getMessage(), e);
-        }
-        catch (UserServiceException e)
         {
             sessionContext.setRollbackOnly();
             throw new PermissionServiceException(e.getMessage(), e);
@@ -6932,5 +6831,116 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } finally {
             logger.debug("Exit reOpenSoftwareContest with the new contest " + reOpenContestId);
         }
+    }
+
+    /**
+     * Assign the given roleId to the specified userId in the given project.
+     * 
+     * @param tcSubject the TCSubject instance.
+     * @param projectId the id of the project.
+     * @param roleId the id of the role.
+     * @param userId the id of the user.
+     * 
+     * @since BUGR-3731
+     */
+    public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId)
+            throws ContestServiceException {
+        logger.debug("enter methods assginRole");
+
+        try {
+            com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, roleId);
+
+            boolean found = false;
+
+            // Check if the resource with the role already exists
+            if (resources != null && resources.length > 0) {
+                for (com.topcoder.management.resource.Resource resource : resources) {
+                    if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
+                            && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(userId)) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            // if not found && user agreed terms (if any) && is eligible, add resource
+            if (!found && checkTerms(projectId, userId, new int[] { (int) roleId })
+                    && isEligible(tcSubject, userId, projectId, false)) {
+
+                com.topcoder.management.resource.Resource newRes = new com.topcoder.management.resource.Resource();
+                newRes.setId(com.topcoder.management.resource.Resource.UNSET_ID);
+                newRes.setProject(projectId);
+
+                ResourceRole[] allroles = projectServices.getAllResourceRoles();
+                ResourceRole roleToSet = null;
+                if (allroles != null && allroles.length > 0)
+                {
+                    for (ResourceRole role :  allroles)
+                    {
+                        if (role.getId() == roleId)
+                        {
+                            roleToSet = role;
+                        }
+                    }
+                }
+                
+                if (roleToSet == null)
+                {
+                    throw new ContestServiceException("Invalid role id " + roleId);
+                }
+
+                newRes.setResourceRole(roleToSet);
+
+                newRes.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(userId));
+                newRes.setProperty(RESOURCE_INFO_HANDLE, String.valueOf(userService.getUserHandle(userId)));
+                newRes.setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+
+                projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
+
+                // create forum watch
+                long forumId = projectServices.getForumId(projectId);
+
+                if (forumId > 0 && createForum) {
+                    createForumWatchAndRole(forumId, userId);
+                }
+            }
+
+        } catch (UserServiceException use) {
+            sessionContext.setRollbackOnly();
+            throw new ContestServiceException(use.getMessage(), use);
+        } catch (ContestServiceException cse) {
+            sessionContext.setRollbackOnly();
+            throw new ContestServiceException(cse.getMessage(), cse);
+        } finally {
+            logger.debug("exist method assginRole");
+        }
+    }
+
+     /* Assigns the role for the given tc project and user, it will assign all projects 
+     * uder tc direct projct
+     * 
+     * @param tcprojectId the id of the tc direct project.
+     * @param roleId the id of the role
+     * @param userId the id of the user.
+     * @throws ContestServiceException if any error occurs
+     * @since BUGR - 3731
+     */
+    public void assginRoleByTCDirectProject(TCSubject tcSubject, long tcprojectId, long roleId, long userId) throws ContestServiceException
+    {
+
+        List<Long> projectIds = projectIds = projectServices.getProjectIdByTcDirectProject(tcprojectId);
+                       
+        if (projectIds != null && projectIds.size() >0)
+        {
+            // for each OR project, find all observers
+            for (Long pid : projectIds)
+            {
+                // delegate to new method added in BUGR-3731
+                this.assginRole(tcSubject, pid, roleId, userId);
+
+            }
+
+        }
+
     }
 }
