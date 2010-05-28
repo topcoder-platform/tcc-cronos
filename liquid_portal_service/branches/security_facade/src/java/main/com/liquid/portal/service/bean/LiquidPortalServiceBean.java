@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -29,22 +29,25 @@ import javax.jws.WebService;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.security.auth.login.LoginContext;
-import com.topcoder.service.pipeline.CapacityData;
 
 import org.jboss.ws.annotation.EndpointConfig;
 
+import com.liquid.portal.service.ActionNotPermittedException;
 import com.liquid.portal.service.CompetitionData;
 import com.liquid.portal.service.CreateCompetitonResult;
 import com.liquid.portal.service.LiquidPortalServiceConfigurationException;
 import com.liquid.portal.service.LiquidPortalServiceException;
+import com.liquid.portal.service.LiquidUser;
 import com.liquid.portal.service.ProvisionUserResult;
 import com.liquid.portal.service.RegisterUserResult;
 import com.liquid.portal.service.Result;
 import com.liquid.portal.service.Warning;
+import com.topcoder.catalog.entity.Category;
+import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.Status;
+import com.topcoder.catalog.entity.Technology;
+import com.topcoder.catalog.service.AssetDTO;
 import com.topcoder.catalog.service.CatalogService;
-import com.topcoder.catalog.service.EntityNotFoundException;
 import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.ProjectDAO;
@@ -56,16 +59,28 @@ import com.topcoder.configuration.persistence.ConfigurationParserException;
 import com.topcoder.configuration.persistence.NamespaceConflictException;
 import com.topcoder.configuration.persistence.UnrecognizedFileTypeException;
 import com.topcoder.configuration.persistence.UnrecognizedNamespaceException;
+import com.topcoder.management.project.ProjectCategory;
+import com.topcoder.management.project.ProjectPropertyType;
+import com.topcoder.management.project.ProjectSpec;
+import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.message.email.AddressException;
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.SendingException;
 import com.topcoder.message.email.TCSEmailMessage;
+import com.topcoder.security.RolePrincipal;
+import com.topcoder.security.TCSubject;
+import com.topcoder.security.auth.module.UserProfilePrincipal;
+import com.topcoder.security.ldap.LDAPClient;
+import com.topcoder.security.ldap.LDAPClientException;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFacade;
+import com.topcoder.service.facade.user.UserServiceFacade;
+import com.topcoder.service.facade.user.UserServiceFacadeException;
 import com.topcoder.service.permission.Permission;
+import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
-import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.PipelineServiceFacade;
@@ -81,8 +96,12 @@ import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.UserNotFoundFault;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
+import com.topcoder.service.studio.ContestStatusData;
+import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
+import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.PersistenceException;
+import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.user.User;
 import com.topcoder.service.user.UserInfo;
@@ -100,34 +119,6 @@ import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogException;
 import com.topcoder.util.log.LogManager;
-import com.topcoder.catalog.entity.Category;
-import com.topcoder.catalog.entity.CompDocumentation;
-import com.topcoder.catalog.entity.CompForum;
-import com.topcoder.catalog.entity.Phase;
-import com.topcoder.catalog.entity.Status;
-import com.topcoder.catalog.entity.Technology;
-import com.topcoder.catalog.service.AssetDTO;
-import com.topcoder.management.project.ProjectCategory;
-import com.topcoder.management.project.ProjectStatus;
-import com.topcoder.management.project.ProjectSpec;
-import com.topcoder.management.project.ProjectPropertyType;
-import com.topcoder.service.studio.ContestTypeData;
-import com.topcoder.service.studio.PrizeData;
-import com.topcoder.service.studio.ContestStatusData;
-import com.topcoder.service.studio.MediumData;
-import com.liquid.portal.service.Util;
-import com.topcoder.security.auth.module.UserProfilePrincipal;
-
-import com.topcoder.security.ldap.LDAPClient;
-import com.topcoder.security.ldap.LDAPClientException;
-
-import com.topcoder.service.util.LoginUtil;
-
-import com.topcoder.security.RolePrincipal;
-import com.topcoder.security.TCSubject;
-
-import com.topcoder.service.facade.user.UserServiceFacade;
-import com.topcoder.service.facade.user.UserServiceFacadeException;
 
 /**
  * <p>
@@ -275,6 +266,16 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * </p>
      */
     private long notusObserverTermsId;
+    
+    /**
+     * <p>
+     * Represents the notus submitter of terms ID.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the business methods.
+     * </p>
+     */
+    private long notusSubmitterTermsId;
 
     /**
      * <p>
@@ -306,6 +307,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * </p>
      */
     private long fullControlPermissionTypeId;
+
+
+     /**
+     * <p>
+     * Represents the IDs of billing projects that will assign handels as client managers.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the business methods.
+     * </p>
+     */
+    private long[] clientManagerForBillingProjects;
 
     /**
      * <p>
@@ -522,6 +534,10 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             // Get properties from configurationObject as per CS 3.2.1
             notusObserverTermsId = getConfigurationLongValue("notusObserverTermsId", configObject);
+            
+            // get notus submitter terms id (added in BUG 3731)
+            notusSubmitterTermsId = getConfigurationLongValue("notusSubmitterTermsId", configObject);
+            
             fullControlPermissionTypeId = getConfigurationLongValue("fullControlPermissionTypeId", configObject);
             inactiveStudioContestStatusId = getConfigurationLongValue("inactiveStudioContestStatusId", configObject);
             inactiveSoftwareContestStatusId = getConfigurationLongValue("inactiveSoftwareContestStatusId",
@@ -578,6 +594,28 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 throw new LiquidPortalServiceConfigurationException(
                         "The value of 'addToNotusEligibilityGroupIds' property should be integer.", e);
             }
+
+            // get billing projects that need client manager
+            Object[] billingProjects = configObject.getPropertyValues("clientManagerForBillingProjects");
+            if (billingProjects == null) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The 'clientManagerForBillingProjects' property should be configed.");
+            }
+            clientManagerForBillingProjects = new long[billingProjects.length];
+            try {
+                for (int i = 0; i < billingProjects.length; i++) {
+                    clientManagerForBillingProjects[i] = Long.parseLong((String) billingProjects[i]);
+                }
+            } catch (ClassCastException e) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The value of 'clientManagerForBillingProjects' property should be String.", e);
+            } catch (NumberFormatException e) {
+                throw new LiquidPortalServiceConfigurationException(
+                        "The value of 'clientManagerForBillingProjects' property should be integer.", e);
+            }
+
+
+            
 
 
             // Assemble addToNotusEligibilityGroupIds into array of longs
@@ -716,7 +754,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @RolesAllowed({"Liquid Administrator" })
-    public RegisterUserResult registerUser(User user, Date termsAgreedDate)
+    public RegisterUserResult registerUser(LiquidUser user, Date termsAgreedDate)
             throws LiquidPortalServiceException {
         final String methodName = "registerUser";
         logEntrance(methodName);
@@ -768,6 +806,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         addUserToNotusEligibilityGroup(user, warnings, methodName);
         // add user to terms group
         addUserToTermsGroup(user, termsAgreedDate, warnings, methodName);
+   System.out.println("---------------isIcCompetitor----------------"+user.isIcCompetitor());     
+        // Added in BUGR 3731
+        if (user.isIcCompetitor()) {
+            // if IcCompetitor is true, add to notus submitter terms group
+            addUserToNotusSubmitterTermsGroup(user, termsAgreedDate, warnings, methodName);
+        }
+        
         // add user to jira
         addUserToJira(user, tcsubject, warnings, methodName);
         result.setWarnings(warnings);
@@ -804,7 +849,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      *             If an error occurs while performing the operation
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Result validateUser(UserInfo user, boolean force) throws LiquidPortalServiceException {
+    public Result validateUser(LiquidUser user, boolean force) throws LiquidPortalServiceException {
         final String methodName = "validateUser";
         logEntrance(methodName);
 
@@ -831,6 +876,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             addUserToNotusEligibilityGroup(savedUserInfo, warnings, methodName);
             // add user to terms group
             addUserToTermsGroup(savedUserInfo, new Date(), warnings, methodName);
+            
+            // Added in BUGR 3731
+            if (user.isIcCompetitor()) {
+                // if IcCompetitor is true, add to notus submitter terms group
+                addUserToNotusSubmitterTermsGroup(savedUserInfo, new Date(), warnings, methodName);
+            }
+                       
             // add user to jira
             addUserToJira(user, tcsubject, warnings, methodName);
         }
@@ -1164,6 +1216,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         // check if support handles exist and in Notus Eligibility groups
         for (String supportHandle : supportHandles) {
             UserInfo user = getUserInfo(supportHandle, methodName);
+            
             if (!userBelongNotusElibilityGroups(user)) {
                 sessionContext.setRollbackOnly();
                 throw logError(new LiquidPortalServiceException(
@@ -1215,6 +1268,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 throw logError(new LiquidPortalServiceException("Can not get the full control permission type"),
                         methodName);
             }
+
+            long contestId = 0;
 
             try {
                 // get cockpit project
@@ -1558,6 +1613,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                 result.setStudioCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId() + ".");
+                
 
             } else {
                 
@@ -1900,12 +1956,21 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                 result.setSoftwareCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getProjectHeader().getId() + ".");
+                contestId = comp.getProjectHeader().getId();
+
             }
 
             for (UserInfo supportInfo : supportInfos) {
                 updatePermission(tcSubject, getPermission(supportInfo, proj, type), supportInfo, warnings);
+                // also add as client manager
+                if (!competitionData.getContestTypeName().equals(CompetitionData.STUDIO)
+                    && assignClientManager(competitionData.getBillingProjectId()))
+                {
+                    contestServiceFacade.assginRoleByTCDirectProject(tcSubject, proj.getProjectId(), ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_ID, supportInfo.getUserId());
+                }
             }
-
+            
+        
             result.setWarnings(warnings);
             logExit(methodName);
             return result;
@@ -3122,6 +3187,41 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         }
     }
+    
+    /**
+     * <p>
+     * Add user to notus submitter terms group. If can not add the user to the group, add a warning
+     * message to warning list.
+     * </p>
+     * 
+     * @param userInfo the user info
+     * @param termsAgreedDate the agreed date
+     * @param warnings the warning list
+     * @param methodName the name of the calling method
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    private void addUserToNotusSubmitterTermsGroup(UserInfo userInfo, Date termsAgreedDate, List<Warning> warnings,
+            String methodName) throws LiquidPortalServiceException {
+        // add user to terms group of notus submitter
+        try {
+            userService.addUserTerm(userInfo.getUserId(), notusSubmitterTermsId, termsAgreedDate);
+        } catch (IllegalArgumentException e) {
+            // notusSubmitterTermsId is invalid
+            logError(e, methodName);
+            // send JIRA email
+            sendJiraNotification(userInfo.getHandle(), methodName, e);
+            warnings.add(getWarning("Can not add user to notus submitter terms group",
+                    LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_TERMS, e));
+        } catch (UserServiceException e) {
+            // can not add user to the Terms groups
+            logError(e, methodName);
+            // send JIRA email
+            sendJiraNotification(userInfo.getHandle(), methodName, e);
+            warnings.add(getWarning("Can not add user to notus submitter terms group",
+                    LiquidPortalServiceException.EC_CANNOT_ADD_USER_TO_TERMS, e));
+
+        }
+    }
 
     /**
      * <p>
@@ -3325,6 +3425,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         for (int i=0; i < zeroContestFeeBillingIds.length ; i++ )
         { 
             if (zeroContestFeeBillingIds[i] == billing)
+            { 
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * check if billing project should assign client managers
+     */
+    private boolean assignClientManager(long billing)
+    { 
+        for (int i=0; i < clientManagerForBillingProjects.length ; i++ )
+        { 
+            if (clientManagerForBillingProjects[i] == billing)
             { 
                 return true;
             }

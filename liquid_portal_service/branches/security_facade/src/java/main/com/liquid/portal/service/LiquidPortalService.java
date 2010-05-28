@@ -54,7 +54,7 @@ public interface LiquidPortalService {
 	 * @throws LiquidPortalServiceException
 	 *             If an error occurs while performing the operation
 	 */
-	public RegisterUserResult registerUser(User user, Date termsAgreedDate)
+	public RegisterUserResult registerUser(LiquidUser user, Date termsAgreedDate)
 			throws LiquidPortalServiceException;
 
 	/**
@@ -64,7 +64,7 @@ public interface LiquidPortalService {
 	 * </p>
 	 * 
 	 * @param user
-	 *            he user info to validate force
+	 *            the user info to validate force
 	 * @param force
 	 *            If true, it will ignore warnings and add user to terms &
 	 *            eligibility groups
@@ -84,7 +84,7 @@ public interface LiquidPortalService {
 	 * @throws LiquidPortalServiceException
 	 *             If an error occurs while performing the operation
 	 */
-	public Result validateUser(UserInfo user, boolean force)
+	public Result validateUser(LiquidUser user, boolean force)
 			throws LiquidPortalServiceException;
 
 	/**
