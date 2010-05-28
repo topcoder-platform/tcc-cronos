@@ -163,7 +163,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public StudioCompetition createContest(TCSubject tcSubject,StudioCompetition contest, long tcDirectProjectId) 
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -189,7 +189,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public StudioCompetition getContest(TCSubject tcSubject,long contestId)
-        throws PersistenceException, ContestNotFoundException;
+        throws PersistenceException, ContestNotFoundException, PermissionServiceException;
 
     /**
      * <p>
@@ -241,7 +241,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public void updateContest(TCSubject tcSubject,StudioCompetition contest)
-        throws PersistenceException, ContestNotFoundException;
+        throws PersistenceException, ContestNotFoundException, PermissionServiceException;
 
     /**
      * <p>
@@ -276,7 +276,7 @@ public interface ContestServiceFacade {
      */
     public void updateContestStatus(TCSubject tcSubject,long contestId, long newStatusId)
         throws PersistenceException, StatusNotAllowedException,
-            StatusNotFoundException, ContestNotFoundException;
+            StatusNotFoundException, ContestNotFoundException, PermissionServiceException;
 
     /**
      * <p>
@@ -357,7 +357,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public void addDocumentToContest(TCSubject tcSubject, long documentId, long contestId)
-        throws PersistenceException, ContestNotFoundException;
+        throws PersistenceException, ContestNotFoundException, PermissionServiceException;
 
     /**
      * <p>
@@ -382,7 +382,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public void removeDocumentFromContest(TCSubject tcSubject,UploadedDocument document)
-        throws PersistenceException, DocumentNotFoundException;
+        throws PersistenceException, DocumentNotFoundException, PermissionServiceException;
 
     /**
      * <p>
@@ -410,7 +410,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public List<SubmissionData> retrieveSubmissionsForContest(TCSubject tcSubject,long contestId)
-        throws PersistenceException, ContestNotFoundException;
+        throws PersistenceException, ContestNotFoundException, PermissionServiceException;
 
 
     /**
@@ -434,7 +434,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public void updateSubmission(TCSubject tcSubject,SubmissionData submission)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -456,7 +456,7 @@ public interface ContestServiceFacade {
      *             if the <code>submissionId</code> is negative.
      * @tested
      */
-    public void removeSubmission(TCSubject tcSubject,long submissionId) throws PersistenceException;
+    public void removeSubmission(TCSubject tcSubject,long submissionId) throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -658,7 +658,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public SubmissionData retrieveSubmission(TCSubject tcSubject,long submissionId)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -697,7 +697,7 @@ public interface ContestServiceFacade {
      *             if specified <code>documentId</code> is negative.
      * @tested
      */
-    public boolean removeDocument(TCSubject tcSubject,long documentId) throws PersistenceException;
+    public boolean removeDocument(TCSubject tcSubject,long documentId) throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -775,7 +775,7 @@ public interface ContestServiceFacade {
      */
     public void purchaseSubmission(TCSubject tcSubject,long submissionId,
         SubmissionPaymentData submissionPaymentData, String securityToken)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
 
     /**
@@ -814,7 +814,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public void setSubmissionPlacement(TCSubject tcSubject,long submissionId, int placement)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -834,7 +834,7 @@ public interface ContestServiceFacade {
      * @tested
      */
     public void setSubmissionPrize(TCSubject tcSubject,long submissionId, long prizeId)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -852,7 +852,7 @@ public interface ContestServiceFacade {
      *             if any error occurs when marking for purchase.
      * @tested
      */
-    public void markForPurchase(TCSubject tcSubject,long submissionId) throws PersistenceException;
+    public void markForPurchase(TCSubject tcSubject,long submissionId) throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -930,7 +930,7 @@ public interface ContestServiceFacade {
      *             if any other error occurs.
      * @tested
      */
-    public void deleteContest(TCSubject tcSubject,long contestId) throws PersistenceException;
+    public void deleteContest(TCSubject tcSubject,long contestId) throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -969,7 +969,7 @@ public interface ContestServiceFacade {
      *             if any error occurs when processing a payment.
      */
     public void processMissingPayments(TCSubject tcSubject,long contestId)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1237,7 +1237,7 @@ public interface ContestServiceFacade {
      */
     public ContestPaymentResult processContestCreditCardPayment(TCSubject tcSubject,
         StudioCompetition competition, CreditCardPaymentData paymentData)
-        throws PersistenceException, PaymentException, ContestNotFoundException;
+        throws PersistenceException, PaymentException, ContestNotFoundException, PermissionServiceException;
 
     /**
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
@@ -1255,7 +1255,7 @@ public interface ContestServiceFacade {
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(TCSubject tcSubject,
         StudioCompetition competition, TCPurhcaseOrderPaymentData paymentDat)
-        throws PersistenceException, PaymentException, ContestNotFoundException;
+        throws PersistenceException, PaymentException, ContestNotFoundException, PermissionServiceException;
 
     /**
      * <p>
@@ -1282,7 +1282,7 @@ public interface ContestServiceFacade {
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
         SoftwareCompetition competition, CreditCardPaymentData paymentData)
-        throws ContestServiceException;
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1309,7 +1309,7 @@ public interface ContestServiceFacade {
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
         SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
-        throws ContestServiceException;
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1346,7 +1346,7 @@ public interface ContestServiceFacade {
     public PaymentResult processSubmissionCreditCardPayment(TCSubject tcSubject,
         CompletedContestData completedContestData,
         CreditCardPaymentData paymentData)
-        throws PaymentException, PersistenceException;
+        throws PaymentException, PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1382,7 +1382,7 @@ public interface ContestServiceFacade {
     public PaymentResult processSubmissionPurchaseOrderPayment(TCSubject tcSubject,
         CompletedContestData completedContestData,
         TCPurhcaseOrderPaymentData paymentData)
-        throws PaymentException, PersistenceException;
+        throws PaymentException, PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1400,7 +1400,7 @@ public interface ContestServiceFacade {
      *             if any error occurs when retrieving/updating the data.
      */
     public boolean rankSubmissions(TCSubject tcSubject,long[] submissionIdsInRankOrder)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1418,7 +1418,7 @@ public interface ContestServiceFacade {
      *             if any error occurs when retrieving/updating the data.
      */
     public boolean updateSubmissionsFeedback(TCSubject tcSubject,SubmissionFeedback[] feedbacks)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1499,7 +1499,7 @@ public interface ContestServiceFacade {
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public SoftwareCompetition createSoftwareContest(TCSubject tcSubject,SoftwareCompetition contest, long tcDirectProjectId)
-        throws ContestServiceException;
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1523,7 +1523,7 @@ public interface ContestServiceFacade {
      * @since BURG-1716
      */
     public SoftwareCompetition getSoftwareContestByProjectId(TCSubject tcSubject,long projectId)
-        throws ContestServiceException;
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1548,7 +1548,7 @@ public interface ContestServiceFacade {
      */
     public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject,
         SoftwareCompetition contest, long tcDirectProjectId)
-        throws ContestServiceException;
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1665,7 +1665,7 @@ public interface ContestServiceFacade {
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public SoftwareCompetition getFullProjectData(TCSubject tcSubject,long projectId)
-        throws ContestServiceException;
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1787,7 +1787,7 @@ public interface ContestServiceFacade {
      * @since TopCoder Service Layer Integration 3 Assembly
      */
     public void setSubmissionStatus(TCSubject tcSubject,long submissionId, long submissionStatusId,
-        String operator) throws ContestServiceException;
+        String operator) throws ContestServiceException, PermissionServiceException;
 
     /**
      * Adds the given user as a new submitter to the given project id.
@@ -1836,7 +1836,7 @@ public interface ContestServiceFacade {
      * @since TCCC-1219
      */
     public boolean updateSubmissionUserRank(TCSubject tcSubject,long submissionId, int rank, Boolean isRankingMilestone)
-        throws PersistenceException;
+        throws PersistenceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1911,7 +1911,8 @@ public interface ContestServiceFacade {
      * @throws ContestServiceException  if any persistence or other error occurs
      * @since 1.0.1
      */
-    public List<ProjectContestFee> getContestFeesByProject(TCSubject tcSubject,long projectId) throws ContestServiceException;
+    public List<ProjectContestFee> getContestFeesByProject(TCSubject tcSubject,long projectId) 
+        throws ContestServiceException, PermissionServiceException;
 
 
       
@@ -2095,7 +2096,7 @@ public interface ContestServiceFacade {
      * @since 1.1
      */
     public List<SubmissionData> getMilestoneSubmissionsForContest(TCSubject tcSubject,
-        long contestId) throws ContestServiceException;
+        long contestId) throws ContestServiceException, PermissionServiceException;
 
     /**
      * get final submissions for contest
@@ -2113,7 +2114,7 @@ public interface ContestServiceFacade {
      * @since 1.1
      */
     public List<SubmissionData> getFinalSubmissionsForContest(TCSubject tcSubject,long contestId)
-        throws ContestServiceException;
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * set submission milestone prize If given submission has already been
@@ -2138,7 +2139,7 @@ public interface ContestServiceFacade {
      * @since 1.1
      */
     public void setSubmissionMilestonePrize(TCSubject tcSubject,long submissionId,
-        long milestonePrizeId) throws ContestServiceException;
+        long milestonePrizeId) throws ContestServiceException, PermissionServiceException;
 
     /**
      * Get all design components.
@@ -2270,7 +2271,7 @@ public interface ContestServiceFacade {
      * @return returns the newly created contest id
      * @throws ContestServiceException if any problem occurs
      */
-    public long reOpenSoftwareContest(TCSubject tcSubject,long projectId, long tcDirectProjectId) throws ContestServiceException;
+    public long reOpenSoftwareContest(TCSubject tcSubject,long projectId, long tcDirectProjectId) throws ContestServiceException, PermissionServiceException;
     /**
      * <p>
      * Create new version for design or development contest. (TCSubject tcSubject,project_status_id = 4-10 in tcs_catalog:project_status_lu).
@@ -2287,7 +2288,7 @@ public interface ContestServiceFacade {
      * @throws ContestServiceException if any error occurs
      */
     public long createNewVersionForDesignDevContest(TCSubject tcSubject,long projectId, long tcDirectProjectId, boolean autoDevCreating,
-                                                    boolean minorVersion) throws ContestServiceException;
+                                                    boolean minorVersion) throws ContestServiceException, PermissionServiceException;
     /**
      * <p>
      * Gets the list of all existing contests related to given project for my
