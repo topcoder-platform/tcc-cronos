@@ -10,16 +10,12 @@ import javax.activation.DataHandler;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
-
 import com.topcoder.clients.model.ProjectContestFee;
-import com.topcoder.management.review.data.Comment;
-import com.topcoder.project.service.ScorecardReviewData;
-import com.topcoder.project.service.FullProjectData;
-import com.topcoder.security.TCSubject;
-import com.topcoder.service.specreview.SpecReview;
-
 import com.topcoder.management.project.DesignComponents;
-import com.topcoder.service.facade.contest.ContestPaymentResult;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.project.service.FullProjectData;
+import com.topcoder.project.service.ScorecardReviewData;
+import com.topcoder.security.TCSubject;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
@@ -29,6 +25,7 @@ import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
+import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.CompletedContestData;
 import com.topcoder.service.studio.ContestNotFoundException;
@@ -52,6 +49,7 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
+import com.topcoder.service.user.Registrant;
 
 
 /**
@@ -2349,4 +2347,19 @@ public interface ContestServiceFacade {
      * @since BUGR - 3731
      */
     public void assginRoleByTCDirectProject(TCSubject tcSubject, long tcprojectId, long roleId, long userId) throws ContestServiceException;
+
+     /**
+     * Gets the registrant information for the given project. If the project is of type Studio, a
+     * boolean flag isStudio should be set to true and passed as argument.
+     * 
+     * @param tcSubject the TCSubject instance.
+     * @param ProjectId the id of the project.
+     * @param isStudio the flag indicates whether the project is of type Studio.
+     * @return the retrieved list of Registrant instances.
+     * @throws ContestServiceException if any error occurs.
+     * 
+     * @since BUGR-3738
+     */
+    public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long ProjectId, boolean isStudio)
+            throws ContestServiceException;
 }

@@ -4,6 +4,8 @@
 package com.topcoder.service.facade.contest.ejb;
 
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -33,8 +35,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.datatype.Duration;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.jboss.logging.Logger;
 
@@ -42,6 +44,7 @@ import com.cronos.onlinereview.services.uploads.ConfigurationException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
 import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices;
+import com.tangosol.coherence.component.Data;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
@@ -60,17 +63,18 @@ import com.topcoder.clients.dao.ProjectDAO;
 import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
-
+import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.Project;
-import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectPropertyType;
+import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.TCSEmailMessage;
-import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.PhaseStatus;
+import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
@@ -123,6 +127,7 @@ import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestMultiRoundInformationData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPaymentData;
+import com.topcoder.service.studio.ContestRegistrationData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
@@ -145,22 +150,25 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
+import com.topcoder.service.user.Registrant;
 import com.topcoder.service.user.UserService;
 import com.topcoder.service.user.UserServiceException;
+import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.Property;
 import com.topcoder.util.errorhandling.BaseException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.file.DocumentGenerator;
 import com.topcoder.util.file.DocumentGeneratorFactory;
 import com.topcoder.util.file.Template;
+import com.topcoder.util.objectfactory.ObjectFactory;
+import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
-import com.topcoder.web.ejb.user.UserTermsOfUse;
-import com.topcoder.web.ejb.user.UserTermsOfUseHome;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseHome;
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.Property;
+import com.topcoder.web.ejb.user.UserTermsOfUse;
+import com.topcoder.web.ejb.user.UserTermsOfUseHome;
 
 /**
  * <p>
@@ -675,6 +683,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @Resource(name = "payPalApiEnvironment")
     private String apiEnvironment;
+    
+    /**
+     * Global object factory config manager specification namespace.
+     * 
+     * @since BUGR-3738
+     */
+    @Resource(name = "objectFactoryConfigName")
+    private String objectFactoryConfigManagerSpecName;
+    
+    /**
+     * Object Factory key for upload manager.
+     * 
+     * @since BUGR-3738
+     */
+    @Resource(name = "uploadManagerOFKey")
+    private String uploadManagerOFKey;
 
     /**
      * A flag indicating whether or not create the forum. It's injected, used in
@@ -918,6 +942,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Cockpit Release Assembly for Receipts
      */
     private EmailMessageGenerator emailMessageGenerator;
+    
+    /**
+     * UploadManager instance which is used to get submission information.
+     * 
+     * @since BUGR-3738
+     */
+    private UploadManager uploadManager;
 
 
     /**
@@ -1020,6 +1051,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
         catch (UserServiceException e) {
             throw new IllegalStateException("Failed to get components/applications user id.", e);
+        }
+        
+        
+        // BUGR-3738 : initialize an UploadManager instance through Object Factory
+        try {
+            ObjectFactory objectFactory = new ObjectFactory(new ConfigManagerSpecificationFactory(this.objectFactoryConfigManagerSpecName));
+            
+            this.uploadManager = (UploadManager) objectFactory.createObject(this.uploadManagerOFKey);        
+            
+        } catch (Exception ex) {
+            throw new IllegalStateException("Failed to initialize UploadManager through Object Factory.", ex);
         }
 
 
@@ -6942,5 +6984,156 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         }
 
+    }
+
+    
+    /**
+     * Gets the registrant information for the given project. If the project is of type Studio, a
+     * boolean flag isStudio should be set to true and passed as argument.
+     * 
+     * @param tcSubject the TCSubject instance.
+     * @param ProjectId the id of the project.
+     * @param isStudio the flag indicates whether the project is of type Studio.
+     * @return the retrieved list of Registrant instances.
+     * @throws ContestServiceException if any error occurs.
+     * 
+     * @since BUGR-3738
+     */
+    public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long projectId, boolean isStudio)
+            throws ContestServiceException {
+
+        logger.debug("getRegistrantsForProject with parameter [TCSubject " + tcSubject.getUserId() + ", projectId ="
+                + projectId + ", isStudio =" + isStudio + "].");
+
+        // create an empty list first to store the result
+        List<Registrant> result = new ArrayList<Registrant>();
+
+        try {
+
+            if (isStudio) {
+                
+                ContestData contest = this.studioService.getContest(projectId);
+
+                // Get all the registrants of this studio contest
+                Set<ContestRegistrationData> regs = contest.getContestRegistrations();
+                
+                // Get all the final submissions of this studio contest 
+                List<SubmissionData> finalSubs = this.studioService.getFinalSubmissionsForContest(projectId);
+                
+                // Create a map to store the mapping between submitter ID and Submission Data
+                Map<Long, SubmissionData> map = new HashMap<Long, SubmissionData>();
+                
+                for(SubmissionData sub : finalSubs) {
+                    map.put(sub.getSubmitterId(), sub);
+                }
+
+                for (ContestRegistrationData r : regs) {
+                    
+                    // for each Registrantion date, create a Registrant instance
+                    Registrant item = new Registrant();
+                    
+                    item.setUserId(r.getUserId());
+                    item.setRegistrationDate(r.getCreateDate());
+                    
+                    // Get handle using User Service
+                    String handle = this.userService.getUserHandle(r.getUserId());
+                    
+                    if (handle != null) {
+                        item.setHandle(handle);
+                    }
+                    
+                    // set rating and reliablity to null
+                    item.setRating(null);
+                    item.setReliability(null);
+                    
+                    // check the submission
+                    if (map.containsKey(r.getUserId())) {
+                        item.setSubmissionDate(map.get(r.getUserId()).getSubmittedDate().toGregorianCalendar().getTime());
+                    } else {
+                        // no submission, set submission date to null
+                        item.setSubmissionDate(null);
+                    }
+                    
+                    // add item into result
+                    result.add(item);
+                }
+
+            } else {
+
+                // user 1 for resource role ID which is the ID of role 'submitter'
+                com.topcoder.management.resource.Resource[] regs = this.projectServices.searchResources(projectId, 1);
+
+                for (com.topcoder.management.resource.Resource r : regs) {
+                    // Create a Registrant instance for every resource in regs
+                    Registrant item = new Registrant();
+
+                    String userId = r.getProperty("External Reference ID");
+                    String handle = r.getProperty("Handle");
+                    String regDate = r.getProperty("Registration Date");
+
+                    // rating and reliability may be null
+                    String rating = r.getProperty("Rating");
+                    String reliability = r.getProperty("Reliability");
+
+                    item.setHandle(handle);
+                    item.setUserId(Long.valueOf(userId));
+
+                    try {
+                        item.setRating(Double.valueOf(rating));
+                    } catch (Exception ex) {
+                        // if any exception occurs, set rating to null
+                        item.setRating(null);
+                    }
+
+                    try {
+                        item.setReliability(Double.valueOf(reliability));
+                    } catch (Exception ex) {
+                        // if any exception occurs, set reliability to null
+                        item.setReliability(null);
+                    }
+
+                    DateFormat format = new SimpleDateFormat("MM.dd.yyyy hh:mm a");
+
+                    item.setRegistrationDate((Date) format.parse(regDate));
+
+                    Long[] submissionIds = r.getSubmissions();
+
+                    // set the property submission date if there is at least one submission
+                    if (submissionIds.length > 0) {
+
+                        Long max = Long.MIN_VALUE;
+
+                        // pick up the largest submission ID
+                        for (Long id : submissionIds) {
+                            if (id.compareTo(max) > 0) {
+                                max = id;
+                            }
+                        }
+
+                        // Get the submission instance with UploadManager
+                        Submission submission = this.uploadManager.getSubmission(max.longValue());
+
+                        // Set the submission date
+                        item.setSubmissionDate(submission.getCreationTimestamp());
+
+                    }
+
+                    // finally add the Registrant into the result list
+                    result.add(item);
+                }
+
+            }
+
+            return result;
+
+        } catch (Exception ex) {
+            // if any exception occurs, log it and wrap into ContestServiceException and throw out
+            logger.error("Operation failed when calling getRegistrantsForProject", ex);
+            throw new ContestServiceException("Operation failed when calling getRegistrantsForProject", ex);
+        } finally {
+            // log the exit of method
+            logger.debug("Exits getRegistrantsForProject with parameter [TCSubject " + tcSubject.getUserId() + ", projectId ="
+                    + projectId + ", isStudio =" + isStudio + "].");
+        }
     }
 }
