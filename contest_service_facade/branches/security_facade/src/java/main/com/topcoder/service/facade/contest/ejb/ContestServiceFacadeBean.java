@@ -3937,6 +3937,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (creatingDevContest) {
                 autoCreateDevContest(tcSubject, contest, tcDirectProjectId, devContest);
+                contest.setDevelopmentProjectHeader(devContest.getProjectHeader());
             }
 
 
