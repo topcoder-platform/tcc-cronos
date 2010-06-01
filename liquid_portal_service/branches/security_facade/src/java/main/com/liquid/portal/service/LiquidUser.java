@@ -16,15 +16,15 @@ public class LiquidUser extends User {
     /**
      * Flag value indicates whether the user is icCompetitor.
      */
-    private boolean icCompetitor;
+    private boolean lcCompetitor;
 
     /**
-     * Gets whether the user is a IcCompetitor.
+     * Gets whether the user is a LC Competitor.
      * 
-     * @return the boolean flag to tell whether the user is a IcCompetitor.
+     * @return the boolean flag to tell whether the user is a LC Competitor.
      */
-    public boolean isIcCompetitor() {
-        return icCompetitor;
+    public boolean isLcCompetitor() {
+        return lcCompetitor;
     }
 
     /**
@@ -32,7 +32,7 @@ public class LiquidUser extends User {
      * 
      * @param icCompetitor the IcCompetitor boolean flag.
      */
-    public void setIcCompetitor(boolean icCompetitor) {
-        this.icCompetitor = icCompetitor;
+    public void setLcCompetitor(boolean lcCompetitor) {
+        this.lcCompetitor = lcCompetitor;
     }
 }

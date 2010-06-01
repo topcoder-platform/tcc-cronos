@@ -806,9 +806,9 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         addUserToNotusEligibilityGroup(user, warnings, methodName);
         // add user to terms group
         addUserToTermsGroup(user, termsAgreedDate, warnings, methodName);
-   System.out.println("---------------isIcCompetitor----------------"+user.isIcCompetitor());     
+  
         // Added in BUGR 3731
-        if (user.isIcCompetitor()) {
+        if (user.isLcCompetitor()) {
             // if IcCompetitor is true, add to notus submitter terms group
             addUserToNotusSubmitterTermsGroup(user, termsAgreedDate, warnings, methodName);
         }
@@ -878,7 +878,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             addUserToTermsGroup(savedUserInfo, new Date(), warnings, methodName);
             
             // Added in BUGR 3731
-            if (user.isIcCompetitor()) {
+            if (user.isLcCompetitor()) {
                 // if IcCompetitor is true, add to notus submitter terms group
                 addUserToNotusSubmitterTermsGroup(savedUserInfo, new Date(), warnings, methodName);
             }
