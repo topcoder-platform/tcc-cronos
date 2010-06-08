@@ -47,7 +47,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "projectPhases", "projectResources", "projectData", "type", "adminFee",
     "clientApproval", "clientName", "reviewPayment", "specificationReviewPayment", "contestFee", "status",
     "category", "confidence", "pricingApproval", "hasWikiSpecification", "passedSpecReview", "hasDependentCompetitions",
-    "wasReposted", "notes"}
+    "wasReposted", "notes", "devId"}
 )
 public class SoftwareCompetition extends Competition {
     /**
@@ -188,6 +188,13 @@ public class SoftwareCompetition extends Competition {
      * <p>Represents the notes.</p>
     */
     private String notes;
+
+    /**
+     * <p>
+     * Represents the id.
+     * </p>
+     */
+    private long devId;
 
     /**
      * <p>
@@ -739,5 +746,14 @@ public class SoftwareCompetition extends Competition {
     @Override
     public void setWasReposted(boolean wasReposted) {
     	this.wasReposted = wasReposted;
+    }
+
+
+    public long getDevId() {
+        return devId;
+    }
+
+     public void setDevId(long devId) {
+        this.devId = devId;
     }
 }
