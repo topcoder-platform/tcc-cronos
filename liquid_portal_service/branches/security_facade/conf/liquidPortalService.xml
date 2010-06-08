@@ -2,8 +2,18 @@
 <CMConfig>
 	<Config name="com.liquid.portal.service">
 		<property name="notusObserverTermsId">
-			<value>1</value>
+			<value>20794</value>
 		</property>
+
+        <property name="notusSubmitterTermsId">
+			<value>20623</value>
+		</property>
+
+        <property name="clientManagerForBillingProjects">
+			<value>70015983</value>
+            <value>1</value>
+		</property>
+
 
 		<property name="projectCategories">
 			<value>development::1</value>
@@ -16,13 +26,26 @@
 		</property>
 
 		<property name="notusEligibilityGroupIds">
-			<value>1</value>
+            <value>217</value>
+		</property>
+
+        <property name="addToNotusEligibilityGroupIds">
 			<value>2</value>
-			<value>3</value>
+			<value>10</value>
+            <value>14</value>
+			<value>2000118</value>
+            <value>2000116</value>
+            <value>217</value>
+		</property>
+
+        <property name="zeroContestFeeBillingIds">
+			<value>70016058</value>
+			<value>70016059</value>
+            <value>70015983</value>
 		</property>
 
 		<property name="fullControlPermissionTypeId">
-			<value>11</value>
+			<value>3</value>
 		</property>
 
 		<property name="inactiveStudioContestStatusId">
@@ -38,7 +61,7 @@
 		</property>
 
 		<property name="notusClientId">
-			<value>15</value>
+			<value>70014096</value>
 		</property>
 
 		<property name="billingAccountPropertyKey">
@@ -58,7 +81,7 @@
 		</property>
 
 		<property name="jiraEmailSubject">
-			<value>[Liquid Testing]Success</value>
+			<value>Liquid Error</value>
 		</property>
 
 		<property name="jiraEmailSender">
