@@ -2325,4 +2325,29 @@ public interface ContestServiceFacade {
      * @since 1.2.3
      */
     public boolean isPrivate(TCSubject tcSubject,long contestId, boolean isStudio) throws ContestServiceException;
+
+     /**
+     * Assigns the role for the given project and user.
+     * 
+     * @param projectId the id of the project.
+     * @param roleId the id of the role
+     * @param userId the id of the user.
+     * @throws ContestServiceException if any error occurs
+     * @since BUGR - 3731
+     */
+    public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId) throws ContestServiceException;
+
+
+    /**
+     * Assigns the role for the given tc project and user, it will assign all projects 
+     * uder tc direct projct
+     * 
+     * @param tcprojectId the id of the tc direct project.
+     * @param roleId the id of the role
+     * @param userId the id of the user.
+     * @throws ContestServiceException if any error occurs
+     * @since BUGR - 3731
+     */
+    public void assginRoleByTCDirectProject(TCSubject tcSubject, long tcprojectId, long roleId, long userId) throws ContestServiceException;
+
 }
