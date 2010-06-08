@@ -15,6 +15,7 @@ import com.topcoder.management.project.SimpleProjectContestData;
 import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.TCSubject;
@@ -915,5 +916,15 @@ public interface ProjectServices {
      *  Get project only (not phase or resources)
      */
     public Project getProject(long projectId) throws ProjectServicesException;
+
+
+    /**
+     * Gets all resource roles in the persistence store.
+     *
+     * @return All resource roles in the persistence store
+     * @throws ProjectServicesException
+     *             If there is an error reading the persistence store.
+     */
+    public ResourceRole[] getAllResourceRoles() throws ProjectServicesException;
 
 }

@@ -22,6 +22,7 @@ import com.topcoder.management.project.SimpleProjectPermissionData;
 import com.topcoder.management.project.SoftwareCapacityData;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceRole;
 
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.project.service.ConfigurationException;
@@ -1636,6 +1637,29 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
+    }
+
+     /**
+     * Gets all resource roles in the persistence store.
+     *
+     * @return All resource roles in the persistence store
+     * @throws ProjectServicesException
+     *             If there is an error reading the persistence store.
+     */
+    public ResourceRole[] getAllResourceRoles() throws ProjectServicesException
+    {
+         String method = "ProjectServicesBean#getAllResourceRoles() method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().getAllResourceRoles();
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
     }
 
 }

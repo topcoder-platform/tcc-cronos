@@ -3677,4 +3677,33 @@ public class ProjectServicesImpl implements ProjectServices {
 
 
 
+     /**
+     * Gets all resource roles in the persistence store.
+     *
+     * @return All resource roles in the persistence store
+     * @throws ProjectServicesException
+     *             If there is an error reading the persistence store.
+     */
+    public ResourceRole[] getAllResourceRoles() throws ProjectServicesException
+    {
+        log(Level.INFO,
+				"Enters ProjectServicesImpl#getAllResourceRoles method.");
+
+		ResourceRole[] allroles = null;
+		try {
+			allroles = resourceManager.getAllResourceRoles();
+		} catch (ResourcePersistenceException ex) {
+			log(
+					Level.ERROR,
+					"ResourcePersistenceException occurred in ProjectServicesImpl#getAllResourceRoles method.");
+			throw new ProjectServicesException(
+					"PersistenceException occurred when operating getAllResourceRoles.",
+					ex);
+		} 
+		log(Level.INFO,
+				"Exits ProjectServicesImpl#getAllResourceRoles method.");
+		return allroles;
+
+    }
+
 }
