@@ -2793,7 +2793,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
             //mark ready for spec review
-            markReadyForReview(tcSubject, tobeUpdatedCompetition.getContestData().getContestId(), true);
+            //markReadyForReview(tcSubject, tobeUpdatedCompetition.getContestData().getContestId(), true);
 
 
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
