@@ -287,7 +287,7 @@ public class ActivePhaseHandler extends AbstractPhaseHandler {
 
         //Start case: The Active phase can start as soon as a contest with "Scheduled" status has its startDate property
         //time reached.
-        return isStartDateReached(contest) && isContestStatusMatch(contest, CockpitPhase.SCHEDULED) && passedSpecReview(contest);
+        return isStartDateReached(contest) && isContestStatusMatch(contest, CockpitPhase.SCHEDULED);
     }
 
     /**
