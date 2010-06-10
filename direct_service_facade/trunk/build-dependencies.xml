@@ -1,0 +1,49 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>     
+    
+    <property name="jboss.home" value="C:/Program Files/JBoss" />
+ 
+    <path id="component.tcs-dependencies">
+        <pathelement location="${tcs_libdir}/base_exception/2.0/base_exception.jar"/>
+        <pathelement location="${tcs_libdir}/logging_wrapper/2.0/logging_wrapper.jar"/>
+        <pathelement location="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+        <pathelement location="${tcs_libdir}/object_formatter/1.0/object_formatter.jar"/>
+        <pathelement location="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
+        <pathelement location="test_reflib/project_management.jar"/>
+        <pathelement location="test_reflib/security.jar"/>
+        <pathelement location="test_reflib/client_project_entities_dao.jar"/>
+        <pathelement location="test_reflib/document_generator.jar"/>
+        <pathelement location="test_reflib/project_phases.jar"/> 
+        <pathelement location="test_reflib/project_services.jar"/>
+        <pathelement location="test_reflib/user_service.jar"/>
+        <pathelement location="test_reflib/catalog_entities.jar"/>
+        <pathelement location="test_reflib/email_engine.jar"/>
+        <pathelement location="test_reflib/phase_management.jar"/>
+        <pathelement location="test_reflib/review_data_structure.jar"/>
+        <pathelement location="test_reflib/studio_contest_manager.jar"/>
+        <pathelement location="test_reflib/resource_management.jar"/>
+        <pathelement location="test_reflib/catalog_services.jar"/>
+        <pathelement location="test_reflib/search_builder.jar"/>
+        <pathelement location="test_reflib/dependence.jar"/>
+    </path>
+
+   	<path id="component.3rdParty-dependencies">
+        <pathelement location="${ext_libdir}/j2ee/ejb-3_0-api.jar"/>
+        <pathelement location="${ext_libdir}/logging/log4j/1.2.15/log4j-1.2.15.jar"/>
+        <pathelement location="${jboss.home}/client/jboss-ejb3x.jar"/>
+        <pathelement location="${jboss.home}/client/jaxb-api.jar"/>
+        <pathelement location="${jboss.home}/client/activation.jar"/>
+        <pathelement location="${jboss.home}/client/ejb3-persistence.jar"/>
+        <pathelement location="${jboss.home}/client/jboss-jaxws.jar"/>
+   	</path>
+   
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${ext_libdir}/junit/junit/4.6/junit-4.6.jar"/>
+        <pathelement location="test_files/direct_service_facade_tests.jar"/>
+    </path>
+
+</project>
