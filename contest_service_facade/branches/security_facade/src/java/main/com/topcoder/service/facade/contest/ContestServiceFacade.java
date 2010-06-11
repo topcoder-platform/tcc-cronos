@@ -16,6 +16,7 @@ import com.topcoder.management.review.data.Comment;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.security.TCSubject;
+import com.topcoder.service.facade.contest.notification.ProjectNotification;
 import com.topcoder.service.payment.CreditCardPaymentData;
 import com.topcoder.service.payment.PaymentException;
 import com.topcoder.service.payment.PaymentResult;
@@ -129,9 +130,15 @@ import com.topcoder.service.user.Registrant;
  * Changes in v1.6 (Direct Search Assembly):
  * - Add getProjectData function
  * </p>
+ * 
+ * <p>
+ * Changes in v1.6.1, two public methods are added (BUGR - 3706):
+ * - List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
+ * - updateNotifcationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications)
+ * </p>
  *
- * @author pulky, murphydog, waits, BeBetter
- * @version 1.6
+ * @author pulky, murphydog, waits, BeBetter, hohosky
+ * @version 1.6.1
  */
 public interface ContestServiceFacade {
     /**
@@ -2347,6 +2354,32 @@ public interface ContestServiceFacade {
      * @since BUGR - 3731
      */
     public void assginRoleByTCDirectProject(TCSubject tcSubject, long tcprojectId, long roleId, long userId) throws ContestServiceException;
+
+    /**
+     * Gets the notification information for the given user id. The notification information will be
+     * returned as a list of ProjectNotification instance.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @return a list of ProjectNotification instances.
+     * @throws ContestServiceExeption if any error occurs, exception from forum EJB service will be
+     *             caught and logged, but no thrown out.
+     * @since 1.6.1
+     */
+    public List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId) throws ContestServiceException;
+    
+    /**
+     * Updates the notifications for the given user, the notifications which need to update are
+     * passed in as a list of ProjectNotification instances.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @param notifications a list of ProjectNotification instances to update.
+     * @throws ContestServiceExeption if any error occurs, exception from forum EJB service will be
+     *             caught and logged, but no thrown out.
+     * @since 1.6.1
+     */
+    public void updateNotificationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications) throws ContestServiceException;
 
      /**
      * Gets the registrant information for the given project. If the project is of type Studio, a
