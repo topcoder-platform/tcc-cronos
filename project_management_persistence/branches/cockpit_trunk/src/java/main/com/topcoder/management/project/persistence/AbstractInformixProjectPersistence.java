@@ -373,6 +373,34 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      */
     public static final int MANAGER_ROLE_ID = 13;
+
+     /**
+     * <p>
+     * Represents the default value for copilot_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int COPILOT_ROLE_ID = 14;
+    /**
+
+     /**
+     * <p>
+     * Represents the default value for client_manager_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int CLIENT_MANAGER_ROLE_ID = 15;
+    /**
+
+     /**
+     * <p>
+     * Represents the default value for post_mortem_reviewer_role_id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int POST_MORTEM_REVIEWER_ROLE_ID = 16;
+    /**
+
     /**
      * <p>
      * Represents the default value for deactivated_role_id. 
@@ -435,7 +463,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         SCREENER_ROLE_ID, REVIEWER_ROLE_ID, ACCURACY_REVIEWER_ROLE_ID, FAILURE_REVIEWER_ROLE_ID,
         STRESS_REVIEWER_ROLE_ID, AGGREGATOR_ROLE_ID, FINAL_REVIEWER_ROLE_ID,
         APPROVER_ROLE_ID, DESIGNER_ROLE_ID, OBSERVER_ROLE_ID, MANAGER_ROLE_ID, DEACTIVATED_ROLE_ID,
-        TEAM_CAPTAIN_ROLE_ID, FREE_AGENT_ROLE_ID, PAYMENT_MANAGER_ROLE_ID};
+        TEAM_CAPTAIN_ROLE_ID, FREE_AGENT_ROLE_ID, PAYMENT_MANAGER_ROLE_ID, COPILOT_ROLE_ID, CLIENT_MANAGER_ROLE_ID,
+        POST_MORTEM_REVIEWER_ROLE_ID};
     
 
 	/**
