@@ -4568,8 +4568,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
                 for (int roleId : ALL_ROLES_ID) {
                     // no manager or observer for cca, for spec review, no submitter
-                    if (roleId != MANAGER_ROLE_ID && roleId != OBSERVER_ROLE_ID  
-                            && !isSpecReviewSubmitter(roleId, projectCategoryId)) {
+                    if (roleId != MANAGER_ROLE_ID && !isSpecReviewSubmitter(roleId, projectCategoryId)) {
                         preparedStatement.setInt(2, roleId);
                         preparedStatement.execute(); 
                     }
