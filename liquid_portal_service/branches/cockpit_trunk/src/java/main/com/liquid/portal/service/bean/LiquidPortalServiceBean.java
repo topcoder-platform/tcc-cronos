@@ -1721,7 +1721,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 projectHeader.getProperties().put(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "Yes");
                 projectHeader.getProperties().put(ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, "Open");
                 projectHeader.getProperties().put(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
-                projectHeader.getProperties().put(ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, String.valueOf(asset.getRootCategory()));
+                projectHeader.getProperties().put(ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, String.valueOf(asset.getRootCategory().getId()));
                 if (competitionData.getCca())
                 {
                     projectHeader.getProperties().put(ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, "CCA");
