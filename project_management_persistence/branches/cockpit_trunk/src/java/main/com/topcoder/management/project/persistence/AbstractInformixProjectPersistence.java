@@ -1300,6 +1300,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Helper.STRING_TYPE, Helper.DATE_TYPE};
     
     /**
+     * Represents the column types for the result set which is returned by
+     * executing the sql statement to query all active projects of the given user.
+     * 
+     * @since BUGR-3706
+     */
+    private static final DataType[] QUERY_SIMPLE_PROJECT_INFO_BY_USER_COLUMN_TYPES = new DataType[] {
+            Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+            Helper.LONG_TYPE, Helper.STRING_TYPE};
+    
+    /**
      * Represents the sql statement to create project spec.
      * 
      * @since Cockpit Launch Contest - Update for Spec Creation v1.0
@@ -4602,6 +4612,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                         preparedStatement.execute(); 
                     }
                 }
+
             } 
 
             //3. insert stardard terms
@@ -5862,6 +5873,93 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw e;
         }
     }
+    
+    /**
+     * Gets active contests for the given user, only active contests will be returned.
+     * 
+     * @param userId the id of the user.
+     * @return the data stored in a list of SimpleProjectContestData instances.
+     * @throws PersistenceException if any error occurs while retrieving data.
+     * @since BUGR-3706
+     */
+    public List<SimpleProjectContestData> getActiveContestsForUser(long userId) throws PersistenceException {
+        getLogger().log(Level.INFO, new LogMessage(null, null, "Enter getActiveContestsForUser method."));
+        
+        Connection conn = null;
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            String qstr = "select c.project_id as contest_id, " +
+                    " (select pinfo.value from project_info as pinfo where pinfo.project_id = c.project_id and pinfo.project_info_type_id = 6) as contest_name, "
+                    + " tc_direct_project_id as project_id, "
+                    + "  tcd.name as project_name, "
+                    + " ( select pi.value from project_info pi where c.project_id = pi.project_id and pi.project_info_type_id = 4 ) as forum_id, "
+                    + " pcl.name as contest_type "
+                    + " from project c, tc_direct_project tcd, project_category_lu pcl  "
+                    + " where c.tc_direct_project_id = tcd.project_id and c.project_status_id = 1 "
+                    + " and pcl.project_category_id = c.project_category_id "
+                    + " and (c.create_user = " + userId + " OR exists "
+                    + "     (select user_id from user_permission_grant upg where upg.user_id = " + userId
+                    + "      and ((upg.resource_id = c.project_id and is_studio = 0) "
+                    + "        OR upg.resource_id = tcd.project_id))) ";
+
+            Object[][] rows = Helper.doQuery(conn, qstr, new Object[] {},
+                    this.QUERY_SIMPLE_PROJECT_INFO_BY_USER_COLUMN_TYPES);
+
+            List<SimpleProjectContestData> result = new ArrayList<SimpleProjectContestData>();
+
+            for (int i = 0; i < rows.length; i++) {
+
+                SimpleProjectContestData c = new SimpleProjectContestData();
+               
+                Object[] os = rows[i];
+
+                if (os[0] != null) {
+                    // set the contest id
+                    c.setContestId((Long) os[0]);
+                }
+                if (os[1] != null) {
+                    // set the contest name
+                    c.setCname(os[1].toString());
+                }
+                if (os[2] != null) {
+                    // set the tc direct project id
+                    c.setProjectId((Long) os[2]);
+                }
+                if (os[3] != null) {
+                    // set the tc direct project name
+                    c.setPname(os[3].toString());
+                }
+                
+                if (os[4] != null) {
+                    // set the forum id
+                    c.setForumId( ((Long) os[4]).intValue());
+                }
+
+                if (os[5] != null)
+                    // set the contest type
+                    c.setType(os[5].toString());
+
+
+                result.add(c);
+            }
+
+            closeConnection(conn);
+            
+            return result;
+            
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fails to retrieving active projects info for user", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        } finally {
+            getLogger().log(Level.INFO, new LogMessage(null, null, "Exit getActiveContestsForUser method."));
+        }
+    }
 
     /**
      * Gets an array of all the billing project configurations in the persistence. The billing
@@ -5911,4 +6009,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         return null;
     }
+    
+    
 }
