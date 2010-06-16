@@ -97,13 +97,20 @@ import com.topcoder.security.TCSubject;
  *    the current permission checking security info.
  * </p>
  * <p>
+ * Changes in v1.4.2 (BUGR - 3706)
+ *  - add method getActiveContestsForUser(TCSubject subject, long userId)
+ *  - add method getNotificationsForUser(long userId, long notificationType, long[] projectIds)
+ *  - add method addNotifications(long userId, long[] projectIds, String operator)
+ *  - add method removeNotifications(long userId, long[] projectIds, String operator)
+ * </p>
+ * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog, waits
- * @version 1.4.1
+ * @author fabrizyo, znyyddf, murphydog, waits, hohosky
+ * @version 1.4.2
  * @since 1.0
  */
 public interface ProjectServices {
@@ -901,6 +908,8 @@ public interface ProjectServices {
      * @throws ProjectServicesException if any error occurs
      */
     FullProjectData createReOpenContest(FullProjectData contest, String operator) throws ProjectServicesException;
+    
+    
     /**
      * Creates new version for development and design contest for the given contest.
      * since version 1.4.
@@ -926,5 +935,54 @@ public interface ProjectServices {
      *             If there is an error reading the persistence store.
      */
     public ResourceRole[] getAllResourceRoles() throws ProjectServicesException;
+
+        
+    /**
+     * Get active contests for the given user, the contest data is stored in
+     * SimpleProjectContestData and the result is returned as a list of SimpleProjectContestData.
+     * 
+     * @param subject the TCSubject instance.
+     * @param userId the id of the user.
+     * @throws ProjectServicesException is any error occrus.
+     * 
+     * @since 1.4.2
+     */
+    public List<SimpleProjectContestData> getActiveContestsForUser(TCSubject subject, long userId) throws ProjectServicesException;
+    
+    /**
+     * Get project notifications of the given notification type for the given user.
+     * 
+     * @param userId the id of the user.
+     * @param the id of the notification type.
+     * @param the array of project ids to check.
+     * 
+     * @throws ProjectServicesException if any error occurs.
+     * 
+     * @since 1.4.2
+     */
+    public long[] getNotificationsForUser(long userId, long notificationType, long[] projectIds) throws ProjectServicesException;
+    
+    /**
+     * Add notifications of the given projects IDs to given user.
+     * 
+     *  @param userId the id of the user.
+     *  @param projectIds the array of project IDs.
+     *  @param operator the operator.
+     *  @throws ProjectServicesException if any error occurs.
+     *  @since 1.4.2
+     */
+    public void addNotifications(long userId, long[] projectIds, String operator) throws ProjectServicesException;
+    
+    /**
+     * Removes the notifications of the given project IDs for the given userId.
+     * 
+     * @param userId the id of the user.
+     * @param projectIds the array of project IDs.
+     * @param operator the operator.
+     * @throws ProjectServicesException if any error occurs.
+     * @since 1.4.2
+     */
+    public void removeNotifications(long userId, long[] projectIds, String operator) throws ProjectServicesException;
+
 
 }
