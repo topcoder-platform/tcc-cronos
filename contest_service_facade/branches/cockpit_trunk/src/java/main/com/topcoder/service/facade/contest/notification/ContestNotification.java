@@ -13,6 +13,10 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class ContestNotification implements Serializable {
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 2742320281043254L;
 
     /**
      * The contest id.
@@ -23,6 +27,13 @@ public class ContestNotification implements Serializable {
      * The contest name.
      */
     private String name;
+
+    /**
+     * The contest type.
+     *
+     * @since Direct Notification Assembly
+     */
+    private String type;
 
     /**
      * Flag indicates whether the forum is watched.
@@ -127,5 +138,25 @@ public class ContestNotification implements Serializable {
      */
     public void setForumId(long forumId) {
         this.forumId = forumId;
+    }
+
+    /**
+     * Gets the type of the contest.
+     *
+     * @return the type of the contest.
+     * @since Direct Notification Assembly
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the type of the contest.
+     *
+     * @param type the type of the contest.
+     * @since Direct Notification Assembly
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 }

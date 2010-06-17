@@ -17,6 +17,11 @@ import java.util.List;
  */
 public class ProjectNotification implements Serializable {
     /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 340017340124753434L;
+
+    /**
      * The id of the project.
      */
     private long projectId;

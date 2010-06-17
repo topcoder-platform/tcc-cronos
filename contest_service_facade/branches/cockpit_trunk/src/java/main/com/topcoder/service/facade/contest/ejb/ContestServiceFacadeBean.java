@@ -6979,7 +6979,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
             throws ContestServiceException {
-        logger.debug("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
+        logger.info("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
                 + "]");
 
         List<ProjectNotification> result = new ArrayList<ProjectNotification>();
@@ -6996,7 +6996,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             long[] contestIds = new long[contests.size()];
 
             for (int i = 0; i < contests.size(); ++i) {
-                forumIds[i] = contests.get(i).getForumId();
+                if (contests.get(i).getForumId() != null) {
+                    forumIds[i] = contests.get(i).getForumId();
+                }
                 contestIds[i] = contests.get(i).getContestId();
             }
 
@@ -7039,6 +7041,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     pn.setProjectId(c.getProjectId());
                     pn.setName(c.getPname());
                     pn.setContestNotifications(new ArrayList<ContestNotification>());
+
+                    map.put(c.getProjectId(), pn);
                     
                 } else {
                     // already exists, directly assign it to pn
@@ -7048,8 +7052,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 ContestNotification cn = new ContestNotification();
 
                 cn.setContestId(c.getContestId());
-                cn.setForumId(c.getForumId());
+                if (c.getForumId() != null) {
+                    cn.setForumId(c.getForumId());
+                }
                 cn.setName(c.getCname());
+                // added in Direct Notification assembly
+                cn.setType(c.getType());
                 cn.setForumNotification(watchedForumsSet.contains(cn.getForumId()));
                 cn.setProjectNotification(notifiedContestsSet.contains(cn.getContestId()));
 
@@ -7058,9 +7066,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             }
 
-            result = new ArrayList<ProjectNotification>(map.values());
-
-            return result;
+            return new ArrayList<ProjectNotification>(map.values());
 
         } catch (ProjectServicesException pse) {
             logger.error("ProjectServices operation failed in the contest service facade.", pse);
@@ -7070,7 +7076,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             logger.error("Operation failed in the contest service facade.", ex);
             return result;
         } finally {
-            logger.debug("Exit getNotificationsForUser");
+            logger.info("Exit getNotificationsForUser");
         }
 
     }
