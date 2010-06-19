@@ -20,15 +20,16 @@
         <pathelement location="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
     	<pathelement location="${tcs_libdir}/document_generator/3.0.0/document_generator.jar"/>
         <pathelement location="${tcs_libdir}/email_engine/3.1.0/email_engine.jar"/>
-        <pathelement location="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
-        <pathelement location="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
-        <pathelement location="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
-        <pathelement location="${tcs_libdir}/security/1.0.0/security.jar"/>
-        <pathelement location="${tcs_libdir}/review_data_structure/1.0.0/review_data_structure.jar"/>
-        <pathelement location="${tcs_libdir}/studio_contest_manager/1.0.0/studio_contest_manager.jar"/>
-        <pathelement location="${tcs_libdir}/catalog_services/1.0.0/catalog_services.jar"/>
-        <pathelement location="${tcs_libdir}/resource_management/1.1.0/resource_management.jar"/>
-        <pathelement location="${tcs_libdir}/search_builder/1.4.0/search_builder.jar"/>
+        <pathelement location="${test_reflib}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+        <pathelement location="${test_reflib}/object_formatter/1.0.0/object_formatter.jar"/>
+        <pathelement location="${test_reflib}/configuration_manager/2.1.5/configuration_manager.jar"/>
+        <pathelement location="${test_reflib}/security/1.0.0/security.jar"/>
+        <pathelement location="${test_reflib}/review_data_structure/1.0.0/review_data_structure.jar"/>
+        <pathelement location="${test_reflib}/studio_contest_manager/1.3.0/studio_contest_manager.jar"/>
+        <pathelement location="${test_reflib}/catalog_services/1.0.0/catalog_services.jar"/>
+        <pathelement location="${test_reflib}/resource_management/1.1.0/resource_management.jar"/>
+        <pathelement location="${test_reflib}/search_builder/1.4.0/search_builder.jar"/>
+        <pathelement location="${testfiles}/dependence.jar"/>
     </path>
 
    	<path id="component.3rdParty-dependencies">
@@ -43,8 +44,7 @@
    
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${ext_libdir}/junit/junit/4.6/junit-4.6.jar"/>
-        <pathelement location="test_files/direct_service_facade_tests.jar"/>
-        <pathelement location="test_files/dependence.jar"/>
+        <pathelement location="${testfiles}/direct_service_facade_tests.jar"/>
     </path>
 
 </project>
