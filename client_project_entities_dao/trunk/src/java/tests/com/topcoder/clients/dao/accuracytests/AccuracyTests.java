@@ -27,6 +27,7 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(CompanyDAOAccuracyTests.class);
         suite.addTestSuite(ProjectDAOAccuracyTests.class);
         suite.addTestSuite(ProjectStatusDAOAccuracyTests.class);
+        suite.addTestSuite(ProjectAccuracyTests.class);
         return suite;
     }
 }

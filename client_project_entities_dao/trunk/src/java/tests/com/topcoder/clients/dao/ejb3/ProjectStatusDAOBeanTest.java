@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -16,7 +16,6 @@ import com.topcoder.clients.model.ProjectStatus;
  * <p>
  * Test class: <code>ProjectStatusDAOBean</code>.
  * </p>
- *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -37,9 +36,7 @@ public class ProjectStatusDAOBeanTest extends TestBase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -55,13 +52,12 @@ public class ProjectStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ProjectStatusDAOBean</code> subclasses
-     * <code>GenericEJB3DAO</code>.
+     * Verifies <code>ProjectStatusDAOBean</code> subclasses <code>GenericEJB3DAO</code>.
      * </p>
      */
     public void testInheritance1() {
         assertTrue("ProjectStatusDAOBean does not subclasses GenericEJB3DAO.",
-                target instanceof GenericEJB3DAO<?, ?>);
+            target instanceof GenericEJB3DAO < ?, ? >);
     }
 
     /**
@@ -69,14 +65,12 @@ public class ProjectStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ProjectStatusDAOBean</code> implements
-     * <code>ProjectStatusDAO</code>.
+     * Verifies <code>ProjectStatusDAOBean</code> implements <code>ProjectStatusDAO</code>.
      * </p>
      */
     public void testInheritance2() {
-        assertTrue(
-                "ProjectStatusDAOBean does not implements ProjectStatusDAO.",
-                target instanceof ProjectStatusDAO);
+        assertTrue("ProjectStatusDAOBean does not implements ProjectStatusDAO.",
+            target instanceof ProjectStatusDAO);
     }
 
     /**
@@ -84,14 +78,12 @@ public class ProjectStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ProjectStatusDAOBean</code> implements
-     * <code>ProjectStatusDAOLocal</code>.
+     * Verifies <code>ProjectStatusDAOBean</code> implements <code>ProjectStatusDAOLocal</code>.
      * </p>
      */
     public void testInheritance3() {
-        assertTrue(
-                "ProjectStatusDAOBean does not implements ProjectStatusDAOLocal.",
-                target instanceof ProjectStatusDAOLocal);
+        assertTrue("ProjectStatusDAOBean does not implements ProjectStatusDAOLocal.",
+            target instanceof ProjectStatusDAOLocal);
     }
 
     /**
@@ -99,25 +91,20 @@ public class ProjectStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ProjectStatusDAOBean</code> implements
-     * <code>ProjectStatusDAORemote</code>.
+     * Verifies <code>ProjectStatusDAOBean</code> implements <code>ProjectStatusDAORemote</code>.
      * </p>
      */
     public void testInheritance4() {
-        assertTrue(
-                "ProjectStatusDAOBean does not implements ProjectStatusDAORemote.",
-                target instanceof ProjectStatusDAORemote);
+        assertTrue("ProjectStatusDAOBean does not implements ProjectStatusDAORemote.",
+            target instanceof ProjectStatusDAORemote);
     }
 
     /**
      * <p>
-     * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.ProjectStatusDAOBean()</code> for
-     * proper behavior.
+     * Tests the <code>com.topcoder.clients.dao.ejb3.ProjectStatusDAOBean()</code> for proper
+     * behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("ProjectStatusDAOBean() failed.", target);
@@ -125,12 +112,9 @@ public class ProjectStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper
-     * behavior.
+     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsWithStatus_1() throws Exception {
         Client client = createClient(100);
@@ -141,12 +125,10 @@ public class ProjectStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper
-     * behavior. IllegalArgumentException if status is null.
+     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper behavior.
+     * IllegalArgumentException if status is null.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsWithStatus_failure_1() throws Exception {
         try {
@@ -159,13 +141,10 @@ public class ProjectStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper
-     * behavior. EntityNotFoundException if status is not found in the
-     * persistence.
+     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper behavior.
+     * EntityNotFoundException if status is not found in the persistence.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsWithStatus_failure_2() throws Exception {
         try {
@@ -180,13 +159,11 @@ public class ProjectStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper
-     * behavior. DAOConfigurationException if the configured entityManager is
-     * invalid (invalid means null here).
+     * Tests the <code>getProjectsWithStatus(ProjectStatus)</code> for proper behavior.
+     * DAOConfigurationException if the configured entityManager is invalid (invalid means null
+     * here).
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsWithStatus_failure_3() throws Exception {
         try {

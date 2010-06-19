@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao;
 
@@ -13,7 +13,6 @@ import com.topcoder.util.errorhandling.ExceptionData;
  * <p>
  * Unit test cases for class EntityNotFoundException. All the method are tested.
  * </p>
- *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -34,7 +33,6 @@ public class EntityNotFoundExceptionTest extends TestCase {
      * <p>
      * Aggregates all tests.
      * </p>
-     *
      * @return A test suite will be returned
      */
     public static Test suite() {
@@ -43,9 +41,7 @@ public class EntityNotFoundExceptionTest extends TestCase {
 
     /**
      * Sets up testing environment.
-     *
-     * @throws Exception
-     *                 when error occurs
+     * @throws Exception when error occurs
      */
     @Override
     public void setUp() throws Exception {
@@ -56,9 +52,7 @@ public class EntityNotFoundExceptionTest extends TestCase {
 
     /**
      * Clears the testing environment.
-     *
-     * @throws Exception
-     *                 when error occurs
+     * @throws Exception when error occurs
      */
     @Override
     public void tearDown() throws Exception {
@@ -70,15 +64,12 @@ public class EntityNotFoundExceptionTest extends TestCase {
      * Target: tests the creation.<br>
      */
     public void testCtor1_Accuracy() {
-        EntityNotFoundException impl = new EntityNotFoundException(
-                ERROR_MESSAGE);
+        EntityNotFoundException impl = new EntityNotFoundException(ERROR_MESSAGE);
         assertNotNull("Unable to instantiate EntityNotFoundException.", impl);
-        assertTrue(
-                "EntityNotFoundException should subclass BaseRuntimeException",
-                impl instanceof DAOException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
+        assertTrue("EntityNotFoundException should subclass BaseRuntimeException",
+            impl instanceof DAOException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
     }
 
     /**
@@ -86,58 +77,47 @@ public class EntityNotFoundExceptionTest extends TestCase {
      * Target: tests the creation.<br>
      */
     public void testCtor2_Accuracy() {
-        EntityNotFoundException impl = new EntityNotFoundException(
-                ERROR_MESSAGE, cause);
+        EntityNotFoundException impl = new EntityNotFoundException(ERROR_MESSAGE, cause);
         assertNotNull("Unable to instantiate EntityNotFoundException.", impl);
         assertTrue("EntityNotFoundException should subclass DAOException",
-                impl instanceof DAOException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
-        assertEquals("The inner exception should match.", cause, impl
-                .getCause());
+            impl instanceof DAOException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
+        assertEquals("The inner exception should match.", cause, impl.getCause());
     }
 
     /**
-     * Test method for EntityNotFoundException(String message, ExceptionData
-     * data).<br>
+     * Test method for EntityNotFoundException(String message, ExceptionData data).<br>
      * Target: tests the creation.<br>
      */
     public void testCtor3_Accuracy() {
-        EntityNotFoundException impl = new EntityNotFoundException(
-                ERROR_MESSAGE, exceptionData);
+        EntityNotFoundException impl = new EntityNotFoundException(ERROR_MESSAGE, exceptionData);
         assertNotNull("Unable to instantiate EntityNotFoundException.", impl);
         assertTrue("EntityNotFoundException should subclass DAOException",
-                impl instanceof DAOException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
-        assertEquals("The Application Code should match.", "Application Code",
-                impl.getApplicationCode());
-        assertEquals("The Error Code should match.", "Error Code", impl
-                .getErrorCode());
+            impl instanceof DAOException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
+        assertEquals("The Application Code should match.", "Application Code", impl
+            .getApplicationCode());
+        assertEquals("The Error Code should match.", "Error Code", impl.getErrorCode());
     }
 
     /**
-     * Test method for EntityNotFoundException(String message, Throwable cause,
-     * ExceptionData data).<br>
+     * Test method for EntityNotFoundException(String message, Throwable cause, ExceptionData data).<br>
      * Target: tests the creation.<br>
      */
     public void testCtor4_Accuracy() {
-        EntityNotFoundException impl = new EntityNotFoundException(
-                ERROR_MESSAGE, cause, exceptionData);
+        EntityNotFoundException impl =
+            new EntityNotFoundException(ERROR_MESSAGE, cause, exceptionData);
         assertNotNull("Unable to instantiate EntityNotFoundException.", impl);
         assertTrue("EntityNotFoundException should subclass DAOException",
-                impl instanceof DAOException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
-        assertEquals("The inner exception should match.", cause, impl
-                .getCause());
-        assertEquals("The Application Code should match.", "Application Code",
-                impl.getApplicationCode());
-        assertEquals("The Error Code should match.", "Error Code", impl
-                .getErrorCode());
+            impl instanceof DAOException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
+        assertEquals("The inner exception should match.", cause, impl.getCause());
+        assertEquals("The Application Code should match.", "Application Code", impl
+            .getApplicationCode());
+        assertEquals("The Error Code should match.", "Error Code", impl.getErrorCode());
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -19,7 +19,6 @@ import com.topcoder.clients.model.Project;
  * <p>
  * Test class: <code>ClientDAOBean</code>.
  * </p>
- *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -40,9 +39,7 @@ public class ClientDAOBeanTest extends TestBase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -58,13 +55,12 @@ public class ClientDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ClientDAOBean</code> subclasses
-     * <code>GenericEJB3DAO</code>.
+     * Verifies <code>ClientDAOBean</code> subclasses <code>GenericEJB3DAO</code>.
      * </p>
      */
     public void testInheritance1() {
         assertTrue("ClientDAOBean does not subclasses GenericEJB3DAO.",
-                target instanceof GenericEJB3DAO<?, ?>);
+            target instanceof GenericEJB3DAO < ?, ? >);
     }
 
     /**
@@ -76,8 +72,7 @@ public class ClientDAOBeanTest extends TestBase {
      * </p>
      */
     public void testInheritance2() {
-        assertTrue("ClientDAOBean does not implements ClientDAO.",
-                target instanceof ClientDAO);
+        assertTrue("ClientDAOBean does not implements ClientDAO.", target instanceof ClientDAO);
     }
 
     /**
@@ -85,13 +80,12 @@ public class ClientDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ClientDAOBean</code> implements
-     * <code>ClientDAOLocal</code>.
+     * Verifies <code>ClientDAOBean</code> implements <code>ClientDAOLocal</code>.
      * </p>
      */
     public void testInheritance3() {
         assertTrue("ClientDAOBean does not implements ClientDAOLocal.",
-                target instanceof ClientDAOLocal);
+            target instanceof ClientDAOLocal);
     }
 
     /**
@@ -99,23 +93,19 @@ public class ClientDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ClientDAOBean</code> implements
-     * <code>ClientDAORemote</code>.
+     * Verifies <code>ClientDAOBean</code> implements <code>ClientDAORemote</code>.
      * </p>
      */
     public void testInheritance4() {
         assertTrue("ClientDAOBean does not implements ClientDAORemote.",
-                target instanceof ClientDAORemote);
+            target instanceof ClientDAORemote);
     }
 
     /**
      * <p>
-     * Tests the <code>com.topcoder.clients.dao.ejb3.ClientDAOBean()</code>
-     * for proper behavior.
+     * Tests the <code>com.topcoder.clients.dao.ejb3.ClientDAOBean()</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("ClientDAOBean() failed.", target);
@@ -123,21 +113,18 @@ public class ClientDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForClient(Client)</code> for proper
-     * behavior.
+     * Tests the <code>getProjectsForClient(Client)</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetProjectsForClient_Client1() throws Exception {
         Client client = createClient(1000);
         createProjectWithClient(10000, client);
         createProjectWithClient(10001, client);
-        List<Project> projects = target.getProjectsForClient(client);
+        List < Project > projects = target.getProjectsForClient(client);
         assertEquals("The number of projects is not right.", 2, projects.size());
         // verify data
-        List<Long> ids = new ArrayList<Long>();
+        List < Long > ids = new ArrayList < Long >();
         ids.add(projects.get(0).getId());
         ids.add(projects.get(1).getId());
         assertTrue("Project should be returned with correct id", ids.contains(10000L));
@@ -146,30 +133,24 @@ public class ClientDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForClient(Client)</code> for proper
-     * behavior.
+     * Tests the <code>getProjectsForClient(Client)</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetProjectsForClient_Client2() throws Exception {
         Client client = createClient(1000);
-        List<Project> projects = target.getProjectsForClient(client);
+        List < Project > projects = target.getProjectsForClient(client);
         assertEquals("The number of projects is not right.", 0, projects.size());
     }
 
     /**
      * <p>
-     * Tests the <code>getProjectsForClient(Client)</code> for proper
-     * behavior. IllegalArgumentException if client is null.
+     * Tests the <code>getProjectsForClient(Client)</code> for proper behavior.
+     * IllegalArgumentException if client is null.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
-    public void testMethodGetProjectsForClient_Client_failure1()
-        throws Exception {
+    public void testMethodGetProjectsForClient_Client_failure1() throws Exception {
         try {
             target.getProjectsForClient(null);
             fail("IllegalArgumentException expected.");
@@ -180,16 +161,12 @@ public class ClientDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForClient(Client)</code> for proper
-     * behavior. EntityNotFoundException if client is not found in the
-     * persistence.
+     * Tests the <code>getProjectsForClient(Client)</code> for proper behavior.
+     * EntityNotFoundException if client is not found in the persistence.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
-    public void testMethodGetProjectsForClient_Client_failure2()
-        throws Exception {
+    public void testMethodGetProjectsForClient_Client_failure2() throws Exception {
         try {
             Client client = new Client();
             client.setId(12L);
@@ -202,16 +179,13 @@ public class ClientDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForClient(Client)</code> for proper
-     * behavior. DAOConfigurationException if the configured entityManager is
-     * invalid (invalid means null here).
+     * Tests the <code>getProjectsForClient(Client)</code> for proper behavior.
+     * DAOConfigurationException if the configured entityManager is invalid (invalid means null
+     * here).
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
-    public void testMethodGetProjectsForClient_Client_failure3()
-        throws Exception {
+    public void testMethodGetProjectsForClient_Client_failure3() throws Exception {
         try {
             target = new ClientDAOBean();
             Client client = createClient(1000);
@@ -224,16 +198,12 @@ public class ClientDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForClient(Client)</code> for proper
-     * behavior. DAOException if any error occurs while performing this
-     * operation.
+     * Tests the <code>getProjectsForClient(Client)</code> for proper behavior. DAOException if any
+     * error occurs while performing this operation.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
-    public void testMethodGetProjectsForClient_Client_failure4()
-        throws Exception {
+    public void testMethodGetProjectsForClient_Client_failure4() throws Exception {
         try {
             Client client = createClient(1000);
             client.setId(102L);

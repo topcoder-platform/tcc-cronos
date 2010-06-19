@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -15,7 +15,6 @@ import junit.framework.TestCase;
  * <p>
  * Some change to remove ambiguous asserts.
  * </p>
- *
  * @author TCSDEVELOPER, TCSDEVELOPER
  * @version 1.1
  * @since 1.0
@@ -32,9 +31,7 @@ public class AuditableEntityTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         target = new MockAuditableEntity();
@@ -49,17 +46,16 @@ public class AuditableEntityTest extends TestCase {
      * </p>
      */
     public void testInheritance() {
-        assertTrue("AuditableEntity does not implements Serializable.", target instanceof Serializable);
+        assertTrue("AuditableEntity does not implements Serializable.",
+            target instanceof Serializable);
     }
 
     /**
      * <p>
-     * Tests the <code>com.topcoder.clients.model.AuditableEntity()</code> for proper behavior. Verifies that the
-     * instance should be created.
+     * Tests the <code>com.topcoder.clients.model.AuditableEntity()</code> for proper behavior.
+     * Verifies that the instance should be created.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("Instance should be created.", target);
@@ -67,12 +63,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setModifyUsername(String)</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>setModifyUsername(String)</code> for proper behavior. Verifies that the
+     * property should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetModifyUsername_String() throws Exception {
         target.setModifyUsername("ModifyUsername");
@@ -81,11 +75,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getId()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getId()</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetId() throws Exception {
         target.setId(10L);
@@ -94,11 +87,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getModifyDate()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getModifyDate()</code> for proper behavior. Verifies that the property should
+     * be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetModifyDate() throws Exception {
         Date modifyDate = new Date();
@@ -108,11 +100,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setId(long)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setId(long)</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetId_long() throws Exception {
         target.setId(10L);
@@ -121,11 +112,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setName(String)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setName(String)</code> for proper behavior. Verifies that the property should
+     * be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetName_String() throws Exception {
         target.setName("name1");
@@ -134,11 +124,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getModifyUsername()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getModifyUsername()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetModifyUsername() throws Exception {
         target.setModifyUsername("name2");
@@ -147,11 +136,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setModifyDate(Date)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setModifyDate(Date)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetModifyDate_Date() throws Exception {
         Date modifyDate = new Date();
@@ -161,12 +149,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setCreateUsername(String)</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>setCreateUsername(String)</code> for proper behavior. Verifies that the
+     * property should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetCreateUsername_String() throws Exception {
         target.setCreateUsername("name3");
@@ -175,11 +161,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getName()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getName()</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetName() throws Exception {
         target.setName("name1");
@@ -188,11 +173,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setDeleted(boolean)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setDeleted(boolean)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetDeleted_boolean() throws Exception {
         target.setDeleted(true);
@@ -201,11 +185,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getCreateUsername()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getCreateUsername()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetCreateUsername() throws Exception {
         target.setCreateUsername("name3");
@@ -214,11 +197,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getCreateDate()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getCreateDate()</code> for proper behavior. Verifies that the property should
+     * be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetCreateDate() throws Exception {
         Date createDate = new Date();
@@ -228,11 +210,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setCreateDate(Date)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setCreateDate(Date)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetCreateDate_Date() throws Exception {
         Date createDate = new Date();
@@ -242,11 +223,10 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>isDeleted()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>isDeleted()</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodIsDeleted() throws Exception {
         target.setDeleted(true);
@@ -255,7 +235,6 @@ public class AuditableEntityTest extends TestCase {
 
     /**
      * Mock class extends AuditableEntity for testing.
-     *
      * @author TCSDEVELOPER
      * @version 1.0
      */

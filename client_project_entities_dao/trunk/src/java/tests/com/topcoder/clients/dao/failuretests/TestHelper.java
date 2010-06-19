@@ -16,7 +16,6 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * the util for junit test using.
- *
  * @author AK_47
  * @version 1.0
  */
@@ -35,11 +34,10 @@ public final class TestHelper {
 
     /**
      * Returns the <code>EntityManager</code> instance for testing.
-     *
      * @return the <code>EntityManager</code> instance.
      */
     public static EntityManager getEntityManager() {
-        if (MANAGER != null){
+        if (MANAGER != null) {
             return MANAGER;
         }
         Ejb3Configuration cfg = new Ejb3Configuration();
@@ -50,7 +48,6 @@ public final class TestHelper {
 
     /**
      * Set fields of auditableEntity.
-     *
      * @param auditableEntity the auditableEntity to set
      */
     public static void setAuditableEntity(AuditableEntity auditableEntity) {
@@ -61,10 +58,8 @@ public final class TestHelper {
         auditableEntity.setName("name");
     }
 
-
     /**
      * Sets the value of a private field in the given class.
-     *
      * @param type the class which the private field belongs to
      * @param instance the instance which the private field belongs to
      * @param name the name of the private field to be set
@@ -89,9 +84,7 @@ public final class TestHelper {
 
     /**
      * Remove all the namespace.
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public static void clearConfig() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -104,11 +97,8 @@ public final class TestHelper {
 
     /**
      * Add the namespace.
-     *
-     * @param filename
-     *                the config filename
-     * @throws Exception
-     *                 to JUnit
+     * @param filename the config filename
+     * @throws Exception to JUnit
      */
     public static void addConfig(String filename) throws Exception {
         ConfigManager cm = ConfigManager.getInstance();

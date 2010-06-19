@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -12,9 +12,8 @@ import junit.framework.TestCase;
  * <p>
  * Test class: <code>Project</code>.
  * </p>
- *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.2
  */
 public class ProjectTest extends TestCase {
     /**
@@ -28,9 +27,7 @@ public class ProjectTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         target = new Project();
@@ -45,17 +42,16 @@ public class ProjectTest extends TestCase {
      * </p>
      */
     public void testInheritance() {
-        assertTrue("Project does not subclasses AuditableEntity.", target instanceof AuditableEntity);
+        assertTrue("Project does not subclasses AuditableEntity.",
+            target instanceof AuditableEntity);
     }
 
     /**
      * <p>
-     * Tests the <code>com.topcoder.clients.model.Project()</code> for proper behavior. Verifies that Verifies that
-     * instance should be created.
+     * Tests the <code>com.topcoder.clients.model.Project()</code> for proper behavior. Verifies
+     * that Verifies that instance should be created.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("Instance should be created.", target);
@@ -63,11 +59,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getDescription()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getDescription()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetDescription() throws Exception {
         target.setDescription("name1");
@@ -76,11 +71,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setActive(boolean)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setActive(boolean)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetActive_boolean() throws Exception {
         target.setActive(true);
@@ -89,11 +83,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>isActive()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>isActive()</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodIsActive() throws Exception {
         target.setActive(true);
@@ -102,11 +95,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getClient()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getClient()</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetClient() throws Exception {
         Client client = new Client();
@@ -116,12 +108,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setProjectStatus(ProjectStatus)</code> for proper behavior. Verifies that the property should
-     * be correct.
+     * Tests the <code>setProjectStatus(ProjectStatus)</code> for proper behavior. Verifies that the
+     * property should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetProjectStatus_ProjectStatus() throws Exception {
         ProjectStatus projectStatus = new ProjectStatus();
@@ -131,11 +121,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setCompany(Company)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setCompany(Company)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetCompany_Company() throws Exception {
         Company company = new Company();
@@ -145,40 +134,36 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getChildProjects()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getChildProjects()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetChildProjects() throws Exception {
-        List<Project> childProjects = new ArrayList<Project>();
+        List < Project > childProjects = new ArrayList < Project >();
         target.setChildProjects(childProjects);
         assertEquals("getChildProjects", childProjects, target.getChildProjects());
     }
 
     /**
      * <p>
-     * Tests the <code>setChildProjects(List)</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>setChildProjects(List)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetChildProjects_List() throws Exception {
-        List<Project> childProjects = new ArrayList<Project>();
+        List < Project > childProjects = new ArrayList < Project >();
         target.setChildProjects(childProjects);
         assertEquals("getChildProjects", childProjects, target.getChildProjects());
     }
 
     /**
      * <p>
-     * Tests the <code>getSalesTax()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getSalesTax()</code> for proper behavior. Verifies that the property should
+     * be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetSalesTax() throws Exception {
         target.setSalesTax(10d);
@@ -187,11 +172,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getPOBoxNumber()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getPOBoxNumber()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetPOBoxNumber() throws Exception {
         target.setPOBoxNumber("numb1");
@@ -200,11 +184,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getPaymentTermsId()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getPaymentTermsId()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetPaymentTermsId() throws Exception {
         target.setPaymentTermsId(5L);
@@ -213,12 +196,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setPaymentTermsId(long)</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>setPaymentTermsId(long)</code> for proper behavior. Verifies that the
+     * property should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetPaymentTermsId_long() throws Exception {
         target.setPaymentTermsId(4L);
@@ -227,11 +208,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getParentProjectId()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getParentProjectId()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetParentProjectId() throws Exception {
         target.setParentProjectId(3L);
@@ -240,11 +220,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getCompany()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getCompany()</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetCompany() throws Exception {
         Company company = new Company();
@@ -254,11 +233,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setClient(Client)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setClient(Client)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetClient_Client() throws Exception {
         Client client = new Client();
@@ -268,11 +246,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getProjectStatus()</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>getProjectStatus()</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodGetProjectStatus() throws Exception {
         ProjectStatus projectStatus = new ProjectStatus();
@@ -282,12 +259,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setParentProjectId(long)</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>setParentProjectId(long)</code> for proper behavior. Verifies that the
+     * property should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetParentProjectId_long() throws Exception {
         target.setParentProjectId(2L);
@@ -296,12 +271,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setPOBoxNumber(String)</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>setPOBoxNumber(String)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetPOBoxNumber_String() throws Exception {
         target.setPOBoxNumber("numb");
@@ -310,12 +283,10 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setDescription(String)</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>setDescription(String)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetDescription_String() throws Exception {
         target.setDescription("desc");
@@ -324,15 +295,57 @@ public class ProjectTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setSalesTax(double)</code> for proper behavior. Verifies that the property should be correct.
+     * Tests the <code>setSalesTax(double)</code> for proper behavior. Verifies that the property
+     * should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethodSetSalesTax_double() throws Exception {
         target.setSalesTax(10d);
         assertEquals("getSalesTax", 10d, target.getSalesTax());
     }
 
+    /**
+     * <p>
+     * Tests <code>getBudget()</code> method.
+     * </p>
+     * <p>
+     * It should return null, by default.
+     * </p>
+     * @since 1.2
+     */
+    public void testGetBudget_default() {
+        assertNull("Should be default to null", target.getBudget());
+    }
+
+    /**
+     * <p>
+     * Tests <code>setBudget(Double)</code> method.
+     * </p>
+     * <p>
+     * Any value is valid, simply set internally.
+     * </p>
+     * @since 1.2
+     */
+    public void testSetBudget_null() {
+        target.setBudget(null);
+
+        assertNull("Incorrect return value.", target.getBudget());
+    }
+
+    /**
+     * <p>
+     * Tests <code>setBudget(Double)</code> method.
+     * </p>
+     * <p>
+     * Any value is valid, simply set internally.
+     * </p>
+     * @since 1.2
+     */
+    public void testSetBudget() {
+        Double value = 1.2;
+        target.setBudget(value);
+
+        assertEquals("Incorrect return value.", value, target.getBudget());
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -19,7 +19,6 @@ import com.topcoder.clients.model.Project;
  * <p>
  * Test class: <code>CompanyDAOBean</code>.
  * </p>
- *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -40,9 +39,7 @@ public class CompanyDAOBeanTest extends TestBase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -58,13 +55,12 @@ public class CompanyDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>CompanyDAOBean</code> subclasses
-     * <code>GenericEJB3DAO</code>.
+     * Verifies <code>CompanyDAOBean</code> subclasses <code>GenericEJB3DAO</code>.
      * </p>
      */
     public void testInheritance1() {
         assertTrue("CompanyDAOBean does not subclasses GenericEJB3DAO.",
-                target instanceof GenericEJB3DAO<?, ?>);
+            target instanceof GenericEJB3DAO < ?, ? >);
     }
 
     /**
@@ -76,8 +72,7 @@ public class CompanyDAOBeanTest extends TestBase {
      * </p>
      */
     public void testInheritance2() {
-        assertTrue("CompanyDAOBean does not implements CompanyDAO.",
-                target instanceof CompanyDAO);
+        assertTrue("CompanyDAOBean does not implements CompanyDAO.", target instanceof CompanyDAO);
     }
 
     /**
@@ -85,13 +80,12 @@ public class CompanyDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>CompanyDAOBean</code> implements
-     * <code>CompanyDAOLocal</code>.
+     * Verifies <code>CompanyDAOBean</code> implements <code>CompanyDAOLocal</code>.
      * </p>
      */
     public void testInheritance3() {
         assertTrue("CompanyDAOBean does not implements CompanyDAOLocal.",
-                target instanceof CompanyDAOLocal);
+            target instanceof CompanyDAOLocal);
     }
 
     /**
@@ -99,23 +93,19 @@ public class CompanyDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>CompanyDAOBean</code> implements
-     * <code>CompanyDAORemote</code>.
+     * Verifies <code>CompanyDAOBean</code> implements <code>CompanyDAORemote</code>.
      * </p>
      */
     public void testInheritance4() {
         assertTrue("CompanyDAOBean does not implements CompanyDAORemote.",
-                target instanceof CompanyDAORemote);
+            target instanceof CompanyDAORemote);
     }
 
     /**
      * <p>
-     * Tests the <code>com.topcoder.clients.dao.ejb3.CompanyDAOBean()</code>
-     * for proper behavior.
+     * Tests the <code>com.topcoder.clients.dao.ejb3.CompanyDAOBean()</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("CompanyDAOBean() failed.", target);
@@ -123,21 +113,18 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsForCompany(Company)</code> for proper
-     * behavior.
+     * Tests the <code>getClientsForCompany(Company)</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getClientsForCompany_1() throws Exception {
         createClient(100);
         Client client = createClient(101);
 
-        List<Client> res = target.getClientsForCompany(client.getCompany());
+        List < Client > res = target.getClientsForCompany(client.getCompany());
         assertEquals("The number of clients", 2, res.size());
         // verify data
-        List<Long> ids = new ArrayList<Long>();
+        List < Long > ids = new ArrayList < Long >();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         assertTrue("should be returned with correct id", ids.contains(100L));
@@ -146,12 +133,10 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsForCompany(Company)</code> for proper
-     * behavior. IllegalArgumentException if company is null.
+     * Tests the <code>getClientsForCompany(Company)</code> for proper behavior.
+     * IllegalArgumentException if company is null.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getClientsForCompany_failure_1() throws Exception {
         try {
@@ -164,13 +149,10 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsForCompany(Company)</code> for proper
-     * behavior. EntityNotFoundException if company is not found in the
-     * persistence.
+     * Tests the <code>getClientsForCompany(Company)</code> for proper behavior.
+     * EntityNotFoundException if company is not found in the persistence.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getClientsForCompany_failure_2() throws Exception {
         try {
@@ -185,13 +167,11 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsForCompany(Company)</code> for proper
-     * behavior. DAOConfigurationException if the configured entityManager is
-     * invalid (invalid means null here).
+     * Tests the <code>getClientsForCompany(Company)</code> for proper behavior.
+     * DAOConfigurationException if the configured entityManager is invalid (invalid means null
+     * here).
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getClientsForCompany_failure_3() throws Exception {
         try {
@@ -206,12 +186,9 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForCompany(Company)</code> for proper
-     * behavior.
+     * Tests the <code>getProjectsForCompany(Company)</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsForCompany_1() throws Exception {
         Client client = createClient(101);
@@ -219,10 +196,10 @@ public class CompanyDAOBeanTest extends TestBase {
         createProjectWithClient(11, client);
         createProjectWithClient(12, client);
 
-        List<Project> res = target.getProjectsForCompany(client.getCompany());
+        List < Project > res = target.getProjectsForCompany(client.getCompany());
         assertEquals("The number of Project", 3, res.size());
         // verify data
-        List<Long> ids = new ArrayList<Long>();
+        List < Long > ids = new ArrayList < Long >();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         ids.add(res.get(2).getId());
@@ -233,12 +210,10 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForCompany(Company)</code> for proper
-     * behavior. IllegalArgumentException if company is null.
+     * Tests the <code>getProjectsForCompany(Company)</code> for proper behavior.
+     * IllegalArgumentException if company is null.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsForCompany_failure_1() throws Exception {
         try {
@@ -251,13 +226,10 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForCompany(Company)</code> for proper
-     * behavior. EntityNotFoundException if company is not found in the
-     * persistence.
+     * Tests the <code>getProjectsForCompany(Company)</code> for proper behavior.
+     * EntityNotFoundException if company is not found in the persistence.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsForCompany_failure_2() throws Exception {
         try {
@@ -272,13 +244,11 @@ public class CompanyDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForCompany(Company)</code> for proper
-     * behavior. DAOConfigurationException if the configured entityManager is
-     * invalid (invalid means null here).
+     * Tests the <code>getProjectsForCompany(Company)</code> for proper behavior.
+     * DAOConfigurationException if the configured entityManager is invalid (invalid means null
+     * here).
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void test_getProjectsForCompany_failure_3() throws Exception {
         try {

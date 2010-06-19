@@ -17,6 +17,8 @@ import junit.framework.TestSuite;
  *
  * @author Beijing2008
  * @version 1.0
+ * @author extra
+ * @version 1.2
  */
 public class ProjectDAOBeanFailureTest extends TestCase {
     /**
@@ -267,6 +269,45 @@ public class ProjectDAOBeanFailureTest extends TestCase {
             instance.getProjectsByClientId(1);
             fail("Expects DAOConfigurationException");
         } catch (DAOConfigurationException e) {
+            // good
+        }
+    }
+
+    /**
+     * Failure test for method updateProjectBudget() with null username.
+     * Expects IllegalArgumentException.
+     */
+    public void test_updateProjectBudgetNull() throws Exception {
+        try {
+            instance.updateProjectBudget(null, 1l, 10d);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * Failure test for method updateProjectBudget() with empty username.
+     * Expects IllegalArgumentException.
+     */
+    public void test_updateProjectBudgetEmpty() throws Exception {
+        try {
+            instance.updateProjectBudget(" ", 1l, 10d);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * Failure test for method getUsersByProject() with negative projectID.
+     * Expects IllegalArgumentException.
+     */
+    public void test_getUsersByProjectNegative() throws Exception {
+        try {
+            instance.getUsersByProject(-1);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
             // good
         }
     }

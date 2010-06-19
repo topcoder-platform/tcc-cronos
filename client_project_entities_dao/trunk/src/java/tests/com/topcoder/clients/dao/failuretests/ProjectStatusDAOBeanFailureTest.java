@@ -14,7 +14,6 @@ import com.topcoder.clients.model.ProjectStatus;
 
 /**
  * Failure test for ProjectStatusDAOBean class.
- *
  * @author AK_47
  * @version 1.0
  */
@@ -28,7 +27,6 @@ public class ProjectStatusDAOBeanFailureTest extends TestCase {
 
     /**
      * Aggregates all tests in this class.
-     *
      * @return Test suite aggregating all tests.
      */
     public static Test suite() {
@@ -39,9 +37,7 @@ public class ProjectStatusDAOBeanFailureTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -52,17 +48,13 @@ public class ProjectStatusDAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>getProjectsWithStatus(ClientStatus)</code> method.
-     *
      * <p>
      * ClientStatus is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testGetProjectsWithStatus_Null_ClientStatus() throws Exception {
         try {
@@ -75,17 +67,13 @@ public class ProjectStatusDAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>getProjectsWithStatus(ClientStatus)</code> method.
-     *
      * <p>
      * entityManager is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testGetProjectsWithStatus_Null_EntityManager() throws Exception {
         try {
@@ -100,16 +88,12 @@ public class ProjectStatusDAOBeanFailureTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsWithStatus(ClientStatus)</code> for proper
-     * behavior.
+     * Tests the <code>getProjectsWithStatus(ClientStatus)</code> for proper behavior.
      * </p>
-     *
      * <p>
      * Expect EntityNotFoundException.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetProjectsWithStatus_Invalid_Client() throws Exception {
         try {

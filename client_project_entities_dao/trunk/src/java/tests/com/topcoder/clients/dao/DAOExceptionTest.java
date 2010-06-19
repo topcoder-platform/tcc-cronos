@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao;
 
@@ -14,7 +14,6 @@ import com.topcoder.util.errorhandling.ExceptionData;
  * <p>
  * Unit test cases for class DAOException. All the method are tested.
  * </p>
- *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -35,7 +34,6 @@ public class DAOExceptionTest extends TestCase {
      * <p>
      * Aggregates all tests.
      * </p>
-     *
      * @return A test suite will be returned
      */
     public static Test suite() {
@@ -44,9 +42,7 @@ public class DAOExceptionTest extends TestCase {
 
     /**
      * Sets up testing environment.
-     *
-     * @throws Exception
-     *                 when error occurs
+     * @throws Exception when error occurs
      */
     @Override
     public void setUp() throws Exception {
@@ -57,9 +53,7 @@ public class DAOExceptionTest extends TestCase {
 
     /**
      * Clears the testing environment.
-     *
-     * @throws Exception
-     *                 when error occurs
+     * @throws Exception when error occurs
      */
     @Override
     public void tearDown() throws Exception {
@@ -74,10 +68,9 @@ public class DAOExceptionTest extends TestCase {
         DAOException impl = new DAOException(ERROR_MESSAGE);
         assertNotNull("Unable to instantiate DAOException.", impl);
         assertTrue("DAOException should subclass BaseCriticalException",
-                impl instanceof BaseCriticalException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
+            impl instanceof BaseCriticalException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
     }
 
     /**
@@ -88,12 +81,10 @@ public class DAOExceptionTest extends TestCase {
         DAOException impl = new DAOException(ERROR_MESSAGE, cause);
         assertNotNull("Unable to instantiate DAOException.", impl);
         assertTrue("DAOException should subclass BaseCriticalException",
-                impl instanceof BaseCriticalException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
-        assertEquals("The inner exception should match.", cause, impl
-                .getCause());
+            impl instanceof BaseCriticalException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
+        assertEquals("The inner exception should match.", cause, impl.getCause());
     }
 
     /**
@@ -104,36 +95,29 @@ public class DAOExceptionTest extends TestCase {
         DAOException impl = new DAOException(ERROR_MESSAGE, exceptionData);
         assertNotNull("Unable to instantiate DAOException.", impl);
         assertTrue("DAOException should subclass BaseCriticalException",
-                impl instanceof BaseCriticalException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
-        assertEquals("The Application Code should match.", "Application Code",
-                impl.getApplicationCode());
-        assertEquals("The Error Code should match.", "Error Code", impl
-                .getErrorCode());
+            impl instanceof BaseCriticalException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
+        assertEquals("The Application Code should match.", "Application Code", impl
+            .getApplicationCode());
+        assertEquals("The Error Code should match.", "Error Code", impl.getErrorCode());
     }
 
     /**
-     * Test method for DAOException(String message, Throwable cause,
-     * ExceptionData data).<br>
+     * Test method for DAOException(String message, Throwable cause, ExceptionData data).<br>
      * Target: tests the creation.<br>
      */
     public void testCtor4_Accuracy() {
-        DAOException impl = new DAOException(ERROR_MESSAGE, cause,
-                exceptionData);
+        DAOException impl = new DAOException(ERROR_MESSAGE, cause, exceptionData);
         assertNotNull("Unable to instantiate DAOException.", impl);
         assertTrue("DAOException should subclass BaseCriticalException",
-                impl instanceof BaseCriticalException);
-        assertEquals(
-                "Error message is not properly propagated to super class.",
-                ERROR_MESSAGE, impl.getMessage());
-        assertEquals("The inner exception should match.", cause, impl
-                .getCause());
-        assertEquals("The Application Code should match.", "Application Code",
-                impl.getApplicationCode());
-        assertEquals("The Error Code should match.", "Error Code", impl
-                .getErrorCode());
+            impl instanceof BaseCriticalException);
+        assertEquals("Error message is not properly propagated to super class.", ERROR_MESSAGE,
+            impl.getMessage());
+        assertEquals("The inner exception should match.", cause, impl.getCause());
+        assertEquals("The Application Code should match.", "Application Code", impl
+            .getApplicationCode());
+        assertEquals("The Error Code should match.", "Error Code", impl.getErrorCode());
     }
 
 }

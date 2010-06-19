@@ -16,7 +16,6 @@ import com.topcoder.search.builder.filter.Filter;
 
 /**
  * Failure test for SearchByFilterUtilityImpl class.
- *
  * @author AK_47
  * @version 1.0
  */
@@ -44,19 +43,17 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
 
     /**
      * Aggregates all tests in this class.
-     *
      * @return Test suite aggregating all tests.
      */
     public static Test suite() {
         return new TestSuite(SearchByFilterUtilityImplFailureTest.class);
     }
+
     /**
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -69,9 +66,7 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
      * <p>
      * tearDown() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfig();
@@ -80,20 +75,17 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
 
     /**
      * Failure test of <code>SearchByFilterUtilityImpl(String, String)</code> method.
-     *
      * <p>
      * searchBundleManagerNamespace is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testConstructor_1() throws Exception {
         try {
-            filter = new SearchByFilterUtilityImpl<Project, Long>(null, searchBundleName);
+            filter = new SearchByFilterUtilityImpl < Project, Long >(null, searchBundleName);
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expect
@@ -102,20 +94,17 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
 
     /**
      * Failure test of <code>SearchByFilterUtilityImpl(String, String)</code> method.
-     *
      * <p>
      * searchBundleManagerNamespace is empty.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testConstructor_2() throws Exception {
         try {
-            filter = new SearchByFilterUtilityImpl<Project, Long>("   ", searchBundleName);
+            filter = new SearchByFilterUtilityImpl < Project, Long >("   ", searchBundleName);
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expect
@@ -124,20 +113,18 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
 
     /**
      * Failure test of <code>SearchByFilterUtilityImpl(String, String)</code> method.
-     *
      * <p>
      * searchBundleName is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testConstructor_3() throws Exception {
         try {
-            filter = new SearchByFilterUtilityImpl<Project, Long>(searchBundleManagerNamespace, null);
+            filter =
+                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace, null);
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expect
@@ -146,20 +133,18 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
 
     /**
      * Failure test of <code>SearchByFilterUtilityImpl(String, String)</code> method.
-     *
      * <p>
      * searchBundleName is empty.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testConstructor_4() throws Exception {
         try {
-            filter = new SearchByFilterUtilityImpl<Project, Long>(searchBundleManagerNamespace, "  ");
+            filter =
+                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace, "  ");
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             // expect
@@ -168,42 +153,38 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
 
     /**
      * Failure test of <code>SearchByFilterUtilityImpl(String, String)</code> method.
-     *
      * <p>
      * searchBundleManagerNamespace is invalid.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testConstructor_5() throws Exception {
         try {
-            filter = new SearchByFilterUtilityImpl<Project, Long>("invalid", searchBundleName);
+            filter = new SearchByFilterUtilityImpl < Project, Long >("invalid", searchBundleName);
             fail("Expect DAOConfigurationException.");
         } catch (DAOConfigurationException e) {
             // expect
         }
     }
+
     /**
      * Failure test of <code>search(Filter)</code> method.
-     *
      * <p>
      * Filter is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testSearch_Null_Filter() throws Exception {
         try {
-            filter = new SearchByFilterUtilityImpl<Project, Long>(
-                searchBundleManagerNamespace, searchBundleName);
+            filter =
+                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace,
+                    searchBundleName);
             filter.search(null);
             fail("Expect IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
@@ -213,21 +194,19 @@ public class SearchByFilterUtilityImplFailureTest extends TestCase {
 
     /**
      * Failure test of <code>search(Filter)</code> method.
-     *
      * <p>
      * Filter is invalid.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testSearch_InvalidFilter() throws Exception {
         try {
-            filter = new SearchByFilterUtilityImpl<Project, Long>(
-                searchBundleManagerNamespace, searchBundleName);
+            filter =
+                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace,
+                    searchBundleName);
 
             Filter filter1 = new EqualToFilter("1111", 1);
             filter.search(filter1);

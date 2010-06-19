@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -17,13 +17,13 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * This class represents the Client java bean. An Client can contain a company,
- * paymentTermsId, clientStatus, salesTax, startDate, endDate, codeName. See
- * base class for other available properties.
+ * This class represents the Client java bean. An Client can contain a company, paymentTermsId,
+ * clientStatus, salesTax, startDate, endDate, codeName. See base class for other available
+ * properties.
  * </p>
  * <p>
- * This is a simple java bean (with a default no-arg constructor and for each
- * property, a corresponding getter/setter method).
+ * This is a simple java bean (with a default no-arg constructor and for each property, a
+ * corresponding getter/setter method).
  * </p>
  * <p>
  * Any attribute in this bean is OPTIONAL so NO VALIDATION IS PERFORMED here.
@@ -32,16 +32,15 @@ import javax.xml.bind.annotation.XmlType;
  * This class is Serializable (base class is Serializable).
  * </p>
  * <p>
- * <strong>THREAD SAFETY:</strong> This class contains only mutable fields so
- * therefore it is not thread safe.
+ * <strong>THREAD SAFETY:</strong> This class contains only mutable fields so therefore it is not
+ * thread safe.
  * </p>
- *
  * @author Mafy, TCSDEVELOPER
  * @version 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "client", propOrder = { "company", "paymentTermsId",
-        "clientStatus", "salesTax", "startDate", "endDate", "codeName" })
+@XmlType(name = "client", propOrder = {"company", "paymentTermsId", "clientStatus", "salesTax",
+    "startDate", "endDate", "codeName" })
 @Entity
 @Table(name = "client")
 @javax.persistence.AttributeOverride(name = "id", column = @Column(name = "client_id"))
@@ -56,16 +55,14 @@ public class Client extends AuditableEntity {
      * This field represents the 'company' property of the Client.
      * </p>
      * <p>
-     * It is default to the default value of this data type when it is not
-     * assigned.
+     * It is default to the default value of this data type when it is not assigned.
      * </p>
      * <p>
-     * Through corresponding getter/setter methods. It is retrieved from
-     * Client.company [Client.getCompany()] and in table client.company_id.
+     * Through corresponding getter/setter methods. It is retrieved from Client.company
+     * [Client.getCompany()] and in table client.company_id.
      * </p>
      * <p>
-     * There are no restrictions at this moment. It can take any value.
-     * OPTIONAL.
+     * There are no restrictions at this moment. It can take any value. OPTIONAL.
      * </p>
      */
     @OneToOne(cascade = CascadeType.REFRESH)
@@ -77,17 +74,14 @@ public class Client extends AuditableEntity {
      * This field represents the 'paymentTermsId' property of the Client.
      * </p>
      * <p>
-     * It is default to the default value of this data type when it is not
-     * assigned.
+     * It is default to the default value of this data type when it is not assigned.
      * </p>
      * <p>
-     * Through corresponding getter/setter methods. It is retrieved from
-     * Client.paymentTermsId [Client.getPaymentTermsId()] and in table
-     * client.payment_term_id.
+     * Through corresponding getter/setter methods. It is retrieved from Client.paymentTermsId
+     * [Client.getPaymentTermsId()] and in table client.payment_term_id.
      * </p>
      * <p>
-     * There are no restrictions at this moment. It can take any value.
-     * OPTIONAL.
+     * There are no restrictions at this moment. It can take any value. OPTIONAL.
      * </p>
      */
     @Column(name = "payment_term_id")
@@ -98,17 +92,14 @@ public class Client extends AuditableEntity {
      * This field represents the 'clientStatus' property of the Client.
      * </p>
      * <p>
-     * It is default to the default value of this data type when it is not
-     * assigned.
+     * It is default to the default value of this data type when it is not assigned.
      * </p>
      * <p>
-     * Through corresponding getter/setter methods. It is retrieved from
-     * Client.clientStatus [Client.getClientStatus()] and in table
-     * client.client_status_id.
+     * Through corresponding getter/setter methods. It is retrieved from Client.clientStatus
+     * [Client.getClientStatus()] and in table client.client_status_id.
      * </p>
      * <p>
-     * There are no restrictions at this moment. It can take any value.
-     * OPTIONAL.
+     * There are no restrictions at this moment. It can take any value. OPTIONAL.
      * </p>
      */
     @OneToOne(cascade = CascadeType.REFRESH)
@@ -120,16 +111,14 @@ public class Client extends AuditableEntity {
      * This field represents the 'salesTax' property of the Client.
      * </p>
      * <p>
-     * It is default to the default value of this data type when it is not
-     * assigned.
+     * It is default to the default value of this data type when it is not assigned.
      * </p>
      * <p>
-     * Through corresponding getter/setter methods. It is retrieved from
-     * Client.salesTax [Client.getSalesTax()] and in table client.salestax.
+     * Through corresponding getter/setter methods. It is retrieved from Client.salesTax
+     * [Client.getSalesTax()] and in table client.salestax.
      * </p>
      * <p>
-     * There are no restrictions at this moment. It can take any value.
-     * OPTIONAL.
+     * There are no restrictions at this moment. It can take any value. OPTIONAL.
      * </p>
      */
     @Column(name = "salestax")
@@ -140,16 +129,14 @@ public class Client extends AuditableEntity {
      * This field represents the 'startDate' property of the Client.
      * </p>
      * <p>
-     * It is default to the default value of this data type when it is not
-     * assigned.
+     * It is default to the default value of this data type when it is not assigned.
      * </p>
      * <p>
-     * Through corresponding getter/setter methods. It is retrieved from
-     * Client.startDate [Client.getStartDate()] and in table client.start_date.
+     * Through corresponding getter/setter methods. It is retrieved from Client.startDate
+     * [Client.getStartDate()] and in table client.start_date.
      * </p>
      * <p>
-     * There are no restrictions at this moment. It can take any value.
-     * OPTIONAL.
+     * There are no restrictions at this moment. It can take any value. OPTIONAL.
      * </p>
      */
     @Column(name = "start_date")
@@ -160,16 +147,14 @@ public class Client extends AuditableEntity {
      * This field represents the 'endDate' property of the Client.
      * </p>
      * <p>
-     * It is default to the default value of this data type when it is not
-     * assigned.
+     * It is default to the default value of this data type when it is not assigned.
      * </p>
      * <p>
-     * Through corresponding getter/setter methods. It is retrieved from
-     * Client.endDate [Client.getEndDate()] and in table client.end_date.
+     * Through corresponding getter/setter methods. It is retrieved from Client.endDate
+     * [Client.getEndDate()] and in table client.end_date.
      * </p>
      * <p>
-     * There are no restrictions at this moment. It can take any value.
-     * OPTIONAL.
+     * There are no restrictions at this moment. It can take any value. OPTIONAL.
      * </p>
      */
     @Column(name = "end_date")
@@ -180,16 +165,14 @@ public class Client extends AuditableEntity {
      * This field represents the 'codeName' property of the Client.
      * </p>
      * <p>
-     * It is default to the default value of this data type when it is not
-     * assigned.
+     * It is default to the default value of this data type when it is not assigned.
      * </p>
      * <p>
-     * Through corresponding getter/setter methods. It is retrieved from
-     * Client.codeName [Client.getCodeName()] and in table client.code_name.
+     * Through corresponding getter/setter methods. It is retrieved from Client.codeName
+     * [Client.getCodeName()] and in table client.code_name.
      * </p>
      * <p>
-     * There are no restrictions at this moment. It can take any value.
-     * OPTIONAL.
+     * There are no restrictions at this moment. It can take any value. OPTIONAL.
      * </p>
      */
     @Column(name = "code_name")
@@ -202,9 +185,8 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Getter for 'clientStatus' property. Please refer to the related
-     * 'clientStatus' field for more information.
-     *
+     * Getter for 'clientStatus' property. Please refer to the related 'clientStatus' field for more
+     * information.
      * @return the value of the 'clientStatus' property. It can be any value.
      */
     public ClientStatus getClientStatus() {
@@ -212,21 +194,18 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Setter for 'clientStatus' property. Please refer to the related
-     * 'clientStatus' field for more information.
-     *
-     * @param clientStatus
-     *                the new clientStatus to be used for 'clientStatus'
-     *                property. It can be any value.
+     * Setter for 'clientStatus' property. Please refer to the related 'clientStatus' field for more
+     * information.
+     * @param clientStatus the new clientStatus to be used for 'clientStatus' property. It can be any
+     *        value.
      */
     public void setClientStatus(ClientStatus clientStatus) {
         this.clientStatus = clientStatus;
     }
 
     /**
-     * Getter for 'codeName' property. Please refer to the related 'codeName'
-     * field for more information.
-     *
+     * Getter for 'codeName' property. Please refer to the related 'codeName' field for more
+     * information.
      * @return the value of the 'codeName' property. It can be any value.
      */
     public String getCodeName() {
@@ -234,21 +213,17 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Setter for 'codeName' property. Please refer to the related 'codeName'
-     * field for more information.
-     *
-     * @param codeName
-     *                the new codeName to be used for 'codeName' property. It
-     *                can be any value.
+     * Setter for 'codeName' property. Please refer to the related 'codeName' field for more
+     * information.
+     * @param codeName the new codeName to be used for 'codeName' property. It can be any value.
      */
     public void setCodeName(String codeName) {
         this.codeName = codeName;
     }
 
     /**
-     * Getter for 'company' property. Please refer to the related 'company'
-     * field for more information.
-     *
+     * Getter for 'company' property. Please refer to the related 'company' field for more
+     * information.
      * @return the value of the 'company' property. It can be any value.
      */
     public Company getCompany() {
@@ -256,21 +231,17 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Setter for 'company' property. Please refer to the related 'company'
-     * field for more information.
-     *
-     * @param company
-     *                the new company to be used for 'company' property. It can
-     *                be any value.
+     * Setter for 'company' property. Please refer to the related 'company' field for more
+     * information.
+     * @param company the new company to be used for 'company' property. It can be any value.
      */
     public void setCompany(Company company) {
         this.company = company;
     }
 
     /**
-     * Getter for 'endDate' property. Please refer to the related 'endDate'
-     * field for more information.
-     *
+     * Getter for 'endDate' property. Please refer to the related 'endDate' field for more
+     * information.
      * @return the value of the 'endDate' property. It can be any value.
      */
     public Date getEndDate() {
@@ -278,21 +249,17 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Setter for 'endDate' property. Please refer to the related 'endDate'
-     * field for more information.
-     *
-     * @param endDate
-     *                the new endDate to be used for 'endDate' property. It can
-     *                be any value.
+     * Setter for 'endDate' property. Please refer to the related 'endDate' field for more
+     * information.
+     * @param endDate the new endDate to be used for 'endDate' property. It can be any value.
      */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
     /**
-     * Getter for 'paymentTermsId' property. Please refer to the related
-     * 'paymentTermsId' field for more information.
-     *
+     * Getter for 'paymentTermsId' property. Please refer to the related 'paymentTermsId' field for
+     * more information.
      * @return the value of the 'paymentTermsId' property. It can be any value.
      */
     public long getPaymentTermsId() {
@@ -300,21 +267,18 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Setter for 'paymentTermsId' property. Please refer to the related
-     * 'paymentTermsId' field for more information.
-     *
-     * @param paymentTermsId
-     *                the new paymentTermsId to be used for 'paymentTermsId'
-     *                property. It can be any value.
+     * Setter for 'paymentTermsId' property. Please refer to the related 'paymentTermsId' field for
+     * more information.
+     * @param paymentTermsId the new paymentTermsId to be used for 'paymentTermsId' property. It can
+     *        be any value.
      */
     public void setPaymentTermsId(long paymentTermsId) {
         this.paymentTermsId = paymentTermsId;
     }
 
     /**
-     * Getter for 'salesTax' property. Please refer to the related 'salesTax'
-     * field for more information.
-     *
+     * Getter for 'salesTax' property. Please refer to the related 'salesTax' field for more
+     * information.
      * @return the value of the 'salesTax' property. It can be any value.
      */
     public double getSalesTax() {
@@ -322,21 +286,17 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Setter for 'salesTax' property. Please refer to the related 'salesTax'
-     * field for more information.
-     *
-     * @param salesTax
-     *                the new salesTax to be used for 'salesTax' property. It
-     *                can be any value.
+     * Setter for 'salesTax' property. Please refer to the related 'salesTax' field for more
+     * information.
+     * @param salesTax the new salesTax to be used for 'salesTax' property. It can be any value.
      */
     public void setSalesTax(double salesTax) {
         this.salesTax = salesTax;
     }
 
     /**
-     * Getter for 'startDate' property. Please refer to the related 'startDate'
-     * field for more information.
-     *
+     * Getter for 'startDate' property. Please refer to the related 'startDate' field for more
+     * information.
      * @return the value of the 'startDate' property. It can be any value.
      */
     public Date getStartDate() {
@@ -344,12 +304,9 @@ public class Client extends AuditableEntity {
     }
 
     /**
-     * Setter for 'startDate' property. Please refer to the related 'startDate'
-     * field for more information.
-     *
-     * @param startDate
-     *                the new startDate to be used for 'startDate' property. It
-     *                can be any value.
+     * Setter for 'startDate' property. Please refer to the related 'startDate' field for more
+     * information.
+     * @param startDate the new startDate to be used for 'startDate' property. It can be any value.
      */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;

@@ -14,7 +14,6 @@ import com.topcoder.clients.model.Client;
 
 /**
  * Failure test for ClientDAOBean class.
- *
  * @author AK_47
  * @version 1.0
  */
@@ -28,21 +27,17 @@ public class ClientDAOBeanFailureTest extends TestCase {
 
     /**
      * Aggregates all tests in this class.
-     *
      * @return Test suite aggregating all tests.
      */
     public static Test suite() {
         return new TestSuite(ClientDAOBeanFailureTest.class);
     }
 
-
     /**
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -53,17 +48,13 @@ public class ClientDAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>getProjectsForClient(Client)</code> method.
-     *
      * <p>
      * client is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testGetProjectsForClient_Null_Client() throws Exception {
         try {
@@ -76,15 +67,12 @@ public class ClientDAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>getProjectsForClient(Client)</code> method.
-     *
      * <p>
      * entityManager is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testGetProjectsForClient_Null_EntityManager() throws Exception {
@@ -102,16 +90,12 @@ public class ClientDAOBeanFailureTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForClient(Client)</code> for proper
-     * behavior.
+     * Tests the <code>getProjectsForClient(Client)</code> for proper behavior.
      * </p>
-     *
      * <p>
      * Expect EntityNotFoundException.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetProjectsForClient_Invalid_Client() throws Exception {
         try {

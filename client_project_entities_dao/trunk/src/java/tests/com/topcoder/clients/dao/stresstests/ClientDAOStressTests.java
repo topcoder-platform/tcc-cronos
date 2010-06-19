@@ -10,6 +10,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import org.hibernate.ejb.Ejb3Configuration;
 
 import com.topcoder.clients.dao.ejb3.ClientDAOBean;
@@ -25,15 +29,10 @@ import com.topcoder.clients.model.Project;
 import com.topcoder.clients.model.ProjectStatus;
 import com.topcoder.util.config.ConfigManager;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.Test;
-
 /**
  * <p>
  * Stress test cases for Client Project Entities DAO component.
  * </p>
- *
  * @author biotrail
  * @version 1.0
  */
@@ -60,12 +59,14 @@ public class ClientDAOStressTests extends TestCase {
     /**
      * The clear table sql.
      */
-    private String[] clearSQLs = new String[] {"delete from project", "delete from client",
-        "delete from client_status", "delete from project_status", "delete from company"};
+    private String[] clearSQLs =
+        new String[] {"delete from project", "delete from client", "delete from client_status",
+            "delete from project_status", "delete from company" };
 
     /**
-     * <p>Return all tests.</p>
-     *
+     * <p>
+     * Return all tests.
+     * </p>
      * @return all tests
      */
     public static Test suite() {
@@ -76,9 +77,7 @@ public class ClientDAOStressTests extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         getEntityManager();
@@ -89,9 +88,7 @@ public class ClientDAOStressTests extends TestCase {
      * <P>
      * tearDown() routine.
      * </P>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
         clearConfig();
@@ -99,7 +96,9 @@ public class ClientDAOStressTests extends TestCase {
     }
 
     /**
-     * <p>Tests ClientDAOBean#getProjectsForClient(Client) for stress purpose.</p>
+     * <p>
+     * Tests ClientDAOBean#getProjectsForClient(Client) for stress purpose.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testGetProjectsForClient() throws Exception {
@@ -111,18 +110,22 @@ public class ClientDAOStressTests extends TestCase {
         start();
 
         for (int i = 0; i < NUMBER; i++) {
-            List<Project> projects = instance.getProjectsForClient(client);
+            List < Project > projects = instance.getProjectsForClient(client);
             assertEquals("Failed to get projects for client.", 1, projects.size());
             assertEquals("Failed to get projects for client.", 100, projects.get(0).getId());
-            assertEquals("Failed to get projects for client.", "createStressUser", projects.get(0).getCreateUsername());
-            assertEquals("Failed to get projects for client.", "modifyStressUser", projects.get(0).getModifyUsername());
+            assertEquals("Failed to get projects for client.", "createStressUser", projects.get(0)
+                .getCreateUsername());
+            assertEquals("Failed to get projects for client.", "modifyStressUser", projects.get(0)
+                .getModifyUsername());
         }
 
         printResult("ClientDAOBean#getProjectsForClient(Client)", NUMBER);
     }
 
     /**
-     * <p>Tests ClientStatusDAOBean#getClientsWithStatus(ClientStatus) for stress purpose.</p>
+     * <p>
+     * Tests ClientStatusDAOBean#getClientsWithStatus(ClientStatus) for stress purpose.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testGetClientsWithStatus() throws Exception {
@@ -134,7 +137,7 @@ public class ClientDAOStressTests extends TestCase {
 
         for (int i = 0; i < NUMBER; i++) {
 
-            List<Client> clients = instance.getClientsWithStatus(client.getClientStatus());
+            List < Client > clients = instance.getClientsWithStatus(client.getClientStatus());
             assertEquals("Failed to get clients with status.", 1, clients.size());
             assertEquals("Failed to get clients with status.", 10, clients.get(0).getId());
         }
@@ -143,7 +146,9 @@ public class ClientDAOStressTests extends TestCase {
     }
 
     /**
-     * <p>Tests CompanyDAOBean#getClientsForCompany(Company) for stress purpose.</p>
+     * <p>
+     * Tests CompanyDAOBean#getClientsForCompany(Company) for stress purpose.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testGetClientsForCompany() throws Exception {
@@ -154,7 +159,7 @@ public class ClientDAOStressTests extends TestCase {
         start();
 
         for (int i = 0; i < NUMBER; i++) {
-            List<Client> clients = instance.getClientsForCompany(client.getCompany());
+            List < Client > clients = instance.getClientsForCompany(client.getCompany());
             assertEquals("Failed to get clients for company.", 1, clients.size());
             assertEquals("Failed to get clients for company.", 10, clients.get(0).getId());
         }
@@ -163,7 +168,9 @@ public class ClientDAOStressTests extends TestCase {
     }
 
     /**
-     * <p>Tests ProjectDAOBean#retrieveById(Long, boolean) for stress purpose.</p>
+     * <p>
+     * Tests ProjectDAOBean#retrieveById(Long, boolean) for stress purpose.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testRetrieveById() throws Exception {
@@ -177,15 +184,19 @@ public class ClientDAOStressTests extends TestCase {
         for (int i = 0; i < NUMBER; i++) {
             Project project = instance.retrieveById(100L, true);
             assertNotNull("Failed to retrieve by id.", project);
-            assertEquals("Failed to retrieve by id.", "createStressUser", project.getCreateUsername());
-            assertEquals("Failed to retrieve by id.", "modifyStressUser", project.getModifyUsername());
+            assertEquals("Failed to retrieve by id.", "createStressUser", project
+                .getCreateUsername());
+            assertEquals("Failed to retrieve by id.", "modifyStressUser", project
+                .getModifyUsername());
         }
 
         printResult("ProjectDAOBean#retrieveById(Long, boolean)", NUMBER);
     }
 
     /**
-     * <p>Tests ProjectStatusDAOBean#getProjectsWithStatus(ProjectStatus) for stress purpose.</p>
+     * <p>
+     * Tests ProjectStatusDAOBean#getProjectsWithStatus(ProjectStatus) for stress purpose.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testGetProjectsWithStatus() throws Exception {
@@ -197,7 +208,7 @@ public class ClientDAOStressTests extends TestCase {
         start();
 
         for (int i = 0; i < NUMBER; i++) {
-            List<Project> projects = instance.getProjectsWithStatus(porject.getProjectStatus());
+            List < Project > projects = instance.getProjectsWithStatus(porject.getProjectStatus());
             assertEquals("Failed to get projects with status.", 1, projects.size());
         }
 
@@ -217,7 +228,6 @@ public class ClientDAOStressTests extends TestCase {
      * <p>
      * Prints test result.
      * </p>
-     *
      * @param name the test name
      * @param count the run count
      */
@@ -251,9 +261,7 @@ public class ClientDAOStressTests extends TestCase {
 
     /**
      * Remove all the namespace.
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     @SuppressWarnings("unchecked")
     private static void clearConfig() throws Exception {
@@ -374,11 +382,8 @@ public class ClientDAOStressTests extends TestCase {
 
     /**
      * Create project with client.
-     *
-     * @param id
-     *                the id of project
-     * @param client
-     *                the client to set
+     * @param id the id of project
+     * @param client the client to set
      * @return created project
      */
     private Project createProjectWithClient(long id, Client client) {

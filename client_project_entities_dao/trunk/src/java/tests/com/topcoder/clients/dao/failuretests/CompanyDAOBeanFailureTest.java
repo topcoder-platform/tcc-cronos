@@ -14,7 +14,6 @@ import com.topcoder.clients.model.Company;
 
 /**
  * Failure test for CompanyDAOBean class.
- *
  * @author AK_47
  * @version 1.0
  */
@@ -28,7 +27,6 @@ public class CompanyDAOBeanFailureTest extends TestCase {
 
     /**
      * Aggregates all tests in this class.
-     *
      * @return Test suite aggregating all tests.
      */
     public static Test suite() {
@@ -39,7 +37,6 @@ public class CompanyDAOBeanFailureTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     *
      * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
@@ -51,15 +48,12 @@ public class CompanyDAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>getClientsForCompany(Company)</code> method.
-     *
      * <p>
      * Company is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testGetClientsForCompany_Null_Company() throws Exception {
@@ -73,15 +67,12 @@ public class CompanyDAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>getProjectsForCompany(Company)</code> method.
-     *
      * <p>
      * Company is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testGetProjectsForCompany_Null_Company() throws Exception {
@@ -92,19 +83,16 @@ public class CompanyDAOBeanFailureTest extends TestCase {
             // expect
         }
     }
+
     /**
      * Failure test of <code>getClientsForCompany(Company)</code> method.
-     *
      * <p>
      * entityManager is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testGetClientsForCompany_Null_EntityManager() throws Exception {
         try {
@@ -120,17 +108,13 @@ public class CompanyDAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>getProjectsForCompany(Company)</code> method.
-     *
      * <p>
      * entityManager is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testGetProjectsForCompany_Null_EntityManager() throws Exception {
         try {
@@ -146,16 +130,12 @@ public class CompanyDAOBeanFailureTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getClientsForCompany(Company)</code> for proper
-     * behavior.
+     * Tests the <code>getClientsForCompany(Company)</code> for proper behavior.
      * </p>
-     *
      * <p>
      * Expect EntityNotFoundException.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetClientsForCompany_Invalid_Client() throws Exception {
         try {
@@ -172,16 +152,12 @@ public class CompanyDAOBeanFailureTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getProjectsForCompany(Company)</code> for proper
-     * behavior.
+     * Tests the <code>getProjectsForCompany(Company)</code> for proper behavior.
      * </p>
-     *
      * <p>
      * Expect EntityNotFoundException.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testGetProjectsForCompany_Invalid_Client() throws Exception {
         try {

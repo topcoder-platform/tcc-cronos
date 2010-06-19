@@ -9,14 +9,18 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import junit.framework.TestCase;
 
 import org.hibernate.ejb.Ejb3Configuration;
 
+import com.topcoder.clients.dao.DAOException;
 import com.topcoder.clients.dao.ejb3.GenericEJB3DAO;
 import com.topcoder.clients.model.AuditableEntity;
 import com.topcoder.clients.model.Client;
@@ -31,13 +35,19 @@ import com.topcoder.util.config.ConfigManager;
  * Base test cases used for accuracy tests.
  * </p>
  *
+ * <p>
+ * Changes in 1.2: Added the createProjectWithClientAndBudget, addProjectWorker and addProjectWorker
+ * helper methods.
+ * </p>
+ *
  * @param <T>
  *            the type param for ejb bean
  * @param <V>
  *            the type param for the entity
  *
- * @author cyberjag
- * @version 1.0
+ * @author cyberjag, akinwale
+ * @version 1.2
+ * @since 1.0
  */
 public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends AuditableEntity> extends TestCase {
 
@@ -49,8 +59,10 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
     /**
      * The clear table sql.
      */
-    private static final String[] clearSQLs = new String[] { "delete from project", "delete from client",
-        "delete from client_status", "delete from project_status", "delete from company" };
+    private static final String[] clearSQLs = new String[] { "delete from project_budget_audit",
+        "delete from project_manager", "delete from project_worker", "delete from user_account",
+        "delete from project", "delete from client", "delete from client_status", "delete from project_status",
+        "delete from company"};
 
     /**
      * The searchBundleManagerNamespace used in tests.
@@ -313,6 +325,39 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
     }
 
     /**
+     * Create project with client and budget.
+     *
+     * @param id
+     *            the id of project
+     * @param client
+     *            the client to set
+     * @param budget
+     *            the budget to set for the project
+     * @return created project
+     */
+    protected Project createProjectWithClientAndBudget(long id, Client client, double budget) {
+        Project project = new Project();
+        setAuditableEntity(project);
+        project.setActive(true);
+        project.setClient(client);
+        ProjectStatus projectStatus = createProjectStatus(100000);
+        project.setProjectStatus(projectStatus);
+        project.setId(id);
+        project.setCompany(client.getCompany());
+        project.setBudget(budget);
+        project.setDeleted(false);
+
+        // persist object
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
+        entityManager.persist(project);
+        entityManager.getTransaction().commit();
+
+        return project;
+    }
+
+    /**
      * Create ProjectStatus.
      *
      * @param id
@@ -531,4 +576,98 @@ public abstract class BaseTest<T extends GenericEJB3DAO<V, Long>, V extends Audi
         }
     }
 
+    /**
+     * <p>
+     * Adds the user with given user name to the billing projects that are specified with project IDs.
+     * </p>
+     * <p>
+     * Note that if the user doesn't exist, a new record will be created.
+     * </p>
+     *
+     * @param userName
+     *            the user name.
+     * @param billingProjectId
+     *            the project ID to which the user is added
+     * @throws Exception  pass any unexpected exception to JUnit.
+     * @since 1.2
+     */
+    @SuppressWarnings("unchecked")
+    protected void addProjectWorker(String userName, long billingProjectId) throws Exception {
+        Long userAccountId = getUserAccountId(userName, true);
+        String queryStr = "select project_id from project_worker "
+                + "where project_id =:projectId and user_account_id=:userAccountId";
+        Query searchQuery = entityManager.createNativeQuery(queryStr);
+        // Insert a record to project_manager table for each specified project id
+        Query projectManagerInsertQuery = entityManager.createNativeQuery(
+              "insert into project_worker (project_id, user_account_id,"
+            + " pay_rate, cost, active, start_date, end_date, creation_date, creation_user, modification_date"
+            + ", modification_user) values (:projectId, :userAccountId, 0, 0, :active, CURRENT, CURRENT, CURRENT"
+            + ", 'System', CURRENT, 'System')");
+
+        // add checking, if user/project is already in the table, we DO NOT insert.
+        searchQuery.setParameter("projectId", billingProjectId);
+        searchQuery.setParameter("userAccountId", userAccountId);
+        List result = searchQuery.getResultList();
+        if (result != null && result.size() == 0) {
+            if (!entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().begin();
+            }
+            projectManagerInsertQuery.setParameter("projectId", billingProjectId);
+            projectManagerInsertQuery.setParameter("userAccountId", userAccountId);
+            projectManagerInsertQuery.setParameter("active", 1);
+            projectManagerInsertQuery.executeUpdate();
+            entityManager.getTransaction().commit();
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the user account id according to given user name.
+     * </p>
+     *
+     * @param userName
+     *            the username to find the user account id.
+     * @param isAdd
+     *            whether to add a new user account if not found.
+     * @return the matched user account id.
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     * @since 1.2
+     */
+    protected Long getUserAccountId(String userName, boolean isAdd) throws Exception {
+        // Query the user account id.
+        Query userQuery = entityManager.createNativeQuery("select user_account_id from user_account"
+            + " where user_name = :userName");
+        userQuery.setParameter("userName", userName);
+        Long userAccountId = null;
+        try {
+            userAccountId = Long.parseLong(userQuery.getSingleResult().toString());
+        } catch (NoResultException nre) {
+            // No matching record in user_account table, should insert new records
+        }
+
+        if (null == userAccountId && isAdd) {
+            Random random = new Random();
+            userAccountId = random.nextLong();
+
+            // and get the userAccountId
+            Query insertUserQuery = entityManager.createNativeQuery("insert into user_account"
+                + " (user_account_id, company_id, account_status_id, user_name, password, creation_date, creation_user,"
+                + " modification_date, modification_user) values "
+                + "(:userAccountId, 1, 1, :userName, '', CURRENT, '', CURRENT, '')");
+            if (!entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().begin();
+            }
+            insertUserQuery.setParameter("userAccountId", userAccountId);
+            insertUserQuery.setParameter("userName", userName);
+            int counts = insertUserQuery.executeUpdate();
+            entityManager.getTransaction().commit();
+            if (counts != 1) {
+                // cannot insert into user_account table, throw DAOException
+                throw new DAOException("Cannot insert user data into user_account!");
+            }
+        }
+
+        return userAccountId;
+    }
 }

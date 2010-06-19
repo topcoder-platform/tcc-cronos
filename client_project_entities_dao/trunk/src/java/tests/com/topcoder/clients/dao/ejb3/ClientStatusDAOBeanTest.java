@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -18,7 +18,6 @@ import com.topcoder.clients.model.ClientStatus;
  * <p>
  * Test class: <code>ClientStatusDAOBean</code>.
  * </p>
- *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -39,9 +38,7 @@ public class ClientStatusDAOBeanTest extends TestBase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -57,13 +54,12 @@ public class ClientStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ClientStatusDAOBean</code> subclasses
-     * <code>GenericEJB3DAO</code>.
+     * Verifies <code>ClientStatusDAOBean</code> subclasses <code>GenericEJB3DAO</code>.
      * </p>
      */
     public void testInheritance1() {
         assertTrue("ClientStatusDAOBean does not subclasses GenericEJB3DAO.",
-                target instanceof GenericEJB3DAO<?, ?>);
+            target instanceof GenericEJB3DAO < ?, ? >);
     }
 
     /**
@@ -71,13 +67,12 @@ public class ClientStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ClientStatusDAOBean</code> implements
-     * <code>ClientStatusDAO</code>.
+     * Verifies <code>ClientStatusDAOBean</code> implements <code>ClientStatusDAO</code>.
      * </p>
      */
     public void testInheritance2() {
         assertTrue("ClientStatusDAOBean does not implements ClientStatusDAO.",
-                target instanceof ClientStatusDAO);
+            target instanceof ClientStatusDAO);
     }
 
     /**
@@ -85,14 +80,12 @@ public class ClientStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ClientStatusDAOBean</code> implements
-     * <code>ClientStatusDAOLocal</code>.
+     * Verifies <code>ClientStatusDAOBean</code> implements <code>ClientStatusDAOLocal</code>.
      * </p>
      */
     public void testInheritance3() {
-        assertTrue(
-                "ClientStatusDAOBean does not implements ClientStatusDAOLocal.",
-                target instanceof ClientStatusDAOLocal);
+        assertTrue("ClientStatusDAOBean does not implements ClientStatusDAOLocal.",
+            target instanceof ClientStatusDAOLocal);
     }
 
     /**
@@ -100,25 +93,20 @@ public class ClientStatusDAOBeanTest extends TestBase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>ClientStatusDAOBean</code> implements
-     * <code>ClientStatusDAORemote</code>.
+     * Verifies <code>ClientStatusDAOBean</code> implements <code>ClientStatusDAORemote</code>.
      * </p>
      */
     public void testInheritance4() {
-        assertTrue(
-                "ClientStatusDAOBean does not implements ClientStatusDAORemote.",
-                target instanceof ClientStatusDAORemote);
+        assertTrue("ClientStatusDAOBean does not implements ClientStatusDAORemote.",
+            target instanceof ClientStatusDAORemote);
     }
 
     /**
      * <p>
-     * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.ClientStatusDAOBean()</code> for
-     * proper behavior.
+     * Tests the <code>com.topcoder.clients.dao.ejb3.ClientStatusDAOBean()</code> for proper
+     * behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("ClientStatusDAOBean() failed.", target);
@@ -126,20 +114,17 @@ public class ClientStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsWithStatus(ClientStatus)<</code> for proper
-     * behavior.
+     * Tests the <code>getClientsWithStatus(ClientStatus)<</code> for proper behavior.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethod_getClientsWithStatus_1() throws Exception {
         createClient(100);
         Client client = createClient(101);
-        List<Client> res = target.getClientsWithStatus(client.getClientStatus());
+        List < Client > res = target.getClientsWithStatus(client.getClientStatus());
         assertEquals("The number of clients", 2, res.size());
         // verify data
-        List<Long> ids = new ArrayList<Long>();
+        List < Long > ids = new ArrayList < Long >();
         ids.add(res.get(0).getId());
         ids.add(res.get(1).getId());
         assertTrue("should be returned with correct id", ids.contains(100L));
@@ -148,12 +133,10 @@ public class ClientStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsWithStatus(ClientStatus)<</code> for proper
-     * behavior. IllegalArgumentException if status is null.
+     * Tests the <code>getClientsWithStatus(ClientStatus)<</code> for proper behavior.
+     * IllegalArgumentException if status is null.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethod_getClientsWithStatus_failure_1() throws Exception {
         try {
@@ -166,13 +149,10 @@ public class ClientStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsWithStatus(ClientStatus)</code> for proper
-     * behavior. EntityNotFoundException if status is not found in the
-     * persistence.
+     * Tests the <code>getClientsWithStatus(ClientStatus)</code> for proper behavior.
+     * EntityNotFoundException if status is not found in the persistence.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethod_getClientsWithStatus_failure_2() throws Exception {
         try {
@@ -187,13 +167,11 @@ public class ClientStatusDAOBeanTest extends TestBase {
 
     /**
      * <p>
-     * Tests the <code>getClientsWithStatus(ClientStatus)</code> for proper
-     * behavior. DAOConfigurationException if the configured entityManager is
-     * invalid (invalid means null here).
+     * Tests the <code>getClientsWithStatus(ClientStatus)</code> for proper behavior.
+     * DAOConfigurationException if the configured entityManager is invalid (invalid means null
+     * here).
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testMethod_getClientsWithStatus_failure_3() throws Exception {
         try {

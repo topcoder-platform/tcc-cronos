@@ -18,7 +18,6 @@ import com.topcoder.clients.model.Client;
 
 /**
  * Failure test for GenericEJB3DAO class.
- *
  * @author AK_47
  * @version 1.0
  */
@@ -44,11 +43,10 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
      * An instance of <code>GenericEJB3DAO</code> which is tested.
      * </p>
      */
-    private GenericEJB3DAO<Client, Long> bean = null;
+    private GenericEJB3DAO < Client, Long > bean = null;
 
     /**
      * Aggregates all tests in this class.
-     *
      * @return Test suite aggregating all tests.
      */
     public static Test suite() {
@@ -59,9 +57,7 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -73,17 +69,13 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>delete(T entity)</code> method.
-     *
      * <p>
      * entity is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testDelete_Null_Client() throws Exception {
         try {
@@ -96,15 +88,12 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>delete(T entity)</code> method.
-     *
      * <p>
      * entityManager is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testDelete_Null_EntityManager() throws Exception {
@@ -121,16 +110,12 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>delete(T entity)</code> for proper
-     * behavior.
+     * Tests the <code>delete(T entity)</code> for proper behavior.
      * </p>
-     *
      * <p>
      * Expect EntityNotFoundException.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     public void testDelete_Invalid_Client() throws Exception {
         try {
@@ -146,15 +131,12 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * searchBundleManagerNamespace is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_1() throws Exception {
@@ -175,20 +157,17 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * searchBundleManagerNamespace is empty.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_2() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean,"searchBundleManagerNamespace", "  ");
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", "  ");
             TestHelper.setField(GenericEJB3DAO.class, bean, "configFileName", configFileName);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configNamespace", configNamespace);
 
@@ -205,20 +184,18 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * configFileName is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_3() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", searchBundleManagerNamespace);
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace",
+                searchBundleManagerNamespace);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configNamespace", configNamespace);
 
             Method method = GenericEJB3DAO.class.getDeclaredMethod("initialize", new Class[] {});
@@ -234,20 +211,18 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * configFileName is empty.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_4() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", searchBundleManagerNamespace);
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace",
+                searchBundleManagerNamespace);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configFileName", "  ");
             TestHelper.setField(GenericEJB3DAO.class, bean, "configNamespace", configNamespace);
 
@@ -264,20 +239,18 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * configNamespace is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_5() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", searchBundleManagerNamespace);
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace",
+                searchBundleManagerNamespace);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configFileName", configFileName);
 
             Method method = GenericEJB3DAO.class.getDeclaredMethod("initialize", new Class[] {});
@@ -293,20 +266,18 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * configNamespace is empty.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_6() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", searchBundleManagerNamespace);
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace",
+                searchBundleManagerNamespace);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configFileName", configFileName);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configNamespace", "  ");
 
@@ -323,20 +294,18 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * searchBundleManagerNamespace is inalid.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_7() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", "invalid");
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace",
+                "invalid");
             TestHelper.setField(GenericEJB3DAO.class, bean, "configFileName", configFileName);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configNamespace", configNamespace);
 
@@ -350,22 +319,21 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
             // expect
         }
     }
+
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * configFileName is invalid.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_8() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", searchBundleManagerNamespace);
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace",
+                searchBundleManagerNamespace);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configFileName", "invalid");
             TestHelper.setField(GenericEJB3DAO.class, bean, "configNamespace", configNamespace);
 
@@ -382,20 +350,18 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>initialize()</code> method.
-     *
      * <p>
      * configNamespace is invalid.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testinitialize_9() throws Exception {
         try {
-            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace", searchBundleManagerNamespace);
+            TestHelper.setField(GenericEJB3DAO.class, bean, "searchBundleManagerNamespace",
+                searchBundleManagerNamespace);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configFileName", configFileName);
             TestHelper.setField(GenericEJB3DAO.class, bean, "configNamespace", "invalid");
 
@@ -412,15 +378,12 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>retrieveAll()</code> method.
-     *
      * <p>
      * entityManager is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testRetrieveAll_Null_EntityManager() throws Exception {
@@ -435,20 +398,15 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
         }
     }
 
-
     /**
      * Failure test of <code>searchByName(String)</code> method.
-     *
      * <p>
      * name is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testSearchByName_Null_Name() throws Exception {
         try {
@@ -461,17 +419,13 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>searchByName(String)</code> method.
-     *
      * <p>
      * name is empty.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testSearchByName_Empty_Name() throws Exception {
         try {
@@ -484,15 +438,12 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>searchByName(String)</code> method.
-     *
      * <p>
      * entityManager is null.
      * </p>
-     *
      * <p>
      * Expect DAOConfigurationException.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testSearchByName_Null_EntityManager() throws Exception {
@@ -509,17 +460,13 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>search(Filter)</code> method.
-     *
      * <p>
      * filter is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testSearch_Null_Filter() throws Exception {
         try {
@@ -532,17 +479,13 @@ public class GenericEJB3DAOBeanFailureTest extends TestCase {
 
     /**
      * Failure test of <code>save(T entity)</code> method.
-     *
      * <p>
      * entity is null.
      * </p>
-     *
      * <p>
      * Expect IllegalArgumentException.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     public void testSave_Null_Entity() throws Exception {
         try {

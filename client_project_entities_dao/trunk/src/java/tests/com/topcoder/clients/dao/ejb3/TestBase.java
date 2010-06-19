@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
+import junit.framework.TestCase;
+
 import org.hibernate.ejb.Ejb3Configuration;
 
 import com.topcoder.clients.model.AuditableEntity;
@@ -18,15 +20,17 @@ import com.topcoder.clients.model.Company;
 import com.topcoder.clients.model.Project;
 import com.topcoder.clients.model.ProjectStatus;
 
-import junit.framework.TestCase;
-
 /**
  * The super class of all persistence related class.
- *
  * @author TCSDEVELOPER
- * @version 1.1
+ * @version 1.2
  */
 public abstract class TestBase extends TestCase {
+    /**
+     * Set the initial budget of a new project, for test in version 1.2.
+     */
+    private static Double initialBudget = new Double(1);
+
     /**
      * An EntityManager instance used in tests.
      */
@@ -35,17 +39,17 @@ public abstract class TestBase extends TestCase {
     /**
      * The clear table sql.
      */
-    private String[] clearSQLs = new String[] {"delete from project_contest_fee", "delete from project_manager",
-        "delete from user_account", "delete from project", "delete from client", "delete from client_status",
-        "delete from project_status", "delete from company"};
+    private String[] clearSQLs =
+        new String[] {"delete from project_worker", "delete from project_contest_fee",
+            "delete from project_manager", "delete from user_account",
+            "delete from project_budget_audit", "delete from project", "delete from client",
+            "delete from client_status", "delete from project_status", "delete from company" };
 
     /**
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         getEntityManager();
@@ -56,9 +60,7 @@ public abstract class TestBase extends TestCase {
      * <p>
      * tearDown() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfig();
@@ -102,11 +104,8 @@ public abstract class TestBase extends TestCase {
 
     /**
      * Create project with client.
-     *
-     * @param id
-     *                the id of project
-     * @param client
-     *                the client to set
+     * @param id the id of project
+     * @param client the client to set
      * @return created project
      */
     protected Project createProjectWithClient(long id, Client client) {
@@ -118,14 +117,16 @@ public abstract class TestBase extends TestCase {
         project.setProjectStatus(projectStatus);
         project.setId(id);
         project.setCompany(client.getCompany());
+        project.setBudget(initialBudget);
 
         // persist object
-        Query query = entityManager
+        Query query =
+            entityManager
                 .createNativeQuery("insert into project (project_id, project_status_id, client_id, "
-                        + "company_id,name,active,sales_tax,po_box_number,payment_terms_id,"
-                        + "description,creation_date,creation_user,modification_date,"
-                        + "modification_user,is_deleted,is_manual_prize_setting)"
-                        + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "company_id,name,active,sales_tax,po_box_number,payment_terms_id,"
+                    + "description,creation_date,creation_user,modification_date,"
+                    + "modification_user,is_deleted,is_manual_prize_setting, budget)"
+                    + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         int idx = 1;
         query.setParameter(idx++, project.getId());
         query.setParameter(idx++, project.getProjectStatus().getId());
@@ -143,6 +144,8 @@ public abstract class TestBase extends TestCase {
         query.setParameter(idx++, project.getModifyUsername());
         query.setParameter(idx++, 0);
         query.setParameter(idx++, 0);
+        query.setParameter(idx++, project.getBudget());
+
         query.executeUpdate();
 
         return project;
@@ -154,7 +157,8 @@ public abstract class TestBase extends TestCase {
      * @param child the child id
      */
     protected void setChildProject(long parent, long child) {
-        Query query = entityManager
+        Query query =
+            entityManager
                 .createNativeQuery("update project set parent_project_id=? where project_id=?");
         query.setParameter(1, parent);
         query.setParameter(2, child);
@@ -168,8 +172,7 @@ public abstract class TestBase extends TestCase {
      * @return ProjectStatus created
      */
     protected ProjectStatus createProjectStatus(long id) {
-        ProjectStatus projectStatus = entityManager.find(ProjectStatus.class,
-                id);
+        ProjectStatus projectStatus = entityManager.find(ProjectStatus.class, id);
         if (projectStatus != null) {
             return projectStatus;
         }
@@ -206,12 +209,11 @@ public abstract class TestBase extends TestCase {
         client.setDeleted(false);
 
         // persist object
-        Query query = entityManager
-                .createNativeQuery("insert into client "
-                        + "(client_id, client_status_id, is_deleted, payment_term_id,company_id"
-                        + ",salestax,start_date,end_date,creation_date,creation_user,modification_date,"
-                        + "modification_user,code_name) "
-                        + "values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        Query query =
+            entityManager.createNativeQuery("insert into client "
+                + "(client_id, client_status_id, is_deleted, payment_term_id,company_id"
+                + ",salestax,start_date,end_date,creation_date,creation_user,modification_date,"
+                + "modification_user,code_name) " + "values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
         int idx = 1;
         query.setParameter(idx++, client.getId());
         query.setParameter(idx++, client.getClientStatus().getId());
@@ -254,12 +256,11 @@ public abstract class TestBase extends TestCase {
         client.setName(name);
 
         // persist object
-        Query query = entityManager
-                .createNativeQuery("insert into client "
-                        + "(client_id, client_status_id, is_deleted, payment_term_id,company_id"
-                        + ",salestax,start_date,end_date,creation_date,creation_user,modification_date,"
-                        + "modification_user,code_name, name) "
-                        + "values (?,?,?,?,?,?,?,?,?,?,?,?,?, ?)");
+        Query query =
+            entityManager.createNativeQuery("insert into client "
+                + "(client_id, client_status_id, is_deleted, payment_term_id,company_id"
+                + ",salestax,start_date,end_date,creation_date,creation_user,modification_date,"
+                + "modification_user,code_name, name) " + "values (?,?,?,?,?,?,?,?,?,?,?,?,?, ?)");
         int idx = 1;
         query.setParameter(idx++, client.getId());
         query.setParameter(idx++, client.getClientStatus().getId());
@@ -335,5 +336,21 @@ public abstract class TestBase extends TestCase {
         entityManager.flush();
         clientStatus.setId(id);
         return clientStatus;
+    }
+
+    /**
+     * @return the initialBudget
+     * @since 1.2
+     */
+    public static Double getInitialBudget() {
+        return initialBudget;
+    }
+
+    /**
+     * @param initialBudget the initialBudget to set
+     * @since 1.2
+     */
+    public static void setInitialBudget(Double initialBudget) {
+        TestBase.initialBudget = initialBudget;
     }
 }

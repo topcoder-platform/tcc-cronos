@@ -12,12 +12,10 @@ import org.hibernate.ejb.Ejb3Configuration;
 
 import com.topcoder.clients.dao.ejb3.ProjectDAOBean;
 
-
 /**
  * <p>
  * Stress Tests for ProjectDAOBean.
  * </p>
- *
  * @author onsky
  * @version 1.0
  */
@@ -44,18 +42,16 @@ public class ProjectDAOBeanStressTests extends TestCase {
      */
     private ProjectDAOBean instance;
 
-	/**
-	 * An EntityManager instance used in tests.
-	 */
-	private static EntityManager entityManager;
+    /**
+     * An EntityManager instance used in tests.
+     */
+    private static EntityManager entityManager;
 
     /**
      * <p>
      * setUp() routine.
      * </p>
-     *
-     * @throws Exception
-     *                 to JUnit
+     * @throws Exception to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -65,51 +61,57 @@ public class ProjectDAOBeanStressTests extends TestCase {
     }
 
     /**
-     * <p>The stress test for addUserToBillingProjects() method.</p>
+     * <p>
+     * The stress test for addUserToBillingProjects() method.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testAddUserToBillingProjects() throws Exception {
         start();
 
         for (int i = 0; i < TOTAL_RUNS; i++) {
-        	try {
-        		instance.addUserToBillingProjects("ivern", new long[]{1, 2, 3});
-        	} catch (Exception e) {
-        	}
+            try {
+                instance.addUserToBillingProjects("ivern", new long[] {1, 2, 3 });
+            } catch (Exception e) {
+            }
         }
 
         this.printResult("ProjectDAOBean#addUserToBillingProjects", TOTAL_RUNS);
     }
 
     /**
-     * <p>The stress test for removeUserFromBillingProjects() method.</p>
+     * <p>
+     * The stress test for removeUserFromBillingProjects() method.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testRemoveUserFromBillingProjects() throws Exception {
         start();
 
         for (int i = 0; i < TOTAL_RUNS; i++) {
-        	try {
-        		instance.removeUserFromBillingProjects("ivern", new long[]{1, 2, 3});
-        	} catch (Exception e) {
-        	}
+            try {
+                instance.removeUserFromBillingProjects("ivern", new long[] {1, 2, 3 });
+            } catch (Exception e) {
+            }
         }
 
         this.printResult("ProjectDAOBean#removeUserFromBillingProjects", TOTAL_RUNS);
     }
 
     /**
-     * <p>The stress test for getProjectsByClientId() method.</p>
+     * <p>
+     * The stress test for getProjectsByClientId() method.
+     * </p>
      * @throws Exception to JUnit
      */
     public void testGetProjectsByClientId() throws Exception {
         start();
 
         for (int i = 0; i < TOTAL_RUNS; i++) {
-        	try {
-        		instance.getProjectsByClientId(10l);
-        	} catch (Exception e) {
-        	}
+            try {
+                instance.getProjectsByClientId(10l);
+            } catch (Exception e) {
+            }
         }
 
         this.printResult("ProjectDAOBean#getProjectsByClientId", TOTAL_RUNS);
@@ -128,7 +130,6 @@ public class ProjectDAOBeanStressTests extends TestCase {
      * <p>
      * Prints test result.
      * </p>
-     *
      * @param name the test name
      * @param count the run count
      */
@@ -137,29 +138,28 @@ public class ProjectDAOBeanStressTests extends TestCase {
             + (System.currentTimeMillis() - current) + " ms");
     }
 
-	/**
-	 * Get EntityManager.
-	 * 
-	 * @return EntityManager
-	 */
-	private EntityManager getEntityManager() {
-		if (entityManager == null || !entityManager.isOpen()) {
-			// create entityManager
-			try {
-				Ejb3Configuration cfg = new Ejb3Configuration();
-				cfg.configure("hibernate.cfg.xml");
+    /**
+     * Get EntityManager.
+     * @return EntityManager
+     */
+    private EntityManager getEntityManager() {
+        if (entityManager == null || !entityManager.isOpen()) {
+            // create entityManager
+            try {
+                Ejb3Configuration cfg = new Ejb3Configuration();
+                cfg.configure("hibernate.cfg.xml");
 
-				EntityManagerFactory emf = cfg.buildEntityManagerFactory();
-				entityManager = emf.createEntityManager();
+                EntityManagerFactory emf = cfg.buildEntityManagerFactory();
+                entityManager = emf.createEntityManager();
 
-			} catch (Exception e) {
-			}
-		}
+            } catch (Exception e) {
+            }
+        }
 
-		entityManager.clear();
-		if (!entityManager.getTransaction().isActive()) {
-			entityManager.getTransaction().begin();
-		}
-		return entityManager;
-	}
+        entityManager.clear();
+        if (!entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().begin();
+        }
+        return entityManager;
+    }
 }

@@ -4,7 +4,8 @@
 
 package com.topcoder.clients.dao.accuracytests;
 
-import java.util.Iterator;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,17 +14,19 @@ import javax.persistence.Query;
 import com.topcoder.clients.dao.ejb3.ProjectDAOBean;
 import com.topcoder.clients.model.Client;
 import com.topcoder.clients.model.Project;
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.idgenerator.IDGenerator;
-import com.topcoder.util.idgenerator.IDGeneratorFactory;
 
 /**
  * <p>
  * Tests the <code>{@link ProjectDAOBean}</code> for accuracy.
  * </p>
  *
- * @author cyberjag
- * @version 1.0
+ * <p>
+ * Changes in 1.2: Added the testUpdateProjectBudget and testGetUsersByProject test cases.
+ * </p>
+ *
+ * @author cyberjag, akinwale
+ * @version 1.2
+ * @since 1.0
  */
 public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
 
@@ -138,6 +141,93 @@ public class ProjectDAOAccuracyTests extends BaseTest<ProjectDAOBean, Project> {
         List<Project> list = getTestBean().retrieveAll(true);
         assertEquals("Failed to retrieveAll.", list.size(), 4);
         assertNotNull("Failed to retrieveAll.", list.get(0).getChildProjects());
+    }
+
+    /**
+     * <p>
+     * Tests that the updateProjectBudget(String, long, double) method works properly.
+     * </p>
+     *
+     * @throws Exception
+     *             exception to pass to JUnit
+     *
+     * @since 1.2
+     */
+    public void testUpdateProjectBudget() throws Exception {
+        Client client = createClient(42);
+        createProjectWithClientAndBudget(101, client, 50);
+        createProjectWithClientAndBudget(102, client, 25);
+        createProjectWithClientAndBudget(103, client, 45);
+
+        // Check the updated tables
+        EntityManager em = getEntityManager();
+
+        ProjectDAOBean bean = getTestBean();
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
+        double budget1 = bean.updateProjectBudget("topcoder1", 101, 300);
+        double budget2 = bean.updateProjectBudget("topcoder2", 102, 400);
+        double budget3 = bean.updateProjectBudget("topcoder3", 103, 500);
+        em.getTransaction().commit();
+
+        // Check the returned budget
+        String error = "updateProjectBudget does not work properly";
+        assertEquals(error, 350.0, budget1);
+        assertEquals(error, 425.0, budget2);
+        assertEquals(error, 545.0, budget3);
+
+        Query query = em.createNativeQuery(
+            "SELECT COUNT(*) FROM project WHERE project_id IN (101, 102, 103) AND budget IN (350.0, 425.0, 545.0)");
+        BigDecimal result = (BigDecimal) query.getSingleResult();
+        assertEquals(error, 3, result.intValue());
+
+        query = em.createNativeQuery(
+              "SELECT COUNT(*) FROM project_budget_audit WHERE project_id IN (101, 102, 103) "
+            + "AND changed_amount IN (300, 400, 500) "
+            + "AND creation_user IN ('topcoder1', 'topcoder2', 'topcoder3')");
+        result = (BigDecimal) query.getSingleResult();
+        assertEquals(error, 3, result.intValue());
+    }
+
+    /**
+     * <p>
+     * Tests that the getUsersByProject(long) method works properly.
+     * </p>
+     *
+     * @throws Exception
+     *             exception to pass to JUnit
+     *
+     * @since 1.2
+     */
+    public void testGetUsersByProject() throws Exception {
+        Client client = createClient(42);
+        createProjectWithClient(101, client);
+
+        EntityManager em = getEntityManager();
+        createCompany(1);
+        ProjectDAOBean bean = getTestBean();
+        getUserAccountId("topcoder", true);
+        getUserAccountId("user", true);
+
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
+        bean.addUserToBillingProjects("topcoder", new long[] {101});
+        bean.addUserToBillingProjects("user", new long[] {101});
+        em.getTransaction().commit();
+
+        addProjectWorker("worker", 101);
+        addProjectWorker("builder", 101);
+        addProjectWorker("topcoder", 101);
+
+
+        List<String> users = bean.getUsersByProject(101);
+        List<String> expected = Arrays.asList(new String[] {"topcoder", "user", "worker", "builder"});
+
+        String error = "getUsersByProject does not work properly";
+        assertEquals(error, 4, users.size());
+        assertTrue(error, expected.containsAll(users));
     }
 
     /**
