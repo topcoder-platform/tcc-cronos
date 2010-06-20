@@ -7,6 +7,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.topcoder.clients.dao.UnitTests;
 import com.topcoder.clients.dao.accuracytests.AccuracyTests;
 import com.topcoder.clients.dao.failuretests.FailureTests;
 import com.topcoder.clients.dao.stresstests.StressTests;
