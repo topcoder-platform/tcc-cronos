@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -11,6 +11,7 @@ import junit.framework.TestCase;
  * <p>
  * Test class: <code>Client</code>.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -26,7 +27,9 @@ public class ClientTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     protected void setUp() throws Exception {
         target = new Client();
@@ -46,10 +49,12 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>com.topcoder.clients.model.Client()</code> for proper behavior. Verifies that
-     * instance should be created.
+     * Tests the <code>com.topcoder.clients.model.Client()</code> for proper behavior. Verifies that instance should
+     * be created.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("Instance should be created.", target);
@@ -57,10 +62,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setEndDate(Date)</code> for proper behavior. Verifies that the property
-     * should be correct.
+     * Tests the <code>setEndDate(Date)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetEndDate_Date() throws Exception {
         Date endDate = new Date();
@@ -70,10 +76,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getStartDate()</code> for proper behavior. Verifies that the property should
-     * be correct.
+     * Tests the <code>getStartDate()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetStartDate() throws Exception {
         Date startDate = new Date();
@@ -83,10 +90,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setStartDate(Date)</code> for proper behavior. Verifies that the property
-     * should be correct.
+     * Tests the <code>setStartDate(Date)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetStartDate_Date() throws Exception {
         Date startDate = new Date();
@@ -96,10 +104,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setCompany(Company)</code> for proper behavior. Verifies that the property
-     * should be correct.
+     * Tests the <code>setCompany(Company)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetCompany_Company() throws Exception {
         Company company = new Company();
@@ -109,10 +118,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getEndDate()</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>getEndDate()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetEndDate() throws Exception {
         Date endDate = new Date();
@@ -122,10 +132,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getClientStatus()</code> for proper behavior. Verifies that the property
-     * should be correct.
+     * Tests the <code>getClientStatus()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetClientStatus() throws Exception {
         ClientStatus clientStatus = new ClientStatus();
@@ -135,10 +146,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setSalesTax(double)</code> for proper behavior. Verifies that the property
-     * should be correct.
+     * Tests the <code>setSalesTax(double)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetSalesTax_double() throws Exception {
         target.setSalesTax(3.3);
@@ -147,10 +159,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getCodeName()</code> for proper behavior. Verifies that the property should
-     * be correct.
+     * Tests the <code>getCodeName()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetCodeName() throws Exception {
         target.setCodeName("name1");
@@ -159,10 +172,12 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setClientStatus(ClientStatus)</code> for proper behavior. Verifies that the
-     * property should be correct.
+     * Tests the <code>setClientStatus(ClientStatus)</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetClientStatus_ClientStatus() throws Exception {
         ClientStatus clientStatus = new ClientStatus();
@@ -172,10 +187,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getPaymentTermsId()</code> for proper behavior. Verifies that the property
-     * should be correct.
+     * Tests the <code>getPaymentTermsId()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetPaymentTermsId() throws Exception {
         target.setPaymentTermsId(1L);
@@ -184,10 +200,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getSalesTax()</code> for proper behavior. Verifies that the property should
-     * be correct.
+     * Tests the <code>getSalesTax()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetSalesTax() throws Exception {
         target.setSalesTax(3.3);
@@ -196,10 +213,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setCodeName(String)</code> for proper behavior. Verifies that the property
-     * should be correct.
+     * Tests the <code>setCodeName(String)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetCodeName_String() throws Exception {
         target.setCodeName("name2");
@@ -208,10 +226,12 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setPaymentTermsId(long)</code> for proper behavior. Verifies that the
-     * property should be correct.
+     * Tests the <code>setPaymentTermsId(long)</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetPaymentTermsId_long() throws Exception {
         target.setPaymentTermsId(6L);
@@ -220,10 +240,11 @@ public class ClientTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getCompany()</code> for proper behavior. Verifies that the property should be
-     * correct.
+     * Tests the <code>getCompany()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetCompany() throws Exception {
         Company company = new Company();

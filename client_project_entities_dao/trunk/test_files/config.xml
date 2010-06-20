@@ -48,6 +48,12 @@
 					<Property name="parentProjectId">
 						<Value>p.parentProjectId</Value>
 					</Property>
+					<Property name="manualPrizeSetting">
+						<Value>p.manualPrizeSetting</Value>
+					</Property>
+					<Property name="budget">
+						<Value>p.budget</Value>
+					</Property>
 					<!-- general properties -->
 					<Property name="createUsername">
 						<Value>p.createUsername</Value>
@@ -150,6 +156,26 @@
 						</Property>
 					</Property>
 					<Property name="parentProjectId">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="manualPrizeSetting">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>default</Value>
+							</Property>
+						</Property>
+					</Property>
+					<Property name="budget">
 						<Property name="validator">
 							<Property name="class">
 								<Value>validator</Value>

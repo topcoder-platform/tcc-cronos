@@ -12,14 +12,10 @@ alter table id_sequences add constraint primary key
 	constraint u100_1;
 	
   
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)
-VALUES ('com.topcoder.clients.model.User', 1, 20, 0);
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)
-VALUES ('client_id', 1, 20, 0);
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)
-VALUES ('client_status_id', 1, 20, 0);
-INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)
-VALUES ('test', 1, 20, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('com.topcoder.clients.model.User', 1, 20, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('client_id', 1, 20, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('client_status_id', 1, 20, 0);
+INSERT INTO id_sequences (name, next_block_start, block_size, exhausted) VALUES ('test', 1, 20, 0);
 INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)
        VALUES ('com.topcoder.clients.manager.dao.DAOCompanyManager', 1, 20, 0);
 INSERT INTO id_sequences (name, next_block_start, block_size, exhausted)

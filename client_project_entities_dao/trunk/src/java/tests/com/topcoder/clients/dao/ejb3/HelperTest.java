@@ -1,15 +1,16 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
-
-import junit.framework.TestCase;
 
 import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
 
+import junit.framework.TestCase;
+
 /**
  * The testcase for Helper class.
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -27,7 +28,8 @@ public class HelperTest extends TestCase {
     }
 
     /**
-     * Test <code>checkNull(Object param, String paramName)</code> method for proper behavior.
+     * Test <code>checkNull(Object param, String paramName)</code> method for
+     * proper behavior.
      */
     public void test_checkNull_1() {
         try {
@@ -39,8 +41,8 @@ public class HelperTest extends TestCase {
     }
 
     /**
-     * Test <code>checkNullAndEmpty(String param, String paramName)</code> method for proper
-     * behavior.
+     * Test <code>checkNullAndEmpty(String param, String paramName)</code>
+     * method for proper behavior.
      */
     public void test_checkNullAndEmpty_1() {
         try {
@@ -52,8 +54,8 @@ public class HelperTest extends TestCase {
     }
 
     /**
-     * Test <code>checkNullAndEmpty(String param, String paramName)</code> method for proper
-     * behavior.
+     * Test <code>checkNullAndEmpty(String param, String paramName)</code>
+     * method for proper behavior.
      */
     public void test_checkNullAndEmpty_2() {
         try {
@@ -65,8 +67,8 @@ public class HelperTest extends TestCase {
     }
 
     /**
-     * Test <code>checkNullAndEmpty(String param, String paramName)</code> method for proper
-     * behavior.
+     * Test <code>checkNullAndEmpty(String param, String paramName)</code>
+     * method for proper behavior.
      */
     public void test_checkNullAndEmpty_3() {
         try {
@@ -78,8 +80,8 @@ public class HelperTest extends TestCase {
     }
 
     /**
-     * Test <code>checkNullAndEmpty(String param, String paramName)</code> method for proper
-     * behavior.
+     * Test <code>checkNullAndEmpty(String param, String paramName)</code>
+     * method for proper behavior.
      */
     public void test_checkNullAndEmpty_4() {
         try {
@@ -91,7 +93,8 @@ public class HelperTest extends TestCase {
     }
 
     /**
-     * Test <code>WrapExceptionWithDAOException</code> method for proper behavior.
+     * Test <code>WrapExceptionWithDAOException</code> method for proper
+     * behavior.
      */
     public void test_WrapExceptionWithDAOException_1() {
         Exception e = new Exception();
@@ -101,7 +104,8 @@ public class HelperTest extends TestCase {
     }
 
     /**
-     * Test <code>WrapExceptionWithDAOException</code> method for proper behavior.
+     * Test <code>WrapExceptionWithDAOException</code> method for proper
+     * behavior.
      */
     public void test_WrapExceptionWithDAOException_2() {
         String message = "msg";

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -19,16 +19,15 @@ import javax.xml.bind.annotation.XmlType;
  * This class represents project contest fee.
  * </p>
  * <p>
- * <strong>THREAD SAFETY:</strong> This class contains only mutable fields so therefore it is not
- * thread safe.
+ * <strong>THREAD SAFETY:</strong> This class contains only mutable fields so therefore it is not thread safe.
  * </p>
  * <p>
- * Version 1.1 update for the Studio Contest Types - Release Assembly 1.0: Remove the contest_type
- * column, remove the sub_type column. Adding is_studio and contest_type_id column. Here
- * contest_type_id column expected to refer to studio_oltp:contest_type_lu.contest_type_id for
- * Studio contests and refer to tcs_catalog:project_category_lu.project_category_id for non-Studion
- * projects
+ * Version 1.1 update for the Studio Contest Types - Release Assembly 1.0: Remove the contest_type column, remove the
+ * sub_type column. Adding is_studio and contest_type_id column. Here contest_type_id column expected to refer to
+ * studio_oltp:contest_type_lu.contest_type_id for Studio contests and refer to
+ * tcs_catalog:project_category_lu.project_category_id for non-Studio projects
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  * @since Configurable Contest Fees v1.0 Assembly
@@ -81,22 +80,6 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
     private boolean studio;
 
     /**
-     * Returns the value of studio.
-     * @return the studio
-     */
-    public boolean isStudio() {
-        return studio;
-    }
-
-    /**
-     * Set the value to studio field.
-     * @param studio the studio to set
-     */
-    public void setStudio(boolean studio) {
-        this.studio = studio;
-    }
-
-    /**
      * <p>
      * The contestFee field.
      * </p>
@@ -108,7 +91,9 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Sets the <code>id</code> field value.
      * </p>
-     * @param id the value to set
+     *
+     * @param id
+     *            the value to set
      */
     public void setId(long id) {
         this.id = id;
@@ -118,6 +103,7 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Gets the <code>id</code> field value.
      * </p>
+     *
      * @return the <code>id</code> field value
      */
     public long getId() {
@@ -128,7 +114,9 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Sets the <code>projectId</code> field value.
      * </p>
-     * @param projectId the value to set
+     *
+     * @param projectId
+     *            the value to set
      */
     public void setProjectId(long projectId) {
         this.projectId = projectId;
@@ -138,6 +126,7 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Gets the <code>projectId</code> field value.
      * </p>
+     *
      * @return the <code>projectId</code> field value
      */
     public long getProjectId() {
@@ -148,7 +137,9 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Sets the <code>contestTypeId</code> field value.
      * </p>
-     * @param contestTypeId the value to set
+     *
+     * @param contestTypeId
+     *            the value to set
      */
     public void setContestType(long contestTypeId) {
         this.contestTypeId = contestTypeId;
@@ -158,6 +149,7 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Gets the <code>contestTypeId</code> field value.
      * </p>
+     *
      * @return the <code>contestTypeId</code> field value
      */
     public long getContestTypeId() {
@@ -168,7 +160,9 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Sets the <code>contestFee</code> field value.
      * </p>
-     * @param contestFee the value to set
+     *
+     * @param contestFee
+     *            the value to set
      */
     public void setContestFee(double contestFee) {
         this.contestFee = contestFee;
@@ -178,9 +172,29 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
      * <p>
      * Gets the <code>contestFee</code> field value.
      * </p>
+     *
      * @return the <code>contestFee</code> field value
      */
     public double getContestFee() {
         return this.contestFee;
+    }
+
+    /**
+     * Returns the value of studio.
+     *
+     * @return the studio
+     */
+    public boolean isStudio() {
+        return studio;
+    }
+
+    /**
+     * Set the value to studio field.
+     *
+     * @param studio
+     *            the studio to set
+     */
+    public void setStudio(boolean studio) {
+        this.studio = studio;
     }
 }

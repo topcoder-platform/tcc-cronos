@@ -17,6 +17,7 @@ import com.topcoder.search.builder.filter.Filter;
  * <p>
  * Test class: <code>SearchByFilterUtilityImpl</code>.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.1
  */
@@ -26,7 +27,7 @@ public class SearchByFilterUtilityImplTest extends TestCase {
      * An instance of <code>SearchByFilterUtilityImpl</code> which is tested.
      * </p>
      */
-    private SearchByFilterUtilityImpl < Project, Long > target = null;
+    private SearchByFilterUtilityImpl<Project, Long> target = null;
 
     /**
      * <p>
@@ -46,23 +47,26 @@ public class SearchByFilterUtilityImplTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     protected void setUp() throws Exception {
         super.setUp();
         TestHelper.clearConfig();
         TestHelper.addConfig("config1.xml");
 
-        target =
-            new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace,
-                searchBundleName);
+        target = new SearchByFilterUtilityImpl<Project, Long>(
+                searchBundleManagerNamespace, searchBundleName);
     }
 
     /**
      * <p>
      * tearDown() routine.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfig();
@@ -74,40 +78,48 @@ public class SearchByFilterUtilityImplTest extends TestCase {
      * Inheritance test.
      * </p>
      * <p>
-     * Verifies <code>SearchByFilterUtilityImpl</code> implements <code>SearchByFilterUtility</code>
-     * .
+     * Verifies <code>SearchByFilterUtilityImpl</code> implements
+     * <code>SearchByFilterUtility</code>.
      * </p>
      */
     public void testInheritance() {
-        assertTrue("SearchByFilterUtilityImpl does not implements SearchByFilterUtility.",
-            target instanceof SearchByFilterUtility < ?, ? >);
+        assertTrue(
+                "SearchByFilterUtilityImpl does not implements SearchByFilterUtility.",
+                target instanceof SearchByFilterUtility<?, ?>);
     }
 
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. Verifies that searchBundle should be set.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. Verifies that searchBundle should be set.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String() throws Exception {
-        assertNotNull("The 'searchBundle' field should be set and not be null.", TestHelper
-            .getPrivateField(SearchByFilterUtilityImpl.class, target, "searchBundle"));
+        assertNotNull(
+                "The 'searchBundle' field should be set and not be null.",
+                TestHelper.getPrivateField(SearchByFilterUtilityImpl.class,
+                        target, "searchBundle"));
     }
 
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_1() throws Exception {
         try {
-            target = new SearchByFilterUtilityImpl < Project, Long >(null, searchBundleName);
+            target = new SearchByFilterUtilityImpl<Project, Long>(null,
+                    searchBundleName);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -117,15 +129,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_2() throws Exception {
         try {
-            target = new SearchByFilterUtilityImpl < Project, Long >("   ", searchBundleName);
+            target = new SearchByFilterUtilityImpl<Project, Long>("   ",
+                    searchBundleName);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -135,15 +150,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_3() throws Exception {
         try {
-            target = new SearchByFilterUtilityImpl < Project, Long >("\t", searchBundleName);
+            target = new SearchByFilterUtilityImpl<Project, Long>("\t",
+                    searchBundleName);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -153,15 +171,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_4() throws Exception {
         try {
-            target = new SearchByFilterUtilityImpl < Project, Long >("\n", searchBundleName);
+            target = new SearchByFilterUtilityImpl<Project, Long>("\n",
+                    searchBundleName);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -171,16 +192,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_5() throws Exception {
         try {
-            target =
-                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace, null);
+            target = new SearchByFilterUtilityImpl<Project, Long>(
+                    searchBundleManagerNamespace, null);
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -190,16 +213,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_6() throws Exception {
         try {
-            target =
-                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace, "   ");
+            target = new SearchByFilterUtilityImpl<Project, Long>(
+                    searchBundleManagerNamespace, "   ");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -209,16 +234,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_7() throws Exception {
         try {
-            target =
-                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace, "\t");
+            target = new SearchByFilterUtilityImpl<Project, Long>(
+                    searchBundleManagerNamespace, "\t");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -228,16 +255,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. IllegalArgumentException if searchBundleManagerNamespace or searchBundleName
-     * is null or empty string.
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. IllegalArgumentException if
+     * searchBundleManagerNamespace or searchBundleName is null or empty string.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_8() throws Exception {
         try {
-            target =
-                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace, "\n");
+            target = new SearchByFilterUtilityImpl<Project, Long>(
+                    searchBundleManagerNamespace, "\n");
             fail("IllegalArgumentException expected.");
         } catch (IllegalArgumentException e) {
             // ok
@@ -247,17 +276,18 @@ public class SearchByFilterUtilityImplTest extends TestCase {
     /**
      * <p>
      * Tests the
-     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code> for
-     * proper behavior. DAOConfigurationException if this utility can not be configured. (if
-     * SearcBundle could not be initialized).
+     * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
+     * for proper behavior. DAOConfigurationException if this utility can not be
+     * configured. (if SearchBundle could not be initialized).
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testConstructor_String_String_failure_9() throws Exception {
         try {
-            target =
-                new SearchByFilterUtilityImpl < Project, Long >(searchBundleManagerNamespace
-                    + "abc", searchBundleName);
+            target = new SearchByFilterUtilityImpl<Project, Long>(
+                    searchBundleManagerNamespace + "abc", searchBundleName);
             fail("DAOConfigurationException expected.");
         } catch (DAOConfigurationException e) {
             // ok
@@ -266,24 +296,28 @@ public class SearchByFilterUtilityImplTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>search(Filter)</code> for proper behavior. Verifies that result is returned
-     * correctly.
+     * Tests the <code>search(Filter)</code> for proper behavior. Verifies
+     * that result is returned correctly.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testMethodSearch_Filter() throws Exception {
         // do search
         EqualToFilter equalToFilter = new EqualToFilter("projectStatus", 1);
-        List < Project > res = target.search(equalToFilter);
+        List<Project> res = target.search(equalToFilter);
         assertEquals("The number of search result", 0, res.size());
     }
 
     /**
      * <p>
-     * Tests the <code>search(Filter)</code> for proper behavior. IllegalArgumentException if filter
-     * is null.
+     * Tests the <code>search(Filter)</code> for proper behavior.
+     * IllegalArgumentException if filter is null.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testMethodSearch_Filter_failure_1() throws Exception {
         try {
@@ -296,10 +330,12 @@ public class SearchByFilterUtilityImplTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>search(Filter)</code> for proper behavior. DAOException if any error occurs
-     * while performing this operation.
+     * Tests the <code>search(Filter)</code> for proper behavior. DAOException
+     * if any error occurs while performing this operation.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *                 to JUnit
      */
     public void testMethodSearch_Filter_failure_2() throws Exception {
         try {

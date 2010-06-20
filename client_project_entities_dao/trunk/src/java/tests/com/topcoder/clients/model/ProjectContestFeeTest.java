@@ -3,188 +3,160 @@
  */
 package com.topcoder.clients.model;
 
-import junit.framework.TestCase;
+import com.topcoder.clients.dao.ejb3.TestBase;
 
 /**
  * <p>
- * Test class: <code>ProjectContestFee</code>.
+ * Unit test for <code>{@link ProjectContestFee}</code> class.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.2
+ * @since 1.2
  */
-public class ProjectContestFeeTest extends TestCase {
+public class ProjectContestFeeTest extends TestBase {
     /**
      * <p>
      * An instance of <code>ProjectContestFee</code> which is tested.
      * </p>
      */
-    private ProjectContestFee instance = null;
+    private ProjectContestFee target = null;
 
     /**
      * <p>
      * setUp() routine.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     protected void setUp() throws Exception {
-        instance = new ProjectContestFee();
+        target = new ProjectContestFee();
     }
 
     /**
      * <p>
-     * Inheritance test.
+     * Tests the <code>getId()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Verifies <code>ProjectContestFee</code> subclasses <code>AuditableEntity</code>.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testInheritance() {
-        assertTrue("ProjectContestFee does not subclasses AuditableEntity.",
-            instance instanceof ProjectContestFeeAudit);
+    public void testMethodGetId_default() throws Exception {
+        assertEquals("the default value is 0.", 0L, target.getId());
     }
 
     /**
      * <p>
-     * Tests the <code>ProjectContestFee()</code> for proper behavior. Verifies that Verifies that
-     * instance should be created.
+     * Tests the <code>setId(long)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testConstructor() throws Exception {
-        assertNotNull("Instance should be created.", instance);
+    public void testMethodSetId_long() throws Exception {
+        target.setId(10L);
+        assertEquals("the id is not set", 10L, target.getId());
     }
 
     /**
      * <p>
-     * Tests <code>getContestFee()</code> method.
+     * Tests the <code>getProjectId()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * It should return zero, by default.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testGetContestFee_default() {
-        assertEquals("Should be default to zero", 0.0, instance.getContestFee());
+    public void testMethodGetProjectId_default() throws Exception {
+        assertEquals("the default value should be 0", 0L, target.getProjectId());
     }
 
     /**
      * <p>
-     * Tests <code>setContestFee(double)</code> method.
+     * Tests the <code>setProjectId(long)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetContestFee() {
-        double value = 1.1;
-        instance.setContestFee(value);
-
-        assertEquals("Incorrect return value.", value, instance.getContestFee());
+    public void testMethodSetProjectId_long() throws Exception {
+        target.setProjectId(10L);
+        assertEquals("the project id is not set.", 10L, target.getProjectId());
     }
 
     /**
      * <p>
-     * Tests <code>getContestTypeId()</code> method.
+     * Tests the <code>getContestTypeId()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * It should return zero, by default.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testGetContestTypeId_default() {
-        assertEquals("Should be default to zero", 0L, instance.getContestTypeId());
+    public void testMethodGetContestType_default() throws Exception {
+        assertEquals("the default value should be zero.", 0L, target.getContestTypeId());
     }
 
     /**
      * <p>
-     * Tests <code>setContestTypeId(long)</code> method.
+     * Tests the <code>setContestType(long)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetContestType() {
-        long value = 1;
-        instance.setContestType(value);
-
-        assertEquals("Incorrect return value.", value, instance.getContestTypeId());
+    public void testMethodSetContestType_long() throws Exception {
+        target.setContestType(10L);
+        assertEquals("the contest type id is not set", 10L, target.getContestTypeId());
     }
 
     /**
      * <p>
-     * Tests <code>getId()</code> method.
+     * Tests the <code>setStudio(boolean)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * It should return zero, by default.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testGetId_default() {
-        assertEquals("Should be default to zero", 0L, instance.getId());
+    public void testMethodSetStudio_boolean() throws Exception {
+        target.setStudio(true);
+        assertTrue("the value is not set.", target.isStudio());
     }
 
     /**
      * <p>
-     * Tests <code>setId(long)</code> method.
+     * Tests the <code>isStudio()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetId() {
-        long value = 1;
-        instance.setId(value);
-
-        assertEquals("Incorrect return value.", value, instance.getId());
+    public void testMethodIsStudio_default() throws Exception {
+        assertFalse("the default value should be false.", target.isStudio());
     }
 
     /**
      * <p>
-     * Tests <code>getProjectId()</code> method.
+     * Tests the <code>getContestFee()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * It should return zero, by default.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testGetProjectId_default() {
-        assertEquals("Should be default to zero", 0L, instance.getProjectId());
+    public void testMethodGetContestFee_default() throws Exception {
+        assertEquals("the default value should be zero.", 0f, target.getContestFee(), 1e-5);
     }
 
     /**
      * <p>
-     * Tests <code>setProjectId(long)</code> method.
+     * Tests the <code>setContestFee(double)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetProjectId() {
-        long value = 2;
-        instance.setProjectId(value);
-
-        assertEquals("Incorrect return value.", value, instance.getProjectId());
+    public void testMethodSetContestFee_double() throws Exception {
+        target.setContestFee(10.0f);
+        assertEquals("the contest fee is not set", 10.0f, target.getContestFee(), 1e-5);
     }
 
-    /**
-     * <p>
-     * Tests <code>isStudio()</code> method.
-     * </p>
-     * <p>
-     * It should return false, by default.
-     * </p>
-     */
-    public void testIsStudio_default() {
-        assertEquals("Should be default to false", false, instance.isStudio());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setStudio(boolean)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetStudio() {
-        instance.setStudio(true);
-
-        assertEquals("Incorrect return value.", true, instance.isStudio());
-    }
 }

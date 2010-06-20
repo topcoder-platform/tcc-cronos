@@ -8,13 +8,13 @@
 			com.informix.jdbc.IfxDriver
 		</property>
 		<property name="hibernate.connection.url">
-			jdbc:informix-sqli://localhost:9088/mydb:INFORMIXSERVER=ol_ids_1150_1
+			jdbc:informix-sqli://localhost:9088/tc:INFORMIXSERVER=ol_topcoder
 		</property>
 		<property name="hibernate.connection.username">
 			informix
 		</property>
 		<property name="hibernate.connection.password">
-			0000000
+			topcoder
 		</property>
 		<property name="current_session_context_class">thread</property>
 

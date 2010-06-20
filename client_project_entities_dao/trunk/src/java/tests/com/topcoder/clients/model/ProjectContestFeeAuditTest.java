@@ -3,16 +3,19 @@
  */
 package com.topcoder.clients.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import junit.framework.TestCase;
 
 /**
  * <p>
- * Test class: <code>ProjectContestFeeAudit</code>.
+ * Unit test for <code>{@link ProjectContestFeeAudit}</code> class.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.2
+ * @since 1.2
  */
 public class ProjectContestFeeAuditTest extends TestCase {
     /**
@@ -20,352 +23,206 @@ public class ProjectContestFeeAuditTest extends TestCase {
      * An instance of <code>ProjectContestFeeAudit</code> which is tested.
      * </p>
      */
-    private ProjectContestFeeAudit instance = null;
+    private ProjectContestFeeAudit target = null;
 
     /**
      * <p>
      * setUp() routine.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
+    @SuppressWarnings("serial")
     protected void setUp() throws Exception {
-        instance = new ProjectContestFee();
+        target = new ProjectContestFeeAudit() {
+        };
     }
 
     /**
      * <p>
-     * Tests <code>getCreateUsername()</code> method.
+     * Inheritance test.
      * </p>
      * <p>
-     * It should return null, by default.
+     * Verifies <code>ProjectContestFeeAudit</code> implements <code>Serializable</code>.
      * </p>
      */
-    public void testGetCreateUsername_default() {
-        assertNull("Should be default to null", instance.getCreateUsername());
+    public void testInheritance() {
+        assertTrue("ProjectContestFeeAudit does not implements Serializable.", target instanceof Serializable);
     }
 
     /**
      * <p>
-     * Tests <code>setCreateUsername(String)</code> method.
+     * Tests the <code>com.topcoder.clients.model.ProjectContestFeeAudit()</code> for proper behavior. Verifies that the
+     * instance should be created.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetCreateUsername_null() {
-        instance.setCreateUsername(null);
-
-        assertNull("Incorrect return value.", instance.getCreateUsername());
+    public void testConstructor() throws Exception {
+        assertNotNull("Instance should be created.", target);
     }
 
     /**
      * <p>
-     * Tests <code>setCreateUsername(String)</code> method.
+     * Tests the <code>setModifyUsername(String)</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetCreateUsername_empty() {
-        String value = "";
-        instance.setCreateUsername(value);
-
-        assertEquals("Incorrect return value.", value, instance.getCreateUsername());
+    public void testMethodSetModifyUsername_String() throws Exception {
+        target.setModifyUsername("ModifyUsername");
+        assertEquals("getModifyUsername", "ModifyUsername", target.getModifyUsername());
     }
 
     /**
      * <p>
-     * Tests <code>setCreateUsername(String)</code> method.
+     * Tests the <code>getModifyDate()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetCreateUsername_trimmedEmpty() {
-        String value = "  ";
-        instance.setCreateUsername(value);
-
-        assertEquals("Incorrect return value.", value, instance.getCreateUsername());
+    public void testMethodGetModifyDate() throws Exception {
+        Date modifyDate = new Date();
+        target.setModifyDate(modifyDate);
+        assertEquals("getModifyDate", modifyDate, target.getModifyDate());
     }
 
     /**
      * <p>
-     * Tests <code>setCreateUsername(String)</code> method.
+     * Tests the <code>setName(String)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetCreateUsername() {
-        String value = "Unit";
-        instance.setCreateUsername(value);
-
-        assertEquals("Incorrect return value.", value, instance.getCreateUsername());
+    public void testMethodSetName_String() throws Exception {
+        target.setName("name1");
+        assertEquals("getName", "name1", target.getName());
     }
 
     /**
      * <p>
-     * Tests <code>getCreateDate()</code> method.
+     * Tests the <code>getModifyUsername()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * It should return null, by default.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testGetCreateDate_default() {
-        assertNull("Should be default to null", instance.getCreateDate());
+    public void testMethodGetModifyUsername() throws Exception {
+        target.setModifyUsername("name2");
+        assertEquals("getModifyUsername", "name2", target.getModifyUsername());
     }
 
     /**
      * <p>
-     * Tests <code>setCreateDate(Date)</code> method.
+     * Tests the <code>setModifyDate(Date)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetCreateDate_null() {
-        instance.setCreateDate(null);
-
-        assertNull("Incorrect return value.", instance.getCreateDate());
+    public void testMethodSetModifyDate_Date() throws Exception {
+        Date modifyDate = new Date();
+        target.setModifyDate(modifyDate);
+        assertEquals("getModifyDate", modifyDate, target.getModifyDate());
     }
 
     /**
      * <p>
-     * Tests <code>setCreateDate(Date)</code> method.
+     * Tests the <code>setCreateUsername(String)</code> for proper behavior. Verifies that the property should be
+     * correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetCreateDate() {
-        Date value = new Date();
-        instance.setCreateDate(value);
-
-        assertEquals("Incorrect return value.", value, instance.getCreateDate());
+    public void testMethodSetCreateUsername_String() throws Exception {
+        target.setCreateUsername("name3");
+        assertEquals("getCreateUsername", "name3", target.getCreateUsername());
     }
 
     /**
      * <p>
-     * Tests <code>isDeleted()</code> method.
+     * Tests the <code>getName()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * It should return null, by default.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testIsDeleted_default() {
-        assertNull("Should be default to null", instance.isDeleted());
+    public void testMethodGetName() throws Exception {
+        target.setName("name1");
+        assertEquals("getName", "name1", target.getName());
     }
 
     /**
      * <p>
-     * Tests <code>setDeleted()</code> method.
+     * Tests the <code>setDeleted(boolean)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetDeleted_null() {
-        instance.setDeleted(null);
-
-        assertNull("Incorrect return value.", instance.isDeleted());
+    public void testMethodSetDeleted_boolean() throws Exception {
+        target.setDeleted(true);
+        assertTrue(target.isDeleted());
     }
 
     /**
      * <p>
-     * Tests <code>setDeleted()</code> method.
+     * Tests the <code>getCreateUsername()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetDeleted() {
-        Boolean value = true;
-        instance.setDeleted(value);
-
-        assertEquals("Incorrect return value.", value, instance.isDeleted());
+    public void testMethodGetCreateUsername() throws Exception {
+        target.setCreateUsername("name3");
+        assertEquals("getCreateUsername", "name3", target.getCreateUsername());
     }
 
     /**
      * <p>
-     * Tests <code>getModifyDate()</code> method.
+     * Tests the <code>getCreateDate()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * It should return null, by default.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testGetModifyDate_default() {
-        assertNull("Should be default to null", instance.getModifyDate());
+    public void testMethodGetCreateDate() throws Exception {
+        Date createDate = new Date();
+        target.setCreateDate(createDate);
+        assertEquals("getCreateDate", createDate, target.getCreateDate());
     }
 
     /**
      * <p>
-     * Tests <code>setModifyDate(Date)</code> method.
+     * Tests the <code>setCreateDate(Date)</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetModifyDate_null() {
-        instance.setModifyDate(null);
-
-        assertNull("Incorrect return value.", instance.getModifyDate());
+    public void testMethodSetCreateDate_Date() throws Exception {
+        Date createDate = new Date();
+        target.setCreateDate(createDate);
+        assertEquals("getCreateDate", createDate, target.getCreateDate());
     }
 
     /**
      * <p>
-     * Tests <code>setModifyDate(Date)</code> method.
+     * Tests the <code>isDeleted()</code> for proper behavior. Verifies that the property should be correct.
      * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
-    public void testSetModifyDate() {
-        Date value = new Date();
-        instance.setModifyDate(value);
-
-        assertEquals("Incorrect return value.", value, instance.getModifyDate());
+    public void testMethodIsDeleted() throws Exception {
+        target.setDeleted(true);
+        assertTrue(target.isDeleted());
     }
-
-    /**
-     * <p>
-     * Tests <code>getModifyUsername()</code> method.
-     * </p>
-     * <p>
-     * It should return null, by default.
-     * </p>
-     */
-    public void testGetModifyUsername_default() {
-        assertNull("Should be default to null", instance.getModifyUsername());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setModifyUsername(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetModifyUsername_null() {
-        instance.setModifyUsername(null);
-
-        assertNull("Incorrect return value.", instance.getModifyUsername());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setModifyUsername(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetModifyUsername_empty() {
-        String value = "";
-        instance.setModifyUsername(value);
-
-        assertEquals("Incorrect return value.", value, instance.getModifyUsername());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setModifyUsername(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetModifyUsername_trimmedEmpty() {
-        String value = "  ";
-        instance.setModifyUsername(value);
-
-        assertEquals("Incorrect return value.", value, instance.getModifyUsername());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setModifyUsername(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetModifyUsername() {
-        String value = "Unit";
-        instance.setModifyUsername(value);
-
-        assertEquals("Incorrect return value.", value, instance.getModifyUsername());
-    }
-
-    /**
-     * <p>
-     * Tests <code>getName()</code> method.
-     * </p>
-     * <p>
-     * It should return null, by default.
-     * </p>
-     */
-    public void testGetName_default() {
-        assertNull("Should be default to null", instance.getName());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setName(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetName_null() {
-        instance.setName(null);
-
-        assertNull("Incorrect return value.", instance.getName());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setName(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetName_empty() {
-        String value = "";
-        instance.setName(value);
-
-        assertEquals("Incorrect return value.", value, instance.getName());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setName(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetName_trimmedEmpty() {
-        String value = "  ";
-        instance.setName(value);
-
-        assertEquals("Incorrect return value.", value, instance.getName());
-    }
-
-    /**
-     * <p>
-     * Tests <code>setName(String)</code> method.
-     * </p>
-     * <p>
-     * Any value is valid, simply set internally.
-     * </p>
-     */
-    public void testSetName() {
-        String value = "Unit";
-        instance.setName(value);
-
-        assertEquals("Incorrect return value.", value, instance.getName());
-    }
-
 }

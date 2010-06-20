@@ -1,4 +1,4 @@
-CREATE TABLE company (	
+CREATE TABLE company (
 company_id INTEGER NOT NULL,
 name VARCHAR(64),
 passcode VARCHAR(64),
@@ -31,6 +31,7 @@ CREATE TABLE project_status (
   modification_user VARCHAR(64)
 );
 
+
 CREATE TABLE client (
 client_id INTEGER NOT NULL,
 client_status_id INT NOT NULL,
@@ -47,6 +48,7 @@ modification_user VARCHAR(64),
 code_name VARCHAR(64),
 is_deleted SMALLINT
 );
+
 
 CREATE TABLE project (
 project_id serial NOT NULL,
@@ -78,21 +80,6 @@ changed_amount DECIMAL(8,3),
 creation_date DATETIME YEAR TO FRACTION default CURRENT YEAR TO FRACTION,
 creation_user VARCHAR(64)
 );
-
-alter table project_budget_audit add constraint primary key 
-	(project_budget_audit_id)
-	constraint project_budget_audit_pk;
-
--- note add project_id as primary key
-alter table project add constraint primary key 
-	(project_id)
-	constraint project_pk;
-
-
-alter table project_budget_audit add constraint foreign key 
-	(project_id) references project (project_id)
-	constraint project_budget_audit_project_fk;
-
 
 -- client_user_xref
 CREATE TABLE client_user_xref (
@@ -151,6 +138,7 @@ CREATE TABLE project_manager (
 	modification_date DATETIME YEAR TO FRACTION DEFAULT CURRENT YEAR TO FRACTION,
 	modification_user varchar(64)
 );
+
 create table project_contest_fee (
     project_contest_fee_id INT not null,
     project_id INT not null,
@@ -164,6 +152,7 @@ create table project_contest_fee (
     is_deleted SMALLINT,
     name VARCHAR(64)
 );
+
 create table project_worker (
     project_id INT not null,
     user_account_id INT not null,
@@ -177,6 +166,7 @@ create table project_worker (
     modification_date DATETIME YEAR TO SECOND not null,
     modification_user VARCHAR(64) not null
 );
+
 
 CREATE SYNONYM client_company FOR company;
 CREATE SYNONYM client_project FOR project;
@@ -199,10 +189,9 @@ alter table client add constraint primary key
 	(client_id)
 	constraint client_pk;
 
--- note added before
---alter table project add constraint primary key 
---	(project_id)
---	constraint project_pk;
+alter table project add constraint primary key 
+	(project_id)
+	constraint project_pk;
   	
 	
 alter table client_status add constraint primary key 
@@ -293,12 +282,14 @@ alter table project_worker add constraint foreign key
 	(project_id) 
 	constraint r172_579;
 
+alter table project_budget_audit add constraint primary key 
+	(project_budget_audit_id)
+	constraint project_budget_audit_pk;
 
-
+alter table project_budget_audit add constraint foreign key 
+	(project_id) references project (project_id)
+	constraint project_budget_audit_project_fk;
 
 create sequence PROJECT_CONTEST_FEE_SEQ;
-
-
-
 
 grant select on "informix".PROJECT_CONTEST_FEE_SEQ to "public" as "informix";

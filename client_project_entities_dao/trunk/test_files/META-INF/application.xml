@@ -48,6 +48,9 @@
 		<java>configuration_persistence.jar</java>
 	</module>
 	<module>
+		<java>configuration_manager.jar</java>
+	</module>
+	<module>
 		<java>object_factory_config_manager_plugin.jar</java>
 	</module>
 	<module>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -9,6 +9,7 @@ import junit.framework.TestCase;
  * <p>
  * Test class: <code>Company</code>.
  * </p>
+ *
  * @author TCSDEVELOPER
  * @version 1.0
  */
@@ -24,7 +25,9 @@ public class CompanyTest extends TestCase {
      * <p>
      * setUp() routine.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     protected void setUp() throws Exception {
         target = new Company();
@@ -39,16 +42,17 @@ public class CompanyTest extends TestCase {
      * </p>
      */
     public void testInheritance() {
-        assertTrue("Company does not subclasses AuditableEntity.",
-            target instanceof AuditableEntity);
+        assertTrue("Company does not subclasses AuditableEntity.", target instanceof AuditableEntity);
     }
 
     /**
      * <p>
-     * Tests the <code>com.topcoder.clients.model.Company()</code> for proper behavior. Verifies
-     * that instance should be created.
+     * Tests the <code>com.topcoder.clients.model.Company()</code> for proper behavior. Verifies that instance should
+     * be created.
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testConstructor() throws Exception {
         assertNotNull("Instance should be created.", target);
@@ -56,10 +60,11 @@ public class CompanyTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>setPasscode(String)</code> for proper behavior. Verifies that the property
-     * should be correct..
+     * Tests the <code>setPasscode(String)</code> for proper behavior. Verifies that the property should be correct..
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodSetPasscode_String() throws Exception {
         target.setPasscode("passcode1");
@@ -68,10 +73,11 @@ public class CompanyTest extends TestCase {
 
     /**
      * <p>
-     * Tests the <code>getPasscode()</code> for proper behavior. Verifies that the property should
-     * be correct..
+     * Tests the <code>getPasscode()</code> for proper behavior. Verifies that the property should be correct..
      * </p>
-     * @throws Exception to JUnit
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void testMethodGetPasscode() throws Exception {
         target.setPasscode("passcode2");
