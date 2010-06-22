@@ -13,8 +13,9 @@ import junit.framework.TestSuite;
  * This test case aggregates all Accuracy test cases.
  * </p>
  *
- * @author PE
- * @version 1.0
+ * @author PE, onsky
+ * @version 1.1
+ * @since 1.0
  */
 public class AccuracyTests extends TestCase {
     /**
@@ -30,6 +31,7 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(SecurityManagerAuthResponseParserAccuracyTest.class);
         suite.addTestSuite(SecurityManagerAuthenticatorAccuracyTest.class);
         suite.addTestSuite(LoginActionsAccuracyTest.class);
+        suite.addTestSuite(AuthCookieManagerImplAccuracyTests.class);
 
         return suite;
     }

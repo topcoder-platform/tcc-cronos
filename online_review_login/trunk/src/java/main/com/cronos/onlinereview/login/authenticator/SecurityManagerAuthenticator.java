@@ -1,16 +1,14 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
+
+
 package com.cronos.onlinereview.login.authenticator;
-
-import java.rmi.RemoteException;
-
-import javax.ejb.CreateException;
-import javax.naming.Context;
-import javax.naming.NamingException;
 
 import com.cronos.onlinereview.login.ConfigurationException;
 import com.cronos.onlinereview.login.Util;
+
 import com.topcoder.naming.jndiutility.JNDIUtils;
 import com.topcoder.security.GeneralSecurityException;
 import com.topcoder.security.TCSubject;
@@ -25,17 +23,23 @@ import com.topcoder.security.login.LoginRemote;
 import com.topcoder.security.login.LoginRemoteHome;
 import com.topcoder.util.config.ConfigManagerException;
 
+import java.rmi.RemoteException;
+
+import javax.ejb.CreateException;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+
 /**
  * This class is used to authenticate user.
  * <p>
- * It utilizes TCS Security Manager Component to do the real authentication. So the
- * authentication work is only a delegation to the <code>LoginBean</code> in Security
- * Manager Component. The login bean will be retrieved by the bean name via TCS JNDI
- * Context Component.
+ * It utilizes TCS Security Manager Component to do the real authentication. So the authentication work is only a
+ * delegation to the <code>LoginBean</code> in Security Manager Component. The login bean will be retrieved by the bean
+ * name via TCS JNDI Context Component.
  * </p>
  * <p>
- * This class derives from <code>AbstractAuthenticator</code>. So it can be plugged
- * into TCS Authentication Factory Component.
+ * This class derives from <code>AbstractAuthenticator</code>. So it can be plugged into TCS Authentication Factory
+ * Component.
  * </p>
  * <p>
  * This class is thread safe since it does not contain any mutable inner state.
@@ -47,8 +51,8 @@ import com.topcoder.util.config.ConfigManagerException;
 public class SecurityManagerAuthenticator extends AbstractAuthenticator {
 
     /**
-     * The remote home instance for the <code>LoginBean</code>. It's used to create the
-     * remote LoginBean to authenticate the user in the authenticate method.
+     * The remote home instance for the <code>LoginBean</code>. It's used to create the remote LoginBean to authenticate
+     * the user in the authenticate method.
      * <p>
      * This variable is set in the constructor, non-null.
      * </p>
@@ -58,11 +62,10 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
     /**
      * Create the instance from given namespace.
      * <p>
-     * It will use <em>context_name</em> property to get <code>Context</code> from
-     * JNDIUtils. If <em>context_name</em> is not configured, default context from
-     * JNDIUtils will be used. And login remote home will be retrieved from the context
-     * via <em>login_bean_name</em> property. For more details about configuration.
-     * please see the Component Specification.
+     * It will use <em>context_name</em> property to get <code>Context</code> from JNDIUtils. If <em>context_name</em>
+     * is not configured, default context from JNDIUtils will be used. And login remote home will be retrieved from the
+     * context via <em>login_bean_name</em> property. For more details about configuration. please see the Component
+     * Specification.
      * </p>
      *
      * @param namespace
@@ -74,17 +77,18 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
      * @throws com.topcoder.security.authenticationfactory.ConfigurationException
      *             if the super constructor fails.
      */
-    public SecurityManagerAuthenticator(String namespace) throws ConfigurationException,
-            com.topcoder.security.authenticationfactory.ConfigurationException {
+    public SecurityManagerAuthenticator(String namespace)
+            throws ConfigurationException, com.topcoder.security.authenticationfactory.ConfigurationException {
 
         super(Util.validateNotNullOrEmpty(namespace, "namespace"));
 
         // retrieve the context from the JDNIUtils
         Context context = null;
+
         try {
-            String contextName = Util
-                    .getOptionalPropertyString(namespace, "context_name");
-            if (contextName != null && contextName.trim().length() != 0) {
+            String contextName = Util.getOptionalPropertyString(namespace, "context_name");
+
+            if ((contextName != null) && (contextName.trim().length() != 0)) {
                 context = JNDIUtils.getContext(contextName);
             } else {
                 context = JNDIUtils.getDefaultContext();
@@ -97,13 +101,13 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
 
         // retrieve the login remote home from the context
         try {
-            String loninBeanName = Util.getRequiredPropertyString(namespace,
-                    "login_bean_name");
+            String loninBeanName = Util.getRequiredPropertyString(namespace, "login_bean_name");
             Object namedObject = context.lookup(loninBeanName);
+
             if (!LoginRemoteHome.class.isInstance(namedObject)) {
-                throw new ConfigurationException("The named object is not instanceof "
-                        + LoginRemoteHome.class);
+                throw new ConfigurationException("The named object is not instanceof " + LoginRemoteHome.class);
             }
+
             this.loginRemoteHome = (LoginRemoteHome) namedObject;
 
         } catch (NamingException e) {
@@ -115,22 +119,18 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
     /**
      * Authenticate the principal.
      * <p>
-     * It utilizes TCS Security Manager Component to do the real authentication. So the
-     * authentication work is only a delegation to the <code>LoginBean</code> in
-     * Security Manager Component.
+     * It utilizes TCS Security Manager Component to do the real authentication. So the authentication work is only a
+     * delegation to the <code>LoginBean</code> in Security Manager Component.
      * </p>
      * <p>
-     * The <em>userName</em> and <em>password</em> value contained in the given
-     * principal will be used to authenticate the user. If authentication successes, a
-     * successful <code>Response</code> containing a <code>TCSubject</code> for the
-     * user will be returned. Otherwise, a failed <code>Response</code> will be
-     * returned.
+     * The <em>userName</em> and <em>password</em> value contained in the given principal will be used to authenticate
+     * the user. If authentication successes, a successful <code>Response</code> containing a <code>TCSubject</code> for
+     * the user will be returned. Otherwise, a failed <code>Response</code> will be returned.
      * </p>
      *
      * @param principal
      *            the principal to authenticate (expected to be non-null)
      * @return the authentication response
-     *
      * @throws MissingPrincipalKeyException
      *             if userName or password is missing
      * @throws InvalidPrincipalException
@@ -140,6 +140,7 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
      */
     protected Response doAuthenticate(Principal principal) throws AuthenticateException {
         try {
+
             // retrieve user name and password from principal
             String userName = getPrincipalValue(principal, Util.USERNAME);
             String password = getPrincipalValue(principal, Util.PASSWORD);
@@ -147,6 +148,7 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
             // try to log in with user name and password.
             LoginRemote loginRemote = (LoginRemote) loginRemoteHome.create();
             TCSubject tcSubject = loginRemote.login(userName, password);
+
             return new Response(true, "Succeeded", tcSubject);
         } catch (AuthenticationException e) {
             return new Response(false, "Failed");
@@ -167,7 +169,6 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
      * @param key
      *            the key associated with the required value
      * @return the String value
-     *
      * @throws MissingPrincipalKeyException
      *             if there is no value associated with the key
      * @throws InvalidPrincipalException
@@ -179,6 +180,7 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
         if (value == null) {
             throw new MissingPrincipalKeyException(key);
         }
+
         if (!(value instanceof String) || ((String) value).trim().length() == 0) {
             throw new InvalidPrincipalException(key + " should be non-empty String.");
         }

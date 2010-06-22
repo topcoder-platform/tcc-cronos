@@ -23,7 +23,6 @@ commons-logging.jar
 commons-validator.jar
 jakarta-oro.jar
 struts.jar
-jbossall-client.jar
 
 -- TCS components
 authentication_factory.jar
@@ -33,5 +32,9 @@ JNDI_Utility.jar
 logging_wrapper.jar
 security_manager.jar
 typesafe_enum.jar
-tcsUtil.jar        --NOTE: This component isn't downloadable. It is extracted from security_manager.ear.
+tcsUtil.jar 
+configuration_api.jar
+simple_cache.jar
+
+       --NOTE: This component isn't downloadable. It is extracted from security_manager.ear.
                            You can also find it in test_files/ directory.

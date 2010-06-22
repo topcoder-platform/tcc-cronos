@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.login.failuretests;
 
@@ -15,40 +15,41 @@ import servletunit.struts.MockStrutsTestCase;
 /**
  * The failure tests for the LoginActions class.
  *
- * @author slion
- * @version 1.0
+ * @author slion, akinwale
+ * @version 1.1
+ * @since 1.0
  */
 public class LoginActionsFailureTests extends MockStrutsTestCase {
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
     private static final String INVALID_CONFIG1 = "test_files/failure/LoginActions_InvalidAuthenticatorName.xml";
-    
+
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
     private static final String INVALID_CONFIG2 = "test_files/failure/LoginActions_InvalidParser.xml";
-    
+
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
     private static final String INVALID_CONFIG3 = "test_files/failure/LoginActions_InvalidParserNamespace.xml";
-    
+
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
     private static final String INVALID_CONFIG4 = "test_files/failure/LoginActions_NoAuthenticatorProperty.xml";
-    
+
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
     private static final String INVALID_CONFIG5 = "test_files/failure/LoginActions_NoParserClassProperty.xml";
-    
+
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
     private static final String INVALID_CONFIG6 = "test_files/failure/LoginActions_NoParserNamespaceProperty.xml";
-    
+
     /**
      * Represents the invalid configuration for constructing LoginActions.
      */
@@ -86,7 +87,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
     public LoginActionsFailureTests(String testName) {
         super(testName);
     }
-    
+
     /**
      * If you override setUp(), you must explicitly call super.setUp()
      *
@@ -96,7 +97,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
         super.setUp();
         CMHelper.clearCM();
     }
-    
+
     /**
      * If you override tearDown(), you must explicitly call super.tearDown()
      *
@@ -106,7 +107,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
         CMHelper.clearCM();
         super.tearDown();
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -121,7 +122,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -136,7 +137,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -151,7 +152,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -166,7 +167,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -181,7 +182,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -196,7 +197,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -211,7 +212,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -226,7 +227,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -241,7 +242,7 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
             // pass
         }
     }
-    
+
     /**
      * Test constructor when the invalid configuration.
      * ConfigurationException is expected.
@@ -296,7 +297,85 @@ public class LoginActionsFailureTests extends MockStrutsTestCase {
         actionPerform();
         verifyForward("failure");
 
-		// When authenticate failed, no error messages recieved here.
-		// Please refer to the forum.
+        // When authenticate failed, no error messages recieved here.
+        // Please refer to the forum.
+    }
+
+    /**
+     * <p>
+     * Tests that the LoginActions() constructor handles a case where the
+     * "auth_cookie_manager.class" configuration value is missing by throwing
+     * {@link ConfigurationException}.
+     * </p>
+     *
+     * <p>
+     * {@link ConfigurationException} is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             exception to pass to JUnit
+     *
+     * @since 1.1
+     */
+    public void testCtor_Failure_MissingAuthCookieManagerClass() throws Exception {
+        CMHelper.loadConfig("test_files/failure/LoginActions.MissingAuthCookieManagerClass.xml");
+        try {
+            new LoginActions();
+            fail("ConfigurationException was expected");
+        } catch (ConfigurationException e) {
+            // success
+        }
+    }
+
+    /**
+     * <p>
+     * Tests that the LoginActions() constructor handles a case where the
+     * "auth_cookie_manager.class" configuration value is an empty string by throwing
+     * {@link ConfigurationException}.
+     * </p>
+     *
+     * <p>
+     * {@link ConfigurationException} is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             exception to pass to JUnit
+     *
+     * @since 1.1
+     */
+    public void testCtor_Failure_EmptyStringAuthCookieManagerClass() throws Exception {
+        CMHelper.loadConfig("test_files/failure/LoginActions.EmptyStringAuthCookieManagerClass.xml");
+        try {
+            new LoginActions();
+            fail("ConfigurationException was expected");
+        } catch (ConfigurationException e) {
+            // success
+        }
+    }
+
+    /**
+     * <p>
+     * Tests that the LoginActions() constructor handles a case where the
+     * "auth_cookie_manager.class" configuration value is an invalid class by throwing
+     * {@link ConfigurationException}.
+     * </p>
+     *
+     * <p>
+     * {@link ConfigurationException} is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             exception to pass to JUnit
+     *
+     * @since 1.1
+     */
+    public void testCtor_Failure_InvalidAuthCookieManagerClass() throws Exception {
+        CMHelper.loadConfig("test_files/failure/LoginActions.InvalidAuthCookieManagerClass.xml");
+        try {
+            new LoginActions();
+            fail("ConfigurationException was expected");
+        } catch (ConfigurationException e) {
+            // success
+        }
     }
 }

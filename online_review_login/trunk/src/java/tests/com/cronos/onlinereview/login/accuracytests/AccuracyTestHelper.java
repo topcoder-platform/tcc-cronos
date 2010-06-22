@@ -103,6 +103,37 @@ public final class AccuracyTestHelper {
     }
 
     /**
+     * <p>
+     * Sets the value of a private field in the given class.
+     * </p>
+     *
+     * @param type the type of the class.
+     * @param instance the instance which the private field belongs to.
+     * @param name the name of the private field to be retrieved.
+     * @param value the value to be set
+     */
+    public static void setPrivateField(Class type, Object instance, String name, Object value) {
+        Field field = null;
+        Object obj = null;
+
+        try {
+            // Get the reflection of the field and get the value
+            field = type.getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(instance, value);
+        } catch (NoSuchFieldException e) {
+            // ignore
+        } catch (IllegalAccessException e) {
+            // ignore
+        } finally {
+            if (field != null) {
+                // Reset the accessibility
+                field.setAccessible(false);
+            }
+        }
+    }
+
+    /**
      * Create a user with given name and password. If the user does already exist, the password will be updated.
      *
      * @param name the name of the user

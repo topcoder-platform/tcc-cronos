@@ -1,27 +1,26 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.login.accuracytests;
+
+import java.util.HashSet;
+
+import servletunit.struts.MockStrutsTestCase;
 
 import com.cronos.onlinereview.login.LoginActions;
 import com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser;
 import com.cronos.onlinereview.login.authenticator.SecurityManagerAuthenticator;
-
 import com.topcoder.security.TCSubject;
 import com.topcoder.security.UserPrincipal;
-
 import com.topcoder.util.log.basic.BasicLog;
-
-import servletunit.struts.MockStrutsTestCase;
-
-import java.util.HashSet;
 
 
 /**
  * Accuracy tests for class <code>LoginActions</code>.
  *
- * @author PE
- * @version 1.0
+ * @author PE, onsky
+ * @version 1.1
+ * @since 1.0
  */
 public class LoginActionsAccuracyTest extends MockStrutsTestCase {
     /**

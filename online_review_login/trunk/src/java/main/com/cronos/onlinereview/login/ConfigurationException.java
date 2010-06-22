@@ -1,18 +1,19 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
+
+
 package com.cronos.onlinereview.login;
 
 import com.topcoder.util.errorhandling.BaseException;
 
 /**
- * This exception is thrown by the constructors of the classes in TCS Online Review Login
- * Component which failed to load the configuration values from the configuration file, or
- * the configuration values are invalid.
+ * This exception is thrown by the constructors of the classes in TCS Online Review Login Component which failed to load
+ * the configuration values from the configuration file, or the configuration values are invalid.
  * <p>
  * Currently, it can be thrown from the constructors of <code>LoginActions</code>,
- * <code>SecurityManagerAuthenticator</code>, and
- * <code>SecurityManagerAuthResponseParser</code>.
+ * <code>SecurityManagerAuthenticator</code>, and <code>SecurityManagerAuthResponseParser</code>.
  * </p>
  *
  * @author woodjohn, maone

@@ -1,0 +1,24 @@
+<project name="Dependency Import" basedir=".">
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <property name="jbossall.jar" value="${ext_libdir}/jboss/jbossall-client.jar"/>
+    <property name="commons-collections.jar" value="${ext_libdir}/commons-collections/3.2.1/commons-collections.jar"/>
+    <property name="javaee.jar" value="${ext_libdir}/javaee/javaee.jar"/>
+    
+    <path id="component.3rdParty-dependencies">
+        <fileset dir="test_reflib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="${javaee.jar}"/>
+    </path>
+    
+    <path id="component.tcs-dependencies"/>
+    
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit4.jar}"/>
+        <pathelement location="${jbossall.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+    </path>
+</project>

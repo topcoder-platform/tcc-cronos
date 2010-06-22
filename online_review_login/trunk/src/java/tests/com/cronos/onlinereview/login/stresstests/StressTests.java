@@ -29,6 +29,7 @@ public class StressTests extends TestCase {
         suite.addTestSuite(StressTestLoginActionsLogin.class);
 
         suite.addTestSuite(StressTestLoginActionsLogout.class);
+        suite.addTestSuite(AuthCookieManagerStressTest.class);
         return suite;
     }
 }

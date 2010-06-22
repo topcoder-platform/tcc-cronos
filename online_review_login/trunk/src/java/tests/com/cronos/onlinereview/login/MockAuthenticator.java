@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
-package com.cronos.onlinereview.login;
 
-import java.util.HashMap;
-import java.util.Map;
+
+
+package com.cronos.onlinereview.login;
 
 import com.topcoder.security.TCSubject;
 import com.topcoder.security.authenticationfactory.AbstractAuthenticator;
@@ -15,13 +15,14 @@ import com.topcoder.security.authenticationfactory.MissingPrincipalKeyException;
 import com.topcoder.security.authenticationfactory.Principal;
 import com.topcoder.security.authenticationfactory.Response;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A mock implementation of <code>AbstractAuthenticator</code>.
- *
  * <p>
  * It is implemented for testing purpose. It can throw different exceptions according to the given user name.
  * </p>
- *
  * <p>
  * In this class, the user/password is prestored in Map userStore. When the login user/password is coming, it will first
  * look up the password in the userStore map. If the password gotten from userStore equals to the password from login,
@@ -57,15 +58,12 @@ public class MockAuthenticator extends AbstractAuthenticator {
 
     /**
      * The actual authenticate method.
-     *
      * <p>
      * Authentication can be successful if the userName is myname and password is mypw.
      * </p>
-     *
      * <p>
      * When the login user/password is coming, it will first look up the password in the userStore map.
      * </p>
-     *
      * <p>
      * If the password gotten from userStore equals to the password from login, return success response, otherwise
      * return false response.
@@ -73,10 +71,9 @@ public class MockAuthenticator extends AbstractAuthenticator {
      *
      * @param principal
      *            the principal instance
-     *
      * @return response
-     *
-     * @throws AuthenticateException if userName contains character <code>@</code>
+     * @throws AuthenticateException
+     *             if userName contains character <code>@</code>
      * @throws InvalidPrincipalException
      *             if userName contains character <code>$</code>.
      * @throws MissingPrincipalKeyException

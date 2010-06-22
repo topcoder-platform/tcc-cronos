@@ -1,32 +1,38 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 - 2010 TopCoder Inc., All Rights Reserved.
  */
+
+
+
 package com.cronos.onlinereview.login;
 
-import java.io.File;
-
 import com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser;
+
 import com.topcoder.security.UserPrincipal;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.log.basic.BasicLog;
 
 import servletunit.struts.MockStrutsTestCase;
 
+import java.io.File;
+
 /**
  * Unit tests for <code>LoginActions</code>.
  *
- * @author maone
- * @version 1.0
+ * @author maone, TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
 public class LoginActionsTest extends MockStrutsTestCase {
+
     /**
      * Represents the default namespace used by <code>LoginActions</code>.
      */
     private static final String NAMESPACE = LoginActions.class.getName();
 
     /**
-     * Represents a <code>Principal</code> instance created during tests.
-     * It should be removed in <code>tearDown()</code> if it is not null.
+     * Represents a <code>Principal</code> instance created during tests. It should be removed in
+     * <code>tearDown()</code> if it is not null.
      */
     private UserPrincipal principal = null;
 
@@ -36,7 +42,8 @@ public class LoginActionsTest extends MockStrutsTestCase {
      * Load all the configurations.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -47,7 +54,8 @@ public class LoginActionsTest extends MockStrutsTestCase {
     /**
      * Tear down. Clear the configurations.
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void tearDown() throws Exception {
         if (principal != null) {
@@ -62,16 +70,17 @@ public class LoginActionsTest extends MockStrutsTestCase {
     /**
      * Test constructor to validate all the fields are initialized properly.
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_Valid() throws Exception {
         LoginActions actions = new LoginActions();
+
         assertTrue("Failed to initialize authenticator.",
-                TestUtil.getFieldValue(actions, "authenticator") instanceof MockAuthenticator);
+                   TestUtil.getFieldValue(actions, "authenticator") instanceof MockAuthenticator);
         assertTrue("Failed to initialize authResponseParser",
-                TestUtil.getFieldValue(actions, "authResponseParser") instanceof SecurityManagerAuthResponseParser);
-        assertTrue("Failed to initialize logger.",
-                TestUtil.getFieldValue(actions, "logger") instanceof BasicLog);
+                   TestUtil.getFieldValue(actions, "authResponseParser") instanceof SecurityManagerAuthResponseParser);
+        assertTrue("Failed to initialize logger.", TestUtil.getFieldValue(actions, "logger") instanceof BasicLog);
 
     }
 
@@ -80,10 +89,13 @@ public class LoginActionsTest extends MockStrutsTestCase {
      * <p>
      * It should throw ConfigurationException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_NoParser() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
+
         cm.removeNamespace(NAMESPACE);
         cm.add(new File(TestUtil.TEST_DIR + "LoginActions_no_parser.xml").getAbsolutePath());
 
@@ -91,6 +103,32 @@ public class LoginActionsTest extends MockStrutsTestCase {
             new LoginActions();
             fail("Should throw ConfigurationException for missing parser.");
         } catch (ConfigurationException e) {
+
+            // pass
+        }
+    }
+
+    /**
+     * Test constructor when the namespace doesn't contain AuthCookieManager configuration.
+     * <p>
+     * It should throw ConfigurationException.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     * @since 1.1
+     */
+    public void testConstructor_NoAuthCookieManager() throws Exception {
+        ConfigManager cm = ConfigManager.getInstance();
+
+        cm.removeNamespace(NAMESPACE);
+        cm.add(new File(TestUtil.TEST_DIR + "LoginActions_no_AuthCookieManager.xml").getAbsolutePath());
+
+        try {
+            new LoginActions();
+            fail("Should throw ConfigurationException for missing parser.");
+        } catch (ConfigurationException e) {
+
             // pass
         }
     }
@@ -100,10 +138,13 @@ public class LoginActionsTest extends MockStrutsTestCase {
      * <p>
      * It should throw ConfigurationException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_InvalidAuthenticator() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
+
         cm.removeNamespace(NAMESPACE);
         cm.add(new File(TestUtil.TEST_DIR + "LoginActions_invalid_authenticator.xml").getAbsolutePath());
 
@@ -111,6 +152,7 @@ public class LoginActionsTest extends MockStrutsTestCase {
             new LoginActions();
             fail("Should throw ConfigurationException for invalid authenticator.");
         } catch (ConfigurationException e) {
+
             // pass
         }
     }
@@ -120,16 +162,20 @@ public class LoginActionsTest extends MockStrutsTestCase {
      * <p>
      * It should throw ConfigurationException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_MissNamespace() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
+
         cm.removeNamespace(NAMESPACE);
 
         try {
             new LoginActions();
             fail("Should throw ConfigurationException for missing namespace.");
         } catch (ConfigurationException e) {
+
             // pass
         }
     }
@@ -140,7 +186,8 @@ public class LoginActionsTest extends MockStrutsTestCase {
      * It should forward to success, and the user id will be put into session.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testLogin_Success() throws Exception {
         principal = TestUtil.createUser("myname", "mypw");
@@ -153,8 +200,7 @@ public class LoginActionsTest extends MockStrutsTestCase {
         actionPerform();
 
         verifyForward("success");
-        assertTrue("The userId should be put into sesseion.",
-                getSession().getAttribute("topcoder") instanceof Long);
+        assertTrue("The userId should be put into sesseion.", getSession().getAttribute("topcoder") instanceof Long);
         verifyNoActionMessages();
     }
 
@@ -164,7 +210,8 @@ public class LoginActionsTest extends MockStrutsTestCase {
      * It should forward to failure, but no action messages should be generated.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testLogin_Failure() throws Exception {
         principal = TestUtil.createUser("myname", "mypw");
@@ -175,8 +222,7 @@ public class LoginActionsTest extends MockStrutsTestCase {
         setRequestPathInfo("/login");
         actionPerform();
         verifyForward("failure");
-        assertNull("No userId should be put into sesseion.",
-                getSession().getAttribute("topcoder"));
+        assertNull("No userId should be put into sesseion.", getSession().getAttribute("topcoder"));
         verifyNoActionMessages();
     }
 
@@ -193,9 +239,8 @@ public class LoginActionsTest extends MockStrutsTestCase {
         setRequestPathInfo("/login");
         actionPerform();
 
-        verifyActionErrors(new String[]{
-            "exception.com.cronos.onlinereview.login.LoginActions.login.AuthenticateException"
-        });
+        verifyActionErrors(new String[] {
+            "exception.com.cronos.onlinereview.login.LoginActions.login.AuthenticateException" });
     }
 
     /**
@@ -211,9 +256,8 @@ public class LoginActionsTest extends MockStrutsTestCase {
         setRequestPathInfo("/login");
         actionPerform();
 
-        verifyActionErrors(new String[]{
-            "exception.com.cronos.onlinereview.login.LoginActions.login.MissingPrincipalKeyException"
-        });
+        verifyActionErrors(new String[] {
+            "exception.com.cronos.onlinereview.login.LoginActions.login.MissingPrincipalKeyException" });
     }
 
     /**
@@ -229,9 +273,8 @@ public class LoginActionsTest extends MockStrutsTestCase {
         setRequestPathInfo("/login");
         actionPerform();
 
-        verifyActionErrors(new String[]{
-            "exception.com.cronos.onlinereview.login.LoginActions.login.InvalidPrincipalException"
-        });
+        verifyActionErrors(new String[] {
+            "exception.com.cronos.onlinereview.login.LoginActions.login.InvalidPrincipalException" });
     }
 
     /**
@@ -248,5 +291,4 @@ public class LoginActionsTest extends MockStrutsTestCase {
         verifyForward("logout");
         verifyNoActionMessages();
     }
-
 }

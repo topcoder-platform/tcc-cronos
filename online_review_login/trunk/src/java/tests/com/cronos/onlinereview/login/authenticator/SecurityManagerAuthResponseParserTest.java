@@ -1,18 +1,22 @@
 /*
  * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
+
+
 package com.cronos.onlinereview.login.authenticator;
-
-import javax.servlet.http.HttpSession;
-
-import servletunit.struts.MockStrutsTestCase;
 
 import com.cronos.onlinereview.login.AuthResponseParsingException;
 import com.cronos.onlinereview.login.ConfigurationException;
 import com.cronos.onlinereview.login.TestUtil;
+
 import com.topcoder.security.TCSubject;
 import com.topcoder.security.authenticationfactory.Principal;
 import com.topcoder.security.authenticationfactory.Response;
+
+import servletunit.struts.MockStrutsTestCase;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Unit tests for <code>SecurityManagerAuthResponseParser</code>.
@@ -21,6 +25,11 @@ import com.topcoder.security.authenticationfactory.Response;
  * @version 1.0
  */
 public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
+
+    /**
+     * Represents a <code>Response</code> instance to help test.
+     */
+    private Response authResponse = null;
 
     /**
      * A <code>SecurityManagerAuthResponseParser</code> instance to test against.
@@ -33,36 +42,35 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
     private Principal principal = null;
 
     /**
-     * Represents a <code>Response</code> instance to help test.
-     */
-    private Response authResponse = null;
-
-    /**
      * Set up.
      * <p>
      * It will create all the helping objects to test, and load the configurations.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void setUp() throws Exception {
         super.setUp();
 
         // create helping objects.
         principal = new Principal("id");
+
         TCSubject subject = new TCSubject(12345);
+
         authResponse = new Response(true, "message", subject);
 
         // load config and create parser
         TestUtil.loadAllConfigurations();
         parser = new SecurityManagerAuthResponseParser(
-                "com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser");
+            "com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser");
     }
 
     /**
      * Tear down. Clear all the configurations.
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     protected void tearDown() throws Exception {
         TestUtil.clearAllConfigurations();
@@ -76,11 +84,12 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * The value should be set with the value in config file.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_Valid() throws Exception {
-        assertEquals("Failed to set userIdentifierKey.",
-                "topcoder", TestUtil.getFieldValue(parser, "userIdentifierKey"));
+        assertEquals("Failed to set userIdentifierKey.", "topcoder",
+                     TestUtil.getFieldValue(parser, "userIdentifierKey"));
     }
 
     /**
@@ -88,13 +97,16 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * It should throw IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_NullNamespace() throws Exception {
         try {
             new SecurityManagerAuthResponseParser(null);
             fail("Should throw IllegalArgumentException for null namespace.");
         } catch (IllegalArgumentException e) {
+
             // pass
         }
     }
@@ -104,13 +116,16 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * It should throw IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_EmptyNamespace() throws Exception {
         try {
             new SecurityManagerAuthResponseParser("  ");
             fail("Should throw IllegalArgumentException for empty namespace.");
         } catch (IllegalArgumentException e) {
+
             // pass
         }
     }
@@ -120,13 +135,16 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * It should throw ConfigurationException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_UnexistNamespace() throws Exception {
         try {
             new SecurityManagerAuthResponseParser("namespace.does.not.exist");
             fail("Should throw ConfigurationException for un-exist namespace.");
         } catch (ConfigurationException e) {
+
             // pass
         }
     }
@@ -136,14 +154,17 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * It should throw ConfigurationException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testConstructor_NoUserIndentifyKey() throws Exception {
         try {
             new SecurityManagerAuthResponseParser(
-                    "com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser.invalid");
+                "com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser.invalid");
             fail("Should throw ConfigurationException for un-exist namespace.");
         } catch (ConfigurationException e) {
+
             // pass
         }
     }
@@ -154,24 +175,24 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * The method will return directly.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_UnsuccessfulResponse() throws Exception {
         authResponse = new Response(false);
 
         parser.setLoginState(principal, authResponse, request, response);
-        assertEquals("No session attribute should be set.",
-                null, request.getSession(true).getAttribute("topcoder"));
+        assertEquals("No session attribute should be set.", null, request.getSession(true).getAttribute("topcoder"));
     }
 
     /**
-     * Test <code>setLoginState</code> when the given <code>authResponse</code> contains
-     * non-TCSubject details.
+     * Test <code>setLoginState</code> when the given <code>authResponse</code> contains non-TCSubject details.
      * <p>
      * The method will throw AuthResponseParsingException.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_InvalidDetails() throws Exception {
         authResponse = new Response(true, "message", "details");
@@ -180,6 +201,7 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
             parser.setLoginState(principal, authResponse, request, response);
             fail("Should throw AuthResponseParsingException for invalid details.");
         } catch (AuthResponseParsingException e) {
+
             // pass
         }
     }
@@ -190,12 +212,13 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * An attribute will be added to the reuqest session.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_ValidateAttribute() throws Exception {
         parser.setLoginState(principal, authResponse, request, response);
-        assertEquals("The userid should be add to the session attribute.",
-                new Long(12345), request.getSession().getAttribute("topcoder"));
+        assertEquals("The userid should be add to the session attribute.", new Long(12345),
+                     request.getSession().getAttribute("topcoder"));
     }
 
     /**
@@ -204,17 +227,23 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * The old session will be invalidated.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_ValidateSession() throws Exception {
         HttpSession oldSession = request.getSession();
+
         parser.setLoginState(principal, authResponse, request, response);
+
         HttpSession newSession = request.getSession(false);
+
         assertNotSame("New session should be created.", newSession, oldSession);
+
         try {
             oldSession.getAttribute("dummy");
             fail("Old session should be invalidated.");
         } catch (IllegalStateException e) {
+
             // pass
         }
     }
@@ -225,12 +254,13 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * The null param will be ignored.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_NullPrincipal() throws Exception {
         parser.setLoginState(null, authResponse, request, response);
-        assertEquals("Null principal should be ignored.",
-                new Long(12345), request.getSession().getAttribute("topcoder"));
+        assertEquals("Null principal should be ignored.", new Long(12345),
+                     request.getSession().getAttribute("topcoder"));
     }
 
     /**
@@ -239,13 +269,15 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * This method will throw IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_NullAuthResponse() throws Exception {
         try {
             parser.setLoginState(principal, null, request, response);
             fail("Should throw IllegalArgumentException for null authResponse.");
         } catch (IllegalArgumentException e) {
+
             // pass
         }
     }
@@ -256,13 +288,15 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * This method will throw IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_NullRequest() throws Exception {
         try {
             parser.setLoginState(principal, authResponse, null, response);
             fail("Should throw IllegalArgumentException for null request.");
         } catch (IllegalArgumentException e) {
+
             // pass
         }
     }
@@ -273,13 +307,15 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * This method will throw IllegalArgumentException.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testSetLoginState_NullResponse() throws Exception {
         try {
             parser.setLoginState(principal, authResponse, request, null);
             fail("Should throw IllegalArgumentException for null response.");
         } catch (IllegalArgumentException e) {
+
             // pass
         }
     }
@@ -289,7 +325,9 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * Nothing will happen in this case.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testUnsetLoginState_NoSession() throws Exception {
         parser.unsetLoginState(request, response);
@@ -301,15 +339,20 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * The session will be invalidated.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testUnsetLoginState_WithSession() throws Exception {
         HttpSession oldSession = request.getSession();
+
         parser.unsetLoginState(request, response);
+
         try {
             oldSession.getAttribute("dummy");
             fail("Session will be invalidated.");
         } catch (IllegalStateException e) {
+
             // pass
         }
     }
@@ -319,13 +362,16 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * It should throw IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testUnsetLoginState_NullRequest() throws Exception {
         try {
             parser.unsetLoginState(null, response);
             fail("Should throw IllegalArgumentException for null request.");
         } catch (IllegalArgumentException e) {
+
             // pass
         }
     }
@@ -335,15 +381,17 @@ public class SecurityManagerAuthResponseParserTest extends MockStrutsTestCase {
      * <p>
      * It should throw IllegalArgumentException.
      * </p>
-     * @throws Exception to JUnit.
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void testUnsetLoginState_NullResponse() throws Exception {
         try {
             parser.unsetLoginState(request, null);
             fail("Should throw IllegalArgumentException for null response.");
         } catch (IllegalArgumentException e) {
+
             // pass
         }
     }
-
 }

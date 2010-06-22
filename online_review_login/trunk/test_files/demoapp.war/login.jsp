@@ -16,7 +16,8 @@
             <input type="hidden" name="method" value="login">
             UserName:<html:text property="userName"/><br />
             Password:<html:password property="password"/><br />
-            <html:submit value="Login"/>
+            <html:submit value="Login"/><br />
+			Remember me<html:checkbox property="rememberMe"/>
         </html:form>
         <br />
         <a href="preload.jsp">Need account? Register!</a>
