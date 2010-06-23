@@ -1,17 +1,21 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="../resources"/>
+    <property name="libdir" value="../tcs/lib"/>
     <property name="tcs_libdir" value="${libdir}/tcs"/>
-    <property name="ext_libdir" value="${libdir}"/>
+    <property name="ext_libdir" value="${libdir}/third_party"/>
+
+    <property name="cronos_libdir" value="${libdir}/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+    
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/junit/cobertura/1.9"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -78,6 +82,9 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
+    <!-- include ant contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
@@ -93,8 +100,8 @@
         </fileset>
         <path refid="buildlibs"/>
         <pathelement location="${build_classdir}"/>
-        <pathelement location="${configdir}"/>
         <pathelement location="${testfiles}"/>
+        <pathelement location="${configdir}"/>
     </path>
 
     <!-- cobertura task definition -->
@@ -239,11 +246,38 @@
 
     <target name="manifest">
         <mkdir dir="${manifest_file_path}"/>
-        <manifest file="${manifest_file}">
-            <attribute name="Component-Vendor" value="TopCoder Inc."/>
-            <attribute name="Component-Name" value="${component}"/>
-            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-        </manifest>
+
+        <if>
+          <and>
+            <isset property="component.mainclass"/>
+            <length string="${component.mainclass}" when="greater" length="0" />
+          </and>
+          <then>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+              <attribute name="Main-Class" value="${component.mainclass}"/>
+            </manifest>
+          </then>
+          <else>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+            </manifest>
+          </else>
+        </if>
+    </target>
+
+    <target name="dist" depends="compile, manifest">
+        <mkdir dir="${dist_lib}/${component_path}"/>
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
+    </target>
+
+    <target name="dist_tests" depends="compile_tests">
+        <mkdir dir="${dist_lib}"/>
+        <jar jarfile="${component.tests.jar}" basedir="${build_testclassdir}"/>
     </target>
 
     <target name="javadoc" depends="compile">
@@ -268,104 +302,7 @@
         <delete dir="${builddir}"/>
     </target>
 
-    <!-- ************************************************************************** -->
-    <!-- ************ DEPLOYMENT RELATED TARGETS  ******************************* -->
-    <!-- ************************************************************************** -->
-    <macrodef name="deployCommand">
-        <!-- standard deploy command -->
-        <sequential>
-            <antcall target="dist"/>
-        </sequential>
-    </macrodef>
-
-    <target name="deploy">
-        <deployCommand/>
-    </target>
-
-    <target name="deploy-lib" depends="deploy,test">
-        <mkdir dir="${target_libdir}/${component_path}"/>
-        <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
-    </target>
-
-    <target name="package_docs" depends="javadoc">
-        <mkdir dir="${dist_docpackage}"/>
-        <jar jarfile="${dist_docpackage}/${javadoc.jar}" basedir="${build_tcsdistdir}/${javadocsdir}"/>
-        <copy todir="${dist_docpackage}">
-            <fileset dir="${docsdir}" casesensitive="no">
-                <include name="${distfilename}_Class_Diagram*"/>
-                <include name="${distfilename}_Use_Case_Diagram*"/>
-                <include name="${distfilename}_Sequence_Diagram*"/>
-                <include name="${distfilename}_Requirements_Specification.pdf"/>
-                <include name="${distfilename}_Component_Specification.pdf"/>
-            </fileset>
-        </copy>
-        <jar jarfile="${builddir}/${docpackage.jar}" basedir="${dist_docpackage}"/>
-    </target>
-
-    <target name="move_to_tcs">
-        <mkdir dir="${target_libdir}/${component_path}"/>
-        <mkdir dir="${target_libdir}/${component_path}/dist"/>
-
-        <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
-        <copy file="${component.dist.jar}" todir="${target_libdir}/${component_path}/dist"/>
-    </target>
-
-    <target name="dev_submission" depends="test">
-        <jar jarfile="${dev_submission.jar}"
-             basedir="."
-             includes="build-dependencies.xml,
-                       README,
-                       ${configdir}/**,
-                       ${javamain}/**/*.java,
-                       ${javatests}/${packagedir}/**,
-                       ${testlogdir}/**,
-                       ${testfiles}/**,
-                       ${docsdir}/**,
-                       ${test_reflib}/**"
-             excludes="${javatests}/${packagedir}/FailureTests.java,
-                       ${javatests}/${packagedir}/stresstests/*,
-                       ${javatests}/${packagedir}/failuretests/*,
-                       ${javatests}/${packagedir}/accuracytests/*"
-            />
-    </target>
-
-    <target name="design_submission">
-        <jar jarfile="${design_submission.jar}"
-             basedir="."
-             includes="build-dependencies.xml,
-                       ${configdir}/**,
-                       ${javamain}/**,
-                       ${docsdir}/**,
-                       ${testfiles}/**"
-            />
-    </target>
-
-
-    <!-- ************************************************************************** -->
-    <!-- ************ END DEPLOYMENT RELATED TARGETS  *************************** -->
-    <!-- ************************************************************************** -->
-
     <!-- Import the macro definitions used to override standard behaviour of
     some of the targets of this build file. -->
     <import file="${basedir}/build-override.xml" optional="true"/>
-
-
-    <taskdef resource="checkstyletask.properties" classpath="${ext_libdir}/checkstyle-all-4.3.jar" />
-
-    <target name="checkstyle" depends="compile">
-        <mkdir dir="${testlogdir}"/>
-        <checkstyle config="../.topcoder/tc_checks.xml" classpath="${build_classdir}">
-            <fileset dir="src/java/main" includes="**/*.java" />
-            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
-        </checkstyle>
-    </target>
-
-    <target name="checkstyle_tests" depends="compile_tests">
-        <mkdir dir="${testlogdir}"/>
-        <checkstyle config="../.topcoder/tc_test_checks.xml" classpath="${test.build.classpath}">
-            <fileset dir="${javatests}/${packagedir}/" includes="**/*.java" 
-                     excludes="FailureTests.java, AllTests.java, stresstests/*, failuretests/*, accuracytests/*" />
-            <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
-        </checkstyle>
-    </target>
 </project>
