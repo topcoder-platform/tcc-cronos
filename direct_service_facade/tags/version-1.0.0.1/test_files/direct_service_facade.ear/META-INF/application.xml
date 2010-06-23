@@ -1,0 +1,35 @@
+<application xmlns="http://java.sun.com/xml/ns/javaee"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_5.xsd"
+      version="5">
+    <display-name>Direct Service Facade</display-name>
+ 
+    
+    <!-- Direct Service Facade -->
+    <module>
+        <ejb>direct_service_facade.jar</ejb>
+    </module> 
+    
+    <module><java>base_exception.jar"</java></module>
+    <module><java>logging_wrapper.jar"</java></module>
+    <module><java>typesafe_enum.jar"</java></module>
+    <module><java>object_formatter.jar"</java></module>
+    <module><java>project_management.jar"</java></module>
+    <module><java>security.jar"</java></module>
+    <module><java>client_project_entities_dao.jar"</java></module>
+    <module><java>document_generator.jar"</java></module>
+    <module><java>project_phases.jar"</java></module> 
+    <module><java>configuration_manager.jar"</java></module>
+    <module><java>project_services.jar"</java></module>
+    <module><java>user_service.jar"</java></module>
+    <module><java>catalog_entities.jar"</java></module>
+    <module><java>email_engine.jar"</java></module>
+    <module><java>phase_management.jar"</java></module>
+    <module><java>review_data_structure.jar"</java></module>
+    <module><java>studio_contest_manager.jar"</java></module>
+    <module><java>resource_management.jar"</java></module>
+    <module><java>catalog_services.jar"</java></module>
+    <module><java>search_builder.jar"</java></module>
+    <module><java>dependence.jar"</java></module>
+    
+</application>

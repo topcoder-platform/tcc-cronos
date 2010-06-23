@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation=
+    "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+         version="3.0">
+    <description>Direct Service Facade EJB</description>
+    <display-name>Direct Service Facade EJB</display-name>
+    <enterprise-beans>
+        <session>
+            <ejb-name>DirectServiceFacadeBean</ejb-name>
+            <remote>
+              com.topcoder.service.facade.direct.ejb.DirectServiceFacadeRemote
+            </remote>
+            <local>
+              com.topcoder.service.facade.direct.ejb.DirectServiceFacadeLocal
+            </local>
+            <ejb-class>
+              com.topcoder.service.facade.direct.ejb.DirectServiceFacadeBean
+            </ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <env-entry>
+                <env-entry-name>loggerName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>direct_service_facade_log</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>projectManagerClassName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>
+                  com.topcoder.management.project.ProjectManagerImpl
+                </env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>projectLinkManagerClassName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>
+                  com.topcoder.management.project.link.ProjectLinkManagerImpl
+                </env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>phaseManagerClassName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>
+                  com.topcoder.management.phase.DefaultPhaseManager
+                </env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>receiptEmailTitleTemplateText</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Receipt for contest "%contestName%"</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>receiptEmailBodyTemplateText</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Project Name: %projectName%
+Contest Fee: %contestFee%
+Start Date: %startDate%
+Prizes: %prizes%
+Total Cost: %contestTotalCost%
+See details here: http://topcoder.com/tc?module=ContestDetails&id=%contestId%
+                </env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>budgetUpdateEmailTitleTemplateText</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Budget Updated</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>budgetUpdateEmailBodyTemplateText</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>Project Name: %billingProjectName%
+Old Budget Amount: %oldBudget%
+New Budget Amount: %newBudget%
+</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>emailSender</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>service@topcoder.com</env-entry-value>
+            </env-entry>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ContestServiceFacade</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>
+                  com.topcoder.service.facade.contest.ejb.ContestServiceFacadeRemote
+                </remote>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/UserService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.service.user.UserServiceRemote</remote>
+            </ejb-ref>
+            <ejb-ref>
+                <ejb-ref-name>ejb/ProjectDAO</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <remote>com.topcoder.clients.dao.ejb3.ProjectDAORemote</remote>
+            </ejb-ref>
+        </session>
+    </enterprise-beans>
+</ejb-jar>
