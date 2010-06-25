@@ -2808,7 +2808,7 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             resourceManager.removeResource(resource, operator);
         } catch (Exception e) {
-            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method + ": " + e);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
@@ -2834,7 +2834,7 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             return resourceManager.searchResources(projectId, roleId);
         } catch (Exception e) {
-            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method + ": " + e);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectManager." ,e);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
@@ -3831,6 +3831,34 @@ public class ProjectServicesImpl implements ProjectServices {
                     ex);
         }
         log(Level.INFO, "Exits ProjectServicesImpl#removeNotifications method.");
+
+    }
+
+
+      /**
+     * cehck if resource exists
+     *
+     * @param projectId project id
+     * @param roleId role 
+     * @param userId user id
+     *
+     * @return boolean
+     *
+     * @throws ResourcePersistenceException if there is an error reading the persistence store.
+     */
+    public boolean resourceExists(long projectId, long roleId, long userId) throws ProjectServicesException {
+        log(Level.INFO, "Enters ProjectServicesImpl#resourceExists method.");
+
+
+        try {
+            return this.resourceManager.resourceExists(projectId, roleId, userId);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR,
+                    "ResourcePersistenceException occurred in ProjectServicesImpl#resourceExists method." + ex);
+            throw new ProjectServicesException(
+                    "ResourcePersistenceException occurred when resourceExists",
+                    ex);
+        }
 
     }
 
