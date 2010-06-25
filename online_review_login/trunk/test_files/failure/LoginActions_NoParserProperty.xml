@@ -13,7 +13,7 @@
 
 	</Config>
 	<Config name="com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser">
-		<Property name="user_identifer_key">
+		<Property name="user_identifier_key">
 			<Value>topcoder</Value>
 		</Property>
 	</Config>

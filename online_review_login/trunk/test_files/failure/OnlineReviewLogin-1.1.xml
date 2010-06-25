@@ -30,7 +30,7 @@
   </Config>
 
     <Config name="com.cronos.onlinereview.login.cookies.AuthCookieManagerImpl">
-        <Property name="user_identifer_key">
+        <Property name="user_identifier_key">
             <Value>topcoder</Value>
         </Property>
         <Property name="cookie_name">
@@ -89,7 +89,7 @@
   </Config>
 
   <Config name="com.cronos.onlinereview.login.authenticator.SecurityManagerAuthResponseParser">
-    <Property name="user_identifer_key">
+    <Property name="user_identifier_key">
       <Value>topcoder</Value>
     </Property>
   </Config>
@@ -162,7 +162,7 @@
     </Config>
 
     <Config name="com.cronos.onlinereview.login.cookies.AuthCookieManagerImpl.MissingCookieName">
-        <Property name="user_identifer_key">
+        <Property name="user_identifier_key">
             <Value>topcoder</Value>
         </Property>
         <Property name="connection_name">
@@ -179,7 +179,7 @@
     </Config>
 
     <Config name="com.cronos.onlinereview.login.cookies.AuthCookieManagerImpl.MissingDbConnFactoryClass">
-        <Property name="user_identifer_key">
+        <Property name="user_identifier_key">
             <Value>topcoder</Value>
         </Property>
         <Property name="cookie_name">
@@ -196,7 +196,7 @@
     </Config>
 
     <Config name="com.cronos.onlinereview.login.cookies.AuthCookieManagerImpl.EmptyStringUserIdentifierKey">
-        <Property name="user_identifer_key">
+        <Property name="user_identifier_key">
             <Value></Value>
         </Property>
         <Property name="cookie_name">
@@ -216,7 +216,7 @@
     </Config>
 
     <Config name="com.cronos.onlinereview.login.cookies.AuthCookieManagerImpl.EmptyStringCookieName">
-        <Property name="user_identifer_key">
+        <Property name="user_identifier_key">
             <Value>topcoder</Value>
         </Property>
         <Property name="cookie_name">
@@ -236,7 +236,7 @@
     </Config>
 
     <Config name="com.cronos.onlinereview.login.cookies.AuthCookieManagerImpl.EmptyStringDbConnFactoryClass">
-        <Property name="user_identifer_key">
+        <Property name="user_identifier_key">
             <Value>topcoder</Value>
         </Property>
         <Property name="cookie_name">
@@ -256,7 +256,7 @@
     </Config>
 
     <Config name="com.cronos.onlinereview.login.cookies.AuthCookieManagerImpl.InvalidDB">
-        <Property name="user_identifer_key">
+        <Property name="user_identifier_key">
             <Value>topcoder</Value>
         </Property>
         <Property name="cookie_name">
