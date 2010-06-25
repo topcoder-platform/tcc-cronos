@@ -985,4 +985,18 @@ public interface ProjectServices {
     public void removeNotifications(long userId, long[] projectIds, String operator) throws ProjectServicesException;
 
 
+      /**
+     * cehck if resource exists
+     *
+     * @param projectId project id
+     * @param roleId role 
+     * @param userId user id
+     *
+     * @return boolean
+     *
+     * @throws ResourcePersistenceException if there is an error reading the persistence store.
+     */
+    public boolean resourceExists(long projectId, long roleId, long userId) throws ProjectServicesException;
+
+
 }

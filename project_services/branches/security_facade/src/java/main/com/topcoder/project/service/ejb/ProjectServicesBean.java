@@ -1774,4 +1774,29 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
     }
 
 
+      /**
+     * cehck if resource exists
+     *
+     * @param projectId project id
+     * @param roleId role 
+     * @param userId user id
+     *
+     * @return boolean
+     *
+     * @throws ResourcePersistenceException if there is an error reading the persistence store.
+     */
+    public boolean resourceExists(long projectId, long roleId, long userId) throws ProjectServicesException {
+
+        String method = "ProjectServicesBean#resourceExists method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            return getProjectServices().resourceExists(projectId, roleId, userId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
 }
