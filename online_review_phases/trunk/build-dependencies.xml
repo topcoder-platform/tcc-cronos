@@ -44,7 +44,18 @@
     <property name="auto_screening_management.jar" value="${tcs_libdir}/auto_screening_management/1.0/auto_screening_management.jar" />
     <property name="user_project_data_store.jar" value="${tcs_libdir}/user_project_data_store/1.0.1/user_project_data_store.jar" />
     
-    
+    <property name="projectEJB.path" value="project_ejb" />
+    <property name="projectEJB.jar.name" value="Project.jar" />
+    <property name="projectEJB.jar" value="${tcs_libdir}/${projectEJB.path}/${projectEJB.jar.name}" />
+
+    <property name="termsOfUseEJB.path" value="terms_of_use_ejb" />
+    <property name="termsOfUseEJB.jar.name" value="TermsOfUse.jar" />
+    <property name="termsOfUseEJB.jar" value="${tcs_libdir}/${termsOfUseEJB.path}/${termsOfUseEJB.jar.name}" />
+
+    <property name="userEJB.path" value="user_ejb" />
+    <property name="userEJB.jar.name" value="User.jar" />
+    <property name="userEJB.jar" value="${tcs_libdir}/${userEJB.path}/${userEJB.jar.name}" />
+
     <property name="scorecard_data_structure.jar" value="${tcs_libdir}/scorecard_data_structure/1.0/scorecard_data_structure.jar"/>
     <property name="scorecard_management.jar" value="${tcs_libdir}/scorecard_management/1.0.1/scorecard_management.jar" />
     <property name="scorecard_management_persistence.jar" value="${tcs_libdir}/scorecard_management_persistence/1.0.1/scorecard_management_persistence.jar" />
@@ -53,6 +64,9 @@
     <property name="deliverable_management_persistence.jar" value="${tcs_libdir}/deliverable_management_persistence/1.0.3/deliverable_management_persistence.jar" />
     
     <property name="command_line_utility.jar" value="${tcs_libdir}/command_line_utility/1.0/command_line_utility.jar" />
+
+    <property name="shared.jar.name" value="shared.jar" />
+    <property name="shared.jar" value="${shared_libdir}/${shared.jar.name}" />
 
     <!-- define 3rd party dependencies -->
 
@@ -92,6 +106,10 @@
         <pathelement location="${workdays.jar}"/>
         <pathelement location="${auto_screening_management.jar}"/>
         <pathelement location="${user_project_data_store.jar}"/>
+        <pathelement location="${termsOfUseEJB.jar}"/>
+        <pathelement location="${userEJB.jar}"/>
+        <pathelement location="${projectEJB.jar}"/>
+        <pathelement location="${shared.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">

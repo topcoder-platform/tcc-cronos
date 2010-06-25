@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2004 - 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -96,8 +96,16 @@ import com.topcoder.util.config.UnknownNamespaceException;
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, pulky, aroglite, waits, isv, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.4 (Member Post-Mortem Review Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #insertPostMortemPhase(Project, Phase, ManagerHelper, String)} method to create Post-Mortem
+ *     phase only if there is respective flag set in project peroperties.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, pulky, aroglite, waits, isv
+ * @version 1.4
  */
 final class PhasesHelper {
     /**
@@ -1236,8 +1244,19 @@ final class PhasesHelper {
             return;
         }
 
+        // Check if Post-Mortem is required based on project properties. If not then do nothing
+        ProjectManager projectManager = managerHelper.getProjectManager();
+        try {
+            com.topcoder.management.project.Project project = projectManager.getProject(currentPrj.getId());
+            String postMortemRequired = (String) project.getProperty("Post-Mortem Required");
+            if ((postMortemRequired == null) || !(postMortemRequired.equalsIgnoreCase("true"))) {
+                return;
+            }
+        } catch (com.topcoder.management.project.PersistenceException e) {
+            throw new PhaseHandlingException("Failed to retrieve details for project " + currentPrj.getId(), e);
+        }
+
         PhaseManager phaseManager = managerHelper.getPhaseManager();
-        UploadManager uploadManager = managerHelper.getUploadManager();
 
         // create phase type and status objects
         PhaseType postMortemPhaseType = getPhaseType(phaseManager, "Post-Mortem");

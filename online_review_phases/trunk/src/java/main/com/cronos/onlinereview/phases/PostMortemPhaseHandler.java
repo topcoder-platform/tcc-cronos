@@ -1,17 +1,37 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceManager;
+import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
+import com.topcoder.shared.util.DBMS;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
+import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
+import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseLocator;
+import com.topcoder.web.ejb.user.UserTermsOfUse;
+import com.topcoder.web.ejb.user.UserTermsOfUseLocator;
+
+import javax.ejb.CreateException;
+import javax.naming.NamingException;
 
 /**
  * <p>
@@ -42,11 +62,19 @@ import com.topcoder.project.phases.Phase;
  * </p>
  *
  * <p>
+ * Version 1.4 (Members Post-Mortem Reviews Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #perform(Phase, String)} method to add submitters and reviewers as Post-Mortem reviewers for
+ *     project.</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author argolite, waits, TCSDEVELOPER
- * @version 1.3
+ * @author argolite, waits, isv
+ * @version 1.4
  * @since 1.1
  */
 public class PostMortemPhaseHandler extends AbstractPhaseHandler {
@@ -65,6 +93,114 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * The name for the post-mortem phase.
      */
     private static final String PHASE_TYPE_POST_MORTEM = "Post-Mortem";
+
+    /**
+     * <p>A <code>String</code> providing the submitter role name.</p>
+     *
+     * @since 1.4
+     */
+    private static final String SUBMITTER_ROLE_NAME = "Submitter";
+
+    /**
+     * <p>A <code>String</code> providing the reviewer role name.</p>
+     *
+     * @since 1.4
+     */
+    private static final String REVIEWER_ROLE_NAME = "Reviewer";
+
+    /**
+     * <p>A <code>String</code> providing the accuracy reviewer role name.</p>
+     *
+     * @since 1.4
+     */
+    private static final String ACCURACY_REVIEWER_ROLE_NAME = "Accuracy Reviewer";
+
+    /**
+     * <p>A <code>String</code> providing the failure reviewer role name.</p>
+     *
+     * @since 1.4
+     */
+    private static final String FAILURE_REVIEWER_ROLE_NAME = "Failure Reviewer";
+
+    /**
+     * <p>A <code>String</code> providing the stress reviewer role name.</p>
+     *
+     * @since 1.4
+     */
+    private static final String STRESS_REVIEWER_ROLE_NAME = "Stress Reviewer";
+
+    /**
+     * <p>A <code>String</code> array listing the names for roles for resources which are candidates for adding to
+     * project as Post-Mortem reviewers when Post-Mortem phase starts.</p>
+     *
+     * @since 1.4
+     */
+    private static final String[] POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES
+        = new String[] {SUBMITTER_ROLE_NAME, REVIEWER_ROLE_NAME, ACCURACY_REVIEWER_ROLE_NAME,
+                        FAILURE_REVIEWER_ROLE_NAME, STRESS_REVIEWER_ROLE_NAME};
+
+    /**
+     * <p>A <code>String</code> array listing the name for Post-Mortem Reviewer role.</p>
+     *
+     * @since 1.4
+     */
+    private static final String[] POST_MORTEM_REVIEWER_FILTER = new String[] {POST_MORTEM_REVIEWER_ROLE_NAME};
+
+    /**
+     * <p>A <code>String</code> providing the name for external reference id property of the resource.</p>
+     *
+     * @since 1.4
+     */
+    private static final String EXTERNAL_REFERENCE_ID = "External Reference ID";
+
+    /**
+     * <p>A <code>String</code> providing the name for handle property of the resource.</p>
+     *
+     * @since 1.4
+     */
+    private static final String HANDLE = "Handle";
+
+    /**
+     * <p>A <code>String</code> providing the name for email property of the resource.</p>
+     *
+     * @since 1.4
+     */
+    private static final String EMAIL = "Email";
+
+    /**
+     * <p>A <code>String</code> providing the name for payment property of the resource.</p>
+     *
+     * @since 1.4
+     */
+    private static final String PAYMENT = "Payment";
+
+    /**
+     * <p>A <code>String</code> providing the name for payment status property of the resource.</p>
+     *
+     * @since 1.4
+     */
+    private static final String PAYMENT_STATUS = "Payment Status";
+
+    /**
+     * <p>A <code>String</code> providing the name for registration date property of the resource.</p>
+     *
+     * @since 1.4
+     */
+    private static final String REGISTRATION_DATE = "Registration Date";
+
+    /**
+     * <p>A <code>String</code> providing the name for rating property of the resource.</p>
+     *
+     * @since 1.4
+     */
+    private static final String RATING = "Rating";
+
+    /**
+     * <p>A <code>Log</code> used for logging the events.</p>
+     *
+     * @since 1.4
+     */
+    private static final Log LOG = LogFactory.getLog(PostMortemPhaseHandler.class.getName());
 
     /**
      * Creates a PostMortemPhaseHandler with default namespace.
@@ -133,21 +269,20 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             // return true if all dependencies have stopped
             // and start time has been reached.
             return PhasesHelper.canPhaseStart(phase);
-
         } else {
-
             // Check phase dependencies
-            boolean depsMeet = PhasesHelper.arePhaseDependenciesMet(phase,
-                            false);
+            boolean depsMeet = PhasesHelper.arePhaseDependenciesMet(phase, false);
 
-            // Return true is dependencies are met and reviews committed.
-            return depsMeet && allPostMortemReviewsDone(phase);
+            // Return true is dependencies are met and minimum number of reviews committed in time before phase
+            // deadline.
+            return depsMeet && PhasesHelper.reachedPhaseEndTime(phase) && allPostMortemReviewsDone(phase);
         }
     }
 
     /**
-     * Provides additional logic to execute a phase. Current implementation does
-     * nothing.
+     * <p>Provides additional logic to execute a phase. If the phase starts then all submitters who have submitted for
+     * project and all reviewers are assigned <code>Post-Mortem Reviewer</code> role for project (if not already) and
+     * emails are sent on phase state transition.</p>
      *
      * @param phase the input phase.
      * @param operator the operator name.
@@ -162,11 +297,91 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
         // send email now if it is going to start
         Map<String, Object> values = new HashMap<String, Object>();
         if (toStart) {
+            ManagerHelper managerHelper = getManagerHelper();
+            ResourceManager resourceManager = managerHelper.getResourceManager();
+            DateFormat dateFormatter = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
+
             Connection conn = null;
             try {
+                // Locate the role for Post-Mortem Reviewer 
+                ResourceRole postMortemReviewerRole = null;
+                ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
+                for (ResourceRole role : resourceRoles) {
+                    if (role.getName().equals(POST_MORTEM_REVIEWER_ROLE_NAME)) {
+                        postMortemReviewerRole = role;
+                        break;
+                    }
+                }
+
                 conn = createConnection();
-                Resource[] resources = PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
-                                       new String[] {POST_MORTEM_REVIEWER_ROLE_NAME}, phase.getProject().getId());
+
+                long projectId = phase.getProject().getId();
+
+                // Get the list of existing Post-Mortem reviewers assigned to project so far
+                Resource[] existingPostMortemResources
+                    = PhasesHelper.searchProjectResourcesForRoleNames(managerHelper, conn, POST_MORTEM_REVIEWER_FILTER,
+                                                                      projectId);
+
+                // Add Submitters (who have submitted), reviewers as Post-Mortem Reviewers but only if they are not
+                // assigned to project as Post-Mortem reviewers already and have all necessary terms of use accepted
+                Resource[] candidatePostMortemResources
+                    = PhasesHelper.searchProjectResourcesForRoleNames(managerHelper, conn,
+                                                                      POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES,
+                                                                      projectId);
+                for (Resource resource : candidatePostMortemResources) {
+                    boolean valid = false;
+                    String roleName = resource.getResourceRole().getName();
+                    if (SUBMITTER_ROLE_NAME.equalsIgnoreCase(roleName)) {
+                        Long[] submissionIds = resource.getSubmissions();
+                        if ((submissionIds != null) && (submissionIds.length > 0)) {
+                            valid = true;
+                        }
+                    } else {
+                        valid = true;
+                    }
+                    if (valid) {
+                        String candidateId = (String) resource.getProperty(EXTERNAL_REFERENCE_ID);
+                        boolean alreadyPostMortemReviewer = false;
+                        for (Resource existingPostMortemReviewer : existingPostMortemResources) {
+                            String existingId = (String) existingPostMortemReviewer.getProperty(EXTERNAL_REFERENCE_ID);
+                            if (existingId.equals(candidateId)) {
+                                alreadyPostMortemReviewer = true;
+                                break;
+                            }
+                        }
+                        if (!alreadyPostMortemReviewer) {
+                            long candidateUserId = Long.parseLong(candidateId);
+                            String candidateUserHandle = (String) resource.getProperty(HANDLE);
+                            boolean hasPendingTerms = hasPendingTermsOfUse(projectId, candidateUserId,
+                                                                           postMortemReviewerRole.getId());
+                            if (!hasPendingTerms) {
+                                Resource newPostMortemReviewer = new Resource();
+                                newPostMortemReviewer.setResourceRole(postMortemReviewerRole);
+                                newPostMortemReviewer.setProject(projectId);
+                                newPostMortemReviewer.setPhase(phase.getId());
+                                newPostMortemReviewer.setProperty(EXTERNAL_REFERENCE_ID, candidateId);
+                                newPostMortemReviewer.setProperty(HANDLE, candidateUserHandle);
+                                newPostMortemReviewer.setProperty(EMAIL, resource.getProperty(EMAIL));
+                                newPostMortemReviewer.setProperty(RATING, resource.getProperty(RATING));
+                                newPostMortemReviewer.setProperty(PAYMENT, "0.00");
+                                newPostMortemReviewer.setProperty(PAYMENT_STATUS, "No");
+                                newPostMortemReviewer.setProperty(REGISTRATION_DATE, dateFormatter.format(new Date()));
+
+                                resourceManager.updateResource(newPostMortemReviewer, operator);
+                            } else {
+                                LOG.log(Level.WARN,  "Can not assign Post-Mortem Reviewer role to user "
+                                                     + candidateUserHandle + "(ID: " + candidateId + ") "
+                                                     + "for project " + projectId + " as user does not have accepted "
+                                                     + "all necessary terms of use for project");
+                            }
+                        }
+                    }
+                }
+
+                Resource[] postMortemResources
+                    = PhasesHelper.searchProjectResourcesForRoleNames(managerHelper, conn, POST_MORTEM_REVIEWER_FILTER,
+                                                                      projectId);
+                
                 //according to discussion here http://forums.topcoder.com/?module=Thread&threadID=659556&start=0
                 //if the attribute is not set, default value would be 0
                 int requiredRN = 0;
@@ -174,8 +389,16 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                     requiredRN = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
                 }
                 values.put("N_REQUIRED_POST_MORTEM_REVIEWERS", requiredRN);
-                values.put("N_POST_MORTEM_REVIEWERS", resources.length);
-                values.put("NEED_POST_MORTEM_REVIEWERS", requiredRN <= resources.length ? 0 : 1);
+                values.put("N_POST_MORTEM_REVIEWERS", postMortemResources.length);
+                values.put("NEED_POST_MORTEM_REVIEWERS", requiredRN <= postMortemResources.length ? 0 : 1);
+            } catch (ResourcePersistenceException e) {
+                throw new PhaseHandlingException("Failed to add new Post-Mortem Reviewer resource", e);
+            } catch (RemoteException e) {
+                throw new PhaseHandlingException("Failed to add new Post-Mortem Reviewer resource", e);
+            } catch (CreateException e) {
+                throw new PhaseHandlingException("Failed to add new Post-Mortem Reviewer resource", e);
+            } catch (NamingException e) {
+                throw new PhaseHandlingException("Failed to add new Post-Mortem Reviewer resource", e);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
@@ -201,19 +424,20 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             Review[] reviews
                 = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
                                                                     phase.getProject().getId(),
-                                                                    new String[] {POST_MORTEM_REVIEWER_ROLE_NAME},
-                                                                    null);
+                                                                    POST_MORTEM_REVIEWER_FILTER, null);
 
-            // Check whether all the reviews are committed. Return false if there is at least one uncommitted review
+            // Count number of committed reviews
+            int committedReviewsCount = 0;
             for (int i = 0; i < reviews.length; ++i) {
-                if (!reviews[i].isCommitted()) {
-                    return false;
+                if (reviews[i].isCommitted()) {
+                    committedReviewsCount++;
                 }
             }
 
+            // Deny to close phase if minimum number of reviews is not committed
             if (phase.getAttribute("Reviewer Number") != null) {
                 int reviewerNum = PhasesHelper.getIntegerAttribute(phase, "Reviewer Number");
-                if (reviews.length < reviewerNum) {
+                if (committedReviewsCount < reviewerNum) {
                     return false;
                 }
             }
@@ -224,5 +448,42 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
         } finally {
             PhasesHelper.closeConnection(conn);
         }
+    }
+
+    /**
+     * <p>Validates that specified user which is going to be assigned specified role for specified project has accepted
+     * all terms of use set for specified role in context of the specified project.</p>
+     *
+     * @param projectId a <code>long</code> providing the project ID.
+     * @param userId a <code>long</code> providing the user ID.
+     * @param roleId a <code>long</code> providing the role ID.
+     * @return a <code>true</code> if there are terms of user which are not yet accepted by the specified user or
+     *         <code>false</code> if all necessary terms of use are accepted.
+     * @throws NamingException if any errors occur during EJB lookup.
+     * @throws RemoteException if any errors occur during EJB remote invocation.
+     * @throws CreateException if any errors occur during EJB creation.
+     * @since 1.5
+     */
+    private boolean hasPendingTermsOfUse(long projectId, long userId, long roleId)
+        throws CreateException, NamingException, RemoteException {
+
+        // get remote services
+        ProjectRoleTermsOfUse projectRoleTermsOfUse = ProjectRoleTermsOfUseLocator.getService();
+        UserTermsOfUse userTermsOfUse = UserTermsOfUseLocator.getService();
+
+        List<Long>[] necessaryTerms = projectRoleTermsOfUse.getTermsOfUse(
+            (int) projectId, new int[] {new Long(roleId).intValue()}, DBMS.COMMON_OLTP_DATASOURCE_NAME);
+
+        for (int j = 0; j < necessaryTerms.length; j++) {
+            if (necessaryTerms[j] != null) {
+                for (Long termsId : necessaryTerms[j]) {
+                    if (!userTermsOfUse.hasTermsOfUse(userId, termsId, DBMS.COMMON_OLTP_DATASOURCE_NAME)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
