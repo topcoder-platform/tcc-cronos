@@ -6870,12 +6870,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.debug("enter methods assginRole");
 
         try {
-            com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, roleId);
+          //  com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, roleId);
 
             boolean found = false;
 
+            found = projectServices.resourceExists(projectId, roleId, userId);
+
             // Check if the resource with the role already exists
-            if (resources != null && resources.length > 0) {
+          /*  if (resources != null && resources.length > 0) {
                 for (com.topcoder.management.resource.Resource resource : resources) {
                     if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
                             && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(userId)) {
@@ -6883,7 +6885,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         break;
                     }
                 }
-            }
+            } */
 
             // if not found && user agreed terms (if any) && is eligible, add resource
             if (!found && checkTerms(projectId, userId, new int[] { (int) roleId })
