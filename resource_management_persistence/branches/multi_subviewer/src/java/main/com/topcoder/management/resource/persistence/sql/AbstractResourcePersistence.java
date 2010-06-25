@@ -371,6 +371,17 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
+     * Represents the sql for updating resource.
+     * </p>
+     */
+    private static final String SQL_RESOURCE_EXISTS =
+        "SELECT 'exists' from resource r, resource_info ri "
+        + "  where project_id = ? and resource_role_id = ? "
+        + "  and r.resource_id = ri.resource_id and resource_info_type_id = 1 "
+        + "  and value = ?";
+
+    /**
+     * <p>
      * Represents the external reference id property key for resource property map.
      * </p>
      *
@@ -2000,7 +2011,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-<<<<<<< .mine
      * Return the id string seperated by comma for the given long id array.
      * 
      * @param ids the id array
@@ -2035,7 +2045,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 	}
 	
     /**
-=======
      * Loads the resources from the result of the SELECT operation. May return an empty array.
      *
      * @return The loaded resources
@@ -2097,7 +2106,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
->>>>>>> .r72308
      * Builds a select sql query with an argument contains many long values. The structure of the result
      * string looks like this: ... in ( id, id, id, id...).
      *
@@ -2672,4 +2680,54 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             Util.closeStatement(statement);
         }
     }
+
+
+
+    /**
+     * cehck if resource exists
+     *
+     * @param projectId project id
+     * @param roleId role 
+     * @param userId user id
+     *
+     * @return boolean
+     *
+     * @throws ResourcePersistenceException if there is an error reading the persistence store.
+     */
+    public boolean resourceExists(long projectId, long roleId, long userId) throws ResourcePersistenceException {
+
+        Connection connection = openConnection();
+
+        ResultSet rs = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_RESOURCE_EXISTS);
+
+            int index = 1;
+            statement.setLong(index++, projectId);
+            statement.setLong(index++, roleId);
+            statement.setString(index++, String.valueOf(userId));
+
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+
+            return false;
+
+        } catch (SQLException e) {
+            closeConnectionOnError(connection);
+            LOGGER.log(Level.ERROR, new LogMessage(null, null,
+        			"Failed in checking resource", e));
+            throw new ResourcePersistenceException("Failed in resourceExists.", e);
+        } finally {
+            Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+
+            closeConnection(connection);
+        }
+    }
+
 }
