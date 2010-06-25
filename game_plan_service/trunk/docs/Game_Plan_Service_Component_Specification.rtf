@@ -1,0 +1,114 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033\deflangfe2052{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\froman\fprq2\fcharset2 Symbol;}{\f3\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}{\s3 heading 3;}}
+{\*\generator Msftedit 5.41.21.2500;}\viewkind4\uc1\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx720\ul\b\f0\fs28 Game Plan Service 1.0 Component Specification\par
+\pard\li720\sa120\ulnone\b0\fs20\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 1.\tab\fs24 Design\par
+\pard\li720\sa60\b0\fs20 The Game Plan Service component defines the interface to retrieve and aggregate data related to the game plan of TopCoder Direct Projects. The component also provides an EJB3 implementation of the defined interface.\par
+This component will be used by new TopCoder Direct site to implement the Game Plan related features.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.1\tab Design Patterns \par
+\pard\li720\sa60 Strategy pattern\b0  \endash  this component provides GamePlanService interface and its implementation that can possibly be used in some external strategy context.\par
+\b DAO pattern\b0  \endash  GamePlanService is a DAO for TCDirectProjectGamePlanData, SoftwareProjectData and StudioProjectData DTOs.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.2\tab Industry Standards \par
+\pard\li720\b0 EJB3, IoC, JPA, SQL\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.3\tab Required Algorithms\par
+\pard\li720\b0 All algorithms used in this component are quite simple and straightforward. Please see them in the implementation notes for methods in TC UML Tool.\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i 1.3.1\tab Logging\par
+\pard\li720\sa120\i0 This component must perform logging in all public methods of GamePlanServiceBean.\par
+All information must be logged using log:Log attribute. If log attribute is null, then logging is not required to be performed.\par
+In all mentioned\cf1  public \cf0 methods method entrance with input arguments, method exit with return value and call duration time must be logged at INFO level. It\rquote s not required to log method exit when method throws an exception.\par
+All errors (for all thrown exceptions) must be logged at ERROR level with exception message and stack trace.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa120\sl240\slmult0\tx0\b 1.4\tab Component Class Overview\par
+\pard\li720 GamePlanService [interface]\b0\par
+\pard\li1440\sa120 This interface represents a game plan service. It provides a method for retrieving game plan specific data for all TC Direct projects associated with the current user.\par
+\pard\li720\b GamePlanServiceBean\b0\par
+\pard\li1440\sa120 This class is an EJB that implements GamePlanService business interface. This bean uses Logging Wrapper component to log exceptions and debug information. Also it uses injected JPA entity managers to access software and studio projects data in the persistence.\par
+\pard\li720\b GamePlanServiceLocal [interface]\b0\par
+\pard\li1440\sa120 This interface represents the local interface for GamePlanService session bean. It extends that interface and provides no additional methods.\par
+\pard\li720\b GamePlanServiceRemote [interface]\b0\par
+\pard\li1440\sa120 This interface represents the remote interface for GamePlanService session bean. It extends that interface and provides no additional methods.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa120\sl240\slmult0\tx0\b 1.5\tab Component Exception Definitions\par
+\pard\li720 GamePlanPersistenceException\b0\par
+\pard\li1440\sa120 This exception is thrown by GamePlanServiceBean when some error occurs while accessing the persistence.\par
+\pard\li720\b GamePlanServiceConfigurationException\b0\par
+\pard\li1440\sa120 This exception is thrown by GamePlanServiceBean when error occurs while initializing this bean.\par
+\pard\li720\b GamePlanServiceException\b0\par
+\pard\li1440\sa120 This exception is thrown by implementations of GamePlanService when some implementation specific error occurred. Also this exception is used as a base class for other specific custom exceptions.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 1.6\tab Thread Safety\par
+\pard\li720\sa60\b0 This component is thread safe.\par
+Implementations of GamePlanService, GamePlanServiceLocal and GamePlanServiceRemote must be thread safe when entities passed to them are used in thread safe manner by the caller.\par
+GamePlanServiceBean is mutable and not thread safe. But it is always used in thread safe manner in EJB container because its state doesn't change after initialization. Instances of EntityManager used by this class are thread safe.\par
+This bean assumes that transactions are managed by the container. At the same time the bean doesn\rquote t require a transaction to be used since it\rquote s the only method doesn\rquote t modify data in the persistence.\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 2.\tab\fs24 Environment Requirements\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 2.1\tab Environment\par
+\pard\li720\b0 Development language: Java 1.5, J2EE 1.5\par
+Compile target: Java 1.5, J2EE 1.5\par
+QA Environment: Solaris 7, RedHat Linux 7.1, Windows 2000, Windows 2003\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 2.2\tab TopCoder Software Components\par
+\pard\li720\sa120 Base Exception 2.0\b0  \endash  is used by custom exceptions defined in this component.\par
+\b Logging Wrapper 2.0\b0  \endash  is used for logging errors and debug information.\par
+\b Cockpit Facade Util 1.1\b0  \endash  defines TCDirectProjectGamePlanData, SoftwareProjectData and StudioProjectData classes used in this component.\par
+\b Security Manager 1.1 \b0\endash  defines TCSubject and RolePrincipal classes used in this component.\par
+\pard\li720\i\fs24 NOTE: The default location for TopCoder Software component jars is../lib/tcs/COMPONENT_NAME/COMPONENT_VERSION relative to the component installation.\cf2   Setting the tcs_libdir property in topcoder_global.properties will overwrite this default location.\cf0\i0\fs20\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 2.3\tab Third Party Components\par
+\pard\li720\sa120\b0 None\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 3.\tab\fs24 Installation and Configuration\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 3.1\tab Package Name\par
+\pard\li720\b0 com.topcoder.service.gameplan\par
+com.topcoder.service.gameplan.ejb\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 3.2\tab Configuration Parameters\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 3.2.1\tab EJB configuration of GamePlanServiceBean\par
+\pard\li720\sb120\sa120\i0 GamePlanServiceBean holds 2 persistence context instances with reference names equal to \ldblquote softwarePersistence\rdblquote  and \ldblquote studioPersistence\rdblquote  respectively. These entity managers must be injected by EJB container.\par
+Also GamePlanServiceBean uses the following resources injected by EJB container:\par
+\trowd\trgaph108\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl\b Resource name\cell Description\cell Values\cell\row\trowd\trgaph108\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl108\trpaddr108\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl\b0 logName\cell\lang2057 The name of the Logger Wrapper logger to be used by this class for logging errors and debug information.\par
+When not specified, logging is not performed.\cell\lang1033 String. Not empty.\par
+Optional.\cell\row\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 3.3\tab Dependencies Configuration\par
+\pard\li720\b0 Please see docs of all the dependency components to configure them properly.\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b 4.\tab\fs24 Usage Notes\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\fs20 4.1\tab Required steps to test the component\par
+\pard\fi-360\li1080\sa120\tx1080\b0\f2\'b7\tab\f0 Extract the component distribution.\par
+\pard\f2\'b7\tab\f0 Follow {\field{\*\fldinst{HYPERLINK "C:\\\\filez\\\\work\\\\tc\\\\tcs_corp\\\\templates\\\\component\\\\" \\\\l "_Dependencies_Configuration" }}{\fldrslt{\cf3\ul Dependencies Configuration}}}\cf0\ulnone\f0\fs20 .\par
+            see test_files/readme.txt\par
+\f2\'b7\tab\f0 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 4.2\tab Required steps to use the component\par
+\pard\li720\b0 Please see the demo.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b 4.3\tab Demo\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 4.3.1\tab API usage\par
+\pard\li720\i0\f3\fs16 // Get game plan service\par
+Context context = new InitialContext();\par
+GamePlanService gamePlanService =\par
+    (GamePlanServiceRemote) context.lookup("GamePlanServiceBean/remote");\par
+\par
+// Create TCSubject instance for admin user\par
+Set<RolePrincipal> principals = new HashSet<RolePrincipal>();\par
+RolePrincipal adminRole = new RolePrincipal("Cockpit Administrator", 1);\par
+principals.add(adminRole);\par
+TCSubject tcSubject1 = new TCSubject(principals, 12345);\par
+\par
+// Retrieve game plan data for all existing TC Direct projects\par
+List<TCDirectProjectGamePlanData> gamePlanDataList =\par
+    gamePlanService.retrieveGamePlanData(tcSubject1);\par
+\par
+for (TCDirectProjectGamePlanData gamePlanData : gamePlanDataList) \{\par
+    // Get data for software projects\par
+    List<SoftwareProjectData> softwareProjects = gamePlanData.getSoftwareProjects();\par
+    \par
+    // Get data for studio projects\par
+    List<StudioProjectData> studioProjects = gamePlanData.getStudioProjects();\par
+    \par
+    // Process projects data\par
+    ...\par
+\}\par
+\par
+// Create TCSubject instance for non-admin user\par
+Set<RolePrincipal> principals = new HashSet<RolePrincipal>();\par
+TCSubject tcSubject2 = new TCSubject(principals, 23456);\par
+\par
+// Retrieve game plan data for all TC Direct projects associated with user with ID=23456\par
+gamePlanDataList = gamePlanService.retrieveGamePlanData(tcSubject2);\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\b\f0 5.\tab\fs24 Future Enhancements\par
+\pard\li720\sa120\b0\fs20 New services will be added to support the save of the game plan.\par
+}
+ 
