@@ -15,6 +15,7 @@ import com.topcoder.util.log.basic.BasicLog;
 import servletunit.struts.MockStrutsTestCase;
 
 import java.io.File;
+import java.util.Iterator;
 
 /**
  * Unit tests for <code>LoginActions</code>.
@@ -96,7 +97,9 @@ public class LoginActionsTest extends MockStrutsTestCase {
     public void testConstructor_NoParser() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
 
-        cm.removeNamespace(NAMESPACE);
+        for (Iterator it = cm.getAllNamespaces(); it.hasNext();) {
+            cm.removeNamespace((String) it.next());
+        }
         cm.add(new File(TestUtil.TEST_DIR + "LoginActions_no_parser.xml").getAbsolutePath());
 
         try {

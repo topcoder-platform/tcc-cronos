@@ -323,7 +323,9 @@ public class AuthCookieManagerImpl implements AuthCookieManager {
 
         // Get server name from the request
         // Set domain name to the cookie
-        cookie.setDomain(serverName);
+        if (serverName != null) {
+            cookie.setDomain(serverName);
+        }
 
         // Set cookie path to root
         cookie.setPath("/");
