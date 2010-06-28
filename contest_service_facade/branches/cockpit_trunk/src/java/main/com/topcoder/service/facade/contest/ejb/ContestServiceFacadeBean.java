@@ -6980,13 +6980,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6.1 BUGR-3706
      */
     public List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
-            throws ContestServiceException {
-        logger.info("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
-                + "]");
-
-        List<ProjectNotification> result = new ArrayList<ProjectNotification>();
-
-        List<com.topcoder.management.project.SimpleProjectContestData> contests;
+	    throws ContestServiceException {
+		    logger.info("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
+				    + "]");
+		    ArrayList<ProjectNotification> result = new ArrayList<ProjectNotification>();
+		    List<com.topcoder.management.project.SimpleProjectContestData> contests;
 
         try {
 
@@ -7068,7 +7066,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             }
 
-            return new ArrayList<ProjectNotification>(map.values());
+			    result = new ArrayList<ProjectNotification>(map.values());
+
+			    // sort the ProjectNotification by alphabetical order
+			    Collections.sort(result, new Comparator<ProjectNotification>(){
+					    public int compare(ProjectNotification o1, ProjectNotification o2) {
+					    return o1.getName().compareToIgnoreCase(o2.getName());
+					    }
+					    });
+
+			    // for each ProjectNotification, sort ContestNotifications by alphabetical order
+			    for (ProjectNotification pn : result){
+				    Collections.sort(pn.getContestNotifications(), new Comparator<ContestNotification>(){
+						    public int compare(ContestNotification o1, ContestNotification o2) {
+						    return o1.getName().compareToIgnoreCase(o2.getName());
+						    }
+						    }) ;
+			    }
+
+			    return result;
 
         } catch (ProjectServicesException pse) {
             logger.error("ProjectServices operation failed in the contest service facade.", pse);
