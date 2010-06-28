@@ -1,0 +1,11 @@
+Starting audit...
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\ActiveContestPrizeIncreasingAction.java:173:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\ActiveContestPrizeRetrievalAction.java:90:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\ActiveContestScheduleExtensionAction.java:133:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\ActiveContestScheduleRetrievalAction.java:90:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\ContestReceiptRetrievalAction.java:90:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\ContestReceiptSendingAction.java:124:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\GamePlanRetrievalAction.java:116:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\ProjectContestDataRetrievalAction.java:94:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\main\com\topcoder\direct\services\view\action\contest\launch\WikiLinkRetrievalAction.java:154:11: Catching 'Exception' is not allowed.
+Audit done.

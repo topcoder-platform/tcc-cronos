@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <bean id="validationErrorsInterceptor"
+        class="com.topcoder.direct.services.view.action.contest.launch.ValidationErrorsInterceptor">
+    </bean>
+
+    <bean id="mockActionInterceptor"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockActionInterceptor">
+    </bean>
+
+    <bean id="contestServiceFacade"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockContestServiceFacade">
+    </bean>
+
+    <bean id="directServiceFacade"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockDirectServiceFacade">
+    </bean>
+
+    <!-- =========================== -->
+    <!-- action beans                -->
+    <!-- =========================== -->
+    
+    <bean id="activeContestPrizeIncreasingAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockActiveContestPrizeIncreasingAction">
+        <property name="directServiceFacade" ref="directServiceFacade"></property>
+    </bean>
+
+    <bean id="activeContestPrizeRetrievalAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockActiveContestPrizeRetrievalAction">
+        <property name="directServiceFacade" ref="directServiceFacade"></property>
+    </bean>
+
+    <bean id="activeContestScheduleExtensionAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockActiveContestScheduleExtensionAction">
+        <property name="directServiceFacade" ref="directServiceFacade"></property>
+    </bean>
+
+    <bean id="activeContestScheduleRetrievalAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockActiveContestScheduleRetrievalAction">
+        <property name="directServiceFacade" ref="directServiceFacade"></property>
+    </bean>
+
+    <bean id="contestReceiptRetrievalAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockContestReceiptRetrievalAction">
+        <property name="directServiceFacade" ref="directServiceFacade"></property>
+    </bean>
+
+    <bean id="contestReceiptSendingAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockContestReceiptSendingAction">
+        <property name="directServiceFacade" ref="directServiceFacade"></property>
+    </bean>
+
+    <bean id="gamePlanRetrievalAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockGamePlanRetrievalAction">
+        <property name="directServiceFacade" ref="directServiceFacade"></property>
+    </bean>
+
+    <bean id="projectContestDataRetrievalAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockProjectContestDataRetrievalAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+    
+    <bean id="wikiLinkRetrievalAction"
+        class="com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction">
+        <property name="contestServiceFacade" ref="contestServiceFacade"></property>
+    </bean>
+    
+</beans>
+

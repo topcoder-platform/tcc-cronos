@@ -1,0 +1,1037 @@
+<html xmlns:lxslt="http://xml.apache.org/xslt" xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Unit Test Results: com.topcoder.direct.services.view.action.contest.launch.AllTests</title>
+<link rel="stylesheet" type="text/css" title="Style" href="../../../../../../../../stylesheet.css">
+<script type="text/javascript" language="JavaScript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.topcoder.direct.services.view.action.contest.launch.AllTests'] = new Array();
+    
+        cur['ant.core.lib'] = 'D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\build.xml';
+    
+        cur['ant.file.Dependency Import'] = 'E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\build-dependencies.xml';
+    
+        cur['ant.file.TopCoder Java Generic Build'] = 'E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\build.xml';
+    
+        cur['ant.home'] = 'D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910';
+    
+        cur['ant.java.version'] = '1.5';
+    
+        cur['ant.library.dir'] = 'D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib';
+    
+        cur['ant.project.name'] = 'TopCoder Java Generic Build';
+    
+        cur['ant.version'] = 'Apache Ant version 1.7.0 compiled on December 13 2006';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['basedir'] = 'E:\\review\\direct_struts_action_3_1.0.0_dev_submission';
+    
+        cur['build_classdir'] = 'build/classes';
+    
+        cur['build_distdir'] = 'build/dist';
+    
+        cur['build_docsdir'] = 'build/docs';
+    
+        cur['build_javadocsdir'] = 'build/docs/javadocs';
+    
+        cur['build_targetclassdir'] = 'build/targetclasses';
+    
+        cur['build_tcsdistdir'] = 'build/dist/direct_struts_action_3-1.0.0';
+    
+        cur['build_testclassdir'] = 'build/testClasses';
+    
+        cur['build_war_dir'] = 'build/war';
+    
+        cur['builddir'] = 'build';
+    
+        cur['cobertura.datafile'] = 'log/cobertura.ser';
+    
+        cur['cobertura.dir'] = 'e:/tcs/lib/third_party/cobertura/1.8';
+    
+        cur['component'] = 'Direct Struts Action 3';
+    
+        cur['component_path'] = 'direct_struts_action_3/1.0.0';
+    
+        cur['component_version'] = '1.0.0';
+    
+        cur['component.bootclasspath'] = '${java_1_5_bootclasspath}';
+    
+        cur['component.dist.jar'] = 'build/dist/direct_struts_action_3-1.0.0.jar';
+    
+        cur['component.distfilename'] = 'direct_struts_action_3';
+    
+        cur['component.jar'] = 'build/dist/lib/tcs/direct_struts_action_3/1.0.0/direct_struts_action_3.jar';
+    
+        cur['component.mainclass'] = '';
+    
+        cur['component.name'] = 'Direct Struts Action 3';
+    
+        cur['component.package'] = 'com.topcoder.direct.services.view.action.contest.launch';
+    
+        cur['component.packagedir'] = 'com/topcoder/direct/services/view/action/contest/launch';
+    
+        cur['component.target'] = '1.5';
+    
+        cur['component.tests.jar'] = 'build/dist/lib/tcs/direct_struts_action_3_tests.jar';
+    
+        cur['component.version.build'] = '1';
+    
+        cur['component.version.major'] = '1';
+    
+        cur['component.version.micro'] = '0';
+    
+        cur['component.version.minor'] = '0';
+    
+        cur['configdir'] = 'conf';
+    
+        cur['debug'] = 'off';
+    
+        cur['design_dist.jar'] = 'direct_struts_action_3_1.0.0_design_dist.jar';
+    
+        cur['design_submission.jar'] = 'direct_struts_action_3_1.0.0_design_submission.jar';
+    
+        cur['dev_dist.jar'] = 'direct_struts_action_3_1.0.0_dev_dist.jar';
+    
+        cur['dev_submission.jar'] = 'direct_struts_action_3_1.0.0_dev_submission.jar';
+    
+        cur['dist_coverage'] = 'build/dist/direct_struts_action_3-1.0.0/docs/coverage';
+    
+        cur['dist_docpackage'] = 'build/doc_package';
+    
+        cur['dist_docs'] = 'build/dist/direct_struts_action_3-1.0.0/docs';
+    
+        cur['dist_javadocs'] = 'build/dist/direct_struts_action_3-1.0.0/docs/javadocs';
+    
+        cur['dist_lib'] = 'build/dist/lib/tcs';
+    
+        cur['distfilename'] = 'direct_struts_action_3';
+    
+        cur['docpackage.jar'] = 'direct_struts_action_3_docs.jar';
+    
+        cur['docsdir'] = 'docs';
+    
+        cur['eclipse.pdebuild.home'] = '/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./';
+    
+        cur['eclipse.pdebuild.scripts'] = '/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/';
+    
+        cur['eclipse.pdebuild.templates'] = '/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/';
+    
+        cur['ext_libdir'] = 'e:/tcs/lib/third_party';
+    
+        cur['file.encoding'] = 'Cp1252';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['instrumented.dir'] = 'build/instrumented';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\build\\testClasses;e:\\tcs\\lib\\third_party\\junit\\4.5\\junit.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\base_exception.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\configuration_api.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\configuration_manager.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\configuration_persistence.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\data_validation.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\id_generator.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\javaee\\activation-1.1.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\javaee\\javaee.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\json-lib-2.3-jdk15.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\logging_wrapper.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\mock.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\object_factory.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\object_factory_configuration_api_plugin.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\object_formatter.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\search_builder.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\security.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\shared.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\com.springsource.org.aopalliance-1.0.0.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.aop-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.asm-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.beans-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.context-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.core-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.expression-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.test-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.web-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\spring\\org.springframework.web.servlet-3.0.1.RELEASE-A.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\commons-fileupload-1.2.1.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\commons-io-1.3.2.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\commons-lang-2.3.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\commons-logging-1.0.4.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\commons-logging-api-1.1.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\freemarker-2.3.15.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\ognl-2.7.3.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\struts2-convention-plugin-2.1.8.1.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\struts2-core-2.1.8.1.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\struts2-junit-plugin-2.1.8.1.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\struts2-spring-plugin-2.1.8.1.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\struts-2.1.8.1\\xwork-core-2.1.6.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\tcwebcommon.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_reflib\\typesafe_enum.jar;D:\\jboss-4.2.2.GA\\client\\activation.jar;D:\\jboss-4.2.2.GA\\client\\antlr.jar;D:\\jboss-4.2.2.GA\\client\\avalon-framework.jar;D:\\jboss-4.2.2.GA\\client\\commons-codec.jar;D:\\jboss-4.2.2.GA\\client\\commons-httpclient.jar;D:\\jboss-4.2.2.GA\\client\\commons-logging.jar;D:\\jboss-4.2.2.GA\\client\\concurrent.jar;D:\\jboss-4.2.2.GA\\client\\ejb3-persistence.jar;D:\\jboss-4.2.2.GA\\client\\getopt.jar;D:\\jboss-4.2.2.GA\\client\\hibernate-annotations.jar;D:\\jboss-4.2.2.GA\\client\\hibernate-client.jar;D:\\jboss-4.2.2.GA\\client\\jacorb.jar;D:\\jboss-4.2.2.GA\\client\\javassist.jar;D:\\jboss-4.2.2.GA\\client\\jaxb-api.jar;D:\\jboss-4.2.2.GA\\client\\jaxb-impl.jar;D:\\jboss-4.2.2.GA\\client\\jaxb-xjc.jar;D:\\jboss-4.2.2.GA\\client\\jboss-annotations-ejb3.jar;D:\\jboss-4.2.2.GA\\client\\jboss-aop-jdk50-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-aspect-jdk50-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-common-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-deployment.jar;D:\\jboss-4.2.2.GA\\client\\jboss-ejb3-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-ejb3x.jar;D:\\jboss-4.2.2.GA\\client\\jboss-iiop-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-j2ee.jar;D:\\jboss-4.2.2.GA\\client\\jboss-jaxrpc.jar;D:\\jboss-4.2.2.GA\\client\\jboss-jaxws.jar;D:\\jboss-4.2.2.GA\\client\\jboss-jsr77-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-remoting.jar;D:\\jboss-4.2.2.GA\\client\\jboss-saaj.jar;D:\\jboss-4.2.2.GA\\client\\jboss-serialization.jar;D:\\jboss-4.2.2.GA\\client\\jboss-srp-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-system-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-transaction-client.jar;D:\\jboss-4.2.2.GA\\client\\jboss-xml-binding.jar;D:\\jboss-4.2.2.GA\\client\\jbossall-client.jar;D:\\jboss-4.2.2.GA\\client\\jbosscx-client.jar;D:\\jboss-4.2.2.GA\\client\\jbossha-client.jar;D:\\jboss-4.2.2.GA\\client\\jbossjmx-ant.jar;D:\\jboss-4.2.2.GA\\client\\jbossmq-client.jar;D:\\jboss-4.2.2.GA\\client\\jbosssx-client.jar;D:\\jboss-4.2.2.GA\\client\\jbossws-client.jar;D:\\jboss-4.2.2.GA\\client\\jbossws-common.jar;D:\\jboss-4.2.2.GA\\client\\jbossws-framework.jar;D:\\jboss-4.2.2.GA\\client\\jbossws-jboss42.jar;D:\\jboss-4.2.2.GA\\client\\jbossws-spi.jar;D:\\jboss-4.2.2.GA\\client\\jmx-client.jar;D:\\jboss-4.2.2.GA\\client\\jmx-invoker-adaptor-client.jar;D:\\jboss-4.2.2.GA\\client\\jnp-client.jar;D:\\jboss-4.2.2.GA\\client\\log4j.jar;D:\\jboss-4.2.2.GA\\client\\logkit.jar;D:\\jboss-4.2.2.GA\\client\\mail.jar;D:\\jboss-4.2.2.GA\\client\\policy.jar;D:\\jboss-4.2.2.GA\\client\\scout.jar;D:\\jboss-4.2.2.GA\\client\\servlet-api.jar;D:\\jboss-4.2.2.GA\\client\\stax-api.jar;D:\\jboss-4.2.2.GA\\client\\stax-ex.jar;D:\\jboss-4.2.2.GA\\client\\streambuffer.jar;D:\\jboss-4.2.2.GA\\client\\trove.jar;D:\\jboss-4.2.2.GA\\client\\wsdl4j.jar;D:\\jboss-4.2.2.GA\\client\\wstx.jar;D:\\jboss-4.2.2.GA\\client\\xmlsec.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\activation.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\antlr.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\autonumber-plugin.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\bcel.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\bindingservice-plugin.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\bsf.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\bsh-deployer.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\bsh.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\cglib.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\commons-codec.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\commons-collections.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\commons-httpclient.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\commons-logging.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\db2jcc.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\dom4j.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\ejb3-persistence.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\el-api.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\hibernate-annotations.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\hibernate-entitymanager.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\hibernate3.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\hsqldb-plugin.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\hsqldb.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\javassist.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jaxen.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-cache-jdk50.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-common-jdbc-wrapper.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-ejb3x.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-hibernate.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-j2ee.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-jaxrpc.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-jaxws.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-jca.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-jsr77.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-jsr88.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-management.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-monitoring.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-remoting-int.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-remoting.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-saaj.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-serialization.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-srp.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-transaction.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss-vfs.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jboss.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossjta-integration.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossjta.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossmq.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbosssx.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossts-common.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossws-common.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossws-framework.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossws-jboss42.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jbossws-spi.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jmx-adaptor-plugin.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jnpserver.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\joesnmp.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jpl-pattern.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jpl-util.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\jsp-api.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\log4j-snmp-appender.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\log4j.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\mail-plugin.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\mail.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\properties-plugin.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\quartz.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\scheduler-plugin-example.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\scheduler-plugin.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\servlet-api.jar;D:\\jboss-4.2.2.GA\\server\\default\\lib\\xmlentitymgr.jar;D:\\jboss-4.2.2.GA\\lib\\endorsed\\xercesImpl.jar;D:\\jboss-4.2.2.GA\\lib\\endorsed\\xalan.jar;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\build\\classes;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\conf;E:\\review\\direct_struts_action_3_1.0.0_dev_submission\\test_files;E:\\review\\direct_struts_action_3_1.0.0_dev_submission;d:\\PROGRA~1\\IBM\\SQLLIB\\java\\db2java.zip;d:\\PROGRA~1\\IBM\\SQLLIB\\java\\db2jcc.jar;d:\\PROGRA~1\\IBM\\SQLLIB\\java\\sqlj.zip;d:\\PROGRA~1\\IBM\\SQLLIB\\java\\db2jcc_license_cu.jar;d:\\PROGRA~1\\IBM\\SQLLIB\\bin;d:\\PROGRA~1\\IBM\\SQLLIB\\java\\common.jar;D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant-launcher.jar;D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant.jar;D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant-junit.jar';
+    
+        cur['java.class.version'] = '49.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre';
+    
+        cur['java.io.tmpdir'] = 'D:\\TEMP\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\bin;.;C:\\WINDOWS\\system32;C:\\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\system32\\wbem;d:\\progra~1\\f-secure\\sshtri~1;c:\\program files\\ibm\\gsk8\\lib;C:\\Program Files\\ATI Technologies\\ATI.ACE\\Core-Static;C:\\Program Files\\Common Files\\Thunder Network\\KanKan\\Codecs;C:\\Program Files\\ThinkPad Wireless LAN Adapter Software;d:\\PROGRA~1\\IBM\\SQLLIB\\BIN;d:\\PROGRA~1\\IBM\\SQLLIB\\FUNCTION;d:\\PROGRA~1\\IBM\\SQLLIB\\SAMPLES\\REPL;E:\\Program Files\\TortoiseSVN\\bin;c:\\Program Files\\Microsoft SQL Server\\90\\Tools\\binn\\;C:\\PROGRA~1\\ibm\\gsk7\\bin;C:\\PROGRA~1\\ibm\\gsk7\\lib;d:\\CTEX\\MiKTeX\\miktex\\bin;d:\\CTEX\\CTeX\\ctex\\bin;d:\\CTEX\\CTeX\\cct\\bin;d:\\CTEX\\CTeX\\ty\\bin;d:\\CTEX\\Ghostscript\\gs8.70\\bin;d:\\CTEX\\GSview\\gsview;d:\\CTEX\\WinEdt;e:\\oracle\\product\\10.1.0\\Db_1\\bin;e:\\oracle\\product\\10.1.0\\Db_1\\jre\\1.4.2\\bin\\client;e:\\oracle\\product\\10.1.0\\Db_1\\jre\\1.4.2\\bin;D:\\apache-ant-1.7.1\\bin;C:\\Program Files\\StormII\\Codec;C:\\Program Files\\StormII;E:\\cpp\\boost_1_43_0';
+    
+        cur['java.runtime.name'] = 'Java(TM) 2 Runtime Environment, Standard Edition';
+    
+        cur['java.runtime.version'] = '1.5.0_21-b01';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.5';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.5.0_21';
+    
+        cur['java.vm.info'] = 'mixed mode, sharing';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) Client VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '1.5.0_21-b01';
+    
+        cur['javac.encoding'] = 'UTF-8';
+    
+        cur['javadoc.jar'] = 'javadocs.jar';
+    
+        cur['javadoc.locale'] = 'en_US';
+    
+        cur['javadocsdir'] = 'docs/javadocs';
+    
+        cur['javamain'] = 'src/java/main';
+    
+        cur['javasrc'] = 'src/java';
+    
+        cur['javatests'] = 'src/java/tests';
+    
+        cur['jboss.home'] = 'D:/jboss-4.2.2.GA';
+    
+        cur['junit.jar'] = 'e:/tcs/lib/third_party/junit/3.8.2/junit.jar';
+    
+        cur['junit4.jar'] = 'e:/tcs/lib/third_party/junit/4.5/junit.jar';
+    
+        cur['libdir'] = '../tcs/lib';
+    
+        cur['line.separator'] = ' ';
+    
+        cur['manifest_file'] = 'build/dist/direct_struts_action_3-1.0.0/META-INF//MANIFEST.MF';
+    
+        cur['manifest_file_path'] = 'build/dist/direct_struts_action_3-1.0.0/META-INF/';
+    
+        cur['os.arch'] = 'x86';
+    
+        cur['os.name'] = 'Windows XP';
+    
+        cur['os.version'] = '5.1';
+    
+        cur['package'] = 'com.topcoder.direct.services.view.action.contest.launch';
+    
+        cur['packagedir'] = 'com/topcoder/direct/services/view/action/contest/launch';
+    
+        cur['path.separator'] = ';';
+    
+        cur['reports'] = 'log/reports';
+    
+        cur['srcdir'] = 'src';
+    
+        cur['sun.arch.data.model'] = '32';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\i18n.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'GBK';
+    
+        cur['sun.management.compiler'] = 'HotSpot Client Compiler';
+    
+        cur['sun.os.patch.level'] = 'Service Pack 3';
+    
+        cur['target_libdir'] = 'e:/tcs/lib/tcs';
+    
+        cur['tcs_libdir'] = 'e:/tcs/lib/tcs';
+    
+        cur['test_reflib'] = 'test_reflib';
+    
+        cur['testfiles'] = 'test_files';
+    
+        cur['testlogdir'] = 'log';
+    
+        cur['user.country'] = 'US';
+    
+        cur['user.dir'] = 'E:\\review\\direct_struts_action_3_1.0.0_dev_submission';
+    
+        cur['user.home'] = 'D:';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'Administrator';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+        cur['verbose'] = 'no';
+    
+        cur['war_name'] = 'demo.war';
+    </script><script type="text/javascript" language="JavaScript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.topcoder.direct.services.view.action.contest.launch.AllTests</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap="nowrap">Time(s)</th><th nowrap="nowrap">Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Pass">
+<td><a title="Display all tests" href="0_AllTests.html">AllTests</a></td><td><a title="Display all tests" href="0_AllTests.html">232</a></td><td>0</td><td>0</td><td>19.359</td><td>2010-06-28T14:53:08</td><td>PC001</td>
+</tr>
+</table>
+<h2>Tests</h2>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap="nowrap">Time(s)</th>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>1.843</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.204</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy1"></a>test_executeAction_Accuracy1</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy2"></a>test_executeAction_Accuracy2</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_OldMilestonePrizesNull"></a>test_executeAction_OldMilestonePrizesNull</td><td>Success</td><td></td><td>0.296</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_ContestNotFound"></a>test_executeAction_ContestNotFound</td><td>Success</td><td></td><td>0.188</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_ContestPrizeNotIncreased"></a>test_executeAction_ContestPrizeNotIncreased</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MilestonePrizeNotIncreased"></a>test_executeAction_MilestonePrizeNotIncreased</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_WrongNumberOfContestPrizes"></a>test_setContestPrizes_WrongNumberOfContestPrizes</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_WrongNumberOfMilestonePrizes"></a>test_setContestPrizes_WrongNumberOfMilestonePrizes</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestId_Accuracy"></a>test_getContestId_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_Accuracy"></a>test_setContestId_Accuracy</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_ContestIdNotPositive"></a>test_setContestId_ContestIdNotPositive</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_isStudio_Accuracy"></a>test_isStudio_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setStudio_Accuracy"></a>test_setStudio_Accuracy</td><td>Success</td><td></td><td>0.156</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestPrizes_Accuracy"></a>test_getContestPrizes_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_Accuracy"></a>test_setContestPrizes_Accuracy</td><td>Success</td><td></td><td>0.079</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_Null"></a>test_setContestPrizes_Null</td><td>Success</td><td></td><td>0.156</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_NullElement"></a>test_setContestPrizes_NullElement</td><td>Success</td><td></td><td>0.187</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_NegativePrize"></a>test_setContestPrizes_NegativePrize</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_NaNPrize"></a>test_setContestPrizes_NaNPrize</td><td>Success</td><td></td><td>0.156</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_NegativeInfinityPrize"></a>test_setContestPrizes_NegativeInfinityPrize</td><td>Success</td><td></td><td>0.157</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_OnlyOnePrize"></a>test_setContestPrizes_OnlyOnePrize</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_TooManyDecimalPlacesForCents"></a>test_setContestPrizes_TooManyDecimalPlacesForCents</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes_SecondPlacePrizeTooLow"></a>test_setContestPrizes_SecondPlacePrizeTooLow</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getMilestonePrizes_Accuracy"></a>test_getMilestonePrizes_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes_Accuracy"></a>test_setMilestonePrizes_Accuracy</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes_Null"></a>test_setMilestonePrizes_Null</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes_NullElement"></a>test_setMilestonePrizes_NullElement</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes_NegativePrize"></a>test_setMilestonePrizes_NegativePrize</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes_NaNPrize"></a>test_setMilestonePrizes_NaNPrize</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes_TooManyDecimalPlacesForCents"></a>test_setMilestonePrizes_TooManyDecimalPlacesForCents</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestId_Accuracy"></a>test_getContestId_Accuracy</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_Accuracy"></a>test_setContestId_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_ContestIdNotPositive"></a>test_setContestId_ContestIdNotPositive</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_isStudio_Accuracy"></a>test_isStudio_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setStudio_Accuracy"></a>test_setStudio_Accuracy</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy"></a>test_executeAction_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_DirectServiceFacadeException"></a>test_executeAction_DirectServiceFacadeException</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestId_Accuracy"></a>test_getContestId_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_Accuracy"></a>test_setContestId_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_ContestIdNotPositive"></a>test_setContestId_ContestIdNotPositive</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_isStudio_Accuracy"></a>test_isStudio_Accuracy</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setStudio_Accuracy"></a>test_setStudio_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy"></a>test_executeAction_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_DirectServiceFacadeException"></a>test_executeAction_DirectServiceFacadeException</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getRegistrationExtension_Accuracy"></a>test_getRegistrationExtension_Accuracy</td><td>Success</td><td></td><td>0.079</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setRegistrationExtension_Accuracy"></a>test_setRegistrationExtension_Accuracy</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setRegistrationExtension_RegistrationExtensionNotPositive"></a>test_setRegistrationExtension_RegistrationExtensionNotPositive</td><td>Success</td><td></td><td>0.218</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getMilestoneExtension_Accuracy"></a>test_getMilestoneExtension_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestoneExtension_Accuracy"></a>test_setMilestoneExtension_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestoneExtension_MilestoneExtensionNotPositive"></a>test_setMilestoneExtension_MilestoneExtensionNotPositive</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getSubmissionExtension_Accuracy"></a>test_getSubmissionExtension_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setSubmissionExtension_Accuracy"></a>test_setSubmissionExtension_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setSubmissionExtension_SubmissionExtensionNotPositive"></a>test_setSubmissionExtension_SubmissionExtensionNotPositive</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.079</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestId_Accuracy"></a>test_getContestId_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_Accuracy"></a>test_setContestId_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_ContestIdNotPositive"></a>test_setContestId_ContestIdNotPositive</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_isStudio_Accuracy"></a>test_isStudio_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setStudio_Accuracy"></a>test_setStudio_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy"></a>test_executeAction_Accuracy</td><td>Success</td><td></td><td>0.079</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_DirectServiceFacadeException"></a>test_executeAction_DirectServiceFacadeException</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestId_Accuracy"></a>test_getContestId_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_Accuracy"></a>test_setContestId_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_ContestIdNotPositive"></a>test_setContestId_ContestIdNotPositive</td><td>Success</td><td></td><td>0.281</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_isStudio_Accuracy"></a>test_isStudio_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setStudio_Accuracy"></a>test_setStudio_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy"></a>test_executeAction_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_ContestNotFoundException"></a>test_executeAction_ContestNotFoundException</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy1"></a>test_executeAction_Accuracy1</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy2"></a>test_executeAction_Accuracy2</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestId_Accuracy"></a>test_getContestId_Accuracy</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_Accuracy"></a>test_setContestId_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_ContestIdNotPositive"></a>test_setContestId_ContestIdNotPositive</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_isStudio_Accuracy"></a>test_isStudio_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setStudio_Accuracy"></a>test_setStudio_Accuracy</td><td>Success</td><td></td><td>0.079</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_ContestNotFoundException"></a>test_executeAction_ContestNotFoundException</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getAdditionalEmailAddresses_Accuracy"></a>test_getAdditionalEmailAddresses_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses_Accuracy"></a>test_setAdditionalEmailAddresses_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses_TooLong"></a>test_setAdditionalEmailAddresses_TooLong</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses_InvalidEmail"></a>test_setAdditionalEmailAddresses_InvalidEmail</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses_EmptyEmail"></a>test_setAdditionalEmailAddresses_EmptyEmail</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.079</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy"></a>test_executeAction_Accuracy</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_ErrorFetchingData"></a>test_executeAction_ErrorFetchingData</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectId_Accuracy"></a>test_getProjectId_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setProjectId_Accuracy"></a>test_setProjectId_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setProjectId_ProjectIdNotPositive"></a>test_setProjectId_ProjectIdNotPositive</td><td>Success</td><td></td><td>0.282</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy"></a>test_executeAction_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectId_Accuracy"></a>test_getProjectId_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setProjectId_Accuracy"></a>test_setProjectId_Accuracy</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setProjectId_ProjectIdNotPositive"></a>test_setProjectId_ProjectIdNotPositive</td><td>Success</td><td></td><td>0.218</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_ErrorGettingProjectData"></a>test_executeAction_ErrorGettingProjectData</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testConstructor"></a>testConstructor</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingFacade"></a>test_executeAction_MissingFacade</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getContestId_Accuracy"></a>test_getContestId_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_Accuracy"></a>test_setContestId_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestId_ContestIdNotPositive"></a>test_setContestId_ContestIdNotPositive</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_isStudio_Accuracy"></a>test_isStudio_Accuracy</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setStudio_Accuracy"></a>test_setStudio_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_Accuracy"></a>test_executeAction_Accuracy</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectId_Accuracy"></a>test_getProjectId_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setProjectId_Accuracy"></a>test_setProjectId_Accuracy</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setProjectId_ProjectIdNotPositive"></a>test_setProjectId_ProjectIdNotPositive</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingAssetDTO"></a>test_executeAction_MissingAssetDTO</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_MissingCategory"></a>test_executeAction_MissingCategory</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_NullContestType"></a>test_executeAction_NullContestType</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_executeAction_NullContestName"></a>test_executeAction_NullContestName</td><td>Success</td><td></td><td>0.187</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getLinkTemplate_Accuracy"></a>test_getLinkTemplate_Accuracy</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLinkTemplate_Accuracy"></a>test_setLinkTemplate_Accuracy</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLinkTemplate_Null"></a>test_setLinkTemplate_Null</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLinkTemplate_MissingContestType"></a>test_setLinkTemplate_MissingContestType</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLinkTemplate_MissingContestName"></a>test_setLinkTemplate_MissingContestName</td><td>Success</td><td></td><td>0.281</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction_1"></a>testExecuteAction_1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testActiveContestPrizeIncreasingAction"></a>testActiveContestPrizeIncreasingAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestId"></a>testGetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestId"></a>testSetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsStudio"></a>testIsStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStudio"></a>testSetStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestPrizes"></a>testGetContestPrizes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestPrizes"></a>testSetContestPrizes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMilestonePrizes"></a>testGetMilestonePrizes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMilestonePrizes"></a>testSetMilestonePrizes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestId"></a>testGetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestId"></a>testSetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsStudio"></a>testIsStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStudio"></a>testSetStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testActiveContestPrizeRetrievalAction"></a>testActiveContestPrizeRetrievalAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestId"></a>testGetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestId"></a>testSetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsStudio"></a>testIsStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStudio"></a>testSetStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testActiveContestScheduleExtensionAction"></a>testActiveContestScheduleExtensionAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetRegistrationExtension"></a>testGetRegistrationExtension</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetRegistrationExtension"></a>testSetRegistrationExtension</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMilestoneExtension"></a>testGetMilestoneExtension</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMilestoneExtension"></a>testSetMilestoneExtension</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSubmissionExtension"></a>testGetSubmissionExtension</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetSubmissionExtension"></a>testSetSubmissionExtension</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestId"></a>testGetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestId"></a>testSetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsStudio"></a>testIsStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStudio"></a>testSetStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testActiveContestScheduleRetrievalAction"></a>testActiveContestScheduleRetrievalAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestId"></a>testGetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestId"></a>testSetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsStudio"></a>testIsStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStudio"></a>testSetStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testContestReceiptRetrievalAction"></a>testContestReceiptRetrievalAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction_1"></a>testExecuteAction_1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestId"></a>testGetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestId"></a>testSetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsStudio"></a>testIsStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStudio"></a>testSetStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testContestReceiptSendingAction"></a>testContestReceiptSendingAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetAdditionalEmailAddresses"></a>testGetAdditionalEmailAddresses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetAdditionalEmailAddresses"></a>testSetAdditionalEmailAddresses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGamePlanRetrievalAction"></a>testGamePlanRetrievalAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetProjectId"></a>testGetProjectId</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetProjectId"></a>testSetProjectId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetProjectId"></a>testGetProjectId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetProjectId"></a>testSetProjectId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testProjectContestDataRetrievalAction"></a>testProjectContestDataRetrievalAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testExecuteAction"></a>testExecuteAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContestId"></a>testGetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContestId"></a>testSetContestId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsStudio"></a>testIsStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStudio"></a>testSetStudio</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetProjectId"></a>testGetProjectId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetProjectId"></a>testSetProjectId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testWikiLinkRetrievalAction"></a>testWikiLinkRetrievalAction</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLinkTemplate"></a>testGetLinkTemplate</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetLinkTemplate"></a>testSetLinkTemplate</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes3"></a>test_setContestPrizes3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes4"></a>test_setContestPrizes4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes5"></a>test_setContestPrizes5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes6"></a>test_setContestPrizes6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setContestPrizes7"></a>test_setContestPrizes7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes5"></a>test_setMilestonePrizes5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setMilestonePrizes7"></a>test_setMilestonePrizes7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses3"></a>test_setAdditionalEmailAddresses3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses4"></a>test_setAdditionalEmailAddresses4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses5"></a>test_setAdditionalEmailAddresses5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setAdditionalEmailAddresses6"></a>test_setAdditionalEmailAddresses6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_ActiveContestPrizeIncreasingAction_1_100"></a>test_ActiveContestPrizeIncreasingAction_1_100</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_ActiveContestPrizeRetrievalAction_1_100"></a>test_ActiveContestPrizeRetrievalAction_1_100</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_ActiveContestScheduleExtensionAction_1_100"></a>test_ActiveContestScheduleExtensionAction_1_100</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_ActiveContestScheduleRetrievalAction_1_100"></a>test_ActiveContestScheduleRetrievalAction_1_100</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_ContestReceiptRetrievalAction_1_100"></a>test_ContestReceiptRetrievalAction_1_100</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_ContestReceiptSendingAction_1_100"></a>test_ContestReceiptSendingAction_1_100</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_GamePlanRetrievalAction_1_100"></a>test_GamePlanRetrievalAction_1_100</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_ProjectContestDataRetrievalAction_1_100"></a>test_ProjectContestDataRetrievalAction_1_100</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_WikiLinkRetrievalAction_5_5"></a>test_WikiLinkRetrievalAction_5_5</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.topcoder.direct.services.view.action.contest.launch.AllTests');">
+                    Properties &raquo;
+                </a>
+</div>
+<div class="Properties">
+<a href="./0_AllTests-out.txt">
+                        System.out &raquo;
+                    </a>
+</div>
+</body>
+</html>

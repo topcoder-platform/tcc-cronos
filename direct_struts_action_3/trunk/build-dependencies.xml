@@ -1,0 +1,92 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <property name="jboss.home" value="D:/jboss-4.2.2.GA" />
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5" />
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+    <!-- TCS dependencies -->
+    <path id="all_libs">
+        <fileset dir="test_reflib">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${jboss.home}/client">
+            <include name="**/*.jar" />
+            <exclude name="**/jaxws-rt.jar" />
+            <exclude name="**/jaxws-tools.jar" />
+        </fileset>
+        <fileset dir="${jboss.home}/server/default/lib">
+            <include name="**/*.jar" />
+        </fileset>
+        <pathelement location="${jboss.home}/lib/endorsed/xercesImpl.jar" />
+        <pathelement location="${jboss.home}/lib/endorsed/xalan.jar" />
+    </path>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit4.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
+
+    <path id="component.tcs-dependencies">
+        <path refid="all_libs" />
+    </path>
+
+    <path id="component.3rdParty-dependencies" />
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit4.jar}" />
+    </path>
+
+    <!-- deployment targets for jboss -->
+    <property name="war_name" value="demo.war" />
+    <property name="build_war_dir" value="build/war" />
+
+    <target name="war" depends="compile, compile_tests">
+        <delete dir="${build_war_dir}" />
+
+        <copy todir="${build_war_dir}/${war_name}/WEB-INF/classes/">
+            <fileset dir="${build_classdir}">
+                <include name="**/*" />
+            </fileset>
+            <fileset dir="${build_testclassdir}">
+                <include name="**/*" />
+            </fileset>
+            <fileset dir="test_files">
+                <include name="com/**/*" />
+            </fileset>
+        </copy>
+
+        <copy todir="${build_war_dir}/${war_name}/WEB-INF/lib" flatten="true">
+            <fileset dir="test_reflib">
+                <include name="**/*.jar" />
+            </fileset>
+        </copy>
+        <copy file="${junit.jar}" todir="${build_war_dir}/${war_name}/WEB-INF/lib" />
+
+        <copy todir="${build_war_dir}/${war_name}">
+            <fileset dir="test_files/war">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <copy file="test_files/applicationContext.xml" todir="${build_war_dir}/${war_name}/WEB-INF" />
+        <copy file="test_files/struts.xml" todir="${build_war_dir}/${war_name}/WEB-INF/classes" />
+        <copy file="test_files/struts.properties" todir="${build_war_dir}/${war_name}/WEB-INF/classes" />
+    </target>
+
+
+    <target name="deployToJBoss" depends="war,undeployToJBoss">
+
+        <copy todir="${jboss.home}/server/default/deploy/${war_name}" overwrite="true">
+            <fileset dir="${build_war_dir}/${war_name}">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="undeployToJBoss">
+        <delete dir="${jboss.home}/server/default/deploy/${war_name}" />
+    </target>
+
+
+</project>

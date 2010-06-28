@@ -1,0 +1,39 @@
+=====================================================
+Setup:
+
+- Follow the required steps to test the component in section 4.1 of the CS (in docs folder),
+  as it has all the instructions you need to setup your environment and run the tests/demo.
+
+- Dependency code is in test_files\mock.
+
+=====================================================
+Other Notes:
+
+- There was some confusion in forum on validations. For example, ARS 1.2.9.1 says for contest prizes
+  (both for studio and software contests) that 1st/2nd place prizes are required to be present and 2nd place prize
+  must be >= 20% of first place prize. Please note, designer confirmed we *do* need to do these validations from the ARS.
+  *** Refer to second question from this thread: http://forums.topcoder.com/?module=Thread&threadID=678204&start=16
+
+- Note that designer also required that we validate at most 2 decimal places for cents.
+  http://forums.topcoder.com/?module=Thread&threadID=678204&start=2
+
+- Note that co-pilot confirmed that struts 2.1.8.1 is required for this comp (I updated dependencies
+  section of CS to reflect this change):
+  http://forums.topcoder.com/?module=Thread&threadID=678202&start=0
+
+- Package name was changed: http://forums.topcoder.com/?module=Thread&threadID=678321&start=0
+  I included the updated build.version and also build.xml with my submission.
+
+- There were a lot of other design changes, many definition changes also,
+  please check forum:
+  http://forums.topcoder.com/?module=Thread&threadID=678233&start=0
+  http://forums.topcoder.com/?module=Thread&threadID=678264&start=3
+  http://forums.topcoder.com/?module=Thread&threadID=678272&start=0
+  http://forums.topcoder.com/?module=Thread&threadID=678366&start=0
+  http://forums.topcoder.com/?module=Thread&threadID=678211&start=9
+  http://forums.topcoder.com/?module=Thread&threadID=678310&start=0
+  http://forums.topcoder.com/?module=Thread&threadID=678358&start=0
+  
+
+
+

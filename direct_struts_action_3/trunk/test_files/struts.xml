@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.convention.action.disableScanning" value="true" />
+    
+    <package name="tcs-default" extends="struts-default"
+        abstract="true">
+        <!-- Setup interceptors stack -->
+        <interceptors>
+            <interceptor name="validationErrors" class="validationErrorsInterceptor" />
+            <interceptor name="mock" class="mockActionInterceptor" />
+
+            <interceptor-stack name="defaultTCSStack">
+                <interceptor-ref name="mock" />
+                <interceptor-ref name="validationErrors" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+
+        <!--
+            Make the default one used for all actions unless otherwise
+            configured.
+        -->
+        <default-interceptor-ref name="defaultTCSStack" />
+
+    </package>
+
+    <package name="default" namespace="/" extends="tcs-default">
+
+        <action name="activeContestPrizeIncreasingAction" class="activeContestPrizeIncreasingAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="activeContestPrizeRetrievalAction" class="activeContestPrizeRetrievalAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="activeContestScheduleExtensionAction" class="activeContestScheduleExtensionAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="activeContestScheduleRetrievalAction" class="activeContestScheduleRetrievalAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="contestReceiptRetrievalAction" class="contestReceiptRetrievalAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="contestReceiptSendingAction" class="contestReceiptSendingAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="gamePlanRetrievalAction" class="gamePlanRetrievalAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="projectContestDataRetrievalAction" class="projectContestDataRetrievalAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="wikiLinkRetrievalAction" class="wikiLinkRetrievalAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+    </package>
+
+</struts>
