@@ -23,6 +23,8 @@ import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.phase.ContestDependencyAutomation;
 import com.topcoder.management.project.ContestSale;
+import com.topcoder.management.project.BillingProjectConfigType;
+import com.topcoder.management.project.BillingProjectConfiguration;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
@@ -634,7 +636,8 @@ public class ProjectServicesImpl implements ProjectServices {
         ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY, 
         ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, 
         ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY};
+        ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY};
 
     /**
      * <p>
@@ -2194,6 +2197,8 @@ public class ProjectServicesImpl implements ProjectServices {
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
                     .valueOf(requireApproval));
             // End BUGR-3616
+            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
+                    .valueOf(requirePostMortemPhase(billingProjectId)));
 
             for (Phase p : newProjectPhases.getAllPhases()) {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
@@ -2996,6 +3001,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 operator);
 
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, "false");
+            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, "false");
 
             // link it to the original project
             projectLinkManager.addProjectLink(projectId, projectData.getProjectHeader().getId(),
@@ -3860,6 +3866,34 @@ public class ProjectServicesImpl implements ProjectServices {
                     ex);
         }
 
+    }
+
+    /**
+     * Check if the billing project needs an post-mortem phase.
+     * 
+     * @param billingProjectId billing project id
+     * @return true if requires, false otherwise.
+     * @throws PersistenceException if any other error occurs.
+     */
+    private boolean requirePostMortemPhase(long billingProjectId) throws PersistenceException {
+        
+        BillingProjectConfiguration approvalConfig = projectManager.getBillingProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED);
+        
+        // if no billing project configuration for post-mortem phase, use TRUE by default
+        if (approvalConfig == null) {
+            return true;
+        } else {
+            String value = approvalConfig.getValue();
+            
+            // the value is not correctly set, use TRUE by default
+            if (value == null || value.trim().length() == 0) {
+                return true;
+            } else {
+                
+                // parse the value to boolean and return the result
+                return Boolean.valueOf(value);
+            }
+        }
     }
 
 }
