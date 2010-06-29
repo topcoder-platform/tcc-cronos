@@ -1,6 +1,6 @@
 <project name="Dependency Import" default="dist" basedir=".">
     <!-- property file defining the component's dependencies
-    <property name="jboss_home" value="${ext_libdir}/jboss/4.2.2.GA"/>
+    <property name="jboss_home" value="${ext_libdir}/jboss/4.2.3.GA"/>
     <property name="jboss_config_name" value="default"/>-->
 
     <!-- Properties used in compile_targets ANT target for JDK version 5 -->
@@ -13,6 +13,7 @@
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
     <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
+    <property name="security_manager.jar" value="${tcs_libdir}/security_manager/1.1/security_manager.jar" />
 
     <property name="security_facade.version" value="2.0.0" />
     <property name="security_facade.jar.name" value="security_facade.jar" />
@@ -83,6 +84,7 @@
         <pathelement location="${typesafe_enum.jar}" />
         <pathelement location="${security.jar}" />
         <pathelement location="${security_facade.jar}" />
+        <pathelement location="${security_manager.jar}" />
         <pathelement location="${configuration_api.jar}" />
         <pathelement location="${configuration_persistence.jar}" />
         <pathelement location="${object_factory.jar}" />
