@@ -6300,7 +6300,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         FullProjectData specReview = null;
         try {
-            specReview = projectServices.createSpecReview(projectId, specReviewPrize, String.valueOf(tcSubject.getUserId()));
+            specReview = projectServices.createSpecReview(projectId, specReviewPrize, String.valueOf(tcSubject.getUserId()), getUserName(tcSubject));
         } catch (ProjectServicesException e) {
             logger.error("Operation failed in ProjectServices.", e);
             throw new ContestServiceException("Operation failed in Project Services.", e);
