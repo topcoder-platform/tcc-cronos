@@ -1323,19 +1323,19 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * @throws IllegalArgumentException if operator is null or empty or prize is negative.
      * @since 1.3
      */
-    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String operator)
+    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String userId, String handle)
             throws ProjectServicesException {
 
         // check operator
-        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+        ExceptionUtils.checkNullOrEmpty(userId, null, null, "The parameter[userId] should not be null or empty.");
 
-        String method = "ProjectServicesBean#createSpecReview(" + projectId + ", " + specReviewPrize + ", " + operator
+        String method = "ProjectServicesBean#createSpecReview(" + projectId + ", " + specReviewPrize + ", " + userId
                 + ") method.";
         Util.log(logger, Level.INFO, "Enters " + method);
 
         FullProjectData specReview = null;
         try {
-            specReview = getProjectServices().createSpecReview(projectId, specReviewPrize, operator);
+            specReview = getProjectServices().createSpecReview(projectId, specReviewPrize, userId, handle);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;

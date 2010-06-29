@@ -602,6 +602,28 @@ public class ProjectServicesImpl implements ProjectServices {
     private static final String NOTES_PROJECT_PROPERTY_KEY = "Notes";
 
 
+     /**
+     * Private constant specifying resource handle
+     *
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_HANDLE = "Handle";
+
+     /**
+     * Private constant specifying resource pay
+     *
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_PAYMENT_STATUS = "Payment Status";
+
+    /**
+     * Private constant specifying resource pay
+     *
+     * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
+     */
+    private static final String RESOURCE_INFO_PAYMENT_STATUS_NA = "N/A";
+
+
     /**
      * <p>
      * Represents the project properties that need to be cloned when creating a specification review project
@@ -2890,14 +2912,14 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @since 1.3
      */
-    public FullProjectData createSpecReview( long projectId, double specReviewPrize, String operator)
+    public FullProjectData createSpecReview( long projectId, double specReviewPrize, String userId, String handle)
         throws ProjectServicesException {
 
         // check operator
-        ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
+        ExceptionUtils.checkNullOrEmpty(userId, null, null, "The parameter[userId] should not be null or empty.");
 
         String method = "ProjectServicesImpl#createSpecReview(" + projectId + ", " + specReviewPrize + ", " +
-            operator + ") method.";
+            userId + ") method.";
         log(Level.INFO, "Enters " + method);
 
         // check non-negative specification review prize
@@ -2993,12 +3015,15 @@ public class ProjectServicesImpl implements ProjectServices {
                 new com.topcoder.management.resource.Resource(com.topcoder.management.resource.Resource.UNSET_ID,
                     submitterRole);
 
-            submitter.setProperty(EXTERNAL_REFERENCE_ID_RESOURCE_PROPERTY_KEY, operator);
+            submitter.setProperty(EXTERNAL_REFERENCE_ID_RESOURCE_PROPERTY_KEY, userId);
+            submitter.setProperty(RESOURCE_INFO_HANDLE, handle);
+            submitter.setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+
             extendedResources[extendedResources.length - 1] = submitter;
 
             // create spec review project
             projectData = createProjectWithTemplate(projectHeader, projectPhases, extendedResources,
-                operator);
+                userId);
 
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, "false");
             projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, "false");
