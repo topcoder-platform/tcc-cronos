@@ -770,7 +770,7 @@ public interface ProjectServices {
      *
      * @since 1.3
      */
-    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String operator)
+    public FullProjectData createSpecReview(long projectId, double specReviewPrize, String userId, String handle)
         throws ProjectServicesException;
 
     /**
