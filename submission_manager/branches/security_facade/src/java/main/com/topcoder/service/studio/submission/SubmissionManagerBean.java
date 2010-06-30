@@ -176,9 +176,14 @@ import javax.persistence.Query;
  * Changes in v1.3.1(Cockpit Security Facade V1.0)
  * - Remove DeclareRoles({"Cockpit User", "Cockpit Administrator"}) and RolesAllowed("Cockpit Administrator") annotation
  * </p>
+ * <p>
+ * Changes in v1.3.2(Direct Registrants List Assembly v1.0)
+ * - The value of {@link #FINAL_SUBMISSION_TYPE} constant is changed to conform the actual correct value set in
+ *   database for final submission type.
+ * </p>
  *
  * @author pulky, waits
- * @version 1.3.1
+ * @version 1.3.2
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -215,7 +220,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
      * Represents the description of submission in final status.
      * </p>
      */
-    private static final String FINAL_SUBMISSION_TYPE = "final submission type";
+    private static final String FINAL_SUBMISSION_TYPE = "Final Submission";
 
     /**
      * <p>
