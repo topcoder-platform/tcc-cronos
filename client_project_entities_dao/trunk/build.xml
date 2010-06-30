@@ -3,32 +3,16 @@
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
-	<!-- Import common task definition -->
-	<import file="${basedir}/build-common-tasks.xml" />
-
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="javac.encoding" value="UTF-8"/>
-	<property name="javadoc.locale" value="en_US"/>
+    <property name="libdir" value="../tcs/lib"/>
+    <property name="tcs_libdir" value="${libdir}/tcs"/>
+    <property name="ext_libdir" value="${libdir}/third_party"/>
 
-	<!-- need ant-contrib for <if> -->
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
-	<if>
-		<not>
-			<available file="../topcoder_global.properties"/>
-		</not>
-		<then>
-			<property name="libdir" value="lib"/>
-			<property name="tcs_libdir" value="${libdir}/tcs"/>
-			<property name="ext_libdir" value="${libdir}/third_party"/>
-			 <property name="cronos_libdir" value="${libdir}/cronos"/>
-    			<property name="target_libdir" value="${cronos_libdir}"/>
-
-		</then>
-	</if>
-
-   
+    <property name="cronos_libdir" value="${libdir}/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+    
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
@@ -42,8 +26,6 @@
     <property name="testfiles" value="test_files"/>
     <property name="javadocsdir" value="${docsdir}/javadocs"/>
     <property name="reports" value="${testlogdir}/reports"/>
-	<property name="target_libdir" value="${tcs_libdir}"/>
-
 
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
@@ -57,13 +39,19 @@
               value="${component.version.major}.${component.version.minor}.${component.version.micro}"/>
     <property name="component_path" value="${distfilename}/${component_version}"/>
 
+    <!-- Change this for custom component build -->
+    <!--
+    <property name="greekgod_libdir" value="../lib/greekgod"/>
+    <property name="target_libdir" value="${greekgod_libdir}"/>
+    -->
+    <property name="target_libdir" value="${tcs_libdir}"/>
+
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
     <property name="javamain" value="${javasrc}/main"/>
     <property name="javatests" value="${javasrc}/tests"/>
 
     <property name="builddir" value="build"/>
-    <property name="build_conf" value="${builddir}/conf"/>
     <property name="build_classdir" value="${builddir}/classes"/>
     <property name="build_testclassdir" value="${builddir}/testClasses"/>
     <property name="build_targetclassdir" value="${builddir}/targetclasses"/>
@@ -94,6 +82,9 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
+    <!-- include ant contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
@@ -109,8 +100,8 @@
         </fileset>
         <path refid="buildlibs"/>
         <pathelement location="${build_classdir}"/>
-        <pathelement location="${configdir}"/>
         <pathelement location="${testfiles}"/>
+        <pathelement location="${configdir}"/>
     </path>
 
     <!-- cobertura task definition -->
@@ -255,29 +246,33 @@
 
     <target name="manifest">
         <mkdir dir="${manifest_file_path}"/>
-        <manifest file="${manifest_file}">
-            <attribute name="Component-Vendor" value="TopCoder Inc."/>
-            <attribute name="Component-Name" value="${component}"/>
-            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-        </manifest>
+
+        <if>
+          <and>
+            <isset property="component.mainclass"/>
+            <length string="${component.mainclass}" when="greater" length="0" />
+          </and>
+          <then>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+              <attribute name="Main-Class" value="${component.mainclass}"/>
+            </manifest>
+          </then>
+          <else>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+            </manifest>
+          </else>
+        </if>
     </target>
 
     <target name="dist" depends="compile, manifest">
-	
-	       <property name="build.properties" location="${basedir}/build.properties" />
-        <property name="global_build.properties" location="${build.properties}"/>
-
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <copy todir="${build_conf}">
-            <fileset dir="${basedir}/conf"/>
-            <filterset>
-              <filtersfile file="${build.properties}"/>
-              <filtersfile file="${global_build.properties}"/>
-            </filterset>
-        </copy>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
-           <metainf dir="${build_conf}/META-INF" includes="**"/>
-        </jar>
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
     </target>
 
     <target name="dist_tests" depends="compile_tests">
@@ -305,7 +300,6 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
-        <delete dir="${testlogdir}"/>
     </target>
 
     <!-- ************************************************************************** -->
@@ -327,11 +321,7 @@
         <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
     </target>
 
-    <target name="distclean">
-        <delete dir="${builddir}"/>
-    </target>
-
-    <target name="dist_tcs" depends="distclean,dist,javadoc">
+    <target name="dist_tcs" depends="clean,dist,javadoc">
         <!-- define tcs distribution format -->
         <mkdir dir="${build_tcsdistdir}"/>
         <copy todir="${build_tcsdistdir}">
@@ -343,18 +333,17 @@
                 <include name="${test_reflib}/**/*"/>
                 <include name="build.version"/>
                 <include name="build-dependencies.xml"/>
-                <include name="build-override.xml"/>
                 <include name="README"/>
                 <include name="build.version"/>
             </fileset>
         </copy>
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
 
-  <!--      <mkdir dir="${dist_coverage}"/>
+        <mkdir dir="${dist_coverage}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
-        </copy>-->
+        </copy>
 
         <mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
@@ -395,7 +384,7 @@
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
-                       build-override.xml,
+                       build.version,
                        README,
                        ${configdir}/**,
                        ${javamain}/**/*.java,
@@ -406,7 +395,8 @@
                        ${test_reflib}/**"
              excludes="${javatests}/${packagedir}/AllTests.java,
                        ${javatests}/${packagedir}/stresstests/*,
-                       ${javatests}/${packagedir}/failuretests/*"
+                       ${javatests}/${packagedir}/failuretests/*,
+                       ${javatests}/${packagedir}/accuracytests/*"
             />
     </target>
 
@@ -414,8 +404,6 @@
         <jar jarfile="${design_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
-                       build.version,
-                       build.xml,
                        ${configdir}/**,
                        ${javamain}/**,
                        ${docsdir}/**,
@@ -458,5 +446,4 @@
     <!-- Import the macro definitions used to override standard behaviour of
     some of the targets of this build file. -->
     <import file="${basedir}/build-override.xml" optional="true"/>
-    <import file="D:/TopCoder/config/build-checkstyle.xml" optional="true"/>
 </project>
