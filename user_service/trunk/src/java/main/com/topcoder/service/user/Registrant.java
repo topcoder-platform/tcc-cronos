@@ -4,21 +4,24 @@
 package com.topcoder.service.user;
 
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Represents the Registrant entity. It holds the attributes user id, handle, rating, reailbility, etc.
  * <p>
  * Thread safety: This class is mutable and not thread safe.
  *
- * @author murphydog
- * @version 1.1
+ * As of version 1.2 the class is marked as serializable.
+ *
+ * @author murphydog, isv
+ * @version 1.2
  */
-public class Registrant {
+public class Registrant implements Serializable {
 
     /**
      * Default serial version id.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Represents the user id attribute of the UserInfo entity. It's set and accessed in the set/get methods. It can
