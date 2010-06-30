@@ -6,6 +6,8 @@ package com.topcoder.service.studio;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -55,7 +57,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
         "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
         "requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants",
         "payments", "tcDirectProjectName", "billingProject", "multiRound", "milestonePrizeData", "multiRoundData",
-        "generalInfo", "specifications", "nonWinningSubmissionsPurchased"})
+        "generalInfo", "specifications", "nonWinningSubmissionsPurchased", "contestRegistrations"})
 public class ContestData implements Serializable {
     /**
      * Default serial version id.
@@ -388,6 +390,12 @@ public class ContestData implements Serializable {
      * creation.
      */
     private boolean launchImmediately;
+	
+    /**
+     * Represents ContestRegistration list.
+	 * @since TCCC-1879
+     */
+    private Set<ContestRegistrationData> contestRegistrations = new HashSet<ContestRegistrationData>();	
 
     /**
      * <p>
@@ -1342,4 +1350,23 @@ public class ContestData implements Serializable {
     public void setNonWinningSubmissionsPurchased(boolean nonWinningSubmissionsPurchased) {
         this.nonWinningSubmissionsPurchased = nonWinningSubmissionsPurchased;
     }
+    /**
+     * Sets contestRegistrations.
+     *
+     * @param contestRegistrations the contestRegistrations to set.
+	 * @since TCCC-1879
+     */
+    public void setContestRegistrations(Set<ContestRegistrationData> contestRegistrations) {
+        this.contestRegistrations = contestRegistrations;
+    }
+
+    /**
+     * Returns contestRegistrations.
+     *
+     * @return the contestRegistrations.
+	 * @since TCCC-1879
+     */
+    public Set<ContestRegistrationData> getContestRegistrations() {
+        return contestRegistrations;
+    }	
 }

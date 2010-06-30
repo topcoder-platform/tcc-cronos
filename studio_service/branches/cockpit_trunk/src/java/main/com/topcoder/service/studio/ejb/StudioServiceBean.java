@@ -39,6 +39,7 @@ import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.RolePrincipal;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.studio.contest.SimpleProjectPermissionData;
+import com.topcoder.service.studio.contest.ContestRegistration;
 import com.topcoder.service.studio.ChangeHistoryData;
 import com.topcoder.service.studio.ContestData;
 import com.topcoder.service.studio.ContestGeneralInfoData;
@@ -46,6 +47,7 @@ import com.topcoder.service.studio.ContestMultiRoundInformationData;
 import com.topcoder.service.studio.ContestNotFoundException;
 import com.topcoder.service.studio.ContestPayload;
 import com.topcoder.service.studio.ContestPaymentData;
+import com.topcoder.service.studio.ContestRegistrationData;
 import com.topcoder.service.studio.ContestSpecificationsData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
@@ -1646,6 +1648,16 @@ public class StudioServiceBean implements StudioService {
         }
 
         contestData.setStatusId(unbox(contest.getStatusId()));
+        //TCCC-1879 TODO
+	for (ContestRegistration contestRegistration : contest.getContestRegistrations()) {
+		ContestRegistrationData contestRegistrationData = new ContestRegistrationData();
+		contestRegistrationData.setContest(contestRegistration.getContest().getContestId());
+		contestRegistrationData.setUserId(contestRegistration.getUserId());
+		contestRegistrationData.setTermsOfUseId(contestRegistration.getTermsOfUseId());
+		contestRegistrationData.setCreateDate(contestRegistration.getCreateDate());
+		contestData.getContestRegistrations().add(contestRegistrationData);
+	}
+
         contestData.setNumberOfRegistrants(contest.getContestRegistrations().size());
         if (contest.isLaunchImmediately() != null) {
             contestData.setLaunchImmediately(contest.isLaunchImmediately());
