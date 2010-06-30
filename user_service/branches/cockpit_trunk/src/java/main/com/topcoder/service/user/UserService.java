@@ -257,5 +257,15 @@ public interface UserService {
      * @since 1.1
      */
     void addUserTerm(long userId, long termsId, Date termsAgreedDate) throws UserServiceException;
+    
+    /**
+     * Gets User information by the given user id.
+     * 
+     * @param userId the id of the user.
+     * @return the User instance.
+     * @throws UserServiceException if any error occurs during operation.
+     * @since BUGR-3739
+     */
+    public User getUser(long userId) throws UserServiceException;
 
 }

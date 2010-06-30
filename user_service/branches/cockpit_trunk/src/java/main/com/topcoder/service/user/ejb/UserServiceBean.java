@@ -1480,4 +1480,111 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
         return ce;
     }
+    
+    /**
+     * Gets User information by the given user id.
+     * 
+     * @param userId the id of the user.
+     * @return the User instance.
+     * @throws UserServiceException if any error occurs during operation.
+     * @since BUGR-3739
+     */
+    public User getUser(long userId) throws UserServiceException {
+        
+        User user = new User();
+        
+        user.setPassword(null);
+        user.setGroupIds(null);
+        
+        try {
+            
+            logEnter("getUser("+userId+")");
+            logOneParameter(userId);
+
+            EntityManager em = getEntityManager();
+
+            // Query the basic information
+            Query basicInfoquery = em.createNativeQuery(
+                    "select "
+                    + "user.user_id, user.handle, user.first_name, user.last_name, email.address "
+                    + "from user "
+                    + "left outer join email on user.user_id = email.user_id "
+                    + "where user.user_id = :userId ");
+
+            basicInfoquery.setParameter("userId", userId);
+
+            // There could be more than one result if the user has more than one
+            // email address, so just pick the first result
+            List basicResult = basicInfoquery.getResultList();
+
+            if (basicResult.isEmpty()) {
+                throw wrapUserServiceException(
+                        "Couldn't find the user id " + userId + " in the database.");
+            }
+
+            Object[] basicValues = (Object[]) basicResult.get(0);
+            
+            user.setUserId(Long.parseLong(basicValues[0].toString()));
+            user.setHandle(basicValues[1].toString());
+            user.setFirstName(basicValues[2].toString());
+            user.setLastName(basicValues[3].toString());
+            user.setEmailAddress(basicValues[4].toString());
+            
+            // Query the phone information
+            Query phoneQuery = em.createNativeQuery(
+                    "select " + "phone_number" + " from phone "
+                    + " where user_id = :userId and phone_type_id = 1");
+            phoneQuery.setParameter("userId", userId);
+            
+            Object phoneValue = phoneQuery.getSingleResult();
+            
+            if (phoneValue != null) {
+                user.setPhone(phoneValue.toString());
+            } else {
+                user.setPhone(null);
+            }
+          
+       
+            // Query the address information
+            Query addressQuery = em.createNativeQuery(
+                    "select  a.address1, a.address2, a.address3, a.city, a.state_code, a.zip, a.country_code, a.province from address a, user_address_xref uax "
+                    + " where a.address_id = uax.address_id and uax.user_id = :userId and a.address_type_id = 1");
+            
+            List addressResult = addressQuery.getResultList();
+            
+            if (!addressResult.isEmpty()) {
+                
+                Address a = new Address();
+                
+                Object[] addressValues = (Object[]) addressResult.get(0);
+                
+                a.setAddress1(addressValues[0] == null ? null : addressValues[0].toString());
+                a.setAddress2(addressValues[1] == null ? null : addressValues[1].toString());
+                a.setAddress3(addressValues[2] == null ? null : addressValues[2].toString());
+                a.setCity(addressValues[3] == null ? null : addressValues[3].toString());
+                a.setStateCode(addressValues[4] == null ? null : addressValues[4].toString());
+                a.setZip(addressValues[5] == null ? null : addressValues[5].toString());
+                a.setCountryCode(addressValues[6] == null ? null : addressValues[6].toString());
+                a.setProvince(addressValues[7] == null ? null : addressValues[7].toString());
+                
+                // add Address instance into user
+                user.setAddress(a);
+                
+            } else {
+                // set address to null
+                user.setAddress(null);
+            }
+         
+            return user;
+
+        } catch (IllegalStateException e) {
+            throw wrapUserServiceException(e, "The EntityManager is closed.");
+        } catch (NoResultException e) {
+            throw wrapUserServiceException(e, "No such user");
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e, "There are errors in getUserHandle.");
+        } finally {
+            logExit("getUser(" + userId + ")");
+        }
+    }
 }
