@@ -1,0 +1,50 @@
+[Run Test]
+1. Setup database.
+1.1 download informix 11.5
+1.2 Setup the database using the Schema.sql and id_sequences.sql.
+1.3 config the database properties.
+1.3.1 test_files\com\topcoder\db\connectionfactory\DBConnectionFactoryImpl.xml
+1.3.2 test_files\hibernate.cfg.xml
+1.3.3 test_files\META-INF\informix-ds.xml
+1.4. Install and start JBoss AS.
+1.5. Run 'ant test.setup' to deploy the component into JBoss container.
+1.6. Run 'ant test'
+
+[About Changes and Improvement]
+1. There may be problems to run GenericEJB3DAOTest, as it creates lots of database connections (Express version of informix 11.5 only allowed 20 max connections), but they can be run singlely.
+
+the exception message, is like 
+
+Caused by: java.sql.SQLException: Cannot create an user thread. On NT check username and IXUSERS group.
+
+GenericEJB3DAOTest class is simplified by removing useless database setup, and the performance is improved.
+2. I made some changes beside the new functionality, to make the code consistent and clean. Please use diff tools to see the changes visually. Followings are some highlights.
+2.1 error message for exception are updated, there are some copy & paste problem in original source code, like ProjectDAOBean.checkPoNumberPermission(String, String), ProjectStatusDAOBean#getProjectsWithStatus. 
+CompanyDAOBean#getProjectsForCompany.
+2.2 test cases are added for ProjectContestFeeAudit and ProjectContestFee entity classes, see ProjectContestFeeAuditTest and ProjectContestFeeTest.
+2.3 some method declaration are simplified. like 
+GenericEJB3DAO#retrieveById(Id id) throws EntityNotFoundException, DAOException
+GenericEJB3DAO#delete(T entity) throws EntityNotFoundException, DAOException 
+...
+
+EntityNotFoundException is redudant, as it extends from DAOException. To make consistency, it can be removed.
+2.4 query are updated, like in ClientStatusDAOBean, GenericEJB3DAO#searchByName(String name).
+2.5 Utils class is removed to reduce scope.
+2.6 GenericEJB3DAO#checkRequiredFields, "@throwsDAOConfigurationException if required fields are invalid." format is incorrect.
+2.7 getContestFeesByProject#getContestFeesByProject, "Helper.checkEntityManager(getEntityManager());" may throw DAOConfigurationException, which should not be wrapped with DAOException.
+
+same to saveContestFees(List<ProjectContestFee> contestFees, long projectId) throws DAOException
+2.8 saveContestFees(List<ProjectContestFee> contestFees, long projectId) throws DAOException, the catch stack is simplified to be consistent with other business method. catching each specific exception makes no sense.
+2.9 checkClientProjectPermission(String username, long projectId) and checkPoNumberPermission(String username, String poNumber), the last if-block can be simplified.
+2.10 the DemoTests is not included in UnitTests and not workable originally, it is fixed. But see http://forums.topcoder.com/?module=Thread&threadID=676656&start=0, the related functions are commented out in DemoTests.
+But the functionality can still work locally (in EJB container or Servlet container that does not involve remote call). 
+2.11. code clean up : unused imports and @SuppressWarnings("unchecked") tag are removed/added, etc.
+2.12. @Stateless annotation are added for other bean classes according to design.
+2.13. Coverage are improved, like GenericEJB3DAOTest, new test cases are added.
+3. code style can be revised, current 80 line limitation is used, but TopCoder can use 120, which can make the code more clean. It is not revised, this can help
+you easily find the changes to the original source code, I will revise it, if I win.
+4. if you meat problem like 
+
+java.sql.SQLException: Cannot create an user thread. On NT check username and IXUSERS group.
+
+it is raised because limitation of connections of Informix, please try to re-run the test. 
