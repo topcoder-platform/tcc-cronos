@@ -1,3 +1,0 @@
-Starting audit...
-C:\TopCoder\proj\java\direct_struts_actions_3_1.0.0\src\java\tests\com\topcoder\direct\services\view\action\contest\launch\MockContestServiceFacade.java:1: File length is 2,163 lines (max allowed is 2,000).
-Audit done.
