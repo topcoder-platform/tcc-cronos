@@ -1,7 +1,7 @@
 Testsuite: com.topcoder.direct.services.view.action.contest.launch.AllTests
-Tests run: 232, Failures: 0, Errors: 0, Time elapsed: 20.875 sec
+Tests run: 232, Failures: 0, Errors: 0, Time elapsed: 13.907 sec
 ------------- Standard Output ---------------
-2010-06-28 22:53:54,781 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockActiveContestPrizeIncreasingAction : test
+2010-07-01 21:14:49,817 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockActiveContestPrizeIncreasingAction : test
 com.topcoder.service.facade.direct.ContestNotFoundException: test
 	at com.topcoder.direct.services.view.action.contest.launch.MockDirectServiceFacade.getContestPrize(MockDirectServiceFacade.java:225)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction.executeAction(ActiveContestPrizeIncreasingAction.java:143)
@@ -80,7 +80,7 @@ com.topcoder.service.facade.direct.ContestNotFoundException: test
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:09,921 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The assetDTO for software competition cannot be null
+2010-07-01 21:14:59,583 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The assetDTO for software competition cannot be null
 java.lang.IllegalStateException: The assetDTO for software competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:135)
@@ -159,7 +159,7 @@ java.lang.IllegalStateException: The assetDTO for software competition cannot be
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:10,078 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The category for software competition cannot be null
+2010-07-01 21:14:59,676 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The category for software competition cannot be null
 java.lang.IllegalStateException: The category for software competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:136)
@@ -238,7 +238,7 @@ java.lang.IllegalStateException: The category for software competition cannot be
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:10,250 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest type for the competition cannot be null
+2010-07-01 21:14:59,770 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest type for the competition cannot be null
 java.lang.IllegalStateException: The contest type for the competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:143)
@@ -317,7 +317,7 @@ java.lang.IllegalStateException: The contest type for the competition cannot be 
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:10,453 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest name for the competition cannot be null
+2010-07-01 21:14:59,848 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest name for the competition cannot be null
 java.lang.IllegalStateException: The contest name for the competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:144)
@@ -397,7 +397,7 @@ java.lang.IllegalStateException: The contest name for the competition cannot be 
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 execute extendActiveContestSchedule.
-2010-06-28 22:54:11,531 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,614 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction.executeAction(ActiveContestPrizeIncreasingAction.java:139)
@@ -422,7 +422,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,546 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalAction.executeAction(ActiveContestPrizeRetrievalAction.java:84)
@@ -447,7 +447,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,546 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionAction.executeAction(ActiveContestScheduleExtensionAction.java:121)
@@ -472,7 +472,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,546 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalAction.executeAction(ActiveContestScheduleRetrievalAction.java:84)
@@ -497,7 +497,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,546 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalAction.executeAction(ContestReceiptRetrievalAction.java:84)
@@ -522,7 +522,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,546 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,645 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingAction.executeAction(ContestReceiptSendingAction.java:116)
@@ -547,7 +547,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,562 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,645 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalAction.executeAction(GamePlanRetrievalAction.java:110)
@@ -572,7 +572,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,562 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalAction : contestServiceFacade was not injected (is null)
+2010-07-01 21:15:00,645 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalAction : contestServiceFacade was not injected (is null)
 java.lang.IllegalStateException: contestServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalAction.executeAction(ProjectContestDataRetrievalAction.java:80)
@@ -597,7 +597,7 @@ java.lang.IllegalStateException: contestServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:54:11,562 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction : contestServiceFacade was not injected (is null)
+2010-07-01 21:15:00,661 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction : contestServiceFacade was not injected (is null)
 java.lang.IllegalStateException: contestServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:115)
@@ -624,142 +624,142 @@ java.lang.IllegalStateException: contestServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 ------------- ---------------- ---------------
 
-Testcase: testInheritance took 1.812 sec
-Testcase: testConstructor took 0.203 sec
-Testcase: test_executeAction_Accuracy1 took 0.156 sec
-Testcase: test_executeAction_Accuracy2 took 0.11 sec
-Testcase: test_executeAction_MissingFacade took 0.11 sec
-Testcase: test_executeAction_OldMilestonePrizesNull took 0.297 sec
-Testcase: test_executeAction_ContestNotFound took 0.218 sec
-Testcase: test_executeAction_ContestPrizeNotIncreased took 0.219 sec
-Testcase: test_executeAction_MilestonePrizeNotIncreased took 0.172 sec
-Testcase: test_setContestPrizes_WrongNumberOfContestPrizes took 0.172 sec
-Testcase: test_setContestPrizes_WrongNumberOfMilestonePrizes took 0.171 sec
-Testcase: test_getContestId_Accuracy took 0.141 sec
-Testcase: test_setContestId_Accuracy took 0.094 sec
-Testcase: test_setContestId_ContestIdNotPositive took 0.281 sec
-Testcase: test_isStudio_Accuracy took 0.078 sec
-Testcase: test_setStudio_Accuracy took 0.156 sec
-Testcase: test_getContestPrizes_Accuracy took 0.078 sec
-Testcase: test_setContestPrizes_Accuracy took 0.094 sec
-Testcase: test_setContestPrizes_Null took 0.172 sec
-Testcase: test_setContestPrizes_NullElement took 0.219 sec
-Testcase: test_setContestPrizes_NegativePrize took 0.187 sec
-Testcase: test_setContestPrizes_NaNPrize took 0.172 sec
-Testcase: test_setContestPrizes_NegativeInfinityPrize took 0.203 sec
-Testcase: test_setContestPrizes_OnlyOnePrize took 0.156 sec
-Testcase: test_setContestPrizes_TooManyDecimalPlacesForCents took 0.172 sec
-Testcase: test_setContestPrizes_SecondPlacePrizeTooLow took 0.156 sec
-Testcase: test_getMilestonePrizes_Accuracy took 0.125 sec
-Testcase: test_setMilestonePrizes_Accuracy took 0.078 sec
-Testcase: test_setMilestonePrizes_Null took 0.172 sec
-Testcase: test_setMilestonePrizes_NullElement took 0.172 sec
-Testcase: test_setMilestonePrizes_NegativePrize took 0.219 sec
-Testcase: test_setMilestonePrizes_NaNPrize took 0.156 sec
-Testcase: test_setMilestonePrizes_TooManyDecimalPlacesForCents took 0.156 sec
-Testcase: testInheritance took 0.078 sec
-Testcase: testConstructor took 0.078 sec
-Testcase: test_executeAction_MissingFacade took 0.079 sec
-Testcase: test_getContestId_Accuracy took 0.125 sec
-Testcase: test_setContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_ContestIdNotPositive took 0.25 sec
-Testcase: test_isStudio_Accuracy took 0.078 sec
-Testcase: test_setStudio_Accuracy took 0.14 sec
-Testcase: test_executeAction_Accuracy took 0.079 sec
-Testcase: test_executeAction_DirectServiceFacadeException took 0.078 sec
-Testcase: testInheritance took 0.078 sec
-Testcase: testConstructor took 0.078 sec
-Testcase: test_executeAction_MissingFacade took 0.125 sec
-Testcase: test_getContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_ContestIdNotPositive took 0.25 sec
-Testcase: test_isStudio_Accuracy took 0.141 sec
-Testcase: test_setStudio_Accuracy took 0.078 sec
-Testcase: test_executeAction_Accuracy took 0.094 sec
-Testcase: test_executeAction_DirectServiceFacadeException took 0.093 sec
-Testcase: test_getRegistrationExtension_Accuracy took 0.094 sec
-Testcase: test_setRegistrationExtension_Accuracy took 0.172 sec
-Testcase: test_setRegistrationExtension_RegistrationExtensionNotPositive took 0.297 sec
-Testcase: test_getMilestoneExtension_Accuracy took 0.078 sec
-Testcase: test_setMilestoneExtension_Accuracy took 0.094 sec
-Testcase: test_setMilestoneExtension_MilestoneExtensionNotPositive took 0.297 sec
-Testcase: test_getSubmissionExtension_Accuracy took 0.078 sec
-Testcase: test_setSubmissionExtension_Accuracy took 0.078 sec
-Testcase: test_setSubmissionExtension_SubmissionExtensionNotPositive took 0.266 sec
-Testcase: testInheritance took 0.078 sec
+Testcase: testInheritance took 1.39 sec
 Testcase: testConstructor took 0.125 sec
-Testcase: test_executeAction_MissingFacade took 0.062 sec
+Testcase: test_executeAction_Accuracy1 took 0.11 sec
+Testcase: test_executeAction_Accuracy2 took 0.141 sec
+Testcase: test_executeAction_MissingFacade took 0.094 sec
+Testcase: test_executeAction_OldMilestonePrizesNull took 0.187 sec
+Testcase: test_executeAction_ContestNotFound took 0.172 sec
+Testcase: test_executeAction_ContestPrizeNotIncreased took 0.109 sec
+Testcase: test_executeAction_MilestonePrizeNotIncreased took 0.156 sec
+Testcase: test_setContestPrizes_WrongNumberOfContestPrizes took 0.11 sec
+Testcase: test_setContestPrizes_WrongNumberOfMilestonePrizes took 0.109 sec
 Testcase: test_getContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_Accuracy took 0.062 sec
-Testcase: test_setContestId_ContestIdNotPositive took 0.313 sec
+Testcase: test_setContestId_Accuracy took 0.11 sec
+Testcase: test_setContestId_ContestIdNotPositive took 0.171 sec
+Testcase: test_isStudio_Accuracy took 0.047 sec
+Testcase: test_setStudio_Accuracy took 0.109 sec
+Testcase: test_getContestPrizes_Accuracy took 0.062 sec
+Testcase: test_setContestPrizes_Accuracy took 0.063 sec
+Testcase: test_setContestPrizes_Null took 0.094 sec
+Testcase: test_setContestPrizes_NullElement took 0.156 sec
+Testcase: test_setContestPrizes_NegativePrize took 0.125 sec
+Testcase: test_setContestPrizes_NaNPrize took 0.094 sec
+Testcase: test_setContestPrizes_NegativeInfinityPrize took 0.093 sec
+Testcase: test_setContestPrizes_OnlyOnePrize took 0.141 sec
+Testcase: test_setContestPrizes_TooManyDecimalPlacesForCents took 0.094 sec
+Testcase: test_setContestPrizes_SecondPlacePrizeTooLow took 0.078 sec
+Testcase: test_getMilestonePrizes_Accuracy took 0.062 sec
+Testcase: test_setMilestonePrizes_Accuracy took 0.094 sec
+Testcase: test_setMilestonePrizes_Null took 0.094 sec
+Testcase: test_setMilestonePrizes_NullElement took 0.094 sec
+Testcase: test_setMilestonePrizes_NegativePrize took 0.14 sec
+Testcase: test_setMilestonePrizes_NaNPrize took 0.094 sec
+Testcase: test_setMilestonePrizes_TooManyDecimalPlacesForCents took 0.094 sec
+Testcase: testInheritance took 0.062 sec
+Testcase: testConstructor took 0.063 sec
+Testcase: test_executeAction_MissingFacade took 0.094 sec
+Testcase: test_getContestId_Accuracy took 0.062 sec
+Testcase: test_setContestId_Accuracy took 0.047 sec
+Testcase: test_setContestId_ContestIdNotPositive took 0.141 sec
+Testcase: test_isStudio_Accuracy took 0.109 sec
+Testcase: test_setStudio_Accuracy took 0.047 sec
+Testcase: test_executeAction_Accuracy took 0.047 sec
+Testcase: test_executeAction_DirectServiceFacadeException took 0.047 sec
+Testcase: testInheritance took 0.094 sec
+Testcase: testConstructor took 0.047 sec
+Testcase: test_executeAction_MissingFacade took 0.062 sec
+Testcase: test_getContestId_Accuracy took 0.047 sec
+Testcase: test_setContestId_Accuracy took 0.094 sec
+Testcase: test_setContestId_ContestIdNotPositive took 0.125 sec
+Testcase: test_isStudio_Accuracy took 0.062 sec
+Testcase: test_setStudio_Accuracy took 0.047 sec
+Testcase: test_executeAction_Accuracy took 0.109 sec
+Testcase: test_executeAction_DirectServiceFacadeException took 0.047 sec
+Testcase: test_getRegistrationExtension_Accuracy took 0.047 sec
+Testcase: test_setRegistrationExtension_Accuracy took 0.047 sec
+Testcase: test_setRegistrationExtension_RegistrationExtensionNotPositive took 0.125 sec
+Testcase: test_getMilestoneExtension_Accuracy took 0.109 sec
+Testcase: test_setMilestoneExtension_Accuracy took 0.062 sec
+Testcase: test_setMilestoneExtension_MilestoneExtensionNotPositive took 0.125 sec
+Testcase: test_getSubmissionExtension_Accuracy took 0.047 sec
+Testcase: test_setSubmissionExtension_Accuracy took 0.11 sec
+Testcase: test_setSubmissionExtension_SubmissionExtensionNotPositive took 0.125 sec
+Testcase: testInheritance took 0.047 sec
+Testcase: testConstructor took 0.047 sec
+Testcase: test_executeAction_MissingFacade took 0.109 sec
+Testcase: test_getContestId_Accuracy took 0.047 sec
+Testcase: test_setContestId_Accuracy took 0.047 sec
+Testcase: test_setContestId_ContestIdNotPositive took 0.141 sec
+Testcase: test_isStudio_Accuracy took 0.047 sec
+Testcase: test_setStudio_Accuracy took 0.109 sec
+Testcase: test_executeAction_Accuracy took 0.047 sec
+Testcase: test_executeAction_DirectServiceFacadeException took 0.062 sec
+Testcase: testInheritance took 0.047 sec
+Testcase: testConstructor took 0.047 sec
+Testcase: test_executeAction_MissingFacade took 0.094 sec
+Testcase: test_getContestId_Accuracy took 0.062 sec
+Testcase: test_setContestId_Accuracy took 0.047 sec
+Testcase: test_setContestId_ContestIdNotPositive took 0.125 sec
+Testcase: test_isStudio_Accuracy took 0.109 sec
+Testcase: test_setStudio_Accuracy took 0.047 sec
+Testcase: test_executeAction_Accuracy took 0.047 sec
+Testcase: test_executeAction_ContestNotFoundException took 0.047 sec
+Testcase: testInheritance took 0.047 sec
+Testcase: testConstructor took 0.094 sec
+Testcase: test_executeAction_Accuracy1 took 0.047 sec
+Testcase: test_executeAction_Accuracy2 took 0.047 sec
+Testcase: test_executeAction_MissingFacade took 0.046 sec
+Testcase: test_getContestId_Accuracy took 0.047 sec
+Testcase: test_setContestId_Accuracy took 0.11 sec
+Testcase: test_setContestId_ContestIdNotPositive took 0.125 sec
 Testcase: test_isStudio_Accuracy took 0.062 sec
 Testcase: test_setStudio_Accuracy took 0.063 sec
-Testcase: test_executeAction_Accuracy took 0.078 sec
-Testcase: test_executeAction_DirectServiceFacadeException took 0.078 sec
-Testcase: testInheritance took 0.14 sec
-Testcase: testConstructor took 0.079 sec
-Testcase: test_executeAction_MissingFacade took 0.078 sec
-Testcase: test_getContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_ContestIdNotPositive took 0.297 sec
-Testcase: test_isStudio_Accuracy took 0.078 sec
-Testcase: test_setStudio_Accuracy took 0.078 sec
-Testcase: test_executeAction_Accuracy took 0.078 sec
-Testcase: test_executeAction_ContestNotFoundException took 0.141 sec
-Testcase: testInheritance took 0.062 sec
-Testcase: testConstructor took 0.078 sec
-Testcase: test_executeAction_Accuracy1 took 0.079 sec
-Testcase: test_executeAction_Accuracy2 took 0.062 sec
-Testcase: test_executeAction_MissingFacade took 0.125 sec
-Testcase: test_getContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_ContestIdNotPositive took 0.234 sec
-Testcase: test_isStudio_Accuracy took 0.094 sec
-Testcase: test_setStudio_Accuracy took 0.125 sec
-Testcase: test_executeAction_ContestNotFoundException took 0.078 sec
-Testcase: test_getAdditionalEmailAddresses_Accuracy took 0.078 sec
-Testcase: test_setAdditionalEmailAddresses_Accuracy took 0.063 sec
-Testcase: test_setAdditionalEmailAddresses_TooLong took 0.156 sec
-Testcase: test_setAdditionalEmailAddresses_InvalidEmail took 0.203 sec
-Testcase: test_setAdditionalEmailAddresses_EmptyEmail took 0.141 sec
-Testcase: testInheritance took 0.094 sec
-Testcase: testConstructor took 0.093 sec
+Testcase: test_executeAction_ContestNotFoundException took 0.047 sec
+Testcase: test_getAdditionalEmailAddresses_Accuracy took 0.109 sec
+Testcase: test_setAdditionalEmailAddresses_Accuracy took 0.047 sec
+Testcase: test_setAdditionalEmailAddresses_TooLong took 0.078 sec
+Testcase: test_setAdditionalEmailAddresses_InvalidEmail took 0.094 sec
+Testcase: test_setAdditionalEmailAddresses_EmptyEmail took 0.125 sec
+Testcase: testInheritance took 0.047 sec
+Testcase: testConstructor took 0.046 sec
 Testcase: test_executeAction_MissingFacade took 0.063 sec
-Testcase: test_executeAction_Accuracy took 0.125 sec
-Testcase: test_executeAction_ErrorFetchingData took 0.063 sec
-Testcase: test_getProjectId_Accuracy took 0.062 sec
-Testcase: test_setProjectId_Accuracy took 0.078 sec
-Testcase: test_setProjectId_ProjectIdNotPositive took 0.281 sec
+Testcase: test_executeAction_Accuracy took 0.047 sec
+Testcase: test_executeAction_ErrorFetchingData took 0.094 sec
+Testcase: test_getProjectId_Accuracy took 0.046 sec
+Testcase: test_setProjectId_Accuracy took 0.047 sec
+Testcase: test_setProjectId_ProjectIdNotPositive took 0.125 sec
+Testcase: testInheritance took 0.062 sec
+Testcase: testConstructor took 0.094 sec
+Testcase: test_executeAction_MissingFacade took 0.047 sec
+Testcase: test_executeAction_Accuracy took 0.047 sec
+Testcase: test_getProjectId_Accuracy took 0.047 sec
+Testcase: test_setProjectId_Accuracy took 0.047 sec
+Testcase: test_setProjectId_ProjectIdNotPositive took 0.172 sec
+Testcase: test_executeAction_ErrorGettingProjectData took 0.047 sec
 Testcase: testInheritance took 0.063 sec
-Testcase: testConstructor took 0.093 sec
-Testcase: test_executeAction_MissingFacade took 0.094 sec
-Testcase: test_executeAction_Accuracy took 0.078 sec
-Testcase: test_getProjectId_Accuracy took 0.078 sec
-Testcase: test_setProjectId_Accuracy took 0.125 sec
-Testcase: test_setProjectId_ProjectIdNotPositive took 0.266 sec
-Testcase: test_executeAction_ErrorGettingProjectData took 0.062 sec
-Testcase: testInheritance took 0.079 sec
-Testcase: testConstructor took 0.078 sec
-Testcase: test_executeAction_MissingFacade took 0.125 sec
-Testcase: test_getContestId_Accuracy took 0.078 sec
-Testcase: test_setContestId_Accuracy took 0.079 sec
-Testcase: test_setContestId_ContestIdNotPositive took 0.265 sec
-Testcase: test_isStudio_Accuracy took 0.125 sec
-Testcase: test_setStudio_Accuracy took 0.078 sec
-Testcase: test_executeAction_Accuracy took 0.062 sec
-Testcase: test_getProjectId_Accuracy took 0.079 sec
-Testcase: test_setProjectId_Accuracy took 0.093 sec
-Testcase: test_setProjectId_ProjectIdNotPositive took 0.297 sec
-Testcase: test_executeAction_MissingAssetDTO took 0.156 sec
-Testcase: test_executeAction_MissingCategory took 0.157 sec
-Testcase: test_executeAction_NullContestType took 0.172 sec
-Testcase: test_executeAction_NullContestName took 0.203 sec
-Testcase: test_getLinkTemplate_Accuracy took 0.078 sec
-Testcase: test_setLinkTemplate_Accuracy took 0.062 sec
-Testcase: test_setLinkTemplate_Null took 0.266 sec
-Testcase: test_setLinkTemplate_MissingContestType took 0.297 sec
-Testcase: test_setLinkTemplate_MissingContestName took 0.234 sec
-Testcase: testExecuteAction took 0.015 sec
+Testcase: testConstructor took 0.046 sec
+Testcase: test_executeAction_MissingFacade took 0.047 sec
+Testcase: test_getContestId_Accuracy took 0.094 sec
+Testcase: test_setContestId_Accuracy took 0.047 sec
+Testcase: test_setContestId_ContestIdNotPositive took 0.14 sec
+Testcase: test_isStudio_Accuracy took 0.047 sec
+Testcase: test_setStudio_Accuracy took 0.094 sec
+Testcase: test_executeAction_Accuracy took 0.047 sec
+Testcase: test_getProjectId_Accuracy took 0.047 sec
+Testcase: test_setProjectId_Accuracy took 0.063 sec
+Testcase: test_setProjectId_ProjectIdNotPositive took 0.125 sec
+Testcase: test_executeAction_MissingAssetDTO took 0.14 sec
+Testcase: test_executeAction_MissingCategory took 0.078 sec
+Testcase: test_executeAction_NullContestType took 0.094 sec
+Testcase: test_executeAction_NullContestName took 0.078 sec
+Testcase: test_getLinkTemplate_Accuracy took 0.11 sec
+Testcase: test_setLinkTemplate_Accuracy took 0.047 sec
+Testcase: test_setLinkTemplate_Null took 0.125 sec
+Testcase: test_setLinkTemplate_MissingContestType took 0.14 sec
+Testcase: test_setLinkTemplate_MissingContestName took 0.125 sec
+Testcase: testExecuteAction took 0 sec
 Testcase: testExecuteAction_1 took 0 sec
 Testcase: testActiveContestPrizeIncreasingAction took 0 sec
 Testcase: testGetContestId took 0 sec
@@ -769,15 +769,15 @@ Testcase: testSetStudio took 0 sec
 Testcase: testGetContestPrizes took 0 sec
 Testcase: testSetContestPrizes took 0 sec
 Testcase: testGetMilestonePrizes took 0 sec
-Testcase: testSetMilestonePrizes took 0.016 sec
-Testcase: testExecuteAction took 0 sec
+Testcase: testSetMilestonePrizes took 0 sec
+Testcase: testExecuteAction took 0.016 sec
 Testcase: testGetContestId took 0 sec
 Testcase: testSetContestId took 0 sec
 Testcase: testIsStudio took 0 sec
 Testcase: testSetStudio took 0 sec
 Testcase: testActiveContestPrizeRetrievalAction took 0 sec
 Testcase: testExecuteAction took 0 sec
-Testcase: testGetContestId took 0 sec
+Testcase: testGetContestId took 0.015 sec
 Testcase: testSetContestId took 0 sec
 Testcase: testIsStudio took 0 sec
 Testcase: testSetStudio took 0 sec
@@ -788,7 +788,7 @@ Testcase: testGetMilestoneExtension took 0 sec
 Testcase: testSetMilestoneExtension took 0 sec
 Testcase: testGetSubmissionExtension took 0 sec
 Testcase: testSetSubmissionExtension took 0 sec
-Testcase: testExecuteAction took 0.015 sec
+Testcase: testExecuteAction took 0 sec
 Testcase: testGetContestId took 0 sec
 Testcase: testSetContestId took 0 sec
 Testcase: testIsStudio took 0 sec
@@ -800,7 +800,7 @@ Testcase: testSetContestId took 0 sec
 Testcase: testIsStudio took 0 sec
 Testcase: testSetStudio took 0 sec
 Testcase: testContestReceiptRetrievalAction took 0 sec
-Testcase: testExecuteAction took 0 sec
+Testcase: testExecuteAction took 0.016 sec
 Testcase: testExecuteAction_1 took 0 sec
 Testcase: testGetContestId took 0 sec
 Testcase: testSetContestId took 0 sec
@@ -845,14 +845,14 @@ Testcase: test_setAdditionalEmailAddresses4 took 0 sec
 Testcase: test_setAdditionalEmailAddresses5 took 0 sec
 Testcase: test_setAdditionalEmailAddresses6 took 0 sec
 Testcase: test_execute took 0 sec
+Testcase: test_execute took 0.016 sec
 Testcase: test_execute took 0 sec
-Testcase: test_execute took 0 sec
-Testcase: test_ActiveContestPrizeIncreasingAction_1_100 took 0.109 sec
-Testcase: test_ActiveContestPrizeRetrievalAction_1_100 took 0.079 sec
-Testcase: test_ActiveContestScheduleExtensionAction_1_100 took 0.078 sec
-Testcase: test_ActiveContestScheduleRetrievalAction_1_100 took 0.125 sec
-Testcase: test_ContestReceiptRetrievalAction_1_100 took 0.094 sec
-Testcase: test_ContestReceiptSendingAction_1_100 took 0.094 sec
-Testcase: test_GamePlanRetrievalAction_1_100 took 0.079 sec
-Testcase: test_ProjectContestDataRetrievalAction_1_100 took 0.078 sec
-Testcase: test_WikiLinkRetrievalAction_5_5 took 0.156 sec
+Testcase: test_ActiveContestPrizeIncreasingAction_1_100 took 0.062 sec
+Testcase: test_ActiveContestPrizeRetrievalAction_1_100 took 0.047 sec
+Testcase: test_ActiveContestScheduleExtensionAction_1_100 took 0.063 sec
+Testcase: test_ActiveContestScheduleRetrievalAction_1_100 took 0.047 sec
+Testcase: test_ContestReceiptRetrievalAction_1_100 took 0.109 sec
+Testcase: test_ContestReceiptSendingAction_1_100 took 0.062 sec
+Testcase: test_GamePlanRetrievalAction_1_100 took 0.047 sec
+Testcase: test_ProjectContestDataRetrievalAction_1_100 took 0.062 sec
+Testcase: test_WikiLinkRetrievalAction_5_5 took 0.063 sec

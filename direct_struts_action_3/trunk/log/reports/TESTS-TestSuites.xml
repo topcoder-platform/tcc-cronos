@@ -1,544 +1,602 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-  <testsuite errors="0" failures="0" hostname="PC001" id="0" name="AllTests" package="com.topcoder.direct.services.view.action.contest.launch" tests="232" time="19.359" timestamp="2010-06-28T14:53:08">
+  <testsuite errors="0" failures="0" hostname="PC001" id="0" name="AllTests" package="com.topcoder.direct.services.view.action.contest.launch" tests="232" time="13.907" timestamp="2010-07-01T13:14:47">
       <properties>
-          <property name="java.vendor" value="Sun Microsystems Inc." />
-
-          <property name="package" value="com.topcoder.direct.services.view.action.contest.launch" />
-
-          <property name="docpackage.jar" value="direct_struts_action_3_docs.jar" />
-
-          <property name="sun.java.launcher" value="SUN_STANDARD" />
-
-          <property name="eclipse.pdebuild.templates" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/" />
-
-          <property name="sun.management.compiler" value="HotSpot Client Compiler" />
-
-          <property name="manifest_file_path" value="build/dist/direct_struts_action_3-1.0.0/META-INF/" />
-
-          <property name="verbose" value="no" />
-
-          <property name="os.name" value="Windows XP" />
-
-          <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_21\jre\classes" />
-
-          <property name="docsdir" value="docs" />
-
-          <property name="javadoc.jar" value="javadocs.jar" />
-
-          <property name="design_submission.jar" value="direct_struts_action_3_1.0.0_design_submission.jar" />
-
-          <property name="sun.desktop" value="windows" />
-
-          <property name="component.tests.jar" value="build/dist/lib/tcs/direct_struts_action_3_tests.jar" />
-
-          <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
-
-          <property name="ant.home" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910" />
-
-          <property name="java.runtime.version" value="1.5.0_21-b01" />
-
-          <property name="component_path" value="direct_struts_action_3/1.0.0" />
-
-          <property name="cobertura.dir" value="e:/tcs/lib/third_party/cobertura/1.8" />
-
-          <property name="component.version.micro" value="0" />
-
-          <property name="user.name" value="Administrator" />
-
-          <property name="manifest_file" value="build/dist/direct_struts_action_3-1.0.0/META-INF//MANIFEST.MF" />
-
-          <property name="debug" value="off" />
-
-          <property name="reports" value="log/reports" />
-
-          <property name="testfiles" value="test_files" />
-
           <property name="component.version.major" value="1" />
-
-          <property name="component_version" value="1.0.0" />
-
-          <property name="dist_coverage" value="build/dist/direct_struts_action_3-1.0.0/docs/coverage" />
-
-          <property name="component.packagedir" value="com/topcoder/direct/services/view/action/contest/launch" />
-
-          <property name="user.language" value="en" />
-
-          <property name="cobertura.datafile" value="log/cobertura.ser" />
-
-          <property name="javadoc.locale" value="en_US" />
-
-          <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin" />
-
-          <property name="tcs_libdir" value="e:/tcs/lib/tcs" />
-
-          <property name="srcdir" value="src" />
-
-          <property name="junit4.jar" value="e:/tcs/lib/third_party/junit/4.5/junit.jar" />
-
-          <property name="ant.project.name" value="TopCoder Java Generic Build" />
-
-          <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
-
-          <property name="component.version.minor" value="0" />
-
-          <property name="java.version" value="1.5.0_21" />
-
-          <property name="user.timezone" value="" />
-
-          <property name="dev_dist.jar" value="direct_struts_action_3_1.0.0_dev_dist.jar" />
-
-          <property name="sun.arch.data.model" value="32" />
-
-          <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\endorsed" />
-
-          <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
-
-          <property name="packagedir" value="com/topcoder/direct/services/view/action/contest/launch" />
-
-          <property name="sun.jnu.encoding" value="GBK" />
 
           <property name="file.encoding.pkg" value="sun.io" />
 
-          <property name="file.separator" value="\" />
-
-          <property name="java.specification.name" value="Java Platform API Specification" />
-
-          <property name="build_docsdir" value="build/docs" />
-
-          <property name="dev_submission.jar" value="direct_struts_action_3_1.0.0_dev_submission.jar" />
-
-          <property name="java.class.version" value="49.0" />
-
-          <property name="build_testclassdir" value="build/testClasses" />
-
-          <property name="user.country" value="US" />
-
           <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_21\jre" />
 
-          <property name="component.distfilename" value="direct_struts_action_3" />
-
-          <property name="component.version.build" value="1" />
-
-          <property name="java.vm.info" value="mixed mode, sharing" />
-
-          <property name="build_war_dir" value="build/war" />
-
-          <property name="ant.file" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build.xml" />
-
-          <property name="os.version" value="5.1" />
-
-          <property name="build_distdir" value="build/dist" />
-
-          <property name="dist_docpackage" value="build/doc_package" />
-
-          <property name="build_tcsdistdir" value="build/dist/direct_struts_action_3-1.0.0" />
-
-          <property name="path.separator" value=";" />
-
-          <property name="java.vm.version" value="1.5.0_21-b01" />
-
-          <property name="testlogdir" value="log" />
-
-          <property name="user.variant" value="" />
-
-          <property name="ant.library.dir" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib" />
-
-          <property name="component.name" value="Direct Struts Action 3" />
-
-          <property name="javamain" value="src/java/main" />
+          <property name="xwork-core.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/xwork-core-2.1.6.jar" />
 
           <property name="dist_javadocs" value="build/dist/direct_struts_action_3-1.0.0/docs/javadocs" />
 
-          <property name="dist_lib" value="build/dist/lib/tcs" />
+          <property name="debug" value="off" />
 
-          <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
-
-          <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
-
-          <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
-
-          <property name="component" value="Direct Struts Action 3" />
-
-          <property name="eclipse.pdebuild.scripts" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/" />
-
-          <property name="user.home" value="D:" />
-
-          <property name="java.specification.vendor" value="Sun Microsystems Inc." />
-
-          <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;d:\progra~1\f-secure\sshtri~1;c:\program files\ibm\gsk8\lib;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\ThinkPad Wireless LAN Adapter Software;d:\PROGRA~1\IBM\SQLLIB\BIN;d:\PROGRA~1\IBM\SQLLIB\FUNCTION;d:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL;E:\Program Files\TortoiseSVN\bin;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;d:\CTEX\MiKTeX\miktex\bin;d:\CTEX\CTeX\ctex\bin;d:\CTEX\CTeX\cct\bin;d:\CTEX\CTeX\ty\bin;d:\CTEX\Ghostscript\gs8.70\bin;d:\CTEX\GSview\gsview;d:\CTEX\WinEdt;e:\oracle\product\10.1.0\Db_1\bin;e:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin\client;e:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin;D:\apache-ant-1.7.1\bin;C:\Program Files\StormII\Codec;C:\Program Files\StormII;E:\cpp\boost_1_43_0" />
-
-          <property name="java.vendor.url" value="http://java.sun.com/" />
-
-          <property name="jboss.home" value="D:/jboss-4.2.2.GA" />
-
-          <property name="build_javadocsdir" value="build/docs/javadocs" />
-
-          <property name="configdir" value="conf" />
-
-          <property name="java.vm.vendor" value="Sun Microsystems Inc." />
-
-          <property name="ant.file.TopCoder Java Generic Build" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build.xml" />
-
-          <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
-
-          <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
-
-          <property name="java.class.path" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build\testClasses;e:\tcs\lib\third_party\junit\4.5\junit.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\base_exception.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\configuration_api.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\configuration_manager.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\configuration_persistence.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\data_validation.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\id_generator.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\javaee\activation-1.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\javaee\javaee.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\json-lib-2.3-jdk15.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\logging_wrapper.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\mock.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\object_factory.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\object_factory_configuration_api_plugin.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\object_formatter.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\search_builder.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\security.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\shared.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\com.springsource.org.aopalliance-1.0.0.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.aop-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.asm-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.beans-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.context-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.core-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.expression-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.test-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.web-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\spring\org.springframework.web.servlet-3.0.1.RELEASE-A.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\commons-fileupload-1.2.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\commons-io-1.3.2.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\commons-lang-2.3.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\commons-logging-1.0.4.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\commons-logging-api-1.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\freemarker-2.3.15.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\ognl-2.7.3.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\struts2-convention-plugin-2.1.8.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\struts2-core-2.1.8.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\struts2-junit-plugin-2.1.8.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\struts2-spring-plugin-2.1.8.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\struts-2.1.8.1\xwork-core-2.1.6.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\tcwebcommon.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\typesafe_enum.jar;D:\jboss-4.2.2.GA\client\activation.jar;D:\jboss-4.2.2.GA\client\antlr.jar;D:\jboss-4.2.2.GA\client\avalon-framework.jar;D:\jboss-4.2.2.GA\client\commons-codec.jar;D:\jboss-4.2.2.GA\client\commons-httpclient.jar;D:\jboss-4.2.2.GA\client\commons-logging.jar;D:\jboss-4.2.2.GA\client\concurrent.jar;D:\jboss-4.2.2.GA\client\ejb3-persistence.jar;D:\jboss-4.2.2.GA\client\getopt.jar;D:\jboss-4.2.2.GA\client\hibernate-annotations.jar;D:\jboss-4.2.2.GA\client\hibernate-client.jar;D:\jboss-4.2.2.GA\client\jacorb.jar;D:\jboss-4.2.2.GA\client\javassist.jar;D:\jboss-4.2.2.GA\client\jaxb-api.jar;D:\jboss-4.2.2.GA\client\jaxb-impl.jar;D:\jboss-4.2.2.GA\client\jaxb-xjc.jar;D:\jboss-4.2.2.GA\client\jboss-annotations-ejb3.jar;D:\jboss-4.2.2.GA\client\jboss-aop-jdk50-client.jar;D:\jboss-4.2.2.GA\client\jboss-aspect-jdk50-client.jar;D:\jboss-4.2.2.GA\client\jboss-client.jar;D:\jboss-4.2.2.GA\client\jboss-common-client.jar;D:\jboss-4.2.2.GA\client\jboss-deployment.jar;D:\jboss-4.2.2.GA\client\jboss-ejb3-client.jar;D:\jboss-4.2.2.GA\client\jboss-ejb3x.jar;D:\jboss-4.2.2.GA\client\jboss-iiop-client.jar;D:\jboss-4.2.2.GA\client\jboss-j2ee.jar;D:\jboss-4.2.2.GA\client\jboss-jaxrpc.jar;D:\jboss-4.2.2.GA\client\jboss-jaxws.jar;D:\jboss-4.2.2.GA\client\jboss-jsr77-client.jar;D:\jboss-4.2.2.GA\client\jboss-remoting.jar;D:\jboss-4.2.2.GA\client\jboss-saaj.jar;D:\jboss-4.2.2.GA\client\jboss-serialization.jar;D:\jboss-4.2.2.GA\client\jboss-srp-client.jar;D:\jboss-4.2.2.GA\client\jboss-system-client.jar;D:\jboss-4.2.2.GA\client\jboss-transaction-client.jar;D:\jboss-4.2.2.GA\client\jboss-xml-binding.jar;D:\jboss-4.2.2.GA\client\jbossall-client.jar;D:\jboss-4.2.2.GA\client\jbosscx-client.jar;D:\jboss-4.2.2.GA\client\jbossha-client.jar;D:\jboss-4.2.2.GA\client\jbossjmx-ant.jar;D:\jboss-4.2.2.GA\client\jbossmq-client.jar;D:\jboss-4.2.2.GA\client\jbosssx-client.jar;D:\jboss-4.2.2.GA\client\jbossws-client.jar;D:\jboss-4.2.2.GA\client\jbossws-common.jar;D:\jboss-4.2.2.GA\client\jbossws-framework.jar;D:\jboss-4.2.2.GA\client\jbossws-jboss42.jar;D:\jboss-4.2.2.GA\client\jbossws-spi.jar;D:\jboss-4.2.2.GA\client\jmx-client.jar;D:\jboss-4.2.2.GA\client\jmx-invoker-adaptor-client.jar;D:\jboss-4.2.2.GA\client\jnp-client.jar;D:\jboss-4.2.2.GA\client\log4j.jar;D:\jboss-4.2.2.GA\client\logkit.jar;D:\jboss-4.2.2.GA\client\mail.jar;D:\jboss-4.2.2.GA\client\policy.jar;D:\jboss-4.2.2.GA\client\scout.jar;D:\jboss-4.2.2.GA\client\servlet-api.jar;D:\jboss-4.2.2.GA\client\stax-api.jar;D:\jboss-4.2.2.GA\client\stax-ex.jar;D:\jboss-4.2.2.GA\client\streambuffer.jar;D:\jboss-4.2.2.GA\client\trove.jar;D:\jboss-4.2.2.GA\client\wsdl4j.jar;D:\jboss-4.2.2.GA\client\wstx.jar;D:\jboss-4.2.2.GA\client\xmlsec.jar;D:\jboss-4.2.2.GA\server\default\lib\activation.jar;D:\jboss-4.2.2.GA\server\default\lib\antlr.jar;D:\jboss-4.2.2.GA\server\default\lib\autonumber-plugin.jar;D:\jboss-4.2.2.GA\server\default\lib\bcel.jar;D:\jboss-4.2.2.GA\server\default\lib\bindingservice-plugin.jar;D:\jboss-4.2.2.GA\server\default\lib\bsf.jar;D:\jboss-4.2.2.GA\server\default\lib\bsh-deployer.jar;D:\jboss-4.2.2.GA\server\default\lib\bsh.jar;D:\jboss-4.2.2.GA\server\default\lib\cglib.jar;D:\jboss-4.2.2.GA\server\default\lib\commons-codec.jar;D:\jboss-4.2.2.GA\server\default\lib\commons-collections.jar;D:\jboss-4.2.2.GA\server\default\lib\commons-httpclient.jar;D:\jboss-4.2.2.GA\server\default\lib\commons-logging.jar;D:\jboss-4.2.2.GA\server\default\lib\db2jcc.jar;D:\jboss-4.2.2.GA\server\default\lib\dom4j.jar;D:\jboss-4.2.2.GA\server\default\lib\ejb3-persistence.jar;D:\jboss-4.2.2.GA\server\default\lib\el-api.jar;D:\jboss-4.2.2.GA\server\default\lib\hibernate-annotations.jar;D:\jboss-4.2.2.GA\server\default\lib\hibernate-entitymanager.jar;D:\jboss-4.2.2.GA\server\default\lib\hibernate3.jar;D:\jboss-4.2.2.GA\server\default\lib\hsqldb-plugin.jar;D:\jboss-4.2.2.GA\server\default\lib\hsqldb.jar;D:\jboss-4.2.2.GA\server\default\lib\javassist.jar;D:\jboss-4.2.2.GA\server\default\lib\jaxen.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-cache-jdk50.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-common-jdbc-wrapper.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-ejb3x.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-hibernate.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-j2ee.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-jaxrpc.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-jaxws.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-jca.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-jsr77.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-jsr88.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-management.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-monitoring.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-remoting-int.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-remoting.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-saaj.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-serialization.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-srp.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-transaction.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss-vfs.jar;D:\jboss-4.2.2.GA\server\default\lib\jboss.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossjta-integration.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossjta.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossmq.jar;D:\jboss-4.2.2.GA\server\default\lib\jbosssx.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossts-common.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossws-common.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossws-framework.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossws-jboss42.jar;D:\jboss-4.2.2.GA\server\default\lib\jbossws-spi.jar;D:\jboss-4.2.2.GA\server\default\lib\jmx-adaptor-plugin.jar;D:\jboss-4.2.2.GA\server\default\lib\jnpserver.jar;D:\jboss-4.2.2.GA\server\default\lib\joesnmp.jar;D:\jboss-4.2.2.GA\server\default\lib\jpl-pattern.jar;D:\jboss-4.2.2.GA\server\default\lib\jpl-util.jar;D:\jboss-4.2.2.GA\server\default\lib\jsp-api.jar;D:\jboss-4.2.2.GA\server\default\lib\log4j-snmp-appender.jar;D:\jboss-4.2.2.GA\server\default\lib\log4j.jar;D:\jboss-4.2.2.GA\server\default\lib\mail-plugin.jar;D:\jboss-4.2.2.GA\server\default\lib\mail.jar;D:\jboss-4.2.2.GA\server\default\lib\properties-plugin.jar;D:\jboss-4.2.2.GA\server\default\lib\quartz.jar;D:\jboss-4.2.2.GA\server\default\lib\scheduler-plugin-example.jar;D:\jboss-4.2.2.GA\server\default\lib\scheduler-plugin.jar;D:\jboss-4.2.2.GA\server\default\lib\servlet-api.jar;D:\jboss-4.2.2.GA\server\default\lib\xmlentitymgr.jar;D:\jboss-4.2.2.GA\lib\endorsed\xercesImpl.jar;D:\jboss-4.2.2.GA\lib\endorsed\xalan.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\build\classes;E:\review\direct_struts_action_3_1.0.0_dev_submission\conf;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_files;E:\review\direct_struts_action_3_1.0.0_dev_submission;d:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;d:\PROGRA~1\IBM\SQLLIB\java\db2jcc.jar;d:\PROGRA~1\IBM\SQLLIB\java\sqlj.zip;d:\PROGRA~1\IBM\SQLLIB\java\db2jcc_license_cu.jar;d:\PROGRA~1\IBM\SQLLIB\bin;d:\PROGRA~1\IBM\SQLLIB\java\common.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-launcher.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-junit.jar" />
-
-          <property name="war_name" value="demo.war" />
-
-          <property name="ext_libdir" value="e:/tcs/lib/third_party" />
-
-          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
-
-          <property name="builddir" value="build" />
-
-          <property name="java.vm.specification.version" value="1.0" />
-
-          <property name="component.dist.jar" value="build/dist/direct_struts_action_3-1.0.0.jar" />
-
-          <property name="junit.jar" value="e:/tcs/lib/third_party/junit/3.8.2/junit.jar" />
-
-          <property name="sun.os.patch.level" value="Service Pack 3" />
-
-          <property name="sun.cpu.endian" value="little" />
-
-          <property name="component.mainclass" value="" />
-
-          <property name="eclipse.pdebuild.home" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./" />
-
-          <property name="component.target" value="1.5" />
-
-          <property name="java.io.tmpdir" value="D:\TEMP\" />
-
-          <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
-
-          <property name="javac.encoding" value="UTF-8" />
-
-          <property name="build_targetclassdir" value="build/targetclasses" />
-
-          <property name="build_classdir" value="build/classes" />
-
-          <property name="javatests" value="src/java/tests" />
-
-          <property name="javadocsdir" value="docs/javadocs" />
-
-          <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
-
-          <property name="os.arch" value="x86" />
-
-          <property name="instrumented.dir" value="build/instrumented" />
-
-          <property name="test_reflib" value="test_reflib" />
-
-          <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\ext" />
-
-          <property name="user.dir" value="E:\review\direct_struts_action_3_1.0.0_dev_submission" />
-
-          <property name="design_dist.jar" value="direct_struts_action_3_1.0.0_design_dist.jar" />
-
-          <property name="libdir" value="../tcs/lib" />
-
-          <property name="javasrc" value="src/java" />
-
-          <property name="line.separator" value=" " />
-
-          <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+          <property name="build_distdir" value="build/dist" />
 
           <property name="distfilename" value="direct_struts_action_3" />
 
-          <property name="basedir" value="E:\review\direct_struts_action_3_1.0.0_dev_submission" />
+          <property name="component.version.micro" value="0" />
 
-          <property name="ant.java.version" value="1.5" />
+          <property name="component.dist.jar" value="build/dist/direct_struts_action_3-1.0.0.jar" />
 
-          <property name="ant.core.lib" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar" />
+          <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\endorsed" />
 
-          <property name="file.encoding" value="Cp1252" />
+          <property name="object_factory.jar" value="e:/tcs/lib/tcs/object_factory/2.1.2/object_factory.jar" />
 
-          <property name="dist_docs" value="build/dist/direct_struts_action_3-1.0.0/docs" />
+          <property name="json-lib-2.3-jdk15.jar" value="e:/tcs/lib/third_party/json/json-lib-2.3-jdk15.jar" />
 
-          <property name="component.jar" value="build/dist/lib/tcs/direct_struts_action_3/1.0.0/direct_struts_action_3.jar" />
+          <property name="sun.os.patch.level" value="Service Pack 3" />
 
-          <property name="java.specification.version" value="1.5" />
+          <property name="design_dist.jar" value="direct_struts_action_3_1.0.0_design_dist.jar" />
+
+          <property name="javadocsdir" value="docs/javadocs" />
+
+          <property name="java.vendor.url" value="http://java.sun.com/" />
+
+          <property name="java.version" value="1.5.0_21" />
+
+          <property name="eclipse.pdebuild.home" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./" />
+
+          <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+
+          <property name="cobertura.datafile" value="log/cobertura.ser" />
+
+          <property name="user.name" value="Administrator" />
+
+          <property name="packagedir" value="com/topcoder/direct/services/view/action/contest/launch" />
+
+          <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+
+          <property name="component_version" value="1.0.0" />
+
+          <property name="sun.jnu.encoding" value="GBK" />
+
+          <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
 
           <property name="target_libdir" value="e:/tcs/lib/tcs" />
 
-          <property name="ant.file.Dependency Import" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build-dependencies.xml" />
+          <property name="reports" value="log/reports" />
+
+          <property name="component.jar" value="build/dist/lib/tcs/direct_struts_action_3/1.0.0/direct_struts_action_3.jar" />
+
+          <property name="java.specification.name" value="Java Platform API Specification" />
+
+          <property name="javamain" value="src/java/main" />
+
+          <property name="user.timezone" value="" />
+
+          <property name="component.version.build" value="1" />
+
+          <property name="tcwebcommon.jar" value="e:/tcs/lib/tcs/tcwebcommon/1.0/tcwebcommon.jar" />
+
+          <property name="path.separator" value=";" />
+
+          <property name="srcdir" value="src" />
+
+          <property name="file.encoding" value="Cp1252" />
+
+          <property name="ant.file" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build.xml" />
+
+          <property name="build_war_dir" value="build/war" />
+
+          <property name="javasrc" value="src/java" />
+
+          <property name="search_builder.jar" value="e:/tcs/lib/tcs/search_builder/1.4.1/search_builder.jar" />
+
+          <property name="instrumented.dir" value="build/instrumented" />
+
+          <property name="component.target" value="1.5" />
+
+          <property name="component.tests.jar" value="build/dist/lib/tcs/direct_struts_action_3_tests.jar" />
+
+          <property name="java.io.tmpdir" value="D:\TEMP\" />
+
+          <property name="user.language" value="en" />
+
+          <property name="manifest_file_path" value="build/dist/direct_struts_action_3-1.0.0/META-INF/" />
+
+          <property name="line.separator" value=" " />
+
+          <property name="component.name" value="Direct Struts Action 3" />
+
+          <property name="verbose" value="no" />
+
+          <property name="manifest_file" value="build/dist/direct_struts_action_3-1.0.0/META-INF//MANIFEST.MF" />
+
+          <property name="ant.file.TopCoder Java Generic Build" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build.xml" />
+
+          <property name="java.vm.info" value="mixed mode, sharing" />
+
+          <property name="component_path" value="direct_struts_action_3/1.0.0" />
+
+          <property name="sun.desktop" value="windows" />
+
+          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+
+          <property name="dist_coverage" value="build/dist/direct_struts_action_3-1.0.0/docs/coverage" />
+
+          <property name="builddir" value="build" />
+
+          <property name="junit4.jar" value="e:/tcs/lib/third_party/junit/4.5/junit.jar" />
+
+          <property name="cobertura.dir" value="e:/tcs/lib/third_party/cobertura/1.8" />
+
+          <property name="struts2-core.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/struts2-core-2.1.8.1.jar" />
+
+          <property name="configuration_manager.jar" value="e:/tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+
+          <property name="javac.encoding" value="UTF-8" />
+
+          <property name="eclipse.pdebuild.templates" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/" />
+
+          <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+
+          <property name="dist_lib" value="build/dist/lib/tcs" />
+
+          <property name="junit.jar" value="e:/tcs/lib/third_party/junit/3.8.2/junit.jar" />
+
+          <property name="configdir" value="conf" />
+
+          <property name="build_tcsdistdir" value="build/dist/direct_struts_action_3-1.0.0" />
+
+          <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+
+          <property name="dist_docs" value="build/dist/direct_struts_action_3-1.0.0/docs" />
+
+          <property name="freemarker.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/freemarker-2.3.15.jar" />
+
+          <property name="mock.jar" value="test_reflib/mock.jar" />
+
+          <property name="test_reflib" value="test_reflib" />
+
+          <property name="testlogdir" value="log" />
+
+          <property name="configuration_api.jar" value="e:/tcs/lib/tcs/configuration_api/1.0.0/configuration_api.jar" />
+
+          <property name="os.name" value="Windows XP" />
+
+          <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="spring-web.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/spring-web-2.5.6.jar" />
+
+          <property name="xercesImpl.jar" value="e:/tcs/lib/third_party/xerces-2_9_1/xercesImpl.jar" />
+
+          <property name="component.mainclass" value="" />
+
+          <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+
+          <property name="war_name" value="demo.war" />
+
+          <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;d:\progra~1\f-secure\sshtri~1;c:\program files\ibm\gsk8\lib;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\Program Files\ThinkPad Wireless LAN Adapter Software;d:\PROGRA~1\IBM\SQLLIB\BIN;d:\PROGRA~1\IBM\SQLLIB\FUNCTION;d:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL;E:\Program Files\TortoiseSVN\bin;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;d:\CTEX\MiKTeX\miktex\bin;d:\CTEX\CTeX\ctex\bin;d:\CTEX\CTeX\cct\bin;d:\CTEX\CTeX\ty\bin;d:\CTEX\Ghostscript\gs8.70\bin;d:\CTEX\GSview\gsview;d:\CTEX\WinEdt;e:\oracle\product\10.1.0\Db_1\bin;e:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin\client;e:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin;D:\apache-ant-1.7.1\bin;C:\Program Files\StormII\Codec;C:\Program Files\StormII;E:\cpp\boost_1_43_0" />
+
+          <property name="docpackage.jar" value="direct_struts_action_3_docs.jar" />
+
+          <property name="eclipse.pdebuild.scripts" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/" />
+
+          <property name="shared.jar" value="e:/tcs/lib/tcs/shared/1.0/shared.jar" />
+
+          <property name="ant.java.version" value="1.5" />
+
+          <property name="basedir" value="E:\review\direct_struts_action_3_1.0.0_dev_submission" />
+
+          <property name="java.class.version" value="49.0" />
+
+          <property name="ant.home" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910" />
+
+          <property name="object_factory_configuration_api_plugin.jar" value="e:/tcs/lib/tcs/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
+
+          <property name="log4j.jar" value="e:/tcs/lib/third_party/log4j/1.2.15/log4j.jar" />
+
+          <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin" />
+
+          <property name="ext_libdir" value="e:/tcs/lib/third_party" />
+
+          <property name="spring-core.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/spring-core-2.5.6.jar" />
+
+          <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+
+          <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+
+          <property name="user.variant" value="" />
+
+          <property name="object_formatter.jar" value="e:/tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" />
+
+          <property name="build_targetclassdir" value="build/targetclasses" />
+
+          <property name="docsdir" value="docs" />
+
+          <property name="dev_dist.jar" value="direct_struts_action_3_1.0.0_dev_dist.jar" />
+
+          <property name="ant.project.name" value="TopCoder Java Generic Build" />
+
+          <property name="component.version.minor" value="0" />
+
+          <property name="java.vm.specification.version" value="1.0" />
+
+          <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+          <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+
+          <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+
+          <property name="build_javadocsdir" value="build/docs/javadocs" />
+
+          <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\ext" />
+
+          <property name="os.version" value="5.1" />
+
+          <property name="user.home" value="D:" />
+
+          <property name="javadoc.jar" value="javadocs.jar" />
+
+          <property name="libdir" value="../tcs/lib" />
+
+          <property name="build_classdir" value="build/classes" />
+
+          <property name="commons-logging.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/commons-logging-1.0.4.jar" />
+
+          <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+
+          <property name="component.distfilename" value="direct_struts_action_3" />
 
           <property name="component.package" value="com.topcoder.direct.services.view.action.contest.launch" />
 
+          <property name="build_testclassdir" value="build/testClasses" />
+
+          <property name="package" value="com.topcoder.direct.services.view.action.contest.launch" />
+
+          <property name="base_exception.jar" value="e:/tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" />
+
+          <property name="user.dir" value="E:\review\direct_struts_action_3_1.0.0_dev_submission" />
+
+          <property name="component.packagedir" value="com/topcoder/direct/services/view/action/contest/launch" />
+
+          <property name="struts2-spring-plugin.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/struts2-spring-plugin-2.1.8.1.jar" />
+
+          <property name="configuration_persistence.jar" value="e:/tcs/lib/tcs/configuration_persistence/1.0/configuration_persistence.jar" />
+
+          <property name="struts2-junit-plugin-2.1.8.1.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/struts2-junit-plugin-2.1.8.1.jar" />
+
+          <property name="spring-context.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/spring-context-2.5.6.jar" />
+
+          <property name="sun.cpu.endian" value="little" />
+
+          <property name="ant.file.Dependency Import" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build-dependencies.xml" />
+
+          <property name="commons-lang.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/commons-lang-2.3.jar" />
+
+          <property name="dist_docpackage" value="build/doc_package" />
+
+          <property name="java.vm.version" value="1.5.0_21-b01" />
+
+          <property name="spring-beans.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/spring-beans-2.5.6.jar" />
+
+          <property name="java.class.path" value="E:\review\direct_struts_action_3_1.0.0_dev_submission\build\testClasses;e:\tcs\lib\third_party\junit\4.5\junit.jar;e:\tcs\lib\tcs\base_exception\2.0.0\base_exception.jar;e:\tcs\lib\tcs\configuration_api\1.0.0\configuration_api.jar;e:\tcs\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;e:\tcs\lib\tcs\configuration_persistence\1.0\configuration_persistence.jar;e:\tcs\lib\tcs\search_builder\1.4.1\search_builder.jar;e:\tcs\lib\tcs\object_factory\2.1.2\object_factory.jar;e:\tcs\lib\tcs\object_factory_configuration_api_plugin\1.0.0\object_factory_configuration_api_plugin.jar;e:\tcs\lib\tcs\object_formatter\1.0.0\object_formatter.jar;e:\tcs\lib\tcs\security\1.0\security.jar;e:\tcs\lib\tcs\shared\1.0\shared.jar;e:\tcs\lib\tcs\tcwebcommon\1.0\tcwebcommon.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\spring-test-2.5.6.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\spring-core-2.5.6.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\spring-web-2.5.6.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\spring-beans-2.5.6.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\spring-context-2.5.6.jar;e:\tcs\lib\third_party\xerces-2_9_1\xercesImpl.jar;e:\tcs\lib\third_party\javaee\1.5\javaee.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\struts2-core-2.1.8.1.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\xwork-core-2.1.6.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\commons-lang-2.3.jar;e:\tcs\lib\third_party\log4j\1.2.15\log4j.jar;e:\tcs\lib\third_party\json\json-lib-2.3-jdk15.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_reflib\mock.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\struts2-junit-plugin-2.1.8.1.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\commons-logging-1.0.4.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\commons-fileupload-1.2.1.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\freemarker-2.3.15.jar;e:\tcs\lib\third_party\struts-2.1.8.1\lib\struts2-spring-plugin-2.1.8.1.jar;E:\review\direct_struts_action_3_1.0.0_dev_submission\build\classes;E:\review\direct_struts_action_3_1.0.0_dev_submission\conf;E:\review\direct_struts_action_3_1.0.0_dev_submission\test_files;E:\review\direct_struts_action_3_1.0.0_dev_submission;d:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;d:\PROGRA~1\IBM\SQLLIB\java\db2jcc.jar;d:\PROGRA~1\IBM\SQLLIB\java\sqlj.zip;d:\PROGRA~1\IBM\SQLLIB\java\db2jcc_license_cu.jar;d:\PROGRA~1\IBM\SQLLIB\bin;d:\PROGRA~1\IBM\SQLLIB\java\common.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-launcher.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-junit.jar" />
+
+          <property name="dev_submission.jar" value="direct_struts_action_3_1.0.0_dev_submission.jar" />
+
+          <property name="ant.library.dir" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib" />
+
+          <property name="os.arch" value="x86" />
+
+          <property name="javaee.jar" value="e:/tcs/lib/third_party/javaee/1.5/javaee.jar" />
+
+          <property name="sun.java.launcher" value="SUN_STANDARD" />
+
+          <property name="ant.core.lib" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar" />
+
+          <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="jboss.home" value="D:/jboss-4.2.2.GA" />
+
+          <property name="file.separator" value="\" />
+
+          <property name="java.runtime.version" value="1.5.0_21-b01" />
+
+          <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_21\jre\classes" />
+
+          <property name="build_docsdir" value="build/docs" />
+
+          <property name="javadoc.locale" value="en_US" />
+
+          <property name="design_submission.jar" value="direct_struts_action_3_1.0.0_design_submission.jar" />
+
+          <property name="security.jar" value="e:/tcs/lib/tcs/security/1.0/security.jar" />
+
+          <property name="user.country" value="US" />
+
+          <property name="tcs_libdir" value="e:/tcs/lib/tcs" />
+
+          <property name="component" value="Direct Struts Action 3" />
+
+          <property name="commons-fileupload.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/commons-fileupload-1.2.1.jar" />
+
+          <property name="java.vendor" value="Sun Microsystems Inc." />
+
+          <property name="spring-test.jar" value="e:/tcs/lib/third_party/struts-2.1.8.1/lib/spring-test-2.5.6.jar" />
+
+          <property name="java.specification.version" value="1.5" />
+
+          <property name="testfiles" value="test_files" />
+
+          <property name="sun.arch.data.model" value="32" />
+
+          <property name="javatests" value="src/java/tests" />
+
       </properties>
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="testInheritance" time="1.843" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="testInheritance" time="1.39" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="testConstructor" time="0.204" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="testConstructor" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_Accuracy1" time="0.14" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_Accuracy1" time="0.11" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_Accuracy2" time="0.11" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_Accuracy2" time="0.141" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_MissingFacade" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_MissingFacade" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_OldMilestonePrizesNull" time="0.296" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_OldMilestonePrizesNull" time="0.187" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_ContestNotFound" time="0.188" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_ContestNotFound" time="0.172" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_ContestPrizeNotIncreased" time="0.219" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_ContestPrizeNotIncreased" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_MilestonePrizeNotIncreased" time="0.203" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_executeAction_MilestonePrizeNotIncreased" time="0.156" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_WrongNumberOfContestPrizes" time="0.172" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_WrongNumberOfContestPrizes" time="0.11" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_WrongNumberOfMilestonePrizes" time="0.172" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_WrongNumberOfMilestonePrizes" time="0.109" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_getContestId_Accuracy" time="0.078" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestId_Accuracy" time="0.14" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestId_Accuracy" time="0.11" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.266" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.171" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_isStudio_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_isStudio_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setStudio_Accuracy" time="0.156" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setStudio_Accuracy" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_getContestPrizes_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_getContestPrizes_Accuracy" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_Accuracy" time="0.079" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_Accuracy" time="0.063" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_Null" time="0.156" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_Null" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NullElement" time="0.187" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NullElement" time="0.156" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NegativePrize" time="0.172" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NegativePrize" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NaNPrize" time="0.156" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NaNPrize" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NegativeInfinityPrize" time="0.157" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_NegativeInfinityPrize" time="0.093" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_OnlyOnePrize" time="0.203" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_OnlyOnePrize" time="0.141" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_TooManyDecimalPlacesForCents" time="0.14" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_TooManyDecimalPlacesForCents" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_SecondPlacePrizeTooLow" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setContestPrizes_SecondPlacePrizeTooLow" time="0.078" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_getMilestonePrizes_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_getMilestonePrizes_Accuracy" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_Accuracy" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_Accuracy" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_Null" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_Null" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_NullElement" time="0.14" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_NullElement" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_NegativePrize" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_NegativePrize" time="0.14" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_NaNPrize" time="0.203" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_NaNPrize" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_TooManyDecimalPlacesForCents" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingActionUnitTest" name="test_setMilestonePrizes_TooManyDecimalPlacesForCents" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="testInheritance" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="testInheritance" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="testConstructor" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="testConstructor" time="0.063" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.219" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.141" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_executeAction_DirectServiceFacadeException" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalActionUnitTest" name="test_executeAction_DirectServiceFacadeException" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="testInheritance" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="testInheritance" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="testConstructor" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="testConstructor" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_executeAction_MissingFacade" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_executeAction_MissingFacade" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getContestId_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getContestId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setContestId_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setContestId_Accuracy" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.219" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_isStudio_Accuracy" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_isStudio_Accuracy" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setStudio_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setStudio_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_executeAction_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_executeAction_Accuracy" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_executeAction_DirectServiceFacadeException" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_executeAction_DirectServiceFacadeException" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getRegistrationExtension_Accuracy" time="0.079" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getRegistrationExtension_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setRegistrationExtension_Accuracy" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setRegistrationExtension_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setRegistrationExtension_RegistrationExtensionNotPositive" time="0.218" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setRegistrationExtension_RegistrationExtensionNotPositive" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getMilestoneExtension_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getMilestoneExtension_Accuracy" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setMilestoneExtension_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setMilestoneExtension_Accuracy" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setMilestoneExtension_MilestoneExtensionNotPositive" time="0.266" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setMilestoneExtension_MilestoneExtensionNotPositive" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getSubmissionExtension_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_getSubmissionExtension_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setSubmissionExtension_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setSubmissionExtension_Accuracy" time="0.11" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setSubmissionExtension_SubmissionExtensionNotPositive" time="0.219" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionActionUnitTest" name="test_setSubmissionExtension_SubmissionExtensionNotPositive" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="testInheritance" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="testInheritance" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="testConstructor" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="testConstructor" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.079" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.266" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.141" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.079" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_executeAction_DirectServiceFacadeException" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalActionUnitTest" name="test_executeAction_DirectServiceFacadeException" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="testInheritance" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="testInheritance" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="testConstructor" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="testConstructor" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.281" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_executeAction_ContestNotFoundException" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalActionUnitTest" name="test_executeAction_ContestNotFoundException" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="testInheritance" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="testInheritance" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="testConstructor" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="testConstructor" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_Accuracy1" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_Accuracy1" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_Accuracy2" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_Accuracy2" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_MissingFacade" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_MissingFacade" time="0.046" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_getContestId_Accuracy" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_getContestId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setContestId_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setContestId_Accuracy" time="0.11" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.219" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.125" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_isStudio_Accuracy" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setStudio_Accuracy" time="0.079" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setStudio_Accuracy" time="0.063" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_ContestNotFoundException" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_executeAction_ContestNotFoundException" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_getAdditionalEmailAddresses_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_getAdditionalEmailAddresses_Accuracy" time="0.109" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setAdditionalEmailAddresses_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setAdditionalEmailAddresses_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setAdditionalEmailAddresses_TooLong" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setAdditionalEmailAddresses_TooLong" time="0.078" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setAdditionalEmailAddresses_InvalidEmail" time="0.203" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setAdditionalEmailAddresses_InvalidEmail" time="0.094" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingActionUnitTest" name="test_setAdditionalEmailAddresses_EmptyEmail" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="testInheritance" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="testInheritance" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="testConstructor" time="0.079" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="testConstructor" time="0.046" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.063" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_executeAction_ErrorFetchingData" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_executeAction_ErrorFetchingData" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_getProjectId_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_getProjectId_Accuracy" time="0.046" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_setProjectId_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_setProjectId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_setProjectId_ProjectIdNotPositive" time="0.282" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalActionUnitTest" name="test_setProjectId_ProjectIdNotPositive" time="0.125" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="testInheritance" time="0.062" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="testConstructor" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="testConstructor" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_getProjectId_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_getProjectId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_setProjectId_Accuracy" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_setProjectId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_setProjectId_ProjectIdNotPositive" time="0.218" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_setProjectId_ProjectIdNotPositive" time="0.172" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_executeAction_ErrorGettingProjectData" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalActionUnitTest" name="test_executeAction_ErrorGettingProjectData" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="testInheritance" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="testInheritance" time="0.063" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="testConstructor" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="testConstructor" time="0.046" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_MissingFacade" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_getContestId_Accuracy" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setContestId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.219" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setContestId_ContestIdNotPositive" time="0.14" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.125" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_isStudio_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setStudio_Accuracy" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.078" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_getProjectId_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_getProjectId_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setProjectId_Accuracy" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setProjectId_Accuracy" time="0.063" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setProjectId_ProjectIdNotPositive" time="0.203" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setProjectId_ProjectIdNotPositive" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_MissingAssetDTO" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_MissingAssetDTO" time="0.14" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_MissingCategory" time="0.14" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_MissingCategory" time="0.078" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_NullContestType" time="0.141" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_NullContestType" time="0.094" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_NullContestName" time="0.187" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_executeAction_NullContestName" time="0.078" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_getLinkTemplate_Accuracy" time="0.063" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_getLinkTemplate_Accuracy" time="0.11" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_Accuracy" time="0.062" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_Accuracy" time="0.047" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_Null" time="0.219" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_Null" time="0.125" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_MissingContestType" time="0.203" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_MissingContestType" time="0.14" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_MissingContestName" time="0.281" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalActionUnitTest" name="test_setLinkTemplate_MissingContestName" time="0.125" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestPrizeIncreasingActionAccTest" name="testExecuteAction" time="0.0" />
 
@@ -562,7 +620,7 @@
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestPrizeIncreasingActionAccTest" name="testSetMilestonePrizes" time="0.0" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestPrizeRetrievalActionAccTest" name="testExecuteAction" time="0.0" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestPrizeRetrievalActionAccTest" name="testExecuteAction" time="0.016" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestPrizeRetrievalActionAccTest" name="testGetContestId" time="0.0" />
 
@@ -576,7 +634,7 @@
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestScheduleExtensionActionAccTest" name="testExecuteAction" time="0.0" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestScheduleExtensionActionAccTest" name="testGetContestId" time="0.0" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestScheduleExtensionActionAccTest" name="testGetContestId" time="0.015" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ActiveContestScheduleExtensionActionAccTest" name="testSetContestId" time="0.0" />
 
@@ -622,7 +680,7 @@
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ContestReceiptRetrievalActionAccTest" name="testContestReceiptRetrievalAction" time="0.0" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ContestReceiptSendingActionAccTest" name="testExecuteAction" time="0.0" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ContestReceiptSendingActionAccTest" name="testExecuteAction" time="0.016" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.ContestReceiptSendingActionAccTest" name="testExecuteAction_1" time="0.0" />
 
@@ -644,7 +702,7 @@
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.GamePlanRetrievalActionAccTest" name="testGamePlanRetrievalAction" time="0.0" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.GamePlanRetrievalActionAccTest" name="testGetProjectId" time="0.015" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.GamePlanRetrievalActionAccTest" name="testGetProjectId" time="0.0" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.accuracytests.GamePlanRetrievalActionAccTest" name="testSetProjectId" time="0.0" />
 
@@ -698,7 +756,7 @@
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.ActiveContestScheduleRetrievalActionFailureTest" name="test_execute" time="0.0" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.ContestReceiptRetrievalActionFailureTest" name="test_execute" time="0.016" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.ContestReceiptRetrievalActionFailureTest" name="test_execute" time="0.0" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.ContestReceiptSendingActionFailureTest" name="test_execute" time="0.0" />
 
@@ -712,29 +770,29 @@
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.GamePlanRetrievalActionFailureTest" name="test_execute" time="0.0" />
 
-      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.ProjectContestDataRetrievalActionFailureTest" name="test_execute" time="0.0" />
+      <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.ProjectContestDataRetrievalActionFailureTest" name="test_execute" time="0.016" />
 
       <testcase classname="com.topcoder.direct.services.view.action.contest.launch.failuretests.WikiLinkRetrievalActionFailureTest" name="test_execute" time="0.0" />
 
       <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ActiveContestPrizeIncreasingAction_1_100" time="0.062" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ActiveContestPrizeRetrievalAction_1_100" time="0.078" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ActiveContestPrizeRetrievalAction_1_100" time="0.047" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ActiveContestScheduleExtensionAction_1_100" time="0.078" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ActiveContestScheduleExtensionAction_1_100" time="0.063" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ActiveContestScheduleRetrievalAction_1_100" time="0.141" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ActiveContestScheduleRetrievalAction_1_100" time="0.047" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ContestReceiptRetrievalAction_1_100" time="0.078" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ContestReceiptRetrievalAction_1_100" time="0.125" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ContestReceiptSendingAction_1_100" time="0.094" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ContestReceiptSendingAction_1_100" time="0.062" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_GamePlanRetrievalAction_1_100" time="0.078" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_GamePlanRetrievalAction_1_100" time="0.047" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ProjectContestDataRetrievalAction_1_100" time="0.078" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_ProjectContestDataRetrievalAction_1_100" time="0.062" />
 
-      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_WikiLinkRetrievalAction_5_5" time="0.172" />
+      <testcase classname="com.topcoder.service.actions.stresstests.DirectStrutsActionsStressTest" name="test_WikiLinkRetrievalAction_5_5" time="0.063" />
 
-      <system-out><![CDATA[2010-06-28 22:53:11,609 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockActiveContestPrizeIncreasingAction : test
+      <system-out><![CDATA[2010-07-01 21:14:49,817 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockActiveContestPrizeIncreasingAction : test
 com.topcoder.service.facade.direct.ContestNotFoundException: test
 	at com.topcoder.direct.services.view.action.contest.launch.MockDirectServiceFacade.getContestPrize(MockDirectServiceFacade.java:225)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction.executeAction(ActiveContestPrizeIncreasingAction.java:143)
@@ -813,7 +871,7 @@ com.topcoder.service.facade.direct.ContestNotFoundException: test
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:25,453 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The assetDTO for software competition cannot be null
+2010-07-01 21:14:59,583 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The assetDTO for software competition cannot be null
 java.lang.IllegalStateException: The assetDTO for software competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:135)
@@ -892,7 +950,7 @@ java.lang.IllegalStateException: The assetDTO for software competition cannot be
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:25,578 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The category for software competition cannot be null
+2010-07-01 21:14:59,676 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The category for software competition cannot be null
 java.lang.IllegalStateException: The category for software competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:136)
@@ -971,7 +1029,7 @@ java.lang.IllegalStateException: The category for software competition cannot be
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:25,734 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest type for the competition cannot be null
+2010-07-01 21:14:59,770 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest type for the competition cannot be null
 java.lang.IllegalStateException: The contest type for the competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:143)
@@ -1050,7 +1108,7 @@ java.lang.IllegalStateException: The contest type for the competition cannot be 
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:25,921 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest name for the competition cannot be null
+2010-07-01 21:14:59,848 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.MockWikiLinkRetrievalAction : The contest name for the competition cannot be null
 java.lang.IllegalStateException: The contest name for the competition cannot be null
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.checkNull(WikiLinkRetrievalAction.java:257)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:144)
@@ -1130,7 +1188,7 @@ java.lang.IllegalStateException: The contest name for the competition cannot be 
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
 execute extendActiveContestSchedule.
-2010-06-28 22:53:26,906 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,614 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeIncreasingAction.executeAction(ActiveContestPrizeIncreasingAction.java:139)
@@ -1155,7 +1213,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,921 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestPrizeRetrievalAction.executeAction(ActiveContestPrizeRetrievalAction.java:84)
@@ -1180,7 +1238,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,921 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleExtensionAction.executeAction(ActiveContestScheduleExtensionAction.java:121)
@@ -1205,7 +1263,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,921 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ActiveContestScheduleRetrievalAction.executeAction(ActiveContestScheduleRetrievalAction.java:84)
@@ -1230,7 +1288,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,921 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,630 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ContestReceiptRetrievalAction.executeAction(ContestReceiptRetrievalAction.java:84)
@@ -1255,7 +1313,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,937 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,645 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ContestReceiptSendingAction.executeAction(ContestReceiptSendingAction.java:116)
@@ -1280,7 +1338,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,937 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalAction : directServiceFacade was not injected (is null)
+2010-07-01 21:15:00,645 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalAction : directServiceFacade was not injected (is null)
 java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.GamePlanRetrievalAction.executeAction(GamePlanRetrievalAction.java:110)
@@ -1305,7 +1363,7 @@ java.lang.IllegalStateException: directServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,937 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalAction : contestServiceFacade was not injected (is null)
+2010-07-01 21:15:00,645 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalAction : contestServiceFacade was not injected (is null)
 java.lang.IllegalStateException: contestServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.ProjectContestDataRetrievalAction.executeAction(ProjectContestDataRetrievalAction.java:80)
@@ -1330,7 +1388,7 @@ java.lang.IllegalStateException: contestServiceFacade was not injected (is null)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
-2010-06-28 22:53:26,937 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction : contestServiceFacade was not injected (is null)
+2010-07-01 21:15:00,661 ERROR com.topcoder.direct.services.view.action.contest.launch.BaseDirectStrutsAction.execute:166 - Error when executing action : com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction : contestServiceFacade was not injected (is null)
 java.lang.IllegalStateException: contestServiceFacade was not injected (is null)
 	at com.topcoder.direct.services.view.action.contest.launch.ActionHelper.checkInjectedFieldNull(ActionHelper.java:62)
 	at com.topcoder.direct.services.view.action.contest.launch.WikiLinkRetrievalAction.executeAction(WikiLinkRetrievalAction.java:115)
