@@ -1,0 +1,34 @@
+Hi Beijing2008,
+
+Please see below for some notes on the FF.
+
+----------------------------------------------------------------------------------------------------
+yuanyeyuanye 2.1.1 - Please confirm with the designer for the signature whether "executeAction()"  in the
+xxxAction class should be defined as "protected" or "public". 
+
+I made all the executeAction methods protected, this seems to be the most logical way since method
+signature in BaseDirectStrutsAction is:
+protected abstract void executeAction() throws Exception;
+
+I didn't change it during the competition because public was what was used in tcuml. But I agree with
+reviewer here we probably want to make them protected.  If you think we need to get designer involved,
+you can reject the FF, but I don't think it's necessary here.
+----------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Beijing2008 3.1.4 - For XXXXAction#execute(), if an error is thrown, Is there any particular reason for
+which you set the result twice (both in method execute() and executeAction() )? 
+
+I double checked the forum, and actually the co-pilot has confirmed the designer's approach (catch exception,
+add to to model, then rethrow). You can refer to this thread:
+http://forums.topcoder.com/?module=Thread&threadID=678247&start=15&mc=25
+
+murphydog: "Urmass's response is confirmed."
+
+So I think since we have co-pilot/designer approval here, everything should be ok and no further
+forum clarifications are necessary. If you disagree, you can reject the FF, but I just didn't see
+the need here to get further clarification since it was confirmed multiple times in that thread
+that we need to add the exception to the model.
+
+----------------------------------------------------------------------------------------------------
+
