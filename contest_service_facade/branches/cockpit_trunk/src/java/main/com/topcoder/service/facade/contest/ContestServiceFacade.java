@@ -50,6 +50,7 @@ import com.topcoder.service.studio.contest.SimpleContestData;
 import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
+import com.topcoder.service.user.Registrant;
 
 
 /**
@@ -2380,4 +2381,18 @@ public interface ContestServiceFacade {
      */
     public void updateNotificationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications) throws ContestServiceException;
 
+     /**
+     * Gets the registrant information for the given project. If the project is of type Studio, a
+     * boolean flag isStudio should be set to true and passed as argument.
+     * 
+     * @param tcSubject the TCSubject instance.
+     * @param ProjectId the id of the project.
+     * @param isStudio the flag indicates whether the project is of type Studio.
+     * @return the retrieved list of Registrant instances.
+     * @throws ContestServiceException if any error occurs.
+     * 
+     * @since BUGR-3738
+     */
+    public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long ProjectId, boolean isStudio)
+            throws ContestServiceException;
 }
