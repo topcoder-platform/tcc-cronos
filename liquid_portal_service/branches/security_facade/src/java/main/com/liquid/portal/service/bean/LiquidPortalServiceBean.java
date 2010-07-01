@@ -883,7 +883,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             }
                        
             // add user to jira
-            addUserToJira(user, tcsubject, warnings, methodName);
+            addUserToJira(savedUserInfo, tcsubject, warnings, methodName);
         }
 
         result.setWarnings(warnings);
