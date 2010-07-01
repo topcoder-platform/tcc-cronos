@@ -7,14 +7,17 @@ package com.topcoder.service.gameplan.ejb;
 import com.topcoder.security.RolePrincipal;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.gameplan.GamePlanServiceConfigurationException;
-import com.topcoder.service.gameplan.TestHelper;
 import com.topcoder.service.util.gameplan.SoftwareProjectData;
 import com.topcoder.service.util.gameplan.StudioProjectData;
 import com.topcoder.service.util.gameplan.TCDirectProjectGamePlanData;
+import org.hibernate.ejb.Ejb3Configuration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -35,6 +38,16 @@ public class GamePlanServiceBeanTests {
      * <p>Represents the <code>GamePlanServiceBean</code> instance for testing.</p>
      */
     private GamePlanServiceBean gamePlanServiceBean;
+
+    /**
+     * <p>Represents the entity manager for tcs_catalog database.</p>
+     */
+    private EntityManager softwareEntityManager;
+
+    /**
+     * <p>Represents the entity manager for studio_oltp database.</p>
+     */
+    private EntityManager studioEntityManager;
 
     /**
      * <p>Set up the testing environment.</p>
@@ -74,7 +87,7 @@ public class GamePlanServiceBeanTests {
         gamePlanServiceBean.initialize();
 
         // verify that the log field is not set.
-        assertNull("The log field should be null.", TestHelper.getField(gamePlanServiceBean, "log"));
+        assertNull("The log field should be null.", getField(gamePlanServiceBean, "log"));
     }
 
     /**
@@ -88,7 +101,7 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = GamePlanServiceConfigurationException.class)
     public void testInitialize_logName_empty() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "");
+        setField(gamePlanServiceBean, "logName", "");
 
         gamePlanServiceBean.initialize();
     }
@@ -104,7 +117,7 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = GamePlanServiceConfigurationException.class)
     public void testInitialize_logName_trimmedEmpty() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", " \t");
+        setField(gamePlanServiceBean, "logName", " \t");
 
         gamePlanServiceBean.initialize();
     }
@@ -120,12 +133,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testInitialize_logName_valid() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "valid");
+        setField(gamePlanServiceBean, "logName", "valid");
 
         gamePlanServiceBean.initialize();
 
         // verify that the log field is set.
-        assertNotNull("The log field should not be null.", TestHelper.getField(gamePlanServiceBean, "log"));
+        assertNotNull("The log field should not be null.", getField(gamePlanServiceBean, "log"));
     }
 
     /**
@@ -139,7 +152,7 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testRetrieveGamePlanData_null() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
@@ -157,7 +170,7 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = IllegalStateException.class)
     public void testRetrieveGamePlanData_softwareEntityManager_null() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
@@ -175,11 +188,13 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = IllegalStateException.class)
     public void testRetrieveGamePlanData_studioEntityManager_null() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
+        EntityManager entityManager = getSoftwareEntityManager();
+
+        setField(gamePlanServiceBean, "softwareEntityManager", entityManager);
 
         TCSubject tcSubject = new TCSubject(1l);
         tcSubject.addPrincipal(new RolePrincipal("Cockpit Administrator", 1l));
@@ -198,12 +213,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData_accuracy1() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(100l);
 
@@ -224,12 +239,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData_accuracy2() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(1l);
 
@@ -275,12 +290,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData_accuracy3() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(2l);
         tcSubject.addPrincipal(new RolePrincipal("Copilot", 1l));
@@ -324,12 +339,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData_accuracy4() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(2l);
         tcSubject.addPrincipal(new RolePrincipal("Cockpit Administrator", 1l));
@@ -363,7 +378,7 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testRetrieveGamePlanData2_null() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
@@ -381,7 +396,7 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = IllegalStateException.class)
     public void testRetrieveGamePlanData2_softwareEntityManager_null() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
@@ -399,11 +414,13 @@ public class GamePlanServiceBeanTests {
      */
     @Test(expected = IllegalStateException.class)
     public void testRetrieveGamePlanData2_studioEntityManager_null() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
+        EntityManager entityManager = getSoftwareEntityManager();
+
+        setField(gamePlanServiceBean, "softwareEntityManager", entityManager);
 
         TCSubject tcSubject = new TCSubject(1l);
         tcSubject.addPrincipal(new RolePrincipal("Cockpit Administrator", 1l));
@@ -422,12 +439,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData2_accuracy1() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(100l);
 
@@ -447,12 +464,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData2_accuracy2() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(1l);
 
@@ -496,12 +513,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData2_accuracy3() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(1l);
         tcSubject.addPrincipal(new RolePrincipal("Copilot", 1l));
@@ -521,12 +538,12 @@ public class GamePlanServiceBeanTests {
      */
     @Test
     public void testRetrieveGamePlanData2_accuracy4() throws Exception {
-        TestHelper.setField(gamePlanServiceBean, "logName", "UnitTest");
+        setField(gamePlanServiceBean, "logName", "UnitTest");
         // mimic the EJB initialization.
         gamePlanServiceBean.initialize();
 
-        TestHelper.setField(gamePlanServiceBean, "softwareEntityManager", TestHelper.getSoftwareEntityManager());
-        TestHelper.setField(gamePlanServiceBean, "studioEntityManager", TestHelper.getStudioEntityManager());
+        setField(gamePlanServiceBean, "softwareEntityManager", getSoftwareEntityManager());
+        setField(gamePlanServiceBean, "studioEntityManager", getStudioEntityManager());
 
         TCSubject tcSubject = new TCSubject(2l);
         tcSubject.addPrincipal(new RolePrincipal("Cockpit Administrator", 1l));
@@ -539,5 +556,101 @@ public class GamePlanServiceBeanTests {
 
         assertFalse("the list should not be empty", result.getSoftwareProjects().isEmpty());
         assertFalse("the list should not be empty", result.getStudioProjects().isEmpty());
+    }
+
+    /**
+     * <p>Gets EntityManager for tcs_catalog database.</p>
+     *
+     * @return EntityManager
+     */
+    private EntityManager getSoftwareEntityManager() {
+        if (softwareEntityManager == null || !softwareEntityManager.isOpen()) {
+            // create entityManager
+            Ejb3Configuration cfg = new Ejb3Configuration();
+            cfg.configure("hibernate_software.cfg.xml");
+
+            EntityManagerFactory emf = cfg.buildEntityManagerFactory();
+            softwareEntityManager = emf.createEntityManager();
+        }
+
+        softwareEntityManager.clear();
+        if (!softwareEntityManager.getTransaction().isActive()) {
+            softwareEntityManager.getTransaction().begin();
+        }
+        return softwareEntityManager;
+    }
+
+    /**
+     * <p>Gets EntityManager for studio_oltp database.</p>
+     *
+     * @return EntityManager
+     */
+    private EntityManager getStudioEntityManager() {
+        if (studioEntityManager == null || !studioEntityManager.isOpen()) {
+            // create entityManager
+            Ejb3Configuration cfg = new Ejb3Configuration();
+            cfg.configure("hibernate_studio.cfg.xml");
+
+            EntityManagerFactory emf = cfg.buildEntityManagerFactory();
+            studioEntityManager = emf.createEntityManager();
+        }
+
+        studioEntityManager.clear();
+        if (!studioEntityManager.getTransaction().isActive()) {
+            studioEntityManager.getTransaction().begin();
+        }
+        return studioEntityManager;
+    }
+
+    /**
+     * <p>Retrieves the specified field of the given object.</p>
+     *
+     * @param object    the object that holds the field
+     * @param fieldName the name of the field
+     * @return the value of the field
+     * @throws Exception pass any unexpected exception to JUnit.
+     */
+    private static Object getField(Object object, String fieldName) throws Exception {
+        Field field = null;
+        Class<?> instanceClass = object.getClass();
+        while (null == field) {
+            try {
+                field = instanceClass.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                instanceClass = instanceClass.getSuperclass();
+                if (null == instanceClass) {
+                    throw e;
+                }
+            }
+        }
+
+        field.setAccessible(true);
+        return field.get(object);
+    }
+
+    /**
+     * <p>Set the specified field of the given object.</p>
+     *
+     * @param object    the object that holds the field
+     * @param fieldName the name of the field
+     * @param value     the value to set
+     * @throws Exception pass any unexpected exception to JUnit.
+     */
+    private static void setField(Object object, String fieldName, Object value) throws Exception {
+        Field field = null;
+        Class<?> instanceClass = object.getClass();
+        while (null == field) {
+            try {
+                field = instanceClass.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                instanceClass = instanceClass.getSuperclass();
+                if (null == instanceClass) {
+                    throw e;
+                }
+            }
+        }
+
+        field.setAccessible(true);
+        field.set(object, value);
     }
 }

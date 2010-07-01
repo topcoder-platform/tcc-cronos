@@ -1,6 +1,6 @@
 <project name="Dependency Import" default="dist" basedir=".">
     <!-- property file defining the component's dependencies -->
-    <property name="jboss_home" value="C:/tcs/lib/jboss-4.2.3.GA"/>
+    <property name="jboss_home" value="${ext_libdir}/jboss/4.2.3.GA"/>
     <property name="jboss_config_name" value="default"/>
     
     <!-- Properties used in compile_targets ANT target for JDK version x -->
@@ -25,8 +25,8 @@
     <property name="jdbcx.informix.jar" value="${ext_libdir}/informix/f/ifxjdbcx.jar" />
     <property name="log4j.jar" value="${jboss_home}/client/log4j.jar" />
     <property name="SaveCoberturaData.jar" value="${testfiles}/SaveCoberturaData.jar"/>
-    <property name="cockpit_facade_util.jar" value="${testfiles}/cockpit_facade_util.jar"/>
-    <property name="security_manager.jar" value="${testfiles}/security_manager.jar"/>
+    <property name="cockpit_facade_util.jar" value="${tcs_libdir}/cockpit_facade_util/1.0.0/cockpit_facade_util.jar"/>
+    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
     
     <property name="cglib.jar" value="${jboss_home}/server/${jboss_config_name}/lib/cglib.jar" />
 	  <property name="dom4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/dom4j.jar" />
@@ -44,7 +44,7 @@
     	  <pathelement location="${object_formatter.jar}" />
     	  <pathelement location="${typesafe_enum.jar}" />
     	  <pathelement location="${cockpit_facade_util.jar}" />
-    	  <pathelement location="${security_manager.jar}" />
+    	  <pathelement location="${security.jar}" />
     </path>
 
     <path id="component.3rdParty-dependencies">
