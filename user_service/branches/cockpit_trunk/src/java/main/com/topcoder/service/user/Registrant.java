@@ -19,7 +19,7 @@ public class Registrant implements Serializable {
     /**
      * Default serial version id.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Represents the user id attribute of the UserInfo entity. It's set and accessed in the set/get methods. It can
