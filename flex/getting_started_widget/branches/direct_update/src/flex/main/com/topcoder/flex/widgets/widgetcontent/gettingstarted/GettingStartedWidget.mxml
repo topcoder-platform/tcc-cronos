@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<tc:GettingStartedWidgetCodeBehind width="100%" 
+	      verticalScrollPolicy="off" 
+	      xmlns:mx="http://www.adobe.com/2006/mxml"
+	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.gettingstarted.*" resizeEffect="{resize}">
+
+
+    <mx:Script>
+        <![CDATA[
+            import flash.events.TextEvent;
+            import mx.core.Application;
+            import mx.containers.VBox;
+
+            public function linkHandler(url:String):void {
+                // Open the link in a new window.
+                navigateToURL(new URLRequest(url), '_blank')
+            }
+            
+            private function openLaunchContestsTab():void {
+                for(var i:int = 0; i < Application.application.widgetLayoutControl.getChildren().length; i++) {
+                    var tmpTab:VBox = Application.application.widgetLayoutControl.getChildAt(i) as VBox;
+                    if (tmpTab.label == "Launch Contests") {
+                        Application.application.widgetLayoutControl.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:Canvas width="100%" height="100%" backgroundColor="#ffffff" >
+
+        <!-- changed to absolute position because of canvas requirement -->
+	    <mx:Image source="@Embed('../assets/getting_started.png')"
+            width="925" height="375" verticalCenter="0" horizontalCenter="0"
+        />
+
+        <!-- added START NOW button with hover state-->
+        <mx:Button id="btnStartNow"
+            width="135" height="25" verticalCenter="155" horizontalCenter="369"
+            upSkin="@Embed('../assets/start_now_idle.png')"
+            overSkin="@Embed('../assets/start_now_hover.png')"
+            downSkin="@Embed('../assets/start_now_hover.png')"
+            buttonMode="true" click="openLaunchContestsTab()"
+        />
+        <mx:Image source="@Embed('../assets/button_shadow.png')"
+            width="135" height="8" verticalCenter="171" horizontalCenter="369"
+        />
+
+    </mx:Canvas>
+  <mx:Resize id="resize" /> 
+</tc:GettingStartedWidgetCodeBehind>
