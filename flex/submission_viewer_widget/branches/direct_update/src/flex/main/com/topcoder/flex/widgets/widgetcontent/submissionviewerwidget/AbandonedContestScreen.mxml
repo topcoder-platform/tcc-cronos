@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements UI logic for abandoned contest screens.
+
+     @author TCSASSEMBLER
+     @since Cockpit Release Assembly 4 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         horizontalAlign="center"
+         verticalAlign="middle"
+         width="100%"
+         height="100%">
+
+    <mx:Script>
+        <![CDATA[
+            import mx.core.Container;
+            import mx.controls.ButtonLabelPlacement;
+            
+            private static const MailToLink:String="<FONT FACE='Arial' SIZE='14' COLOR='#0000ff'><a href='mailto:directassist@topcoder.com' target='_blank'>directassist@topcoder.com</a></FONT>";
+            
+            /**
+             * Reference to the parent submission viewer widget.
+             */
+            [Bindable]
+            private var _subViewer:SubmissionViewerWidget;
+            
+            /**
+             * Gets the reference to the parent submission viewer widget.
+             *
+             * @return the parent submission viewer widget.
+             */
+            [Bindable]
+            public function get subViewer():SubmissionViewerWidget {
+                return this._subViewer;
+            }
+            
+            /**
+             * Sets the reference of the parent submission viewer widget.
+             *
+             * @param viewer the parent submission viewer widget.
+             */
+            public function set subViewer(viewer:SubmissionViewerWidget):void {
+                this._subViewer=viewer;
+            }
+            
+            /**
+             * Handler for closing this view.
+             */
+            private function close():void {
+                this.subViewer.restoreScreen();
+            }
+        ]]>
+    </mx:Script>
+
+
+    <mx:VBox width="100%"
+             horizontalAlign="center"
+             verticalGap="5">
+        <mx:Text width="100%"
+                  fontFamily="Arial"
+                  fontWeight="bold"
+                  fontSize="16"
+                  textAlign="center"
+                  color="#000000"
+                  text="The time allotted to select winners for your contest and download submissions has expired."/>
+        <mx:Text width="100%"
+                 fontFamily="Arial"
+                 fontWeight="bold"
+                 fontSize="14"
+                 textAlign="center"
+                 color="#000000"
+                 htmlText="{'Please contact ' + MailToLink + ' for further assistance.'}">
+        </mx:Text>
+    </mx:VBox>
+    <mx:HBox horizontalAlign="center"
+             id="closeButtonBar"
+             visible="{this.subViewer &amp;&amp; this.subViewer.isMaximized()}"
+             includeInLayout="{this.subViewer &amp;&amp; this.subViewer.isMaximized()}"
+             width="100%"
+             paddingTop="35">
+        <mx:Button buttonMode="true"
+                   styleName="arrowRightBtnStyle"
+                   label="Close"
+                   click="close()"/>
+    </mx:HBox>
+</mx:VBox>

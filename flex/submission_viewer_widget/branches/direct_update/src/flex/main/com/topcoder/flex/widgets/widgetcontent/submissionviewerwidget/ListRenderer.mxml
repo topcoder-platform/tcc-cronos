@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Updated for Cockpit Release Assembly 2 [BUGR-1666]
+     	- Use TCImage to support immediate loading of image.
+	- Additionally show the broken image icon for broken images.
+
+@author snow01	
+-->
+<mx:Canvas  xmlns:mx="http://www.adobe.com/2006/mxml" width="83" height="97"
+            xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
+        <tc:TCImage id="thumbnail" top="12" left="11" bottom="20" right="10" source="{data.thumbnail}" ioError="onIoError(event)"/>
+        <mx:Button styleName="rankLogo" buttonMode="true" id="rank" label="{data.rank}" visible="{rank.label.length > 0}"
+                width="26" height="26" textAlign="center" />
+        <mx:Label id="content" width="100%" textAlign="center" text="{data.id}" bottom="0"
+                fontWeight="bold" />
+        <mx:Canvas width="18" height="19" backgroundSize="100%" bottom="0" right="0"
+            visible="{data.purchased == true}" styleName="purchaseLogo" >
+        </mx:Canvas>
+
+    <mx:Script>
+    <![CDATA[
+            import mx.controls.Image;
+
+            private function onIoError(event:IOErrorEvent):void {
+                /*if (event.target is Image) {
+                    var image:Image;
+                    image = event.target as Image;
+                    image.source = "";
+                }*/
+            }
+
+        ]]>
+    	</mx:Script>
+</mx:Canvas>
+
+

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for showing the air viewer installer screen.
+
+     @author TCSDEVELOPER
+     @since Cockpit Submission Viewer Widget Enhancement Part 1.
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         borderStyle="solid"
+         borderColor="red"
+         verticalAlign="middle"
+         horizontalAlign="center"
+         backgroundColor="white">
+    <mx:Script>
+        <![CDATA[
+            /**
+             * Callback Function to handle install of Air Viewer.
+             */
+            [Bindable]
+            private var _installAir:Function;
+
+            /**
+             * Callback Function to handle cancel of Air Viewer installer.
+             */
+            [Bindable] 
+            private var _cancelInstall:Function;
+
+            /**
+             * <p>
+             * Simple getter of the air viewer installer callback function.
+             * </p>
+             *
+             * @return the air viewer installer callback function.
+             */
+            [Bindable]
+            public function get installAir():Function {
+                return this._installAir;
+            }
+
+            /**
+             * <p>
+             * Simple setter of the air viewer installer callback function.
+             * </p>
+             *
+             * @param f the air viewer installer callback function.
+             */
+            public function set installAir(f:Function):void {
+                this._installAir=f;
+            }
+
+            /**
+             * <p>
+             * Simple getter of the air viewer installer cancel callback function.
+             * </p>
+             *
+             * @return the air viewer installer cancel callback function.
+             */
+            [Bindable]
+            public function get cancelInstall():Function {
+                return this._cancelInstall;
+            }
+
+            /**
+             * <p>
+             * Simple setter of the air viewer installer cancel callback function.
+             * </p>
+             *
+             * @param f the air viewer installer cancel callback function.
+             */
+            public function set cancelInstall(f:Function):void {
+                this._cancelInstall=f;
+            }
+        ]]>
+    </mx:Script>
+    <mx:VBox id="installerScreen"
+             horizontalAlign="center">
+        <mx:Label text="Required TopCoder Submission Viewer is not installed. Please install it!"
+                  fontWeight="bold"
+                  fontSize="14"
+                  color="red"/>
+        <mx:Spacer height="10"/>
+        <mx:HBox horizontalAlign="center">
+            <mx:Button label="OK"
+                       click="installAir(event);"/>
+            <mx:Button label="Cancel"
+                       click="cancelInstall(event);"/>
+        </mx:HBox>
+        <mx:Spacer height="10"/>
+    </mx:VBox>
+</mx:VBox>
