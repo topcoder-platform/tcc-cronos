@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<RendererBase xmlns="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.*"
+              xmlns:mx="http://www.adobe.com/2006/mxml">
+
+</RendererBase>

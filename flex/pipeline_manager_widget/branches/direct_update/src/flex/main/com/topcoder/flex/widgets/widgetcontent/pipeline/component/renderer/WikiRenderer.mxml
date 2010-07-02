@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer for wiki link/icon.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         paddingLeft="15"
+         verticalScrollPolicy="off"
+         horizontalScrollPolicy="off"
+         horizontalAlign="center"
+         verticalAlign="top">
+    <mx:Script>
+        <![CDATA[
+            import flash.net.navigateToURL;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Detail;
+            
+            [Bindable]
+            private var detail:Detail;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Detail) {
+                    detail=data as Detail;
+                    //wiki.visible=(detail.wiki.length > 0);
+                }
+            }
+            
+            public function openWiki():void {
+                //navigateToURL(new URLRequest(detail.wiki), "_blank");
+            }
+        ]]>
+    </mx:Script>
+    <mx:LinkButton id="wiki"
+                   styleName="wikiStyle"
+                   click="openWiki()"/>
+</mx:VBox>
