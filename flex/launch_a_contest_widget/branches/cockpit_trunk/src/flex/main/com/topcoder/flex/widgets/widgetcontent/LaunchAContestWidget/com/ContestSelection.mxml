@@ -843,6 +843,32 @@ xmlns:hc="com.hillelcoren.components.*"
                             mainWidget.showLoadingProgress();
                     }
                 } 
+
+                else
+
+                {
+                    
+                    var item:Object = new Object();
+			            item.label= "<<hidden>>";
+			            item.data = new Object();
+			            item.data.poNumber = "<<hidden>>";
+			            item.data.projectName = "<<hidden>>";
+			            item.data.projectId = billingProject;
+			            item.data.clientId = 0;
+			            item.data.clientName = "<<hidden>>";
+			            item.data.manualPrizeSetting = false;
+                        mainWidget.clientProjectNames = new ArrayCollection();
+            	        mainWidget.clientProjectNames.addItem(item);
+                        selectBillingAccount.selectedItem=item;
+                        selectBillingAccount.selectedIndex=0;
+                        if (mainWidget) {
+                                setBillingProjectProperties(item);
+                            }
+                            var getEligibilityNameOp:AbstractOperation=mainWidget._csws.getOperation("getEligibilityName");
+                            getEligibilityNameOp.addEventListener("result", getEligibilityNameOpHandler);
+                            getEligibilityNameOp.send(billingProject);
+                            mainWidget.showLoadingProgress();
+                }
             }
 
 
