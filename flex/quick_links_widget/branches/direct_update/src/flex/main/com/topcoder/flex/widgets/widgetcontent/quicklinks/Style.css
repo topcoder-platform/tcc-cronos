@@ -1,0 +1,53 @@
+/* CSS file */
+.WidgetPanel {
+   borderColor: #B7BABC;
+   borderThicknessLeft: 10;
+   borderThicknessTop: 1;
+   borderThicknessBottom: 1;
+   borderThicknessRight: 10;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
+.panelTitle {
+   textAlign: left;
+   color: #000000;
+   fontWeight: bold;
+}
+
+.topcoderHome {
+    upSkin: Embed(source="../assets/topcoder_home_up.png", scaleGridLeft="113", scaleGridTop="25", scaleGridRight="173", scaleGridBottom="26");
+    overSkin: Embed(source="../assets/topcoder_home_over.png", scaleGridLeft="113",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    down-skin: Embed(source="../assets/topcoder_home_over.png", scaleGridLeft="113",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+}
+
+.topcoderStudio {
+    upSkin: Embed(source="../assets/topcoder_studio_up.png", scaleGridLeft="116",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    overSkin: Embed(source="../assets/topcoder_studio_over.png", scaleGridLeft="116",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    down-skin: Embed(source="../assets/topcoder_studio_over.png", scaleGridLeft="116",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+}
+
+.topcoderBug {
+    upSkin: Embed(source="../assets/topcoder_bug_trucker_up.png", scaleGridLeft="147",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    overSkin: Embed(source="../assets/topcoder_bug_trucker_over.png", scaleGridLeft="147",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    down-skin: Embed(source="../assets/topcoder_bug_trucker_over.png", scaleGridLeft="147",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+}
+
+.onlineReview {
+    upSkin: Embed(source="../assets/online_review_up.png", scaleGridLeft="105",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    overSkin: Embed(source="../assets/online_review_over.png", scaleGridLeft="105",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    down-skin: Embed(source="../assets/online_review_over.png", scaleGridLeft="105",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+}
+
+.topcoderWiki {
+    upSkin: Embed(source="../assets/topcoder_wiki_up.png", scaleGridLeft="104",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    overSkin: Embed(source="../assets/topcoder_wiki_over.png", scaleGridLeft="104",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    down-skin: Embed(source="../assets/topcoder_wiki_over.png", scaleGridLeft="104",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+}
+
+.topcoderForums {
+    upSkin: Embed(source="../assets/topcoder_forums_up.png", scaleGridLeft="124",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    overSkin: Embed(source="../assets/topcoder_forums_over.png", scaleGridLeft="124",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+    down-skin: Embed(source="../assets/topcoder_forums_over.png", scaleGridLeft="124",scaleGridTop="25",scaleGridRight="173",scaleGridBottom="26");
+}

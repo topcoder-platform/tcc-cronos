@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<tc:QuickLinksWidgetCodeBehind width="100%" 
+	      verticalScrollPolicy="auto" 
+	      xmlns:mx="http://www.adobe.com/2006/mxml"
+	      xmlns:tc="com.topcoder.flex.widgets.widgetcontent.quicklinks.*"
+	      styleName="WidgetPanel"
+              resizeEffect="{resize}">
+
+    <mx:Style source="Style.css" />
+
+    <mx:Script>
+        <![CDATA[
+            import flash.events.TextEvent; 
+
+            public function linkHandler(url:String):void {
+                // Open the link in a new window.
+                navigateToURL(new URLRequest(url), '_blank')
+            }
+        ]]>
+    </mx:Script>
+    
+    <mx:Canvas width="100%" height="100%">
+<!--
+	    <mx:LinkButton label="TopCoder Home" click="linkHandler('http://www.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left"/>
+	    <mx:Spacer />
+	    <mx:LinkButton label="TopCoder Studio" click="linkHandler('http://studio.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left" y="21"/>
+	    <mx:Spacer />
+	    <mx:LinkButton label="Online Review" click="linkHandler('http://software.topcoder.com');" width="100%" visible="true"  height="26"  textAlign="left" y="71"/>
+	    <mx:Spacer />
+	    <mx:LinkButton label="TopCoder Forums" click="linkHandler('http://forums.topcoder.com/?module=Main');" width="100%" visible="true"  height="26"  textAlign="left" y="123"/>
+	    <mx:Spacer />
+	    <mx:LinkButton label="TopCoder Wiki" click="linkHandler('http://www.topcoder.com/wiki');" width="100%" visible="true"  height="26"  textAlign="left" y="96"/>
+	    <mx:Spacer />
+	    <mx:LinkButton label="TopCoder Bug Tracker" click="linkHandler('http://www.topcoder.com/bugs');" width="100%" visible="true"  height="26"  textAlign="left" y="45"/>
+	    <mx:Spacer />
+	    <mx:Spacer />
+-->
+        <mx:VBox width="100%" height="100%" verticalGap="6">
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com');" height="34" width="100%" styleName="topcoderHome"/>
+            <mx:LinkButton click="linkHandler('http://studio.topcoder.com');" height="34" width="100%" styleName="topcoderStudio"/>
+            <mx:LinkButton click="linkHandler('http://software.topcoder.com');" height="34" width="100%" styleName="topcoderBug"/>
+            <mx:LinkButton click="linkHandler('http://forums.topcoder.com/?module=Main');" height="34" width="100%" styleName="onlineReview"/>
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com/wiki');" height="34" width="100%" styleName="topcoderWiki"/>
+            <mx:LinkButton click="linkHandler('http://www.topcoder.com/bugs');" height="34" width="100%" styleName="topcoderForums"/>
+        </mx:VBox>
+    </mx:Canvas>
+  <mx:Resize id="resize" /> 
+</tc:QuickLinksWidgetCodeBehind>
+	
+
+
