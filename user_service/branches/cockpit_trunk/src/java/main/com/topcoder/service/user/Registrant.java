@@ -4,6 +4,7 @@
 package com.topcoder.service.user;
 
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Represents the Registrant entity. It holds the attributes user id, handle, rating, reailbility, etc.
@@ -13,7 +14,7 @@ import java.util.Date;
  * @author murphydog
  * @version 1.1
  */
-public class Registrant {
+public class Registrant implements Serializable {
 
     /**
      * Default serial version id.
