@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render contest row.
+     
+     Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+        - For read only, when a user selects the contest, it will go to launch a contest just like now, 
+        - but the user can only view the contest information and can not update any thing. 
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton.
+        
+     Version 1.0.1 (Spec Reviews Finishing Touches v1.0) Change Notes:
+        - added icon for spec review status.
+        - removed the extra column. 
+     Version 1.0.2 (Cockpit Release Assembly 10 - My Projects 1.0) Change Notes:
+        - Look and feel changed to match the prototype.
+        - Refer http://www.topcoder.com/wiki/display/docs/Other+Cockpit+Release+Assembly+10+-+My+Projects
+     Version 1.0.3 (Cockpit Spec Review - part 2 version 1.0)
+        - remove the 'spec review' column.
+        - add the spec review status
+        - add one more drop down option
+     Version 1.0.4 (Cockpit Release Assembly - Contest Repost and New Version 1.0) Notes:
+        - Add two new choice 'repost' and 'create new version'        
+
+     @author TCSDEVELOPER, TCSASSEMBLER, waits
+     @since My Project Widget Overhaul
+     @version 1.0.4
+-->
+<mx:VBox 
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:filters="flash.filters.*"
+    xmlns:degrafa="http://www.degrafa.com/2007"
+    width="100%"
+    borderStyle="solid"
+    borderSides="bottom"
+    styleName="ContestRowStyle"
+    backgroundSize="100%">
+    <mx:Script>
+        <![CDATA[
+            import mx.managers.PopUpManager;
+            import mx.rpc.AbstractOperation;
+            import mx.events.CloseEvent;
+            import mx.core.Application;
+            import mx.utils.StringUtil;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.ProjectWidget;
+            import mx.controls.ButtonLabelPlacement;
+            import com.topcoder.flex.widgets.model.IWidget;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
+            import com.topcoder.flex.widgets.widgetcontent.projectwidget.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.SubmissionViewerWidget;
+            import mx.formatters.DateFormatter;
+            import mx.collections.ArrayCollection;
+            import flash.utils.Dictionary;
+            import com.topcoder.flex.Helper;
+            import mx.controls.PopUpButton;
+            import mx.controls.Alert;
+            import mx.rpc.events.ResultEvent;
+            import mx.events.MenuEvent;
+	    import mx.controls.Menu;
+	    import mx.binding.utils.BindingUtils;
+        
+            /**
+             * Row number of this contest row.
+             */
+            private var _rowNum:int;
+
+            /**
+             * Contest for this contest row.
+             */
+            [Bindable]
+            private var contest:Contest;
+        
+            /**
+             * Menu in the PopupButton
+             */
+            private var actionMenu:Menu;
+
+            /**
+             * Reference to the instance of Project Widget class.
+             * 
+             * @since Cockpit Release Assembly 2 [BUGR-1830]
+             */
+            [Bindable]
+            public var parentWidget:ProjectWidget=null;
+
+            /**
+             * The base url for the link of studio contents;
+             */
+            private var studioContentDetailUrlBase:String="http://studio.topcoder.com/?module=ViewContestDetails&ct=";
+
+            /**
+             * The base url for the link of software contents;
+             */
+            private var softwareContentDetailUrlBase:String = "http://www.topcoder.com/tc?module=ProjectDetail&pj=";
+            
+            /**
+             * The base url for the link of OR;
+             */
+            private var softwareConetestORurl:String = "http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid=";
+
+            /**
+             * The base url for the link of forum;
+             */
+            private var studioForumUrlBase:String="http://studio.topcoder.com/forums?module=ThreadList&forumID=";
+
+            /**
+             * The base url for the link of contents;
+             */
+            private var softwareForumUrlBase:String="http://forums.topcoder.com/?module=Category&categoryID=";
+
+
+            /**
+             * The width of status bar;
+             */
+            [Bindable]
+            private var capacityWidth:int = 240;
+
+            /**
+             * The green filled width of status bar;
+             */
+            [Bindable]
+            private var greenWidth:int;
+            /**
+             * The yellow filled width of status bar;
+             */
+            [Bindable]
+            private var yellowWidth:int;
+
+            /**
+             * The const string;
+             */
+            private static var STUDIO_TYPE:String = "Studio";
+
+            /////////////////////////////////////////////////////
+            //// the drop down options
+            ////////////////////////////////////////////////////
+            /**
+             * Const represents the view option of 'View'.
+             * @since 1.0.4
+             */
+            private static var VIEW_OPTION:String = "View";
+            /**
+             * Const represents the view option of 'edit'.
+             * @since 1.0.4
+             */
+			private static var EDIT_OPTION:String = "Edit";
+			/**
+             * Const represents the view option of 'submission'.
+             * @since 1.0.4
+             */
+			private static var SUBMISSIONS_OPTION:String = "Submissions";
+			/**
+             * Const represents the view option of 'View spec review'.
+             * @since 1.0.4
+             */
+			private static var SPEC_REVIEW_OPTION:String = "View Spec Review";
+			/**
+             * Const represents the view option of 'repost'.
+             * @since 1.0.4
+             */
+			private static var REPOST_OPTION:String = "Repost";
+			/**
+             * Const represents the view option of 'create new version'.
+             * @since 1.0.4
+             */
+			private static var NEW_VERSION_OPTION:String = "Create New Version";
+			/**
+             * Const represents the view option of 'create new version with dev'.
+             * @since 1.0.4
+             */
+			private static var NEW_VERSION_WITH_DEV_OPTION:String = "Create New Version with Dev";
+
+            /**
+             * Sets the data for this contest row.
+             *
+             * @param value the contest data.
+             */
+            override public function set data(value:Object):void {
+                contest=value as Contest;
+                super.data=value;
+                startDate=contest.startDate;
+                endDate=contest.endDate;
+                var midDate:Date = null;
+                this.reOpenContestId = null;
+                this.newVersionContestId = null;
+
+                // only show green/yellow if not draft or scheduled
+                if (contest.status.toLowerCase() != "draft" && contest.status.toLowerCase() != "scheduled")
+                {
+
+                    if (contest.milestoneDate != null) {
+                        midDate = contest.milestoneDate;
+                    }
+                    if (contest.submissionEndDate != null) {
+                        midDate = contest.submissionEndDate;
+                    }
+                            var widthToday:int = Math.max(capacityWidth * (new Date().getTime() - contest.start.getTime()) 
+                        / (contest.end.getTime() - contest.start.getTime()), 0);
+
+                    if (midDate != null) {
+                        var widthMid:int = capacityWidth * (midDate.getTime() - contest.start.getTime())  / (contest.end.getTime() - contest.start.getTime());
+                        greenWidth = Math.min(widthToday, widthMid);
+                        yellowWidth = widthToday;
+                    } else {
+                        greenWidth = yellowWidth = widthToday;
+                    }
+                    greenWidth = Math.min(greenWidth, capacityWidth);
+                    yellowWidth = Math.min(yellowWidth, capacityWidth);
+                } else {
+                    greenWidth = 0;
+                    yellowWidth = 0;
+                }
+
+                //only if it is 'draft' or 'scheduled', we are going to show the spec review status
+                //since 1.0.3
+                if (contest.status.toLowerCase() == "draft" || contest.status.toLowerCase() == "scheduled") {
+                    //if no spec review status, then
+                    if (contest.reviewStatus && StringUtil.trim(contest.reviewStatus).toLowerCase() != 'null' 
+                                             && mx.utils.StringUtil.trim(contest.reviewStatus) != '') {
+                        specReviewStatusTxt.visible = true;
+                    }
+                }
+
+                initActionPopBtn();
+            }
+
+            /**
+             * Sets the row number of this contest row.
+             *
+             * @param temp row number.
+             */
+            public function set rowNum(temp:Number):void {
+                _rowNum=temp;
+                if ((_rowNum % 2) == 0) {
+                    var o:Object=getStyle("oddRowColor");
+                    this.setStyle("backgroundColor", getStyle("oddRowColor"))
+                } else {
+                    this.setStyle("backgroundColor", getStyle("evenRowColor"))
+                }
+            }
+
+            /**
+             * Gets the row number of this contest row.
+             *
+             * @return the row number.
+             */
+            public function get rowNum():Number {
+                return _rowNum;
+            }
+
+            /**
+             * Handles the set of status label.
+             */
+            public function handleStatus(input:String):String {
+                statusBtn.label=input;
+                switch (input.toLowerCase()) {
+                    case "active":
+                    case "terminated":
+                    case "completed":
+                    case "draft":
+                    case "scheduled":
+                    case "danger":
+                        return input.toLocaleLowerCase();
+                    default:
+                        return "standard";
+                }
+            }
+
+            /**
+             * Handles the set of link properties (when specified value > 0) for forum and submissions.
+             *
+             * @param input the input value.
+             * @param linkButton the reference to link button.
+             * @param clickHandler the reference to click handler that need to be called on link button click.
+             */
+            private function setLinkProperties(input:int, linkButton:LinkButton, clickHandler:Function):String {
+                if (contest.type == STUDIO_TYPE) {
+                    if (input >= 0) {
+                        linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                    }
+                    if (input == 0 && linkButton == lblForumPosts) {
+                        return "0";
+                    }
+                    return "" + input;
+                } else {
+                    linkButton.addEventListener(MouseEvent.CLICK, clickHandler);
+                    return "" + input;
+                }
+            }
+
+            /**
+             * Handles the set of review status link properties.
+             * 
+             * Updated for Version 1.0.1
+             *    - style name is set as per the status.
+             *
+             * @param input the review status value.
+             * 
+             * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
+             */
+/*            private function getReviewStatusBtnStyle(status:String):String {
+                var styleName:String="";
+                if (status == "PASSED") {
+                    styleName="reviewPassedIcon";
+                } else if (status == "FAILED") {
+                    styleName="reviewFailedIcon";
+                } else {
+                    styleName="reviewNeededIcon";    
+                } 
+
+                return styleName;
+            }
+*/
+
+            /**
+             * Get the style for the spec review status.
+             * @param the status
+             * @return the style name
+             * @since 1.0.3
+             */
+            private function getReviewStatusStyle(status:String):String {
+                var styleName:String="";
+                if (status == "Assigning Reviewer") {
+                    styleName="assigningSpecReviewer";
+                } else if (status == "Spec Review Failed") {
+                    styleName="failSpecReview";
+                } else if (status == "Spec Review Passed"){
+                    styleName="passSpecReview";
+                } else if (status == "Reviewing"){
+                    styleName="assigningSpecReviewer";
+                }
+                return styleName;
+            }
+            /**
+             * Format the spec review status.
+             * @param the status
+             * @return the status name
+             * @since 1.0.3
+             */
+            private function getReviewStatus(status:String):String {
+                return status + "...";
+            }
+            /**
+             * Shows the contest monitor widget for this contest row.
+             */
+            private function showStats():void {
+                if (contest.type == STUDIO_TYPE) {
+                    // restore widget to normal width if it's not already.
+                    if (parentWidget.isMaximized()) {
+                        parentWidget.restoreScreen();
+                    }
+                    
+                    // call method on widget to load the selected contest.
+                    var tabName:String=parentWidget.widgetFramework.getActiveTabName();
+                    var widgetName:String="Contest Monitor";
+                    openWidget(tabName, widgetName);
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
+            }
+
+            /**
+             * Shows the submission viewer widget for this contest row.
+             */
+            private function showSubmission(event:MouseEvent):void {
+                if (contest.type == STUDIO_TYPE) {
+                    
+                    if (contest.submissions > 0) {
+                        
+                        // restore widget to normal width if it's not already.
+                        if (parentWidget.isMaximized()) {
+                            parentWidget.restoreScreen();
+                        }
+                        
+                        var tabName:String=null;
+                        var widgetName:String=null;
+                        // open submission viewer widget and load the current contest.
+                        tabName=parentWidget.widgetFramework.getActiveTabName();
+                        widgetName="Submission Viewer";
+                        openWidget(tabName, widgetName);
+                        
+                        // open contest monitor widget and load the current contest.
+                        tabName=parentWidget.widgetFramework.getActiveTabName();
+                        widgetName="Contest Monitor";
+                        openWidget(tabName, widgetName);
+                    }
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id));
+                }
+            }
+
+            /**
+             * utility function that creates / opens the Submission Viewer or Contest Monitor widget.
+             *
+             * @param tabName the tab in which to open the widget.
+             * @param widgetName name of the widget to be opened.
+             */
+            private function openWidget(tabName:String, widgetName:String):void {
+                var widget:IWidget=parentWidget.widgetFramework.openWidget(tabName, widgetName);
+
+                var props:Dictionary=new Dictionary();
+                props["pid"]=parentWidget.model.currentProj.id;
+                props["toBeLoadedContestId"]=contest.id;
+                if (widget == null) {
+                    // properties (or attributes) of widget that need to be created new.
+                    var propertiesObj:Dictionary=new Dictionary();
+                    propertiesObj["tabName"]=tabName;
+                    propertiesObj["name"]=widgetName;
+                    propertiesObj["title"]=widgetName;
+                    propertiesObj["column"]="2";
+                    propertiesObj["minimized"]="true";
+                    propertiesObj["maximized"]="false";
+                    propertiesObj["allowclose"]="true";
+                    propertiesObj["rowspan"]=1
+
+                    if (widgetName == "Submission Viewer") {
+                        propertiesObj["row"]="1";
+                        propertiesObj["columnspan"]=5;
+                    } else if (widgetName == "Contest Monitor") {
+                        propertiesObj["row"]="2";
+                        propertiesObj["columnspan"]=4;
+                    }
+
+                    propertiesObj["widgetConfig"]=props;
+                    parentWidget.widgetFramework.addWidgetWithProperties(propertiesObj);
+                } else {
+                    props["reload"]=true;
+                    widget.setAttributes(props);
+                }
+            }
+
+            /**
+             * Handler for contest label click.
+             */
+            private function handleClick():void {
+                if (contest.type == "Studio") {
+                    navigateToURL(new URLRequest(studioContentDetailUrlBase + contest.id), "_blank");
+                } else {
+                    navigateToURL(new URLRequest(softwareContentDetailUrlBase + contest.id), "_blank");
+                }
+            }
+
+
+        /**
+         * Init the pop up button.
+         *
+         * Add 'View Spec Review' in version 1.0.3.
+         * Add 'Repost' and NEW_VERSION_OPTIONs in version 1.0.4
+         */
+         private function initActionPopBtn():void {
+            if (actionPopBtn == null) {
+                return;
+            }
+            actionMenu = new Menu();
+            BindingUtils.bindProperty(actionMenu, "width", actionPopBtn, "width");
+            var labels:Array;
+            if (editable()) {
+                labels = [{label: VIEW_OPTION}, {label: EDIT_OPTION}, {label: SUBMISSIONS_OPTION}];
+            } else {
+                labels = [{label: VIEW_OPTION}, {label: SUBMISSIONS_OPTION}];
+            }
+            if (haveSpecReviewProject()) {
+                labels.push({label:SPEC_REVIEW_OPTION});
+            }
+            var writePermission:Boolean = hasWritePermission(contest.permission);
+            if (isFailedSoftwareContest() && writePermission) {
+                labels.push({label:REPOST_OPTION});
+            }
+            if(isCompletedDesignDevComponent()&& writePermission) {
+                labels.push({label:NEW_VERSION_OPTION});
+            }
+
+            actionMenu.dataProvider = labels;
+            actionMenu.selectedIndex = 0;
+            actionMenu.addEventListener(MenuEvent.ITEM_CLICK, itemClickHandler);
+            actionPopBtn.popUp = actionMenu;
+            actionPopBtn.label = actionMenu.dataProvider[actionMenu.selectedIndex].label;
+        }
+        
+        private function haveSpecReviewProject():Boolean {
+            if (contest && contest.status && contest.status.toLowerCase() == 'scheduled' && contest.specReviewProjectId != null) {
+                return true;
+            }
+            if (contest && contest.status && contest.status.toLowerCase() == 'draft'){
+                return true;
+            }
+            return false;
+        }
+        /**
+         * Handler for pop up button item selection.
+         * Add 'View Spec Review' in version 1.0.3.
+         * Add 'repost' and NEW_VERSION_OPTIONs in version 1.0.4
+         */
+        private function itemClickHandler(event:MenuEvent):void {
+            actionPopBtn.close();
+            var option:String = null;
+            if (event != null) {
+               option = event.label;
+            }
+            
+            var canViewSpecReviewOption:Boolean = canViewSpecReview();
+            
+            if (option == VIEW_OPTION) {
+                //View contest
+                handleClick();
+            } else if (option == EDIT_OPTION) {
+                //Edit
+                editContest();
+            } else if (option == SUBMISSIONS_OPTION) {
+                //View submisions
+                if (contest.type == "Studio") {
+                    showSubmission(null);
+                } else {
+                    navigateToURL(new URLRequest(softwareConetestORurl + contest.id), "_blank");
+                }
+            } else if (option == SPEC_REVIEW_OPTION) {
+                if (contest.type == "Studio") {
+                    if (canViewSpecReviewOption) {
+                        //open review screen in launch contest widget
+                        openReviewScreen();
+                    } else {
+                        Helper.showAlertMessage("You must activate your contest prior to getting a spec review. " +
+                                                "Please Edit your contest and complete the activation process", 120);
+                    }
+                } else {
+                    if (canViewSpecReviewOption && contest.specReviewProjectId) {
+                        //open spec reviwe in OR
+                        navigateToURL(new URLRequest(softwareConetestORurl + contest.specReviewProjectId), "_blank");
+                    } else {
+                        Helper.showAlertMessage("You must activate your contest prior to getting a spec review. " +
+                                                "Please Edit your contest and complete the activation process", 120);
+                    }
+                }
+            } else if (option == REPOST_OPTION) {
+                var alertDlg:Alert=Alert.show("Are you sure you want to repost this contest?  You will not be charged a contest fee for the repost unless otherwise instructed by TopCoder.", "Confirmation", Alert.YES | Alert.NO, null, handleRepost);
+                alertDlg.height=150;
+            } else if (option == NEW_VERSION_OPTION) {
+            	var popup:NewVersionPopUp = new NewVersionPopUp();
+            	popup.isDesignComponent = (contest.type == 'Design');
+            	popup.createFunction = createNewVersion;
+            	PopUpManager.addPopUp(popup, this, true,null);
+            	PopUpManager.centerPopUp(popup);
+            }
+        }
+
+		////////////////////////////////////////////////////////////////////////
+		/////////////// methods for reopen, new versions - start
+		/////////////// @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+		////////////////////////////////////////////////////////////////////////
+		 /**
+         * Checks if the current contest is software and is failed.  
+         * @return true if it is failed software contest
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function isFailedSoftwareContest():Boolean {
+            return (contest && contest.type != STUDIO_TYPE &&
+                         (contest.status == 'Cancelled - Failed Review'
+                          || contest.status == 'Cancelled - Failed Screening'
+                          || contest.status == 'Cancelled - Zero Submissions'
+                          || contest.status == 'Cancelled - Winner Unresponsive'
+                          || contest.status == 'Cancelled - Client Request'
+                          || contest.status == 'Cancelled - Requirements Infeasible'
+                          || contest.status == 'Cancelled - Zero Registrations'));
+        }
+        /**
+         * Checks if the current contest is completed design/development.
+         * @return true if it is completed design or development contest
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function isCompletedDesignDevComponent():Boolean {
+            return contest && (contest.type == 'Design' || contest.type == 'Development') && (contest.status == 'Completed');
+        }
+		/**
+		 * <p>
+		 * If user confirms to create repost the contest, this method will try to call the backend to repost the contest.
+		 * </p>
+		 * @param event the alert confirm event
+		 * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+		 */
+        private function handleRepost(event:CloseEvent):void {
+            if (event.detail == Alert.YES) {
+            	parentWidget.showLoadingProgress();
+                var reOpenOperation:AbstractOperation  = parentWidget.ContestServiceFacadeBean.getOperation("reOpenSoftwareContest");
+                reOpenOperation.addEventListener(ResultEvent.RESULT, reOpenSuccessHandler);
+                reOpenOperation.send(parseInt(contest.id), parseInt(contest.projId));
+            }
+        }
+        /**
+         * the re-open contest id. the result value from the reOpenSoftwareContest.
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private var reOpenContestId:String = null;
+
+		/**
+		 * Handler for success repost the contest.
+		 * @param e the remote invoke result event
+		 * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+		 */
+        private function reOpenSuccessHandler(e:ResultEvent):void {
+            parentWidget.hideLoadingProgress();
+            if (e && e.result) {
+               reOpenContestId = new String(e.result);
+               var alertDlg:Alert=Alert.show("The repost has been created.  Would you like to go to Launch Contest to view and edit the details?",
+                                           "Confirmation", Alert.YES |Alert.NO, null, visitReOpen);
+               alertDlg.height=150;
+            }
+        }
+        /**
+         * Handler user to review the re-open-contest in launch contest widget.
+         * @param event the alert confirm event
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function visitReOpen(event:CloseEvent):void {
+            if (event.detail == Alert.YES) {
+                editContest(contest.type, reOpenContestId, contest.projId, contest.projName, contest.permission);
+            }  else {
+            	parentWidget.reload();
+            }
+        }
+        /**
+         * <p>
+         * Invoke remote create new version contest.
+         * </p>
+         * @param true to create auto dev too
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function createNewVersion(autoDev:Boolean=false, minorVersion:Boolean=true):void {
+        	parentWidget.showLoadingProgress();
+        	var newVersionContestOperation:AbstractOperation =
+                    	 parentWidget.ContestServiceFacadeBean.getOperation("createNewVersionForDesignDevContest");
+        	newVersionContestOperation.addEventListener(ResultEvent.RESULT, handleNewVersionSuccess);
+        	newVersionContestOperation.send(parseInt(contest.id), parseInt(contest.projId), autoDev, minorVersion);
+        }
+        /**
+         * The new version contest id. 
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private var newVersionContestId:String;
+        /**
+         * Handler for create new version success.
+         *
+         * @param e the result event from remote invoke
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */ 
+        private function handleNewVersionSuccess(e:ResultEvent):void {
+            parentWidget.hideLoadingProgress();
+            if (e && e.result) {
+               newVersionContestId = new String(e.result);
+               var alertDlg:Alert=Alert.show("New Version contest has been created, do you want to go to Launch Contest Widget to check details?",
+                                           "Confirmation", Alert.YES | Alert.NO, null, visitNewVersionContest);
+                alertDlg.height=150;
+            }
+        }
+        /**
+         * Handler to visit the new version contest in launch contest widget.
+         * @param event the alert confirm event 
+         * @since Cockpit Release Assembly - Contest Repost and New Version 1.0
+         */
+        private function visitNewVersionContest(event:CloseEvent):void {
+            if (event.detail == Alert.YES) {            	
+                editContest(contest.type, newVersionContestId, contest.projId, contest.projName, contest.permission);
+            } else {
+            	parentWidget.reload();
+            }
+        }
+        ////////////////////////////////////////////////////////////////////////
+		/////////////// methods for reopen, new versions - end
+		////////////////////////////////////////////////////////////////////////
+
+        private function openSPStatus():void {
+        	navigateToURL(new URLRequest(softwareConetestORurl + contest.specReviewProjectId), "_blank");
+        }
+        
+        /**
+         *
+         * Added for Cockpit Spec Review - Stage 2 v1.0.
+         * Show 'View Spec Review' button for software/studio contests also whose status is not 'draft'/'inactive'.
+         *
+         * @return return true if user can 'view spec review'
+         *
+         */
+        private function canViewSpecReview():Boolean {
+            if (!contest || !contest.type || !contest.status)
+            {
+                return false;
+            }
+            if ((contest.type.toLocaleLowerCase() == "studio"
+                    && (contest.status.toLocaleLowerCase() == "draft"
+                            || contest.status.toLocaleLowerCase() == "unactive - not yet published"))
+                || (contest.type.toLocaleLowerCase() != "studio"
+                    && (contest.status.toLocaleLowerCase() == "draft"
+                            || contest.status.toLocaleLowerCase() == "inactive"))) {
+                return false;
+            }
+            return true;
+        }
+
+
+
+            /**
+             * Handler for forum link click.
+             */
+            private function openForum(event:MouseEvent):void {
+                if (contest.type == STUDIO_TYPE) {
+                    
+                    if (contest.forumId == null || contest.forumId == "-1") {
+                        return;
+                    }
+                    navigateToURL(new URLRequest(studioForumUrlBase + contest.forumId));
+                } else {
+
+                    if (contest.forumId == null || contest.forumId == "0") {
+                        return;
+                    }
+
+                    navigateToURL(new URLRequest(softwareForumUrlBase + contest.forumId));
+                }
+            }
+
+            /**
+             * Row mouse over handler.
+             * 
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             * Show edit button for non studio contests also which are of type active or inactive.
+             * 
+             * <p>
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+             *    - earlier for read only contest (as per the permission), launch widget could not be launched.
+             * </p>
+             *
+             * Fix for [BUGR-2038]: if type is not studio, show edit button if
+             * status is 'draft' or 'scheduled' instead of status 'active'.
+             */
+            private function editable():Boolean {
+                if (!contest || !contest.type || !contest.status)
+                {
+                    return false;
+                }
+                if ((contest.type.toLocaleLowerCase() == "studio" 
+                        && (contest.status.toLocaleLowerCase() == "draft" 
+                                || contest.status.toLocaleLowerCase() == "unactive - not yet published" 
+                                || contest.status.toLocaleLowerCase() == "scheduled")) 
+                    || (contest.type.toLocaleLowerCase() != "studio" 
+                        && (contest.status.toLocaleLowerCase() == "draft" 
+                                || contest.status.toLocaleLowerCase() == "scheduled"
+                                || contest.status.toLocaleLowerCase() == "inactive"))) {
+
+                    return true;
+                }
+                return false;
+            }
+
+            /**
+             * Handler for click on edit contest button.
+             * 
+             * Updated for Cockpit Release Assembly 1 v1.0 [BUGR-1847]
+             * Additionally pass contest type so that launch widget can distinguish between software and studio contests.
+             * 
+             * <p>
+             * Updated for Cockpit Release Assembly 3 [RS: 1.1.2]
+             *    - launch widget should distinguish between read only and write allowed contests.
+             *    - earlier for read only contest (as per the permission), launch widget could not be launched.
+             * </p>
+             */
+            private function editContest(contestType:String=null, contestId:String=null,
+                                         projectId:String=null, projectName:String=null, permission:String=null):void {
+                var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+                var props:Dictionary=new Dictionary();
+                props["contestType"]=contestType?contestType:contest.type;
+                props["contestid"]=contestId?contestId:contest.id;
+                props["projectid"]=projectId?projectId:contest.projId;
+                props["projectName"]=projectName?projectName:contest.projName;
+
+                var mode:String = hasWritePermission(permission?permission:contest.permission)?"WRITE":"READ";
+                props["mode"]=mode;
+
+                widget.setAttributes(props);
+                parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }
+
+            private function hasWritePermission(permission:String):Boolean {
+                return permission=="contest_full"
+                    || permission=="contest_write"
+                    || (permission==null &&
+                            (parentWidget.model.currentProj.permission=="project_full"
+                                || parentWidget.model.currentProj.permission=="project_write"));
+            }
+
+            /**
+             * Setters for start date of the contest
+             *
+             * @param temp start date.
+             */
+            private function set startDate(temp:String):void {
+                var dateStr:String=temp;
+                if (dateStr) {
+                    var dataStrArr:Array=dateStr.split("T");
+                    var timeStrArray:Array=dataStrArr[1].split(".");
+                    var timeStr:String=timeStrArray[1];
+                    lblStartDatePart.text=dataStrArr[0] + " " + timeStrArray[0].substr(0,5) + " EST";
+                }
+            }
+
+            /**
+             * Setters for end date of the contest.
+             *
+             * @param temp end date of the contest.
+             */
+            private function set endDate(temp:String):void {
+                var dateStr:String=temp;
+                if (dateStr) {
+                    var dataStrArr:Array=dateStr.split("T");
+                    var timeStrArray:Array=dataStrArr[1].split(".");
+                    var timeStr:String=timeStrArray[1];
+                    lblEndDatePart.text=dataStrArr[0] + " " + timeStrArray[0].substr(0,5) + " EST";
+                }
+            }
+            
+            /**
+             * Handler for click on review status button.
+             * 
+             * Updated for Version 1.0.1
+             *    - pass the mode to Launch Widget.
+             *
+             * @since Cockpit Launch Contest Widget - Inline Spec Reviews - Part 1
+             */
+            private function openReviewScreen(/*event:MouseEvent*/):void {
+                if (!editable()) {
+                    // TCCC-1473
+                    // disable review button click if launch action is not allowed.
+                    return;
+                }
+                var widget:IWidget=parentWidget.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+                var props:Dictionary=new Dictionary();
+                props["contestType"]=contest.type;
+                props["contestid"]=contest.id;
+                props["projectid"]=contest.projId;
+                props["projectName"]=contest.projName;
+                props["screen"]="Review";
+                props["creator"]=contest.createUser;
+                
+                var mode:String="READ";
+                
+                if(contest.permission=="contest_full" 
+                    || contest.permission=="contest_write"
+                    || (contest.permission==null && 
+                            (parentWidget.model.currentProj.permission=="project_full" 
+                                || parentWidget.model.currentProj.permission=="project_write"))) {
+                    mode="WRITE";				                
+                }
+                
+                props["mode"]=mode;
+                
+                widget.setAttributes(props);
+                parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }         
+        ]]>
+    </mx:Script>
+    <mx:HBox width="100%"
+	    styleName="rowContent">
+	<mx:Spacer width="5" />
+        <mx:LinkButton buttonMode="true"
+                           useHandCursor="true"
+                           id="lblContextName"
+                           styleName="linkBtn"
+                           label="{contest.name}"
+                           click="handleClick()"
+                           width="30%" />
+        <mx:Text width="18%"
+                 styleName="rowContentLabel"
+                 id="lblStartDatePart"/>
+        <mx:Text width="18%"
+                 styleName="rowContentLabel"
+                 id="lblEndDatePart"/>
+        <mx:Text width="10%"
+                 styleName="rowContentLabel"
+                 id="lblType"
+                 htmlText="{contest.type}"/>
+        <mx:HBox width="10%">
+            <mx:Spacer width="100%"/>
+            <!--
+            <mx:Button id="reviewStatusBtn"
+                       styleName="{getReviewStatusBtnStyle(contest.reviewStatus)}"
+                       width="20"
+                       height="20"
+                       visible="true"
+                       click="openReviewScreen(event)"/>
+            <mx:Spacer width="100%"/>
+            -->
+        </mx:HBox>
+        <mx:PopUpButton 
+            id="actionPopBtn" 
+            creationComplete="initActionPopBtn();"
+            width="15%"
+            click="itemClickHandler(null)" />
+    </mx:HBox>
+    <mx:HBox width="100%"
+             styleName="rowContent">
+        <mx:HBox width="30%">
+            <mx:VBox  verticalAlign="center" width="40%">
+                <mx:LinkButton 
+                    buttonMode="true"
+                    id="statusBtn"
+                    styleName="{handleStatus(contest.status)}"
+                    labelPlacement="bottom"
+                    click="showStats()"/>
+            </mx:VBox>
+            <mx:HBox width="60%">
+                <mx:VBox horizontalAlign="right" verticalAlign="top">
+                    <mx:Text
+                        paddingTop="-4"
+                        paddingBottom="-4"
+                        height = "13"
+                        htmlText="Registrations: "/>
+                    <mx:Text
+                        paddingTop="-4"
+                        paddingBottom="-4"
+                        height = "13"
+                        htmlText="Submissions: "/>
+                    <mx:Text
+                        paddingTop="-4"
+                        paddingBottom="-4"
+                        height = "13"
+                        htmlText="Forum Posts: "/>
+                </mx:VBox>
+                <mx:VBox horizontalAlign="left" verticalAlign="top">
+                    <mx:Text 
+                        paddingTop="-4"
+                        paddingBottom="-4"
+                        width="100%"
+                        height = "13"
+                        id="lblRegistrants"
+                        htmlText="{contest.registrants}"/>
+                    <mx:LinkButton 
+                        paddingTop="-9"
+                        paddingBottom="-3"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        height = "15"
+                        id="lblSubmissions"
+                        textDecoration="underline"
+                        label="{setLinkProperties(contest.submissions, lblSubmissions, showSubmission)}"/>
+                    <mx:LinkButton 
+                        paddingTop="-9"
+                        paddingBottom="-3"
+                        paddingLeft="0"
+                        paddingRight="0"
+                        height = "15"
+                        id="lblForumPosts"
+                        textDecoration="underline"
+                        label="{setLinkProperties(contest.forumPosts, lblForumPosts, openForum)}"/>
+                </mx:VBox>
+            </mx:HBox>
+        </mx:HBox>
+        <mx:VBox verticalGap="0" horizontalScrollPolicy="off" width="{capacityWidth}" >
+            <!-- Masked Surface and Filter for the Capacity Indicator -->
+            <degrafa:Surface
+                id="capacitySurface"
+                verticalCenter="0"
+                horizontalCenter="0"
+                width="{capacityWidth}"
+                height="15"
+                mask="{roundMask}">
+                
+                <degrafa:GeometryGroup
+                    id="roundMask">
+                    <degrafa:RoundedRectangle
+                        width="{capacityWidth}"
+                        height="{capacitySurface.height}"
+                        cornerRadius="20"
+                        fill="{colorOne}"/>
+                            <degrafa:GeometryComposition
+                                graphicsTarget="{[capacitySurface]}">
+                            
+                            <degrafa:fills>
+                                <degrafa:SolidFill
+                                    id="colorOne"
+                                    color="#479B55"/>
+                                <degrafa:SolidFill
+                                    id="colorTwo"
+                                    color="#F0E765"/>
+                                <degrafa:SolidFill
+                                    id="colorThree"
+                                    color="#FFFFFF"/>
+                            </degrafa:fills>
+                            
+                            <degrafa:strokes>
+                                <degrafa:SolidStroke
+                                    id="whiteStroke"
+                                    color="#FFF"
+                                    weight="1"
+                                    alpha=".15"/>
+                                <degrafa:SolidStroke
+                                    id="darkStroke"
+                                    color="#000"
+                                    weight="1"
+                                    alpha=".2"/>
+                            </degrafa:strokes>
+                            
+                                    
+                                <degrafa:RegularRectangle
+                                    id="thirdRect"
+                                    width="{capacityWidth}"
+                                    height="{capacitySurface.height}"
+                                    fill="{colorThree}"/>
+                                <degrafa:RegularRectangle
+                                    id="secondRect"
+                                    width="{yellowWidth}"
+                                    height="{capacitySurface.height}"
+                                    fill="{colorTwo}"/>	
+                                <degrafa:RegularRectangle
+                                    id="firstRect"
+                                    width="{greenWidth}"
+                                    height="{capacitySurface.height}"
+                                    fill="{colorOne}"/>
+                                    
+                                <degrafa:VerticalLineRepeater
+                                    x="20"
+                                    y="0"
+                                    y1="{capacitySurface.height}"
+                                    moveOffsetX="20"
+                                    count="{capacityWidth/20}"
+                                    stroke="{darkStroke}"/>
+                                <degrafa:VerticalLineRepeater
+                                    x="21"
+                                    y="0"
+                                    y1="{capacitySurface.height}"
+                                    moveOffsetX="20"
+                                    count="{capacityWidth/20}"
+                                    stroke="{whiteStroke}"/>
+                        
+                        </degrafa:GeometryComposition>
+                        
+                </degrafa:GeometryGroup>
+                
+                <degrafa:filters>
+                    <filters:GlowFilter
+                        color="#000000"
+                        alpha=".1"
+                        blurX="4"
+                        blurY="4"
+                        inner="true"
+                        quality="6"/>
+
+                </degrafa:filters>
+            </degrafa:Surface>
+			<mx:Spacer height="2" />
+			<mx:HBox paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" horizontalAlign="center" width="100%">
+				<mx:LinkButton id="specReviewStatusTxt" label="{getReviewStatus(contest.reviewStatus)}" click="openSPStatus()"
+                          styleName="{getReviewStatusStyle(contest.reviewStatus)}" visible="false"/>	
+			</mx:HBox>
+            
+         </mx:VBox>
+        <mx:Spacer width="20%" />
+    </mx:HBox>    
+</mx:VBox>
