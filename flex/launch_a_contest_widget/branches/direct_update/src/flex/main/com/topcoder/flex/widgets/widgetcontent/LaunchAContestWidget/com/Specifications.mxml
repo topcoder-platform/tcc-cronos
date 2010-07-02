@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+
+<!--
+    This mxml component presents the specifications page for the launch contest widget.
+
+    Version 1.0.1 (Studio Multi-Rounds Assembly - Launch Contest) Change Notes:
+        - Project name title is hidden if the summary is shown since it's already there
+
+    @author pulky
+    @version 1.0.1
+    @since 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+           width="100%"
+           height="100%"
+           horizontalScrollPolicy="off"
+           verticalScrollPolicy="off">
+    <mx:HTTPService id="requestFileTypes"
+                    url="data/launch_a_contest/fileTypes.xml"
+                    resultFormat="e4x"
+                    result="loadFileTypes(event)"
+                    fault="Helper.showAlertMessage(event.fault.faultString);">
+    </mx:HTTPService>
+
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+            import flash.events.MouseEvent;
+            import mx.containers.Panel;
+            import mx.rpc.events.ResultEvent;
+            import com.topcoder.flex.Helper;
+            import mx.controls.CheckBox;
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1501			
+
+            private static const FILE_FORMAT_PREFIX:String="chb_";
+
+            [Bindable]
+            private var fileTypes:XML;
+
+            [Bindable]
+            public var mainWidget:LaunchWidget;
+
+            public var widgetHeight:Number;
+            public var ColorsHint:String;
+            public var FontsHint:String;
+            public var SizeHint:String;
+            public var AdditionalHint:String;
+            public var formatStr:String;
+
+            private static const ADDEDHEIGHT:Number=80;
+
+
+            public function initData():void {
+                colorInput.text="";
+                fontInput.text="";
+                sizeInput.text="";
+                addReInput.text="";
+                fileFormatInput.text="";
+                
+                if (!this.mainWidget.competition) {
+                    return;
+                }
+
+                formatStr=this.mainWidget.competition.contestData.finalFileFormat;
+                if (formatStr == null) {
+                    formatStr="";
+                }
+                /*    		since BUGR-1039
+                   this.psdChb.selected = (formatStr.indexOf("psd")>=0);
+                   this.aiChb.selected = (formatStr.indexOf("ai")>=0);
+                   this.epsChb.selected = (formatStr.indexOf("eps")>=0);
+                 */
+                for each (var item:*in fileFormatsBox.getChildren()) {
+                    var ext:String=(item as CheckBox).id.substring(FILE_FORMAT_PREFIX.length, (item as CheckBox).id.length);
+                    (item as CheckBox).selected=(formatStr.indexOf(ext) >= 0);
+                }
+
+                colorInput.text=this.mainWidget.competition.contestData.requiredOrRestrictedColors;
+                fontInput.text=this.mainWidget.competition.contestData.requiredOrRestrictedFonts;
+                sizeInput.text=this.mainWidget.competition.contestData.sizeRequirements;
+                addReInput.text=this.mainWidget.competition.contestData.otherRequirementsOrRestrictions;
+                fileFormatInput.text=this.mainWidget.competition.contestData.otherFileFormats;
+            }
+
+            private function updateData():void {
+                mainWidget.competition.contestData.requiredOrRestrictedColors=this.colorInput.text;
+                mainWidget.competition.contestData.requiredOrRestrictedFonts=this.fontInput.text;
+                mainWidget.competition.contestData.sizeRequirements=this.sizeInput.text;
+                mainWidget.competition.contestData.otherRequirementsOrRestrictions=this.addReInput.text;
+                mainWidget.competition.contestData.otherFileFormats=this.fileFormatInput.text;
+
+                var formats:String="";
+                for each (var item:*in fileFormatsBox.getChildren()) {
+                    var cb:CheckBox=item as CheckBox;
+                    if (cb.selected) {
+                        formats+="," + cb.id.substr(FILE_FORMAT_PREFIX.length);
+                    }
+                }
+                if (formats.length > 0) {
+                    formats=formats.substr(1);
+                }
+
+
+                mainWidget.competition.contestData.finalFileFormat=formats;
+
+                /*this.mainWidget.review.colorInputStr=colorInput.text;
+                this.mainWidget.review.fontInputStr=fontInput.text;
+                this.mainWidget.review.sizeInputStr=sizeInput.text;
+                this.mainWidget.review.addReInputStr=addReInput.text;
+
+                this.mainWidget.review.fileFormatInputStr=mainWidget.competition.contestData.finalFileFormat;*/
+            }
+
+            public function validateFields():Boolean {
+                // BUGR-1475
+                return validateFieldsEx2(true, false);
+            }
+
+            // BUGR-1475
+            public function validateFieldsEx2(showMsg:Boolean, showPageName:Boolean):Boolean {
+                //no validation required for this step
+                updateData();
+                return true;
+            }
+            
+            
+            private function showColorHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    colorHint.height=ADDEDHEIGHT;
+                    colorHint.text=ColorsHint;
+                    colorHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT;
+                    widgetHeight+=ADDEDHEIGHT;
+                } else {
+                    event.target.label="[+ show hint]";
+                    colorHint.height=0;
+                    colorHint.text="";
+                    colorHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT;
+                    widgetHeight-=ADDEDHEIGHT;
+                }
+            }
+
+            private function showFontsHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    fontsHint.height=ADDEDHEIGHT;
+                    fontsHint.text=FontsHint;
+                    fontsHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT;
+                    widgetHeight+=ADDEDHEIGHT;
+                } else {
+                    event.target.label="[+ show hint]";
+                    fontsHint.height=0;
+                    fontsHint.text="";
+                    fontsHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT;
+                    widgetHeight-=ADDEDHEIGHT;
+                }
+            }
+
+            private function showSizeHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    sizeHint.height=ADDEDHEIGHT;
+                    sizeHint.text=SizeHint;
+                    sizeHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT;
+                    widgetHeight+=ADDEDHEIGHT;
+                } else {
+                    event.target.label="[+ show hint]";
+                    sizeHint.height=0;
+                    sizeHint.text="";
+                    sizeHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT;
+                    widgetHeight-=ADDEDHEIGHT;
+                }
+            }
+
+            private function showAddReqHint(event:MouseEvent):void {
+                if (event.target.label == "[+ show hint]") {
+                    event.target.label="[- show hint]";
+                    addReqHint.height=30;
+                    addReqHint.text=AdditionalHint;
+                    addReqHint.visible=true;
+                    mainWidget.height+=ADDEDHEIGHT;
+                    widgetHeight+=ADDEDHEIGHT;
+                } else {
+                    event.target.label="[+ show hint]";
+                    addReqHint.height=0;
+                    addReqHint.text="";
+                    addReqHint.visible=false;
+                    mainWidget.height-=ADDEDHEIGHT;
+                    widgetHeight-=ADDEDHEIGHT;
+                }
+            }
+
+            private function loadFileTypes(e:ResultEvent):void {
+                if (e != null && e.result != null && e.result is XML) {
+                    fileTypes=e.result as XML;
+                    fileFormatsBox.removeAllChildren();
+                    var id:Number=mainWidget.studioContestSubTypeId;
+                    for each (var fmt:XML in fileTypes.contestType.(@id == id).children()) {
+                        var chb:CheckBox=new CheckBox();
+                        chb.label=fmt.description;
+                        chb.id=FILE_FORMAT_PREFIX + fmt.value;
+                        fileFormatsBox.addChild(chb);
+                    }
+                    for each (var item:*in fileFormatsBox.getChildren()) {
+                        var ext:String=(item as CheckBox).id.substring(FILE_FORMAT_PREFIX.length, (item as CheckBox).id.length);
+                        (item as CheckBox).selected=(formatStr.indexOf(ext) >= 0);
+                    }
+                }
+            }
+
+         ]]>
+    </mx:Script>
+    <mx:VBox paddingLeft="2" width="100%" height="100%">
+        <mx:VBox width="100%" styleName="boxStyle" >
+
+            <mx:VBox width="100%">
+                <!-- Hide project name if the summary is shown since it's already there -->
+                <mx:HBox horizontalAlign="right" width="100%" visible="{!mainWidget.showSummary}"
+                     includeInLayout="{!mainWidget.showSummary}">
+                    <mx:Label text="Project: {mainWidget.tcDirectProjectName}" styleName="projectTitle" width="80%" />
+                    <mx:Spacer width="100%" />
+                </mx:HBox>
+                <mx:Text width="100%" id="contestSpecf">
+                    <mx:text>
+                        Do you have any requirements, preferences or restrictions regarding the following design elements?
+                    </mx:text>
+                </mx:Text>
+                <mx:Spacer height="5"/>
+                <mx:VBox width="100%" verticalGap="0">
+                    <mx:HBox width="500">
+                        <mx:Label text="Colors:" fontWeight="bold"/>
+                        <mx:Spacer width="344"/>
+                        <mx:LinkButton label="[+ show hint]" click="showColorHint(event)" />
+                    </mx:HBox>
+                    <mx:Text id="colorHint" color="0x888888" width="500" height="0" visible="false">
+                        <mx:text>
+                        </mx:text>
+                    </mx:Text>
+                    <mx:TextArea id="colorInput" width="500" height="50"/>
+                </mx:VBox>
+             </mx:VBox>
+
+            <mx:Spacer height="5"/>
+            <mx:VBox width="100%" verticalGap="0" >
+                <mx:HBox width="500">
+                    <mx:Label text="Fonts:" fontWeight="bold"/>
+                    <mx:Spacer width="347"/>
+                    <mx:LinkButton label="[+ show hint]" click="showFontsHint(event)" />
+                </mx:HBox>
+                <mx:Text id="fontsHint" color="0x888888" width="500" height="0" visible="false">
+                    <mx:text>
+                    </mx:text>
+                </mx:Text>
+                <mx:TextArea id="fontInput" width="500" height="50"/>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <mx:VBox width="100%" verticalGap="0">
+                <mx:HBox width="500">
+                    <mx:Label text="Size:" fontWeight="bold"/>
+                    <mx:Spacer width="356"/>
+                    <mx:LinkButton label="[+ show hint]" click="showSizeHint(event)" />
+                </mx:HBox>
+                <mx:Text id="sizeHint" color="0x888888" width="500" height="0" visible="false">
+                    <mx:text>
+                    </mx:text>
+                </mx:Text>
+                <mx:TextArea id="sizeInput" width="500" height="50"/>
+            </mx:VBox>
+            <mx:Spacer height="5"/>
+            <mx:VBox width="100%" verticalGap="0">
+                <mx:HBox width="500">
+                    <mx:Label text="Additional Requirements or Restrictions:" fontWeight="bold"/>
+                    <mx:Spacer width="151"/>
+                    <mx:LinkButton label="[+ show hint]" click="showAddReqHint(event)" />
+                </mx:HBox>
+                <mx:Text id="addReqHint" color="0x888888" width="500" height="0" visible="false">
+                    <mx:text>
+                    </mx:text>
+                </mx:Text>
+                <mx:TextArea id="addReInput" width="500" height="50"/>
+            </mx:VBox>
+        </mx:VBox>
+        <mx:VBox width="100%" styleName="boxStyle" >
+
+            <mx:Label text="Final File Formats" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+                       <mx:HBox horizontalGap="0" verticalGap="0" width="100%">
+                <mx:Label paddingTop="3" text="If you are unsure what type of file you will need, please feel free to"/>  <!-- BUGR-1472 -->
+                <mx:LinkButton baseline="middle" styleName="linkBtn" label="post a question in the forums" click="{navigateToURL(new URLRequest('http://studio.topcoder.com/forums?module=ThreadList&amp;forumID=6'), '_blank');}" />
+                <mx:Image source="@Embed('../../assets/more_info.png')"/>
+                <mx:Label paddingTop="3" text="The members will be happy to help you." />  <!-- BUGR-1472 -->
+            </mx:HBox>
+            <mx:HBox horizontalGap="0"> <!-- BUGR-1472 -->
+                <mx:Text htmlText="You can also email" paddingTop="3" />
+                <mx:LinkButton styleName="linkBtn" label="directassist@topcoder.com" click="{navigateToURL(new URLRequest('mailto:directassist@topcoder.com'), '_self');}" />
+            </mx:HBox>
+            <mx:Text width="100%" text="For your chosen contest type - {mainWidget.studioContestSubTypeLabel} - the most common final file formats are:" />
+            <mx:VBox width="100%" paddingLeft="10">
+                <mx:VBox id="fileFormatsBox">
+
+                </mx:VBox>
+                <mx:Spacer height="5"/>
+                <mx:Label text="Other File Formats:" fontWeight="bold"/>
+                <mx:Text id="otherFileFormats" color="0x888888" width="100%">
+                    <mx:text>
+                        Please list any other file formats you may need that is not listed above.
+                    </mx:text>
+                </mx:Text>
+                <mx:TextArea id="fileFormatInput"
+                             width="480"
+                             height="50"/>
+            </mx:VBox>
+        </mx:VBox>
+    </mx:VBox>
+</mx:VBox>
