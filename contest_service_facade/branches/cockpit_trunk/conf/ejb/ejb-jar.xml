@@ -45,6 +45,20 @@
                 <env-entry-name>payFlowHostAddress</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>@build-rep.contest_service_facade.payFlowHostAddress@</env-entry-value>
+            </env-entry>
+            
+            <!--  BUGR-3738 -->
+            <env-entry>
+                <env-entry-name>objectFactoryConfigName</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>com.topcoder.util.objectfactory</env-entry-value>
+            </env-entry> 
+            
+            <!--  BUGR-3738 -->
+            <env-entry>
+                <env-entry-name>uploadManagerOFKey</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>uploadManagerKey</env-entry-value>
             </env-entry> 
             
             <env-entry>
