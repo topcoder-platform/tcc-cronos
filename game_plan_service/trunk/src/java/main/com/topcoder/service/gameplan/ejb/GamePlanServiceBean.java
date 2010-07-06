@@ -85,7 +85,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
      * 'Spec Review' category will be excluded.
      */
     private static final String RETRIEVE_SOFTWARE_PROJECT_DATA = "SELECT p.tc_direct_project_id, p.project_id,"
-            + "tcd.name as project_name,"
+            + "(select pi.value from project_info pi where pi.project_id = p.project_id AND pi.project_info_type_id = 6) as project_name,"
             + "(SELECT MIN(NVL(actual_start_time, scheduled_start_time)) FROM project_phase ph"
             + "    WHERE ph.project_id = p.project_id) as start_time,"
             + "(SELECT MAX(NVL(actual_end_time, scheduled_end_time)) FROM project_phase ph"
@@ -115,7 +115,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             + "  LEFT OUTER JOIN contest_detailed_status_lu cds"
             + "    on c.contest_detailed_status_id = cds.contest_detailed_status_id "
             + "WHERE (c.deleted IS NULL OR c.deleted = 0) AND"
-            + "  (c.contest_detailed_status_id IS NULL OR c.contest_detailed_status_id != 3)";
+            + "  (c.contest_detailed_status_id IS NULL OR c.contest_detailed_status_id != 3) AND (c.contest_id IS NOT NULL)";
 
     /**
      * Represents the sql for retrieving IDs of dependency projects.
@@ -123,6 +123,12 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
     private static final String RETRIEVE_DEPENDENCY_PROJECT_IDS_SQL =
             "SELECT dest_project_id FROM linked_project_xref"
                     + " WHERE source_project_id = :projectId AND link_type_id in (1, 4)";
+                    
+    /**
+     * Represents the sql for retrieving tc direct project.
+     */
+    private static final String RETRIEVE_DIRECT_PROJECT_SQL =
+            "SELECT project_id, name FROM tc_direct_project WHERE ";
 
     /**
      * Represents the name for active status.
@@ -325,6 +331,42 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         Date now = new Date();
         // Create mapping from TC Direct Project ID to TCDirectProjectGamePlanData instance
         Map<Long, TCDirectProjectGamePlanData> tcDirectProjectsMap = new HashMap<Long, TCDirectProjectGamePlanData>();
+        
+        String directProjectQuery = RETRIEVE_DIRECT_PROJECT_SQL; 
+        
+        if (userId != null) {
+            directProjectQuery += " user_id = :userId";
+        }
+
+        if (directProjectId != null) {
+            directProjectQuery += ( (userId == null ? "" : " AND ") + " project_id = :directProjectId");
+        }
+        
+        // Create query for retrieving direct projects data
+        Query query = studioEntityManager.createNativeQuery(directProjectQuery);
+        
+        // set the parameter value if present
+        if (userId != null) {
+            query.setParameter("userId", userId);
+        }
+
+        if (directProjectId != null) {
+            query.setParameter("directProjectId", directProjectId);
+        }
+
+        List<Object[]> resultList = query.getResultList();
+        
+        for (Object[] row : resultList) {
+        	TCDirectProjectGamePlanData data = new TCDirectProjectGamePlanData();
+        	long tcDirectProjectId = (Integer) row[0];
+        	String tcDirectProjectName = (String) row[1];
+        	
+            data.setTcDirectProjectId(tcDirectProjectId);
+            data.setTcDirectProjectName(tcDirectProjectName);
+            
+            tcDirectProjectsMap.put(tcDirectProjectId, data); 
+        }
+        
         try {
             retrieveSoftwareProjectData(userId, directProjectId, now, tcDirectProjectsMap);
 
@@ -523,6 +565,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             // Create new TC Direct project game plan data instance and saved in the map.
             tcDirectProjectData = new TCDirectProjectGamePlanData();
             tcDirectProjectData.setTcDirectProjectId(tcDirectProjectId);
+            
             tcDirectProjectsMap.put(tcDirectProjectId, tcDirectProjectData);
         }
         return tcDirectProjectData;
