@@ -659,7 +659,8 @@ public class ProjectServicesImpl implements ProjectServices {
         ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, 
         ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY,
         ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY};
+        ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY,
+        ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY};
 
     /**
      * <p>
@@ -1639,6 +1640,26 @@ public class ProjectServicesImpl implements ProjectServices {
                 throw pde;
             }
 
+            String billingProject = projectHeader.getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+            long billingProjectId = 0;
+
+            if (billingProject != null && !billingProject.equals("") && !billingProject.equals("0")) {
+                billingProjectId = Long.parseLong(billingProject);
+            }
+
+            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
+
+            projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.RELIABILITY_BONUS_ELIGIBLE)));
+
+            projectHeader.setProperty(ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.MEMBER_PAYMENT_ELIGIBLE)));
+
+            projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
+
 
             // call projectManager.updateProject(projectHeader,projectHeaderReason,operator)
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#updateProject method.");
@@ -2220,7 +2241,16 @@ public class ProjectServicesImpl implements ProjectServices {
                     .valueOf(requireApproval));
             // End BUGR-3616
             projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
-                    .valueOf(requirePostMortemPhase(billingProjectId)));
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
+
+            projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.RELIABILITY_BONUS_ELIGIBLE)));
+
+            projectHeader.setProperty(ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.MEMBER_PAYMENT_ELIGIBLE)));
+
+            projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
 
             for (Phase p : newProjectPhases.getAllPhases()) {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
@@ -3894,15 +3924,15 @@ public class ProjectServicesImpl implements ProjectServices {
     }
 
     /**
-     * Check if the billing project needs an post-mortem phase.
+     * get boolean value from client project config
      * 
      * @param billingProjectId billing project id
      * @return true if requires, false otherwise.
      * @throws PersistenceException if any other error occurs.
      */
-    private boolean requirePostMortemPhase(long billingProjectId) throws PersistenceException {
+    private boolean getBooleanClientProjectConfig(long billingProjectId, BillingProjectConfigType billingType) throws PersistenceException {
         
-        BillingProjectConfiguration approvalConfig = projectManager.getBillingProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED);
+        BillingProjectConfiguration approvalConfig = projectManager.getBillingProjectConfig(billingProjectId, billingType);
         
         // if no billing project configuration for post-mortem phase, use TRUE by default
         if (approvalConfig == null) {
