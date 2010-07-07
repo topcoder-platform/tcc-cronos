@@ -24,6 +24,11 @@ public class TCDirectProjectGamePlanData implements Serializable {
      * The ID of the TC Direct project. Can be any value. Has getter and setter.
      */
     private long tcDirectProjectId;
+    
+    /**
+     * The name of the TC Direct project. Can not be empty. Has getter and setter.
+     */
+    private String tcDirectProjectName;
 
     /**
      * The list of software projects for this TC Direct project. Is initialized in the constructor with an empty list.
@@ -62,6 +67,24 @@ public class TCDirectProjectGamePlanData implements Serializable {
      */
     public void setTcDirectProjectId(long tcDirectProjectId) {
         this.tcDirectProjectId = tcDirectProjectId;
+    }
+    
+    /**
+     * Retrieves the name of the TC Direct project.
+     *
+     * @return the name of the TC Direct project
+     */
+    public String getTcDirectProjectName() {
+        return tcDirectProjectName;
+    }
+
+    /**
+     * Sets the name of the TC Direct project.
+     *
+     * @param tcDirectProjectName the name of the TC Direct project
+     */
+    public void setTcDirectProjectName(String tcDirectProjectName) {
+        this.tcDirectProjectName = tcDirectProjectName;
     }
 
     /**

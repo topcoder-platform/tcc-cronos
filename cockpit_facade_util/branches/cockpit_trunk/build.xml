@@ -322,7 +322,7 @@
         <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
     </target>
 
-    <target name="dist_tcs" depends="clean,dist,javadoc">
+    <target name="dist_tcs" depends="clean,dist">
         <!-- define tcs distribution format -->
         <mkdir dir="${build_tcsdistdir}"/>
         <copy todir="${build_tcsdistdir}">
@@ -346,12 +346,12 @@
             <fileset dir="${testlogdir}/coverage"/>
         </copy>-->
 
-        <mkdir dir="${dist_javadocs}"/>
+        <!--<mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
             <fileset dir="${javadocsdir}"/>
         </copy>
 
-        <antcall target="package_docs"/>
+        <antcall target="package_docs"/>-->
 
         <zip destfile="${component.dist.jar}" basedir="${build_distdir}"/>
 
