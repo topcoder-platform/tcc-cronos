@@ -3058,7 +3058,7 @@ public class ProjectServicesImpl implements ProjectServices {
             projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
             projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, "false");
             projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, "false");
-            projectHeader.setProperty(ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, "false");
+            projectHeader.setProperty(ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, "true");
 
             // link it to the original project
             projectLinkManager.addProjectLink(projectId, projectData.getProjectHeader().getId(),
