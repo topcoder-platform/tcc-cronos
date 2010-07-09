@@ -341,7 +341,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         }
 
         if (directProjectId != null) {
-            directProjectQuery += " AND project_id = :directProjectId");
+            directProjectQuery += " AND project_id = :directProjectId";
         }
         
         // Create query for retrieving direct projects data
