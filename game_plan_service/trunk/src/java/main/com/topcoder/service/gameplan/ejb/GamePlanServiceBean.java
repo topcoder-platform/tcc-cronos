@@ -130,7 +130,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
      * Represents the sql for retrieving tc direct project.
      */
     private static final String RETRIEVE_DIRECT_PROJECT_SQL =
-            "SELECT project_id, name FROM tc_direct_project WHERE ";
+            "SELECT project_id, name FROM user_permission_grant upg, tc_direct_project WHERE upg.resource_id = project_id and  upg.permission_type_id in (1,2,3 ) ";
 
     /**
      * Represents the name for active status.
@@ -337,11 +337,11 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         String directProjectQuery = RETRIEVE_DIRECT_PROJECT_SQL; 
         
         if (userId != null) {
-            directProjectQuery += " user_id = :userId";
+            directProjectQuery += " AND upg.user_id = :userId ";
         }
 
         if (directProjectId != null) {
-            directProjectQuery += ( (userId == null ? "" : " AND ") + " project_id = :directProjectId");
+            directProjectQuery += " AND project_id = :directProjectId");
         }
         
         // Create query for retrieving direct projects data
