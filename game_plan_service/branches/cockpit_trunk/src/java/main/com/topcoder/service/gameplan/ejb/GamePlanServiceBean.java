@@ -97,11 +97,12 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             + "pcl.name as project_type,"
             + "(SELECT COUNT(lpx.dest_project_id) FROM linked_project_xref lpx"
             + "    WHERE lpx.source_project_id = p.project_id AND lpx.link_type_id = 5) "
-            + "FROM project p"
+            + "FROM user_permission_grant upg, project p"
             + "  INNER JOIN tc_direct_project tcd ON tcd.project_id = p.tc_direct_project_id"
             + "  LEFT OUTER JOIN project_status_lu psl ON psl.project_status_id = p.project_status_id"
             + "  LEFT OUTER JOIN project_category_lu pcl ON pcl.project_category_id = p.project_category_id "
-            + "WHERE p.project_status_id != 3 AND p.project_category_id != 27";
+            + "WHERE p.project_status_id != 3 AND p.project_category_id != 27  "
+            + " and tcd.project_id = upg.resource_id  and upg.permission_type_id in (1,2,3 ) ";
 
     /**
      * Represents the sql for retrieving studio project data. Any contest with 'Deleted' status will be excluded.
@@ -110,12 +111,13 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             + "c.project_id, c.contest_id, p.name as project_name, c.name as contest_name, c.start_time, c.end_time, "
             + "p.user_id, cds.name as contest_status, "
             + "(select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) "
-            + "FROM tc_direct_project p"
+            + "FROM user_permission_grant upg, tc_direct_project p"
             + "  LEFT OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id"
             + "  LEFT OUTER JOIN contest_detailed_status_lu cds"
             + "    on c.contest_detailed_status_id = cds.contest_detailed_status_id "
             + "WHERE (c.deleted IS NULL OR c.deleted = 0) AND"
-            + "  (c.contest_detailed_status_id IS NULL OR c.contest_detailed_status_id != 3) AND (c.contest_id IS NOT NULL)";
+            + "  (c.contest_detailed_status_id IS NULL OR c.contest_detailed_status_id != 3) AND (c.contest_id IS NOT NULL) "
+            + " and  p.project_id = upg.resource_id and upg.permission_type_id in (1,2,3) ";
 
     /**
      * Represents the sql for retrieving IDs of dependency projects.
@@ -393,7 +395,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
                                            Map<Long, TCDirectProjectGamePlanData> tcDirectProjectsMap) {
         String queryStr = RETRIEVE_STUDIO_PROJECT_DATA_SQL;
         if (userId != null) {
-            queryStr += " AND p.user_id = :userId";
+            queryStr += " AND upg.user_id = :userId";
         }
 
         if (directProjectId != null) {
@@ -492,7 +494,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
 
         String queryStr = RETRIEVE_SOFTWARE_PROJECT_DATA;
         if (userId != null) {
-            queryStr += " AND tcd.user_id = :userId";
+            queryStr += " AND upg.user_id = :userId";
         }
 
         if (directProjectId != null) {
