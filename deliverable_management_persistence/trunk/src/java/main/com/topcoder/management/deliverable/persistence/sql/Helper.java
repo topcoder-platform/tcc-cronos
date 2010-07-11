@@ -1,7 +1,16 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql;
+
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.management.deliverable.AuditedDeliverableStructure;
+import com.topcoder.management.deliverable.NamedDeliverableStructure;
+import com.topcoder.management.deliverable.persistence.PersistenceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,71 +23,79 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.management.deliverable.AuditedDeliverableStructure;
-import com.topcoder.management.deliverable.NamedDeliverableStructure;
-import com.topcoder.management.deliverable.persistence.PersistenceException;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
-
 /**
- * Helper class for the package
+ * <p>Helper class for the package
  * com.topcoder.management.deliverable.persistence.sql., including the methods
- * to validate arguments and the methods to access database.
- * @author urtks
- * @version 1.0.2
+ * to validate arguments and the methods to access database.</p>
+ *
+ * <p><strong>Thread safety:</strong> This class is immutable and thread safe.</p>
+ *
+ * @author urtks, TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
-class Helper {
+public final class Helper {
+
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type String or as null in case the ResultSet
      * value was null, and to specify that PreparedStatement#setString() should
      * be used for a parameter.
+     * </p>
      */
     static final DataType STRING_TYPE = new StringType();
 
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Long or as null in case the ResultSet value
      * was null, and to specify that PreparedStatement#setLong() should be used
      * for a parameter.
+     * </p>
      */
     static final DataType LONG_TYPE = new LongType();
 
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Double or as null in case the ResultSet value
      * was null, and to specify that PreparedStatement#setDouble() should be used
      * for a parameter.
+     * </p>
      */
     static final DataType DOUBLE_TYPE = new DoubleType();
-    
+
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Boolean or as null in case the ResultSet
      * value was null, and to specify that PreparedStatement#setBoolean() should
      * be used for a parameter.
+     * </p>
      */
     static final DataType BOOLEAN_TYPE = new BooleanType();
 
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Date or as null in case the ResultSet value
      * was null, and to specify that PreparedStatement#setTimestamp() should be
      * used for a parameter.
+     * </p>
      */
     static final DataType DATE_TYPE = new DateType();
 
-    /** Logger instance using the class name as category */
-    private static final Log logger = LogFactory.getLog(Helper.class.getName()); 
-    
+    /**
+     * <p>Logger instance using the class name as category.</p>
+     */
+    private static final Log LOGGER = LogFactory.getLog(Helper.class.getName());
+
     /**
      * <p>
      * This class is a wrapper for type safe getting of values from a ResultSet
@@ -92,6 +109,7 @@ class Helper {
      * expected types and the specified setXXX methods are used (setObject() is
      * kind of dangerous in some cases).
      * </p>
+     *
      * <p>
      * This class contains a private constructor to make sure all
      * implementations of this class are declared inside Helper. Instances are
@@ -99,80 +117,78 @@ class Helper {
      * defines some kind of 'pseudo-enum' which cannot be instantiated
      * externally.
      * </p>
+     *
      * @author urtks
      * @version 1.0
      */
     abstract static class DataType {
+
         /**
-         * Empty private constructor. By using this concept, it is assured that
+         * <p>Empty private constructor. By using this concept, it is assured that
          * only Helper class can contain subclasses of this class and the
-         * implementation classes cannot be instantiated externally.
+         * implementation classes cannot be instantiated externally.</p>
          */
         private DataType() {
         }
 
         /**
-         * This method gets the value at the given index from the given
-         * resultSet as instance of the subclass-dependent type.
-         * @param resultSet
-         *            the result set from which to get the value
-         * @param index
-         *            the index at which to get the value
+         * <p>This method gets the value at the given index from the given
+         * resultSet as instance of the subclass-dependent type.</p>
+         *
+         * @param resultSet the result set from which to get the value
+         * @param index     the index at which to get the value
+         *
          * @return the retrieved value
-         * @throws IllegalArgumentException
-         *             if resultSet is null
-         * @throws SQLException
-         *             if error occurs while working with the given ResultSet or
-         *             the index does not exist in the result set
+         *
+         * @throws IllegalArgumentException if resultSet is null
+         * @throws SQLException             if error occurs while working with the given ResultSet or
+         *                                  the index does not exist in the result set
          */
         protected abstract Object getValue(ResultSet resultSet, int index) throws SQLException;
 
         /**
-         * This method sets the value at the given index from the given
-         * preparedStatement as instance of the subclass-dependent type.
-         * @param preparedStatement
-         *            the prepared statement from which to set the value
-         * @param index
-         *            the index at which to set the value
-         * @param value
-         *            the value to set
-         * @throws IllegalArgumentException
-         *             if preparedStatement or value is null, or value is not an
-         *             instance of the subclass-dependent type
-         * @throws SQLException
-         *             if error occurs while working with the given
-         *             preparedStatement or the index does not exist in the
-         *             prepared statement
+         * <p>This method sets the value at the given index from the given
+         * preparedStatement as instance of the subclass-dependent type.</p>
+         *
+         * @param preparedStatement the prepared statement from which to set the value
+         * @param index             the index at which to set the value
+         * @param value             the value to set
+         *
+         * @throws IllegalArgumentException if preparedStatement or value is null, or value is not an
+         *                                  instance of the subclass-dependent type
+         * @throws SQLException             if error occurs while working with the given
+         *                                  preparedStatement or the index does not exist in the
+         *                                  prepared statement
          */
         protected abstract void setValue(PreparedStatement preparedStatement, int index,
-            Object value) throws SQLException;
+                                         Object value) throws SQLException;
     }
 
     /**
-     * This class is a wrapper for type safe getting of values from a ResultSet
+     * <p>This class is a wrapper for type safe getting of values from a ResultSet
      * and setting of values to a PreparedStatement. The values retrieved by the
      * getValue(java.sql.ResultSet, int) implementation of this DataType are
      * assured to be of type String or to be null in case the ResultSet value
      * was null. PreparedStatement#setString() will be used to set the value,
-     * which should be of String type.
+     * which should be of String type.</p>
+     *
      * @author urtks
      * @version 1.0
      */
     private static class StringType extends DataType {
         /**
-         * This method retrieves the value at the given index from the given
-         * resultSet as instance of String type.
-         * @param resultSet
-         *            the result set from which to retrieve the value
-         * @param index
-         *            the index at which to retrieve the value
+         * <p>This method retrieves the value at the given index from the given
+         * resultSet as instance of String type.</p>
+         *
+         * @param resultSet the result set from which to retrieve the value
+         * @param index     the index at which to retrieve the value
+         *
          * @return the retrieved value as String or null if the value in the
          *         ResultSet was null.
-         * @throws IllegalArgumentException
-         *             if resultSet is null
-         * @throws SQLException
-         *             if error occurs while working with the given ResultSet or
-         *             the index does not exist in the result set
+         *
+         * @throws IllegalArgumentException if resultSet is null
+         * @throws SQLException             if error occurs while working with the given ResultSet or
+         *                                  the index does not exist in the result set
          */
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
@@ -181,21 +197,18 @@ class Helper {
         }
 
         /**
-         * This method sets the value at the given index from the given
-         * preparedStatement as instance of String type.
-         * @param preparedStatement
-         *            the prepared statement from which to set the value
-         * @param index
-         *            the index at which to set the value
-         * @param value
-         *            the value to set
-         * @throws IllegalArgumentException
-         *             if preparedStatement or value is null, or value is not an
-         *             instance of String type
-         * @throws SQLException
-         *             if error occurs while working with the given
-         *             preparedStatement or the index does not exist in the
-         *             prepared statement
+         * <p>This method sets the value at the given index from the given
+         * preparedStatement as instance of String type.</p>
+         *
+         * @param preparedStatement the prepared statement from which to set the value
+         * @param index             the index at which to set the value
+         * @param value             the value to set
+         *
+         * @throws IllegalArgumentException if preparedStatement or value is null, or value is not an
+         *                                  instance of String type
+         * @throws SQLException             if error occurs while working with the given
+         *                                  preparedStatement or the index does not exist in the
+         *                                  prepared statement
          */
         protected void setValue(PreparedStatement preparedStatement, int index, Object value)
             throws SQLException {
@@ -203,130 +216,124 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, String.class, "value " + index);
 
             if (value != null) {
-            	preparedStatement.setString(index, (String) value);
+                preparedStatement.setString(index, (String) value);
             } else {
-            	preparedStatement.setNull(index, Types.VARCHAR);
+                preparedStatement.setNull(index, Types.VARCHAR);
             }
         }
     }
 
     /**
-     * This class is a wrapper for type safe getting of values from a ResultSet
+     * <p>This class is a wrapper for type safe getting of values from a ResultSet
      * and setting of values to a PreparedStatement. The values retrieved by the
      * getValue(java.sql.ResultSet, int) implementation of this DataType are
      * assured to be of type Long or to be null in case the ResultSet value was
      * null. PreparedStatement#setLong() will be used to set the value, which
-     * should be of Long type.
+     * should be of Long type.</p>
+     *
      * @author urtks
      * @version 1.0
      */
     private static class LongType extends DataType {
         /**
-         * This method retrieves the value at the given index from the given
-         * resultSet as instance of Long type.
-         * @param resultSet
-         *            the result set from which to retrieve the value
-         * @param index
-         *            the index at which to retrieve the value
+         * <p>This method retrieves the value at the given index from the given
+         * resultSet as instance of Long type.</p>
+         *
+         * @param resultSet the result set from which to retrieve the value
+         * @param index     the index at which to retrieve the value
+         *
          * @return the retrieved value as Long or null if the value in the
          *         ResultSet was null.
-         * @throws IllegalArgumentException
-         *             if resultSet is null
-         * @throws SQLException
-         *             if error occurs while working with the given ResultSet or
-         *             the index does not exist in the result set
+         *
+         * @throws IllegalArgumentException if resultSet is null
+         * @throws SQLException             if error occurs while working with the given ResultSet or
+         *                                  the index does not exist in the result set
          */
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
             long ret = resultSet.getLong(index);
             if (resultSet.wasNull()) {
-            	return null;
+                return null;
             }
             return new Long(ret);
         }
 
         /**
-         * This method sets the value at the given index from the given
-         * preparedStatement as instance of Long type.
-         * @param preparedStatement
-         *            the prepared statement from which to set the value
-         * @param index
-         *            the index at which to set the value
-         * @param value
-         *            the value to set
-         * @throws IllegalArgumentException
-         *             if preparedStatement or value is null, or value is not an
-         *             instance of Long type
-         * @throws SQLException
-         *             if error occurs while working with the given
-         *             preparedStatement or the index does not exist in the
-         *             prepared statement
+         * <p>This method sets the value at the given index from the given
+         * preparedStatement as instance of Long type.</p>
+         *
+         * @param preparedStatement the prepared statement from which to set the value
+         * @param index             the index at which to set the value
+         * @param value             the value to set
+         *
+         * @throws IllegalArgumentException if preparedStatement or value is null, or value is not an
+         *                                  instance of Long type
+         * @throws SQLException             if error occurs while working with the given
+         *                                  preparedStatement or the index does not exist in the
+         *                                  prepared statement
          */
         protected void setValue(PreparedStatement preparedStatement, int index, Object value)
             throws SQLException {
             Helper.assertObjectNotNull(preparedStatement, "statement");
             Helper.assertObjectNullOrIsInstance(value, Long.class, "value " + index);
-            
+
             if (value != null) {
-            	preparedStatement.setLong(index, ((Long) value).longValue());
+                preparedStatement.setLong(index, ((Long) value).longValue());
             } else {
-            	preparedStatement.setNull(index, Types.INTEGER);
+                preparedStatement.setNull(index, Types.INTEGER);
             }
         }
     }
 
     /**
-     * This class is a wrapper for type safe getting of values from a ResultSet
+     * <p>This class is a wrapper for type safe getting of values from a ResultSet
      * and setting of values to a PreparedStatement. The values retrieved by the
      * getValue(java.sql.ResultSet, int) implementation of this DataType are
      * assured to be of type Double or to be null in case the ResultSet value was
      * null. PreparedStatement#setDouble() will be used to set the value, which
-     * should be of Double type.
+     * should be of Double type.</p>
+     *
      * @author urtks
      * @version 1.0
      */
     private static class DoubleType extends DataType {
         /**
-         * This method retrieves the value at the given index from the given
-         * resultSet as instance of Double type.
-         * @param resultSet
-         *            the result set from which to retrieve the value
-         * @param index
-         *            the index at which to retrieve the value
+         * <p>This method retrieves the value at the given index from the given
+         * resultSet as instance of Double type.</p>
+         *
+         * @param resultSet the result set from which to retrieve the value
+         * @param index     the index at which to retrieve the value
+         *
          * @return the retrieved value as Double or null if the value in the
          *         ResultSet was null.
-         * @throws IllegalArgumentException
-         *             if resultSet is null
-         * @throws SQLException
-         *             if error occurs while working with the given ResultSet or
-         *             the index does not exist in the result set
+         *
+         * @throws IllegalArgumentException if resultSet is null
+         * @throws SQLException             if error occurs while working with the given ResultSet or
+         *                                  the index does not exist in the result set
          */
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
 
             double ret = resultSet.getDouble(index);
             if (resultSet.wasNull()) {
-            	return null;
+                return null;
             }
             return new Double(ret);
         }
 
         /**
-         * This method sets the value at the given index from the given
-         * preparedStatement as instance of Double type.
-         * @param preparedStatement
-         *            the prepared statement from which to set the value
-         * @param index
-         *            the index at which to set the value
-         * @param value
-         *            the value to set
-         * @throws IllegalArgumentException
-         *             if preparedStatement or value is null, or value is not an
-         *             instance of Double type
-         * @throws SQLException
-         *             if error occurs while working with the given
-         *             preparedStatement or the index does not exist in the
-         *             prepared statement
+         * <p>This method sets the value at the given index from the given
+         * preparedStatement as instance of Double type.</p>
+         *
+         * @param preparedStatement the prepared statement from which to set the value
+         * @param index             the index at which to set the value
+         * @param value             the value to set
+         *
+         * @throws IllegalArgumentException if preparedStatement or value is null, or value is not an
+         *                                  instance of Double type
+         * @throws SQLException             if error occurs while working with the given
+         *                                  preparedStatement or the index does not exist in the
+         *                                  prepared statement
          */
         protected void setValue(PreparedStatement preparedStatement, int index, Object value)
             throws SQLException {
@@ -334,64 +341,61 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, Double.class, "value " + index);
 
             if (value != null) {
-            	preparedStatement.setDouble(index, ((Double) value).doubleValue());
+                preparedStatement.setDouble(index, ((Double) value).doubleValue());
             } else {
-            	preparedStatement.setNull(index, Types.DOUBLE);
+                preparedStatement.setNull(index, Types.DOUBLE);
             }
         }
     }
 
     /**
-     * This class is a wrapper for type safe getting of values from a ResultSet
+     * <p>This class is a wrapper for type safe getting of values from a ResultSet
      * and setting of values to a PreparedStatement. The values retrieved by the
      * getValue(java.sql.ResultSet, int) implementation of this DataType are
      * assured to be of type Boolean or to be null in case the ResultSet value
      * was null. PreparedStatement#setBoolean() will be used to set the value,
-     * which should be of Boolean type.
+     * which should be of Boolean type.</p>
+     *
      * @author urtks
      * @version 1.0
      */
     private static class BooleanType extends DataType {
         /**
-         * This method retrieves the value at the given index from the given
-         * resultSet as instance of Boolean type.
-         * @param resultSet
-         *            the result set from which to retrieve the value
-         * @param index
-         *            the index at which to retrieve the value
+         * <p>This method retrieves the value at the given index from the given
+         * resultSet as instance of Boolean type.</p>
+         *
+         * @param resultSet the result set from which to retrieve the value
+         * @param index     the index at which to retrieve the value
+         *
          * @return the retrieved value as Boolean or null if the value in the
          *         ResultSet was null.
-         * @throws IllegalArgumentException
-         *             if resultSet is null
-         * @throws SQLException
-         *             if error occurs while working with the given ResultSet or
-         *             the index does not exist in the result set
+         *
+         * @throws IllegalArgumentException if resultSet is null
+         * @throws SQLException             if error occurs while working with the given ResultSet or
+         *                                  the index does not exist in the result set
          */
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
             boolean ret = resultSet.getBoolean(index);
             if (resultSet.wasNull()) {
-            	return null;
+                return null;
             }
             return new Boolean(ret);
         }
 
         /**
-         * This method sets the value at the given index from the given
-         * preparedStatement as instance of Boolean type.
-         * @param preparedStatement
-         *            the prepared statement from which to set the value
-         * @param index
-         *            the index at which to set the value
-         * @param value
-         *            the value to set
-         * @throws IllegalArgumentException
-         *             if preparedStatement or value is null, or value is not an
-         *             instance of Boolean type
-         * @throws SQLException
-         *             if error occurs while working with the given
-         *             preparedStatement or the index does not exist in the
-         *             prepared statement
+         * <p>This method sets the value at the given index from the given
+         * preparedStatement as instance of Boolean type.</p>
+         *
+         * @param preparedStatement the prepared statement from which to set the value
+         * @param index             the index at which to set the value
+         * @param value             the value to set
+         *
+         * @throws IllegalArgumentException if preparedStatement or value is null, or value is not an
+         *                                  instance of Boolean type
+         * @throws SQLException             if error occurs while working with the given
+         *                                  preparedStatement or the index does not exist in the
+         *                                  prepared statement
          */
         protected void setValue(PreparedStatement preparedStatement, int index, Object value)
             throws SQLException {
@@ -399,38 +403,38 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, Boolean.class, "value " + index);
 
             if (value != null) {
-            	preparedStatement.setBoolean(index, ((Boolean) value).booleanValue());
+                preparedStatement.setBoolean(index, ((Boolean) value).booleanValue());
             } else {
-            	preparedStatement.setNull(index, Types.BOOLEAN);
+                preparedStatement.setNull(index, Types.BOOLEAN);
             }
         }
     }
 
     /**
-     * This class is a wrapper for type safe getting of values from a ResultSet
+     * <p>This class is a wrapper for type safe getting of values from a ResultSet
      * and setting of values to a PreparedStatement. The values retrieved by the
      * getValue(java.sql.ResultSet, int) implementation of this DataType are
      * assured to be of type java.util.Date or to be null in case the ResultSet
      * value was null. PreparedStatement#setTimestamp() will be used to set the
-     * value, which should be of java.util.Date type.
+     * value, which should be of java.util.Date type.</p>
+     *
      * @author urtks
      * @version 1.0
      */
     private static class DateType extends DataType {
         /**
-         * This method retrieves the value at the given index from the given
-         * resultSet as instance of java.util.Date type.
-         * @param resultSet
-         *            the result set from which to retrieve the value
-         * @param index
-         *            the index at which to retrieve the value
+         * <p>This method retrieves the value at the given index from the given
+         * resultSet as instance of java.util.Date type.</p>
+         *
+         * @param resultSet the result set from which to retrieve the value
+         * @param index     the index at which to retrieve the value
+         *
          * @return the retrieved value as java.util.Date or null if the value in
          *         the ResultSet was null.
-         * @throws IllegalArgumentException
-         *             if resultSet is null
-         * @throws SQLException
-         *             if error occurs while working with the given ResultSet or
-         *             the index does not exist in the result set
+         *
+         * @throws IllegalArgumentException if resultSet is null
+         * @throws SQLException             if error occurs while working with the given ResultSet or
+         *                                  the index does not exist in the result set
          */
         protected Object getValue(ResultSet resultSet, int index) throws SQLException {
             Helper.assertObjectNotNull(resultSet, "resultSet");
@@ -440,23 +444,20 @@ class Helper {
         }
 
         /**
-         * This method sets the value at the given index from the given
-         * preparedStatement as instance of java.util.Date type. <p/> Note:
+         * <p>This method sets the value at the given index from the given
+         * preparedStatement as instance of java.util.Date type. Note:
          * UnsupportedOperationException is always thrown currently to ensure
-         * that this method won't be called.
-         * @param preparedStatement
-         *            the prepared statement from which to set the value
-         * @param index
-         *            the index at which to set the value
-         * @param value
-         *            the value to set
-         * @throws IllegalArgumentException
-         *             if preparedStatement or value is null, or value is not an
-         *             instance of java.util.Date type
-         * @throws SQLException
-         *             if error occurs while working with the given
-         *             preparedStatement or the index does not exist in the
-         *             prepared statement
+         * that this method won't be called.</p>
+         *
+         * @param preparedStatement the prepared statement from which to set the value
+         * @param index             the index at which to set the value
+         * @param value             the value to set
+         *
+         * @throws IllegalArgumentException if preparedStatement or value is null, or value is not an
+         *                                  instance of java.util.Date type
+         * @throws SQLException             if error occurs while working with the given
+         *                                  preparedStatement or the index does not exist in the
+         *                                  prepared statement
          */
         protected void setValue(PreparedStatement preparedStatement, int index, Object value)
             throws SQLException {
@@ -464,15 +465,15 @@ class Helper {
             Helper.assertObjectNullOrIsInstance(value, Date.class, "value" + index);
 
             if (value != null) {
-            	preparedStatement.setTimestamp(index, new Timestamp(((Date) value).getTime()));
+                preparedStatement.setTimestamp(index, new Timestamp(((Date) value).getTime()));
             } else {
-            	preparedStatement.setNull(index, Types.TIMESTAMP);
+                preparedStatement.setNull(index, Types.TIMESTAMP);
             }
         }
     }
 
     /**
-     * Private constructor to prevent this class be instantiated.
+     * <p>Private constructor to prevent this class be instantiated.</p>
      */
     private Helper() {
     }
@@ -489,39 +490,31 @@ class Helper {
      * <p>
      * Note: The given connection is not closed or committed in this method.
      * </p>
-     * @param connection
-     *            the connection to perform the query on
-     * @param queryString
-     *            the query to be performed
-     * @param argumentTypes
-     *            the types of each object in queryArgs, use one of the values
-     *            STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
-     * @param queryArgs
-     *            the arguments to be used in the query
-     * @param columnTypes
-     *            the types as which to return the result set columns
+     *
+     * @param connection    the connection to perform the query on
+     * @param queryString   the query to be performed
+     * @param argumentTypes the types of each object in queryArgs, use one of the values
+     *                      STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
+     * @param queryArgs     the arguments to be used in the query
+     * @param columnTypes   the types as which to return the result set columns
+     *
      * @return the result of the query as Object[][] containing an Object[] for
      *         each ResultSet row The elements of the array are of the type
      *         represented by the DataType specified at the corresponding index
      *         in the given columnTypes array (or null in case the resultSet
      *         value was null)
-     * @throws IllegalArgumentException
-     *             if connection is null
-     * @throws IllegalArgumentException
-     *             if queryString is null or empty (trimmed)
-     * @throws IllegalArgumentException
-     *             if argumentTypes is null or contains null
-     * @throws IllegalArgumentException
-     *             if queryArgs is null or the length of it is different from
-     *             that of argumentTypes
-     * @throws IllegalArgumentException
-     *             if columnTypes is null or contains null or the the number of
-     *             columns returned is different from that of columnTypes
-     * @throws PersistenceException
-     *             if any error happens
+     *
+     * @throws IllegalArgumentException if connection is null
+     * @throws IllegalArgumentException if queryString is null or empty (trimmed)
+     * @throws IllegalArgumentException if argumentTypes is null or contains null
+     * @throws IllegalArgumentException if queryArgs is null or the length of it is different from
+     *                                  that of argumentTypes
+     * @throws IllegalArgumentException if columnTypes is null or contains null or the the number of
+     *                                  columns returned is different from that of columnTypes
+     * @throws PersistenceException     if any error happens
      */
     static Object[][] doQuery(Connection connection, String queryString, DataType[] argumentTypes,
-        Object[] queryArgs, DataType[] columnTypes) throws PersistenceException {
+                              Object[] queryArgs, DataType[] columnTypes) throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         Helper.assertStringNotNullNorEmpty(queryString, "queryString");
         Helper.assertArrayNotNullNorHasNull(argumentTypes, "argumentTypes");
@@ -551,7 +544,7 @@ class Helper {
             int columnCount = resultSet.getMetaData().getColumnCount();
             if (columnTypes.length != columnCount) {
                 throw new IllegalArgumentException("The column types length [" + columnTypes.length
-                    + "] does not match the result set column count[" + columnCount + "].");
+                        + "] does not match the result set column count[" + columnCount + "].");
             }
 
             while (resultSet.next()) {
@@ -561,10 +554,10 @@ class Helper {
                 }
                 ret.add(rowData);
             }
-            return (Object[][]) ret.toArray(new Object[][] {});
+            return (Object[][]) ret.toArray(new Object[][]{});
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs while executing query [" + queryString
-                + "] using the query arguments " + Arrays.asList(queryArgs).toString() + ".", e);
+                    + "] using the query arguments " + Arrays.asList(queryArgs).toString() + ".", e);
         } finally {
             try {
                 closeResultSet(resultSet);
@@ -586,41 +579,32 @@ class Helper {
      * <p>
      * Note: The given connection is not closed or committed in this method.
      * </p>
-     * @param connectionFactory
-     *            the connection factory
-     * @param connectionName
-     *            the connection name
-     * @param queryString
-     *            the query to be performed
-     * @param argumentTypes
-     *            the types of each object in queryArgs, use one of the values
-     *            STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
-     * @param queryArgs
-     *            the arguments to be used in the query
-     * @param columnTypes
-     *            the types as which to return the result set columns
+     *
+     * @param connectionFactory the connection factory
+     * @param connectionName    the connection name
+     * @param queryString       the query to be performed
+     * @param argumentTypes     the types of each object in queryArgs, use one of the values
+     *                          STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
+     * @param queryArgs         the arguments to be used in the query
+     * @param columnTypes       the types as which to return the result set columns
+     *
      * @return the result of the query as Object[][] containing an Object[] for
      *         each ResultSet row The elements of the array are of the type
      *         represented by the DataType specified at the corresponding index
      *         in the given columnTypes array (or null in case the resultSet
      *         value was null)
-     * @throws IllegalArgumentException
-     *             if connectionFactory is null
-     * @throws IllegalArgumentException
-     *             if queryString is null or empty (trimmed)
-     * @throws IllegalArgumentException
-     *             if argumentTypes is null or contains null
-     * @throws IllegalArgumentException
-     *             if queryArgs is null or the length of it is different from
-     *             that of argumentTypes
-     * @throws IllegalArgumentException
-     *             if columnTypes is null or contains null or the the number of
-     *             columns returned is different from that of columnTypes
-     * @throws PersistenceException
-     *             if any error happens
+     *
+     * @throws IllegalArgumentException if connectionFactory is null
+     * @throws IllegalArgumentException if queryString is null or empty (trimmed)
+     * @throws IllegalArgumentException if argumentTypes is null or contains null
+     * @throws IllegalArgumentException if queryArgs is null or the length of it is different from
+     *                                  that of argumentTypes
+     * @throws IllegalArgumentException if columnTypes is null or contains null or the the number of
+     *                                  columns returned is different from that of columnTypes
+     * @throws PersistenceException     if any error happens
      */
     static Object[][] doQuery(DBConnectionFactory connectionFactory, String connectionName,
-        String queryString, DataType[] argumentTypes, Object[] queryArgs, DataType[] columnTypes)
+                              String queryString, DataType[] argumentTypes, Object[] queryArgs, DataType[] columnTypes)
         throws PersistenceException {
 
         Connection conn = null;
@@ -643,30 +627,24 @@ class Helper {
      * <p>
      * Note: The given connection is not closed or committed in this method.
      * </p>
-     * @param connection
-     *            the connection to perform the query on
-     * @param queryString
-     *            the query to be performed
-     * @param argumentTypes
-     *            the types of each object in queryArgs, use one of the values
-     *            STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
-     * @param queryArgs
-     *            the arguments to be used in the query
+     *
+     * @param connection    the connection to perform the query on
+     * @param queryString   the query to be performed
+     * @param argumentTypes the types of each object in queryArgs, use one of the values
+     *                      STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
+     * @param queryArgs     the arguments to be used in the query
+     *
      * @return the number of database rows affected by the query
-     * @throws IllegalArgumentException
-     *             if connection is null
-     * @throws IllegalArgumentException
-     *             if queryString is null or empty (trimmed)
-     * @throws IllegalArgumentException
-     *             if argumentTypes is null or contains null
-     * @throws IllegalArgumentException
-     *             if queryArgs is null or length of it is different from that
-     *             of argumentTypes
-     * @throws PersistenceException
-     *             if the query fails
+     *
+     * @throws IllegalArgumentException if connection is null
+     * @throws IllegalArgumentException if queryString is null or empty (trimmed)
+     * @throws IllegalArgumentException if argumentTypes is null or contains null
+     * @throws IllegalArgumentException if queryArgs is null or length of it is different from that
+     *                                  of argumentTypes
+     * @throws PersistenceException     if the query fails
      */
     static int doDMLQuery(Connection connection, String queryString, DataType[] argumentTypes,
-        Object[] queryArgs) throws PersistenceException {
+                          Object[] queryArgs) throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
         Helper.assertStringNotNullNorEmpty(queryString, "queryString");
         Helper.assertArrayNotNullNorHasNull(argumentTypes, "argumentTypes");
@@ -689,7 +667,7 @@ class Helper {
             return preparedStatement.getUpdateCount();
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs while executing query [" + queryString
-                + "] using the query arguments " + Arrays.asList(queryArgs).toString() + ".", e);
+                    + "] using the query arguments " + Arrays.asList(queryArgs).toString() + ".", e);
         } finally {
             closeStatement(preparedStatement);
         }
@@ -701,32 +679,25 @@ class Helper {
      * the given query arguments and their types. The update count returned from
      * the query is then returned.
      * </p>
-     * @param connectionFactory
-     *            the connection factory
-     * @param connectionName
-     *            the connection name
-     * @param queryString
-     *            the query to be performed
-     * @param argumentTypes
-     *            the types of each object in queryArgs, use one of the values
-     *            STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
-     * @param queryArgs
-     *            the arguments to be used in the query
+     *
+     * @param connectionFactory the connection factory
+     * @param connectionName    the connection name
+     * @param queryString       the query to be performed
+     * @param argumentTypes     the types of each object in queryArgs, use one of the values
+     *                          STRING_TYPE, LONG_TYPE or BOOLEAN_TYPE here
+     * @param queryArgs         the arguments to be used in the query
+     *
      * @return the number of database rows affected by the query
-     * @throws IllegalArgumentException
-     *             if connectionFactory is null
-     * @throws IllegalArgumentException
-     *             if queryString is null or empty (trimmed)
-     * @throws IllegalArgumentException
-     *             if argumentTypes is null or contains null
-     * @throws IllegalArgumentException
-     *             if queryArgs is null or length of it is different from that
-     *             of argumentTypes
-     * @throws PersistenceException
-     *             if the query fails
+     *
+     * @throws IllegalArgumentException if connectionFactory is null
+     * @throws IllegalArgumentException if queryString is null or empty (trimmed)
+     * @throws IllegalArgumentException if argumentTypes is null or contains null
+     * @throws IllegalArgumentException if queryArgs is null or length of it is different from that
+     *                                  of argumentTypes
+     * @throws PersistenceException     if the query fails
      */
     static int doDMLQuery(DBConnectionFactory connectionFactory, String connectionName,
-        String queryString, DataType[] argumentTypes, Object[] queryArgs)
+                          String queryString, DataType[] argumentTypes, Object[] queryArgs)
         throws PersistenceException {
 
         Connection conn = null;
@@ -741,16 +712,16 @@ class Helper {
     }
 
     /**
-     * Close the connection if conn is not null.
-     * @param conn
-     *            the connection to close
-     * @throws PersistenceException
-     *             if error occurs when closing the connection
+     * <p>Close the connection if conn is not null.</p>
+     *
+     * @param conn the connection to close
+     *
+     * @throws PersistenceException if error occurs when closing the connection
      */
     static void closeConnection(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "close the connection.");
+                LOGGER.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when closing the connection.", e);
@@ -759,11 +730,11 @@ class Helper {
     }
 
     /**
-     * Close the prepared statement if ps is not null.
-     * @param ps
-     *            the prepared statement to close
-     * @throws PersistenceException
-     *             error occurs when closing the prepared statement
+     * <p>Close the prepared statement if ps is not null.</p>
+     *
+     * @param ps the prepared statement to close
+     *
+     * @throws PersistenceException error occurs when closing the prepared statement
      */
     static void closeStatement(PreparedStatement ps) throws PersistenceException {
         if (ps != null) {
@@ -771,17 +742,17 @@ class Helper {
                 ps.close();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when closing the prepared statement.",
-                    e);
+                        e);
             }
         }
     }
 
     /**
-     * Close the result set if rs is not null.
-     * @param rs
-     *            the result set to close
-     * @throws PersistenceException
-     *             error occurs when closing the result set.
+     * <p>Close the result set if rs is not null.</p>
+     *
+     * @param rs the result set to close
+     *
+     * @throws PersistenceException error occurs when closing the result set.
      */
     static void closeResultSet(ResultSet rs) throws PersistenceException {
         if (rs != null) {
@@ -794,16 +765,16 @@ class Helper {
     }
 
     /**
-     * Do commit for transaction if conn is not null.
-     * @param conn
-     *            the connection
-     * @throws PersistenceException
-     *             error occurs when doing commit
+     * <p>Do commit for transaction if conn is not null.</p>
+     *
+     * @param conn the connection
+     *
+     * @throws PersistenceException error occurs when doing commit
      */
     static void commitTransaction(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "commit the transaction.");
+                LOGGER.log(Level.INFO, "commit the transaction.");
                 conn.commit();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when doing commit.", e);
@@ -812,16 +783,16 @@ class Helper {
     }
 
     /**
-     * Do rollback for transaction if conn is not null.
-     * @param conn
-     *            the connection
-     * @throws PersistenceException
-     *             error occurs when doing rollback
+     * <p>Do rollback for transaction if conn is not null.</p>
+     *
+     * @param conn the connection
+     *
+     * @throws PersistenceException error occurs when doing rollback
      */
     static void rollBackTransaction(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
-            	logger.log(Level.INFO, "rollback the transaction.");
+                LOGGER.log(Level.INFO, "rollback the transaction.");
                 conn.rollback();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when doing rollback.", e);
@@ -830,34 +801,33 @@ class Helper {
     }
 
     /**
-     * Create a connection from the connectionFactory and connectionName, with
+     * <p>Create a connection from the connectionFactory and connectionName, with
      * options to enable or disable the auto-commit mode and to enable or
-     * disable the read-only mode.
-     * @param connectionFactory
-     *            the connection factory
-     * @param connectionName
-     *            the connection name
-     * @param autoCommit
-     *            true to enable auto-commit mode; false to disable it
-     * @param readOnly
-     *            true to enable read-only mode; false to disable it
+     * disable the read-only mode.</p>
+     *
+     * @param connectionFactory the connection factory
+     * @param connectionName    the connection name
+     * @param autoCommit        true to enable auto-commit mode; false to disable it
+     * @param readOnly          true to enable read-only mode; false to disable it
+     *
      * @return the connection created
-     * @throws PersistenceException
-     *             if error happens when creating the connection
+     *
+     * @throws PersistenceException if error happens when creating the connection
      */
     static Connection createConnection(DBConnectionFactory connectionFactory,
-        String connectionName, boolean autoCommit, boolean readOnly) throws PersistenceException {
+                                       String connectionName, boolean autoCommit, boolean readOnly)
+        throws PersistenceException {
         Helper.assertObjectNotNull(connectionFactory, "connectionFactory");
 
         try {
             // create the connection.
             Connection conn = connectionName == null ? connectionFactory.createConnection()
-                : connectionFactory.createConnection(connectionName);
+                    : connectionFactory.createConnection(connectionName);
 
-            if ( connectionName == null) {
-            	logger.log(Level.INFO, "create db connection using default connection name");
+            if (connectionName == null) {
+                LOGGER.log(Level.INFO, "create db connection using default connection name");
             } else {
-            	logger.log(Level.INFO, "create db connection using connection name:" + connectionName);
+                LOGGER.log(Level.INFO, "create db connection using connection name:" + connectionName);
             }
             conn.setAutoCommit(autoCommit);
             conn.setReadOnly(readOnly);
@@ -871,23 +841,24 @@ class Helper {
             return conn;
         } catch (DBConnectionException e) {
             throw new PersistenceException("Error occurs when getting the connection using "
-                + (connectionName == null ? "default name" : ("name [" + connectionName + "].")), e);
+                    + (connectionName == null ? "default name" : ("name [" + connectionName + "].")), e);
         } catch (SQLException e) {
             throw new PersistenceException(
-                "Error occurs when enable/disable the connection's auto-commit mode, "
-                    + "or when enable/disable the connection's read-only mode.", e);
+                    "Error occurs when enable/disable the connection's auto-commit mode, "
+                            + "or when enable/disable the connection's read-only mode.", e);
         }
     }
 
     /**
-     * Create a String object from the ids array in the form of "(id0, id1, id2,
-     * ...)", used in a sql statement.
-     * @param ids
-     *            the ids array
+     * <p>Create a String object from the ids array in the form of "(id0, id1, id2,
+     * ...)", used in a sql statement.</p>
+     *
+     * @param ids the ids array
+     *
      * @return A String that represents the ids array in the form of "(id0, id1,
      *         id2, ...)"
-     * @throws IllegalArgumentException
-     *             if ids is null or empty
+     *
+     * @throws IllegalArgumentException if ids is null or empty
      */
     static String makeIdListString(long[] ids) {
         Helper.assertObjectNotNull(ids, "ids");
@@ -912,19 +883,18 @@ class Helper {
     }
 
     /**
-     * Load data items from the data row and fill the fields of an
-     * AuditedDeliverableStructure instance.
-     * @param entity
-     *            the AuditedDeliverableStructure instance whose fields will be
-     *            filled
-     * @param row
-     *            the data row
-     * @param startIndex
-     *            the start index to read from
+     * <p>Load data items from the data row and fill the fields of an
+     * AuditedDeliverableStructure instance.</p>
+     *
+     * @param entity     the AuditedDeliverableStructure instance whose fields will be
+     *                   filled
+     * @param row        the data row
+     * @param startIndex the start index to read from
+     *
      * @return the start index of the left data items that haven't been read
      */
     static int loadEntityFieldsSequentially(AuditedDeliverableStructure entity, Object[] row,
-        int startIndex) {
+                                            int startIndex) {
 
         entity.setId(((Long) row[startIndex++]).longValue());
         entity.setCreationUser((String) row[startIndex++]);
@@ -935,19 +905,18 @@ class Helper {
     }
 
     /**
-     * Load data items from the data row and fill the fields of an
-     * NamedDeliverableStructure instance.
-     * @param namedEntity
-     *            the NamedDeliverableStructure instance whose fields will be
-     *            filled
-     * @param row
-     *            the data row
-     * @param startIndex
-     *            the start index to read from
+     * <p>Load data items from the data row and fill the fields of an
+     * NamedDeliverableStructure instance.</p>
+     *
+     * @param namedEntity the NamedDeliverableStructure instance whose fields will be
+     *                    filled
+     * @param row         the data row
+     * @param startIndex  the start index to read from
+     *
      * @return the start index of the left data items that haven't been read
      */
     static int loadNamedEntityFieldsSequentially(NamedDeliverableStructure namedEntity,
-        Object[] row, int startIndex) {
+                                                 Object[] row, int startIndex) {
 
         startIndex = loadEntityFieldsSequentially(namedEntity, row, startIndex);
 
@@ -957,28 +926,26 @@ class Helper {
     }
 
     /**
-     * Check if the given object is null.
-     * @param obj
-     *            the given object to check
-     * @param name
-     *            the name to identify the object.
-     * @throws IllegalArgumentException
-     *             if the given object is null
+     * <p>Check if the given object is null.</p>
+     *
+     * @param obj  the given object to check
+     * @param name the name to identify the object.
+     *
+     * @throws IllegalArgumentException if the given object is null
      */
-    static void assertObjectNotNull(Object obj, String name) {
+    public static void assertObjectNotNull(Object obj, String name) {
         if (obj == null) {
             throw new IllegalArgumentException(name + " should not be null.");
         }
     }
 
     /**
-     * Check if the given array is null or contains null.
-     * @param array
-     *            the given array to check
-     * @param name
-     *            the name to identify the array.
-     * @throws IllegalArgumentException
-     *             if the given array is null or contains null.
+     * <p>Check if the given array is null or contains null.</p>
+     *
+     * @param array the given array to check
+     * @param name  the name to identify the array.
+     *
+     * @throws IllegalArgumentException if the given array is null or contains null.
      */
     static void assertArrayNotNullNorHasNull(Object[] array, String name) {
         assertObjectNotNull(array, name);
@@ -991,33 +958,29 @@ class Helper {
     }
 
     /**
-     * Check if the lengths of the two arrays are equal.
-     * @param array
-     *            the given array to check
-     * @param array1
-     *            the given array to check
-     * @param name
-     *            the name to identify array.
-     * @param name1
-     *            the name to identify array1.
-     * @throws IllegalArgumentException
-     *             if length of array is different from that of array1.
+     * <p>Check if the lengths of the two arrays are equal.</p>
+     *
+     * @param array  the given array to check
+     * @param array1 the given array to check
+     * @param name   the name to identify array.
+     * @param name1  the name to identify array1.
+     *
+     * @throws IllegalArgumentException if length of array is different from that of array1.
      */
     static void assertArrayLengthEqual(Object[] array, String name, Object[] array1, String name1) {
         if (array.length != array1.length) {
             throw new IllegalArgumentException("The length of " + name
-                + " should be the same as that of " + name1);
+                    + " should be the same as that of " + name1);
         }
     }
 
     /**
-     * Check if the given string is empty (trimmed).
-     * @param str
-     *            the given string to check
-     * @param name
-     *            the name to identify the string.
-     * @throws IllegalArgumentException
-     *             if the given string is not null and empty (trimmed).
+     * <p>Check if the given string is empty (trimmed).</p>
+     *
+     * @param str  the given string to check
+     * @param name the name to identify the string.
+     *
+     * @throws IllegalArgumentException if the given string is not null and empty (trimmed).
      */
     static void assertStringNotEmpty(String str, String name) {
         if (str != null && str.trim().length() == 0) {
@@ -1026,13 +989,12 @@ class Helper {
     }
 
     /**
-     * Check if the given string is null or empty (trimmed).
-     * @param str
-     *            the given string to check
-     * @param name
-     *            the name to identify the string.
-     * @throws IllegalArgumentException
-     *             if the given string is null or empty (trimmed).
+     * <p>Check if the given string is null or empty (trimmed).</p>
+     *
+     * @param str  the given string to check
+     * @param name the name to identify the string.
+     *
+     * @throws IllegalArgumentException if the given string is null or empty (trimmed).
      */
     static void assertStringNotNullNorEmpty(String str, String name) {
         assertObjectNotNull(str, name);
@@ -1040,13 +1002,12 @@ class Helper {
     }
 
     /**
-     * Check if the given long value is UNSET_ID.
-     * @param value
-     *            the given long value to check.
-     * @param name
-     *            the name to identify the long value.
-     * @throws IllegalArgumentException
-     *             if the given long value is UNSET_ID.
+     * <p>Check if the given long value is UNSET_ID.</p>
+     *
+     * @param value the given long value to check.
+     * @param name  the name to identify the long value.
+     *
+     * @throws IllegalArgumentException if the given long value is UNSET_ID.
      */
     static void assertIdNotUnset(long value, String name) {
         if (value == AuditedDeliverableStructure.UNSET_ID) {
@@ -1055,14 +1016,13 @@ class Helper {
     }
 
     /**
-     * Check if the given long array is null or contains non positive values.
-     * @param values
-     *            the long array to check
-     * @param name
-     *            the name to identify the long array.
-     * @throws IllegalArgumentException
-     *             if the given long array is null or contains negative or zero
-     *             values.
+     * <p>Check if the given long array is null or contains non positive values.</p>
+     *
+     * @param values the long array to check
+     * @param name   the name to identify the long array.
+     *
+     * @throws IllegalArgumentException if the given long array is null or contains negative or zero
+     *                                  values.
      */
     static void assertLongArrayNotNulLAndOnlyHasPositive(long[] values, String name) {
         Helper.assertObjectNotNull(values, name);
@@ -1075,34 +1035,31 @@ class Helper {
     }
 
     /**
-     * Check if the given object is an instance of the expected class.
-     * @param obj
-     *            the given object to check.
-     * @param expectedType
-     *            the expected class.
-     * @param name
-     *            the name to identify the object.
-     * @throws IllegalArgumentException
-     *             if the given object is null or is not an instance of the
-     *             expected class.
+     * <p>Check if the given object is an instance of the expected class.</p>
+     *
+     * @param obj          the given object to check.
+     * @param expectedType the expected class.
+     * @param name         the name to identify the object.
+     *
+     * @throws IllegalArgumentException if the given object is null or is not an instance of the
+     *                                  expected class.
      */
     static void assertObjectNullOrIsInstance(Object obj, Class expectedType, String name) {
         if (obj != null && !expectedType.isInstance(obj)) {
             throw new IllegalArgumentException(name + " of type [" + obj.getClass().getName()
-                + "] should be an instance of " + expectedType.getName());
+                    + "] should be an instance of " + expectedType.getName());
         }
     }
 
     /**
-     * Check if the given AuditedDeliverableStructure instance is valid to
-     * persist.
-     * @param entity
-     *            the given AuditedDeliverableStructure instance to check.
-     * @param name
-     *            the name to identify the instance.
-     * @throws IllegalArgumentException
-     *             if the given instance is null or isValidToPersist returns
-     *             false.
+     * <p>Check if the given AuditedDeliverableStructure instance is valid to
+     * persist.</p>
+     *
+     * @param entity the given AuditedDeliverableStructure instance to check.
+     * @param name   the name to identify the instance.
+     *
+     * @throws IllegalArgumentException if the given instance is null or isValidToPersist returns
+     *                                  false.
      */
     static void assertEntityNotNullAndValidToPersist(AuditedDeliverableStructure entity, String name) {
         Helper.assertObjectNotNull(entity, name);
@@ -1111,21 +1068,22 @@ class Helper {
             throw new IllegalArgumentException("The entity [" + name + "] is not valid to persist.");
         }
     }
-    
+
     /**
-     * Return the id string seperated by comma for the given long id array.
-     * 
+     * <p>Return the id string separated by comma for the given long id array.</p>
+     *
      * @param ids the id array
-     * @return string seperated by comma
+     *
+     * @return string separated by comma
      */
-	static String getIdString(long[] ids) {
-		String idString = "";
-        for(int i = 0; i < ids.length; i++) {
-        	idString += ids[i];
-        	if ( i < ids.length -1) {
-        		idString += ",";
-        	}
+    static String getIdString(long[] ids) {
+        String idString = "";
+        for (int i = 0; i < ids.length; i++) {
+            idString += ids[i];
+            if (i < ids.length - 1) {
+                idString += ",";
+            }
         }
-		return idString;
-	}
+        return idString;
+    }
 }

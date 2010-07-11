@@ -3,13 +3,12 @@
  */
 package com.topcoder.management.deliverable.persistence.failuretests;
 
+import junit.framework.TestCase;
+
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-import com.topcoder.management.deliverable.persistence.DeliverablePersistenceException;
 import com.topcoder.management.deliverable.persistence.sql.SqlDeliverablePersistence;
 import com.topcoder.util.config.ConfigManager;
-
-import junit.framework.TestCase;
 
 /**
  * Failure test cases for class <code>SqlDeliverablePersistenceTest</code>.
@@ -305,15 +304,5 @@ public class FailureTestForSqlDeliverablePersistence extends TestCase {
         } catch (IllegalArgumentException e) {
             // ok.
         }
-    }
-
-    /**
-     * Test for Deliverable[] loadDeliverables(long[], long[]).
-     *
-     * @throws Exception
-     *             to junit.
-     */
-    public void testLoadDeliverableslongArraylongArray_7() throws Exception {
-        persistence.loadDeliverables(new long[0], new long[0], new long[0]);
     }
 }
