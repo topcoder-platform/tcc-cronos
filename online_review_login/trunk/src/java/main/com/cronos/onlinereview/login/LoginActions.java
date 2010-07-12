@@ -15,7 +15,7 @@ import com.topcoder.security.authenticationfactory.Principal;
 import com.topcoder.security.authenticationfactory.Response;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
+import com.topcoder.util.log.LogFactory;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -25,6 +25,8 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * <code>LoginActions</code> class defines login and logout actions for Online Review Login component.
@@ -147,7 +149,7 @@ public class LoginActions extends DispatchAction {
         String loggerName = Util.getOptionalPropertyString(DEFAULT_NAMESPACE, "logger_name");
 
         if ((loggerName != null) && (loggerName.trim().length() != 0)) {
-            logger = LogManager.getLog(loggerName);
+            logger = LogFactory.getLog(loggerName);
         } else {
             logger = null;
         }
@@ -212,12 +214,17 @@ public class LoginActions extends DispatchAction {
             authResponseParser.setLoginState(principal, authResponse, request, response);
 
             if (authResponse.isSuccessful()) {
-
-                // Extract the value of "Remember me" flag from the form
-                if ("on".equals(validatorForm.get("rememberMe"))) {
-
-                    // Set auth cookie with cookie manager
-                    this.authCookieManager.setAuthCookie(principal, request, response);
+                // Save the cookie with user details if Remember Me feature is requested. But if impersonated login
+                // is used then do not persist such cookie and erase existing one
+                boolean isImpersonationUsed = (userName.indexOf("/") >= 0);
+                if (isImpersonationUsed) {
+                    this.authCookieManager.removeAuthCookie(request, response);
+                } else {
+                    // Extract the value of "Remember me" flag from the form
+                    if ("on".equals(validatorForm.get("rememberMe"))) {
+                        // Set auth cookie with cookie manager
+                        this.authCookieManager.setAuthCookie(principal, request, response);
+                    }
                 }
 
                 request.getSession().removeAttribute("redirectBackUrl");
@@ -370,10 +377,12 @@ public class LoginActions extends DispatchAction {
      *            the exception instance
      */
     private void recordException(Exception e) {
-
         // record to logger
+        StringWriter sw = new StringWriter();
+        PrintWriter out = new PrintWriter(sw);
+        e.printStackTrace(out);
         if (logger != null) {
-            logger.log(Level.ERROR, e.getStackTrace());
+            logger.log(Level.ERROR, sw.getBuffer());
         }
     }
 }
