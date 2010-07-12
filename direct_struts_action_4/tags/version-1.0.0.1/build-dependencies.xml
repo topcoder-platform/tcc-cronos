@@ -1,0 +1,118 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+	<property name="admin_service_facade.jar" value="${tcs_libdir}/admin_service_facade/1.0.0/admin_service_facade.jar" />
+	<property name="catalog_entities.jar" value="${tcs_libdir}/catalog_entities/1.2.0/catalog_entities.jar" />
+	<property name="catalog_services.jar" value="${tcs_libdir}/catalog_services/1.1.0/catalog_services.jar" />
+	<property name="client_project_entities_dao.jar" value="${tcs_libdir}/client_project_entities_dao/1.1.0/client_project_entities_dao.jar" />
+	<property name="contest_and_submission_entities.jar" value="${tcs_libdir}/contest_and_submission_entities/1.2.0/contest_and_submission_entities.jar" />
+	<property name="project_management.jar" value="${tcs_libdir}/project_management/1.0.1/project_management.jar" />
+	<property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.1/project_phases.jar" /> 
+	<property name="project_service.jar" value="${tcs_libdir}/project_service/1.1.0/project_service.jar" />
+	<property name="project_services.jar" value="${tcs_libdir}/project_services/1.1.0/project_services.jar" />
+	<property name="review_data_structure.jar" value="${tcs_libdir}/review_data_structure/1.0.0/review_data_structure.jar" />
+	<property name="security.jar" value="${tcs_libdir}/security/1.0.0/security.jar" />
+	<property name="studio_contest_manager.jar" value="${tcs_libdir}/studio_contest_manager/1.3.0/studio_contest_manager.jar" />
+	<property name="studio_service.jar" value="${tcs_libdir}/studio_service/1.3.0/studio_service.jar" />
+	
+    <!-- 3rd party dependencies -->
+    <property name="struts2.home" value="${ext_libdir}/struts/2.1.8.1" />
+    <property name="jboss.home" value="${ext_libdir}/jboss/4.2.3.GA" />       
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
+    <property name="easymock.jar" value="${ext_libdir}/easymock/2.4/easymock.jar" />
+    <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar" />
+    <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j.jar" />
+    
+   <property name="depends_service_facade.jar" value="test_reflib/depends_service_facade.jar" />
+   <property name="shared.jar" value="test_reflib/shared.jar" />
+        
+    <path id="component.tcs-dependencies">                
+		    <pathelement location="${base_exception.jar}" />
+	     	<pathelement location="${admin_service_facade.jar}" />
+	    	<pathelement location="${catalog_entities.jar}" />
+	    	<pathelement location="${catalog_services.jar}" />
+		    <pathelement location="${client_project_entities_dao.jar}" />
+		    <pathelement location="${contest_and_submission_entities.jar}" />
+		  	<pathelement location="${project_management.jar}" />
+	     	<pathelement location="${project_phases.jar}" />
+	    	<pathelement location="${project_service.jar}" />
+	    	<pathelement location="${project_services.jar}" />
+		    <pathelement location="${review_data_structure.jar}" />
+		    <pathelement location="${security.jar}" />
+		    <pathelement location="${studio_contest_manager.jar}" />
+	     	<pathelement location="${log4j.jar}" />
+    </path>
+    
+    <path id="component.3rdParty-dependencies">
+    		<pathelement location="${javaee.jar}" />
+	     	<pathelement location="${studio_service.jar}" />
+	     	
+        <fileset dir="${struts2.home}/lib">             
+             <exclude name="struts2-*-plugin*.jar"/>
+             <exclude name="struts2-osgi*.jar"/>
+        </fileset>
+        
+        <fileset dir="${struts2.home}/lib">
+             <include name="struts2-spring-plugin*.jar"/>
+             <include name="struts2-junit-plugin*.jar"/>
+             <include name="struts2-dojo-plugin*.jar"/>
+             <include name="struts2-convention-plugin-2.1.8.1.jar"/>
+        </fileset>       
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${easymock.jar}"/>
+    </path>
+    
+        <!-- deployment targets for jboss -->
+    <property name="war_name" value="demo.war" />
+    <property name="build_war_dir" value="build/war" />
+
+    <target name="war" depends="compile, compile_tests">
+        <delete dir="${build_war_dir}" />
+
+        <copy todir="${build_war_dir}/${war_name}/WEB-INF/classes/">
+            <fileset dir="${build_classdir}">
+                <include name="**/*" />
+            </fileset>
+            <fileset dir="${build_testclassdir}">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+        
+        <copy todir="${build_war_dir}/${war_name}/WEB-INF/lib" flatten="true">
+            <path refid="component.tcs-dependencies"/>
+            <path refid="component.3rdParty-dependencies"/>
+        </copy>
+        
+        <copy file="${junit.jar}" todir="${build_war_dir}/${war_name}/WEB-INF/lib" />
+        
+        <copy todir="${build_war_dir}/${war_name}">
+            <fileset dir="test_files/war">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+        
+        <copy file="test_files/applicationContext.xml" todir="${build_war_dir}/${war_name}/WEB-INF/classes" />
+        <copy file="test_files/struts.xml" todir="${build_war_dir}/${war_name}/WEB-INF/classes" />
+    </target>     
+    
+    <target name="deployToJBoss" depends="war,undeployToJBoss">
+        <copy todir="${jboss.home}/server/default/deploy/${war_name}" overwrite="true">
+            <fileset dir="${build_war_dir}/${war_name}">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="undeployToJBoss">
+        <delete dir="${jboss.home}/server/default/deploy/${war_name}" />
+    </target>
+</project>

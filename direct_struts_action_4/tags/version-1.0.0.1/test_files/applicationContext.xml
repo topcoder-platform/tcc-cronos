@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+    
+    <bean id="ContestServiceFacade" class="com.topcoder.direct.services.view.action.contest.launch.MockContestServiceFacade"></bean>
+    <bean id="DirectServiceFacade" class="com.topcoder.direct.services.view.action.contest.launch.MockDirectServiceFacade"></bean>
+    	
+    <bean id="ContestDeletingAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.ContestDeletingAction" scope="prototype"/>   
+	<bean id="ContestDeletingAction" class="com.topcoder.direct.services.view.action.contest.launch.ContestDeletingAction" scope="prototype">
+	   <property name="directServiceFacade" ref="DirectServiceFacade"></property>
+	</bean>
+
+    <bean id="ContestLinksRetrievalAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.ContestLinksRetrievalAction" scope="prototype"/>
+    <bean id="ContestLinksRetrievalAction" class="com.topcoder.direct.services.view.action.contest.launch.ContestLinksRetrievalAction" scope="prototype">
+       <property name="directServiceFacade" ref="DirectServiceFacade"></property>
+    </bean>
+
+    <bean id="ContestRepostingAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.ContestRepostingAction" scope="prototype"/>
+    <bean id="ContestRepostingAction" class="com.topcoder.direct.services.view.action.contest.launch.ContestRepostingAction" scope="prototype">
+       <property name="directServiceFacade" ref="DirectServiceFacade"></property>
+    </bean>       
+    
+    <bean id="ContestsLinkingAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.ContestsLinkingAction" scope="prototype"/>    
+    <bean id="ContestsLinkingAction" class="com.topcoder.direct.services.view.action.contest.launch.ContestsLinkingAction" scope="prototype">
+       <property name="directServiceFacade" ref="DirectServiceFacade"></property>
+    </bean>
+    
+    <bean id="NewComponentVersionCreationAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.NewComponentVersionCreationAction" scope="prototype"/>    
+    <bean id="NewComponentVersionCreationAction" class="com.topcoder.direct.services.view.action.contest.launch.NewComponentVersionCreationAction" scope="prototype">
+       <property name="directServiceFacade" ref="DirectServiceFacade"></property>
+    </bean>      
+    
+    <bean id="ProjectBudgetModifyingAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.ProjectBudgetModifyingAction" scope="prototype"/>    
+    <bean id="ProjectBudgetModifyingAction" class="com.topcoder.direct.services.view.action.contest.launch.ProjectBudgetModifyingAction" scope="prototype">
+       <property name="directServiceFacade" ref="DirectServiceFacade"></property>
+    </bean>
+    
+    <bean id="SpecificationReviewResultRetrievalAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.SpecificationReviewResultRetrievalAction" scope="prototype"/>
+    <bean id="SpecificationReviewResultRetrievalAction" class="com.topcoder.direct.services.view.action.contest.launch.SpecificationReviewResultRetrievalAction" scope="prototype">
+       <property name="contestServiceFacade" ref="ContestServiceFacade"></property>
+    </bean>   
+    
+    <bean id="SpecificationReviewStartingAction_NULL" class="com.topcoder.direct.services.view.action.contest.launch.SpecificationReviewStartingAction" scope="prototype"/>
+    <bean id="SpecificationReviewStartingAction" class="com.topcoder.direct.services.view.action.contest.launch.SpecificationReviewStartingAction" scope="prototype">
+       <property name="contestServiceFacade" ref="ContestServiceFacade"></property>
+    </bean>          
+</beans>
