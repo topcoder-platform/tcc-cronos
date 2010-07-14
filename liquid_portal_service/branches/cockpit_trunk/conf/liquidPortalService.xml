@@ -91,6 +91,30 @@
 		<property name="jiraEmailMessageTemplateName">
 			<value>/home/cockpit/jboss/server/default/deploy/cockpit2.1.ear/liquid_template.txt</value>
 		</property>
+
+		<property name="liquidStudioContestsEmailFrom">
+			<value>sma@topcoder.com</value>
+		</property>
+
+		<property name="liquidStudioContestsEmailSubject">
+			<value>Studio Private Contest Creation</value>
+		</property>
+
+		<property name="liquidStudioContestsEmailTo">
+			<value>sma@topcoder.com</value>
+		</property>
+
+		<property name="liquidStudioContestsEmailCC">
+			<value>sma@topcoder.com</value>
+		</property>
+
+        <property name="liquidStudioContestsEmailBilling">
+			<value>1</value>
+		</property>
+
+		<property name="liquidStudioContestsEmailTemplateName">
+			<value>/home/cockpit/jboss/server/default/deploy/cockpit2.1.ear/liquid_studio_contests_email.txt</value>
+		</property>
 	</Config>
 	<Config name="document_generator_configuration">
 		<Property name="sources">

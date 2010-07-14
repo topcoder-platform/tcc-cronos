@@ -491,6 +491,72 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * </p>
      */
     private DocumentGenerator documentGenerator;
+
+   /**
+     * <p>
+     * Represents the From address of the message to use to send at studio contest creation.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the
+     * createCompetition method.
+     * </p>
+     */
+    private String liquidStudioContestsEmailFrom;
+
+   /**
+     * <p>
+     * Represents the Subject of the message to use to send at studio contest creation.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the
+     * createCompetition method.
+     * </p>
+     */
+    private String liquidStudioContestsEmailSubject;
+
+   /**
+     * <p>
+     * Represents the To list of the message to use to send at studio contest creation.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the
+     * createCompetition method.
+     * </p>
+     */
+    private String liquidStudioContestsEmailTo;
+
+    /**
+     * <p>
+     * Represents the CC list of the message to use to send at studio contest creation.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the
+     * createCompetition method.
+     * </p>
+     */
+    private String liquidStudioContestsEmailCC;
+
+   /**
+     * <p>
+     * Represents the template name of the message to use to send at studio contest creation.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the
+     * createCompetition method.
+     * </p>
+     */
+    private String liquidStudioContestsEmailTemplateName;
+
+    /**
+     * <p>
+     * Represents the billing project that needs to send at studio contest creation.
+     * </p>
+     * <p>
+     * It is set in the initialize method. It is used in the
+     * createCompetition method.
+     * </p>
+     */
+    private long liquidStudioContestsEmailBilling;
     
     private Pattern allowedCharacters;
 
@@ -551,6 +617,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             jiraEmailSubject = getConfigurationValue("jiraEmailSubject", configObject);
             jiraEmailSender = getConfigurationValue("jiraEmailSender", configObject);
             jiraEmailMessageTemplateName = getConfigurationValue("jiraEmailMessageTemplateName", configObject);
+	        liquidStudioContestsEmailFrom = getConfigurationValue("liquidStudioContestsEmailFrom", configObject);
+            liquidStudioContestsEmailSubject = getConfigurationValue("liquidStudioContestsEmailSubject", configObject);
+	        liquidStudioContestsEmailTo = getConfigurationValue("liquidStudioContestsEmailTo", configObject);
+            liquidStudioContestsEmailCC = getConfigurationValue("liquidStudioContestsEmailCC", configObject);
+	        liquidStudioContestsEmailTemplateName = getConfigurationValue("liquidStudioContestsEmailTemplateName", configObject);
+            liquidStudioContestsEmailBilling = getConfigurationLongValue("liquidStudioContestsEmailBilling", configObject);
 
             // Create a new instance of Log
             logName = getConfigurationValue("logName", configObject);
@@ -1618,6 +1690,35 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 result.setStudioCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId() + ".");
                 
+                if (competitionData.getBillingProjectId() == liquidStudioContestsEmailBilling)
+                {
+                    try {
+					Template template = documentGenerator.getTemplate(liquidStudioContestsEmailTemplateName);
+					String tmpData = "<DATA><StudioID>" + comp.getContestData().getContestId() + "</StudioID><DateTime>" + comp.getStartTime() + "</DateTime></DATA>";
+					String message = documentGenerator.applyTemplate(template,tmpData);
+					
+					TCSEmailMessage emailMessage = new TCSEmailMessage();
+					emailMessage.setFromAddress(liquidStudioContestsEmailFrom);
+					emailMessage.setSubject(liquidStudioContestsEmailSubject);
+					emailMessage.setBody(message);
+					emailMessage.setToAddress(liquidStudioContestsEmailTo, TCSEmailMessage.TO);
+					emailMessage.setToAddress(liquidStudioContestsEmailCC, TCSEmailMessage.CC);
+					EmailEngine.send(emailMessage);
+                    } catch (TemplateSourceException e) {
+                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                    } catch (TemplateFormatException e) {
+                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                    } catch (TemplateDataFormatException e) {
+                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                    } catch (AddressException e) {
+                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                    } catch (ConfigManagerException e) {
+                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                    } catch (SendingException e) {
+                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                    }
+                }
+				
 
             } else {
                 
