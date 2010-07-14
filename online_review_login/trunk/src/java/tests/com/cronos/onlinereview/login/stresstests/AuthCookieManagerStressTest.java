@@ -4,6 +4,8 @@
 package com.cronos.onlinereview.login.stresstests;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
@@ -31,7 +34,7 @@ import junit.framework.TestCase;
 
 /**
  * The stress tests for the class {@link}
- *
+ * 
  * @author KLW
  * @version 1.0
  */
@@ -48,23 +51,27 @@ public class AuthCookieManagerStressTest extends TestCase {
     /**
      * the database testing url.
      */
-    private String dburl = "jdbc:mysql://localhost:3306/orl";
+    private String dburl;
 
     /**
      * the database testing name.
      */
-    private String username = "topcoder";
+    private String username;
 
     /**
      * the database testing password.
      */
-    private String pass = "topcoder";
-
+    private String pass;
+    /**
+     * the database testing driver.
+     */
+    private String driver;
+    
     /**
      * the random for testing.
      */
     private Random seed = new Random();
-
+    
     /**
      * the flag if the tests fails.
      */
@@ -72,18 +79,20 @@ public class AuthCookieManagerStressTest extends TestCase {
 
     /**
      * Sets up the test environment.
-     *
+     * 
      * @throws Exception
      *             if any exceptions throw to JUnit.
      */
     protected void setUp() throws Exception {
         super.setUp();
         clearConfig();
-        loadConfig("test_files/stresstests/OnlineReviewLogin.xml");
+        loadDbConfig();
         clearData();
         initData();
+        loadConfig("test_files/stresstests/OnlineReviewLogin.xml");
         manager = new AuthCookieManagerImpl(namespace);
         assertNotNull("The instance should not be null.", manager);
+        succ = true;
     }
 
     /**
@@ -93,10 +102,35 @@ public class AuthCookieManagerStressTest extends TestCase {
         manager = null;
         clearData();
     }
+    
+    /**
+     * Loads the database config from configuration file.
+     * @throws Exception if any error occurs.
+     */
+    private void loadDbConfig() throws Exception{
+        if(username!=null){
+            return;
+        }
+        Properties p =  new Properties();
+        InputStream in = null;
+        try {
+            in = new FileInputStream("test_files/stresstests/db.properties");
+            p.load(in);
+            dburl = p.getProperty("url");
+            username = p.getProperty("user");
+            pass = p.getProperty("password");
+            driver = p.getProperty("driver");
+        }finally{
+            if(in!=null){
+                in.close();
+            }
+        }
+            
+    }
 
     /**
      * init the testing data.
-     *
+     * 
      * @throws Exception
      *             if any exception occurs.
      */
@@ -120,7 +154,7 @@ public class AuthCookieManagerStressTest extends TestCase {
 
     /**
      * clear the testing data.
-     *
+     * 
      * @throws Exception
      *             if any exception occurs.
      */
@@ -137,19 +171,19 @@ public class AuthCookieManagerStressTest extends TestCase {
 
     /**
      * get connection to the database.
-     *
+     * 
      * @return the connection to the database.
      * @throws Exception
      *             if any exception occurs.
      */
     private Connection getConnection() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName(driver);
         return DriverManager.getConnection(dburl, username, pass);
     }
 
     /**
      * close the connection to the database.
-     *
+     * 
      * @param conn
      *            the connection to close.
      * @throws Exception
@@ -163,7 +197,7 @@ public class AuthCookieManagerStressTest extends TestCase {
 
     /**
      * load config from file.
-     *
+     * 
      * @param filePath
      *            the config file
      * @throws Exception
@@ -176,7 +210,7 @@ public class AuthCookieManagerStressTest extends TestCase {
 
     /**
      * Clears the configurations in the config manager.
-     *
+     * 
      * @throws Exception
      *             if any exceptions occurs.
      */
@@ -266,9 +300,9 @@ public class AuthCookieManagerStressTest extends TestCase {
                     } catch (AuthCookieManagementException e) {
                         succ = false;
                         fail("fail to set auth cookie.");
-
+                       
                     }
-
+                    
                     //check the result.
                     try {
                         Field field = response.getClass().getDeclaredField("cookies");
@@ -315,7 +349,6 @@ public class AuthCookieManagerStressTest extends TestCase {
         for(int i=1; i<101; i++){
             new Thread(tg, new Runnable() {
                 //do the checkAuthCookie method
-                @SuppressWarnings("unchecked")
                 public void run() {
                     HttpServletRequest request = new MockHttpServletRequest();
                     request.getSession();
@@ -353,7 +386,7 @@ public class AuthCookieManagerStressTest extends TestCase {
             fail("fail to set auth cookie.");
         }
     }
-
+    
     /**
      * Compute a one-way hash of a password.
      *
