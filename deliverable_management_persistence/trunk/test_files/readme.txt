@@ -1,7 +1,6 @@
-
-Only package com.topcoder.management.deliverable.persistence.sql is
-required for this component.
-
-The other package are the dependency, but I included them for convenience.
-
-Thank you.
+You should update the DB configuration from the following files:
+test_files/dbfactory.xml
+test_files/accuracytests/dbconnectionfactory.xml
+test_files/failuretests/DBConnectionFactory.xml
+test_files/failuretests/dbfactory.xml
+test_files/stresstests/dbconfig.xml
