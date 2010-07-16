@@ -164,7 +164,7 @@
             <junit fork="true" haltonerror="false">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
-                <test name="${package}.UnitTests" todir="${testlogdir}">
+                <test name="${package}.AllTests" todir="${testlogdir}">
                     <formatter type="plain" usefile="true"/>
                     <formatter type="xml" usefile="true"/>
                 </test>
@@ -190,7 +190,7 @@
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <classpath refid="cobertura.classpath"/>
-                <test name="${package}.UnitTests" todir="${testlogdir}">
+                <test name="${package}.AllTests" todir="${testlogdir}">
                     <formatter type="plain" usefile="true"/>
                     <formatter type="xml" usefile="true"/>
                 </test>
@@ -296,25 +296,6 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
-    </target>
-
-	<taskdef resource="checkstyletask.properties" classpath="${ext_libdir}/checkstyle/4.3/checkstyle-all-4.3.jar"/>
-	<target name="checkstyle">
-        <taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
-        <mkdir dir="${testlogdir}"/>
-        <checkstyle config="D:/dev/topcoder/code standard/tcs_checkstyle_config/tc_checks.xml" classpath="${build_classdir}">
-            <fileset dir="src/java/main" includes="**/*.java" />
-            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
-        </checkstyle>
-    </target>
-
-    <target name="checkstyle_tests">
-        <taskdef name="checkstyle" classname="com.puppycrawl.tools.checkstyle.CheckStyleTask"/>
-        <mkdir dir="${testlogdir}"/>
-        <checkstyle config="D:/dev/topcoder/code standard/tcs_checkstyle_config/tc_test_checks.xml">
-            <fileset dir="${javatests}/${packagedir}/" includes="**/*.java" />
-            <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
-        </checkstyle>
     </target>
 
     <!-- ************************************************************************** -->
