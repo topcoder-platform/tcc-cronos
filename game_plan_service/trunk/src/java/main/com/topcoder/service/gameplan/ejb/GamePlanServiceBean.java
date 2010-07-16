@@ -125,7 +125,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
     private static final String RETRIEVE_DEPENDENCY_PROJECT_IDS_SQL = 
             "SELECT  lp.dest_project_id FROM linked_project_xref lp, project p " +
 			" WHERE lp.source_project_id = :projectId " + 
-			" AND lp.source_project_id = p.project_id " + 
+			" AND lp.source_project_id = p.project_id AND lp.link_type_id in (1, 4) " + 
 			" AND p.tc_direct_project_id = (SELECT tc_direct_project_id FROM project WHERE project_id = lp.dest_project_id) " +
 			" AND p.tc_direct_project_id IS NOT NULL";
                     
