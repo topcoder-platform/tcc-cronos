@@ -6,4 +6,4 @@ component.packagedir=com/topcoder/management/deliverable/persistence
 component.version.major=1
 component.version.minor=1
 component.version.micro=0
-component.version.build=0
+component.version.build=1
