@@ -477,6 +477,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String DR_POINT_COST_PROJECT_INFO_TYPE = "DR points";
 
+     /**
+     * Private constant specifying cost for Spec Review Cost.
+     *
+     * @since 1.0.3
+     */
+    private static final String SPEC_REVIEW_COST_PROJECT_INFO_TYPE = "Spec Review Cost";
+
     /**
      * The const string for configuration files.
      * @since 1.2.2
@@ -2956,7 +2963,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
                 + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
                 + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE));
+                + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE))
+                + Double.parseDouble((String) contest.getProperty(SPEC_REVIEW_COST_PROJECT_INFO_TYPE));
 
             fee = fee - pastPayment;
 
