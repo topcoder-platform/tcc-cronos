@@ -1259,13 +1259,14 @@ public class CatalogServiceImpl implements CatalogServiceLocal, CatalogServiceRe
      * @param compVersion the CompVersion to populate
      */
     private void populateForumAndLink(AssetDTO assetDTO, CompVersion compVersion) {
+
         CompForum compForum = assetDTO.getForum();
-        if (compForum != null) {
+        if (compForum != null && compVersion.getForum() == null) {
             compVersion.setForum(compForum);
             compForum.setCompVersion(compVersion);
         }
         CompLink link = assetDTO.getLink();
-        if (link != null) {
+        if (link != null && compVersion.getLink() == null) {
             compVersion.setLink(link);
             link.setCompVersion(compVersion);
         }
