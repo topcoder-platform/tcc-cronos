@@ -1705,17 +1705,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 					emailMessage.setToAddress(liquidStudioContestsEmailCC, TCSEmailMessage.CC);
 					EmailEngine.send(emailMessage);
                     } catch (TemplateSourceException e) {
-                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                        logError(new LiquidPortalServiceException("TemplateSourceException occurs when sending email of studio contest creation", e), methodName);
                     } catch (TemplateFormatException e) {
-                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                        logError(new LiquidPortalServiceException("TemplateFormatException occurs when sending email of studio contest creation", e), methodName);
                     } catch (TemplateDataFormatException e) {
-                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                        logError(new LiquidPortalServiceException("TemplateDataFormatException occurs when sending email of studio contest creation", e), methodName);
                     } catch (AddressException e) {
-                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                        logError(new LiquidPortalServiceException("AddressException occurs when sending email of studio contest creation", e), methodName);
                     } catch (ConfigManagerException e) {
-                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                        logError(new LiquidPortalServiceException("ConfigManagerException occurs when sending email of studio contest creation", e), methodName);
                     } catch (SendingException e) {
-                        logError(new LiquidPortalServiceException("Error occurs when sending email of studio contest creation", e), methodName);
+                        logError(new LiquidPortalServiceException("SendingException occurs when sending email of studio contest creation", e), methodName);
                     }
                 }
 				
@@ -2853,7 +2853,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     private <T extends Exception> T logError(T error, String methodName) {
         if (logger != null) {
             logger.log(Level.ERROR, "[Error in method " + this.getClass().getName() + "." + methodName + ": Details "
-                    + error.getMessage() + "]", error);
+                    + error + "]", error);
         }
         return error;
     }
