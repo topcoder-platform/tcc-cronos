@@ -19,6 +19,8 @@ import com.topcoder.clients.model.AuditableEntityTest;
 import com.topcoder.clients.model.ClientStatusTest;
 import com.topcoder.clients.model.ClientTest;
 import com.topcoder.clients.model.CompanyTest;
+import com.topcoder.clients.model.ProjectContestFeeAuditTest;
+import com.topcoder.clients.model.ProjectContestFeeTest;
 import com.topcoder.clients.model.ProjectStatusTest;
 import com.topcoder.clients.model.ProjectTest;
 
@@ -38,6 +40,7 @@ public class UnitTests extends TestCase {
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
+        suite.addTestSuite(DemoTests.class);
 
         suite.addTestSuite(EntityNotFoundExceptionTest.class);
         suite.addTestSuite(DAOExceptionTest.class);
@@ -56,6 +59,8 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(ProjectTest.class);
         suite.addTestSuite(AuditableEntityTest.class);
         suite.addTestSuite(ClientTest.class);
+        suite.addTestSuite(ProjectContestFeeAuditTest.class);
+        suite.addTestSuite(ProjectContestFeeTest.class);
         suite.addTestSuite(GenericEJB3DAOTest.class);
         suite.addTestSuite(SearchByFilterUtilityImplTest.class);
         return suite;

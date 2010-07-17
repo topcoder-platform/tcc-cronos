@@ -278,7 +278,7 @@ public class SearchByFilterUtilityImplTest extends TestCase {
      * Tests the
      * <code>com.topcoder.clients.dao.ejb3.SearchByFilterUtilityImpl(String, String)</code>
      * for proper behavior. DAOConfigurationException if this utility can not be
-     * configured. (if SearcBundle could not be initialized).
+     * configured. (if SearchBundle could not be initialized).
      * </p>
      *
      * @throws Exception

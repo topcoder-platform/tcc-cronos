@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
@@ -41,6 +42,9 @@ import com.topcoder.clients.model.ClientStatus;
  * operations, retrieve the EntityManager using it's corresponding getter.
  * </p>
  * <p>
+ * Changes in version 1.2: javax.ejb.Stateless annotation is added back.
+ * </p>
+ * <p>
  * <strong>THREAD SAFETY:</strong> This class is technically mutable since the
  * inherited configuration properties (with {@link PersistenceContext} ) are set
  * after construction, but the container will not initialize the properties more
@@ -48,20 +52,21 @@ import com.topcoder.clients.model.ClientStatus;
  * safety in this case.
  * </p>
  *
- * @author Mafy, TCSDEVELOPER
- * @version 1.0
+ * @author Mafy, nhzp339, TCSDEVELOPER
+ * @version 1.2
  */
 @Local(ClientStatusDAOLocal.class)
 @Remote(ClientStatusDAORemote.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Stateless(name = ClientStatusDAO.BEAN_NAME)
 public class ClientStatusDAOBean extends GenericEJB3DAO<ClientStatus, Long>
         implements ClientStatusDAO, ClientStatusDAOLocal, ClientStatusDAORemote {
     /**
      * The query string used in method getClientsWithStatus.
      */
     private static final String QUERYSTRING = "select c from Client c"
-            + " where c.clientStatus = :status and c.deleted = false";
+            + " where c.clientStatus = :status and (c.deleted is null or c.deleted = false)";
 
     /**
      * Default no-arg constructor. Constructs a new 'ClientStatusDAOBean'

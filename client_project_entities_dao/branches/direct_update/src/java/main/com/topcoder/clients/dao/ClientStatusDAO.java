@@ -60,5 +60,5 @@ public interface ClientStatusDAO extends GenericDAO<ClientStatus, Long> {
      *                 if any error occurs while performing this operation.
      */
     public List<Client> getClientsWithStatus(ClientStatus status)
-        throws EntityNotFoundException, DAOException;
+        throws DAOException;
 }

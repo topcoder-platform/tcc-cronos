@@ -81,10 +81,10 @@ import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFact
  * // get project for corresponding id with projectChildren
  * tempProject = bean.retrieveById(100L, true);
  *
- * // get all projects without projectChildrens
+ * // get all projects without projectChildren
  * projects = bean.retrieveAll(false);
  *
- * // get all projects with projectChildrens
+ * // get all projects with projectChildren
  * projects = bean.retrieveAll(true);
  *
  * // get projects by user
@@ -119,6 +119,12 @@ import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFact
  *
  * // get the projects by the given client id.
  * projects = bean.getProjectsByClientId(200);
+ *
+ * // update project budget
+ * bean.updateProjectBudget(&quot;ivern&quot;, 100, 1000.0);
+ *
+ * // get users from the project
+ * List&lt;String&gt; users = bean.getUsersByProject(100);
  * </pre>
  *
  * </p>
@@ -131,7 +137,7 @@ import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFact
  * @param <Id>
  *            The type of id of entity
  * @author Mafy, TCSDEVELOPER
- * @version 1.1
+ * @version 1.2
  */
 public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Serializable>
         implements GenericDAO<T, Id> {
@@ -279,7 +285,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
     /**
      * <p>
      * Initialize the searchByFilterUtility and makes sure the initialization of
-     * this session bean is ok.
+     * this session bean is OK.
      * </p>
      * <p>
      * This method is called after this bean is constructed by the EJB
@@ -304,11 +310,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
             // Get ConfigurationObject with key configNamespace and extract
             // properties as per CS 3.2.3.
             ConfigurationObject config = cfm.getConfiguration(configNamespace);
-            if (config == null) {
-                throw new DAOConfigurationException(
-                        "Cannot found ConfigurationObject with namespace:"
-                                + configNamespace);
-            }
+            // UnrecognizedNamespaceException will be raised if the config doesn't exist.
             ConfigurationObject configObject = config.getChild(configNamespace);
             if (configObject == null) {
                 throw new DAOConfigurationException(
@@ -326,7 +328,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
             if (token == null || token.trim().length() == 0) {
                 throw new DAOConfigurationException(
                         "The 'search_by_filter_utility_token' property should"
-                                + " be configed and not be empty string.");
+                                + " be configured and not be empty string.");
             }
             // Create a new SearchByFilterUtility instance through Object
             // Factory get ConfigurationObjectSpecificationFactory
@@ -364,7 +366,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
     /**
      * This method check required fields for non-null, non-empty for string.
      *
-     * @throwsDAOConfigurationException if required fields are invalid.
+     * @throws DAOConfigurationException if required fields are invalid.
      */
     private void checkRequiredFields() {
         // check the fields which should be non-null
@@ -388,14 +390,11 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
     }
 
     /**
-     * Setter used by container injection mechanism for 'entityManager'
-     * property. Please refer to the related 'entityManager' field for more
-     * information.
+     * Sets the entity manager.
      *
      * @param entityManager
      *                the entityManager used in persistence
      */
-    @PersistenceContext(unitName = "persistenceUnit", type = PersistenceContextType.TRANSACTION)
     public void setEntityManager(EntityManager entityManager) {
         Helper.checkNull(entityManager, "entityManager");
         this.entityManager = entityManager;
@@ -458,7 +457,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
      *                 if any error occurs while performing this operation.
      */
     @SuppressWarnings("unchecked")
-    public T retrieveById(Id id) throws EntityNotFoundException, DAOException {
+    public T retrieveById(Id id) throws DAOException {
         if (id == null) {
             throw new IllegalArgumentException("'id' should not be null.");
         }
@@ -537,7 +536,7 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
 
         String queryString = "select e from "
                 + entityBeanType.getCanonicalName() + " as e"
-                + " where e.name = :name" + " and e.deleted = false";
+                + " where e.name = :name" + " and (e.deleted is null or e.deleted = false)";
 
         try {
             return Helper.getEntities("name", name, entityManager, queryString);
@@ -610,15 +609,15 @@ public abstract class GenericEJB3DAO<T extends AuditableEntity, Id extends Seria
      *                 if any error occurs while performing this operation.
      */
     @SuppressWarnings("unchecked")
-    public void delete(T entity) throws EntityNotFoundException, DAOException {
+    public void delete(T entity) throws DAOException {
         Helper.checkNull(entity, "entity");
         Helper.checkEntityManager(entityManager);
 
         try {
             Id id = ((Id) ((Long) entity.getId()));
-            T persitedEntity = retrieveById(id);
-            persitedEntity.setDeleted(true);
-            entityManager.merge(persitedEntity);
+            T persistedEntity = retrieveById(id);
+            persistedEntity.setDeleted(true);
+            entityManager.merge(persistedEntity);
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e,
                     "Failed to delete entity.");

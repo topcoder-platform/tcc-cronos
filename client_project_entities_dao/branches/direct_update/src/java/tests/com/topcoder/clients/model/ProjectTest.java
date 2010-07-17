@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.2
  */
 public class ProjectTest extends TestCase {
     /**
@@ -335,4 +335,58 @@ public class ProjectTest extends TestCase {
         assertEquals("getSalesTax", 10d, target.getSalesTax());
     }
 
+    /**
+     * <p>
+     * Tests the <code>setManualPrizeSetting(boolean)</code> for proper behavior. Verifies that the property should be
+     * correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     * @since 1.2
+     */
+    public void testMethodSetManualPrizeSetting_boolean() throws Exception {
+        target.setManualPrizeSetting(true);
+        assertTrue("The value is not set", target.isManualPrizeSetting());
+    }
+
+    /**
+     * <p>
+     * Tests the <code>isManualPrizeSetting()</code> for proper behavior. Verifies that the property should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     * @since 1.2
+     */
+    public void testMethodIsManualPrizeSetting_default() throws Exception {
+        assertFalse("The default should be false", target.isManualPrizeSetting());
+    }
+
+    /**
+     * <p>
+     * Tests the <code>setBudget(Double)</code> for proper behavior. Verifies that the property should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     * @since 1.2
+     */
+    public void testMethodSetBudget_boolean() throws Exception {
+        target.setBudget(new Double(1));
+        assertEquals("The value is not set", new Double(1), target.getBudget());
+    }
+
+    /**
+     * <p>
+     * Tests the <code>isBudget()</code> for proper behavior. Verifies that the property should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
+     * @since 1.2
+     */
+    public void testMethodGetBudget_default() throws Exception {
+        assertNull("The default should be null", target.getBudget());
+    }
 }

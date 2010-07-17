@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
@@ -41,6 +42,9 @@ import com.topcoder.clients.model.ProjectStatus;
  * operations, retrieve the EntityManager using it's corresponding getter.
  * </p>
  * <p>
+ * Changes in version 1.2: javax.ejb.Stateless annotation is added back.
+ * </p>
+ * <p>
  * <strong>THREAD SAFETY:</strong> This class is technically mutable since the
  * inherited configuration properties (with {@link PersistenceContext}) are set
  * after construction, but the container will not initialize the properties more
@@ -48,13 +52,14 @@ import com.topcoder.clients.model.ProjectStatus;
  * safety in this case.
  * </p>
  *
- * @author Mafy, TCSDEVELOPER
- * @version 1.0
+ * @author Mafy, nhzp339, TCSDEVELOPER
+ * @version 1.2
  */
 @Local(ProjectStatusDAOLocal.class)
 @Remote(ProjectStatusDAORemote.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Stateless(name = ProjectStatusDAO.BEAN_NAME)
 public class ProjectStatusDAOBean extends GenericEJB3DAO<ProjectStatus, Long>
         implements ProjectStatusDAO, ProjectStatusDAOLocal,
         ProjectStatusDAORemote {
@@ -102,7 +107,7 @@ public class ProjectStatusDAOBean extends GenericEJB3DAO<ProjectStatus, Long>
             return Helper.getEntities("status", status, entityManager, QUERY);
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e,
-                    "Failed to get get projects with status.");
+                    "Failed to get projects with status.");
         }
     }
 }

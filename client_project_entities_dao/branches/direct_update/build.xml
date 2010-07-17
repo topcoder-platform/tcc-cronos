@@ -305,7 +305,6 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
-        <delete dir="${testlogdir}"/>
     </target>
 
     <!-- ************************************************************************** -->
@@ -396,18 +395,16 @@
              basedir="."
              includes="build-dependencies.xml,
                        build-override.xml,
+                       build.xml,
                        README,
                        ${configdir}/**,
                        ${javamain}/**/*.java,
-                       ${javatests}/${packagedir}/**,
+                       ${javatests}/**/*.java,
                        ${testlogdir}/**,
                        ${testfiles}/**,
                        ${docsdir}/**,
                        ${test_reflib}/**"
-             excludes="${javatests}/${packagedir}/AllTests.java,
-                       ${javatests}/${packagedir}/stresstests/*,
-                       ${javatests}/${packagedir}/failuretests/*,
-                       ${javatests}/${packagedir}/accuracytests/*"
+             excludes="${javatests}/${packagedir}/AllTests.java"
             />
     </target>
 
@@ -460,4 +457,5 @@
     some of the targets of this build file. -->
     <import file="${basedir}/build-override.xml" optional="true"/>
     <import file="D:/TopCoder/config/build-checkstyle.xml" optional="true"/>
+    <import file="D:/TopCoder/config/build-spellcheck.xml" optional="true"/>
 </project>

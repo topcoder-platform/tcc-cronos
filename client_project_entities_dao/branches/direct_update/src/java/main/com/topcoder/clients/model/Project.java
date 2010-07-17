@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.model;
 
@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  * <p>
  * This class represents the Project java bean. An Project can contain a
  * company, active, salesTax, pOBoxNumber, paymentTermsId, description,
- * projectStatus, client, childProjects, parentProjectId, manualPrizeSetting.
+ * projectStatus, client, childProjects, parentProjectId, manualPrizeSetting, budget.
  * </p>
  * <p>
  * See base class for other available properties.
@@ -42,17 +42,22 @@ import javax.xml.bind.annotation.XmlType;
  * </p>
  *
  * <p>
+ * Version 1.2 Change Notes:
+ *  - Add a new budget attribute(and this attribute is added into corresponding db table too) along with
+ *  its getter and setter.
+ * </p>
+ *
+ * <p>
  * <strong>THREAD SAFETY:</strong> This class contains only mutable fields so
  * therefore it is not thread safe.
  * </p>
  *
- * @author Mafy, TCSDEVELOPER, TCSASSEMBLER
- * @version 1.0.1
+ * @author Mafy, nhzp339, TCSDEVELOPER, TCSASSEMBLER
+ * @version 1.2
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "clientProject", propOrder = { "company", "active", "salesTax",
-        "pOBoxNumber", "paymentTermsId", "description", "projectStatus",
-        "client", "manualPrizeSetting", "childProjects", "parentProjectId" })
+@XmlType(name = "clientProject", propOrder = {"company", "active", "salesTax", "pOBoxNumber", "paymentTermsId",
+    "description", "projectStatus", "client", "manualPrizeSetting", "childProjects", "parentProjectId", "budget"})
 @Entity
 @Table(name = "project")
 @javax.persistence.AttributeOverride(name = "id", column = @Column(name = "project_id"))
@@ -281,6 +286,14 @@ public class Project extends AuditableEntity {
      */
     @Column(name = "is_manual_prize_setting")
     private boolean manualPrizeSetting;
+
+    /**
+     * <p>Represents the 'budget' property of the Project.</p>
+     *
+     * @since 1.2
+     */
+    @Column(name = "budget")
+    private Double budget;
 
     /**
      * Default no-arg constructor. Constructs a new 'Project' instance.
@@ -527,5 +540,26 @@ public class Project extends AuditableEntity {
      */
     public void setManualPrizeSetting(boolean manualPrizeSetting) {
         this.manualPrizeSetting = manualPrizeSetting;
+    }
+
+    /**
+     * Gets the budget for the project.
+     *
+     * @return the budget for the project.
+     * @since 1.2
+     */
+    public Double getBudget() {
+        return this.budget;
+    }
+
+    /**
+     * Sets the budget for the project.
+     *
+     * @param budget
+     *            the budget for the project.
+     * @since 1.2
+     */
+    public void setBudget(Double budget) {
+        this.budget = budget;
     }
 }

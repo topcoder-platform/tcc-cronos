@@ -49,7 +49,7 @@ public interface GenericDAO<T extends AuditableEntity, Id extends Serializable> 
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    public T retrieveById(Id id) throws EntityNotFoundException, DAOException;
+    public T retrieveById(Id id) throws DAOException;
 
     /**
      * <p>
@@ -66,18 +66,18 @@ public interface GenericDAO<T extends AuditableEntity, Id extends Serializable> 
 
     /**
      * <p>
-     * Defines the operation that performs the retrieval of all entities that
-     * have the given name in the persistence. If nothing is found, return an
-     * empty list.
+     * Defines the operation that performs the retrieval of all entities that have the given name in the persistence. If
+     * nothing is found, return an empty list.
      * </p>
      *
      * @param name
-     *                the name of the entity that should be retrieved. Should be
-     *                not empty and not null.
-     * @return the list with entities with the given name retrieved from the
-     *         persistence. If nothing is found, return an empty list.
+     *            the name of the entity that should be retrieved. Should be not empty and not null.
+     * @return the list with entities with the given name retrieved from the persistence. If nothing is found, return an
+     *         empty list.
+     * @throws IllegalArgumentException
+     *             if name is null or empty string.
      * @throws DAOException
-     *                 if any error occurs while performing this operation.
+     *             if any error occurs while performing this operation.
      */
     public List<T> searchByName(String name) throws DAOException;
 
@@ -132,5 +132,5 @@ public interface GenericDAO<T extends AuditableEntity, Id extends Serializable> 
      * @throws DAOException
      *                 if any error occurs while performing this operation.
      */
-    public void delete(T entity) throws EntityNotFoundException, DAOException;
+    public void delete(T entity) throws DAOException;
 }

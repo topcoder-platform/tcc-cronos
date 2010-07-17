@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.clients.dao.ejb3;
 
@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
@@ -41,6 +42,9 @@ import com.topcoder.clients.model.Project;
  * operations, retrieve the EntityManager using it's corresponding getter.
  * </p>
  * <p>
+ * Changes in version 1.2: javax.ejb.Stateless annotation is added back.
+ * </p>
+ * <p>
  * <strong>THREAD SAFETY:</strong> This class is technically mutable since the
  * inherited configuration properties (with {@link PersistenceContext} ) are set
  * after construction, but the container will not initialize the properties more
@@ -48,13 +52,14 @@ import com.topcoder.clients.model.Project;
  * safety in this case.
  * </p>
  *
- * @author Mafy, TCSDEVELOPER
- * @version 1.0
+ * @author Mafy, nhzp339, TCSDEVELOPER
+ * @version 1.2
  */
 @Local(ClientDAOLocal.class)
 @Remote(ClientDAORemote.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Stateless(name = ClientDAO.BEAN_NAME)
 public class ClientDAOBean extends GenericEJB3DAO<Client, Long> implements
         ClientDAO, ClientDAOLocal, ClientDAORemote {
 

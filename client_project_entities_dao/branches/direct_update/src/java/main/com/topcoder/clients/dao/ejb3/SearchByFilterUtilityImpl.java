@@ -75,7 +75,7 @@ public class SearchByFilterUtilityImpl<T extends AuditableEntity, Id extends Ser
      *                 if searchBundleManagerNamespace or searchBundleName is
      *                 null or empty string.
      * @throws DAOConfigurationException
-     *                 if this utility can not be configured. (if SearcBundle
+     *                 if this utility can not be configured. (if SearchBundle
      *                 could not be initialized).
      */
     public SearchByFilterUtilityImpl(String searchBundleManagerNamespace,

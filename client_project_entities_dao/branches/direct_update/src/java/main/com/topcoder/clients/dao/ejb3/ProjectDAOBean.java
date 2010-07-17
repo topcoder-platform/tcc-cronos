@@ -17,9 +17,7 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import javax.persistence.TransactionRequiredException;
 
 import com.topcoder.clients.dao.DAOConfigurationException;
 import com.topcoder.clients.dao.DAOException;
@@ -76,13 +74,20 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * </ul>
  * </p>
  * <p>
+ * Change note for 1.2 version, two new methods are added:
+ * <ul>
+ * <li>Add updateProjectBudget method to update the project’s budget.</li>
+ * <li>Add getUsersByProject method to get all users' name who have access of the specified billing project.</li>
+ * </ul>
+ * </p>
+ * <p>
  * <strong>THREAD SAFETY:</strong> This class is technically mutable since the inherited configuration properties (with
  * {@link PersistenceContext}) are set after construction, but the container will not initialize the properties more
  * than once for the session beans and the EJB3 container ensure the thread safety in this case.
  * </p>
  *
- * @author Mafy, snow01, flying2hk, TCSDEVELOPER
- * @version 1.1
+ * @author Mafy, snow01, flying2hk, nhzp339, TCSDEVELOPER
+ * @version 1.2
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -112,8 +117,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      */
     private static final String SELECT_PROJECT = "select p.project_id, p.name, p.po_box_number, p.description, "
               + " p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
-              + " p.creation_date, p.creation_user, p.is_deleted, "
-              + " cp.client_id, c.name as client_name, p.is_manual_prize_setting "
+              + " p.creation_date, p.creation_user, p.is_deleted,"
+              + " cp.client_id, c.name as client_name, p.is_manual_prize_setting, p.budget "
               + " from project as p left join client_project as cp on p.project_id = cp.project_id left join client c "
               + "            on c.client_id = cp.client_id and (c.is_deleted = 0 or c.is_deleted is null) "
               + " where p.start_date <= current and current <= p.end_date ";
@@ -121,10 +126,10 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
     /**
      * The query string used to select projects.
      */
-    private static final String SELECT_PROJECT_BY_CLIENT_ID = "select p.project_id, p.name, p.po_box_number, p.description, "
-        + " p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
+    private static final String SELECT_PROJECT_BY_CLIENT_ID = "select p.project_id, p.name, p.po_box_number,"
+        + " p.description,  p.active, p.sales_tax, p.payment_terms_id, p.modification_user, p.modification_date, "
         + " p.creation_date, p.creation_user, p.is_deleted, "
-        + " cp.client_id, c.name as client_name, p.is_manual_prize_setting "
+        + " cp.client_id, c.name as client_name, p.is_manual_prize_setting, p.budget "
         + " from project as p, client_project as cp, client as c "
         + " where p.start_date <= current and current <= p.end_date "
         + " and c.client_id = cp.client_id and (p.is_deleted = 0 or p.is_deleted is null) "
@@ -180,6 +185,11 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
             + " where user_name = :userName";
 
 
+    /**
+     * <p>
+     * Represents the default company id for inserting dummy user account.
+     * </p>
+     */
     private static final long DEFAULT_COMPANY_ID = 1;
 
     /**
@@ -223,6 +233,48 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      * @since 1.1
      */
     private static final String ID_KEY = "com.topcoder.clients.model.User";
+
+    /**
+     * <p>
+     * The query string used to select project's budget.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String SELECT_PROJECT_BUDGET = "select budget from project where project_id = :projectId";
+
+    /**
+     * <p>
+     * The string used to update project's budget.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String UPDATE_PROJECT_BUDGET =
+        "update project set budget = :budget where project_id = :projectId";
+
+    /**
+     * <p>
+     * The string used to insert project's budget audit record.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String INSERT_PROJECT_BUDGET_AUDIT = "insert into project_budget_audit (project_id,"
+            + " changed_amount, creation_date, creation_user) values (:projectId, :updatedAmount, CURRENT, :username)";
+
+    /**
+     * <p>
+     * The string used to select users who have access to a specific project.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String SELECT_USERS_BY_PROJECT = "SELECT distinct user_name FROM project_manager p, "
+            + "user_account u WHERE p.user_account_id = u.user_account_id and p.active = 1 and"
+            + " p.project_id = :projectId union SELECT distinct user_name FROM project_worker p,"
+            + "user_account u WHERE p.start_date <= current and current <= p.end_date and p.active =1 and "
+            + "p.user_account_id = u.user_account_id and p.project_id = :projectId";
 
     /**
      * Default no-arg constructor. Constructs a new 'ProjectDAOBean' instance.
@@ -294,7 +346,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
                     + " where (p.deleted is null or p.deleted = false) and p.active = true order by upper(p.name) ";
             Query query = entityManager.createQuery(queryString);
 
-            // Involves an unchecked conversion:
+            // Involves an unchecked conversion
             List<Project> projects = query.getResultList();
 
             // if includeChildren is true we return the childProjects list too
@@ -344,7 +396,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e,
-                    "Failed to get project for user [" + username + "].");
+                    "Failed to get projects for user [" + username + "].");
         }
     }
 
@@ -375,91 +427,6 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
         }
     }
 
-    /**
-     * Converts the given query results into list of project.
-     *
-     * <p>
-     * Updated for Cockpit Release Assembly for Receipts
-     *     - now setting client name too.
-     * </p>
-     *
-     * <p>
-     * Updated for Version 1.1.1
-     *     - Added fetch for is_manual_prize_setting.
-     * </p>
-     *
-     * @param query the specified query.
-     * @return list of project.
-     */
-    @SuppressWarnings("unchecked")
-    private List<Project> convertQueryToListProjects(Query query) {
-        List list = query.getResultList();
-
-
-        List<Project> result = new ArrayList<Project>();
-
-        for (int i = 0; i < list.size(); i++) {
-
-            Project c = new Project();
-            Object[] os = (Object[]) list.get(i);
-            if (os[0] != null)
-                c.setId(Integer.parseInt(os[0].toString()));
-
-            if (os[1] != null)
-                c.setName(os[1].toString());
-
-            if (os[2] != null)
-                c.setPOBoxNumber(os[2].toString());
-
-            if (os[3] != null)
-                c.setDescription(os[3].toString());
-
-            if (os[4] != null)
-                c.setActive(((Short) os[4]).intValue() == 1 ? true : false);
-
-            if (os[5] != null)
-                c.setSalesTax(((BigDecimal) os[5]).doubleValue());
-
-            if (os[6] != null)
-                c.setPaymentTermsId(((Integer) os[6]).intValue());
-
-            if (os[7] != null)
-                c.setModifyUsername(os[7].toString());
-
-            if (os[8] != null)
-                c.setModifyDate(new Date(((Timestamp) os[8]).getTime()));
-
-            if (os[9] != null)
-                c.setCreateDate(new Date(((Timestamp) os[9]).getTime()));
-
-            if (os[10] != null)
-                c.setCreateUsername(os[10].toString());
-
-            if (os[11] != null)
-                c.setDeleted(((Short) os[11]).intValue() == 1 ? true : false);
-
-            Client client = new Client();
-            c.setClient(client);
-
-            if (os[12] != null) {
-                client.setId(Integer.parseInt(os[12].toString()));
-            }
-
-            if (os[13] != null) {
-                           client.setName(os[13].toString());
-            }
-
-            if (os[14] != null) {
-                int manualPrizeSetting = Integer.parseInt(os[14].toString());
-                c.setManualPrizeSetting(manualPrizeSetting == 0 ? false : true);
-            }
-
-            result.add(c);
-
-        }
-
-        return result;
-    }
 
     /**
      * Gets all contest fees by project id.
@@ -475,24 +442,17 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      * @since Configurable Contest Fees v1.0 Assembly
      */
     @SuppressWarnings("unchecked")
-    public List<ProjectContestFee> getContestFeesByProject(long projectId)
-            throws DAOException {
+    public List<ProjectContestFee> getContestFeesByProject(long projectId) throws DAOException {
+        EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
         try {
-            EntityManager entityManager = Helper
-                    .checkEntityManager(getEntityManager());
 
-            Query query = entityManager
-                    .createQuery(SELECT_PROJECT_CONTEST_FEES_JPA);
+            Query query = entityManager.createQuery(SELECT_PROJECT_CONTEST_FEES_JPA);
             query.setParameter("projectId", projectId);
 
             return query.getResultList();
-        } catch (IllegalStateException e) {
-            throw Helper.wrapWithDAOException(e,
-                    "The EntityManager is closed.");
         } catch (Exception e) {
-            throw Helper.wrapWithDAOException(e,
-                    "Failed to retrieve contest fees for project id of "
-                    + projectId + ". Error is " + e.getMessage());
+            throw Helper.wrapWithDAOException(e, "Failed to retrieve contest fees for project id of " + projectId
+                    + ". Error is " + e.getMessage());
         }
     }
 
@@ -514,8 +474,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      * @since Configurable Contest Fees v1.0 Assembly
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void saveContestFees(List<ProjectContestFee> contestFees,
-            long projectId) throws DAOException {
+    public void saveContestFees(List<ProjectContestFee> contestFees, long projectId) throws DAOException {
         // we could allow this as deletion process for all contest fees
         if (contestFees == null) {
             contestFees = new ArrayList<ProjectContestFee>();
@@ -532,13 +491,11 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
             }
         }
 
-        try {
-            EntityManager entityManager = Helper
-                    .checkEntityManager(getEntityManager());
+        EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
 
+        try {
             // wipe out old data
-            Query query = entityManager
-                    .createNativeQuery(DELETE_PROJECT_CONTEST_FEES);
+            Query query = entityManager.createNativeQuery(DELETE_PROJECT_CONTEST_FEES);
             query.setParameter("projectId", projectId);
             query.executeUpdate();
 
@@ -548,21 +505,11 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
             }
 
             entityManager.flush();
-        } catch (IllegalStateException e) {
-            throw Helper.wrapWithDAOException(e,
-                    "The EntityManager is closed.");
-        } catch (TransactionRequiredException e) {
-            throw Helper.wrapWithDAOException(e,
-                    "This method is required to run in transaction.");
-        } catch (PersistenceException e) {
-            throw Helper.wrapWithDAOException(e,
-                    "There are errors while persisting the entity.");
         } catch (Exception e) {
             // DAOException is marked as rollbackable exception so we don't need
             // to explicitly catch it
-            throw Helper.wrapWithDAOException(e,
-                    "Failed to save contest fees for project id of  "
-                            + projectId + ". Error is " + e.getMessage());
+            throw Helper.wrapWithDAOException(e, "Failed to save contest fees for project id of  " + projectId
+                    + ". Error is " + e.getMessage());
         }
     }
 
@@ -655,14 +602,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
             List result = query2.getResultList();
 
-            if (result != null && result.size() > 0)
-            {
-                return true;
-            }
-
-            return false;
-
-
+            return result != null && result.size() > 0;
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e,
                     "Failed in check client project permission for [" + username + ", " + projectId +"].");
@@ -699,17 +639,10 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
             List result = query2.getResultList();
 
-            if (result != null && result.size() > 0)
-            {
-                return true;
-            }
-
-            return false;
-
-
+            return result != null && result.size() > 0;
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e,
-                    "Failed in check client project permission for [" + username + ", " + poNumber +"].");
+                    "Failed in check PO number permission for [" + username + ", " + poNumber +"].");
         }
     }
 
@@ -734,6 +667,7 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      *             if any error occurs while performing this operation.
      * @since 1.1
      */
+    @SuppressWarnings("unchecked")
     public void addUserToBillingProjects(String userName, long[] billingProjectIds) throws DAOException {
         checkUserNameAndBillingProjectIds(userName, billingProjectIds);
 
@@ -741,8 +675,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
         Long userAccountId = getUserAccountId(entityManager, userName, true);
         String queryStr = "select project_id from project_manager "
-		        + "where project_id =:projectId and user_account_id=:userAccountId";
-        Query searchQuery=entityManager.createNativeQuery(queryStr);
+                + "where project_id =:projectId and user_account_id=:userAccountId";
+        Query searchQuery = entityManager.createNativeQuery(queryStr);
         try {
             // Insert a record to project_manager table for each specified project id
             Query projectManagerInsertQuery = entityManager.createNativeQuery(INSERT_PROJECT_MANAGER);
@@ -827,7 +761,6 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      *             if any error occurs while performing this operation.
      * @since 1.1
      */
-    @SuppressWarnings("unchecked")
     public List<Project> getProjectsByClientId(long clientId) throws DAOException {
         if (clientId <= 0) {
             throw new IllegalArgumentException("The clientId should be positive.");
@@ -842,6 +775,161 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
             return convertQueryToListProjects(query);
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e, "Fail to get projects by client id.");
+        }
+    }
+
+    /**
+     * <p>
+     * updates the project’s budget to current budget + updatedAmount.
+     * </p>
+     * <p>
+     * The audit record is also inserted into project_budget_audit table.
+     * </p>
+     *
+     * @param username
+     *            the user name
+     * @param billingProjectId
+     *            the id for the project which is to be updated.
+     * @param updatedAmount
+     *            the delta amount of budget to add(or subtract if it's negative).
+     * @return The budget after modified.
+     * @throws DAOException
+     *             if any error occurs while performing this operation.
+     * @throws IllegalArgumentException
+     *             if username is null or empty, or if updatedAmount makes the new budget negative(budget +
+     *             updatedAmount &lt; 0)
+     * @throws DAOConfigurationException
+     *             if the configured entityManager is invalid (invalid means null here).
+     * @throws EntityNotFoundException
+     *             if project with given id is not found in the persistence.
+     * @since 1.2
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public double updateProjectBudget(String username, long billingProjectId, double updatedAmount)
+        throws DAOException {
+        Helper.checkNullAndEmpty(username, "username");
+
+        EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
+        try {
+
+            // retrieve the current project budget
+            Query selectQuery = entityManager.createNativeQuery(SELECT_PROJECT_BUDGET);
+            selectQuery.setParameter("projectId", billingProjectId);
+            Object result = selectQuery.getSingleResult();
+
+            // null budget is deemed as zero.
+            double currentBudget = 0.0;
+
+            if (null != result) {
+                currentBudget = Double.parseDouble(result.toString());
+            }
+
+            if (currentBudget + updatedAmount < 0) {
+                throw new IllegalArgumentException("The new budget cann't be negative.");
+            }
+
+            // update the the project budget
+            Query updateQuery = entityManager.createNativeQuery(UPDATE_PROJECT_BUDGET);
+            updateQuery.setParameter("budget", updatedAmount);
+            updateQuery.setParameter("projectId", billingProjectId);
+            updateQuery.executeUpdate();
+
+            // insert a project budget audit record.
+            Query insertAuditQuery = entityManager.createNativeQuery(INSERT_PROJECT_BUDGET_AUDIT);
+            insertAuditQuery.setParameter("projectId", billingProjectId);
+            insertAuditQuery.setParameter("updatedAmount", updatedAmount);
+            insertAuditQuery.setParameter("username", username);
+            insertAuditQuery.executeUpdate();
+            entityManager.flush();
+
+            return currentBudget + updatedAmount;
+        } catch (IllegalArgumentException e) {
+            // re-throw it.
+            throw e;
+        } catch (NoResultException e) {
+            throw new EntityNotFoundException("no project with the given id in the persistence.", e);
+        } catch (Exception e) {
+            throw Helper.wrapWithDAOException(e, "Fail to update project budget.");
+        }
+    }
+
+
+    /**
+     * <p>
+     * Gets all users' name who have access of the billing project.
+     * </p>
+     *
+     * @param billingProjectId
+     *            the id for the project which is to be updated.
+     * @return All the users's name who have access of the billing project. If none have access, empty list is returned
+     *         but if project doesn't exist, EntityNotFoundException is thrown.
+     * @throws DAOException
+     *             if any error occurs while performing this operation.
+     * @throws IllegalArgumentException
+     *             if id &lt;= 0
+     * @throws EntityNotFoundException
+     *             if project with given id is not found in the persistence.
+     * @throws DAOConfigurationException
+     *             if the configured entityManager is invalid (invalid means null here).
+     * @since 1.2
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getUsersByProject(long billingProjectId) throws DAOException {
+        // try to retrieve the project with the given id, making sure it is present
+        retrieveById(billingProjectId);
+
+        EntityManager entityManager = Helper.checkEntityManager(getEntityManager());
+        try {
+            Query query = entityManager.createNativeQuery(SELECT_USERS_BY_PROJECT);
+            query.setParameter("projectId", billingProjectId);
+            return query.getResultList();
+        } catch (Exception e) {
+            throw Helper.wrapWithDAOException(e, "Fail to get users by project.");
+        }
+    }
+
+
+    /**
+     * <p>
+     * Checks the search name, make sure it does not contain not-allowed wildcard characters: *, %.
+     * </p>
+     *
+     * @param name
+     *            the search name.
+     * @throws IllegalArgumentException
+     *             if the project name contains wildcard character: *, %
+     */
+    private static void checkSearchName(String name) {
+        // name can not contains wildcard characters % or *
+        if (name != null && (name.contains("%") || name.contains("*"))) {
+            throw new IllegalArgumentException("the name should not contain wildcard % or *");
+        }
+    }
+
+
+    /**
+     * <p>
+     * Checks the <code>userName</code> and <code>billingProjectIds</code> arguments.
+     * </p>
+     *
+     * @param userName
+     *            the user name.
+     * @param billingProjectIds
+     *            the IDs of the projects to which the user is added
+     * @throws IllegalArgumentException
+     *             if userName is null/empty, or addUserToBillingProjects is null/empty, or any project ID in
+     *             addUserToBillingProjects array is &lt;= 0.
+     */
+    private static void checkUserNameAndBillingProjectIds(String userName, long[] billingProjectIds) {
+        Helper.checkNullAndEmpty(userName, "userName");
+        Helper.checkNull(billingProjectIds, "billingProjectIds");
+        if (billingProjectIds.length == 0) {
+            throw new IllegalArgumentException("The 'billingProjectIds' array can not be empty.");
+        }
+        for (long projectId : billingProjectIds) {
+            if (projectId <= 0) {
+                throw new IllegalArgumentException("Any billing project id should be positive");
+            }
         }
     }
 
@@ -884,20 +972,94 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
     }
 
     /**
+     * Converts the given query results into list of project.
+     *
      * <p>
-     * Checks the search name, make sure it does not contain not-allowed wildcard characters: *, %.
+     * Updated for Cockpit Release Assembly for Receipts
+     *     - now setting client name too.
      * </p>
      *
-     * @param name
-     *            the search name.
-     * @throws IllegalArgumentException
-     *             if the project name contains wildcard character: *, %
+     * <p>
+     * Updated for Version 1.1.1
+     *     - Added fetch for is_manual_prize_setting.
+     * </p>
+     *
+     * @param query the specified query.
+     * @return list of project.
      */
-    private static void checkSearchName(String name) {
-        // name can not contains wildcard characters % or *
-        if (name != null && (name.contains("%") || name.contains("*"))) {
-            throw new IllegalArgumentException("the name should not contain wildcard % or *");
+    @SuppressWarnings("unchecked")
+    private List<Project> convertQueryToListProjects(Query query) {
+        List list = query.getResultList();
+
+
+        List<Project> result = new ArrayList<Project>();
+
+        for (int i = 0; i < list.size(); i++) {
+
+            Project c = new Project();
+            Object[] os = (Object[]) list.get(i);
+            if (os[0] != null)
+                c.setId(Integer.parseInt(os[0].toString()));
+
+            if (os[1] != null)
+                c.setName(os[1].toString());
+
+            if (os[2] != null)
+                c.setPOBoxNumber(os[2].toString());
+
+            if (os[3] != null)
+                c.setDescription(os[3].toString());
+
+            if (os[4] != null)
+                c.setActive(((Short) os[4]).intValue() == 1 ? true : false);
+
+            if (os[5] != null)
+                c.setSalesTax(((BigDecimal) os[5]).doubleValue());
+
+            if (os[6] != null)
+                c.setPaymentTermsId(((Integer) os[6]).intValue());
+
+            if (os[7] != null)
+                c.setModifyUsername(os[7].toString());
+
+            if (os[8] != null)
+                c.setModifyDate(new Date(((Timestamp) os[8]).getTime()));
+
+            if (os[9] != null)
+                c.setCreateDate(new Date(((Timestamp) os[9]).getTime()));
+
+            if (os[10] != null)
+                c.setCreateUsername(os[10].toString());
+
+            if (os[11] != null)
+                c.setDeleted(((Short) os[11]).intValue() == 1 ? true : false);
+
+            Client client = new Client();
+            c.setClient(client);
+
+            if (os[12] != null) {
+                client.setId(Integer.parseInt(os[12].toString()));
+            }
+
+            if (os[13] != null) {
+                client.setName(os[13].toString());
+            }
+
+            if (os[14] != null) {
+                int manualPrizeSetting = Integer.parseInt(os[14].toString());
+                c.setManualPrizeSetting(manualPrizeSetting == 0 ? false : true);
+            }
+
+            if (os[15] != null) {
+                double budget = Double.parseDouble(os[15].toString());
+                c.setBudget(budget);
+            }
+
+            result.add(c);
+
         }
+
+        return result;
     }
 
     /**
@@ -946,37 +1108,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
 
             return userAccountId;
         } catch (Exception e) {
-            if (e instanceof DAOException) {
-                throw (DAOException) e;
-            } else {
-                throw Helper.wrapWithDAOException(e, "Fail to get the User account id.");
-            }
+            throw Helper.wrapWithDAOException(e, "Fail to get the User account id.");
         }
     }
 
-    /**
-     * <p>
-     * Checks the <code>userName</code> and <code>billingProjectIds</code> arguments.
-     * </p>
-     *
-     * @param userName
-     *            the user name.
-     * @param billingProjectIds
-     *            the IDs of the projects to which the user is added
-     * @throws IllegalArgumentException
-     *             if userName is null/empty, or addUserToBillingProjects is null/empty, or any project ID in
-     *             addUserToBillingProjects array is &lt;= 0.
-     */
-    private static void checkUserNameAndBillingProjectIds(String userName, long[] billingProjectIds) {
-        Helper.checkNullAndEmpty(userName, "userName");
-        Helper.checkNull(billingProjectIds, "billingProjectIds");
-        if (billingProjectIds.length == 0) {
-            throw new IllegalArgumentException("The 'billingProjectIds' array can not be empty.");
-        }
-        for (long projectId : billingProjectIds) {
-            if (projectId <= 0) {
-                throw new IllegalArgumentException("Any billing project id should be positive");
-            }
-        }
-    }
 }

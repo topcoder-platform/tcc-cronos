@@ -14,7 +14,7 @@ import com.topcoder.util.config.ConfigManager;
  * @author TCSDEVELOPER
  * @version 1.0
  */
-final class TestHelper {
+class TestHelper {
 
     /**
      * Represents the namespace to load search builder configuration.

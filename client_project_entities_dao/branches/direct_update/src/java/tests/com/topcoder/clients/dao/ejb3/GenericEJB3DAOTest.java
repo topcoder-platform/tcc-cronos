@@ -408,6 +408,96 @@ public class GenericEJB3DAOTest extends TestBase {
 
     /**
      * <p>
+     * Tests the <code>initialize()</code> for proper behavior.
+     * DAOConfigurationException if needed configurations are missing.
+     * </p>
+     *
+     * @throws Exception
+     *                 to JUnit
+     * @since 1.2
+     */
+    public void test_initialize_failure_11() throws Exception {
+        try {
+            target = new ProjectDAOBean();
+            target.setEntityManager(em);
+
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "searchBundleManagerNamespace",
+                    searchBundleManagerNamespace);
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "configFileName", "test_files/test1.properties");
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "configNamespace", configNamespace);
+
+            target.initialize();
+            fail("DAOConfigurationException expected.");
+        } catch (DAOConfigurationException e) {
+            // ok
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the <code>initialize()</code> for proper behavior.
+     * DAOConfigurationException if needed configurations are missing.
+     * </p>
+     *
+     * @throws Exception
+     *                 to JUnit
+     * @since 1.2
+     */
+    public void test_initialize_failure_12() throws Exception {
+        try {
+            target = new ProjectDAOBean();
+            target.setEntityManager(em);
+
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "searchBundleManagerNamespace",
+                    searchBundleManagerNamespace);
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "configFileName", "test_files/test2.properties");
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "configNamespace", configNamespace);
+
+            target.initialize();
+            fail("DAOConfigurationException expected.");
+        } catch (DAOConfigurationException e) {
+            // ok
+        }
+    }
+
+    /**
+     * <p>
+     * Tests the <code>initialize()</code> for proper behavior.
+     * DAOConfigurationException if needed configurations are missing.
+     * </p>
+     *
+     * @throws Exception
+     *                 to JUnit
+     * @since 1.2
+     */
+    public void test_initialize_failure_13() throws Exception {
+        try {
+            target = new ProjectDAOBean();
+            target.setEntityManager(em);
+
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "searchBundleManagerNamespace",
+                    searchBundleManagerNamespace);
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "configFileName", "test_files/test3.properties");
+            TestHelper.setPrivateField(GenericEJB3DAO.class, target,
+                    "configNamespace", configNamespace);
+
+            target.initialize();
+            fail("DAOConfigurationException expected.");
+        } catch (DAOConfigurationException e) {
+            // ok
+        }
+    }
+
+    /**
+     * <p>
      * Tests the <code>setEntityManager(EntityManager)</code> for proper
      * behavior.
      *
@@ -447,7 +537,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_getEntityBeanType_1() throws Exception {
-        target.initialize();
         assertEquals("EntityBeanType", Project.class, target
                 .getEntityBeanType());
     }
@@ -462,7 +551,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_flush_1() throws Exception {
-        target.initialize();
         target.flush();
         // no exception is ok.
     }
@@ -477,7 +565,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_clear_1() throws Exception {
-        target.initialize();
         target.clear();
         // no exception is ok.
     }
@@ -492,8 +579,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_retrieveById_1() throws Exception {
-        target.initialize();
-
         // prepare data
         long id = 100;
         Client client = createClient(200);
@@ -516,13 +601,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_retrieveById_failure_1() throws Exception {
-        target.initialize();
-
-        // prepare data
-        long id = 100;
-        Client client = createClient(200);
-        createProjectWithClient(id, client);
-
         try {
             target.retrieveById(null);
             fail("IllegalArgumentException expected.");
@@ -542,13 +620,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_retrieveById_failure_2() throws Exception {
-        target.initialize();
-
-        // prepare data
-        long id = 100;
-        Client client = createClient(200);
-        createProjectWithClient(id, client);
-
         try {
             target.retrieveById(0L);
             fail("IllegalArgumentException expected.");
@@ -568,13 +639,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_retrieveById_failure_3() throws Exception {
-        target.initialize();
-
-        // prepare data
-        long id = 100;
-        Client client = createClient(200L);
-        createProjectWithClient(id, client);
-
         try {
             target.retrieveById(-1L);
             fail("IllegalArgumentException expected.");
@@ -595,13 +659,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_retrieveById_failure_4() throws Exception {
-        target.initialize();
-
-        // prepare data
-        long id = 100;
-        Client client = createClient(200L);
-        createProjectWithClient(id, client);
-
         try {
             target.retrieveById(101L);
             fail("EntityNotFoundException expected.");
@@ -624,11 +681,6 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_retrieveById_failure_5() throws Exception {
         target = new ProjectDAOBean();
 
-        // prepare data
-        long id = 100;
-        Client client = createClient(200L);
-        createProjectWithClient(id, client);
-
         try {
             target.retrieveById(100L);
             fail("DAOConfigurationException expected.");
@@ -646,8 +698,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_retrieveAll_1() throws Exception {
-        target.initialize();
-
         // prepare data
         long id = 100;
         Client client = createClient(200L);
@@ -684,13 +734,6 @@ public class GenericEJB3DAOTest extends TestBase {
     public void test_retrieveAll_failure_1() throws Exception {
         target = new ProjectDAOBean();
 
-        // prepare data
-        long id = 100;
-        Client client = createClient(200L);
-        createProjectWithClient(id++, client);
-        createProjectWithClient(id++, client);
-        createProjectWithClient(id++, client);
-        createProjectWithClient(id, client);
         try {
             target.retrieveAll();
             fail("DAOConfigurationException expected.");
@@ -743,8 +786,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_searchByName_failure_1() throws Exception {
-        target.initialize();
-
         try {
             target.searchByName(null);
             fail("IllegalArgumentException expected.");
@@ -763,8 +804,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_searchByName_failure_2() throws Exception {
-        target.initialize();
-
         try {
             target.searchByName("  ");
             fail("IllegalArgumentException expected.");
@@ -783,8 +822,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_searchByName_failure_3() throws Exception {
-        target.initialize();
-
         try {
             target.searchByName("\t");
             fail("IllegalArgumentException expected.");
@@ -803,8 +840,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_searchByName_failure_4() throws Exception {
-        target.initialize();
-
         try {
             target.searchByName("\n");
             fail("IllegalArgumentException expected.");
@@ -923,8 +958,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_save_1() throws Exception {
-        target.initialize();
-
         // prepare data
         Client client = createClient(11);
         Project project = createProjectWithClient(110, client);
@@ -947,8 +980,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_save_failure_1() throws Exception {
-        target.initialize();
-
         try {
             target.save(null);
             fail("IllegalArgumentException expected.");
@@ -993,8 +1024,6 @@ public class GenericEJB3DAOTest extends TestBase {
      */
     @SuppressWarnings("unchecked")
     public void test_delete_1() throws Exception {
-        target.initialize();
-
         // prepare data
         Client client = createClient(11);
         Project project = createProjectWithClient(110, client);
@@ -1017,8 +1046,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_delete_failure_1() throws Exception {
-        target.initialize();
-
         try {
             target.delete(null);
             fail("IllegalArgumentException expected.");
@@ -1060,7 +1087,6 @@ public class GenericEJB3DAOTest extends TestBase {
      *                 to JUnit
      */
     public void test_delete_failure_3() throws Exception {
-        target.initialize();
         // prepare data
         Client client = createClient(11);
         Project project = createProjectWithClient(110, client);

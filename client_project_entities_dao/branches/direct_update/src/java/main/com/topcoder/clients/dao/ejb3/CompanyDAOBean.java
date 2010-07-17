@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
@@ -42,6 +43,9 @@ import com.topcoder.clients.model.Project;
  * operations, retrieve the EntityManager using it's corresponding getter.
  * </p>
  * <p>
+ * Changes in version 1.2: javax.ejb.Stateless annotation is added back.
+ * </p>
+ * <p>
  * <strong>THREAD SAFETY:</strong> This class is technically mutable since the
  * inherited configuration properties (with {@link PersistenceContext}) are set
  * after construction, but the container will not initialize the properties more
@@ -49,13 +53,14 @@ import com.topcoder.clients.model.Project;
  * safety in this case.
  * </p>
  *
- * @author Mafy, TCSDEVELOPER
- * @version 1.1
+ * @author Mafy, nhzp339, TCSDEVELOPER
+ * @version 1.2
  */
 @Local(CompanyDAOLocal.class)
 @Remote(CompanyDAORemote.class)
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
+@Stateless(name = CompanyDAO.BEAN_NAME)
 public class CompanyDAOBean extends GenericEJB3DAO<Company, Long> implements
         CompanyDAO, CompanyDAOLocal, CompanyDAORemote {
     /**
@@ -144,7 +149,7 @@ public class CompanyDAOBean extends GenericEJB3DAO<Company, Long> implements
             return Helper.getEntities("company", company, entityManager, QUERY_PROJECTS);
         } catch (Exception e) {
             throw Helper.wrapWithDAOException(e,
-                    "Failed to get clients for company.");
+                    "Failed to get projects for company.");
         }
     }
 }

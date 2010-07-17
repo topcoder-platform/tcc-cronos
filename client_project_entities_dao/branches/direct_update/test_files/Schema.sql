@@ -69,7 +69,16 @@ modification_date DATETIME YEAR TO FRACTION default CURRENT YEAR TO FRACTION,
 modification_user VARCHAR(64),
 is_deleted SMALLINT,
 parent_project_id INT,
-is_manual_prize_setting SMALLINT
+is_manual_prize_setting SMALLINT,
+budget DECIMAL(8,3)
+);
+
+CREATE TABLE project_budget_audit (
+project_budget_audit_id serial NOT NULL,
+project_id INT NOT NULL,
+changed_amount DECIMAL(8,3),
+creation_date DATETIME YEAR TO FRACTION default CURRENT YEAR TO FRACTION,
+creation_user VARCHAR(64)
 );
 
 -- client_user_xref
@@ -133,8 +142,8 @@ CREATE TABLE project_manager (
 create table project_contest_fee (
     project_contest_fee_id INT not null,
     project_id INT not null,
-    contest_type VARCHAR(64) not null,
-    sub_type VARCHAR(64),
+    contest_type_id INT,
+    is_studio SMALLINT,
     contest_fee DECIMAL(5,0),
     creation_user VARCHAR(64),
     creation_date DATETIME YEAR TO FRACTION,
@@ -273,10 +282,14 @@ alter table project_worker add constraint foreign key
 	(project_id) 
 	constraint r172_579;
 
+alter table project_budget_audit add constraint primary key 
+	(project_budget_audit_id)
+	constraint project_budget_audit_pk;
 
-
+alter table project_budget_audit add constraint foreign key 
+	(project_id) references project (project_id)
+	constraint project_budget_audit_project_fk;
 
 create sequence PROJECT_CONTEST_FEE_SEQ;
-
 
 grant select on "informix".PROJECT_CONTEST_FEE_SEQ to "public" as "informix";

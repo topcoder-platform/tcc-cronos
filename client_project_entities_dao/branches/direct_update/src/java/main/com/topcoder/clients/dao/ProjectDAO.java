@@ -28,6 +28,13 @@ import com.topcoder.clients.model.ProjectContestFee;
  * </ul>
  * </p>
  * <p>
+ * Changes in version 1.2:
+ * <ul>
+ *   <li>Add updateProjectBudget method to update the project’s budget.</li>
+ *   <li>Add getUsersByProject method to get all users' name who have access of the specified billing project.</li>
+ * </ul>
+ * </p>
+ * <p>
  * See base interface for other available operations.
  * </p>
  * <p>
@@ -35,8 +42,8 @@ import com.topcoder.clients.model.ProjectContestFee;
  * thread safe.
  * </p>
  *
- * @author Mafy, flying2hk, TCSDEVELOPER
- * @version 1.1
+ * @author Mafy, flying2hk, nhzp339, TCSDEVELOPER
+ * @version 1.2
  */
 @Remote
 public interface ProjectDAO extends GenericDAO<Project, Long> {
@@ -75,7 +82,7 @@ public interface ProjectDAO extends GenericDAO<Project, Long> {
      *                 if any error occurs while performing this operation.
      */
     public Project retrieveById(Long id, boolean includeChildren)
-        throws EntityNotFoundException, DAOException;
+        throws DAOException;
 
     /**
      * <p>
@@ -280,4 +287,46 @@ public interface ProjectDAO extends GenericDAO<Project, Long> {
      * @since 1.1
      */
     public List<Project> getProjectsByClientId(long clientId) throws DAOException;
+
+    /**
+     * <p>
+     * Updates the project’s budget to current budget + updatedAmount.
+     * </p>
+     *
+     * @param username
+     *            the user name
+     * @param billingProjectId
+     *            the id for the project which is to be updated.
+     * @param updatedAmount
+     *            the delta amount of budget to add(or subtract if it's negative).
+     * @return The budget after modified.
+     * @throws IllegalArgumentException
+     *             if username is null or empty, or if updatedAmount makes the new budget negative(budget +
+     *             updatedAmount < 0)
+     * @throws DAOException
+     *             if any error occurs while performing this operation.
+     * @throws EntityNotFoundException
+     *             if project with given id is not found in the persistence.
+     * @since 1.2
+     */
+    public double updateProjectBudget(String username, long billingProjectId, double updatedAmount) throws DAOException;
+
+    /**
+     * <p>
+     * Gets all users' name who have access of the billing project.
+     * </p>
+     *
+     * @param billingProjectId
+     *            the id for the project which is to be updated.
+     * @return All the users's name who have access of the billing project. If none have access, empty list is returned
+     *         but if project doesn't exist, EntityNotFoundException is thrown.
+     * @throws IllegalArgumentException
+     *             if id &lt;= 0
+     * @throws DAOException
+     *             if any error occurs while performing this operation.
+     * @throws EntityNotFoundException
+     *             if project with given id is not found in the persistence.
+     * @since 1.2
+     */
+    public List<String> getUsersByProject(long billingProjectId) throws DAOException;
 }

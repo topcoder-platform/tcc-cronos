@@ -6,4 +6,5 @@
             <jndi-name>ProjectDAOBean/remote</jndi-name>
         </session>
     </enterprise-beans>
+    <security-domain>java:/jaas/JBossLoginModule</security-domain>
 </jboss>

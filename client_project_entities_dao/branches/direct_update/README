@@ -15,7 +15,7 @@ This readme file explains how to setup and build this component.
 4. The following standard build script properties can be changed (defaults are noted)
 	debug=off - as expected
 	verbose=no - as expected
-	cobertura.dir=${ext_libdir}/cobertura/1.9
+	cobertura.dir=${ext_libdir}/cobertura/1.8
 		installation directory of cobertura script expects {$cobertura.dir}/cobertura.jar
 		and {$cobertura.dir}/lib/containg Jars for asm, jakarta, and log4j to run cobertura task
 

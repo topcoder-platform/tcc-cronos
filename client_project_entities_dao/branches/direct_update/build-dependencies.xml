@@ -5,7 +5,7 @@
 	<property name="component.target" value="1.5" />
 	<property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
 
-	<property name="jboss_home" value="D:/jboss-4.2.2.GA/jboss-4.2.2.GA"/>
+	<property name="jboss_home" value="C:/AppServers/jboss/jboss-4.2.3.GA"/>
 	<property name="jboss_config_name" value="default" />
 
 	<!-- TCS dependencies -->
@@ -20,18 +20,19 @@
 	<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
 	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
 	<property name="data_validation.jar" value="${tcs_libdir}/data_validation/1.1.1/data_validation.jar" />
-	<property name="class_associations.jar" value="${tcs_libdir}/class_associations/1.0.0/class_associations.jar" />
+	<property name="class_associations.jar" value="${tcs_libdir}/class_associations/1.0/class_associations.jar" />
 	<property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0/id_generator.jar" /> 
 	<property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar" />
 
-    <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.0/search_builder_1.4_modified.jar" />
+  <property name="search_builder.jar" value="${testfiles}/search_builder1.4/search_builder_1.4_modified.jar" />
+  <!--property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.1/search_builder.jar" /-->
 	<!-- 3rd party dependencies -->
 	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />
 	<property name="javaee.jar" value="${ext_libdir}/javaee/javaee.jar" />
 	<property name="SaveCoberturaData.jar" value="${testfiles}/SaveCoberturaData.jar"/>
 
 	
-	<property name="jdbc.informix.jar" value="${ext_libdir}/informix/ifxjdbc.jar" />
+	<property name="jdbc.informix.jar" value="${ext_libdir}/jdbc/informix/ifxjdbc.jar" />
 
 	<property name="cglib.jar" value="${jboss_home}/server/${jboss_config_name}/lib/cglib.jar" />
 	<property name="dom4j.jar" value="${jboss_home}/server/${jboss_config_name}/lib/dom4j.jar" />
@@ -76,7 +77,6 @@
 		<pathelement location="${object_formatter.jar}" />
 		<pathelement location="${search_builder.jar}" />
 		<pathelement location="${data_validation.jar}" />
-        <pathelement location="${class_associations.jar}" />
 		<pathelement location="${id_generator.jar}" />
 		<pathelement location="${db_connection_factory.jar}" />
 	</path>
@@ -103,7 +103,7 @@
 		<pathelement location="${hibernate-annotations.jar}" />
 		<pathelement location="${hibernate-entitymanager.jar}" />
 		<pathelement location="${javaee.jar}" />
-        	<pathelement location="${SaveCoberturaData.jar}" />
+		<pathelement location="${testfiles}/SaveCoberturaData.jar" />
 	</path>
 
 </project>
