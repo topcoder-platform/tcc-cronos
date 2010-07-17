@@ -1,0 +1,13 @@
+- build-dependencies.xml has been modified to list all the jars.
+
+- For onsky's review, I removed the public from the Helper method (co-pilot said this was recommended, but not required),
+  but for the other item co-pilot said the way I used was preferred.
+  
+  Here is co-pilot's response:
+  
+"I agree that neither of these are issues that should have affected the
+score, and I personally prefer your way of short-circuiting the if
+statement.  Yanbo or Volodymyr, can you please raise the 3.1.2 score
+here to a 4 and change the one required item to recommended?"
+
+*** You can refer to the scorecard to see the manager correction for that item.

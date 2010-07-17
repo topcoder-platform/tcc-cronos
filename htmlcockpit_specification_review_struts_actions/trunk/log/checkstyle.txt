@@ -1,0 +1,6 @@
+Starting audit...
+C:\TopCoder\proj\java\htmlcockpit_specification_review_struts_actions_1.0.0\src\java\main\com\topcoder\direct\actions\ResubmitSpecificationReviewAction.java:107:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\htmlcockpit_specification_review_struts_actions_1.0.0\src\java\main\com\topcoder\direct\actions\SaveSpecificationReviewCommentAction.java:192:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\htmlcockpit_specification_review_struts_actions_1.0.0\src\java\main\com\topcoder\direct\actions\StartSpecificationReviewAction.java:197:11: Catching 'Exception' is not allowed.
+C:\TopCoder\proj\java\htmlcockpit_specification_review_struts_actions_1.0.0\src\java\main\com\topcoder\direct\actions\ViewSpecificationReviewAction.java:129:11: Catching 'Exception' is not allowed.
+Audit done.
