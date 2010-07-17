@@ -1637,10 +1637,16 @@ public class DirectServiceFacadeBean implements DirectServiceFacadeLocal, Direct
         result.setNewBudget(newBudget);
         result.setChangedAmount(changedAmount);
 
-        // update project budget
-        projectDAO.updateProjectBudget(billingProjectId, changedAmount);
+        List<String> recipients = null;
+        try {
+            // update project budget
+            projectDAO.updateProjectBudget(tcSubject.toString(), billingProjectId, changedAmount);
 
-        List<String> recipients = projectDAO.getUsersByProject(billingProjectId);
+            recipients = projectDAO.getUsersByProject(billingProjectId);
+        } catch (DAOException e) {
+            logException(log, methodName, e);
+            throw new DirectServiceFacadeException("DAOException occurs while updating project budgets.", e);
+        }
         Map<String, String> params = new HashMap<String, String>();
         params.put("billingProjectName", project.getName());
         params.put("oldBudget", Double.toString(oldBudget));
