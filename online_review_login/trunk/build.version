@@ -5,7 +5,7 @@ component.package=com.cronos.onlinereview.login
 component.packagedir=com/cronos/onlinereview/login
 component.version.major=1
 component.version.minor=1
-component.version.micro=0
+component.version.micro=2
 component.version.build=1
 
 # Defines the Main-Class property for the manifest file (e.g. com.topcoder.utility.SomeClass)

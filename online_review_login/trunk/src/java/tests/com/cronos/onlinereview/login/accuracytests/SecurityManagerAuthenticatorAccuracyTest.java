@@ -106,7 +106,7 @@ public class SecurityManagerAuthenticatorAccuracyTest extends MockStrutsTestCase
 
         Response response = authenticator.doAuthenticate(principal);
         assertFalse("Authenticate should be unsuccessful.", response.isSuccessful());
-        assertEquals("The message should be Failed.", "Failed", response.getMessage());
+        assertEquals("The message should be Failed.", "Username and/or password are incorrect", response.getMessage());
 
         AccuracyTestHelper.removeUser(userPrincipal, (TCSubject) response.getDetails());
     }

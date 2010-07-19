@@ -222,7 +222,7 @@ public class SecurityManagerAuthenticatorTest extends MockStrutsTestCase {
         Response response = authenticator.doAuthenticate(principal);
 
         assertFalse("Authenticate should be unsuccessful.", response.isSuccessful());
-        assertEquals("The message should be Failed.", "Failed", response.getMessage());
+        assertEquals("The message should be Failed.", "Username and/or password are incorrect", response.getMessage());
     }
 
     /**

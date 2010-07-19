@@ -67,7 +67,7 @@
                         <Value>jdbc:mysql://localhost:3306/orl</Value>
                     </Property>
                     <Property name="user">
-                        <Value>topcoder</Value>
+                        <Value>root</Value>
                     </Property>
                     <Property name="password">
                         <Value>topcoder</Value>
