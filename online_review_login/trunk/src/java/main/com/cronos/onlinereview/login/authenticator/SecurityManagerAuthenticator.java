@@ -44,9 +44,13 @@ import javax.naming.NamingException;
  * <p>
  * This class is thread safe since it does not contain any mutable inner state.
  * </p>
+ * <p>
+ * Changes in 1.0.1: Updated {@link #doAuthenticate(Principal)} method to create {@link Response} instance with message
+ * from {@link AuthenticateException} in case of failure. 
+ * </p>
  *
- * @author woodjohn, maone
- * @version 1.0
+ * @author woodjohn, maone, isv
+ * @version 1.0.1
  */
 public class SecurityManagerAuthenticator extends AbstractAuthenticator {
 
@@ -151,7 +155,7 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
 
             return new Response(true, "Succeeded", tcSubject);
         } catch (AuthenticationException e) {
-            return new Response(false, "Failed");
+            return new Response(false, e.getMessage());
         } catch (CreateException e) {
             throw new AuthenticateException("Can't create loginRemote instance.", e);
         } catch (GeneralSecurityException e) {

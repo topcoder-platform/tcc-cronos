@@ -17,9 +17,13 @@ import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 
+import org.apache.struts.Globals;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 import org.apache.struts.validator.DynaValidatorForm;
 
@@ -41,11 +45,14 @@ import java.io.StringWriter;
  * Changes in 1.1: Added support for "Remember me" checkbox and usage of AuthCookieManager.
  * </p>
  * <p>
+ * Changes in 1.1.1: Updated the logic to support impersonated logins.
+ * </p>
+ * <p>
  * <b>Thread Safety:</b>This class is thread safe since it does not contain any mutable inner states.
  * </p>
  *
- * @author woodjhon, maone, saarixx, TCSDEVELOPER
- * @version 1.1
+ * @author woodjhon, maone, saarixx, isv
+ * @version 1.1.1
  * @since 1.0
  */
 public class LoginActions extends DispatchAction {
@@ -239,6 +246,12 @@ public class LoginActions extends DispatchAction {
                 // Actually in case of wrong login attempt, an attribute should be place into the request
                 // This is to let use the same page in the application for the first login
                 // and for every subsequent incorrect login attempt
+                ActionErrors errors = (ActionErrors) request.getAttribute(Globals.ERROR_KEY);
+                if (errors == null) {
+                    errors = new ActionErrors();
+                    request.setAttribute(Globals.ERROR_KEY, errors);
+                }
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(authResponse.getMessage(), false));
                 return mapping.findForward("failure");
             }
         } catch (MissingPrincipalKeyException e) {
