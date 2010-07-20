@@ -450,16 +450,8 @@ public class AuthCookieManagerImpl implements AuthCookieManager {
     private long validateSession(String hashedPasswordInCookie, String realHashedPassword, HttpServletRequest request,
                                  long userId) {
 
-        // Get old session from the request
-        HttpSession session = request.getSession(false);
-
-        // Invalidate old session
-        if (session != null) {
-            session.invalidate();
-        }
-
-        // Get new session
-        session = request.getSession();
+        // Get session from the request
+        HttpSession session = request.getSession();
 
         // Set user ID to the session attribute
         session.setAttribute(userIdentifierKey, new Long(userId));
