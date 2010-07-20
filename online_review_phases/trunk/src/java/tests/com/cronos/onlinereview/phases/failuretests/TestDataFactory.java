@@ -156,6 +156,24 @@ public class TestDataFactory {
      *
      * @return a new <code>PhaseType</code> instance.
      */
+    public static PhaseType getSpecificationSubmissionPhaseType() {
+        return new PhaseType(11, "Specification Submission");
+    }
+
+    /**
+     * <p>Generates a new instance of <code>PhaseType</code> type initialized with random data.</p>
+     *
+     * @return a new <code>PhaseType</code> instance.
+     */
+    public static PhaseType getSpecificationReviewPhaseType() {
+        return new PhaseType(13, "Specification Review");
+    }
+
+    /**
+     * <p>Generates a new instance of <code>PhaseType</code> type initialized with random data.</p>
+     *
+     * @return a new <code>PhaseType</code> instance.
+     */
     public static PhaseType getApprovalPhaseType() {
         return new PhaseType(11, "Approval");
     }
@@ -742,6 +760,7 @@ public class TestDataFactory {
      *
      * @return a new <code>Connection</code> instance.
      */
+    @SuppressWarnings("deprecation")
     public static Connection getConnection() throws Exception {
         DBConnectionFactory factory = new DBConnectionFactoryImpl("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
         return factory.createConnection();
@@ -755,4 +774,142 @@ public class TestDataFactory {
     public static Connection getMockConnection() {
         return new MockConnection();
     }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getSpecificationSubmissionPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationSubmissionPhaseType());
+        result.setPhaseStatus(getScheduledPhaseStatus());
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getOpenSpecificationSubmissionPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationSubmissionPhaseType());
+        result.setPhaseStatus(getOpenPhaseStatus());
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getClosedSpecificationSubmissionPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationSubmissionPhaseType());
+        result.setPhaseStatus(getClosedPhaseStatus());
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getSpecificationSubmissionPhaseWithManualScreening() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationSubmissionPhaseType());
+        result.setPhaseStatus(getScheduledPhaseStatus());
+        result.setAttribute("Manual Screening", "Yes");
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getSpecificationReviewPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationReviewPhaseType());
+        result.setPhaseStatus(getScheduledPhaseStatus());
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getOpenSpecificationReviewPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationReviewPhaseType());
+        result.setPhaseStatus(getOpenPhaseStatus());
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getClosedSpecificationReviewPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationReviewPhaseType());
+        result.setPhaseStatus(getClosedPhaseStatus());
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getScheduledSpecificationReviewPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationReviewPhaseType());
+        result.setPhaseStatus(getScheduledPhaseStatus());
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
+    public static Phase getSpecificationReviewPhaseWithManualScreening() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getSpecificationReviewPhaseType());
+        result.setPhaseStatus(getScheduledPhaseStatus());
+        result.setAttribute("Manual Screening", "Yes");
+        result.setAttribute("Submission Number", "1");
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
 }

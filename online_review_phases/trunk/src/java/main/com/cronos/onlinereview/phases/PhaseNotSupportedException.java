@@ -23,6 +23,11 @@ import com.topcoder.management.phase.PhaseHandlingException;
  */
 public class PhaseNotSupportedException extends PhaseHandlingException {
     /**
+     * The generated serial version UID.
+     */
+    private static final long serialVersionUID = -2534347268584751918L;
+
+    /**
      * Create a new PhaseNotSupportedException instance with the specified error
      * message.
      *

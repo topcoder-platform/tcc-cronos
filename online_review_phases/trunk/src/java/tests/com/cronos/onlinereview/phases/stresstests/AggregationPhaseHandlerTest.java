@@ -9,7 +9,6 @@ import java.util.Date;
 import com.cronos.onlinereview.phases.AggregationPhaseHandler;
 import com.cronos.onlinereview.phases.AppealsResponsePhaseHandler;
 import com.cronos.onlinereview.phases.ReviewPhaseHandler;
-import com.dumbster.smtp.SimpleSmtpServer;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.resource.Resource;

@@ -41,7 +41,7 @@ public class PhaseTypeLookupUtilityFailureTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ConfigHelper.releaseSingletonInstance(PhaseTypeLookupUtility.class, "cachedPairs");
+        ConfigHelper.releaseSingletonInstance(PhaseTypeLookupUtility.class, "CACHED_PAIRS");
     }
 
     /**

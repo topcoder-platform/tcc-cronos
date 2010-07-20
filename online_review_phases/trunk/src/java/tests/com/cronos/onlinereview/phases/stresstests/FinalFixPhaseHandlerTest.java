@@ -196,7 +196,7 @@ public class FinalFixPhaseHandlerTest extends StressBaseTest {
                 insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
                 insertResourceInfo(conn, aggregator.getId(), 1, "1002");
                 insertUploads(conn, new Upload[]{upload1 });
-                insertSubmissions(conn, new Submission[]{submission1 });
+                insertSubmissions(conn, new Submission[]{submission1});
                 insertScorecards(conn, new Scorecard[]{scorecard1 });
                 insertReviews(conn, new Review[]{review1 });
 

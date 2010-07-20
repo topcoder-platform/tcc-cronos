@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
-import java.util.List;
 
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
@@ -17,8 +15,6 @@ import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
-import com.topcoder.management.phase.ContestDependencyAutomation;
-
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.Project;
 
@@ -76,9 +72,12 @@ import com.topcoder.project.phases.Project;
  *     scorecards tied to project but not to phase type.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Change in 1.4: Updated not to use ContestDependencyAutomation.
+ * </p>
  *
- * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
- * @version 1.3
+ * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy
+ * @version 1.4
  */
 public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -91,6 +90,13 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * constant for Approval phase type.
      */
     private static final String PHASE_TYPE_APPROVAL = "Approval";
+
+    /**
+     * constant for Approver.
+     *
+     * @since 1.4
+     */
+    private static final String APPROVER = "Approver";
 
     /**
      * Create a new instance of ApprovalPhaseHandler using the default namespace
@@ -151,7 +157,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * @return True if the input phase can be executed, false otherwise.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Approval" type.
+     *        &quot;Approval&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input is null.
@@ -183,9 +189,9 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
                 // Get the number of required approval (use reviewer number
                 // criteria), if it's not set, fallback value is used
-                if (phase.getAttribute("Reviewer Number") != null) {
+                if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
                     approverNum = PhasesHelper.getIntegerAttribute(phase,
-                                    "Reviewer Number");
+                            PhasesHelper.REVIEWER_NUMBER_PROPERTY);
                 }
 
                 // version 1.1 : Return true if approver number is met
@@ -221,11 +227,15 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * Version 1.2 : for start, add the approver info. for stop, add the result to the value map.
      * </p>
      *
+     * <p>
+     * Change in 1.4: Updated not to use ContestDependencyAutomation.
+     * </p>
+     *
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Approval" type.
+     *         &quot;Approval&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
@@ -237,7 +247,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPROVAL);
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
-        ManagerHelper managerHelper = getManagerHelper();
         Map<String, Object> values = new HashMap<String, Object>();
 
         if (toStart) {
@@ -253,7 +262,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         } else {
             // Check whether there is approval review rejected
             boolean rejected = checkScorecardsRejected(phase);
-            values.put("RESULT", rejected ? "rejected" : "approved");
+            values.put("RESULT", rejected ? PhasesHelper.REJECTED : PhasesHelper.APPROVED);
 
             if (rejected) {
                 // approval review rejected, insert final review/final fix phases
@@ -276,25 +285,8 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                     PhasesHelper.createAggregatorOrFinalReviewer(previousFinalReviewPhase, getManagerHelper(), conn,
                                                                  "Final Reviewer",
                                                                  finalReviewPhaseId, operator);
-
-                    // Since new FF/FR phase are added adjust the timelines for depending projects accordingly
-                    // by amount of time equal to difference between the end times for current processed Approval phase
-                    // and newly added Final Review phase
-                    Date currentPhaseEndDate = phase.getScheduledEndDate();
-                    Date newPhaseEndDate = currentPrj.getAllPhases()[currentPhaseIndex + 2].getScheduledEndDate();
-                    long diff = newPhaseEndDate.getTime() - currentPhaseEndDate.getTime();
-                    ContestDependencyAutomation auto
-                        = new ContestDependencyAutomation(managerHelper.getPhaseManager(),
-                                                          managerHelper.getProjectManager(),
-                                                          managerHelper.getProjectLinkManager());
-                    List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(currentPrj.getId(), diff);
-                    for (Phase[] affectedProjectPhases : affectedPhases) {
-                        managerHelper.getPhaseManager().updatePhases(affectedProjectPhases[0].getProject(), operator);
-                    }
                 } catch (PhaseManagementException e) {
                     throw new PhaseHandlingException("Problem when persisting phases", e);
-                } catch (PersistenceException e) {
-                    throw new PhaseHandlingException("Problem when reading phases", e);
                 } finally {
                     PhasesHelper.closeConnection(conn);
                 }
@@ -330,7 +322,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
-                                                                   new String[]{"Approver"},
+                                                                   new String[]{APPROVER},
                                                                    phase.getProject().getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -355,7 +347,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
             Review[] approveReviews
                 = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
                                                                     phase.getProject().getId(),
-                                                                    new String[] {"Approver"},
+                                                                    new String[] {APPROVER},
                                                                     null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
@@ -366,8 +358,8 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
             // approverNum default to 1
             int approverNum = 1;
-            if (phase.getAttribute("Reviewer Number") != null) {
-                approverNum = PhasesHelper.getIntegerAttribute(phase, "Reviewer Number");
+            if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
+                approverNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
             }
 
             // counter for committed review
@@ -406,7 +398,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn,
-                getManagerHelper(), phase.getProject().getId(), new String[] {"Approver"}, null);
+                getManagerHelper(), phase.getProject().getId(), new String[] {APPROVER}, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // check for approved/rejected comments.
@@ -417,9 +409,10 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 for (int i = 0; i < comments.length; i++) {
                     String value = (String) comments[i].getExtraInfo();
                     if (comments[i].getCommentType().getName().equals("Approval Review Comment")) {
-                        if ("Approved".equalsIgnoreCase(value) || "Accepted".equalsIgnoreCase(value)) {
+                        if (PhasesHelper.APPROVED.equalsIgnoreCase(value)
+                            || PhasesHelper.ACCEPTED.equalsIgnoreCase(value)) {
                             continue;
-                        } else if ("Rejected".equalsIgnoreCase(value)) {
+                        } else if (PhasesHelper.REJECTED.equalsIgnoreCase(value)) {
                             rejected = true;
                             break;
                         } else {
@@ -455,7 +448,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn,
-                getManagerHelper(), phase.getProject().getId(), new String[] {"Approver"}, null);
+                getManagerHelper(), phase.getProject().getId(), new String[] {APPROVER}, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // check for approved/rejected comments.

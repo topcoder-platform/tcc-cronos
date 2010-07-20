@@ -11,7 +11,6 @@ import com.topcoder.util.config.ConfigManager;
 
 import java.sql.Connection;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -257,7 +256,7 @@ public class AbstractPhaseHandlerTest extends BaseTest {
                 AbstractPhaseHandler.class, handler, "endPhaseEmailOptions");
         assertNotNull("The field is null.", endPhaseEmailOptions);
         assertEquals("The field is invalid.", 2, endPhaseEmailOptions.size());
-        assertEquals("The value is invalid.", "Phase Start", endPhaseEmailOptions.get("Manager").getSubject());
+        assertEquals("The value is invalid.", "Phase End", endPhaseEmailOptions.get("Manager").getSubject());
         assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Reviewer"));
         assertEquals("The value is invalid.", 0, endPhaseEmailOptions.get("Reviewer").getPriority());
     }
@@ -277,7 +276,7 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         Map<String, EmailOptions> startPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
                 AbstractPhaseHandler.class, handler, "startPhaseEmailOptions");
         assertNotNull("The field is null.", startPhaseEmailOptions);
-        assertEquals("The field is invalid.", 14, startPhaseEmailOptions.size());
+        assertEquals("The field is invalid.", 22, startPhaseEmailOptions.size());
         assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Manager"));
         assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Reviewer"));
 
@@ -285,7 +284,7 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         Map<String, EmailOptions> endPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
                 AbstractPhaseHandler.class, handler, "endPhaseEmailOptions");
         assertNotNull("The field is null.", endPhaseEmailOptions);
-        assertEquals("The field is invalid.", 14, endPhaseEmailOptions.size());
+        assertEquals("The field is invalid.", 22, endPhaseEmailOptions.size());
         assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Manager"));
         assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Reviewer"));
     }
@@ -293,7 +292,9 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with null.
      *
-     * @throws Exception
+     * @throws PhaseHandlingException
+     *             into JUnit
+     * @throws ConfigurationException
      *             into JUnit
      */
     public void testSendEmail_nullPhase() throws PhaseHandlingException, ConfigurationException {
@@ -466,33 +467,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
             Phase phase = createPhase(1, 2, "Open", 1, "Registration");
             phase.setLength(0);
-
-            handler.sendEmail(phase);
-
-            // manually check mailbox.
-        } finally {
-            cleanTables();
-        }
-    }
-
-    /**
-     * Tests the AbstractPhaseHandler.sendEmail(Phase) method with scheduled start date after scheduled end date.
-     *
-     * @throws Exception
-     *             not under test.
-     */
-    public void testSendEmailWithWrongScheduledDate() throws Exception {
-        AbstractPhaseHandler handler = new AbstractPhaseHandlerSubClass(ABSTRACT_HANDLER_NAMESPACE);
-
-        try {
-            cleanTables();
-            setupProjectResourcesNotification("All");
-
-            Phase phase = createPhase(1, 2, "Open", 1, "Registration");
-
-            Date date = new Date();
-            phase.setScheduledEndDate(date);
-            phase.setScheduledStartDate(new Date(date.getTime() + 1000));
 
             handler.sendEmail(phase);
 

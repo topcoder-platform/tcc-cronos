@@ -63,7 +63,7 @@ public class LookupHelperTest extends BaseTest {
      * @throws Exception not during test.
      */
     public void testLookUpId() throws Exception {
-        Map map = new HashMap();
+        Map<String, Long> map = new HashMap<String, Long>();
         String value = "Open";
         long expectedId = 2;
         String sql = "SELECT phase_status_id FROM phase_status_lu WHERE name = ?";
@@ -81,7 +81,7 @@ public class LookupHelperTest extends BaseTest {
      * @throws Exception not during test.
      */
     public void testLookUpIdCache() throws Exception {
-        Map map = new HashMap();
+        Map<String, Long> map = new HashMap<String, Long>();
         String value = "Open";
         long expectedId = 2;
         String sql = "SELECT phase_status_id FROM phase_status_lu WHERE name = ?";
@@ -100,7 +100,7 @@ public class LookupHelperTest extends BaseTest {
      * @throws Exception not during test.
      */
     public void testLookUpIdConnection() throws Exception {
-        Map map = new HashMap();
+        Map<String, Long> map = new HashMap<String, Long>();
         String value = "Open";
         String sql = "SELECT phase_status_id FROM phase_status_lu WHERE name = ?";
         Connection conn = getConnection();

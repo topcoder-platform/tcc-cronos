@@ -4,6 +4,7 @@
 package com.cronos.onlinereview.phases.failuretests.lookup;
 
 import com.cronos.onlinereview.phases.failuretests.AbstractTestCase;
+import com.cronos.onlinereview.phases.failuretests.ConfigHelper;
 import com.cronos.onlinereview.phases.failuretests.TestDataFactory;
 import com.cronos.onlinereview.phases.failuretests.mock.MockConnection;
 import com.cronos.onlinereview.phases.lookup.ProjectInfoTypeLookupUtility;
@@ -40,6 +41,7 @@ public class ProjectInfoTypeLookupUtilityFailureTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ConfigHelper.releaseSingletonInstance(ProjectInfoTypeLookupUtility.class, "CACHED_PAIRS");
     }
 
     /**

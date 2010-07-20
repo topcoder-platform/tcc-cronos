@@ -15,6 +15,7 @@ import com.cronos.onlinereview.phases.lookup.PhaseTypeLookupUtilityTest;
 import com.cronos.onlinereview.phases.lookup.ProjectInfoTypeLookupUtilityTest;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtilityTest;
 import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtilityTest;
+import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtilityTest;
 import com.cronos.onlinereview.phases.lookup.UploadStatusLookupUtilityTest;
 import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtilityTest;
 
@@ -23,11 +24,15 @@ import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtilityTest;
  * This test case aggregates all Unit test cases.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.3
+ * @author myxgyy
+ * @version 1.4
  */
 public class UnitTests extends TestCase {
-
+    /**
+     * Aggregates all unit test cases.
+     *
+     * @return unit test suite.
+     */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
 
@@ -41,7 +46,7 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(UploadStatusLookupUtilityTest.class);
         suite.addTestSuite(NotificationTypeLookupUtilityTest.class);
         suite.addTestSuite(UploadTypeLookupUtilityTest.class);
-        //
+
         // log message
         suite.addTestSuite(LogMessageTest.class);
         // email options
@@ -67,10 +72,15 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(ApprovalPhaseHandlerTest.class);
         suite.addTestSuite(PostMortemPhaseHandlerTest.class);
 
+        // added in version 1.4
+        suite.addTestSuite(SubmissionTypeLookupUtilityTest.class);
+        suite.addTestSuite(SpecificationSubmissionPhaseHandlerTest.class);
+        suite.addTestSuite(SpecificationReviewPhaseHandlerTest.class);
+        suite.addTestSuite(PhasesHelperTest.class);
+
         // demo test
         suite.addTestSuite(DemoTest.class);
 
         return suite;
     }
-
 }

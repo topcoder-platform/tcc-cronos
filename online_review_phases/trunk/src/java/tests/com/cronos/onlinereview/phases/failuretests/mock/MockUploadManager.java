@@ -4,6 +4,7 @@
 
 package com.cronos.onlinereview.phases.failuretests.mock;
 
+import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.UploadType;
@@ -28,15 +29,18 @@ import java.util.ArrayList;
  * <p>A mock implementation of {@link UploadManager} class to be used for testing.
  * Overrides the protected methods declared by a super-class. The overridden methods are declared with package private access
  * so only the test cases could invoke them. The overridden methods simply call the corresponding method of a super-class.
+ * </p>
+ * <p>The version 1.4 add some methods: createSubmissionType, getAllSubmissionTypes,
+ * removeSubmissionType, updateSubmissionType, to suit new UploadManager.</p>
  *
- * @author  isv
- * @version 1.0
+ * @author  isv, stevenfrog
+ * @version 1.4
  */
 public class MockUploadManager implements UploadManager {
 
     /**
      * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Map</code>s mapping the <code>
-     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been 
+     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been
      * provided by the caller of the method.</p>
      */
     private static Map methodArguments = new HashMap();
@@ -81,12 +85,14 @@ public class MockUploadManager implements UploadManager {
      * @param uploadStatusIdGenerator The generator for UploadStatus ids
      * @param submissionIDGenerator The generator for Submission ids
      * @param submissionStatusIdGenerator The generator for SubmissionStatus ids
+     * @param submissionTypeIdGenerator the generator for submission type ids
      * @throws IllegalArgumentException If any argument is null
      */
     public MockUploadManager(UploadPersistence persistence, SearchBundle uploadSearchBundle,
             SearchBundle submissionSearchBundle, IDGenerator uploadIdGenerator,
             IDGenerator uploadTypeIdGenerator, IDGenerator uploadStatusIdGenerator,
-            IDGenerator submissionIDGenerator, IDGenerator submissionStatusIdGenerator) {
+            IDGenerator submissionIDGenerator, IDGenerator submissionStatusIdGenerator,
+            IDGenerator submissionTypeIdGenerator) {
     }
 
     /**
@@ -1087,6 +1093,45 @@ public class MockUploadManager implements UploadManager {
      */
     public static void init() {
         setMethodResult("searchSubmissions_Filter", new Submission[0]);
+    }
+
+    /**
+     * <p>Create the submission type.</p>
+     * @param arg0 submission type
+     * @param arg1 the argument
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public void createSubmissionType(SubmissionType arg0, String arg1) throws UploadPersistenceException {
+        // Empty
+    }
+
+    /**
+     * <p>Get all submission types.</p>
+     * @return the submission type
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public SubmissionType[] getAllSubmissionTypes() throws UploadPersistenceException {
+        return null;
+    }
+
+    /**
+     * <p>Remove submission type.</p>
+     * @param arg0 submission type
+     * @param arg1 the argument
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public void removeSubmissionType(SubmissionType arg0, String arg1) throws UploadPersistenceException {
+        // Empty
+    }
+
+    /**
+     * <p>Update submission type.</p>
+     * @param arg0 submission type
+     * @param arg1 the argument
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public void updateSubmissionType(SubmissionType arg0, String arg1) throws UploadPersistenceException {
+        // Empty
     }
 
 }

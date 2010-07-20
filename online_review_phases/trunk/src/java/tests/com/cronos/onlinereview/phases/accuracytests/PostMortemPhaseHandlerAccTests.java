@@ -167,6 +167,9 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         // test with open status.
         postMortemPhase.setPhaseStatus(PhaseStatus.OPEN);
 
+        // time passed
+        postMortemPhase.setActualStartDate(new Date(System.currentTimeMillis() - 1000));
+        postMortemPhase.setActualEndDate(new Date());
         // remove all dependencies
         for (int i = 0; i < postMortemPhase.getAllDependencies().length; ++i) {
             postMortemPhase.removeDependency(postMortemPhase.getAllDependencies()[i]);
@@ -176,7 +179,7 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setAttribute("Reviewer Number", "1");
 
         // insert post-mortem reviewer
-        Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 14);
+        Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 16);
 
         Connection conn = getConnection();
 

@@ -12,7 +12,6 @@ import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
-import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
@@ -79,7 +78,7 @@ public class AggregationReviewPhaseHandlerTest extends StressBaseTest {
             Phase aggregationReviewPhase = phases[7];
 
             // change dependency type to F2F
-            Dependency[] ds = aggregationReviewPhase.getAllDependencies();
+            aggregationReviewPhase.getAllDependencies();
 
             aggregationReviewPhase.getAllDependencies()[0].setDependentStart(false);
 

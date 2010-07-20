@@ -8,6 +8,7 @@ import com.cronos.onlinereview.phases.failuretests.lookup.PhaseTypeLookupUtility
 import com.cronos.onlinereview.phases.failuretests.lookup.ProjectInfoTypeLookupUtilityFailureTest;
 import com.cronos.onlinereview.phases.failuretests.lookup.ResourceRoleLookupUtilityFailureTest;
 import com.cronos.onlinereview.phases.failuretests.lookup.SubmissionStatusLookupUtilityFailureTest;
+import com.cronos.onlinereview.phases.failuretests.lookup.SubmissionTypeLookupUtilityFailureTest;
 import com.cronos.onlinereview.phases.failuretests.lookup.UploadStatusLookupUtilityFailureTest;
 import com.cronos.onlinereview.phases.failuretests.lookup.UploadTypeLookupUtilityFailureTest;
 import com.cronos.onlinereview.phases.failuretests.lookup.NotificationTypeLookupUtilityFailureTest;
@@ -25,6 +26,8 @@ public class FailureTests extends TestCase {
 
     public static Test suite() {
         final TestSuite suite = new TestSuite();
+
+        // com.cronos.onlinereview.phases.failuretests
         suite.addTest(AbstractPhaseHandlerFailureTest.suite());
 
         suite.addTest(AggregationPhaseHandlerFailureTest.suite());
@@ -44,6 +47,7 @@ public class FailureTests extends TestCase {
         suite.addTest(ScreeningPhaseHandlerFailureTest.suite());
         suite.addTest(SubmissionPhaseHandlerFailureTest.suite());
 
+        // com.cronos.onlinereview.phases.failuretests.lookup
         suite.addTest(NotificationTypeLookupUtilityFailureTest.suite());
         suite.addTest(PhaseStatusLookupUtilityFailureTest.suite());
         suite.addTest(PhaseTypeLookupUtilityFailureTest.suite());
@@ -52,9 +56,16 @@ public class FailureTests extends TestCase {
         suite.addTest(SubmissionStatusLookupUtilityFailureTest.suite());
         suite.addTest(UploadStatusLookupUtilityFailureTest.suite());
         suite.addTest(UploadTypeLookupUtilityFailureTest.suite());
+        suite.addTest(SubmissionTypeLookupUtilityFailureTest.suite());
 
-        suite.addTestSuite(ApprovalPhaseHandlerTest.class);
-        suite.addTestSuite(PostMortemPhaseHandlerTest.class);
+        // add new failure test class since 1.1
+        suite.addTestSuite(ApprovalPhaseHandlerFailureTest2.class);
+        suite.addTestSuite(PostMortemPhaseHandlerFailureTest.class);
+
+        // add new failure test class since 1.4
+        suite.addTest(SpecificationSubmissionPhaseHandlerFailureTest.suite());
+        suite.addTest(SpecificationReviewPhaseHandlerFailureTest.suite());
+
         return suite;
     }
 

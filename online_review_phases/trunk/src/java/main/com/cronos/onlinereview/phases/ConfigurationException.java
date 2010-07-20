@@ -20,6 +20,11 @@ import com.topcoder.util.errorhandling.BaseException;
  */
 public class ConfigurationException extends BaseException {
     /**
+     * The generated serial version UID.
+     */
+    private static final long serialVersionUID = 5786137119616593442L;
+
+    /**
      * Create a new ConfigurationException instance with the specified error
      * message.
      *

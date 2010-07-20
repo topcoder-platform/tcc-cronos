@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 - 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -30,8 +30,13 @@ import java.util.Date;
  * The test cases will try to do on that way while for email content, please check it manually.
  * </p>
  *
- * @author bose_java, waits
- * @version 1.2
+ * <p>
+ * Version 1.4 change notes : add new test cases for updated function in version 1.4.
+ * </p>
+ *
+ * @author bose_java, waits, myxgyy
+ * @version 1.4
+ * @since 1.0
  */
 public class RegistrationPhaseHandlerTest extends BaseTest {
     /**
@@ -199,6 +204,92 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
     }
 
     /**
+     * Tests the canPerform method with Scheduled statuses. The phase is the first phase,
+     * and parent project completed, the method should return true.
+     *
+     * @throws Exception not under test.
+     * @since 1.4
+     */
+    public void testCanPerformScheduled1() throws Exception {
+        RegistrationPhaseHandler handler = new RegistrationPhaseHandler();
+
+        try {
+            cleanTables();
+
+            //create phases
+            Project project = super.setupPhasesWithDepedentProject();
+
+            Phase[] phases = project.getAllPhases();
+            Phase registration = phases[0];
+
+            // test with scheduled status.
+            registration.setPhaseStatus(PhaseStatus.SCHEDULED);
+            assertTrue("can start should return true", handler.canPerform(registration));
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the canPerform method with Scheduled statuses. The phase is not first phase,
+     * the method should return true.
+     *
+     * @throws Exception not under test.
+     * @since 1.4
+     */
+    public void testCanPerformScheduled2() throws Exception {
+        RegistrationPhaseHandler handler = new RegistrationPhaseHandler();
+
+        try {
+            cleanTables();
+
+            //create phases
+            Project project = super.setupPhasesForSpec(true);
+
+            Phase[] phases = project.getAllPhases();
+            Phase registration = phases[2];
+
+            phases[0].setPhaseStatus(PhaseStatus.CLOSED);
+            phases[1].setPhaseStatus(PhaseStatus.CLOSED);
+            // test with scheduled status.
+            registration.setPhaseStatus(PhaseStatus.SCHEDULED);
+            assertTrue("can start should return true", handler.canPerform(registration));
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the canPerform method with Scheduled statuses. The phase is the first phase,
+     * but the parent project not completed, the method should return false.
+     *
+     * @throws Exception not under test.
+     * @since 1.4
+     */
+    public void testCanPerformScheduled_ParentProjectNotCompleted() throws Exception {
+        RegistrationPhaseHandler handler = new RegistrationPhaseHandler();
+
+        try {
+            cleanTables();
+
+            // create phases
+            Project project = super.setupPhasesWithNonCompletedDepedentProject();
+
+            Phase[] phases = project.getAllPhases();
+            Phase registration = phases[0];
+
+            // test with scheduled status.
+            registration.setPhaseStatus(PhaseStatus.SCHEDULED);
+            assertFalse("can start should return false", handler.canPerform(registration));
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
+    /**
      * Tests the RegistrationPhaseHandler() constructor and canPerform with Scheduled and Open statuses.
      *
      * @throws Exception not under test.
@@ -235,6 +326,69 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
             Resource resource = super.createResource(1, 101L, 1, 1);
             super.insertResources(conn, new Resource[] {resource});
             assertTrue("can stop should return true", handler.canPerform(registration));
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the canPerform method with open statuses. The dependencies are not met,
+     * the method should return false.
+     *
+     * @throws Exception not under test.
+     * @since 1.4
+     */
+    public void testCanPerformOpen_DependenciesNotMet() throws Exception {
+        RegistrationPhaseHandler handler = new RegistrationPhaseHandler();
+
+        try {
+            cleanTables();
+
+            //create phases
+            Project project = super.setupPhasesForSpec(true);
+
+            Phase[] phases = project.getAllPhases();
+            Phase registration = phases[2];
+
+            registration.getAllDependencies()[0].setDependentStart(false);
+            // test with scheduled status.
+            registration.setPhaseStatus(PhaseStatus.OPEN);
+            assertFalse("can start should return false", handler.canPerform(registration));
+        } finally {
+            closeConnection();
+            cleanTables();
+        }
+    }
+
+    /**
+     * Tests the canPerform method with open statuses. The registration is not enough,
+     * the method should return false.
+     *
+     * @throws Exception not under test.
+     * @since 1.4
+     */
+    public void testCanPerformOpen_RegistrationNotEnough() throws Exception {
+        RegistrationPhaseHandler handler = new RegistrationPhaseHandler();
+
+        try {
+            cleanTables();
+
+            //create phases
+            Project project = super.setupPhasesForSpec(true);
+
+            Phase[] phases = project.getAllPhases();
+            Phase registration = phases[2];
+
+            // test with scheduled status.
+            registration.setPhaseStatus(PhaseStatus.OPEN);
+            registration.setAttribute("Registration Number", "2");
+
+            // only one register
+            Connection conn = getConnection();
+            Resource resource = super.createResource(1, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            assertFalse("can start should return false", handler.canPerform(registration));
         } finally {
             closeConnection();
             cleanTables();
@@ -286,6 +440,7 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
             Phase registration = createPhase(1, 1, "Scheduled", 1, "Registration");
             Connection conn = getConnection();
             insertProject(conn);
+            insertProjectInfo(conn, 1, new long[] {44}, new String[] {"true"});
 
             String operator = "1001";
 
@@ -410,7 +565,7 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
 
             handler.perform(registration, "1001");
 
-            //manually check the email
+            // manually check the email
             // Post-mortem phase should not be inserted
             // when there is registration
             assertFalse("Post-mortem phase should NOT be inserted", havePostMortemPhase(conn));
@@ -434,6 +589,7 @@ public class RegistrationPhaseHandlerTest extends BaseTest {
         try {
             cleanTables();
             Project project = setupProjectResourcesNotification("Registration");
+            insertProjectInfo(getConnection(), project.getId(), new long[] {44}, new String[] {"true"});
            // test with scheduled status.
             Phase registration = project.getAllPhases()[0];
 

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.topcoder.management.scorecard.PersistenceException;
+import com.topcoder.management.scorecard.ScorecardIDInfo;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.QuestionType;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -22,15 +23,17 @@ import com.topcoder.search.builder.filter.Filter;
  * <p>A mock implementation of {@link ScorecardManager} class to be used for testing.
  * Overrides the protected methods declared by a super-class. The overridden methods are declared with package private access
  * so only the test cases could invoke them. The overridden methods simply call the corresponding method of a super-class.
+ * </p>
+ * <p>The version 1.4 add one method: getDefaultScorecardsIDInfo, to suit new ScorecardManager.</p>
  *
- * @author  isv
- * @version 1.0
+ * @author  isv, stevenfrog
+ * @version 1.4
  */
 public class MockScorecardManager implements ScorecardManager {
 
     /**
      * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Map</code>s mapping the <code>
-     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been 
+     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been
      * provided by the caller of the method.</p>
      */
     private static Map methodArguments = new HashMap();
@@ -488,6 +491,16 @@ public class MockScorecardManager implements ScorecardManager {
      * <p>Initializes the initial state for all created instances of <code>MockScorecardManager</code> class.</p>
      */
     public static void init() {
+    }
+
+    /**
+     * <p>Get the default scorecard ID info.</p>
+     * @param arg0 the id
+     * @return scorecard ID info
+     * @throws PersistenceException if any error occurs
+     */
+    public ScorecardIDInfo[] getDefaultScorecardsIDInfo(long arg0) throws PersistenceException {
+        return null;
     }
 
 }

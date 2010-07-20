@@ -3,15 +3,15 @@
  */
 package com.cronos.onlinereview.phases.failuretests;
 
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.ConfigManagerException;
-import com.topcoder.util.config.UnknownNamespaceException;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
-import java.util.HashMap;
+import java.util.Map;
+
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.UnknownNamespaceException;
 
 /**
  * <p>This is a helper class for existing accuracy test cases which provides a set of helpful methods manipulating with
@@ -129,6 +129,7 @@ public class ConfigHelper {
      * @param instanceName a <code>String</code> providing the name of the static field holding the reference to the
      * singleton instance.
      */
+    @SuppressWarnings("unchecked")
     public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
         try {
             Field instanceField = clazz.getDeclaredField(instanceName);
@@ -136,7 +137,8 @@ public class ConfigHelper {
             instanceField.setAccessible(true);
 
             if (Modifier.isStatic(instanceField.getModifiers())) {
-                instanceField.set(null, new HashMap());
+                Map obj = (Map)instanceField.get(null);
+                obj.clear();
             } else {
                 System.out.println("An error occurred while trying to release the singleton instance - the "
                                    + " '" + instanceName + "' field is not static");

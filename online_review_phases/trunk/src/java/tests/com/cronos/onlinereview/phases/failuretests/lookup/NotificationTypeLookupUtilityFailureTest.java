@@ -40,7 +40,7 @@ public class NotificationTypeLookupUtilityFailureTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ConfigHelper.releaseSingletonInstance(NotificationTypeLookupUtility.class, "cachedPairs");
+        ConfigHelper.releaseSingletonInstance(NotificationTypeLookupUtility.class, "CACHED_PAIRS");
     }
 
     /**

@@ -15,8 +15,6 @@ import junit.framework.TestCase;
  * @since 1.2
  */
 public class EmailOptionsTest extends TestCase {
-    /** Property name constant for "StartPhaseEmail". */
-    private static final String PROP_PHASE_EMAIL = "{0}PhaseEmail";
     /** EmailOptions instance to test against. */
     private EmailOptions instance = null;
 

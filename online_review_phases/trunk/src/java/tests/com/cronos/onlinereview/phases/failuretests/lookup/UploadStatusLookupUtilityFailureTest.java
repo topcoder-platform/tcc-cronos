@@ -41,7 +41,7 @@ public class UploadStatusLookupUtilityFailureTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ConfigHelper.releaseSingletonInstance(UploadStatusLookupUtility.class, "cachedPairs");
+        ConfigHelper.releaseSingletonInstance(UploadStatusLookupUtility.class, "CACHED_PAIRS");
     }
 
     /**

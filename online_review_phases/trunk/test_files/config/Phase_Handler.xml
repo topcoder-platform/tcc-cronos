@@ -89,7 +89,7 @@
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
 	            <Property name="EmailSubject">
-	                <Value>Phase Start</Value>
+	                <Value>Phase End</Value>
 	            </Property>
 	            <Property name="EmailFromAddress">
 	                <Value>topcoder.developer@gmail.com</Value>
@@ -1618,6 +1618,119 @@
         	</Property>
         </Property>
     </Config>
+
+    <!--for the specification submission phase handler -->
+    <Config name="com.cronos.onlinereview.phases.SpecificationSubmissionPhaseHandler">
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="ManagerHelperNamespace">
+            <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+        </Property>
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="Schemes">
+            <Property name="DefaultScheme">
+                <Value>Manager</Value>
+                <Value>Specification Submitter</Value>
+                <Value>Specification Reviewer</Value>
+                <Value>Observer</Value>
+            </Property>
+         </Property>
+         <Property name="DefaultScheme">
+             <Property name="StartPhaseEmail">
+                 <Property name="SendEmail">
+                     <Value>yes</Value>
+                 </Property>
+                 <Property name="EmailTemplateSource">
+                     <Value>file</Value>
+                 </Property>
+                 <Property name="EmailTemplateName">
+                     <Value>test_files/email_templates/specification_submission/specification_submission_start_template.txt</Value>
+                 </Property>
+                 <Property name="EmailSubject">
+                     <Value>Phase Start</Value>
+                 </Property>
+                 <Property name="EmailFromAddress">
+                     <Value>topcoder.developer@gmail.com</Value>
+                 </Property>
+             </Property>
+             <Property name="EndPhaseEmail">
+                 <Property name="SendEmail">
+                     <Value>yes</Value>
+                 </Property>
+                 <Property name="EmailTemplateSource">
+                     <Value>file</Value>
+                 </Property>
+                 <Property name="EmailTemplateName">
+                     <Value>test_files/email_templates/specification_submission/specification_submission_end_template.txt</Value>
+				</Property>
+				<Property name="EmailSubject">
+				    <Value>Phase End</Value>
+				</Property>
+				<Property name="EmailFromAddress">
+				    <Value>topcoder.developer@gmail.com</Value>
+				</Property>
+		    </Property>
+		</Property>
+	</Config>
+	<!--for the specification review phase handler -->
+	<Config name="com.cronos.onlinereview.phases.SpecificationReviewPhaseHandler">
+		<Property name="ConnectionName">
+			<Value>informix_connection</Value>
+		</Property>
+		<Property name="ManagerHelperNamespace">
+			<Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+		</Property>
+			<Property name="ConnectionFactoryNS">
+			    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="Schemes">
+				<Property name="DefaultScheme">
+				    <Value>Manager</Value>
+				    <Value>Specification Submitter</Value>
+				    <Value>Specification Reviewer</Value>
+				    <Value>Observer</Value>
+				</Property>
+			</Property>
+			<Property name="DefaultScheme">
+				<Property name="StartPhaseEmail">
+				    <Property name="SendEmail">
+				        <Value>yes</Value>
+				    </Property>
+				    <Property name="EmailTemplateSource">
+				        <Value>file</Value>
+				    </Property>
+				    <Property name="EmailTemplateName">
+				        <Value>test_files/email_templates/specification_review/specification_review_start_template.txt</Value>
+				    </Property>
+				    <Property name="EmailSubject">
+				        <Value>Phase Start</Value>
+					</Property>
+					<Property name="EmailFromAddress">
+					    <Value>topcoder.developer@gmail.com</Value>
+					</Property>
+					</Property>
+					<Property name="EndPhaseEmail">
+					    <Property name="SendEmail">
+					        <Value>yes</Value>
+					    </Property>
+					<Property name="EmailTemplateSource">
+					    <Value>file</Value>
+					</Property>
+					<Property name="EmailTemplateName">
+					    <Value>test_files/email_templates/specification_review/specification_review_end_template.txt</Value>
+					</Property>
+					<Property name="EmailSubject">
+					    <Value>Phase End</Value>
+					</Property>
+					<Property name="EmailFromAddress">
+					    <Value>topcoder.developer@gmail.com</Value>
+					</Property>
+				</Property>
+			</Property>
+	</Config>
 
     <!-- for all other handler -->
     <Config name="com.cronos.onlinereview.phases.OtherHandler">

@@ -118,6 +118,9 @@
 		<Property name="SubmissionStatusIdGeneratorName">
 			<Value>submission_status_id_seq</Value>
 		</Property>
+		<Property name="SubmissionTypeIdGeneratorName">
+                <Value>submission_type_id_seq</Value>
+        </Property>
 		<Property name="PersistenceClassName">
 			<Value>com.topcoder.management.deliverable.persistence.sql.SqlUploadPersistence</Value>
 		</Property>
@@ -137,7 +140,7 @@
 			<Value>com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator</Value>
 		</Property>
 	</Property>
-	
+
 	<Property name="ProjectDetailsURL">
 		<Value>http://www.topcoder.com/tc?projectDetails=?</Value>
 	</Property>

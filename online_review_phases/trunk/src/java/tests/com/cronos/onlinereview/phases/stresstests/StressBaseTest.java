@@ -1,31 +1,16 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.stresstests;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Iterator;
-
-import junit.framework.TestCase;
-
-import com.dumbster.smtp.SimpleSmtpServer;
 import com.topcoder.date.workdays.DefaultWorkdays;
+
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
+import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.UploadType;
@@ -38,23 +23,64 @@ import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.ScorecardStatus;
 import com.topcoder.management.scorecard.data.ScorecardType;
+
 import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
+
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 
+import junit.framework.TestCase;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+
+import java.util.Date;
+import java.util.Iterator;
+
 /**
+ * Defines setup() and tearDown() method to do usual configuration cleanup.
+ *
  * <p>
- * The base class for all the stress cases.
+ * version 1.1 change notes: add utility methods for testing version 1.1
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.2, change notes: add utility methods for testing version 1.2.
+ * </p>
+ *
+ * <p>
+ * Version 1.4, change notes: add generateSpecificationPhases method for testing version 1.4.
+ * </p>
+ *
+ * @author bose_java, waits, TopCoder
+ * @version 1.4
+ * @since 1.0
  */
 public class StressBaseTest extends TestCase {
+
+    /**
+     * The number of projects for stress tests.
+     */
+    protected static final int PROJECT_ID = 1;
+
+    /**
+     * The number of threads for stress tests.
+     */
+    protected static final int THREADS = 5;
 
     /**
      * The first level load.
@@ -67,41 +93,42 @@ public class StressBaseTest extends TestCase {
     protected static final int DEFAULT_ID = 1;
 
     /** constant for rules configuration file. */
-    protected static final String DB_FACTORY_CONFIG_FILE = "config/DB_Factory.xml";
+    public static final String DB_FACTORY_CONFIG_FILE = "config/DB_Factory.xml";
 
     /** constant for logging wrapper configuration file. */
-    protected static final String LOGGING_WRAPPER_CONFIG_FILE = "config/Logging_Wrapper.xml";
+    public static final String LOGGING_WRAPPER_CONFIG_FILE = "config/Logging_Wrapper.xml";
 
     /** constant for document generator configuration file. */
-    protected static final String DOC_GENERATOR_CONFIG_FILE = "config/Document_Manager.xml";
+    public static final String DOC_GENERATOR_CONFIG_FILE = "config/Document_Manager.xml";
 
     /** constant for manager helper configuration file. */
-    protected static final String PHASE_HANDLER_CONFIG_FILE = "config/Phase_Handler.xml";
+    public static final String PHASE_HANDLER_CONFIG_FILE = "config/Phase_Handler.xml";
 
     /** constant for manager helper configuration file. */
-    protected static final String MANAGER_HELPER_CONFIG_FILE = "config/Manager_Helper.xml";
+    public static final String MANAGER_HELPER_CONFIG_FILE = "config/Manager_Helper.xml";
 
     /** constant for manager helper configuration file. */
-    protected static final String EMAIL_CONFIG_FILE = "config/Email_Engine.xml";
+    public static final String EMAIL_CONFIG_FILE = "config/Email_Engine.xml";
 
     /** constant for namespace to test abstract phase handler class with. */
-    protected static final String ABSTRACT_HANDLER_NAMESPACE = "com.cronos.onlinereview.phases.AbstractPhaseHandler";
+    public static final String ABSTRACT_HANDLER_NAMESPACE = "com.cronos.onlinereview.phases.AbstractPhaseHandler";
 
     /** constant for namespace to test other phase handlers with. */
-    protected static final String PHASE_HANDLER_NAMESPACE = "com.cronos.onlinereview.phases.AbstractPhaseHandler";
+    public static final String PHASE_HANDLER_NAMESPACE = "com.cronos.onlinereview.phases.AbstractPhaseHandler";
 
     /** array of all the config file names for various dependency components. */
-    protected static final String[] COMPONENT_FILE_NAMES = new String[]{"config/Project_Management.xml",
+    public static final String[] COMPONENT_FILE_NAMES = new String[]{"config/Project_Management.xml",
         "config/Phase_Management.xml", "config/Review_Management.xml", "config/Scorecard_Management.xml",
         "config/Screening_Management.xml", "config/Upload_Resource_Search.xml",
         "config/User_Project_Data_Store.xml", "config/Review_Score_Aggregator.xml",
         "config/SearchBuilderCommon.xml" };
 
     /** constant for namespace to phase manager to be used during demo. */
-    protected static final String PHASE_MANAGER_NAMESPACE = "com.topcoder.management.phase.DefaultPhaseManager";
+    public static final String PHASE_MANAGER_NAMESPACE = "com.topcoder.management.phase.DefaultPhaseManager";
 
     /**
      * an array of table names to be cleaned in setup() and tearDown() methods.
+     *
      * <p>
      * Version 1.1 change notes: Add clean for table project_user_audit".
      * </p>
@@ -115,17 +142,6 @@ public class StressBaseTest extends TestCase {
         "categories", "comp_catalog", "user_reliability", "user_rating", "user", "email",
         "linked_project_xref" };
 
-    /**
-     * Represents the long value to record the running time.
-     */
-    private static long time = 0L;
-
-    /**
-     * Field.
-     */
-    private static String fileName = "stressText.txt";
-
-
     /** Represents the configuration manager instance used in tests. */
     private ConfigManager configManager;
 
@@ -136,18 +152,26 @@ public class StressBaseTest extends TestCase {
     private Connection connection;
 
     /**
+     * Represents the long value to record the running time.
+     */
+    private static long time = 0L;
+
+    /**
+     * Field.
+     */
+    private static String fileName = "stressText.txt";
+
+    /**
      * <p>
      * Sets up the test environment. The configurations are removed.
      * </p>
      *
-     * @throws Exception
-     *             pass any unexpected exception to JUnit.
+     * @throws Exception pass any unexpected exception to JUnit.
      */
-    @SuppressWarnings({"deprecation", "unchecked" })
     protected void setUp() throws Exception {
         configManager = ConfigManager.getInstance();
 
-        // Remove all name spaces
+        // Remove all namespaces
         Iterator iter = configManager.getAllNamespaces();
 
         while (iter.hasNext()) {
@@ -161,8 +185,6 @@ public class StressBaseTest extends TestCase {
         configManager.add(LOGGING_WRAPPER_CONFIG_FILE);
 
         dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
-
-       
     }
 
     /**
@@ -170,10 +192,8 @@ public class StressBaseTest extends TestCase {
      * Cleans up the test environment. The configurations are removed.
      * </p>
      *
-     * @throws Exception
-     *             pass any unexpected exception to JUnit.
+     * @throws Exception pass any unexpected exception to JUnit.
      */
-    @SuppressWarnings("unchecked")
     protected void tearDown() throws Exception {
         // Remove all namespaces
         Iterator iter = configManager.getAllNamespaces();
@@ -186,15 +206,12 @@ public class StressBaseTest extends TestCase {
         connection = null;
         dbFactory = null;
         configManager = null;
-
-       
     }
 
     /**
      * adds files to configuration for testing purposes.
      *
-     * @throws ConfigManagerException
-     *             in case of config error.
+     * @throws ConfigManagerException in case of config error.
      */
     protected void doConfig() throws ConfigManagerException {
         configManager.add(DOC_GENERATOR_CONFIG_FILE);
@@ -203,16 +220,12 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create a phase instance.
      *
-     * @param phaseId
-     *            phase id.
-     * @param phaseStatusId
-     *            phase Status Id.
-     * @param phaseStatusName
-     *            phase Status Name.
-     * @param phaseTypeId
-     *            phase Type Id.
-     * @param phaseTypeName
-     *            phase Type Name.
+     * @param phaseId phase id.
+     * @param phaseStatusId phase Status Id.
+     * @param phaseStatusName phase Status Name.
+     * @param phaseTypeId phase Type Id.
+     * @param phaseTypeName phase Type Name.
+     *
      * @return phase instance.
      */
     protected Phase createPhase(long phaseId, long phaseStatusId, String phaseStatusName, long phaseTypeId,
@@ -231,14 +244,11 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create Resource instance.
      *
-     * @param resourceId
-     *            resource Id.
-     * @param phaseId
-     *            phase Id.
-     * @param projectId
-     *            project Id.
-     * @param resourceRoleId
-     *            resource Role Id.
+     * @param resourceId resource Id.
+     * @param phaseId phase Id.
+     * @param projectId project Id.
+     * @param resourceRoleId resource Role Id.
+     *
      * @return Resource instance.
      */
     protected Resource createResource(long resourceId, Long phaseId, long projectId, long resourceRoleId) {
@@ -254,18 +264,13 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create Upload instance.
      *
-     * @param uploadId
-     *            upload id.
-     * @param projectId
-     *            project id.
-     * @param resourceId
-     *            resource id.
-     * @param uploadTypeId
-     *            upload type id.
-     * @param uploadStatusId
-     *            upload status id.
-     * @param parameter
-     *            parameter.
+     * @param uploadId upload id.
+     * @param projectId project id.
+     * @param resourceId resource id.
+     * @param uploadTypeId upload type id.
+     * @param uploadStatusId upload status id.
+     * @param parameter parameter.
+     *
      * @return Upload instance.
      */
     protected Upload createUpload(long uploadId, long projectId, long resourceId, long uploadTypeId,
@@ -285,18 +290,36 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create Submission instance.
      *
-     * @param submissionId
-     *            submission id.
-     * @param uploadId
-     *            upload id.
-     * @param submissionStatusId
-     *            submission status id.
+     * @param submissionId submission id.
+     * @param uploadId upload id.
+     * @param submissionStatusId submission status id.
      * @return Submission instance.
      */
     protected Submission createSubmission(long submissionId, long uploadId, long submissionStatusId) {
         Submission submission = new Submission(submissionId);
         submission.setUpload(new Upload(uploadId));
         submission.setSubmissionStatus(new SubmissionStatus(submissionStatusId));
+        SubmissionType type = new SubmissionType();
+        type.setId(1);
+        submission.setSubmissionType(type);
+        return submission;
+    }
+
+    /**
+     * Helper method to create Submission instance.
+     *
+     * @param submissionId submission id.
+     * @param uploadId upload id.
+     * @param submissionStatusId submission status id.
+     * @param submissionTypeId submission type id.
+     * @return Submission instance.
+     */
+    protected Submission createSubmission(long submissionId, long uploadId, long submissionStatusId,
+        long submissionTypeId) {
+        Submission submission = new Submission(submissionId);
+        submission.setUpload(new Upload(uploadId));
+        submission.setSubmissionStatus(new SubmissionStatus(submissionStatusId));
+        submission.setSubmissionType(new SubmissionType(submissionTypeId));
 
         return submission;
     }
@@ -304,22 +327,15 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create Scorecard instance.
      *
-     * @param scorecardId
-     *            scorecard id.
-     * @param scorecardStatusId
-     *            scorecard status id.
-     * @param scorecardTypeId
-     *            scorecard type id.
-     * @param projectCategoryId
-     *            project category id.
-     * @param name
-     *            name.
-     * @param version
-     *            version.
-     * @param minScore
-     *            min score.
-     * @param maxScore
-     *            max score.
+     * @param scorecardId scorecard id.
+     * @param scorecardStatusId scorecard status id.
+     * @param scorecardTypeId scorecard type id.
+     * @param projectCategoryId project category id.
+     * @param name name.
+     * @param version version.
+     * @param minScore min score.
+     * @param maxScore max score.
+     *
      * @return Scorecard instance.
      */
     protected Scorecard createScorecard(long scorecardId, long scorecardStatusId, long scorecardTypeId,
@@ -339,18 +355,13 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create Review instance.
      *
-     * @param reviewId
-     *            review id.
-     * @param resourceId
-     *            resource id.
-     * @param submissionId
-     *            submission id.
-     * @param scorecardId
-     *            scorecard id.
-     * @param committed
-     *            committed.
-     * @param score
-     *            score.
+     * @param reviewId review id.
+     * @param resourceId resource id.
+     * @param submissionId submission id.
+     * @param scorecardId scorecard id.
+     * @param committed committed.
+     * @param score score.
+     *
      * @return Review instance.
      */
     protected Review createReview(long reviewId, long resourceId, long submissionId, long scorecardId,
@@ -368,16 +379,12 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create Comment instance.
      *
-     * @param id
-     *            comment id
-     * @param author
-     *            author of comment.
-     * @param sComment
-     *            comment text.
-     * @param commentTypeId
-     *            comment type id.
-     * @param commentType
-     *            comment type.
+     * @param id comment id
+     * @param author author of comment.
+     * @param sComment comment text.
+     * @param commentTypeId comment type id.
+     * @param commentType comment type.
+     *
      * @return Comment instance.
      */
     protected Comment createComment(long id, long author, String sComment, long commentTypeId,
@@ -393,14 +400,11 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to create a review item instance.
      *
-     * @param id
-     *            review item id.
-     * @param answer
-     *            answer.
-     * @param reviewId
-     *            review id.
-     * @param questionId
-     *            question id.
+     * @param id review item id.
+     * @param answer answer.
+     * @param reviewId review id.
+     * @param questionId question id.
+     *
      * @return review item instance.
      */
     protected Item createReviewItem(long id, String answer, long reviewId, long questionId) {
@@ -416,8 +420,8 @@ public class StressBaseTest extends TestCase {
      * Returns a connection instance.
      *
      * @return a connection instance.
-     * @throws Exception
-     *             not for this test case.
+     *
+     * @throws Exception not for this test case.
      */
     protected Connection getConnection() throws Exception {
         if (connection == null) {
@@ -445,8 +449,7 @@ public class StressBaseTest extends TestCase {
     /**
      * helper method to close a statement.
      *
-     * @param stmt
-     *            statement to close.
+     * @param stmt statement to close.
      */
     protected void closeStatement(Statement stmt) {
         if (stmt != null) {
@@ -462,10 +465,9 @@ public class StressBaseTest extends TestCase {
      * inserts a project into the database. Inserts records into the project, comp_catalog and
      * comp_versions tables.
      *
-     * @param conn
-     *            connection to use.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertProject(Connection conn) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -502,6 +504,27 @@ public class StressBaseTest extends TestCase {
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
             preparedStmt = null;
+
+            // insert into project_info
+            String insertProjectInfo = "insert into project_info(project_id, project_info_type_id, value, "
+                + "create_user, create_date, modify_user, modify_date) values "
+                + "(1, 44, 'true', 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertProjectInfo);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            insertProjectInfo = "insert into project_info(project_id, project_info_type_id, value, "
+                + "create_user, create_date, modify_user, modify_date) values "
+                + "(1, 43, 'true', 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertProjectInfo);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
         } finally {
             closeStatement(preparedStmt);
         }
@@ -511,10 +534,9 @@ public class StressBaseTest extends TestCase {
      * inserts a project into the database. Inserts records into the project, comp_catalog and
      * comp_versions tables.
      *
-     * @param conn
-     *            connection to use.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertDependentProject(Connection conn) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -553,8 +575,8 @@ public class StressBaseTest extends TestCase {
             preparedStmt = null;
 
             // insert into linked_project_xref
-            String insertLinkedProject = "insert into linked_project_xref"
-                + "(source_project_id, dest_project_id, link_type_id) values " + "(1, 2, 1)";
+            String insertLinkedProject = "insert into linked_project_xref(source_project_id, dest_project_id"
+                + ", link_type_id) values (1, 2, 1)";
             preparedStmt = conn.prepareStatement(insertLinkedProject);
             preparedStmt.executeUpdate();
             closeStatement(preparedStmt);
@@ -567,16 +589,12 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts project properties into the database. Inserts records into the project_info table.
      *
-     * @param conn
-     *            connection to use.
-     * @param projectId
-     *            project id.
-     * @param infoTypes
-     *            array of project info type ids.
-     * @param infoValues
-     *            array of corresponding project info values.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     * @param projectId project id.
+     * @param infoTypes array of project info type ids.
+     * @param infoValues array of corresponding project info values.
+     *
+     * @throws Exception not under test.
      */
     protected void insertProjectInfo(Connection conn, long projectId, long[] infoTypes, String[] infoValues)
         throws Exception {
@@ -608,11 +626,11 @@ public class StressBaseTest extends TestCase {
     /**
      * Setup project, phases, resources and project-notifications.
      *
-     * @param step
-     *            which phase to create
+     * @param step which phase to create
+     *
      * @return The created Project
-     * @throws Exception
-     *             into JUnit
+     *
+     * @throws Exception into JUnit
      * @since 1.2
      */
     protected Project setupProjectResourcesNotification(String step) throws Exception {
@@ -622,14 +640,13 @@ public class StressBaseTest extends TestCase {
     /**
      * Setup project, phases, resources and project-notifications.
      *
-     * @param step
-     *            which phase to create
-     * @param postMorterm
-     *            create phases with post-morterm phase, if false, only create phases based on the
-     *            step
+     * @param step which phase to create
+     * @param postMorterm create phases with post-morterm phase, if false, only create phases based
+     *            on the step
+     *
      * @return The created Project
-     * @throws Exception
-     *             into JUnit
+     *
+     * @throws Exception into JUnit
      * @since 1.2
      */
     protected Project setupProjectResourcesNotification(String step, boolean postMorterm) throws Exception {
@@ -787,8 +804,8 @@ public class StressBaseTest extends TestCase {
      * inserts a project and the standard phases into the database.
      *
      * @return project instance with phases populated.
-     * @throws Exception
-     *             not under test.
+     *
+     * @throws Exception not under test.
      */
     protected Project setupPhases() throws Exception {
         return setupPhases("All", false, false);
@@ -798,8 +815,8 @@ public class StressBaseTest extends TestCase {
      * inserts a project and the standard phases into the database.
      *
      * @return project instance with phases populated.
-     * @throws Exception
-     *             not under test.
+     *
+     * @throws Exception not under test.
      */
     protected Project setupPastPhases() throws Exception {
         return setupPhases("All", false, true);
@@ -809,8 +826,8 @@ public class StressBaseTest extends TestCase {
      * inserts a project and the standard phases into the database.
      *
      * @return project instance with phases populated.
-     * @throws Exception
-     *             not under test.
+     *
+     * @throws Exception not under test.
      */
     protected Project setupPhasesWithDepedentProject() throws Exception {
         return setupPhases("All", true, false);
@@ -819,15 +836,9 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts a project and the standard phases into the database.
      *
-     * @param stepPhase
-     *            the step phase
-     * @param hasDependentProject
-     *            the has dependent project
-     * @param past
-     *            the past
      * @return project instance with phases populated.
-     * @throws Exception
-     *             not under test.
+     *
+     * @throws Exception not under test.
      */
     protected Project setupPhases(String stepPhase, boolean hasDependentProject, boolean past)
         throws Exception {
@@ -846,8 +857,7 @@ public class StressBaseTest extends TestCase {
                 insertDependentProject(conn);
             }
 
-            String insertPhase = "insert into project_phase"
-                + "(project_phase_id, project_id, phase_type_id, phase_status_id,"
+            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id,"
                 + "scheduled_start_time, scheduled_end_time, duration,"
                 + " create_user, create_date, modify_user, modify_date)"
                 + "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
@@ -960,10 +970,125 @@ public class StressBaseTest extends TestCase {
     }
 
     /**
+     * inserts a project and the standard phases into the database.
+     *
+     * @return project instance with phases populated.
+     * @throws Exception not under test.
+     */
+    protected Project setupPhasesWithoutAggregation() throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement preparedStmt = null;
+        Project project = null;
+
+        try {
+            project = new Project(new Date(), new DefaultWorkdays());
+            project.setId(1);
+
+            // insert project first
+            insertProject(conn);
+
+            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id,"
+                + " phase_status_id, scheduled_start_time, scheduled_end_time, duration,"
+                + " create_user, create_date, modify_user, modify_date)"
+                + "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
+
+            preparedStmt = conn.prepareStatement(insertPhase);
+
+            // insert all standard phases
+            long[] phaseIds = new long[]{101, 102, 103, 104, 105, 106, 109, 110, 111 };
+            long[] phaseTypeIds = new long[]{1, 2, 3, 4, 5, 6, 9, 10, 11 };
+            String[] phaseTypeNames = new String[]{"Registration", "Submission", "Screening", "Review",
+                "Appeals", "Appeals Response", "Final Fix", "Final Review", "Approval" };
+            int step = phaseIds.length - 1;
+
+            long duration = 24 * 60 * 60 * 1000; // one day
+            long now = System.currentTimeMillis();
+            Timestamp scheduledStart = new Timestamp(now - duration * 2);
+            Timestamp scheduledEnd = null;
+            scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+
+            for (int i = 0; i < (step + 1); i++) {
+                // insert into db
+                preparedStmt.setLong(1, phaseIds[i]);
+                preparedStmt.setLong(2, phaseTypeIds[i]);
+                preparedStmt.setTimestamp(3, scheduledStart);
+                preparedStmt.setTimestamp(4, scheduledEnd);
+                preparedStmt.setLong(5, duration);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                // create phase instance
+                Phase phase = new Phase(project, duration);
+                phase.setId(phaseIds[i]);
+                phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
+                phase.setPhaseStatus(PhaseStatus.SCHEDULED);
+                phase.setActualStartDate(scheduledStart);
+                phase.setActualEndDate(scheduledEnd);
+                phase.setScheduledStartDate(scheduledStart);
+                phase.setScheduledEndDate(scheduledEnd);
+
+                project.addPhase(phase);
+
+                // re-calculate scheduled start and end.
+                scheduledStart = new Timestamp(scheduledEnd.getTime());
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert dependencies
+            String insertDependency = "INSERT INTO phase_dependency "
+                + "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time,"
+                + " create_user, create_date, modify_user, modify_date)"
+                + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertDependency);
+
+            long[] dependencyPhaseIds = new long[]{101, 102, 103, 104, 105, 106, 109, 110 };
+            long[] dependentPhaseIds = new long[]{102, 103, 104, 105, 106, 109, 110, 111 };
+            Phase[] phases = project.getAllPhases();
+
+            for (int i = 0; i < step; i++) {
+                preparedStmt.setLong(1, dependencyPhaseIds[i]);
+                preparedStmt.setLong(2, dependentPhaseIds[i]);
+                preparedStmt.setBoolean(3, false);
+                preparedStmt.setBoolean(4, true);
+                preparedStmt.setLong(5, 0);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                Dependency dependency = new Dependency(phases[i], phases[i + 1], false, true, 0);
+                phases[i + 1].addDependency(dependency);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            if (project.getAllPhases().length > 3) {
+                // insert phase_criteria
+                Statement stmt = conn.createStatement();
+                stmt
+                    .execute("insert into phase_criteria(project_phase_id, phase_criteria_type_id, parameter,"
+                        + " create_user, create_date, modify_user, modify_date)"
+                        + " values(104, 6, '1', user, CURRENT, user, CURRENT)");
+                project.getAllPhases()[3].setAttribute("Reviewer Number", "1");
+                stmt.close();
+            }
+        } finally {
+            closeStatement(preparedStmt);
+            closeConnection();
+        }
+
+        return project;
+    }
+
+    /**
      * Creates submission for the project at the screening phase.
      *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
+     *
      * @since 1.1
      */
     protected void setupSubmissionForScreening() throws Exception {
@@ -994,6 +1119,7 @@ public class StressBaseTest extends TestCase {
         submission.setId(1);
         submission.setUpload(upload);
         submission.setSubmissionStatus(new SubmissionStatus(1));
+        submission.setSubmissionType(new SubmissionType(2));
 
         insertSubmissions(con, new Submission[]{submission });
     }
@@ -1001,11 +1127,21 @@ public class StressBaseTest extends TestCase {
     /**
      * Creates submission for the project at review phase.
      *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      * @since 1.1
      */
     protected void setupSubmissionForReview() throws Exception {
+        setupSubmissionForReview(2);
+    }
+
+    /**
+     * Creates submission for the project at review phase.
+     *
+     * @param submissionTypeId the submission type id.
+     * @throws Exception to JUnit.
+     * @since 1.4
+     */
+    protected void setupSubmissionForReview(long submissionTypeId) throws Exception {
         Connection con = getConnection();
 
         // Prepare submitter and insert into DB
@@ -1033,6 +1169,7 @@ public class StressBaseTest extends TestCase {
         submission.setId(1);
         submission.setUpload(upload);
         submission.setSubmissionStatus(new SubmissionStatus(1));
+        submission.setSubmissionType(new SubmissionType(submissionTypeId));
 
         insertSubmissions(con, new Submission[]{submission });
     }
@@ -1040,12 +1177,10 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts resources required by test cases into the db.
      *
-     * @param conn
-     *            connection to use.
-     * @param resources
-     *            resources to insert.
-     * @throws Exception
-     *             not under test.
+     * @param resources resources to insert.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertResources(Connection conn, Resource[] resources) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -1085,12 +1220,10 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts uploads required by test cases into the db.
      *
-     * @param conn
-     *            connection to use.
-     * @param uploads
-     *            uploads to insert.
-     * @throws Exception
-     *             not under test.
+     * @param uploads uploads to insert.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertUploads(Connection conn, Upload[] uploads) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -1126,12 +1259,10 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts uploads required by test cases into the db.
      *
-     * @param conn
-     *            connection to use.
-     * @param submissions
-     *            submissions to insert.
-     * @throws Exception
-     *             not under test.
+     * @param submissions submissions to insert.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertSubmissions(Connection conn, Submission[] submissions) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -1139,8 +1270,8 @@ public class StressBaseTest extends TestCase {
         try {
             String insertSubmission = "INSERT INTO submission "
                 + "(submission_id, upload_id, submission_status_id, "
-                + "create_user, create_date, modify_user, modify_date, placement) "
-                + "VALUES (?, ?, ?, 'user', ?, 'user', ?, ?)";
+                + "submission_type_id, create_user, create_date, modify_user, modify_date, placement) "
+                + "VALUES (?, ?, ?, ?, 'user', ?, 'user', ?, ?)";
             preparedStmt = conn.prepareStatement(insertSubmission);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1149,10 +1280,11 @@ public class StressBaseTest extends TestCase {
                 preparedStmt.setLong(1, submissions[i].getId());
                 preparedStmt.setLong(2, submissions[i].getUpload().getId());
                 preparedStmt.setLong(3, submissions[i].getSubmissionStatus().getId());
-                preparedStmt.setTimestamp(4, now);
+                preparedStmt.setLong(4, submissions[i].getSubmissionType().getId());
                 preparedStmt.setTimestamp(5, now);
+                preparedStmt.setTimestamp(6, now);
 
-                preparedStmt.setLong(6, (submissions[i].getPlacement() == null) ? new Long(0)
+                preparedStmt.setLong(7, (submissions[i].getPlacement() == null) ? new Long(0)
                     : submissions[i].getPlacement());
                 preparedStmt.executeUpdate();
             }
@@ -1167,12 +1299,10 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts scorecards required by test cases into the db.
      *
-     * @param conn
-     *            connection to use.
-     * @param scorecards
-     *            scorecards to insert.
-     * @throws Exception
-     *             not under test.
+     * @param scorecards scorecards to insert.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertScorecards(Connection conn, Scorecard[] scorecards) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -1212,12 +1342,10 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts reviews required by test cases into the db.
      *
-     * @param conn
-     *            connection to use.
-     * @param reviews
-     *            reviews to insert.
-     * @throws Exception
-     *             not under test.
+     * @param reviews reviews to insert.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertReviews(Connection conn, Review[] reviews) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -1253,12 +1381,9 @@ public class StressBaseTest extends TestCase {
     /**
      * inserts screening task.
      *
-     * @param conn
-     *            connection to use.
-     * @param uploadId
-     *            the upload id
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     *
+     * @throws Exception not under test.
      */
     protected void insertScreeningTask(Connection conn, long uploadId) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -1288,20 +1413,14 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to insert Comment into the database.
      *
-     * @param conn
-     *            connection to use
-     * @param ids
-     *            comment id
-     * @param authors
-     *            author of comment.
-     * @param reviewIds
-     *            review id.
-     * @param sComments
-     *            comment text.
-     * @param commentTypeIds
-     *            comment type id.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use
+     * @param ids comment id
+     * @param authors author of comment.
+     * @param reviewIds review id.
+     * @param sComments comment text.
+     * @param commentTypeIds comment type id.
+     *
+     * @throws Exception not under test.
      */
     protected void insertComments(Connection conn, long[] ids, long[] authors, long[] reviewIds,
         String[] sComments, long[] commentTypeIds) throws Exception {
@@ -1337,22 +1456,15 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to insert Comment with extra info into the database.
      *
-     * @param conn
-     *            connection to use
-     * @param ids
-     *            comment id
-     * @param authors
-     *            author of comment.
-     * @param reviewIds
-     *            review id.
-     * @param sComments
-     *            comment text.
-     * @param commentTypeIds
-     *            comment type id.
-     * @param extraInfos
-     *            extra info
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use
+     * @param ids comment id
+     * @param authors author of comment.
+     * @param reviewIds review id.
+     * @param sComments comment text.
+     * @param commentTypeIds comment type id.
+     * @param extraInfos extra info
+     *
+     * @throws Exception not under test.
      */
     protected void insertCommentsWithExtraInfo(Connection conn, long[] ids, long[] authors, long[] reviewIds,
         String[] sComments, long[] commentTypeIds, String[] extraInfos) throws Exception {
@@ -1388,17 +1500,13 @@ public class StressBaseTest extends TestCase {
 
     /**
      * Helper method to insert a question. This inserts a record into the scorecard_group,
-     * scorecard_section,
-     * scorecard_question tables.
+     * scorecard_section, scorecard_question tables.
      *
-     * @param conn
-     *            connection to use.
-     * @param questionId
-     *            scorecard question id.
-     * @param scorecardId
-     *            scorecard id.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     * @param questionId scorecard question id.
+     * @param scorecardId scorecard id.
+     *
+     * @throws Exception not under test.
      */
     protected void insertScorecardQuestion(Connection conn, long questionId, long scorecardId)
         throws Exception {
@@ -1455,12 +1563,10 @@ public class StressBaseTest extends TestCase {
     /**
      * Helper method to insert review item into the database.
      *
-     * @param conn
-     *            connection to use
-     * @param items
-     *            array of review items to insert.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use
+     * @param items array of review items to insert.
+     *
+     * @throws Exception not under test.
      */
     protected void insertReviewItems(Connection conn, Item[] items) throws Exception {
         PreparedStatement preparedStmt = null;
@@ -1495,14 +1601,11 @@ public class StressBaseTest extends TestCase {
     /**
      * This will insert the review item comments into the database.
      *
-     * @param conn
-     *            connection to use.
-     * @param itemComments
-     *            item comments to insert.
-     * @param reviewItemIds
-     *            corresponding review item ids.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     * @param itemComments item comments to insert.
+     * @param reviewItemIds corresponding review item ids.
+     *
+     * @throws Exception not under test.
      */
     protected void insertReviewItemComments(Connection conn, Comment[] itemComments, long[] reviewItemIds)
         throws Exception {
@@ -1540,14 +1643,11 @@ public class StressBaseTest extends TestCase {
      * A helper method to insert a winning submitter for the given project id with given resource
      * id.
      *
-     * @param conn
-     *            connection to use.
-     * @param resourceId
-     *            resource id.
-     * @param projectId
-     *            project id.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     * @param resourceId resource id.
+     * @param projectId project id.
+     *
+     * @throws Exception not under test.
      */
     protected void insertWinningSubmitter(Connection conn, long resourceId, long projectId) throws Exception {
         Resource winner = createResource(resourceId, 101L, projectId, 1);
@@ -1567,16 +1667,12 @@ public class StressBaseTest extends TestCase {
      * A helper method to insert a winning submitter for the given project id with given resource
      * id.
      *
-     * @param conn
-     *            connection to use.
-     * @param resourceId
-     *            resource id.
-     * @param resourceInfoTypeId
-     *            resource info type id.
-     * @param resourceInfo
-     *            resource info value.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     * @param resourceId resource id.
+     * @param resourceInfoTypeId resource info type id.
+     * @param resourceInfo resource info value.
+     *
+     * @throws Exception not under test.
      */
     protected void insertResourceInfo(Connection conn, long resourceId, long resourceInfoTypeId,
         String resourceInfo) throws Exception {
@@ -1606,14 +1702,11 @@ public class StressBaseTest extends TestCase {
     /**
      * Inserts resource-submission mapping into the resource_submission table.
      *
-     * @param conn
-     *            connection to use.
-     * @param resourceId
-     *            resource id.
-     * @param submissionId
-     *            submission id.
-     * @throws Exception
-     *             not under test.
+     * @param conn connection to use.
+     * @param resourceId resource id.
+     * @param submissionId submission id.
+     *
+     * @throws Exception not under test.
      */
     protected void insertResourceSubmission(Connection conn, long resourceId, long submissionId)
         throws Exception {
@@ -1642,11 +1735,12 @@ public class StressBaseTest extends TestCase {
     /**
      * Checks whether a post-mortem phase is inserted into database.
      *
-     * @param con
-     *            the database connection.
+     * @param con the database connection.
+     *
      * @return true if there is Post-Mortem phase inserted, false otherwise.
-     * @throws Exception
-     *             if any error occurs.
+     *
+     * @throws Exception if any error occurs.
+     *
      * @since 1.1
      */
     protected boolean havePostMortemPhase(Connection con) throws Exception {
@@ -1676,11 +1770,12 @@ public class StressBaseTest extends TestCase {
     /**
      * Checks whether an approval phase is inserted into database.
      *
-     * @param con
-     *            the database connection.
+     * @param con the database connection.
+     *
      * @return true if there is approval phase inserted, false otherwise.
-     * @throws Exception
-     *             if any error occurs.
+     *
+     * @throws Exception if any error occurs.
+     *
      * @since 1.1
      */
     protected boolean haveApprovalPhase(Connection con) throws Exception {
@@ -1710,11 +1805,12 @@ public class StressBaseTest extends TestCase {
     /**
      * Checks whether a new final review phase is inserted into database.
      *
-     * @param con
-     *            the database connection.
+     * @param con the database connection.
+     *
      * @return true if there is approval phase inserted, false otherwise.
-     * @throws Exception
-     *             if any error occurs.
+     *
+     * @throws Exception if any error occurs.
+     *
      * @since 1.1
      */
     protected boolean haveNewFinalReviewPhase(Connection con) throws Exception {
@@ -1745,11 +1841,12 @@ public class StressBaseTest extends TestCase {
     /**
      * Checks whether a new final fix phase is inserted into database.
      *
-     * @param con
-     *            the database connection.
+     * @param con the database connection.
+     *
      * @return true if there is approval phase inserted, false otherwise.
-     * @throws Exception
-     *             if any error occurs.
+     *
+     * @throws Exception if any error occurs.
+     *
      * @since 1.1
      */
     protected boolean haveNewFinalFixPhase(Connection con) throws Exception {
@@ -1779,8 +1876,7 @@ public class StressBaseTest extends TestCase {
     /**
      * Cleans up records in the given table names.
      *
-     * @throws Exception
-     *             not under test.
+     * @throws Exception not under test.
      */
     protected void cleanTables() throws Exception {
         Connection conn = null;
@@ -1802,14 +1898,6 @@ public class StressBaseTest extends TestCase {
         }
     }
 
-    /**
-     * Delete phase.
-     *
-     * @param id
-     *            the id
-     * @throws Exception
-     *             the exception occurs
-     */
     protected void deletePhase(long id) throws Exception {
         Connection conn = null;
         Statement stmt = null;
@@ -1830,8 +1918,9 @@ public class StressBaseTest extends TestCase {
      * Set up phases include a new post-mortem phase. This method is brought in in version 1.1.
      *
      * @return the created project
-     * @throws Exception
-     *             to JUnit.
+     *
+     * @throws Exception to JUnit.
+     *
      * @since 1.1
      */
     protected Project setupPhasesWithPostMortem() throws Exception {
@@ -1933,18 +2022,143 @@ public class StressBaseTest extends TestCase {
     }
 
     /**
-     * Gets the value of a private field in the given class. The field has the given name. The value
-     * is retrieved from
-     * the given instance. If the instance is null, the field is a static field. If any error
-     * occurs, null is
-     * returned.
+     * Generates the specification review or submission phase.
      *
-     * @param type
-     *            the class which the private field belongs to
-     * @param instance
-     *            the instance which the private field belongs to
-     * @param name
-     *            the name of the private field to be retrieved
+     * @return the created project
+     * @throws Exception to JUnit.
+     * @since 1.4
+     */
+    protected Project generateSpecificationPhases(int id, boolean hasExtraDepends) throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement preparedStmt = null;
+        Project project = null;
+
+        try {
+            project = new Project(new Date(), new DefaultWorkdays());
+            project.setId(id);
+
+            // insert project first
+            insertProject(conn);
+
+            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id,"
+                + "scheduled_start_time, scheduled_end_time, duration,"
+                + " create_user, create_date, modify_user, modify_date)"
+                + "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
+
+            preparedStmt = conn.prepareStatement(insertPhase);
+
+            // insert all standard phases
+            long[] phaseIds = null;
+            long[] phaseTypeIds = null;
+            String[] phaseTypeNames = null;
+            if (hasExtraDepends) {
+                phaseIds = new long[]{112, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111 };
+                phaseTypeIds = new long[]{12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+                phaseTypeNames = new String[]{"Post-Mortem", "Specification Submission",
+                    "Specification Review", "Registration", "Submission", "Screening", "Review", "Appeals",
+                    "Appeals Response", "Aggregation", "Aggregation Review", "Final Fix", "Final Review",
+                    "Approval" };
+            } else {
+                phaseIds = new long[]{99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 };
+                phaseTypeIds = new long[]{13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+                phaseTypeNames = new String[]{"Specification Submission", "Specification Review",
+                    "Registration", "Submission", "Screening", "Review", "Appeals", "Appeals Response",
+                    "Aggregation", "Aggregation Review", "Final Fix", "Final Review", "Approval",
+                    "Post-Mortem" };
+            }
+
+            long now = System.currentTimeMillis();
+            Timestamp scheduledStart = new Timestamp(now);
+            long duration = 24 * 60 * 60 * 1000; // one day
+            Timestamp scheduledEnd = new Timestamp(now + duration);
+
+            for (int i = 0; i < phaseIds.length; i++) {
+                // insert into db
+                preparedStmt.setLong(1, phaseIds[i]);
+                preparedStmt.setLong(2, phaseTypeIds[i]);
+                preparedStmt.setTimestamp(3, scheduledStart);
+                preparedStmt.setTimestamp(4, scheduledEnd);
+                preparedStmt.setLong(5, duration);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                // create phase instance
+                Phase phase = new Phase(project, duration);
+                phase.setId(phaseIds[i]);
+                phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
+                phase.setPhaseStatus(PhaseStatus.SCHEDULED);
+                phase.setActualStartDate(scheduledStart);
+                phase.setActualEndDate(scheduledEnd);
+                phase.setScheduledStartDate(scheduledStart);
+                phase.setScheduledEndDate(scheduledEnd);
+
+                project.addPhase(phase);
+
+                // re-calculate scheduled start and end.
+                scheduledStart = new Timestamp(scheduledEnd.getTime());
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert dependencies
+            String insertDependency = "INSERT INTO phase_dependency "
+                + "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time,"
+                + " create_user, create_date, modify_user, modify_date)"
+                + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertDependency);
+
+            long[] dependencyPhaseIds = null;
+            long[] dependentPhaseIds = null;
+            if (hasExtraDepends) {
+                dependencyPhaseIds = new long[]{112, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109,
+                    110 };
+                dependentPhaseIds = new long[]{99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111 };
+            } else {
+                dependencyPhaseIds = new long[]{99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
+                    102 };
+                dependentPhaseIds = new long[]{100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+                    112 };
+            }
+            Phase[] phases = project.getAllPhases();
+
+            for (int i = 0; i < dependencyPhaseIds.length; i++) {
+                preparedStmt.setLong(1, dependencyPhaseIds[i]);
+                preparedStmt.setLong(2, dependentPhaseIds[i]);
+                preparedStmt.setBoolean(3, false);
+                preparedStmt.setBoolean(4, true);
+                preparedStmt.setLong(5, 0);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                Dependency dependency = new Dependency(phases[i], phases[i + 1], false, true, 0);
+                phases[i + 1].addDependency(dependency);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            project.getAllPhases()[11].setAttribute("Reviewer Number", "1");
+        } finally {
+            closeStatement(preparedStmt);
+            closeConnection();
+        }
+
+        return project;
+    }
+
+    /**
+     * Gets the value of a private field in the given class. The field has the given name. The value
+     * is retrieved from the given instance. If the instance is null, the field is a static field.
+     * If any error occurs, null is returned.
+     *
+     * @param type the class which the private field belongs to
+     * @param instance the instance which the private field belongs to
+     * @param name the name of the private field to be retrieved
+     *
      * @return the value of the private field
      * @since 1.2
      */
@@ -1985,10 +2199,8 @@ public class StressBaseTest extends TestCase {
     /**
      * End record the time.
      *
-     * @param method
-     *            the method name
-     * @param load
-     *            the load to run
+     * @param method the method name
+     * @param load the load to run
      */
     protected void endRecord(String method, int load) {
         time = System.currentTimeMillis() - time;
@@ -1997,49 +2209,9 @@ public class StressBaseTest extends TestCase {
     }
 
     /**
-     * <p>
-     * A helper method to be used to <code>nullify</code> the singleton instance. The method uses a
-     * <code>Java
-     * Reflection API</code> to access the field and initialize the field with <code>null</code>
-     * value. The operation may fail if a <code>SecurityManager</code> prohibits such sort of
-     * accessing.
-     * </p>
-     *
-     * @param clazz
-     *            a <code>Class</code> representing the class of the <code>Singleton</code>
-     *            instance.
-     * @param instanceName
-     *            a <code>String</code> providing the name of the static field holding the reference
-     *            to the
-     *            singleton instance.
-     * @throws Exception
-     *             the exception occurs
-     */
-    @SuppressWarnings("unchecked")
-    public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
-        try {
-            Field instanceField = clazz.getDeclaredField(instanceName);
-            boolean accessibility = instanceField.isAccessible();
-            instanceField.setAccessible(true);
-
-            if (Modifier.isStatic(instanceField.getModifiers())) {
-                instanceField.set(null, null);
-            } else {
-                System.out.println("An error occurred while trying to release the singleton instance - the "
-                    + " '" + instanceName + "' field is not static");
-            }
-
-            instanceField.setAccessible(accessibility);
-        } catch (Exception e) {
-            System.out.println("An error occurred while trying to release the singleton instance : " + e);
-        }
-    }
-
-    /**
      * Print the information.
      *
-     * @param methodName
-     *            the method name of the className param
+     * @param methodName the method name of the className param
      */
     protected static void printResultToFile(String methodName) {
 

@@ -141,6 +141,7 @@ public class SubmissionPhaseHandlerAccTestsV11 extends BaseTestCase {
         String operator = "1000001";
         Connection conn = getConnection();
         insertProject(conn);
+        insertProjectInfo(getConnection(), 1, new long[] {44}, new String[] {"true"});
 
         // test with scheduled status
         handler.perform(submissionPhase, operator);

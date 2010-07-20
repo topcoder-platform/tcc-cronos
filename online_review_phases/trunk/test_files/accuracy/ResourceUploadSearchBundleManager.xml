@@ -278,6 +278,13 @@
 						submission_status_lu.modify_date AS submission_status_modify_date,
 						submission_status_lu.name AS submission_status_name,
 						submission_status_lu.description AS submission_status_description,
+						submission_type_lu.submission_type_id AS submission_type_id,
+						submission_type_lu.create_user AS submission_type_create_user,
+						submission_type_lu.create_date AS submission_type_create_date,
+						submission_type_lu.modify_user AS submission_type_modify_user,
+						submission_type_lu.modify_date AS submission_type_modify_date,
+						submission_type_lu.name AS submission_type_name,
+						submission_type_lu.description AS submission_type_description,
 						upload.upload_id AS upload_id,
 						upload.create_user AS upload_create_user,
 						upload.create_date AS upload_create_date,
@@ -307,10 +314,12 @@
 						FROM submission,
 						upload,
 						submission_status_lu,
+						submission_type_lu,
 						upload_type_lu,
 						upload_status_lu
 						WHERE submission.upload_id = upload.upload_id
 						AND submission.submission_status_id = submission_status_lu.submission_status_id
+						AND submission.submission_type_id = submission_type_lu.submission_type_id
 						AND upload.upload_type_id = upload_type_lu.upload_type_id
 						AND upload.upload_status_id = upload_status_lu.upload_status_id
 						AND
@@ -331,6 +340,9 @@
 					</Property>
 					<Property name="submission_status_id">
 						<Value>submission.submission_status_id</Value>
+					</Property>
+					<Property name="submission_type_id">
+						<Value>submission.submission_type_id</Value>
 					</Property>
 					<Property name="project_id">
 						<Value>upload.project_id</Value>

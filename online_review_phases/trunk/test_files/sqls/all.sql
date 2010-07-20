@@ -385,10 +385,21 @@ CREATE TABLE submission_status_lu (
   modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   PRIMARY KEY(submission_status_id)
 );
+CREATE TABLE submission_type_lu (
+  submission_type_id          INTEGER                         NOT NULL,
+  name                          VARCHAR(64)                     NOT NULL,
+  description                   VARCHAR(254)                    NOT NULL,
+  create_user                   VARCHAR(64)                     NOT NULL,
+  create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  modify_user                   VARCHAR(64)                     NOT NULL,
+  modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
+  PRIMARY KEY(submission_type_id)
+);
 create table submission (
     submission_id INT not null,
     upload_id INT not null,
     submission_status_id INT not null,
+    submission_type_id INT not null,
     screening_score DECIMAL(5,2),
     initial_score DECIMAL(5,2),
     final_score DECIMAL(5,2),
@@ -410,6 +421,12 @@ alter table submission add constraint foreign key
 	references submission_status_lu
 	(submission_status_id) 
 	constraint fk_submission_submissionstatuslu_submissionstatusid;
+
+alter table submission add constraint foreign key 
+	(submission_type_id)
+	references submission_type_lu
+	(submission_type_id) 
+	constraint fk_submission_submissiontypelu_submissiontypeid;
 
 alter table submission add constraint foreign key 
 	(upload_id)
@@ -1133,7 +1150,7 @@ insert into project_info_type_lu(project_info_type_id, name, description, create
 insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(42, 'Requires Other Fixes', 'Requires Other Fixes', 'System', CURRENT, 'System', CURRENT);
 insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(43, 'Send Winner Emails', 'Send Winner Emails', 'System', CURRENT, 'System', CURRENT);  
+  VALUES(43, 'Send Winner Emails', 'Send Winner Emails', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'Registration', 'Registration', 'System', CURRENT, 'System', CURRENT);
@@ -1182,34 +1199,46 @@ INSERT INTO phase_criteria_type_lu(phase_criteria_type_id, name, description, cr
 INSERT INTO phase_criteria_type_lu(phase_criteria_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(7, 'Post-Mortem Reviewer Number', 'Post-Mortem Reviewer Number', 'System', CURRENT, 'System', CURRENT);  
 
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(1, NULL, 'Submitter', 'Submitter', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(2, 3, 'Primary Screener', 'Primary Screener', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(3, 3, 'Screener', 'Screener', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(4, 4, 'Reviewer', 'Reviewer', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(5, 4, 'Accuracy Reviewer', 'Accuracy Reviewer', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(6, 4, 'Failure Reviewer', 'Failure Reviewer', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(7, 4, 'Stress Reviewer', 'Stress Reviewer', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(8, 7, 'Aggregator', 'Aggregator', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(9, 10, 'Final Reviewer', 'Final Reviewer', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(10, 11, 'Approver', 'Approver', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(11, NULL, 'Designer', 'Designer', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(12, NULL, 'Observer', 'Observer', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(13, NULL, 'Manager', 'Manager', 'System', CURRENT, 'System', CURRENT);
-INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(14, 12, 'Post-Mortem Reviewer', 'Post-Mortem Reviewer', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (1, NULL, 'Submitter', 'Submitter', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (2, 3, 'Primary Screener', 'Primary Screener', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (3, 3, 'Screener', 'Screener', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (4, 4, 'Reviewer', 'Reviewer', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (5, 4, 'Accuracy Reviewer', 'Accuracy Reviewer', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (6, 4, 'Failure Reviewer', 'Failure Reviewer', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (7, 4, 'Stress Reviewer', 'Stress Reviewer', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (8, 7, 'Aggregator', 'Aggregator', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (9, 10, 'Final Reviewer', 'Final Reviewer', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (10, NULL, 'Approver', 'Approver', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (11, NULL, 'Designer', 'Designer', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (12, NULL, 'Observer', 'Observer', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (13, NULL, 'Manager', 'Manager', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (14, NULL, 'Copilot', 'Copilot', 'System', '2010-01-13 08:54:35.000', 'System', '2010-01-13 08:54:35.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (15, NULL, 'Client Manager', 'Client Manager', 'System', '2010-01-13 08:54:35.000', 'System', '2010-01-13 08:54:35.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (16, NULL, 'Post-Mortem Reviewer', 'Post-Mortem Reviewer', 'System', current, 'System', current);
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (1001, NULL, 'Team Captain', 'Team Captain', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (1002, NULL, 'Free Agent', 'Free Agent', 'System', '2006-11-02 20:14:24.000', 'System', '2006-11-02 20:14:24.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (1003, NULL, 'Payment Manager', 'Payment Manager', 'System', '2009-03-16 20:27:00.000', 'System', '2009-03-16 20:27:00.000');
+INSERT INTO resource_role_lu(resource_role_id,phase_type_id,name,description,
+create_user,create_date,modify_user,modify_date) VALUES (86, NULL, 'Deactivated', 'Deactivated', 'System', '2008-12-04 14:51:25.000', 'System', '2008-12-04 14:51:25.000');
 
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'External Reference ID', 'External Reference ID', 'System', CURRENT, 'System', CURRENT);
@@ -1453,10 +1482,6 @@ UPDATE scorecard_type_lu SET name = 'Approval', description = 'Approval' WHERE s
 INSERT INTO scorecard_type_lu (scorecard_type_id, name, description, create_user, create_date, modify_user, modify_date)
        VALUES (4, 'Post-Mortem', 'Post-Mortem', 'System', CURRENT, 'System', CURRENT);
 
-INSERT INTO resource_role_lu (resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user,
-                              modify_date)
-       VALUES (16, NULL, 'Post-Mortem Reviewer', 'Post-Mortem Reviewer', 'System', CURRENT, 'System', CURRENT);
-
 INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission,
                             required, create_user, create_date, modify_user, modify_date)
        VALUES (24, 12, 16, 'Post-Mortem Review', 'Post-Mortem Review', 0, 1, 'System', CURRENT, 'System', CURRENT );
@@ -1464,10 +1489,36 @@ INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, nam
 -- Approver role is unbound from Approval phase
 UPDATE resource_role_lu SET phase_type_id = NULL WHERE resource_role_id = 10;
 
--- New project info type to hold the flag indicating whether the project requires other fixes
-INSERT INTO project_info_type_lu (project_info_type_id, name, description,
-                                  create_user, create_date, modify_user, modify_date)
-       VALUES (50, 'Requires Other Fixes', 'Requires Other Fixes', 'System', CURRENT, 'System', CURRENT);
+-- for specification submission and specification review, added in version 1.4
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('submission_type_id_seq', 1, 1, 0);
+
+insert into project_info_type_lu(project_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(44, 'Post-Mortem Required', 'Post-Mortem Required', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO submission_type_lu(submission_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(1, 'Contest Submission', 'The contest submission', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO submission_type_lu(submission_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(2, 'Specification Submission', 'The specification submission', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(13, 'Specification Submission', 'Specification Submission', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(14, 'Specification Review', 'Specification Review', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(14, 'Specification Review Comment', 'Specification Review Comment', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(17, 13, 'Specification Submitter', 'Specification Submitter', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(18, 14, 'Specification Reviewer', 'Specification Reviewer', 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
+  VALUES (25, 13, 1, 'Specification Submission', 'Specification Submission', 0, 0, 'System', CURRENT, 'System', CURRENT );
+INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
+  VALUES (26, 14, 15, 'Specification Review', 'Specification Review', 1, 1, 'System', CURRENT, 'System', CURRENT );
+
 
 create table link_type_lu (
 link_type_id INT not null,

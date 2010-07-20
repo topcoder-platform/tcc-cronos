@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
+import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
@@ -20,6 +21,7 @@ import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -101,6 +103,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         "Appeal Response", "Aggregation Comment",
         "Aggregation Review Comment", "Submitter Comment",
         "Manager Comment"};
+
     /**
      * The log instance used by this handler.
      */
@@ -162,7 +165,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      * @return True if the input phase can be executed, false otherwise.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Aggregation" type.
+     *         &quot;Aggregation&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input is null.
@@ -223,7 +226,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Provides addtional logic to execute a phase. This method will be called
+     * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
      * Management component. This method can send email to a group of users
      * associated with timeline notification for the project.The email can be
@@ -306,7 +309,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                                                 + phase.getId());
             }
             String aggregatorUserId = (String) aggregators[0]
-                            .getProperty("External Reference ID");
+                            .getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
 
             Review aggWorksheet = null;
             if (previousAggregationPhase != null) {
@@ -321,7 +324,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 aggWorksheet.setAuthor(aggregators[0].getId());
 
                 // copy the comments from review scorecards
-                Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review",
+                Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW,
                                 false, true);
                 Resource[] reviewers = PhasesHelper
                                 .searchResourcesForRoleNames(
@@ -346,8 +349,13 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 Filter filter = SubmissionFilterBuilder
                                 .createResourceIdFilter(winningSubmitter
                                                 .getId());
+                // change in version 1.4
+                // AND submission type ID = "Contest Submission"
+                long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(conn,
+                        PhasesHelper.CONTEST_SUBMISSION_TYPE);
+                Filter typeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
                 Submission[] submissions = getManagerHelper()
-                                .getUploadManager().searchSubmissions(filter);
+                                .getUploadManager().searchSubmissions(new AndFilter(filter, typeFilter));
 
                 // OrChange - Modified to handle multiple submissions for a
                 // single resource
@@ -410,9 +418,9 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                                 getManagerHelper().getReviewManager(),
                                 "Submitter Comment");
                 for (int i = 0; i < reviewers.length; i++) {
-                    if (reviewers[i].getProperty("External Reference ID") == null
+                    if (reviewers[i].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID) == null
                                     || reviewers[i].getProperty(
-                                                    "External Reference ID")
+                                            PhasesHelper.EXTERNAL_REFERENCE_ID)
                                                     .equals(aggregatorUserId)) {
                         continue;
                     }
@@ -441,13 +449,13 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 // For each comment, reset comment extra info
                 for (int i = 0; i < comments.length; i++) {
                     Comment comment = comments[i];
-                    if ("Approved".equalsIgnoreCase((String) comment
+                    if (PhasesHelper.APPROVED.equalsIgnoreCase((String) comment
                                     .getExtraInfo())
-                                    || "Accepted"
+                                    || PhasesHelper.ACCEPTED
                                                     .equalsIgnoreCase((String) comment
                                                                     .getExtraInfo())) {
                         comment.setExtraInfo("Approving");
-                    } else if ("Rejected".equalsIgnoreCase((String) comment
+                    } else if (PhasesHelper.REJECTED.equalsIgnoreCase((String) comment
                                     .getExtraInfo())) {
                         comment.setExtraInfo(null);
                     }
@@ -465,16 +473,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Problem when persisting review",
                             e);
         } catch (SQLException e) {
-            LOG
-                            .log(
-                                            Level.ERROR,
-                                            new LogMessage(
-                                                            new Long(
-                                                                            phase
-                                                                                            .getId()),
-                                                            operator,
-                                                            "Fail to create aggregate worksheet.",
-                                                            e));
+            LOG.log(Level.ERROR, new LogMessage(new Long(phase.getId()),
+                operator, "Fail to create aggregate worksheet.", e));
             throw new PhaseHandlingException("Problem when looking up ids.", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException(
@@ -501,21 +501,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         Connection conn = null;
         try {
             conn = createConnection();
-            Review review = PhasesHelper.getAggregationWorksheet(conn,
-                            getManagerHelper(), phase.getId());
+            Review review = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), phase.getId());
             return (review != null && review.isCommitted());
-        } catch (SQLException e) {
-            LOG
-                            .log(
-                                            Level.ERROR,
-                                            new LogMessage(
-                                                            new Long(
-                                                                            phase
-                                                                                            .getId()),
-                                                            null,
-                                                            "Fail to check if aggregate worksheet present.",
-                                                            e));
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

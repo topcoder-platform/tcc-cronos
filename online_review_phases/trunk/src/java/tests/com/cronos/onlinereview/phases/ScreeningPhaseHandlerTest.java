@@ -369,7 +369,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // 3. insert submission
             Upload submitterUpload = createUpload(102, project.getId(), submitter.getId(), 1, 1, "parameter");
-            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1);
+            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
             this.insertUploads(conn, new Upload[] {submitterUpload});
@@ -436,7 +436,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // 3. insert submission
             Upload submitterUpload = createUpload(102, project.getId(), submitter.getId(), 1, 1, "parameter");
-            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1);
+            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
             this.insertUploads(conn, new Upload[] {submitterUpload});
@@ -475,6 +475,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // test with scheduled status.
             Project project = super.setupPhases();
+            insertProjectInfo(getConnection(), project.getId(), new long[] {44}, new String[] {"true"});
             Phase[] phases = project.getAllPhases();
             Phase screenPhase = phases[2];
 
@@ -504,7 +505,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // 3. insert submission
             Upload submitterUpload = createUpload(102, project.getId(), submitter.getId(), 1, 1, "parameter");
-            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1);
+            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
             this.insertUploads(conn, new Upload[] {submitterUpload});
@@ -577,7 +578,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // 3. insert submission
             Upload submitterUpload = createUpload(102, project.getId(), submitter.getId(), 1, 1, "parameter");
-            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1);
+            Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
             this.insertUploads(conn, new Upload[] {submitterUpload});
@@ -633,7 +634,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             // another register
@@ -646,7 +647,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             handler.perform(screeningPhase, operator);
@@ -690,7 +691,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             // another register
@@ -703,7 +704,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             // insert screener
@@ -759,7 +760,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
@@ -781,7 +782,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             scorecard = createScorecard(2, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
@@ -839,7 +840,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
@@ -861,7 +862,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             scorecard = createScorecard(2, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
@@ -915,7 +916,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
@@ -1020,7 +1021,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             handler.canPerform(screeningPhase);
@@ -1071,7 +1072,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
@@ -1124,22 +1125,28 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            Upload upload1 = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload1});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            Upload upload2 = super.createUpload(2, project.getId(), screener.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload2});
+
+            Submission submission1 = super.createSubmission(1, upload1.getId(), 1, 1);
+            super.insertSubmissions(conn, new Submission[] {submission1});
+
+            Submission submission2 = super.createSubmission(2, upload2.getId(), 1, 1);
+            super.insertSubmissions(conn, new Submission[] {submission2});
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // insert a screening review, different submission id
-            Review screenReview = createReview(11, screener.getId(), submission.getId() + 1, scorecard.getId(), true,
+            Review screenReview = createReview(11, screener.getId(), submission2.getId(), scorecard.getId(), true,
                     90.0f);
 
             this.insertScorecards(conn, new Scorecard[] {scorecard});
             this.insertReviews(conn, new Review[] {screenReview});
 
-            assertFalse("exptect false", handler.canPerform(screeningPhase));
+            assertFalse("expect false", handler.canPerform(screeningPhase));
         } finally {
             cleanTables();
             closeConnection();
@@ -1153,7 +1160,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
      *             not under test.
      * @since 1.3
      */
-    public void testCanPerform_PrimaryScreener_reviewNotFound1() throws Exception {
+    public void testCanPerform_PrimaryScreener_reviewNotFound() throws Exception {
         ScreeningPhaseHandler handler = new ScreeningPhaseHandler();
 
         try {
@@ -1183,63 +1190,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-
-            Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
-
-            // insert a screening review, different submission id
-            Review screenReview = createReview(11, screener.getId(), submission.getId() + 1, scorecard.getId(), true,
-                    90.0f);
-
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
-
-            assertFalse("exptect false", handler.canPerform(screeningPhase));
-        } finally {
-            cleanTables();
-            closeConnection();
-        }
-    }
-
-    /**
-     * Tests the perform. To stop the phase and check the email.
-     *
-     * @throws Exception
-     *             not under test.
-     * @since 1.3
-     */
-    public void testCanPerform_PrimaryScreener_reviewNotFound2() throws Exception {
-        ScreeningPhaseHandler handler = new ScreeningPhaseHandler();
-
-        try {
-            cleanTables();
-
-            Project project = setupProjectResourcesNotification("Screening");
-
-            // test with scheduled status.
-            Phase screeningPhase = project.getAllPhases()[2];
-            screeningPhase.setPhaseStatus(PhaseStatus.OPEN);
-
-            Connection conn = getConnection();
-
-            // insert screener
-            Resource screener = createResource(6, screeningPhase.getId(), 1, 2);
-            super.insertResources(conn, new Resource[] {screener});
-            insertResourceInfo(conn, screener.getId(), 1, "2");
-
-            // create a registration
-            Resource resource = createResource(4, 103L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
-            insertResourceInfo(conn, resource.getId(), 1, "4");
-            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
-            insertResourceInfo(conn, resource.getId(), 4, "3808");
-            insertResourceInfo(conn, resource.getId(), 5, "100");
-
-            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
-
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             assertFalse("exptect false", handler.canPerform(screeningPhase));
@@ -1286,12 +1237,11 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
-            // insert a screening review, different submission id
             Review screenReview = createReview(11, screener.getId(), submission.getId(), scorecard.getId(), false,
                     90.0f);
 

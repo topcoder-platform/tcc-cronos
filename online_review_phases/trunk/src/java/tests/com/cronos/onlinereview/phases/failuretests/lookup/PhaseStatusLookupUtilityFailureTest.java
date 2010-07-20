@@ -4,9 +4,11 @@
 package com.cronos.onlinereview.phases.failuretests.lookup;
 
 import com.cronos.onlinereview.phases.failuretests.AbstractTestCase;
+import com.cronos.onlinereview.phases.failuretests.ConfigHelper;
 import com.cronos.onlinereview.phases.failuretests.TestDataFactory;
 import com.cronos.onlinereview.phases.failuretests.mock.MockConnection;
 import com.cronos.onlinereview.phases.lookup.PhaseStatusLookupUtility;
+
 import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -40,6 +42,7 @@ public class PhaseStatusLookupUtilityFailureTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ConfigHelper.releaseSingletonInstance(PhaseStatusLookupUtility.class, "CACHED_PAIRS");
     }
 
     /**

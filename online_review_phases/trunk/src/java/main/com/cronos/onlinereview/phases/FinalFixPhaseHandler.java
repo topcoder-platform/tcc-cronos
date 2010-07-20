@@ -19,11 +19,12 @@ import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
 
 import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -144,7 +145,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
             // Get nearest Final Review phase
             Phase finalReviewPhase = PhasesHelper.locatePhase(phase,
-                            "Final Review", true, false);
+                            PhasesHelper.PHASE_FINAL_REVIEW, true, false);
             if (finalReviewPhase == null) {
                 return false;
             }
@@ -157,7 +158,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                                 .searchResourcesForRoleNames(
                                                 getManagerHelper(),
                                                 conn,
-                                                new String[] {"Final Reviewer"},
+                                                new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME},
                                                 finalReviewPhase.getId());
 
                 // return true if there is a final reviewer
@@ -174,7 +175,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Provides addtional logic to execute a phase. This method will be called
+     * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
      * Management component. This method can send email to a group os users
      * associated with timeline notification for the project. The email can be
@@ -233,9 +234,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         // Check if the Final Review worksheet is created
         // Get nearest Final Review phase
         Phase finalReviewPhase = PhasesHelper.locatePhase(phase,
-                        "Final Review", true, true);
+                PhasesHelper.PHASE_FINAL_REVIEW, true, true);
         Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase,
-                        "Final Review", false, false);
+                PhasesHelper.PHASE_FINAL_REVIEW, false, false);
 
         Connection conn = null;
 
@@ -245,8 +246,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             // Search for id of the Final Reviewer
             Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
-                            new String[] {"Final Reviewer"}, finalReviewPhase
-                                            .getId());
+                            new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME}, finalReviewPhase.getId());
 
             if (resources.length == 0) {
                 throw new PhaseHandlingException(
@@ -295,64 +295,44 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     finalWorksheet.setScorecard(aggWorksheet.getScorecard());
                     finalWorksheet.setSubmission(aggWorksheet.getSubmission());
                 } else {
-                    // Create final review from review scorecards
-
-                    // copy the comments from review scorecards
                     Phase reviewPhase = PhasesHelper.locatePhase(phase,
-                                    "Review", false, true);
+                            PhasesHelper.REVIEW, false, true);
 
                     // find winning submitter.
-                    Resource winningSubmitter = PhasesHelper
-                                    .getWinningSubmitter(
-                                                    getManagerHelper()
-                                                                    .getResourceManager(),
-                                                    getManagerHelper()
-                                                                    .getProjectManager(),
-                                                    conn, phase.getProject()
-                                                                    .getId());
+                    Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
+                                                    getManagerHelper().getResourceManager(),
+                                                    getManagerHelper().getProjectManager(),
+                                                    conn, phase.getProject().getId());
                     if (winningSubmitter == null) {
                         throw new PhaseHandlingException(
-                                        "No winner for project with id"
-                                                        + phase
-                                                                        .getProject()
-                                                                        .getId());
+                                        "No winner for project with id" + phase.getProject().getId());
                     }
 
                     // find the winning submission
                     Filter filter = SubmissionFilterBuilder
                                     .createResourceIdFilter(winningSubmitter
                                                     .getId());
-                    Submission[] submissions = getManagerHelper()
-                                    .getUploadManager().searchSubmissions(
-                                                    filter);
+                    // change in version 1.4
+                    Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
                     if (submissions == null || submissions.length != 1) {
-                        throw new PhaseHandlingException(
-                                        "No winning submission for project with id"
-                                                        + phase
-                                                                        .getProject()
-                                                                        .getId());
+                        throw new PhaseHandlingException("No winning submission for project with id"
+                            + phase.getProject().getId());
                     }
                     Long winningSubmissionId = new Long(submissions[0].getId());
 
                     // Search all review scorecard from review phase for the
                     // winning submitter
-                    Review[] reviews = PhasesHelper
-                                    .searchReviewsForResourceRoles(
-                                                    conn,
-                                                    getManagerHelper(),
-                                                    reviewPhase.getId(),
-                                                    PhasesHelper.REVIEWER_ROLE_NAMES,
-                                                    winningSubmissionId);
+                    Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn,
+                        getManagerHelper(), reviewPhase.getId(), PhasesHelper.REVIEWER_ROLE_NAMES,
+                        winningSubmissionId);
 
                     for (int r = 0; r < reviews.length; r++) {
                         finalWorksheet.setScorecard(reviews[r].getScorecard());
-                        finalWorksheet
-                                        .setSubmission(reviews[r]
-                                                        .getSubmission());
+                        finalWorksheet.setSubmission(reviews[r].getSubmission());
                         PhasesHelper.copyComments(reviews[r], finalWorksheet,
-                                        COMMENT_TYPES_TO_COPY, null);
+                            COMMENT_TYPES_TO_COPY, null);
                         PhasesHelper.copyReviewItems(reviews[r],
-                                        finalWorksheet, COMMENT_TYPES_TO_COPY);
+                            finalWorksheet, COMMENT_TYPES_TO_COPY);
                     }
                 }
 
@@ -412,29 +392,22 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
 
             long uploadTypeId = UploadTypeLookupUtility.lookUpId(conn,
-                            "Final Fix");
+                    PHASE_TYPE_FINAL_FIX);
             long uploadStatusId = UploadStatusLookupUtility.lookUpId(conn,
                             "Active");
 
             // get final fix upload based on "Final Fix" type, "Active" status
             // and winning submitter resource id filters.
-            Filter uploadTypeFilter = UploadFilterBuilder
-                            .createUploadTypeIdFilter(uploadTypeId);
-            Filter uploadStatusFilter = UploadFilterBuilder
-                            .createUploadStatusIdFilter(uploadStatusId);
+            Filter uploadTypeFilter = UploadFilterBuilder.createUploadTypeIdFilter(uploadTypeId);
+            Filter uploadStatusFilter = UploadFilterBuilder.createUploadStatusIdFilter(uploadStatusId);
             Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
                             getManagerHelper().getResourceManager(),
-                            getManagerHelper().getProjectManager(), conn, phase
-                                            .getProject().getId());
-            Filter resourceIdFilter = UploadFilterBuilder
-                            .createResourceIdFilter(winningSubmitter.getId());
-            Filter fullFilter = SearchBundle.buildAndFilter(SearchBundle
-                            .buildAndFilter(uploadTypeFilter,
-                                            uploadStatusFilter),
-                            resourceIdFilter);
+                            getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
+            Filter resourceIdFilter = UploadFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
+            Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {uploadTypeFilter,
+                uploadStatusFilter, resourceIdFilter}));
 
-            Upload[] uploads = getManagerHelper().getUploadManager()
-                            .searchUploads(fullFilter);
+            Upload[] uploads = getManagerHelper().getUploadManager().searchUploads(fullFilter);
 
             if (uploads.length == 0) {
                 return null;

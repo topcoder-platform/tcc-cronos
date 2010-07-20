@@ -136,7 +136,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      * @return True if the input phase can be executed, false otherwise.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Appeals" type.
+     *         &quot;Appeals&quot; type.
      * @throws PhaseHandlingException if there is any error while processing the
      *         phase.
      * @throws IllegalArgumentException if the input is null.
@@ -172,16 +172,8 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
                                     getManagerHelper().getUploadManager(),
                                     conn, phase.getProject().getId());
                 } catch (PhaseHandlingException phe) {
-                    LOG
-                                    .log(
-                                                    Level.ERROR,
-                                                    new LogMessage(
-                                                                    new Long(
-                                                                                    phase
-                                                                                                    .getId()),
-                                                                    null,
-                                                                    "Fail to check if appeals can be closed early.",
-                                                                    phe));
+                    LOG.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+                        "Fail to check if appeals can be closed early.", phe));
                     throw phe;
                 } finally {
                     PhasesHelper.closeConnection(conn);
@@ -193,7 +185,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * Provides addtional logic to execute a phase. This method will be called
+     * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
      * Management component. This method can send email to a group of users
      * associated with timeline notification for the project. The email can be
@@ -206,7 +198,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      * @param operator The operator that execute the phase.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Appeals" type.
+     *         &quot;Appeals&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty

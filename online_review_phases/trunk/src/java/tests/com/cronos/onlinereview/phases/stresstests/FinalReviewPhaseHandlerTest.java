@@ -377,6 +377,9 @@ public class FinalReviewPhaseHandlerTest extends StressBaseTest {
             startRecord();
             for (int i = 0; i < FIRST_LEVEL; i++) {
                 handler.perform(finalReviewPhase, operator);
+                if (i == 0) {
+                    finalReviewPhase = finalReviewPhase.getProject().getAllPhases()[11];
+                }
             }
             endRecord("FinalReviewPhaseHandler::perform(Phase, String)--"
                 + "(the phase status is false, the rejecte is true)", FIRST_LEVEL);

@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
@@ -13,13 +14,13 @@ import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
 
-import com.topcoder.project.phases.Project;
 import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +78,7 @@ import java.util.Map;
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
  *   <ol>
  *     <li>Updated {@link #perform(Phase, String)} method to use updated
- *     {@link PhasesHelper#insertPostMortemPhase(Project , Phase, ManagerHelper, String)} method for creating
+ *     PhasesHelper#insertPostMortemPhase(Project , Phase, ManagerHelper, String) method for creating
  *     <code>Post-Mortem</code> phase.</li>
  *   </ol>
  * </p>
@@ -92,9 +93,6 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.ScreeningPhaseHandler";
 
-    /** constant for "Submitter" role name. */
-    private static final String ROLE_SUBMITTER = "Submitter";
-
     /** constant for "Screener" role name. */
     private static final String ROLE_SCREENER = "Screener";
 
@@ -103,9 +101,6 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
     /** constant for "Failed Screening" submission status. */
     private static final String SUBMISSION_STATUS_FAILED_SCREENING = "Failed Screening";
-
-    /** constant for "Screening Score" property. */
-    private static final String PROP_SCREENING_SCORE = "Screening Score";
 
     /** constant for screening phase type. */
     private static final String PHASE_TYPE_SCREENING = "Screening";
@@ -194,7 +189,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 // Search all "Active" submissions for current project
                 Submission[] subs = PhasesHelper.searchActiveSubmissions(
                                 getManagerHelper().getUploadManager(), conn,
-                                phase.getProject().getId());
+                                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
                 return (subs.length > 0);
             } catch (SQLException sqle) {
                 throw new PhaseHandlingException(
@@ -221,9 +216,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * Provides addtional logic to execute a phase. This method will be called
+     * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
-     * Management component. This method can send email to a group os users
+     * Management component. This method can send email to a group of users
      * associated with timeline notification for the project. The email can be
      * send on start phase or end phase base on configuration settings.
      * <p>
@@ -252,7 +247,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Screening" type.
+     *         &quot;Screening&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
@@ -280,10 +275,11 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 conn = createConnection();
 
                 // Search all submissions for current project
+                // change in version 1.4
                 Submission[] submissions = PhasesHelper
                                 .searchActiveSubmissions(getManagerHelper()
                                                 .getUploadManager(), conn,
-                                                phase.getProject().getId());
+                                                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
                 // Search all screening scorecard for the current phase
                 Review[] screenReviews = PhasesHelper
@@ -364,8 +360,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                                                                             conn, SCREENING_ROLES , phase.getId());
             values.put("NEED_PRIMARY_SCREENER", screeners.length == 0 ? 1 : 0);
             //get submissions
+            // change in version 1.4
             subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                                                               phase.getProject().getId());
+                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up submissions.", e);
         } finally {
@@ -488,7 +485,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             // get the submitter for this phase
             Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
-                            new String[] {ROLE_SUBMITTER}, phase.getId());
+                            new String[] {PhasesHelper.SUBMITTER_ROLE_NAME}, phase.getId());
 
             if (resources.length != 1) {
                 throw new PhaseHandlingException(
@@ -504,8 +501,13 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                             .createProjectIdFilter(phase.getProject().getId());
             Filter resourceIdFilter = SubmissionFilterBuilder
                             .createResourceIdFilter(submitter.getId());
-            Filter fullFilter = SearchBundle.buildAndFilter(projectIdFilter,
-                            resourceIdFilter);
+
+            // changes in version 1.4
+            // AND submission type ID = <looked up ID for "Contest Submission">
+            Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(
+                    SubmissionTypeLookupUtility.lookUpId(conn, PhasesHelper.CONTEST_SUBMISSION_TYPE));
+            Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {projectIdFilter,
+                resourceIdFilter, submissionTypeFilter}));
             Submission[] submissions = getManagerHelper().getUploadManager()
                             .searchSubmissions(fullFilter);
 
@@ -574,9 +576,10 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                                             null);
 
             // get the submissions for the project
+            // change in version 1.4
             Submission[] submissions = PhasesHelper.searchActiveSubmissions(
                             getManagerHelper().getUploadManager(), conn, phase
-                                            .getProject().getId());
+                                            .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
             // If the number of reviews doesn't match submission number - not
             // all reviews are commited for sure

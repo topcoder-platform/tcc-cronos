@@ -57,6 +57,7 @@ public class ScreeningPhaseHandlerAccTestsV11 extends BaseTestCase {
         Project project = super.setupPhases();
         Phase[] phases = project.getAllPhases();
         Phase screenPhase = phases[2];
+        insertProjectInfo(getConnection(), 1, new long[] {44}, new String[] {"true"});
 
         screenPhase.setPhaseStatus(PhaseStatus.OPEN);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -15,7 +15,6 @@ import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
-import com.topcoder.project.phases.Project;
 
 /**
  * <p>
@@ -71,13 +70,22 @@ import com.topcoder.project.phases.Project;
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
  *   <ol>
  *     <li>Updated {@link #perform(Phase, String)} method to use updated
- *     {@link PhasesHelper#insertPostMortemPhase(Project, Phase, ManagerHelper, String)} method for creating
+ *     PhasesHelper#insertPostMortemPhase(Project, Phase, ManagerHelper, String) method for creating
  *     <code>Post-Mortem</code> phase.</li>
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, argolite, bramandia, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.4 Change notes:
+ *   <ol>
+ *     <li>Updated {@link #getAutoScreeningPasses(Phase)} method to create connection before calling
+ *     PhasesHelper#getScreeningTasks(ManagerHelper, Connection, Phase) method.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, bramandia, saarixx, myxgyy
+ * @version 1.4
+ * @since 1.0
  */
 public class SubmissionPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -145,7 +153,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      * @return True if the input phase can be executed, false otherwise.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Submission" type.
+     *         &quot;Submission&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input is null.
@@ -236,7 +244,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
             subs = PhasesHelper.searchActiveSubmissions(
                             getManagerHelper().getUploadManager(), conn, phase
-                                            .getProject().getId());
+                                            .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
         } catch (SQLException e) {
             throw new PhaseHandlingException(
                             "Error retrieving submission status id", e);
@@ -324,8 +332,6 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
             }
 
             return passedNum;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -333,6 +339,10 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Returns the number of submissions which passed automatic screening.
+     * <p>
+     * Change in version 1.4: create connection before calling
+     * {@link PhasesHelper#getScreeningTasks(ManagerHelper, Connection, Phase)} method.
+     * </p>
      *
      * @param phase phase instance.
      *
@@ -341,18 +351,26 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException in case of retrieval error.
      */
     private int getAutoScreeningPasses(Phase phase) throws PhaseHandlingException {
-        ScreeningTask[] screeningTasks = PhasesHelper.getScreeningTasks(
-                        getManagerHelper(), phase);
-        int passedNum = 0;
+        Connection conn = null;
+        try {
+            conn = createConnection();
 
-        for (int i = 0; i < screeningTasks.length; i++) {
-            String status = screeningTasks[i].getScreeningStatus().getName();
+            ScreeningTask[] screeningTasks = PhasesHelper.getScreeningTasks(getManagerHelper(), conn, phase);
+            int passedNum = 0;
 
-            if ("Passed".equals(status) || "Passed with Warning".equals(status)) {
-                passedNum++;
+            for (int i = 0; i < screeningTasks.length; i++) {
+                String status = screeningTasks[i].getScreeningStatus().getName();
+
+                if ("Passed".equals(status) || "Passed with Warning".equals(status)) {
+                    passedNum++;
+                }
             }
-        }
 
-        return passedNum;
+            return passedNum;
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("Problem when getting screening tasks.", e);
+        } finally {
+            PhasesHelper.closeConnection(conn);
+        }
     }
 }

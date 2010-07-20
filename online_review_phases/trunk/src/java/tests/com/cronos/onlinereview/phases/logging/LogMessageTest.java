@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * </p>
  *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.4
  */
 public class LogMessageTest extends TestCase {
 
@@ -213,5 +213,23 @@ public class LogMessageTest extends TestCase {
 
         assertNotNull("should never null", stackTrace);
         assertTrue("exception message should be present", stackTrace.contains(ERROR.getMessage()));
+    }
+
+    /**
+     * <p>
+     * Tests the <code>getExceptionStackTrace(Throwable)</code> method.
+     * </p>
+     * <p>
+     * The given cause is null, IllegalArgumentException expected.
+     * </p>
+     * @since 1.4
+     */
+    public void testGetExceptionStackTrace_failure() {
+        try {
+            LogMessage.getExceptionStackTrace(null);
+            fail("should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // pass
+        }
     }
 }

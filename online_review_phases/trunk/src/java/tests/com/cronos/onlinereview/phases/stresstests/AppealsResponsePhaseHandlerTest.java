@@ -253,10 +253,10 @@ public class AppealsResponsePhaseHandlerTest extends StressBaseTest {
 
             // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[]{upload });
+            super.insertUploads(conn, new Upload[]{upload});
 
             Submission submission = super.createSubmission(1, upload.getId(), 1);
-            super.insertSubmissions(conn, new Submission[]{submission });
+            super.insertSubmissions(conn, new Submission[]{submission});
 
             // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);

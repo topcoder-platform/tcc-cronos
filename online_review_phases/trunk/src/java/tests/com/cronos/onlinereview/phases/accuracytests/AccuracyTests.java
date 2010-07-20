@@ -52,6 +52,9 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(ScreeningPhaseHandlerAccTestsV11.class);
         suite.addTestSuite(SubmissionPhaseHandlerAccTestsV11.class);
         suite.addTestSuite(ApprovalPhaseHandlerTestV12.class);
+        suite.addTestSuite(SubmissionTypeLookupUtilityAccuracyTests.class);
+        suite.addTestSuite(SpecificationSubmissionPhaseHandlerAccuracyTests.class);
+        suite.addTestSuite(SpecificationReviewPhaseHandlerAccuracyTests.class);
 
         return suite;
     }

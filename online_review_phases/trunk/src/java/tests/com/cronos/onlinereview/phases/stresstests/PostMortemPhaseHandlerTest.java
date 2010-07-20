@@ -89,7 +89,7 @@ public class PostMortemPhaseHandlerTest extends StressBaseTest {
             postMortemPhase.setAttribute("Reviewer Number", "1");
 
             // insert post-mortem reviewer
-            Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 14);
+            Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 16);
 
             Connection conn = getConnection();
 

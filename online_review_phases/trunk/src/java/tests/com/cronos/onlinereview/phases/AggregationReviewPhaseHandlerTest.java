@@ -303,7 +303,7 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
             // aggregator resource
             Resource aggregator = createResource(101, aggregationPhase.getId(), project.getId(), 8);
             Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
-            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -392,7 +392,7 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
             Resource aggregator = createResource(101, aggregationPhase.getId(), project.getId(), 8);
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
             Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
-            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -452,7 +452,7 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
             System.out.println(reviewPhase.getId());
             Resource reviewer = createResource(6, reviewPhase.getId(), project.getId(), 4);
             Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
-            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -512,7 +512,7 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
             Resource aggregator = createResource(101, aggregationPhase.getId(), project.getId(), 8);
             Resource reviewer = createResource(6, reviewPhase.getId(), project.getId(), 4);
             Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
-            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -572,7 +572,7 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
             Resource aggregator = createResource(101, aggregationPhase.getId(), project.getId(), 8);
             Resource reviewer = createResource(6, reviewPhase.getId(), project.getId(), 4);
             Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
-            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -635,7 +635,7 @@ public class AggregationReviewPhaseHandlerTest extends BaseTest {
             Resource aggregator = createResource(101, aggregationPhase.getId(), project.getId(), 8);
             Resource reviewer = createResource(6, reviewPhase.getId(), project.getId(), 4);
             Upload aggUpload = createUpload(1, project.getId(), aggregator.getId(), 4, 1, "parameter");
-            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1);
+            Submission aggSubmission = createSubmission(1, aggUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);

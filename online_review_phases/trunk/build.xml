@@ -1,21 +1,18 @@
 <?xml version="1.0"?>
-<project name="Cronos Java Generic Build" default="dist" basedir=".">
+<project name="TopCoder Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="../tcs/lib"/>
+    <property name="libdir" value="lib"/>
     <property name="tcs_libdir" value="${libdir}/tcs"/>
     <property name="ext_libdir" value="${libdir}/third_party"/>
-
-    <property name="cronos_libdir" value="${libdir}/cronos"/>
-    <property name="target_libdir" value="${cronos_libdir}"/>
-    
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -194,7 +191,7 @@
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <classpath refid="cobertura.classpath"/>
-                <test name="${package}.AllTests" todir="${testlogdir}">
+                <test name="${package}.UnitTests" todir="${testlogdir}">
                     <formatter type="plain" usefile="true"/>
                     <formatter type="xml" usefile="true"/>
                 </test>
@@ -219,7 +216,7 @@
     </target>
 
     <target name="coveragereport" depends="coveragetest">
-        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
+        <cobertura-report format="${cobertura.format}" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
                           datafile="${cobertura.datafile}">
             <fileset dir="${javamain}">
                 <include name="**/*.java"/>
@@ -439,6 +436,24 @@
             />
     </target>
 
+
+    <taskdef resource="checkstyletask.properties" classpath="c:/tc/Java/checkstyle-4.4/checkstyle-4.4/checkstyle-all-4.4.jar" />
+
+		<target name="checkstyle" depends="compile">
+			<mkdir dir="${testlogdir}" />
+			<checkstyle config="c:\tc\Java\Commonfiles\tc_checks.xml" classpath="${build_classdir}">
+				<fileset dir="src/java/main" includes="**/*.java" />
+				<formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
+			</checkstyle>
+		</target>
+
+		<target name="checkstyle_tests" depends="compile_tests">
+			<mkdir dir="${testlogdir}" />
+			<checkstyle config="c:\tc\Java\Commonfiles\tc_test_checks.xml" classpath="${test.build.classpath}">
+				<fileset dir="${javatests}/${packagedir}/" includes="**/*.java" excludes="UnitTests.java, AllTests.java, stresstests/*, failuretests/*, accuracytests/*" />
+				<formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
+			</checkstyle>
+		</target>
     <!-- ************************************************************************** -->
     <!-- ************ END DEPLOYMENT RELATED TARGETS  *************************** -->
     <!-- ************************************************************************** -->

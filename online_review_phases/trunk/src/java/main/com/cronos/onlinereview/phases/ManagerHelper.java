@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -29,6 +29,7 @@ import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.SearchBundleManager;
+import com.topcoder.util.datavalidator.AbstractObjectValidator;
 import com.topcoder.util.datavalidator.LongValidator;
 import com.topcoder.util.datavalidator.StringValidator;
 import com.topcoder.util.idgenerator.IDGenerationException;
@@ -159,6 +160,9 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  *      &lt;Property name="SubmissionStatusIdGeneratorName"&gt;
  *          &lt;Value&gt;submission_status_id_seq&lt;/Value&gt;
  *      &lt;/Property&gt;
+ *       &lt;Property name="SubmissionStatusIdGeneratorName"&gt;
+ *          &lt;Value&gt;submission_type_id_seq&lt;/Value&gt;
+ *      &lt;/Property&gt;
  *      &lt;Property name="PersistenceClassName"&gt;
  *          &lt;Value&gt;com.topcoder.management.deliverable.persistence.sql.SqlUploadPersistence&lt;/Value&gt;
  *      &lt;/Property&gt;
@@ -180,9 +184,16 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * </pre>
  *
  * </p>
+ * <p>
+ * Change in version 1.4:
+ * <ul>
+ *     <li>add submission type id generator used to create UploadManager.</li>
+ *     <li>use java generic type instead of the raw type.</li>
+ * </ul>
+ * </p>
  *
- * @author tuenm, bose_java, waits
- * @version 1.3
+ * @author tuenm, bose_java, waits, saarixx, myxgyy
+ * @version 1.4
  */
 public class ManagerHelper {
     /**
@@ -361,6 +372,15 @@ public class ManagerHelper {
     private static final String PROP_UPLOAD_MGR_SUBMISSION_STATUS_IDGEN_NAME =
         "UploadManager.SubmissionStatusIdGeneratorName";
 
+    /**
+     * Property name constant for submission type IDgenerator name when
+     * creating UploadManager instance.
+     *
+     * @since 1.4
+     */
+    private static final String PROP_UPLOAD_MGR_SUBMISSION_TYPE_IDGEN_NAME =
+        "UploadManager.SubmissionTypeIdGeneratorName";
+
     /** Property name constant for UploadPersistence implementation class name. */
     private static final String PROP_UPLOAD_MGR_PERSISTENCE_CLASS_NAME = "UploadManager.PersistenceClassName";
 
@@ -385,7 +405,7 @@ public class ManagerHelper {
      * parameter. This constant array is used as parameter types array when
      * instantiating using reflection in the initManager() method.
      */
-    private static final Class[] MANAGER_PARAM_TYPES = new Class[] {String.class};
+    private static final Class<?>[] MANAGER_PARAM_TYPES = new Class[] {String.class};
 
     /**
      * ProjectyLinkManager all use same constructor signature which is the one that takes a String and ProjectManager
@@ -394,7 +414,8 @@ public class ManagerHelper {
      *
      * @since 1.3
      */
-    private static final Class[] PROJECT_LINK_MANAGER_PARAM_TYPES = new Class[] {String.class, ProjectManager.class};
+    private static final Class<?>[] PROJECT_LINK_MANAGER_PARAM_TYPES = new Class[] {String.class,
+        ProjectManager.class};
 
     /**
      * Represents the ProjectManager instance. It is initialized in the constructor and never changed after
@@ -496,31 +517,30 @@ public class ManagerHelper {
     public ManagerHelper(String namespace) throws ConfigurationException {
         PhasesHelper.checkString(namespace, "namespace");
 
-        this.projectManager = (ProjectManager) initManager(namespace,
-                        PROP_PROJECT_MGR_CLASS_NAME,
-                        PROP_PROJECT_MGR_NAMESPACE, ProjectManager.class, false);
-          this.projectLinkManager
-                = initProjectLinkManager(namespace, PROP_PROJECT_LINK_MGR_CLASS_NAME, PROP_PROJECT_LINK_MGR_NAMESPACE);
+        this.projectManager = initManager(namespace, PROP_PROJECT_MGR_CLASS_NAME,
+            PROP_PROJECT_MGR_NAMESPACE, ProjectManager.class, false);
 
-        this.phaseManager = (PhaseManager) initManager(namespace,
+        this.projectLinkManager = initProjectLinkManager(namespace,
+            PROP_PROJECT_LINK_MGR_CLASS_NAME, PROP_PROJECT_LINK_MGR_NAMESPACE);
+        this.phaseManager = initManager(namespace,
                         PROP_PHASE_MGR_CLASS_NAME, PROP_PHASE_MGR_NAMESPACE,
                         PhaseManager.class, false);
-        this.reviewManager = (ReviewManager) initManager(namespace,
+        this.reviewManager = initManager(namespace,
                         PROP_REVIEW_MGR_CLASS_NAME, PROP_REVIEW_MGR_NAMESPACE,
                         ReviewManager.class, false);
-        this.scorecardManager = (ScorecardManager) initManager(namespace,
+        this.scorecardManager = initManager(namespace,
                         PROP_SCORECARD_MGR_CLASS_NAME,
                         PROP_SCORECARD_MGR_NAMESPACE, ScorecardManager.class,
                         false);
         this.screeningManager = initScreeningManager(namespace);
         this.uploadManager = initUploadManager(namespace);
         this.resourceManager = initResourceManager(namespace);
-        this.userRetrieval = (UserRetrieval) initManager(namespace,
+        this.userRetrieval = initManager(namespace,
                         PROP_USER_RETRIEVAL_CLASS_NAME,
                         PROP_USER_RETRIEVAL_NAMESPACE, UserRetrieval.class,
                         true);
         this.scorecardAggregator = initScorecardAggregator(namespace);
-        this.projectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_PROJECT_DETAILS_URL, true);;
+        this.projectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_PROJECT_DETAILS_URL, true);
     }
 
     /**
@@ -662,7 +682,9 @@ public class ManagerHelper {
      * UploadManager. It retrieves the required properties from the given
      * namespace, and creates UploadPersistence, search bundle and id generator
      * instances which are required to create the UploadManager instance.
-     *
+     * <p>
+     * Change in version 1.4: add submission type id generator used to create UploadManager.
+     * </p>
      * @param namespace the namespace to load configuration settings from.
      *
      * @return a UploadManager instance.
@@ -694,11 +716,14 @@ public class ManagerHelper {
         String submissionStatusIdGeneratorName = PhasesHelper.getPropertyValue(
                         namespace,
                         PROP_UPLOAD_MGR_SUBMISSION_STATUS_IDGEN_NAME, true);
+        String submissionTypeIdGeneratorName = PhasesHelper.getPropertyValue(
+                namespace,
+                PROP_UPLOAD_MGR_SUBMISSION_TYPE_IDGEN_NAME, true);
         String persistenceClassName = PhasesHelper.getPropertyValue(namespace,
                         PROP_UPLOAD_MGR_PERSISTENCE_CLASS_NAME, true);
 
         // create persistence instance
-        UploadPersistence persistence = (UploadPersistence) createPersistence(
+        UploadPersistence persistence = createPersistence(
                         namespace, persistenceClassName,
                         UploadPersistence.class);
 
@@ -717,6 +742,8 @@ public class ManagerHelper {
         IDGenerator uploadStatusIdGenerator = null;
         IDGenerator submissionIdGenerator = null;
         IDGenerator submissionStatusIdGenerator = null;
+        // added in version 1.4
+        IDGenerator submissionTypeIdGenerator = null;
 
         try {
             uploadIdGenerator = IDGeneratorFactory
@@ -729,6 +756,8 @@ public class ManagerHelper {
                             .getIDGenerator(submissionIdGeneratorName);
             submissionStatusIdGenerator = IDGeneratorFactory
                             .getIDGenerator(submissionStatusIdGeneratorName);
+            submissionTypeIdGenerator = IDGeneratorFactory
+                            .getIDGenerator(submissionTypeIdGeneratorName);
         } catch (IDGenerationException e) {
             throw new ConfigurationException(
                             "Could not instantiate IDGenerator", e);
@@ -737,12 +766,14 @@ public class ManagerHelper {
         // create UploadManager instance using reflection...
         Object[] params = new Object[] {persistence, uploadSearchBundle, submissionSearchBundle, uploadIdGenerator,
                                         uploadTypeIdGenerator, uploadStatusIdGenerator,
-                                        submissionIdGenerator, submissionStatusIdGenerator};
-        Class[] paramTypes = new Class[] {UploadPersistence.class, SearchBundle.class, SearchBundle.class,
+                                        submissionIdGenerator, submissionStatusIdGenerator,
+                                        submissionTypeIdGenerator};
+        Class<?>[] paramTypes = new Class[] {UploadPersistence.class, SearchBundle.class, SearchBundle.class,
                                           IDGenerator.class, IDGenerator.class,
-                                          IDGenerator.class, IDGenerator.class, IDGenerator.class};
+                                          IDGenerator.class, IDGenerator.class,
+                                          IDGenerator.class, IDGenerator.class};
 
-        return (UploadManager) createObject(uploadManagerClassName,
+        return createObject(uploadManagerClassName,
                         UploadManager.class, params, paramTypes);
     }
 
@@ -834,12 +865,11 @@ public class ManagerHelper {
                                         resourceRoleSearchBundle, notificationSearchBundle,
                                         notificationTypeSearchBundle, resourceIdGenerator,
                                         resourceRoleIdGenerator, notificationTypeIdGenerator};
-        Class[] paramTypes = new Class[] {ResourcePersistence.class,
-                                          SearchBundle.class, SearchBundle.class,
-                                          SearchBundle.class, SearchBundle.class,
-                                          IDGenerator.class, IDGenerator.class, IDGenerator.class};
+        Class<?>[] paramTypes = new Class[] {ResourcePersistence.class,
+            SearchBundle.class, SearchBundle.class, SearchBundle.class, SearchBundle.class,
+            IDGenerator.class, IDGenerator.class, IDGenerator.class};
 
-        return (ResourceManager) createObject(resourceManagerClassName,
+        return createObject(resourceManagerClassName,
                         ResourceManager.class, params, paramTypes);
     }
 
@@ -849,7 +879,7 @@ public class ManagerHelper {
      * @param searchBundle the search bundle to set
      */
     private void setResourceFieldsSearchable(SearchBundle searchBundle) {
-        Map fields = new HashMap();
+        Map<String, AbstractObjectValidator> fields = new HashMap<String, AbstractObjectValidator>();
 
         // set the resource filter fields
         fields.put(ResourceFilterBuilder.RESOURCE_ID_FIELD_NAME, LongValidator
@@ -884,12 +914,10 @@ public class ManagerHelper {
                         LongValidator.isPositive());
 
         // set the notification type filter fields
-        fields
-                        .put(
-                                        NotificationTypeFilterBuilder.NOTIFICATION_TYPE_ID_FIELD_NAME,
-                                        LongValidator.isPositive());
+        fields.put(NotificationTypeFilterBuilder.NOTIFICATION_TYPE_ID_FIELD_NAME,
+            LongValidator.isPositive());
         fields.put(NotificationTypeFilterBuilder.NAME_FIELD_NAME,
-                        StringValidator.startsWith(""));
+            StringValidator.startsWith(""));
 
         searchBundle.setSearchableFields(fields);
     }
@@ -900,7 +928,7 @@ public class ManagerHelper {
      * @param searchBundle the search bundle to set
      */
     private void setUploadFieldsSearchable(SearchBundle searchBundle) {
-        Map fields = new HashMap();
+        Map<String, AbstractObjectValidator> fields = new HashMap<String, AbstractObjectValidator>();
 
         // set the upload filter fields
         fields.put("upload_id", LongValidator.isPositive());
@@ -910,6 +938,7 @@ public class ManagerHelper {
         fields.put("resource_id", LongValidator.isPositive());
         fields.put("submission_id", LongValidator.isPositive());
         fields.put("submission_status_id", LongValidator.isPositive());
+        fields.put("submission_type_id", LongValidator.isPositive());
         fields.put("deliverable_id", LongValidator.isPositive());
         fields.put("phase_id", LongValidator.isPositive());
         fields.put("name", StringValidator.startsWith(""));
@@ -956,8 +985,8 @@ public class ManagerHelper {
      * @throws ConfigurationException if some property is missing or an error
      *         occurs during instantiation.
      */
-    private Object createPersistence(String namespace, String className,
-                    Class expectedType) throws ConfigurationException {
+    private <T> T createPersistence(String namespace, String className,
+                    Class<T> expectedType) throws ConfigurationException {
         // initialize DBConnectionFactory from given namespace, throw exception
         // if property is missing.
         DBConnectionFactory dbConnFactory = PhasesHelper
@@ -967,18 +996,18 @@ public class ManagerHelper {
                         PROP_CONNECTION_NAME, false);
 
         Object[] params = null;
-        Class[] paramTypes = null;
+        Class<?>[] paramTypes = null;
 
         if (PhasesHelper.isStringNullOrEmpty(connectionName)) {
             // if connection name not specified, call constructor with
             // DBConnectionFactory argument.
             params = new Object[] {dbConnFactory};
-            paramTypes = new Class[] {DBConnectionFactory.class};
+            paramTypes = new Class<?>[] {DBConnectionFactory.class};
         } else {
             // else, call constructor with DBConnectionFactory and
             // connectionName arguments.
             params = new Object[] {dbConnFactory, connectionName};
-            paramTypes = new Class[] {DBConnectionFactory.class, String.class};
+            paramTypes = new Class<?>[] {DBConnectionFactory.class, String.class};
         }
 
         return createObject(className, expectedType, params, paramTypes);
@@ -1028,8 +1057,8 @@ public class ManagerHelper {
      * @throws ConfigurationException if a required property is missing or if a
      *         problem occurs during instantiation.
      */
-    private Object initManager(String namespace, String classPropName,
-                    String nsPropName, Class expectedType,
+    private <T> T initManager(String namespace, String classPropName,
+                    String nsPropName, Class<T> expectedType,
                     boolean nsPropertyReqd) throws ConfigurationException {
         String mgrClassName = PhasesHelper.getPropertyValue(namespace,
                         classPropName, true);
@@ -1037,7 +1066,7 @@ public class ManagerHelper {
                         nsPropName, nsPropertyReqd);
 
         Object[] params = null;
-        Class[] paramTypes = null;
+        Class<?>[] paramTypes = null;
 
         if (!PhasesHelper.isStringNullOrEmpty(mgrNamespace)) {
             params = new Object[] {mgrNamespace};
@@ -1059,20 +1088,24 @@ public class ManagerHelper {
      * @since 1.3
      */
     private ProjectLinkManager initProjectLinkManager(String namespace, String classPropName, String nsPropName)
-            throws ConfigurationException {
+        throws ConfigurationException {
         String mgrClassName = PhasesHelper.getPropertyValue(namespace, classPropName, true);
         String mgrNamespace = PhasesHelper.getPropertyValue(namespace, nsPropName, true);
 
         Object[] params = new Object[]{mgrNamespace, this.projectManager};
 
-        return (ProjectLinkManager) createObject(mgrClassName, ProjectLinkManager.class, params,
+        return createObject(mgrClassName, ProjectLinkManager.class, params,
                                                  PROJECT_LINK_MANAGER_PARAM_TYPES);
     }
 
     /**
      * Helper method to instantiate the specified className using reflection.
      * The params is passed to constructor during reflection.
+     * <p>
+     * Change in version 1.4: Use generic type to create object.
+     * </p>
      *
+     * @param <T> the generic class type.
      * @param className name of class to be instantiated.
      * @param expectedType expected type of the return instance.
      * @param params constructor params.
@@ -1083,18 +1116,12 @@ public class ManagerHelper {
      *
      * @throws ConfigurationException if an error occurs during instantiation.
      */
-    private Object createObject(String className, Class expectedType,
-                    Object[] params, Class[] paramTypes) throws ConfigurationException {
+    private <T> T createObject(String className, Class<T> expectedType,
+                    Object[] params, Class<?>[] paramTypes) throws ConfigurationException {
         // instantiate using reflection.
         try {
-            Class clazz = Class.forName(className);
-            if (!expectedType.isAssignableFrom(clazz)) {
-                throw new ConfigurationException(className
-                                + " must be of type " + expectedType.getName());
-            }
-
-            Object obj = clazz.getConstructor(paramTypes).newInstance(params);
-            return obj;
+            Class<? extends T> clazz = Class.forName(className).asSubclass(expectedType);
+            return clazz.getConstructor(paramTypes).newInstance(params);
         } catch (ClassNotFoundException e) {
             throw new ConfigurationException("Could not find class:"
                             + className, e);
@@ -1116,8 +1143,10 @@ public class ManagerHelper {
         } catch (NoSuchMethodException e) {
             throw new ConfigurationException(
                             "The object could not be instantiated.", e);
+        } catch (ClassCastException e) {
+            throw new ConfigurationException(className
+                + " must be of type " + expectedType.getName());
         } catch (Error e) {
-            System.out.println("ERRor:" + e.toString());
             throw e;
         }
     }

@@ -294,7 +294,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //another register
@@ -307,7 +307,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             handler.perform(reviewPhase, operator);
@@ -351,7 +351,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //another register
@@ -364,7 +364,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //insert the reviewers
@@ -424,7 +424,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             //insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -444,7 +444,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -495,7 +495,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //another register
@@ -508,7 +508,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             assertFalse(handler.canPerform(reviewPhase));
@@ -553,7 +553,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //another register
@@ -566,7 +566,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //insert the reviewers
@@ -625,7 +625,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             //insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -645,7 +645,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -706,7 +706,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             //insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -726,7 +726,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -788,7 +788,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             //insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -808,7 +808,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -867,7 +867,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             //insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -887,7 +887,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);

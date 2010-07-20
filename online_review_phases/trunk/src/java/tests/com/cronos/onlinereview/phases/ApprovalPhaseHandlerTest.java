@@ -376,7 +376,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             // populate db with required data for approver resource
             Resource approver = createResource(101, approvalPhase.getId(), project.getId(), 10);
             Upload appUpload = createUpload(1, project.getId(), approver.getId(), 4, 1, "parameter");
-            Submission appSubmission = createSubmission(1, appUpload.getId(), 1);
+            Submission appSubmission = createSubmission(1, appUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1001, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -446,7 +446,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             // populate db with required data for approver resource
             Resource approver = createResource(101, approvalPhase.getId(), project.getId(), 10);
             Upload appUpload = createUpload(1, project.getId(), approver.getId(), 4, 1, "parameter");
-            Submission appSubmission = createSubmission(1, appUpload.getId(), 1);
+            Submission appSubmission = createSubmission(1, appUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -516,7 +516,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             // populate db with required data for approver resource
             Resource approver = createResource(101, approvalPhase.getId(), project.getId(), 10);
             Upload appUpload = createUpload(1, project.getId(), approver.getId(), 4, 1, "parameter");
-            Submission appSubmission = createSubmission(1, appUpload.getId(), 1);
+            Submission appSubmission = createSubmission(1, appUpload.getId(), 1, 1);
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -29,8 +29,13 @@ import java.util.Date;
  * Version 1.2 change notes : since the email-templates and role-supported has been enhanced.
  * The test cases will try to do on that way while for email content, please check it manually.
  * </p>
- * @author waits
- * @version 1.2
+ * <p>
+ * Version 1.4 change notes : tests both user has accepted terms of use or does not has accepted
+ * the terms can be assigned specified role.
+ * </p>
+ *
+ * @author waits, myxgyy
+ * @version 1.4
  *
  * @since 1.1
  */
@@ -233,6 +238,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
 
             // time has passed, but dependency not met.
+            postMortemPhase.setActualEndDate(new Date());
             postMortemPhase.setActualStartDate(new Date());
             assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
 
@@ -300,18 +306,18 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
             // insert a scorecard here
             Upload upload = createUpload(101, project.getId(), postMortemReviewer.getId(), 4, 1, "parameter");
-            Submission submission = createSubmission(101, upload.getId(), 1);
+            Submission submission = createSubmission(101, upload.getId(), 1, 1);
             submission.setUpload(upload);
 
-            Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard scorecard = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
 
             // scorecard not committed
             Review postMortemScorecard = createReview(11, postMortemReviewer.getId(), submission.getId(),
-                    scorecard1.getId(), false, 90.0f);
+                    scorecard.getId(), false, 90.0f);
 
             this.insertUploads(conn, new Upload[] {upload});
             this.insertSubmissions(conn, new Submission[] {submission});
-            this.insertScorecards(conn, new Scorecard[] {scorecard1});
+            this.insertScorecards(conn, new Scorecard[] {scorecard});
             this.insertReviews(conn, new Review[] {postMortemScorecard});
 
             // scorecard not committed return false
@@ -340,6 +346,9 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             // test with open status.
             postMortemPhase.setPhaseStatus(PhaseStatus.OPEN);
 
+            // time passed
+            postMortemPhase.setActualEndDate(new Date());
+            postMortemPhase.setActualStartDate(new Date(System.currentTimeMillis() - 1000));
             // remove all dependencies
             for (int i = 0; i < postMortemPhase.getAllDependencies().length; ++i) {
                 postMortemPhase.removeDependency(postMortemPhase.getAllDependencies()[i]);
@@ -349,7 +358,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             postMortemPhase.setAttribute("Reviewer Number", "1");
 
             // insert post-mortem reviewer
-            Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 14);
+            Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 16);
 
             Connection conn = getConnection();
 
@@ -362,7 +371,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
             // insert a scorecard here
             Upload upload = createUpload(101, project.getId(), postMortemReviewer.getId(), 4, 1, "parameter");
-            Submission submission = createSubmission(101, upload.getId(), 1);
+            Submission submission = createSubmission(101, upload.getId(), 1, 1);
             submission.setUpload(upload);
 
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -396,7 +405,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
         try {
             cleanTables();
 
-            Project project = setupProjectResourcesNotification("All", true);
+            Project project = setupProjectResourcesNotification("All", true, false);
             Phase[] phases = project.getAllPhases();
             Phase postMortemPhase = phases[11];
 
@@ -419,7 +428,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
         try {
             cleanTables();
 
-            Project project = setupProjectResourcesNotification("All", true);
+            Project project = setupProjectResourcesNotification("All", true, false);
             Phase[] phases = project.getAllPhases();
             Phase postMortemPhase = phases[11];
 
@@ -433,6 +442,95 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             handler.perform(postMortemPhase, "1001");
         } finally {
             cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * Tests the perform with Scheduled statuses. The 
+     *
+     * @throws Exception not under test.
+     * @since 1.4
+     */
+    public void testPerformStart_ReviewerSubmitterHasTermsOfUse() throws Exception {
+        PostMortemPhaseHandler handler = new PostMortemPhaseHandler(PostMortemPhaseHandler.DEFAULT_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = this.setupPhasesWithPostMortem();
+            Phase[] phases = project.getAllPhases();
+            Phase postMortemPhase = phases[11];
+            Connection conn = getConnection();
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+
+            // insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "Parameter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertResourceSubmission(conn, 4, 1);
+
+            // assign reviewer
+            Resource postMortemReviewer = createResource(1011, postMortemPhase.getId(), project.getId(), 14);
+            insertResources(conn, new Resource[] {postMortemReviewer});
+            insertResourceInfo(conn, postMortemReviewer.getId(), 1, "2");
+
+            // test perform, it should do nothing
+            handler.perform(postMortemPhase, "1001");
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * Tests the perform with Scheduled statuses.
+     *
+     * @throws Exception not under test.
+     * @since 1.4
+     */
+    public void testPerformStart_ReviewerSubmitterNoTermsOfUse() throws Exception {
+        PostMortemPhaseHandler handler = new PostMortemPhaseHandler(PostMortemPhaseHandler.DEFAULT_NAMESPACE);
+        try {
+            cleanTables();
+
+            Project project = this.setupPhasesWithPostMortem();
+            Phase[] phases = project.getAllPhases();
+            Phase postMortemPhase = phases[11];
+            Connection conn = getConnection();
+            // create a registration
+            Resource resource = createResource(1, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource});
+            // user has term of use not accepted
+            insertResourceInfo(conn, resource.getId(), 1, "1");
+
+            // insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), 1, 1, 1, "Parameter");
+            super.insertUploads(conn, new Upload[] {upload});
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
+            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertResourceSubmission(conn, 1, 1);
+
+            // assign reviewer
+            Resource postMortemReviewer = createResource(1011, postMortemPhase.getId(), project.getId(), 14);
+            insertResources(conn, new Resource[] {postMortemReviewer});
+            insertResourceInfo(conn, postMortemReviewer.getId(), 1, "2");
+
+            // test perform
+            handler.perform(postMortemPhase, "1001");
+            Resource updated = PhasesHelper.searchProjectResourcesForRoleNames(handler.getManagerHelper(),
+                conn, new String[] {"Post-Mortem Reviewer"}, 1)[0];
+            assertEquals("should be '0.00'", "0.00", updated.getProperty(PhasesHelper.PAYMENT_PROPERTY_KEY));
+            assertEquals("should be 'No'", "No", updated.getProperty("Payment Status"));
+        } finally {
+            cleanTables();
+            closeConnection();
         }
     }
 
@@ -448,7 +546,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
         try {
             cleanTables();
 
-            Project project = setupProjectResourcesNotification("All", true);
+            Project project = setupProjectResourcesNotification("All", true, false);
             Phase[] phases = project.getAllPhases();
             Phase postMortemPhase = phases[11];
 

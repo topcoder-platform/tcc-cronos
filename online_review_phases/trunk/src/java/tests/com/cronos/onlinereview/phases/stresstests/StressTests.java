@@ -9,7 +9,7 @@ import junit.framework.TestSuite;
 
 /**
  * <p>
- * This test case aggregates all Stress test cases.
+ * This test case aggregates all stress test cases.
  * </p>
  *
  * @author TCSDEVELOPER
@@ -18,12 +18,15 @@ import junit.framework.TestSuite;
 public class StressTests extends TestCase {
 
     /**
-     * Suite.
+     * Aggregates all the stress tests.
      *
-     * @return the test
+     * @return the test suite
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
+        suite.addTestSuite(SpecificationReviewPhaseHandlerStressTest.class);
+        suite.addTestSuite(SpecificationSubmissionPhaseHandlerStressTest.class);
+
         suite.addTestSuite(AggregationPhaseHandlerTest.class);
         suite.addTestSuite(AggregationReviewPhaseHandlerTest.class);
         suite.addTestSuite(AppealsPhaseHandlerTest.class);

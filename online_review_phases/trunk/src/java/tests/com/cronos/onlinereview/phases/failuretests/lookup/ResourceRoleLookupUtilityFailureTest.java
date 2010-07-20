@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases.failuretests.lookup;
 
+import com.cronos.onlinereview.phases.failuretests.ConfigHelper;
 import com.cronos.onlinereview.phases.failuretests.TestDataFactory;
 import com.cronos.onlinereview.phases.failuretests.AbstractTestCase;
 import com.cronos.onlinereview.phases.failuretests.mock.MockConnection;
@@ -40,6 +41,7 @@ public class ResourceRoleLookupUtilityFailureTest extends AbstractTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ConfigHelper.releaseSingletonInstance(ResourceRoleLookupUtility.class, "CACHED_PAIRS");
     }
 
     /**

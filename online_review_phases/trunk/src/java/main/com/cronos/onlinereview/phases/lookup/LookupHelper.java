@@ -75,7 +75,7 @@ final class LookupHelper {
      * @throws IllegalArgumentException if any input is null or value is empty.
      * @throws SQLException if there is any problem acessing the database.
      */
-    static long lookUpId(Map cachedPairs, String value, Connection connection,
+    static long lookUpId(Map<String, Long> cachedPairs, String value, Connection connection,
                     String sql) throws SQLException {
         checkNull(cachedPairs, "cachedPairs");
         checkString(value, "value");

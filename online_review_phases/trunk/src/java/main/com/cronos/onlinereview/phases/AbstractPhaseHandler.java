@@ -62,8 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 /**
  * <p>
  * This abstract class is used as a base class for all phase handlers. This class contains logic in the constructor to
@@ -395,6 +393,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 allRoles.add(role.getName());
             }
         } catch (ResourcePersistenceException ex) {
+            // ignore
         }
 
         for (String scheme : schemes.keySet()) {
@@ -414,18 +413,23 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 List<String> roles = schemes.get(scheme);
 
                 // If at least one of the role names is "*" we add the scheme for all roles.
-                if (roles.contains("*"))
+                if (roles.contains("*")) {
                     roles = allRoles;
+                }
 
                 for (String role : roles) {
                     // If the role is already associated with some scheme we pick the one with the higher priority.
-                    EmailOptions currentStartOptions = (EmailOptions)startPhaseEmailOptions.get(role);
-                    if (currentStartOptions == null || currentStartOptions.getPriority()<startEmailOption.getPriority())
+                    EmailOptions currentStartOptions = startPhaseEmailOptions.get(role);
+                    if (currentStartOptions == null
+                        || currentStartOptions.getPriority() < startEmailOption.getPriority()) {
                         startPhaseEmailOptions.put(role, startEmailOption);
+                    }
 
-                    EmailOptions currentEndOptions = (EmailOptions)endPhaseEmailOptions.get(role);
-                    if (currentEndOptions == null || currentEndOptions.getPriority()<endEmailOption.getPriority())
+                    EmailOptions currentEndOptions = endPhaseEmailOptions.get(role);
+                    if (currentEndOptions == null
+                        || currentEndOptions.getPriority() < endEmailOption.getPriority()) {
                         endPhaseEmailOptions.put(role, endEmailOption);
+                    }
                 }
             }
         }
@@ -635,7 +639,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         }
         //flat resource from map to list
         List<Resource> resourcesToSendEmail = new ArrayList<Resource>();
-        for (List<Resource> resources: resourceInRoles.values()) {
+        for (List<Resource> resources : resourceInRoles.values()) {
             resourcesToSendEmail.addAll(resources);
         }
 
@@ -645,7 +649,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
             // prepare email content and send email to each user...
             for (int i = 0; i < resourcesToSendEmail.size(); i++) {
-                Resource resource = (Resource) resourcesToSendEmail.get(i);
+                Resource resource = resourcesToSendEmail.get(i);
                 resource = rm.getResource(resource.getId());
 
                 ResourceRole role = resource.getResourceRole();
@@ -654,8 +658,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 EmailOptions options = bStart ? startPhaseEmailOptions.get(roleName)
                                               : endPhaseEmailOptions.get(roleName);
 
-                if (options == null || !options.isSend())
+                if (options == null || !options.isSend()) {
                     continue;
+                }
 
                 Template template = docGenerator.getTemplate(options.getTemplateSource(), options.getTemplateName());
                 long externalId = Long.parseLong((String) resource.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID));
@@ -771,7 +776,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @throws PhaseHandlingException if the values element for the loop is invalid
      */
     private void setNodes(Node[] nodes, ExternalUser user, Project project,
-                         Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
+        Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
         for (int i = 0; i < nodes.length; i++) {
             if (nodes[i] instanceof Field) {
                 setField((Field) nodes[i], user, project, phase, values, bStart);
@@ -802,7 +807,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      */
     @SuppressWarnings("unchecked")
     private void setLoopItems(Loop loop, ExternalUser user, Project project,
-                         Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
+        Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
         try {
             List loopItems = (List) values.get(loop.getLoopElement());
             if (loopItems == null) {
@@ -830,7 +835,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @param bStart true if phase is to start, false if phase is to end.
      */
     private void setField(Field field, ExternalUser user, Project project,
-                         Phase phase, Map<String, Object> values, boolean bStart) {
+        Phase phase, Map<String, Object> values, boolean bStart) {
         if ("PHASE_TIMESTAMP".equals(field.getName())) {
             field.setValue(formatDate(new Date()));
         } else if ("USER_FIRST_NAME".equals(field.getName())) {
@@ -948,21 +953,23 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         try {
             com.topcoder.util.config.Property schemesProperty =
                 ConfigManager.getInstance().getPropertyObject(namespace, "Schemes");
-            if (schemesProperty == null)
+            if (schemesProperty == null) {
                 return new HashMap<String, List<String>>();
+            }
 
-            java.util.Enumeration schemeNames = schemesProperty.propertyNames();
+            java.util.Enumeration<?> schemeNames = schemesProperty.propertyNames();
             Map<String, List<String>> schemes = new HashMap<String, List<String>>();
 
-            for (; schemeNames.hasMoreElements() ;) {
-                String schemeName = (String)schemeNames.nextElement();
+            while (schemeNames.hasMoreElements()) {
+                String schemeName = (String) schemeNames.nextElement();
                 if (schemeName != null) {
                     String[] roles = schemesProperty.getProperty(schemeName).getValues();
 
-                    if (roles!=null && roles.length>0)
+                    if (roles != null && roles.length > 0) {
                         schemes.put(schemeName, java.util.Arrays.asList(roles));
-                    else
+                    } else {
                         schemes.put(schemeName, new ArrayList<String>());
+                    }
                 }
             }
 

@@ -3,7 +3,6 @@
  */
 package com.cronos.onlinereview.phases.accuracytests;
 
-import com.dumbster.smtp.SimpleSmtpServer;
 import com.topcoder.date.workdays.DefaultWorkdays;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -11,6 +10,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
+import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.UploadType;
@@ -53,8 +53,8 @@ import java.util.Properties;
 /**
  * Defines methods to do usual operations.
  *
- * @author myxgyy, assistant
- * @version 1.0
+ * @author myxgyy, assistant, akinwale
+ * @version 1.4
  *
  * @since 1.2
  */
@@ -248,18 +248,38 @@ abstract class BaseTestCase extends TestCase {
      *
      * @param submissionId submission id.
      * @param uploadId upload id.
-     * @param submissionStatusId submission status id.
+     * @param submissionStatusId submission status id
      *
      * @return Submission instance.
+     *
+     * @since 1.2
      */
     protected Submission createSubmission(long submissionId, long uploadId, long submissionStatusId) {
+        return createSubmission(submissionId, uploadId, submissionStatusId, 1);
+    }
+
+    /**
+     * Helper method to create Submission instance.
+     *
+     * @param submissionId submission id.
+     * @param uploadId upload id.
+     * @param submissionStatusId submission status id.
+     * @param submissionTypeId the submission type id
+     *
+     * @return Submission instance.
+     *
+     * @since 1.4
+     */
+    protected Submission createSubmission(long submissionId, long uploadId, long submissionStatusId,
+        long submissionTypeId) {
         Submission submission = new Submission(submissionId);
         submission.setUpload(new Upload(uploadId));
         submission.setSubmissionStatus(new SubmissionStatus(submissionStatusId));
         submission.setIntialScore(89.92d);
         submission.setFinalScore(93.92d);
-        submission.setPlacement(new Long(2));
+        submission.setPlacement(new Long(1));
         submission.setScreeningScore(100.00d);
+        submission.setSubmissionType(new SubmissionType(submissionTypeId));
 
         return submission;
     }
@@ -703,6 +723,8 @@ abstract class BaseTestCase extends TestCase {
 
             closeStatement(preparedStmt);
             preparedStmt = null;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
         } finally {
             closeStatement(preparedStmt);
         }
@@ -722,9 +744,9 @@ abstract class BaseTestCase extends TestCase {
 
         try {
             String insertSubmission = "INSERT INTO submission " + "(submission_id, upload_id, submission_status_id, " +
-                "create_user, create_date, modify_user, modify_date," +
+                "submission_type_id, create_user, create_date, modify_user, modify_date," +
                 " placement, initial_score, final_score, screening_score) " +
-                "VALUES (?, ?, ?, 'user', ?, 'user', ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, 'user', ?, 'user', ?, ?, ?, ?, ?)";
             preparedStmt = conn.prepareStatement(insertSubmission);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -733,19 +755,22 @@ abstract class BaseTestCase extends TestCase {
                 preparedStmt.setLong(1, submissions[i].getId());
                 preparedStmt.setLong(2, submissions[i].getUpload().getId());
                 preparedStmt.setLong(3, submissions[i].getSubmissionStatus().getId());
-                preparedStmt.setTimestamp(4, now);
+                preparedStmt.setLong(4, submissions[i].getSubmissionType().getId());
                 preparedStmt.setTimestamp(5, now);
+                preparedStmt.setTimestamp(6, now);
 
-                preparedStmt.setDouble(6,
+                preparedStmt.setDouble(7,
                     (submissions[i].getPlacement() == null) ? new Long(0) : submissions[i].getPlacement());
-                preparedStmt.setDouble(7, submissions[i].getInitialScore());
-                preparedStmt.setDouble(8, submissions[i].getFinalScore());
-                preparedStmt.setDouble(9, submissions[i].getScreeningScore());
+                preparedStmt.setDouble(8, submissions[i].getInitialScore());
+                preparedStmt.setDouble(9, submissions[i].getFinalScore());
+                preparedStmt.setDouble(10, submissions[i].getScreeningScore());
                 preparedStmt.executeUpdate();
             }
 
             closeStatement(preparedStmt);
             preparedStmt = null;
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
         } finally {
             closeStatement(preparedStmt);
         }
@@ -1828,5 +1853,135 @@ abstract class BaseTestCase extends TestCase {
         resource2.setResourceRole(new ResourceRole(resourceRoleId));
 
         return resource2;
+    }
+
+    /**
+     * <p>
+     * Set up phases include specification phases.
+     * </p>
+     *
+     * @return the created project
+     *
+     * @throws Exception
+     *             exception to pass to JUnit
+     *
+     * @since 1.4
+     */
+    protected Project setupPhasesWithSpecificationPhases(boolean hasExtraDepends) throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement preparedStmt = null;
+        Project project = null;
+
+        try {
+            project = new Project(new Date(), new DefaultWorkdays());
+            project.setId(1);
+
+            // insert project first
+            insertProject(conn);
+
+            String insertPhase =
+                "insert into project_phase(project_phase_id, project_id, phase_type_id, phase_status_id," +
+                "scheduled_start_time, scheduled_end_time, duration," +
+                " create_user, create_date, modify_user, modify_date)" +
+                "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
+
+            preparedStmt = conn.prepareStatement(insertPhase);
+
+            // insert all standard phases
+            long[] phaseIds = null;
+            long[] phaseTypeIds = null;
+            String[] phaseTypeNames = null;
+            if (hasExtraDepends) {
+                phaseIds = new long[] {112, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111};
+                phaseTypeIds = new long[] {12, 13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+                phaseTypeNames = new String[] {"Post-Mortem", "Specification Submission", "Specification Review",
+                    "Registration", "Submission", "Screening", "Review", "Appeals", "Appeals Response", "Aggregation",
+                    "Aggregation Review", "Final Fix", "Final Review", "Approval"};
+            } else {
+                phaseIds = new long[] {99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 };
+                phaseTypeIds = new long[] {13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+                phaseTypeNames = new String[] {"Specification Submission", "Specification Review", "Registration",
+                    "Submission", "Screening", "Review", "Appeals", "Appeals Response", "Aggregation",
+                    "Aggregation Review", "Final Fix", "Final Review", "Approval", "Post-Mortem"};
+            }
+
+            long now = System.currentTimeMillis();
+            Timestamp scheduledStart = new Timestamp(now);
+            long duration = 24 * 60 * 60 * 1000; // one day
+            Timestamp scheduledEnd = new Timestamp(now + duration);
+
+            for (int i = 0; i < phaseIds.length; i++) {
+                // insert into db
+                preparedStmt.setLong(1, phaseIds[i]);
+                preparedStmt.setLong(2, phaseTypeIds[i]);
+                preparedStmt.setTimestamp(3, scheduledStart);
+                preparedStmt.setTimestamp(4, scheduledEnd);
+                preparedStmt.setLong(5, duration);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                // create phase instance
+                Phase phase = new Phase(project, duration);
+                phase.setId(phaseIds[i]);
+                phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
+                phase.setPhaseStatus(PhaseStatus.SCHEDULED);
+                phase.setActualStartDate(scheduledStart);
+                phase.setActualEndDate(scheduledEnd);
+                phase.setScheduledStartDate(scheduledStart);
+                phase.setScheduledEndDate(scheduledEnd);
+
+                project.addPhase(phase);
+
+                // re-calculate scheduled start and end.
+                scheduledStart = new Timestamp(scheduledEnd.getTime());
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + duration);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert dependencies
+            String insertDependency = "INSERT INTO phase_dependency " +
+                "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time," +
+                " create_user, create_date, modify_user, modify_date)" +
+                "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertDependency);
+
+            long[] dependencyPhaseIds = null;
+            long[] dependentPhaseIds = null;
+            if (hasExtraDepends) {
+                dependencyPhaseIds = new long[] {112, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110};
+                dependentPhaseIds = new long[] {99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111};
+            } else {
+                dependencyPhaseIds = new long[] {99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 102 };
+                dependentPhaseIds = new long[] {100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 };
+            }
+            Phase[] phases = project.getAllPhases();
+
+            for (int i = 0; i < dependencyPhaseIds.length; i++) {
+                preparedStmt.setLong(1, dependencyPhaseIds[i]);
+                preparedStmt.setLong(2, dependentPhaseIds[i]);
+                preparedStmt.setBoolean(3, false);
+                preparedStmt.setBoolean(4, true);
+                preparedStmt.setLong(5, 0);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                Dependency dependency = new Dependency(phases[i], phases[i + 1], false, true, 0);
+                phases[i + 1].addDependency(dependency);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            project.getAllPhases()[11].setAttribute("Reviewer Number", "1");
+        } finally {
+            closeStatement(preparedStmt);
+            closeConnection();
+        }
+
+        return project;
     }
 }

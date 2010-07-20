@@ -39,6 +39,11 @@ public class BaseAccuracyTest extends TestCase {
     public static final String CONNECTION_FACTORY_NS = "accuracy/ConnectionFactory.xml";
 
     /**
+     * The log configuration file.
+     */
+    public static final String LOG_CONFIGURATION = "accuracy/Logging_Wrapper.xml";
+
+    /**
      * The configuration namespace for phase handlers
      */
     public static final String PHASE_HANDLER_NS = "com.cronos.onlinereview.phases.AbstractPhaseHandler";
@@ -68,6 +73,7 @@ public class BaseAccuracyTest extends TestCase {
 
         // load the configuration file
         configManager.add(CONNECTION_FACTORY_NS);
+        configManager.add(LOG_CONFIGURATION);
 
         // initialize DBConnectionFactory
         this.dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());

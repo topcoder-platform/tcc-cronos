@@ -338,7 +338,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //insertScorecards
@@ -360,7 +360,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -394,6 +394,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
         try {
             cleanTables();
             Project project = super.setupPhases();
+            insertProjectInfo(getConnection(), project.getId(), new long[] {44}, new String[] {"true"});
             Phase[] phases = project.getAllPhases();
             Phase appealsResponsePhase = phases[5];
             Phase submissionPhase = phases[1];
@@ -413,8 +414,8 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
                             .getId(), 1, 1, "parameter");
             Upload upload2 = createUpload(2, project.getId(), submitter2
                             .getId(), 1, 1, "parameter");
-            Submission submission1 = createSubmission(1, upload1.getId(), 1);
-            Submission submission2 = createSubmission(2, upload2.getId(), 1);
+            Submission submission1 = createSubmission(1, upload1.getId(), 1, 1);
+            Submission submission2 = createSubmission(2, upload2.getId(), 1, 1);
             submission1.setPlacement(new Long(1));
             submission2.setPlacement(new Long(2));
             submission1.setUpload(upload1);
@@ -516,9 +517,9 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
                             .getId(), 1, 1, "parameter");
             Upload upload3 = createUpload(3, project.getId(), submitter3
                             .getId(), 1, 1, "parameter");
-            Submission submission1 = createSubmission(1, upload1.getId(), 1);
-            Submission submission2 = createSubmission(2, upload2.getId(), 1);
-            Submission submission3 = createSubmission(3, upload3.getId(), 1);
+            Submission submission1 = createSubmission(1, upload1.getId(), 1, 1);
+            Submission submission2 = createSubmission(2, upload2.getId(), 1, 1);
+            Submission submission3 = createSubmission(3, upload3.getId(), 1, 1);
             Scorecard scorecard = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             // assuming 2 reviewers * 3 submissions, so 6 reviews in all are
             // needed
@@ -649,7 +650,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //insertScorecards
@@ -671,7 +672,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -762,7 +763,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             // insertScorecards
@@ -784,7 +785,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -864,7 +865,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             // insertScorecards
@@ -886,7 +887,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
@@ -944,7 +945,7 @@ public class AppealsResponsePhaseHandlerTest extends BaseTest {
             Resource submitter1 = createResource(1, submissionPhase.getId(), project.getId(), 1);
             Resource reviewer1 = createResource(4, reviewPhase.getId(), project.getId(), 4);
             Upload upload1 = createUpload(1, project.getId(), submitter1.getId(), 1, 1, "parameter");
-            Submission submission1 = createSubmission(1, upload1.getId(), 1);
+            Submission submission1 = createSubmission(1, upload1.getId(), 1, 1);
             Scorecard scorecard = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
 
             Connection conn = getConnection();

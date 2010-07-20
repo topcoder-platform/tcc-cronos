@@ -1,10 +1,11 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.phase.PhaseHandlingException;
@@ -58,9 +59,17 @@ import com.topcoder.util.log.LogFactory;
  * ends.</li>
  * </ol>
  * </p>
+ * <p>
+ * Version 1.4 Change notes:
+ * <ol>
+ * <li>Made some duplicate String values as constants of class.</li>
+ * <li>Updated {@link #perform(Phase, String)} method to calculate the number of final reviewers for project and
+ * bind it to map used for filling email template.</li>
+ * </ol>
+ * </p>
  *
- * @author tuenm, bose_java, pulky, argolite, waits
- * @version 1.1
+ * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy, isv
+ * @version 1.4
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -71,6 +80,35 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
     /** constant for aggregation Review phase type. */
     private static final String PHASE_TYPE_AGGREGATION_REVIEW = "Aggregation Review";
+
+    /**
+     * constant for aggregation review comment.
+     *
+     * @since 1.4
+     */
+    private static final String AGGREGATION_REVIEW_COMMENT = "Aggregation Review Comment";
+
+    /**
+     * constant for Submitter comment.
+     *
+     * @since 1.4
+     */
+    private static final String SUBMITTER_COMMENT = "Submitter Comment";
+
+    /**
+     * constant for Aggregation phase.
+     *
+     * @since 1.4
+     */
+    private static final String AGGREGATION = "Aggregation";
+
+    /**
+     * constant for Aggregator.
+     *
+     * @since 1.4
+     */
+    private static final String AGGREGATOR = "Aggregator";
+
     /**
      * Log used for this class.
      */
@@ -174,7 +212,6 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                     LOG.log(Level.DEBUG, "Automatically approving pending aggregation reviews");
                     approvePendingAggregationReview(phase);
                 } catch (Exception e) {
-
                     LOG.log(Level.WARN, new LogMessage(new Long(phase.getId()),
                                                        null,
                                         "Was not able to automatically approve pending aggregation reviews.",
@@ -223,11 +260,35 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        Map<String, Object> values = new HashMap<String, Object>();
         if (!toStart) {
             checkAggregationReview(phase, operator);
+
+            Resource[] finalReviewers = getFinalReviewers(PhasesHelper.locatePhase(phase, "Final Review", true, true));
+            values.put("N_FINAL_REVIEWERS", finalReviewers.length);
         }
 
-        sendEmail(phase);
+        sendEmail(phase, values);
+    }
+
+    /**
+     * <p>Gets the list of resources assigned <code>Final Reviewer</code> role.</p>
+     *
+     * @param finalReviewPhase a <code>Phase</code> providing the details for <code>Final Review</code> phase.
+     * @return a <code>Resource</code> array listing the resources granted <code>Final Reviewer</code> role.
+     * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
+     * @since 1.4
+     */
+    private Resource[] getFinalReviewers(Phase finalReviewPhase) throws PhaseHandlingException {
+        Resource[] finalReviewers;
+        Connection connection = createConnection();
+        try {
+            finalReviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+                    connection, new String[] {"Final Reviewer"}, finalReviewPhase.getId());
+        } finally {
+            PhasesHelper.closeConnection(connection);
+        }
+        return finalReviewers;
     }
 
     /**
@@ -251,12 +312,12 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 Comment comment = aggregationWorksheet.getComment(i);
 
                 if ((comment.getCommentType().getName().equals(
-                                "Submitter Comment") || comment
+                                SUBMITTER_COMMENT) || comment
                                 .getCommentType().getName().equals(
-                                                "Aggregation Review Comment"))
-                                && !"Approved".equals(comment.getExtraInfo())
-                                && !"Rejected".equals(comment.getExtraInfo())) {
-                    comment.setExtraInfo("Approved");
+                                        AGGREGATION_REVIEW_COMMENT))
+                                && !PhasesHelper.APPROVED.equals(comment.getExtraInfo())
+                                && !PhasesHelper.REJECTED.equals(comment.getExtraInfo())) {
+                    comment.setExtraInfo(PhasesHelper.APPROVED);
                 }
             }
 
@@ -296,12 +357,12 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 String value = (String) comments[i].getExtraInfo();
                 String commentType = comments[i].getCommentType().getName();
 
-                if (commentType.equals("Aggregation Review Comment")
-                                || commentType.equals("Submitter Comment")) {
-                    if ("Approved".equalsIgnoreCase(value)
-                                    || "Accepted".equalsIgnoreCase(value)) {
+                if (commentType.equals(AGGREGATION_REVIEW_COMMENT)
+                                || commentType.equals(SUBMITTER_COMMENT)) {
+                    if (PhasesHelper.APPROVED.equalsIgnoreCase(value)
+                                    || PhasesHelper.ACCEPTED.equalsIgnoreCase(value)) {
                         continue;
-                    } else if ("Rejected".equalsIgnoreCase(value)) {
+                    } else if (PhasesHelper.REJECTED.equalsIgnoreCase(value)) {
                         rejected = true;
 
                         break;
@@ -318,8 +379,8 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 for (int i = 0; i < comments.length; i++) {
                     String commentType = comments[i].getCommentType().getName();
 
-                    if (commentType.equals("Aggregation Review Comment")
-                                    || commentType.equals("Submitter Comment")) {
+                    if (commentType.equals(AGGREGATION_REVIEW_COMMENT)
+                                    || commentType.equals(SUBMITTER_COMMENT)) {
                         comments[i].resetExtraInfo();
                     }
                 }
@@ -330,13 +391,13 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 // create phase type and status objects
                 PhaseType aggPhaseType = PhasesHelper.getPhaseType(
                                 getManagerHelper().getPhaseManager(),
-                                "Aggregation");
+                                AGGREGATION);
                 PhaseType aggReviewPhaseType = PhasesHelper.getPhaseType(
                                 getManagerHelper().getPhaseManager(),
-                                "Aggregation Review");
+                                PHASE_TYPE_AGGREGATION_REVIEW);
                 PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(
                                 getManagerHelper().getPhaseManager(),
-                                "Scheduled");
+                                PhasesHelper.PHASE_STATUS_SCHEDULED);
 
                 // use helper method to create and save the new phases
                 int currentPhaseIndex = PhasesHelper.createNewPhases(
@@ -354,7 +415,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
                 PhasesHelper.createAggregatorOrFinalReviewer(
                                 allPhases[currentPhaseIndex - 1],
-                                getManagerHelper(), conn, "Aggregator",
+                                getManagerHelper(), conn, AGGREGATOR,
                                 newAggPhaseId, operator);
             }
         } catch (PhaseManagementException e) {
@@ -379,14 +440,12 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         Comment[] comments = getAggregationWorksheet(phase).getAllComments();
 
         // Locate the nearest Review and Aggregation phase
-        Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false,
+        Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false,
                         false);
-        Phase aggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation",
+        Phase aggregationPhase = PhasesHelper.locatePhase(phase, AGGREGATION,
                         false, false);
         if (reviewPhase == null || aggregationPhase == null) {
-            LOG
-                            .log(Level.INFO,
-                                            "Can't start phase: reviewPhase == null || aggregationPhase == null");
+            LOG.log(Level.INFO, "Can't start phase: reviewPhase == null || aggregationPhase == null");
             return false;
         }
         Connection conn = null;
@@ -401,7 +460,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                                             .getId());
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
-                            new String[] {"Aggregator"}, aggregationPhase
+                            new String[] {AGGREGATOR}, aggregationPhase
                                             .getId());
             if (aggregators.length == 0) {
                 LOG.log(Level.DEBUG, "No Aggregator resource found for phase: "
@@ -411,7 +470,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                                                 + aggregationPhase.getId());
             }
             String aggregatorUserId = (String) aggregators[0]
-                            .getProperty("External Reference ID");
+                            .getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
 
             // winning submitter.
             Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
@@ -424,14 +483,14 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             // "Aggregation Review Comment" with extra info of either "Approved"
             // or "Rejected".
             for (int i = 0; i < reviewers.length; i++) {
-                if (reviewers[i].getProperty("External Reference ID") == null
+                if (reviewers[i].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID) == null
                                 || reviewers[i].getProperty(
-                                                "External Reference ID")
+                                                PhasesHelper.EXTERNAL_REFERENCE_ID)
                                                 .equals(aggregatorUserId)) {
                     continue;
                 }
                 if (!doesCommentExist(comments, reviewers[i].getId(),
-                                "Aggregation Review Comment")) {
+                                AGGREGATION_REVIEW_COMMENT)) {
                     LOG.log(Level.INFO,
                             "cant't start phase: not exists comment type 'Aggregation Review Comment' for reviewer: "
                             + reviewers[i].getId());
@@ -439,7 +498,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 }
             }
             if (doesCommentExist(comments, winningSubmitter.getId(),
-                            "Submitter Comment")) {
+                            SUBMITTER_COMMENT)) {
                 return true;
             }
             LOG.log(Level.INFO,
@@ -462,7 +521,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private Review getAggregationWorksheet(Phase phase) throws PhaseHandlingException {
         // Locate the nearest backward Aggregation phase
-        Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation", false,
+        Phase aggPhase = PhasesHelper.locatePhase(phase, AGGREGATION, false,
                         true);
         Connection conn = null;
 
@@ -477,8 +536,6 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                                 "aggregation worksheet does not exist.");
             }
             return aggWorksheet;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -503,9 +560,9 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             // the comment should have "Approved" or "Rejected" extra info
             String extraInfo = (String) comment.getExtraInfo();
             if (comment.getCommentType().getName().equals(commentType)
-                            && ("Approved".equalsIgnoreCase(extraInfo)
-                                            || "Accepted".equalsIgnoreCase(extraInfo)
-                                            || "Rejected".equalsIgnoreCase(extraInfo))) {
+                            && (PhasesHelper.APPROVED.equalsIgnoreCase(extraInfo)
+                                            || PhasesHelper.ACCEPTED.equalsIgnoreCase(extraInfo)
+                                            || PhasesHelper.REJECTED.equalsIgnoreCase(extraInfo))) {
                 if (comment.getAuthor() == resourceId) {
                     return true;
                 }

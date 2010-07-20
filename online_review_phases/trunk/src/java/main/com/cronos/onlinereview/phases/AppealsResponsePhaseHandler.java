@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -88,13 +88,21 @@ import java.util.Map;
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
  *   <ol>
  *     <li>Updated {@link #perform(Phase, String)} method to use updated
- *     {@link PhasesHelper#insertPostMortemPhase(com.topcoder.project.phases.Project , Phase, ManagerHelper, String)}
+ *     PhasesHelper#insertPostMortemPhase(com.topcoder.project.phases.Project, Phase, ManagerHelper, String)
  *     method for creating <code>Post-Mortem</code> phase.</li>
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.4 Change notes:
+ *   <ol>
+ *     <li>Updated {@link #perform(Phase, String)} method to calculate the number of aggregators for project and bind it
+ *     to map used for filling email template.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, isv
+ * @version 1.4
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -154,7 +162,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      * @param phase The input phase to check.
      * @return True if the input phase can be executed, false otherwise.
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Appeals Response" type.
+     *         &quot;Appeals Response&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input is null.
@@ -178,7 +186,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Provides addtional logic to execute a phase. This method will be called
+     * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
      * Management component. This method can send email to a group os users
      * associated with timeline notification for the project. The email can be
@@ -222,7 +230,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Appeals Response" type.
+     *         &quot;Appeals Response&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
@@ -250,9 +258,31 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 // insert the post-mortem phase
                 PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
             }
+            Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true, true));
+            values.put("N_AGGREGATOR", aggregators.length);
         }
 
         sendEmail(phase, values);
+    }
+
+    /**
+     * <p>Gets the list of resources assigned <code>Aggregator</code> role.</p>
+     *
+     * @param aggregationPhase a <code>Phase</code> providing the details for <code>Aggregation</code> phase.
+     * @return a <code>Resource</code> array listing the resources granted <code>Aggregator</code> role.
+     * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
+     * @since 1.4
+     */
+    private Resource[] getAggregators(Phase aggregationPhase) throws PhaseHandlingException {
+        Resource[] aggregators;
+        Connection connection = createConnection();
+        try {
+            aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), connection,
+                    new String[]{"Aggregator"}, aggregationPhase.getId());
+        } finally {
+            PhasesHelper.closeConnection(connection);
+        }
+        return aggregators;
     }
 
 
@@ -299,12 +329,13 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
 
             // Search all "Active" submissions for current project
+            // change in version 1.5
             Submission[] subs = PhasesHelper.searchActiveSubmissions(
                             getManagerHelper().getUploadManager(), conn, phase
-                                            .getProject().getId());
+                                            .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
             // locate previous review phase
-            Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review",
+            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW,
                             false, true);
             long reviewPhaseId = reviewPhase.getId();
 
@@ -333,7 +364,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             for (int iSub = 0; iSub < subs.length; iSub++) {
                 Submission submission = subs[iSub];
                 long subId = submission.getId();
-                List scoresList = new ArrayList();
+                List<Float> scoresList = new ArrayList<Float>();
 
                 // Match the submission with its reviews
                 for (int j = 0; j < reviews.length; j++) {
@@ -449,18 +480,13 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 Project project = getManagerHelper().getProjectManager()
                                 .getProject(phase.getProject().getId());
 
-                Object winnerExtId = winningSubmitter
-                                .getProperty("External Reference ID");
-                project
-                                .setProperty("Winner External Reference ID",
-                                                winnerExtId);
+                Object winnerExtId = winningSubmitter.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
+                project.setProperty("Winner External Reference ID", winnerExtId);
 
                 // if there is a runner up
                 if (runnerUpSubmitter != null) {
-                    Object runnerExtId = runnerUpSubmitter
-                                    .getProperty("External Reference ID");
-                    project.setProperty("Runner-up External Reference ID",
-                                    runnerExtId);
+                    Object runnerExtId = runnerUpSubmitter.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
+                    project.setProperty("Runner-up External Reference ID", runnerExtId);
                 }
 
                 // update the project
@@ -475,7 +501,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 Map<String, Object> infos = new HashMap<String, Object>();
                 infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(
                                               getManagerHelper().getResourceManager().getResource(
-                                               submission.getUpload().getOwner()).getProperty("Handle")));
+                                               submission.getUpload().getOwner()).getProperty(PhasesHelper.HANDLE)));
                 infos.put("SUBMITTER_PRE_APPEALS_SCORE", submission.getInitialScore());
                 infos.put("SUBMITTER_POST_APPEALS_SCORE", submission.getFinalScore());
                 infos.put("SUBMITTER_RESULT", submission.getPlacement());
@@ -566,7 +592,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     private boolean allAppealsResolved(Phase phase) throws PhaseHandlingException {
         // Find appeals : Go back to the nearest Review phase
-        Phase reviewPhase = PhasesHelper.locatePhase(phase, "Review", false,
+        Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false,
                         false);
         if (reviewPhase == null) {
             return false;
@@ -622,8 +648,6 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             }
 
             return true;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

@@ -3,7 +3,7 @@
         <!-- Namespace for all handler classes -->
     <Config name="com.cronos.onlinereview.phases.failuretests">
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -111,7 +111,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ProjectLinkManager">
             <Property name="ClassName">
@@ -186,6 +186,9 @@
             <Property name="SubmissionStatusIdGeneratorName">
                 <Value>submission_status_id_seq</Value>
             </Property>
+            <Property name="SubmissionTypeIdGeneratorName">
+                <Value>submission_type_id_seq</Value>
+            </Property>
             <Property name="PersistenceClassName">
                 <Value>com.cronos.onlinereview.phases.failuretests.mock.MockUploadPersistence</Value>
             </Property>
@@ -235,9 +238,9 @@
     <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
         <Property name="connections">
             <Property name="default">
-                <Value>dbconnection</Value>
+                <Value>informix_connection</Value>
             </Property>
-            <Property name="dbconnection">
+            <Property name="informix_connection">
                 <Property name="producer">
                     <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
                 </Property>
@@ -246,13 +249,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://75.101.226.6:2021/orp_test:informixserver=informixoltp_tcp</Value>
+                        <Value>jdbc:informix-sqli://192.168.1.3:9000/online_review:informixserver=tcs</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>1nf0rm1x</Value>
+                        <Value>123456</Value>
                     </Property>
                 </Property>
             </Property>
@@ -264,7 +267,7 @@
             <Value>localhost</Value>
         </Property>
         <Property name="smtp_host_port">
-            <Value>2222</Value>
+            <Value>25</Value>
         </Property>
         <Property name="username">
             <Value></Value>
@@ -279,7 +282,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -377,7 +380,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -475,7 +478,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -573,7 +576,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -671,7 +674,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -769,7 +772,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -867,7 +870,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -965,7 +968,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -1063,7 +1066,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -1161,7 +1164,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -1259,7 +1262,7 @@
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
         </Property>
         <Property name="ConnectionName">
-            <Value>dbconnection</Value>
+            <Value>informix_connection</Value>
         </Property>
         <Property name="ManagerHelperNamespace">
             <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
@@ -1351,6 +1354,124 @@
             </Property>
         </Property>
     </Config>
+        <!-- Default namespace for Specification Submission Phase handler -->
+    <Config name="com.cronos.onlinereview.phases.SpecificationSubmissionPhaseHandler">
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="ManagerHelperNamespace">
+            <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+        </Property>
+        <Property name="Schemes">
+            <Property name="DefaultScheme">
+                <Value>Reviewer</Value>
+            </Property>
+            <Property name="ExtendedScheme">
+                <Value>Manager</Value>
+            </Property>
+            <Property name="EmptyScheme">
+        <!-- such definition, is invalid. just for coverage purpose -->
+            </Property>
+        </Property>
+        <Property name="DefaultScheme">
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+        <!-- Default namespace for Specification Review Phase handler -->
+    <Config name="com.cronos.onlinereview.phases.SpecificationReviewPhaseHandler">
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="ManagerHelperNamespace">
+            <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+        </Property>
+        <Property name="Schemes">
+            <Property name="DefaultScheme">
+                <Value>Reviewer</Value>
+            </Property>
+            <Property name="ExtendedScheme">
+                <Value>Manager</Value>
+            </Property>
+            <Property name="EmptyScheme">
+        <!-- such definition, is invalid. just for coverage purpose -->
+            </Property>
+        </Property>
+        <Property name="DefaultScheme">
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/valid_email_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
         <!-- Namespace to instantiate the SreeningManager through ObjectFactory -->
     <Config name="com.cronos.onlinereview.phases.failuretests.screening">
         <Property name="com/cronos/onlinereview/autoscreening/management/ScreeningManager">
@@ -1408,7 +1529,7 @@
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="resource_id">
@@ -1447,7 +1568,7 @@
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -1486,7 +1607,7 @@
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -1525,7 +1646,7 @@
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -1564,7 +1685,7 @@
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">
@@ -1604,7 +1725,7 @@
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
                 </Property>
                 <Property name="connectionProducerName">
-                    <Value>dbconnection</Value>
+                    <Value>informix_connection</Value>
                 </Property>
                 <Property name="alias">
                     <Property name="The ID">

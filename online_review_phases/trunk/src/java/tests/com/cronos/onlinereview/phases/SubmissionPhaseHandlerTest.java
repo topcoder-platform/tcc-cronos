@@ -278,7 +278,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
             Resource reviewer2 = super.createResource(3, screeningPhaseId, 1, 3);
 
             Upload upload = createUpload(1, 1, submitter.getId(), 1, 1, "parameter");
-            Submission submission = createSubmission(1, 1, 1);
+            Submission submission = createSubmission(1, 1, 1, 1);
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(1, reviewer1.getId(), submission.getId(), scorecard.getId(), true, 80.0f);
 
@@ -316,6 +316,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
             String operator = "1001";
             Connection conn = getConnection();
             insertProject(conn);
+            insertProjectInfo(getConnection(), 1, new long[] {44}, new String[] {"true"});
 
             // test with open status
             submissionPhase.setPhaseStatus(PhaseStatus.OPEN);
@@ -418,7 +419,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             handler.perform(submissionPhase, operator);
@@ -464,7 +465,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            Submission submission = super.createSubmission(1, upload.getId(), 1);
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             //another register
@@ -477,7 +478,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
             super.insertUploads(conn, new Upload[] {upload});
 
-            submission = super.createSubmission(2, upload.getId(), 1);
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
             super.insertSubmissions(conn, new Submission[] {submission});
 
             handler.perform(submissionPhase, operator);
@@ -518,7 +519,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
             Resource reviewer2 = super.createResource(3, screeningPhaseId, 1, 3);
 
             Upload upload = createUpload(1, 1, submitter.getId(), 1, 1, "parameter");
-            Submission submission = createSubmission(1, 1, 1);
+            Submission submission = createSubmission(1, 1, 1, 1);
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(1, reviewer1.getId(), submission.getId(), scorecard.getId(), true, 80.0f);
 
@@ -566,7 +567,7 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
             Resource reviewer2 = super.createResource(3, screeningPhaseId, 1, 3);
 
             Upload upload = createUpload(1, 1, submitter.getId(), 1, 1, "parameter");
-            Submission submission = createSubmission(1, 1, 1);
+            Submission submission = createSubmission(1, 1, 1, 1);
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(1, reviewer1.getId(), submission.getId(), scorecard.getId(), true, 80.0f);
 

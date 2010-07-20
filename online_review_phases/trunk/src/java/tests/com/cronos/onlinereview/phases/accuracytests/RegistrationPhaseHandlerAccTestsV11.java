@@ -54,6 +54,7 @@ public class RegistrationPhaseHandlerAccTestsV11 extends BaseTestCase {
         Phase registration = createPhase(1, 1, "Scheduled", 1, "Registration");
         Connection conn = getConnection();
         insertProject(conn);
+        insertProjectInfo(getConnection(), 1, new long[] {44}, new String[] {"true"});
 
         String operator = "1000001";
         handler.perform(registration, operator);

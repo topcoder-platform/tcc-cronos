@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;
-import java.util.List;
 
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
@@ -17,7 +15,6 @@ import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.Project;
-import com.topcoder.management.phase.ContestDependencyAutomation;
 
 /**
  * <p>
@@ -67,8 +64,18 @@ import com.topcoder.management.phase.ContestDependencyAutomation;
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.4 Change notes:
+ *   <ol>
+ *     <li>Updated not to use ContestDependencyAutomation.</li>
+ *     <li>Updated {@link #perform(Phase, String)} method to calculate the number of approvers for project and bind it
+ *     to map used for filling email template.</li> 
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, isv
+ * @version 1.4
+ * @since 1.0
  */
 public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -77,8 +84,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.FinalReviewPhaseHandler";
 
-    /** constant for final review phase type. */
-    private static final String PHASE_TYPE_FINAL_REVIEW = "Final Review";
+    /** constant for final review comment. */
+    private static final String FINAL_REVIEW_COMMENT = "Final Review Comment";
 
     /**
      * Create a new instance of FinalReviewPhaseHandler using the default
@@ -128,14 +135,14 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      * @return True if the input phase can be executed, false otherwise.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Final Review" type.
+     *         &quot;Final Review&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input is null.
      */
     public boolean canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_FINAL_REVIEW);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_FINAL_REVIEW);
 
         // will throw exception if phase status is neither "Scheduled" nor
         // "Open"
@@ -151,7 +158,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * Provides addtional logic to execute a phase. This method will be called
+     * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
      * Management component. This method can send email to a group os users
      * associated with timeline notification for the project. The email can be
@@ -172,12 +179,15 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      * Version 1.2: for start, find the number of final reviewers.
      *              for stop, add the result.
      * </p>
+     * <p>
+     * Change in 1.4: Updated not to use ContestDependencyAutomation.
+     * </p>
      *
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
      *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Final Review" type.
+     *         &quot;Final Review&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
      *         processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
@@ -186,7 +196,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_FINAL_REVIEW);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_FINAL_REVIEW);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
@@ -198,10 +208,39 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             // checkFinalReview is changed in version 1.1 to add
             // an approval phase after final review is approved
             values.put("RESULT", checkFinalReview(phase, operator) ? "rejected" : "approved");
+
+            Phase approvalPhase = PhasesHelper.locatePhase(phase, "Approval", true, false);
+            if (approvalPhase != null) {
+                int approvers = getApproverNumbers(approvalPhase);
+                int approverNum = getRequiredReviewersNumber(approvalPhase);
+                values.put("N_APPROVERS", approvers);
+                values.put("N_REQUIRED_APPROVERS", approverNum);
+                values.put("NEED_APPROVER", approverNum <= approvers ? 0 : 1);
+            } else {
+                values.put("NEED_APPROVER", 0);
+            }
         }
 
         sendEmail(phase, values);
     }
+
+    /**
+     * <p>Gets the number of required reviewers for specified phase. If specified phase does not have such a value set
+     * then 1 s returned.</p>
+     *
+     * @param phase a <code>Phase</code> providing the details for current phase.
+     * @return an <code>int</code> providing number of required reviewers for specified phase.
+     * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
+     * @since 1.3.1
+     */
+    private int getRequiredReviewersNumber(Phase phase) throws PhaseHandlingException {
+        int approverNum = 1;
+        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
+            approverNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+        }
+        return approverNum;
+    }
+
     /**
      * <p>
      * Get the final reviewer number of the project.
@@ -215,7 +254,28 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                                                           new String[] {"Final Reviewer"}, phase.getId()).length;
+                                                           new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME},
+                                                           phase.getId()).length;
+        } finally {
+            PhasesHelper.closeConnection(conn);
+        }
+    }
+
+    /**
+     * Find the number of 'Approver' of the phase.
+     *
+     * @param phase the current Phase
+     * @return the number of approver
+     * @throws PhaseHandlingException if any error occurs
+     * @since 1.4
+     */
+    private int getApproverNumbers(Phase phase) throws PhaseHandlingException {
+        Connection conn = null;
+        try {
+            conn = createConnection();
+            return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
+                                                                   new String[] {"Approver"},
+                                                                   phase.getProject().getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -260,14 +320,16 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      * Version 1.2: add the return value.
      * </p>
      *
+     * <p>
+     * Change in 1.4: Updated not to use ContestDependencyAutomation.
+     * </p>
+     *
      * @param phase phase instance.
      * @param operator operator name
      * @return if pass the final review of not
      *
      * @throws PhaseHandlingException if an error occurs when retrieving/saving
      *         data.
-     *
-     * @version 1.2
      */
     private boolean checkFinalReview(Phase phase, String operator) throws PhaseHandlingException {
         Connection conn = null;
@@ -284,11 +346,11 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 String value = (String) comments[i].getExtraInfo();
 
                 if (comments[i].getCommentType().getName().equals(
-                                "Final Review Comment")) {
-                    if ("Approved".equalsIgnoreCase(value)
-                                    || "Accepted".equalsIgnoreCase(value)) {
+                        FINAL_REVIEW_COMMENT)) {
+                    if (PhasesHelper.APPROVED.equalsIgnoreCase(value)
+                                    || PhasesHelper.APPROVED.equalsIgnoreCase(value)) {
                         continue;
-                    } else if ("Rejected".equalsIgnoreCase(value)) {
+                    } else if (PhasesHelper.REJECTED.equalsIgnoreCase(value)) {
                         rejected = true;
 
                         break;
@@ -304,7 +366,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 for (int i = 0; i < comments.length; i++) {
 
                     if (comments[i].getCommentType().getName().equals(
-                                    "Final Review Comment")) {
+                            FINAL_REVIEW_COMMENT)) {
                         comments[i].resetExtraInfo();
                     }
                 }
@@ -318,27 +380,12 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                                                 managerHelper.getPhaseManager(),
                                                 operator);
 
-                // Since new Final Review phases was added adjust the timelines for depending projects accordingly
-                // by amount of time equal to difference between the end times for current processed Final Review phase
-                // and newly added Final Review phase
-                Date currentPhaseEndDate = phase.getScheduledEndDate();
-                Date newPhaseEndDate = currentPrj.getAllPhases()[currentPhaseIndex + 2].getScheduledEndDate();
-                long diff = newPhaseEndDate.getTime() - currentPhaseEndDate.getTime();
-                ContestDependencyAutomation auto
-                    = new ContestDependencyAutomation(managerHelper.getPhaseManager(),
-                                                      managerHelper.getProjectManager(),
-                                                      managerHelper.getProjectLinkManager());
-                List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(currentPrj.getId(), diff);
-                for (Phase[] affectedProjectPhases : affectedPhases) {
-                    managerHelper.getPhaseManager().updatePhases(affectedProjectPhases[0].getProject(), operator);
-                }
-
                 // get the id of the newly created final review phase
                 long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2]
                                 .getId();
 
                 PhasesHelper.createAggregatorOrFinalReviewer(phase,
-                                managerHelper, conn, "Final Reviewer",
+                                managerHelper, conn, PhasesHelper.FINAL_REVIEWER_ROLE_NAME,
                                 finalReviewPhaseId, operator);
             } else {
                 // Newly added in version 1.1
@@ -346,31 +393,14 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                 // and if there is corresponding property value
                 Phase approvalPhase = PhasesHelper.locatePhase(phase, "Approval", true, false);
 
-                com.topcoder.management.project.ProjectManager projectManager
-                     = getManagerHelper().getProjectManager();
-                com.topcoder.management.project.Project project
-                     = projectManager.getProject(phase.getProject().getId());
+                com.topcoder.management.project.ProjectManager projectManager =
+                    getManagerHelper().getProjectManager();
+                com.topcoder.management.project.Project project =
+                    projectManager.getProject(phase.getProject().getId());
                 String approvalRequired = (String) project.getProperty("Approval Required");
 
                 if (approvalPhase == null && approvalRequired != null && approvalRequired.equalsIgnoreCase("true")) {
                     PhasesHelper.insertApprovalPhase(phase.getProject(), phase, getManagerHelper(), operator);
-
-                    // Since new Approval was added adjust the timelines for depending projects accordingly
-                    // by amount of time equal to difference between the end times for current processed Final Review phase
-                    // and newly added Approval phase
-                    Project currentPrj = phase.getProject();
-                    Date currentPhaseEndDate = phase.getScheduledEndDate();
-                    Phase[] phases = currentPrj.getAllPhases();
-                    Date newPhaseEndDate = phases[phases.length - 1].getScheduledEndDate();
-                    long diff = newPhaseEndDate.getTime() - currentPhaseEndDate.getTime();
-                    ContestDependencyAutomation auto
-                        = new ContestDependencyAutomation(managerHelper.getPhaseManager(),
-                                                          managerHelper.getProjectManager(),
-                                                          managerHelper.getProjectLinkManager());
-                    List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(currentPrj.getId(), diff);
-                    for (Phase[] affectedProjectPhases : affectedPhases) {
-                        managerHelper.getPhaseManager().updatePhases(affectedProjectPhases[0].getProject(), operator);
-                    }
                 }
             }
             return rejected;

@@ -26,7 +26,7 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                      <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://10.1.1.7:9088/test:informixserver=informix</Value>
+                        <Value>jdbc:informix-sqli://192.168.1.3:9000/online_review:informixserver=tcs</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>

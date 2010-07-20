@@ -179,13 +179,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://wishingbone:15260/or:INFORMIXSERVER=or</Value>
+                        <Value>jdbc:informix-sqli://localhost:9088/topcoder:informixserver=informix_tc</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>informix</Value>
+                        <Value>123456</Value>
                     </Property>
                 </Property>
             </Property>
@@ -956,7 +956,7 @@
             </Property>
         </Property>
     </Config>
-    
+
     <!-- Configuration for DBSearchStrategy -->
     <Config name="com.topcoder.search.builder.database.DBSearchStrategy">
         <!-- Property defining a specification for constructing the dbConnectionFactory to use. -->
@@ -1090,7 +1090,7 @@
             </Property>
         </Property>
     </Config>
-    
+
     <Config name="com.topcoder.search.builder.database.factory">
     </Config>
 

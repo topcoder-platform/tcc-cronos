@@ -6,6 +6,7 @@ package com.cronos.onlinereview.phases.failuretests.mock;
 
 import com.topcoder.management.deliverable.persistence.UploadPersistence;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.UploadType;
 import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.SubmissionStatus;
@@ -23,15 +24,18 @@ import java.util.ArrayList;
  * <p>A mock implementation of {@link UploadPersistence} class to be used for testing.
  * Overrides the protected methods declared by a super-class. The overridden methods are declared with package private access
  * so only the test cases could invoke them. The overridden methods simply call the corresponding method of a super-class.
+ * </p>
+ * <p>The version 1.4 add some methods: addSubmissionType, getAllSubmissionTypeIds, loadSubmissionType,
+ * loadSubmissionTypes, removeSubmissionType, updateSubmissionType, to suit new UploadManager.</p>
  *
- * @author  isv
- * @version 1.0
+ * @author  isv, stevenfrog
+ * @version 1.4
  */
 public class MockUploadPersistence implements UploadPersistence {
 
     /**
      * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Map</code>s mapping the <code>
-     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been 
+     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been
      * provided by the caller of the method.</p>
      */
     private static Map methodArguments = new HashMap();
@@ -1277,12 +1281,78 @@ public class MockUploadPersistence implements UploadPersistence {
     public static void init() {
     }
 
+    /**
+     * <p>Load submissions.</p>
+     * @param resultSet the custom result set
+     * @return the submissions
+     */
 	public Submission[] loadSubmissions(CustomResultSet resultSet) throws UploadPersistenceException {
 		throw new IllegalStateException("not implemented");
 	}
 
+	/**
+	 * <p>Load uploads</p>
+	 * @param resultSet the custom result set
+     * @return the uploads
+	 */
 	public Upload[] loadUploads(CustomResultSet resultSet) throws UploadPersistenceException {
 		throw new IllegalStateException("not implemented");
 	}
+
+	/**
+	 * <p>Add submission type.</p>
+	 * @param arg0 the submission type
+	 * @throws UploadPersistenceException if any error occurs
+	 */
+    public void addSubmissionType(SubmissionType arg0) throws UploadPersistenceException {
+        // Empty
+    }
+
+    /**
+     * <p>get all submission type ids.</p>
+     * @return the ids
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public long[] getAllSubmissionTypeIds() throws UploadPersistenceException {
+        return null;
+    }
+
+    /**
+     * <p>load submission type.</p>
+     * @param arg0 the id
+     * @return the type
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public SubmissionType loadSubmissionType(long arg0) throws UploadPersistenceException {
+        return null;
+    }
+
+    /**
+     * <p>load submission types.</p>
+     * @param arg0 the ids
+     * @return the types
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public SubmissionType[] loadSubmissionTypes(long[] arg0) throws UploadPersistenceException {
+        return null;
+    }
+
+    /**
+     * <p>remove submission type.</p>
+     * @param arg0 the submission type
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public void removeSubmissionType(SubmissionType arg0) throws UploadPersistenceException {
+        // Empty
+    }
+
+    /**
+     * <p>update submission type.</p>
+     * @param arg0 the submission type
+     * @throws UploadPersistenceException if any error occurs
+     */
+    public void updateSubmissionType(SubmissionType arg0) throws UploadPersistenceException {
+        // Empty
+    }
 
 }
