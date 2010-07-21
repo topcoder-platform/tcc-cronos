@@ -28,7 +28,19 @@ public class VMInstanceData implements Serializable {
      * Represents the VM manager's handle. It has getter & setter. It can be any value.
      */
     private String managerHandle;
-
+    
+    /**
+     * Stores contest name for readability.
+     * @since BUGR-3232
+     */
+    private String contestName;
+    
+    /**
+     * Stores tc image name for readability.
+     * @since BUGR-3232
+     */
+    private String vmImageTcName;
+    
     /**
      * Empty constructor.
      */
@@ -88,5 +100,47 @@ public class VMInstanceData implements Serializable {
     public void setManagerHandle(String managerHandle) {
         this.managerHandle = managerHandle;
     }
+   
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     * @since BUGR-3932
+     */
+    public String getContestName() {
+        return contestName;
+    }
+    
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param managerHandle value to set
+     * @since BUGR-3932
+     */
+    public void setContestName(String contestName) {
+        this.contestName = contestName;
+    }
+    
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     * @since BUGR-3932
+     */
+    public String getVmImageTcName() {
+        return vmImageTcName;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param managerHandle value to set
+     * @since BUGR-3932
+     */
+    public void setVmImageTcName(String vmImageTcName) {
+        this.vmImageTcName = vmImageTcName;
+    }
+    
+    
 }
 

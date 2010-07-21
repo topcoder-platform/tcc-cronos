@@ -3,6 +3,7 @@
  */
 package com.topcoder.direct.cloudvm.service.bean;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.AvailabilityZone;
@@ -35,6 +36,8 @@ import com.topcoder.service.user.UserServiceException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
+import com.topcoder.service.facade.contest.ContestServiceFacade;
+import com.topcoder.service.facade.contest.ContestServiceException;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.annotation.Resource;
@@ -55,6 +58,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -114,6 +118,13 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
     private UserService userService;
 
     /**
+     * The user service to retrieve the user email. Will be injected by the container. Must be non-null.
+     * @since BUGR-3932
+     */
+    @EJB(name = "ejb/ContestServiceFacade")
+    private ContestServiceFacade contestServiceFacade;
+
+    /**
      * The logger to log invocation details. Initialized in constructor and never changed afterwards. Must be non-null.
      */
     private final Log logger;
@@ -129,96 +140,140 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
      * Launch VM instance.
      *
      * @param tcSubject  the currently logged-in user info.
-     * @param vmInstance the VM instance to launch.
+     * @param vmInstanceMain the VM instance to launch.
      * @return the launched VM instance.
      * @throws IllegalArgumentException if any argument is null.
      * @throws CloudVMServiceException  if any error occurs (wrap the underlying exceptions).
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public VMInstanceData launchVMInstance(TCSubject tcSubject, VMInstance vmInstance) throws CloudVMServiceException {
+    public List<VMInstanceData> launchVMInstance(TCSubject tcSubject, VMInstance vmInstanceMain) throws CloudVMServiceException {
         logEnter("launchVMInstance");
         checkNull("tcSubject", tcSubject);
-        checkNull("vmInstance", vmInstance);
+        checkNull("vmInstance", vmInstanceMain);
+        List<VMInstanceData> res = new LinkedList<VMInstanceData>();
         try {
             EntityManager entityManager = getEntityManager();
 
-            verifySecurityKey(entityManager, vmInstance.getTcMemberHandle());
+            String[] userHandles = vmInstanceMain.getTcMemberHandle().split(";");
+            for(String tcMemberHandle : userHandles) {
+                VMInstance vmInstance = new VMInstance();
+                vmInstance.setVmImageId(vmInstanceMain.getVmImageId());
+                vmInstance.setContestId(vmInstanceMain.getContestId());
+                vmInstance.setContestTypeId(vmInstanceMain.getContestTypeId());
+                vmInstance.setSvnBranch(vmInstanceMain.getSvnBranch());
+                vmInstance.setTcMemberHandle(tcMemberHandle);
+                vmInstance.setUserData(vmInstanceMain.getUserData());
+                
+                String contestName = "";
+                if (vmInstanceMain.getContestTypeId() == SOFTWARE_CONTEST_TYPE_ID) {
+                    contestName = contestServiceFacade.getSoftwareContestByProjectId(tcSubject, vmInstanceMain.getContestId()).getAssetDTO().getName();
+                } else if (vmInstanceMain.getContestTypeId() == STUDIO_CONTEST_TYPE_ID) {
+                    contestName = contestServiceFacade.getContest(tcSubject, vmInstanceMain.getContestId()).getContestData().getName();
+                } else if (vmInstanceMain.getContestTypeId() == BUG_RACE_TYPE_ID) {
+                    contestName = "Bug Race";
+                    // no check for bug races
+                }
+                vmInstance.setContestName(contestName);
 
-            VMAccount vmAccount = getVMAccount(tcSubject.getUserId());
-            AmazonEC2Client client = new AmazonEC2Client(
-                new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
-            VMImage vmImage = getVMImage(vmInstance.getVmImageId());
-            if (vmImage == null) {
-                throw new CloudVMServiceException("No vm image with id " + vmInstance.getVmImageId());
+                tcMemberHandle = tcMemberHandle.trim();
+                logger.log(Level.DEBUG, "Launching for " + tcMemberHandle);
+                verifySecurityKey(entityManager, tcMemberHandle);
+    
+                VMAccount vmAccount = getVMAccount(tcSubject.getUserId());
+                AmazonEC2Client client = new AmazonEC2Client(
+                    new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
+                VMImage vmImage = getVMImage(vmInstance.getVmImageId());
+                if (vmImage == null) {
+                    throw new CloudVMServiceException("No vm image with id " + vmInstance.getVmImageId());
+                }
+                VMImage defaultImage = getVMImage(defaultVMImageId);
+    
+                // create and populate request
+                RunInstancesRequest request = new RunInstancesRequest();
+                if (vmImage.getSecurityGroup() == null) {
+                    request.setSecurityGroups(Arrays.asList(defaultImage.getSecurityGroup().getName()));
+                } else {
+                    request.setSecurityGroups(Arrays.asList(vmImage.getSecurityGroup().getName()));
+                }
+    
+                // process time zones
+                VMAvailabilityZone requestZone = vmImage.getAvailabilityZone() == null ? defaultImage.getAvailabilityZone()
+                    : vmImage.getAvailabilityZone();
+                Set<String> availableZones = new HashSet<String>();
+                for (AvailabilityZone zone : client.describeAvailabilityZones().getAvailabilityZones()) {
+                    availableZones.add(zone.getZoneName());
+                }
+                if (availableZones.contains(requestZone.getName())) {
+                    request.setPlacement(new Placement().withAvailabilityZone(requestZone.getName()));
+                } else {
+                    request.setPlacement(new Placement().withAvailabilityZone(availableZones.iterator().next()));
+                }
+    
+                request.setInstanceType(vmImage.getInstanceType() == null ? defaultImage.getInstanceType().getName()
+                    : vmImage.getInstanceType().getName());
+                request.setKeyName(
+                    vmImage.getKeyPair() == null ? defaultImage.getKeyPair().getName() : vmImage.getKeyPair().getName());
+    
+                // process user data
+                StringBuilder userData = new StringBuilder();
+                for (VMUserData data : vmImage.getUserData()) {
+                    userData.append(data.getKey()).append("=").append(data.getValue()).append("\n");
+                }
+                userData.append("email=").append(userService.getEmailAddress(tcSubject.getUserId())).append("\n");
+                userData.append("branch=").append(vmInstance.getSvnBranch()).append("\n");
+                userData.append("handle=").append(tcMemberHandle).append("\n");
+                userData.append("user_email=").append(userService.getEmailAddress(tcMemberHandle)).append("\n"); // BUGR-3931
+                logger.log(Level.DEBUG, "user data is: " + vmInstance.getUserData());
+                // append entered user data
+                if(vmInstance.getUserData() != null) {
+                    String[] userDataLines = vmInstance.getUserData().split("\n");
+                    for(String userDataLine : userDataLines) {
+                        userDataLine = userDataLine.trim();
+                        if(userDataLine.length() == 0) continue;
+                        int idx = userDataLine.indexOf('=');
+                        if(idx == -1 || idx == 0 || idx == userDataLine.length() - 1) {
+                            throw new CloudVMServiceException("User data should be in key=value format");
+                        }
+                        userData.append(userDataLine).append("\n");
+                    }
+                }
+                request.setUserData(new String(Base64.encodeBase64(userData.toString().getBytes())));
+    
+                request.setImageId(vmImage.getAwsImageId());
+                request.setMinCount(1);
+                request.setMaxCount(1);
+    
+                // send request
+                RunInstancesResult result = client.runInstances(request);
+                Instance instance = result.getReservation().getInstances().get(0);
+    
+                vmInstance.setAwsInstanceId(instance.getInstanceId());
+                vmInstance.setAccountId(vmAccount.getId());
+                logger.log(Level.DEBUG, "state=" + instance.getState() + ", public ip= " + instance.getPublicIpAddress());
+                vmInstance.setPublicIP(instance.getPublicIpAddress()); // BUGR-3932
+                vmInstance = entityManager.merge(vmInstance);
+    
+                // create audit record
+                VMInstanceAudit audit = new VMInstanceAudit();
+                audit.setAction("launched");
+                audit.setInstanceId(vmInstance.getId());
+                audit.setCreateDate(new Date());
+                entityManager.merge(audit);
+    
+                // create and return DTO object 
+                VMInstanceData data = new VMInstanceData();
+                data.setInstance(vmInstance);
+                data.setStatus(convertState(instance.getState()));
+                fillInstanceData(tcSubject, vmInstance, data);
+                res.add(data);
             }
-            VMImage defaultImage = getVMImage(defaultVMImageId);
-
-            // create and populate request
-            RunInstancesRequest request = new RunInstancesRequest();
-            if (vmImage.getSecurityGroup() == null) {
-                request.setSecurityGroups(Arrays.asList(defaultImage.getSecurityGroup().getName()));
-            } else {
-                request.setSecurityGroups(Arrays.asList(vmImage.getSecurityGroup().getName()));
-            }
-
-            // process time zones
-            VMAvailabilityZone requestZone = vmImage.getAvailabilityZone() == null ? defaultImage.getAvailabilityZone()
-                : vmImage.getAvailabilityZone();
-            Set<String> availableZones = new HashSet<String>();
-            for (AvailabilityZone zone : client.describeAvailabilityZones().getAvailabilityZones()) {
-                availableZones.add(zone.getZoneName());
-            }
-            if (availableZones.contains(requestZone.getName())) {
-                request.setPlacement(new Placement().withAvailabilityZone(requestZone.getName()));
-            } else {
-                request.setPlacement(new Placement().withAvailabilityZone(availableZones.iterator().next()));
-            }
-
-            request.setInstanceType(vmImage.getInstanceType() == null ? defaultImage.getInstanceType().getName()
-                : vmImage.getInstanceType().getName());
-            request.setKeyName(
-                vmImage.getKeyPair() == null ? defaultImage.getKeyPair().getName() : vmImage.getKeyPair().getName());
-
-            // process user data
-            StringBuilder userData = new StringBuilder();
-            for (VMUserData data : vmImage.getUserData()) {
-                userData.append(data.getKey()).append("=").append(data.getValue()).append("\n");
-            }
-            userData.append("email=").append(userService.getEmailAddress(tcSubject.getUserId())).append("\n");
-            userData.append("branch=").append(vmInstance.getSvnBranch()).append("\n");
-            userData.append("handle=").append(vmInstance.getTcMemberHandle()).append("\n");
-            request.setUserData(new String(Base64.encodeBase64(userData.toString().getBytes())));
-
-            request.setImageId(vmImage.getAwsImageId());
-            request.setMinCount(1);
-            request.setMaxCount(1);
-
-            // send request
-            RunInstancesResult result = client.runInstances(request);
-            Instance instance = result.getReservation().getInstances().get(0);
-
-            vmInstance.setAwsInstanceId(instance.getInstanceId());
-            vmInstance.setAccountId(vmAccount.getId());
-            vmInstance = entityManager.merge(vmInstance);
-
-            // create audit record
-            VMInstanceAudit audit = new VMInstanceAudit();
-            audit.setAction("launched");
-            audit.setInstanceId(vmInstance.getId());
-            audit.setCreateDate(new Date());
-            entityManager.merge(audit);
-
-            // create and return DTO object 
-            VMInstanceData data = new VMInstanceData();
-            data.setInstance(vmInstance);
-            data.setStatus(convertState(instance.getState()));
-            return data;
+            return new ArrayList<VMInstanceData>(res);
 
         } catch (UserServiceException e) {
             throw logError(new CloudVMServiceException("Unable to fetch user.", e));
         } catch (Exception e) {
             throw logError(
-                new CloudVMServiceException("Unable to launch vm image with id " + vmInstance.getVmImageId(), e));
+                new CloudVMServiceException("Unable to launch vm image with id " + vmInstanceMain.getVmImageId(), e));
         } finally {
             logExit("launchVMInstance");
         }
@@ -273,6 +328,9 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
             audit.setInstanceId(vmInstance.getId());
             audit.setCreateDate(new Date());
             entityManager.merge(audit);
+            
+            vmInstance.setTerminated(true);
+            entityManager.merge(vmInstance);
 
             // return new vm state
             return convertState(result.getTerminatingInstances().get(0).getCurrentState());
@@ -306,6 +364,24 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
     }
 
     /**
+     * Contest type id for software contests.
+     * @since BUGR-3932
+     */
+    private static final int SOFTWARE_CONTEST_TYPE_ID = 1;
+
+    /**
+     * Contest type id for studio contests.
+     * @since BUGR-3932
+     */
+    private static final int STUDIO_CONTEST_TYPE_ID = 2;
+
+    /**
+     * Contest type id for bug race contests.
+     * @since BUGR-3932
+     */
+    private static final int BUG_RACE_TYPE_ID = 3;
+    
+    /**
      * Get VM instances for the given user.
      *
      * @param tcSubject the currently logged-in user info.
@@ -318,7 +394,12 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
         checkNull("tcSubject", tcSubject);
         try {
             EntityManager entityManager = getEntityManager();
-            VMAccount vmAccount = getVMAccount(tcSubject.getUserId());
+            VMAccount vmAccount;
+            try {
+                vmAccount = getVMAccount(tcSubject.getUserId());
+            } catch (CloudVMServiceException e) { // return empty list
+                return new ArrayList<VMInstanceData>();
+            }
 
             // make db query
             Query q;
@@ -340,40 +421,67 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
 
             // create VMInstanceData objects
             for (VMInstance instance : instances) {
+            	  if(instance.isTerminated()) { // BUGR-3930
+                    continue;
+                }
                 VMInstanceData instanceData = new VMInstanceData();
                 instanceData.setInstance(instance);
                 data.add(instanceData);
                 dataMap.put(instance.getAwsInstanceId(), instanceData);
+                // TODO: Comment ?!?
                 instanceData.setStatus(VMInstanceStatus.TERMINATED);
+               
             }
-
             // make remote call and fetch information about vm statuses
-            DescribeInstancesResult result =
+            DescribeInstancesResult result = null;
+            try {
+             result =
                 client.describeInstances(new DescribeInstancesRequest().withInstanceIds(dataMap.keySet()));
+            }
+            catch(AmazonServiceException  aws) {
+            	logger.log(Level.DEBUG, aws.getErrorCode());
+            	if("InvalidInstanceID.NotFound".equals(aws.getErrorCode())) {
+            		logger.log(Level.DEBUG, "AWS error");
+            	} else {
+            		throw logError(new CloudVMServiceException("Unable to describe instances", aws));
+            	}
+            } catch (Exception e) {
+            	throw logError(new CloudVMServiceException("Unable to describe instances", e));
+            }
             for (Reservation reservation : result.getReservations()) {
                 for (Instance instance : reservation.getInstances()) {
-                    if (dataMap.get(instance.getInstanceId()) != null) {
-                        dataMap.get(instance.getInstanceId()).setStatus(convertState(instance.getState()));
+                	if (dataMap.get(instance.getInstanceId()) != null) {
+                        VMInstanceData inst = dataMap.get(instance.getInstanceId());
+                        inst.setStatus(convertState(instance.getState()));
+                        logger.log(Level.DEBUG, inst.getInstance() + " " + instance.getState().getName());
+                        // BUGR-3981
+                        if(inst.getStatus() == VMInstanceStatus.TERMINATED) {
+                        	markAsTerminated(inst, instance.getLaunchTime());
+                        	data.remove(inst);
+                        }
+                        
+                        // set public IP if it is not set yet
+                        if(inst.getInstance().getPublicIP() == null ||instance.getPublicIpAddress() != null) {
+                            VMInstance toBeSaved = inst.getInstance();
+                            toBeSaved.setPublicIP(instance.getPublicIpAddress());
+                            toBeSaved = entityManager.merge(toBeSaved);
+                            data.get(data.indexOf(inst)).setInstance(toBeSaved);
+                        }
+                        dataMap.remove(instance.getInstanceId());
                     }
                 }
-            }
+           }
+            
+           for (VMInstanceData inst : dataMap.values()) { // terminated
+                logger.log(Level.DEBUG, "here for " + inst.getInstance().getId());
+                markAsTerminated(inst, new Date());
+                data.remove(inst);
+           }
 
-            Collection<VMInstanceData> vm_data = new ArrayList<VMInstanceData>(data);
-            for (VMInstanceData instanceData : vm_data) {
-                if (instanceData.getStatus() == VMInstanceStatus.TERMINATED) {
-                     data.remove(instanceData);
-                }
-            }
-	
-            // remove terminated instances from the database
-            /*
-            for (VMInstanceData instanceData : data) {
-                if (instanceData.getStatus() == VMInstanceStatus.TERMINATED) {
-                     entityManager.remove(instanceData.getInstance());
-                }
-            }
-            */
-
+           for (VMInstanceData instanceData : data) {
+        	   fillInstanceData(tcSubject, instanceData.getInstance(), instanceData);
+           }
+           
             // for administrators, fetch vm managers also
             if (inRole(tcSubject, "Administrator")) {
                 for (VMInstanceData instanceData : data) {
@@ -389,6 +497,68 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
             throw logError(new CloudVMServiceException("Unable to fetch vm instances.", e));
         } finally {
             logExit("getVMInstances");
+        }
+    }
+
+    /**
+     * Set insrance as terminated.
+     * @param inst instance to be marked as terminated
+     * @since BUGR-3981
+     */
+	private void markAsTerminated(VMInstanceData inst, Date when) throws CloudVMServiceException {
+		try{
+			logger.log(Level.DEBUG, "setting as terminated " + inst.getInstance().getId());
+			VMInstance toBeTerminated = inst.getInstance();
+	    	toBeTerminated.setTerminated(true);
+	    	toBeTerminated = getEntityManager().merge(toBeTerminated);
+	    	
+	        // create audit record
+	        VMInstanceAudit audit = new VMInstanceAudit();
+	        audit.setAction("terminated");
+	        audit.setInstanceId(toBeTerminated.getId());
+	        audit.setCreateDate(when);
+	        getEntityManager().merge(audit);
+		}
+        catch (Exception e) {
+        	throw logError(new CloudVMServiceException("unable to mark terminated", e));
+        }
+        
+	}
+    /**
+     * Fills contest name and vm image TC name.
+     * 
+     * @param tcSubject
+     * @param instance
+     * @param instanceData
+     * @since BUGR-3932
+     */
+    private void fillInstanceData(TCSubject tcSubject, VMInstance instance, VMInstanceData instanceData) throws CloudVMServiceException {
+        logEnter("fillInstanceData");
+        try {
+            // query VM image TC name
+            Query q = getEntityManager().createQuery("select a from VMImage a where a.id=:vmImageId");
+            q.setParameter("vmImageId", instance.getVmImageId());
+            VMImage img = (VMImage) q.getResultList().get(0);
+            instanceData.setVmImageTcName(img.getTcName());
+            
+            /*
+            String contestName = "";
+            if (instance.getContestTypeId() == SOFTWARE_CONTEST_TYPE_ID) {
+                contestName = contestServiceFacade.getSoftwareContestByProjectId(tcSubject, instance.getContestId()).getAssetDTO().getName();
+            } else if (instance.getContestTypeId() == STUDIO_CONTEST_TYPE_ID) {
+                contestName = contestServiceFacade.getContest(tcSubject, instance.getContestId()).getContestData().getName();
+            } else if (instance.getContestTypeId() == BUG_RACE_TYPE_ID) {
+                contestName = "Bug Race";
+                // no check for bug races
+            }
+            */
+
+            instanceData.setContestName(instance.getContestName());
+        } catch (Exception e) {
+            throw logError(
+                new CloudVMServiceException("Unable to fill instance data", e));
+        } finally {
+            logExit("fillInstanceData");
         }
     }
 
@@ -452,7 +622,7 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
             }
             return result;
         } catch (Exception e) {
-            throw logError(new CloudVMServiceException("Unable to fetch vm accounts.", e));
+            throw logError(new CloudVMServiceException("You have not set up a VM Account!"));
         }
     }
 

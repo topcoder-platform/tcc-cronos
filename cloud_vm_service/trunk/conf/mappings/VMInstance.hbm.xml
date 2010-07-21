@@ -18,7 +18,10 @@
         <property name="tcMemberHandle" column="tc_member_handle" />
         <property name="svnBranch" column="svn_branch" />
         <property name="contestId" column="contest_id" />
+        <property name="contestName" column="contest_name" />
         <property name="contestTypeId" column="vm_contest_type_id" />
-
+        <property name="terminated" column="is_terminated" />
+	      <property name="publicIP" column="public_ip" />
+	      
     </class>
 </hibernate-mapping>
