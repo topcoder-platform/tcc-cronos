@@ -31,7 +31,7 @@ public interface CloudVMService {
      * @throws IllegalArgumentException if any argument is null.
      * @throws CloudVMServiceException  if any error occurs.
      */
-    public VMInstanceData launchVMInstance(TCSubject tcSubject, VMInstance instance) throws CloudVMServiceException;
+    public List<VMInstanceData> launchVMInstance(TCSubject tcSubject, VMInstance instance) throws CloudVMServiceException;
 
     /**
      * Terminate VM instance.

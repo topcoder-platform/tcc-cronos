@@ -24,5 +24,7 @@
         <key column="vm_image_id" />
         <many-to-many column="vm_user_data_id" class="VMUserData" />
       </bag>
+      
+      <property name="tcName" column="vm_image_tc_name"/>
   </class>
 </hibernate-mapping>

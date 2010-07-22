@@ -44,6 +44,11 @@ public class VMInstance extends AbstractIdEntity {
     private long contestId;
 
     /**
+     * Represents the contest name. It has getter & setter. It can be any value.
+     */
+    private String contestName;
+
+    /**
      * Represents the contest type id. It has getter & setter. It can be any value.
      */
     private long contestTypeId;
@@ -52,7 +57,28 @@ public class VMInstance extends AbstractIdEntity {
      * Represents the VM account id. It has getter & setter. It can be any value.
      */
     private long accountId;
+    
+    /**
+     * Represents VM public IP address.
+     * @since BUGR-3932
+     */
+    private String publicIP;
 
+    /**
+     * Is set to true if VM is terminated
+     * @since BUGR-3930
+     */
+    private boolean terminated;
+    
+    /**
+     * Represents user data properties in the form:
+     *  key1=value1 
+     *  key2=value2
+     *  
+     *  @since BUGR-3931 
+     */
+    private String userData;
+    
     /**
      * Empty constructor.
      */
@@ -111,6 +137,24 @@ public class VMInstance extends AbstractIdEntity {
      */
     public void setContestId(long contestId) {
         this.contestId = contestId;
+    }
+
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     */
+    public String getContestName() {
+        return contestName;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param contestId value to set
+     */
+    public void setContestName(String contestName) {
+        this.contestName = contestName;
     }
 
     /**
@@ -184,5 +228,64 @@ public class VMInstance extends AbstractIdEntity {
     public void setAccountId(long accountId) {
         this.accountId = accountId;
     }
-}
+    
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     * @since BUGR-3930
+     */
+    public boolean isTerminated() {
+        return terminated;
+    }
 
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param terminated value to set
+     * @since BUGR-3930
+     */
+    public void setTerminated(boolean terminated) {
+        this.terminated = terminated;
+    }
+    
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     * @since BUGR-3931
+     */
+    public String getUserData() {
+        return userData;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param userData value to set
+     * @since BUGR-3931
+     */
+    public void setUserData(String userData) {
+        this.userData = userData;
+    }
+    
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     * @since BUGR-3932
+     */
+    public String getPublicIP() {
+        return publicIP;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param accountId value to set
+     * @since BUGR-3932
+     */
+    public void setPublicIP(String publicIP) {
+        this.publicIP = publicIP;
+    }
+}

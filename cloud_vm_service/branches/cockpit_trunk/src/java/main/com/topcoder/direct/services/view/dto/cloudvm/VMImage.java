@@ -51,6 +51,12 @@ public class VMImage extends AbstractIdEntity {
     private List<VMUserData> userData;
 
     /**
+     * Represents TopCoder image name.
+     * @since BUGR-3932
+     */
+    private String tcName;
+    
+    /**
      * Empty constructor.
      */
     public VMImage() {
@@ -143,5 +149,24 @@ public class VMImage extends AbstractIdEntity {
     public void setUserData(List<VMUserData> userData) {
         this.userData = userData;
     }
+
+    /**
+     * 
+     * @return field value
+     * @since BUGR-3932
+     */
+    public String getTcName() {
+        return tcName;
+    }
+    /**
+     * 
+     * @param tcName the new value to set
+     * @since BUGR-3932
+     */
+    public void setTcName(String tcName) {
+        this.tcName = tcName;
+    }
+    
+    
 }
 
