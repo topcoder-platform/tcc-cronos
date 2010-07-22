@@ -4051,6 +4051,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY, assetDTO.getId().toString());
             contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
             contest.getProjectHeader().setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, "1.0");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, "1");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY, "Off");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.STATUS_NOTIFICATION_PROJECT_PROPERTY_KEY, "On");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.TIMELINE_NOTIFICATION_PROJECT_PROPERTY_KEY, "On");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.PUBLIC_PROJECT_PROPERTY_KEY, "Yes");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "Yes");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, "Open");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
 
             if (forumId > 0) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY, String.valueOf(forumId));
