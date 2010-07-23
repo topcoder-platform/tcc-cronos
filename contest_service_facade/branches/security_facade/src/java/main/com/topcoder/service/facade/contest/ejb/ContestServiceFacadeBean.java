@@ -4049,6 +4049,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, assetDTO.getCompVersionId().toString());
             contest.getProjectHeader().setProperty(ProjectPropertyType.COMPONENT_ID_PROJECT_PROPERTY_KEY, assetDTO.getId().toString());
+            contest.getProjectHeader().setProperty(ProjectPropertyType.ROOT_CATALOG_ID_PROJECT_PROPERTY_KEY, assetDTO.getRootCategory().getId().toString());
             contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
             contest.getProjectHeader().setProperty(ProjectPropertyType.NOTES_PROJECT_PROPERTY_KEY, "");
             contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, "1.0");
