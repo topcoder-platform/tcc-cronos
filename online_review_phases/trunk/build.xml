@@ -11,7 +11,7 @@
     <property name="ext_libdir" value="${libdir}/third_party"/>
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+	<property name="cobertura.dir" value="E:\Dev_Lib\Java\cobertura-1.8"/>
     <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
@@ -162,7 +162,7 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-            <junit fork="true" haltonerror="false">
+        	<junit fork="true" haltonerror="false">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
@@ -185,7 +185,7 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-            <junit fork="true" haltonerror="false">
+        	<junit fork="true" haltonerror="false">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
