@@ -1,3 +1,0 @@
-Starting audit...
-C:\TopCoder\proj\java\htmlcockpit_specification_review_struts_actions_1.0.0\src\java\tests\com\topcoder\direct\actions\MockContestServiceFacade.java:1: File length is 2,157 lines (max allowed is 2,000).
-Audit done.

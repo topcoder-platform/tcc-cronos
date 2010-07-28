@@ -16,7 +16,7 @@
     <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
     <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
-    <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security_manager/1.0/security_manager.jar" />
     <property name="shared.jar" value="${tcs_libdir}/shared/1.0/shared.jar" />
     <property name="tcwebcommon.jar" value="${tcs_libdir}/tcwebcommon/1.0/tcwebcommon.jar" />
     <property name="workdays.jar" value="${tcs_libdir}/workdays/1.0.1/workdays.jar" />
@@ -26,21 +26,21 @@
     <property name="junit4.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
     <property name="xercesImpl.jar" value="${ext_libdir}/xerces-2_9_1/xercesImpl.jar" />
     <property name="javaee.jar" value="${ext_libdir}/javaee/1.5/javaee.jar" />
-    <property name="struts2-core.jar" value="${ext_libdir}/struts-2.1.8.1/lib/struts2-core-2.1.8.1.jar" />
-    <property name="xwork-core.jar" value="${ext_libdir}/struts-2.1.8.1/lib/xwork-core-2.1.6.jar" />
-    <property name="commons-lang.jar" value="${ext_libdir}/struts-2.1.8.1/lib/commons-lang-2.3.jar" />
+    <property name="struts2-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/struts2-core-2.1.8.1.jar" />
+    <property name="xwork-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/xwork-core-2.1.6.jar" />
+    <property name="commons-lang.jar" value="${ext_libdir}/struts/2.1.8.1/lib/commons-lang-2.3.jar" />
     <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j.jar" />
     <property name="json-lib-2.3-jdk15.jar" value="${ext_libdir}/json/json-lib-2.3-jdk15.jar" />
-    <property name="struts2-junit-plugin-2.1.8.1.jar" value="${ext_libdir}/struts-2.1.8.1/lib/struts2-junit-plugin-2.1.8.1.jar" />
-    <property name="commons-logging.jar" value="${ext_libdir}/struts-2.1.8.1/lib/commons-logging-1.0.4.jar" />
-    <property name="commons-fileupload.jar" value="${ext_libdir}/struts-2.1.8.1/lib/commons-fileupload-1.2.1.jar" />
-    <property name="freemarker.jar" value="${ext_libdir}/struts-2.1.8.1/lib/freemarker-2.3.15.jar" />
-    <property name="struts2-spring-plugin.jar" value="${ext_libdir}/struts-2.1.8.1/lib/struts2-spring-plugin-2.1.8.1.jar" />
-    <property name="spring-core.jar" value="${ext_libdir}/struts-2.1.8.1/lib/spring-core-2.5.6.jar" />
-    <property name="spring-test.jar" value="${ext_libdir}/struts-2.1.8.1/lib/spring-test-2.5.6.jar" />
-    <property name="spring-web.jar" value="${ext_libdir}/struts-2.1.8.1/lib/spring-web-2.5.6.jar" />
-    <property name="spring-beans.jar" value="${ext_libdir}/struts-2.1.8.1/lib/spring-beans-2.5.6.jar" />
-    <property name="spring-context.jar" value="${ext_libdir}/struts-2.1.8.1/lib/spring-context-2.5.6.jar" />
+    <property name="struts2-junit-plugin-2.1.8.1.jar" value="${ext_libdir}/struts/2.1.8.1/lib/struts2-junit-plugin-2.1.8.1.jar" />
+    <property name="commons-logging.jar" value="${ext_libdir}/struts/2.1.8.1/lib/commons-logging-1.0.4.jar" />
+    <property name="commons-fileupload.jar" value="${ext_libdir}/struts/2.1.8.1/lib/commons-fileupload-1.2.1.jar" />
+    <property name="freemarker.jar" value="${ext_libdir}/struts/2.1.8.1/lib/freemarker-2.3.15.jar" />
+    <property name="struts2-spring-plugin.jar" value="${ext_libdir}/struts/2.1.8.1/lib/struts2-spring-plugin-2.1.8.1.jar" />
+    <property name="spring-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-core-2.5.6.jar" />
+    <property name="spring-test.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-test-2.5.6.jar" />
+    <property name="spring-web.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-web-2.5.6.jar" />
+    <property name="spring-beans.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-beans-2.5.6.jar" />
+    <property name="spring-context.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-context-2.5.6.jar" />
 
     <property name="mock.jar" value="test_reflib/mock.jar" />
 
