@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.convention.action.disableScanning" value="true" />
+    
+    <package name="tcs-default" extends="struts-default"
+        abstract="true">
+        <!-- Setup interceptors stack -->
+        <interceptors>
+            <interceptor name="mock" class="mockActionInterceptor" />
+
+            <interceptor-stack name="defaultTCSStack">
+                <interceptor-ref name="mock" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+
+        <!--
+            Make the default one used for all actions unless otherwise
+            configured.
+        -->
+        <default-interceptor-ref name="defaultTCSStack" />
+
+    </package>
+
+    <package name="default" namespace="/" extends="tcs-default">
+
+        <action name="startSpecificationReviewAction" class="startSpecificationReviewAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+        <action name="viewSpecificationReviewAction" class="viewSpecificationReviewAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/displaySpecReviewComments.jsp</result>
+        </action>
+
+        <action name="saveSpecificationReviewCommentAction" class="saveSpecificationReviewCommentAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/displayComment.jsp</result>
+        </action>
+
+        <action name="resubmitSpecificationReviewAction" class="resubmitSpecificationReviewAction">
+            <result name="input">/input.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+    </package>
+
+</struts>

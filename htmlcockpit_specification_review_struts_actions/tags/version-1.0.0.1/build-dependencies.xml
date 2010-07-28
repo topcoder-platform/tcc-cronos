@@ -1,0 +1,141 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <property name="jboss.home" value="D:/jboss-4.2.2.GA" />
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5" />
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+	<!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar" />
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0/configuration_persistence.jar" />
+    <property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.1/search_builder.jar" />
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
+    <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
+    <property name="security.jar" value="${tcs_libdir}/security_manager/1.0/security_manager.jar" />
+    <property name="shared.jar" value="${tcs_libdir}/shared/1.0/shared.jar" />
+    <property name="tcwebcommon.jar" value="${tcs_libdir}/tcwebcommon/1.0/tcwebcommon.jar" />
+    <property name="workdays.jar" value="${tcs_libdir}/workdays/1.0.1/workdays.jar" />
+    <property name="struts_framework.jar" value="${tcs_libdir}/struts_framework/1.0.0/struts_framework.jar" />
+
+    <!-- 3rd party dependencies -->
+    <property name="junit4.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
+    <property name="xercesImpl.jar" value="${ext_libdir}/xerces-2_9_1/xercesImpl.jar" />
+    <property name="javaee.jar" value="${ext_libdir}/javaee/1.5/javaee.jar" />
+    <property name="struts2-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/struts2-core-2.1.8.1.jar" />
+    <property name="xwork-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/xwork-core-2.1.6.jar" />
+    <property name="commons-lang.jar" value="${ext_libdir}/struts/2.1.8.1/lib/commons-lang-2.3.jar" />
+    <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j.jar" />
+    <property name="json-lib-2.3-jdk15.jar" value="${ext_libdir}/json/json-lib-2.3-jdk15.jar" />
+    <property name="struts2-junit-plugin-2.1.8.1.jar" value="${ext_libdir}/struts/2.1.8.1/lib/struts2-junit-plugin-2.1.8.1.jar" />
+    <property name="commons-logging.jar" value="${ext_libdir}/struts/2.1.8.1/lib/commons-logging-1.0.4.jar" />
+    <property name="commons-fileupload.jar" value="${ext_libdir}/struts/2.1.8.1/lib/commons-fileupload-1.2.1.jar" />
+    <property name="freemarker.jar" value="${ext_libdir}/struts/2.1.8.1/lib/freemarker-2.3.15.jar" />
+    <property name="struts2-spring-plugin.jar" value="${ext_libdir}/struts/2.1.8.1/lib/struts2-spring-plugin-2.1.8.1.jar" />
+    <property name="spring-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-core-2.5.6.jar" />
+    <property name="spring-test.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-test-2.5.6.jar" />
+    <property name="spring-web.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-web-2.5.6.jar" />
+    <property name="spring-beans.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-beans-2.5.6.jar" />
+    <property name="spring-context.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-context-2.5.6.jar" />
+
+    <property name="mock.jar" value="test_reflib/mock.jar" />
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}" />
+        <pathelement location="${configuration_api.jar}" />
+        <pathelement location="${configuration_manager.jar}" />
+        <pathelement location="${configuration_persistence.jar}" />
+        <pathelement location="${search_builder.jar}" />
+        <pathelement location="${object_factory.jar}" />
+        <pathelement location="${object_factory_configuration_api_plugin.jar}" />
+        <pathelement location="${object_formatter.jar}" />
+        <pathelement location="${security.jar}" />
+        <pathelement location="${shared.jar}" />
+        <pathelement location="${tcwebcommon.jar}" />
+        <pathelement location="${workdays.jar}" />
+        <pathelement location="${struts_framework.jar}" />
+    </path>
+
+    <path id="component.3rdParty-dependencies" >
+        
+        <pathelement location="${spring-test.jar}" />
+        <pathelement location="${spring-core.jar}" />
+        <pathelement location="${spring-web.jar}" />
+        <pathelement location="${spring-beans.jar}" />
+        <pathelement location="${spring-context.jar}" />
+        <pathelement location="${xercesImpl.jar}" />
+        <pathelement location="${javaee.jar}" />
+        <pathelement location="${struts2-core.jar}" />
+        <pathelement location="${xwork-core.jar}" />
+        <pathelement location="${commons-lang.jar}" />
+        <pathelement location="${log4j.jar}" />
+        <pathelement location="${json-lib-2.3-jdk15.jar}" />
+        <pathelement location="${mock.jar}" />
+        <pathelement location="${struts2-junit-plugin-2.1.8.1.jar}" />
+        <pathelement location="${commons-logging.jar}" />
+        <pathelement location="${commons-fileupload.jar}" />
+        <pathelement location="${freemarker.jar}" />
+        <pathelement location="${struts2-spring-plugin.jar}" />
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit4.jar}" />
+    </path>
+
+    <!-- deployment targets for jboss -->
+    <property name="war_name" value="demo.war" />
+    <property name="build_war_dir" value="build/war" />
+
+    <target name="war" depends="compile, compile_tests">
+        <delete dir="${build_war_dir}" />
+
+        <copy todir="${build_war_dir}/${war_name}/WEB-INF/classes/">
+            <fileset dir="${build_classdir}">
+                <include name="**/*" />
+            </fileset>
+            <fileset dir="${build_testclassdir}">
+                <include name="**/*" />
+            </fileset>
+            <fileset dir="test_files">
+                <include name="com/**/*" />
+            </fileset>
+        </copy>
+
+        <copy todir="${build_war_dir}/${war_name}/WEB-INF/lib" flatten="true">
+            <fileset dir="test_reflib">
+                <include name="**/*.jar" />
+            </fileset>
+        </copy>
+        <copy file="${junit.jar}" todir="${build_war_dir}/${war_name}/WEB-INF/lib" />
+
+        <copy todir="${build_war_dir}/${war_name}">
+            <fileset dir="test_files/war">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <copy file="test_files/applicationContext.xml" todir="${build_war_dir}/${war_name}/WEB-INF" />
+        <copy file="test_files/struts.xml" todir="${build_war_dir}/${war_name}/WEB-INF/classes" />
+        <copy file="test_files/struts.properties" todir="${build_war_dir}/${war_name}/WEB-INF/classes" />
+    </target>
+
+
+    <target name="deployToJBoss" depends="war,undeployToJBoss">
+
+        <copy todir="${jboss.home}/server/default/deploy/${war_name}" overwrite="true">
+            <fileset dir="${build_war_dir}/${war_name}">
+                <include name="**/*" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="undeployToJBoss">
+        <delete dir="${jboss.home}/server/default/deploy/${war_name}" />
+    </target>
+
+
+</project>

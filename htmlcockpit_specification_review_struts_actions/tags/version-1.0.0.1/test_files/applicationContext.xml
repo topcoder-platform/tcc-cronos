@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <bean id="mockActionInterceptor"
+        class="com.topcoder.direct.actions.MockActionInterceptor">
+    </bean>
+
+    <bean id="contestServiceFacade"
+        class="com.topcoder.direct.actions.MockContestServiceFacade">
+    </bean>
+
+    <bean id="specificationReviewService"
+        class="com.topcoder.direct.actions.MockSpecificationReviewService">
+    </bean>
+
+    <bean id="specReviewCommentService"
+        class="com.topcoder.direct.actions.MockSpecReviewCommentService">
+    </bean>
+
+    <!-- =========================== -->
+    <!-- action beans                -->
+    <!-- =========================== -->
+    
+    <bean id="startSpecificationReviewAction"
+        class="com.topcoder.direct.actions.StartSpecificationReviewAction">
+        <property name="specificationReviewService" ref="specificationReviewService"></property>
+    </bean>
+
+    <bean id="viewSpecificationReviewAction"
+        class="com.topcoder.direct.actions.ViewSpecificationReviewAction">
+        <property name="specificationReviewService" ref="specificationReviewService"></property>
+        <property name="specReviewCommentService" ref="specReviewCommentService"></property>
+    </bean>
+
+    <bean id="saveSpecificationReviewCommentAction"
+        class="com.topcoder.direct.actions.SaveSpecificationReviewCommentAction">
+        <property name="specReviewCommentService" ref="specReviewCommentService"></property>
+    </bean>
+
+    <bean id="resubmitSpecificationReviewAction"
+        class="com.topcoder.direct.actions.ResubmitSpecificationReviewAction">
+        <property name="specificationReviewService" ref="specificationReviewService"></property>
+    </bean>
+    
+</beans>
+

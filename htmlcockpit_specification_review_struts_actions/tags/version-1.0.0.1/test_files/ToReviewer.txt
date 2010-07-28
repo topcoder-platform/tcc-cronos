@@ -1,0 +1,34 @@
+=====================================================
+Setup:
+
+- Follow the required steps to test the component in section 4.1 of the CS (in docs folder),
+  as it has all the instructions you need to setup your environment and run the tests/demo.
+
+- Dependency code is in test_files\mock.
+
+=====================================================
+Notes/Enhancements:
+
+- Note that catch(Exception e) is approved (by copilot) for this component:
+  http://forums.topcoder.com/?module=Thread&threadID=679994&start=0
+
+- Note algorithm change to SpecificationReviewAction#addValidationError
+  http://forums.topcoder.com/?module=Thread&threadID=680028&start=0
+
+- The contest service facade in the wiki is wrong. The correct one is the one posted by mashannon168 at this link:
+  http://forums.topcoder.com/?module=Thread&threadID=679993&start=0
+
+- Struts 2.1.8.1 is required, I updated CS to reflect this.
+  http://forums.topcoder.com/?module=Thread&threadID=679987&start=0
+
+- Note the class name changes (I updated CS 1.5 to reflect these name changes):
+    http://forums.topcoder.com/?module=Thread&threadID=680030
+    http://forums.topcoder.com/?module=Thread&threadID=680031&start=0 
+
+Enhancements:
+1) Added a config example to CS for struts.xml and applicationContext.xml.
+2) In execute methods, I provided extra checking for required injected fields
+   to make sure they aren't null so that meaningful exception message can be
+   stored in model instead of just letting NPE get thrown.
+  
+
