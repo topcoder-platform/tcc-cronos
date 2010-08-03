@@ -358,7 +358,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON = "On";
 
-    
+
 
     /**
      * Private constant specifying resource ext ref id
@@ -704,18 +704,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @Resource(name = "payPalApiEnvironment")
     private String apiEnvironment;
-    
+
     /**
      * Global object factory config manager specification namespace.
-     * 
+     *
      * @since BUGR-3738
      */
     @Resource(name = "objectFactoryConfigName")
     private String objectFactoryConfigManagerSpecName;
-    
+
     /**
      * Object Factory key for upload manager.
-     * 
+     *
      * @since BUGR-3738
      */
     @Resource(name = "uploadManagerOFKey")
@@ -963,10 +963,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Cockpit Release Assembly for Receipts
      */
     private EmailMessageGenerator emailMessageGenerator;
-    
+
     /**
      * UploadManager instance which is used to get submission information.
-     * 
+     *
      * @since BUGR-3738
      */
     private UploadManager uploadManager;
@@ -1073,14 +1073,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         catch (UserServiceException e) {
             throw new IllegalStateException("Failed to get components/applications user id.", e);
         }
-        
-        
+
+
         // BUGR-3738 : initialize an UploadManager instance through Object Factory
         try {
             ObjectFactory objectFactory = new ObjectFactory(new ConfigManagerSpecificationFactory(this.objectFactoryConfigManagerSpecName));
-            
-            this.uploadManager = (UploadManager) objectFactory.createObject(this.uploadManagerOFKey);        
-            
+
+            this.uploadManager = (UploadManager) objectFactory.createObject(this.uploadManagerOFKey);
+
         } catch (Exception ex) {
             throw new IllegalStateException("Failed to initialize UploadManager through Object Factory.", ex);
         }
@@ -1141,7 +1141,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             ContestData contestData = convertToContestData(contest);
             //checks the permission
-	        //TODO liquid creaet project, and assign permission, check fails here
+            //TODO liquid creaet project, and assign permission, check fails here
             //checkStudioProjectPermission(tcSubject, tcDirectProjectId);
             checkStudioBillingProjectPermission(tcSubject, contestData);
 
@@ -2553,7 +2553,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestCreditCardPayment(TCSubject tcSubject, StudioCompetition competition,
-            CreditCardPaymentData paymentData) 
+            CreditCardPaymentData paymentData)
             throws PersistenceException, PaymentException, ContestNotFoundException, PermissionServiceException {
         logger.debug("processContestCreditCardPayment");
         logger.info("StudioCompetition: " + competition);
@@ -2594,7 +2594,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since BUGR-1494 returns ContestPaymentResult instead of PaymentResult
      */
     public ContestPaymentResult processContestPurchaseOrderPayment(TCSubject tcSubject, StudioCompetition competition,
-            TCPurhcaseOrderPaymentData paymentData) 
+            TCPurhcaseOrderPaymentData paymentData)
             throws PersistenceException, PaymentException, PermissionServiceException,
             ContestNotFoundException {
         logger.debug("processContestPurchaseOrderPayment");
@@ -2710,7 +2710,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
-                
+
                 checkStudioBillingProjectPermission(tcSubject, competition.getContestData());
 
                 long billingProject = competition.getContestData().getBillingProject();
@@ -3082,7 +3082,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // no need for dev that has design, so all non-dev and dev only will have spec review
             // and dont create for private, and it is not already have a spec review
             if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility 
+                  && !hasEligibility
                   && projectServices.getSpecReviewProjectId(tobeUpdatedCompetition.getProjectHeader().getId()) <= 0)
             {
                  //create spec review project
@@ -3785,8 +3785,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 throw new PermissionServiceException("Fail to get user-handle");
             }
            if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
-      
-                ContestData cur = studioService.getContest(contestData.getContestId());      
+
+                ContestData cur = studioService.getContest(contestData.getContestId());
                 if (cur.getBillingProject() == contestData.getBillingProject())
                 {
                     return;
@@ -3890,7 +3890,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             ExceptionUtils.checkNull(contest.getProjectHeader(), null, null, "The contest#ProjectHeader to create is null.");
 
             // check the permission
-	     //TODO liquid creaet project, and assign permission, check fails here
+         //TODO liquid creaet project, and assign permission, check fails here
             //checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
             //check the billing project permission
             long billingProjectId = getBillingProjectId(contest);
@@ -4283,7 +4283,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 long billingProjectId = getBillingProjectId(contest);
 
                 // dont send wiiner email for private
-                if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) 
+                if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0)
                 {
                     contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
                 }
@@ -4328,7 +4328,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 for (ContestEligibility ce:contestEligibilities){
                     contestEligibilityManager.remove(ce);
                 }
-                
+
                 if (billingProjectId > 0) {
                     persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);
                 }
@@ -4882,8 +4882,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             } else {
                 projects = projectService.getProjectsForUser(tcSubject.getUserId());
             }
-                
-            
+
+
             for (ProjectData project : projects) {
                 ProjectSummaryData data = new ProjectSummaryData();
                 data.setProjectId(project.getProjectId());
@@ -6737,7 +6737,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             //if it is dev only, or design, create new version here
             if (!isDevContest || !autoDevCreating) {
-        //clear the version
+                //clear the version
                 dto.setCompVersionId(null);
                 dto.setForum(null);
                 dto.setDocumentation(new ArrayList<CompDocumentation>());
@@ -6755,9 +6755,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));
             contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));
 
+            boolean isDevOnly = projectServices.isDevOnly(contest.getProjectHeader().getProjectCategory().getId());
+
             long forumId = 0;
-            // create forum
-            if (createForum) {
+            // create forum BUGR 4036: only create forum if it is dev only contest when it is dev contest
+            boolean needForum = true;
+            FullProjectData associateddesignContest = null;
+
+            // use DTO forum
+            if(autoDevCreating && isDevContest) {
+               needForum = false;
+               if (dto.getForum() != null)
+               {
+                    forumId = dto.getForum().getJiveCategoryId(); 
+               }
+
+            }
+            if (createForum && needForum) {
                 forumId = createForum(tcSubject, dto, tcSubject.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
             }
 
@@ -6795,6 +6809,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     createNewVersionForDesignDevContest(tcSubject, developmentProjectId, tcDirectProjectId, true, nextDevProdDay(startDate), minorVersion);
                 }
             }
+
+            //BUGR 4036
+            if(isDevContest) {
+                //it will link to design contest if it exists, it forwards to project link manager
+                projectServices.linkDevelopmentToDesignContest(newVersionORProject.getProjectHeader().getId());
+            }
+
             logger.debug("Exit createNewVersionForDesignDevContest");
             return newVersionORProject.getProjectHeader().getId();
         } catch (Exception e) {
@@ -6897,12 +6918,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
     /**
      * Assign the given roleId to the specified userId in the given project.
-     * 
+     *
      * @param tcSubject the TCSubject instance.
      * @param projectId the id of the project.
      * @param roleId the id of the role.
      * @param userId the id of the user.
-     * 
+     *
      * @since BUGR-3731
      */
     public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId)
@@ -6947,7 +6968,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         }
                     }
                 }
-                
+
                 if (roleToSet == null)
                 {
                     throw new ContestServiceException("Invalid role id " + roleId);
@@ -6980,9 +7001,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
     }
 
-     /* Assigns the role for the given tc project and user, it will assign all projects 
+     /* Assigns the role for the given tc project and user, it will assign all projects
      * uder tc direct projct
-     * 
+     *
      * @param tcprojectId the id of the tc direct project.
      * @param roleId the id of the role
      * @param userId the id of the user.
@@ -6993,7 +7014,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     {
 
         List<Long> projectIds = projectIds = projectServices.getProjectIdByTcDirectProject(tcprojectId);
-                       
+
         if (projectIds != null && projectIds.size() >0)
         {
             // for each OR project, find all observers
@@ -7011,7 +7032,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      /**
      * Gets the notification information for the given user id. The notification information will be
      * returned as a list of ProjectNotification instance.
-     * 
+     *
      * @param subject the TCSubject instance.
      * @param userId the id of the user.
      * @return a list of ProjectNotification instances.
@@ -7020,11 +7041,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6.1 BUGR-3706
      */
     public List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
-	    throws ContestServiceException {
-		    logger.info("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
-				    + "]");
-		    ArrayList<ProjectNotification> result = new ArrayList<ProjectNotification>();
-		    List<com.topcoder.management.project.SimpleProjectContestData> contests;
+        throws ContestServiceException {
+            logger.info("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
+                    + "]");
+            ArrayList<ProjectNotification> result = new ArrayList<ProjectNotification>();
+            List<com.topcoder.management.project.SimpleProjectContestData> contests;
 
         try {
 
@@ -7043,25 +7064,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
             long[] watchedForumIds = new long[0];
-            
+
             if (this.createForum) {
                 Forums forums = getForumEJB();
 
                 // get the watched forums Ids of the user
                 watchedForumIds = forums.areCategoriesWatched(userId, forumIds);
             }
-            
-            
+
+
             // Use a hash set to store watched forum IDs
             Set<Long> watchedForumsSet = new HashSet<Long>();
             for (long id : watchedForumIds)
                 watchedForumsSet.add(id);
 
-            // get the IDs of contests of which notifications are on   
+            // get the IDs of contests of which notifications are on
             long[] notifiedContestIds = this.projectServices.getNotificationsForUser(userId,
                     TIMELINE_NOTIFICATION_TYPE, contestIds);
-            
-            // Use a hash set to store notified contest Ids 
+
+            // Use a hash set to store notified contest Ids
             Set<Long> notifiedContestsSet = new HashSet<Long>();
             for (long id : notifiedContestIds)
                 notifiedContestsSet.add(id);
@@ -7076,14 +7097,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (!map.containsKey(c.getProjectId())) {
                     // does not contain the project, create a new one
                     pn = new ProjectNotification();
-                    
+
                     // initialize with project id and project name
                     pn.setProjectId(c.getProjectId());
                     pn.setName(c.getPname());
                     pn.setContestNotifications(new ArrayList<ContestNotification>());
 
                     map.put(c.getProjectId(), pn);
-                    
+
                 } else {
                     // already exists, directly assign it to pn
                     pn = map.get(c.getProjectId());
@@ -7106,25 +7127,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             }
 
-			    result = new ArrayList<ProjectNotification>(map.values());
+                result = new ArrayList<ProjectNotification>(map.values());
 
-			    // sort the ProjectNotification by alphabetical order
-			    Collections.sort(result, new Comparator<ProjectNotification>(){
-					    public int compare(ProjectNotification o1, ProjectNotification o2) {
-					    return o1.getName().compareToIgnoreCase(o2.getName());
-					    }
-					    });
+                // sort the ProjectNotification by alphabetical order
+                Collections.sort(result, new Comparator<ProjectNotification>(){
+                        public int compare(ProjectNotification o1, ProjectNotification o2) {
+                        return o1.getName().compareToIgnoreCase(o2.getName());
+                        }
+                        });
 
-			    // for each ProjectNotification, sort ContestNotifications by alphabetical order
-			    for (ProjectNotification pn : result){
-				    Collections.sort(pn.getContestNotifications(), new Comparator<ContestNotification>(){
-						    public int compare(ContestNotification o1, ContestNotification o2) {
-						    return o1.getName().compareToIgnoreCase(o2.getName());
-						    }
-						    }) ;
-			    }
+                // for each ProjectNotification, sort ContestNotifications by alphabetical order
+                for (ProjectNotification pn : result){
+                    Collections.sort(pn.getContestNotifications(), new Comparator<ContestNotification>(){
+                            public int compare(ContestNotification o1, ContestNotification o2) {
+                            return o1.getName().compareToIgnoreCase(o2.getName());
+                            }
+                            }) ;
+                }
 
-			    return result;
+                return result;
 
         } catch (ProjectServicesException pse) {
             logger.error("ProjectServices operation failed in the contest service facade.", pse);
@@ -7142,7 +7163,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     /**
      * Updates the notifications for the given user, the notifications which need to update are
      * passed in as a list of ProjectNotification instances.
-     * 
+     *
      * @param subject the TCSubject instance.
      * @param userId the id of the user.
      * @param notifications a list of ProjectNotification instances to update.
@@ -7180,7 +7201,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
                 }
             }
-            
+
             if (this.createForum) {
 
                 Forums forums = getForumEJB();
@@ -7211,15 +7232,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
 
     }
-    
+
     /**
      * Get the EJB handler for Forum EJB service.
-     * 
+     *
      * @return the forum EJB service handler.
      * @throws NamingException if a naming exception is encountered.
      * @throws RemoteException if remote error occurs.
      * @throws CreateException if error occurs when creating EJB handler
-     * 
+     *
      * @since 1.6.1
      */
     private Forums getForumEJB() throws NamingException, RemoteException, CreateException {
@@ -7236,10 +7257,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         Forums forums = forumsHome.create();
         return forums;
     }
-    
+
     /**
      * Generates a string which contains debug info of a list of ProjectNotification instances.
-     * 
+     *
      * @param notifications the list of ProjectNotification instances.
      * @return the generated string.
      * @since 1.6.1
@@ -7256,13 +7277,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
         }
-        
+
         return sb.toString();
     }
-    
+
     /**
      * Utility method which coverts a List of Long to primitive long[].
-     * 
+     *
      * @param list a list of Long.
      * @return converted primitive long[]
      */
@@ -7274,17 +7295,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         return result;
     }
 
-    
+
     /**
      * Gets the registrant information for the given project. If the project is of type Studio, a
      * boolean flag isStudio should be set to true and passed as argument.
-     * 
+     *
      * @param tcSubject the TCSubject instance.
      * @param ProjectId the id of the project.
      * @param isStudio the flag indicates whether the project is of type Studio.
      * @return the retrieved list of Registrant instances.
      * @throws ContestServiceException if any error occurs.
-     * 
+     *
      * @since BUGR-3738
      */
     public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long projectId, boolean isStudio)
@@ -7299,41 +7320,41 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
 
             if (isStudio) {
-                
+
                 ContestData contest = this.studioService.getContest(projectId);
 
                 // Get all the registrants of this studio contest
                 Set<ContestRegistrationData> regs = contest.getContestRegistrations();
-                
-                // Get all the final submissions of this studio contest 
+
+                // Get all the final submissions of this studio contest
                 List<SubmissionData> finalSubs = this.studioService.getFinalSubmissionsForContest(projectId);
-                
+
                 // Create a map to store the mapping between submitter ID and Submission Data
                 Map<Long, SubmissionData> map = new HashMap<Long, SubmissionData>();
-                
+
                 for(SubmissionData sub : finalSubs) {
                     map.put(sub.getSubmitterId(), sub);
                 }
 
                 for (ContestRegistrationData r : regs) {
-                    
+
                     // for each Registrantion date, create a Registrant instance
                     Registrant item = new Registrant();
-                    
+
                     item.setUserId(r.getUserId());
                     item.setRegistrationDate(r.getCreateDate());
-                    
+
                     // Get handle using User Service
                     String handle = this.userService.getUserHandle(r.getUserId());
-                    
+
                     if (handle != null) {
                         item.setHandle(handle);
                     }
-                    
+
                     // set rating and reliablity to null
                     item.setRating(null);
                     item.setReliability(null);
-                    
+
                     // check the submission
                     if (map.containsKey(r.getUserId())) {
                         item.setSubmissionDate(map.get(r.getUserId()).getSubmittedDate().toGregorianCalendar().getTime());
@@ -7341,7 +7362,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         // no submission, set submission date to null
                         item.setSubmissionDate(null);
                     }
-                    
+
                     // add item into result
                     result.add(item);
                 }
