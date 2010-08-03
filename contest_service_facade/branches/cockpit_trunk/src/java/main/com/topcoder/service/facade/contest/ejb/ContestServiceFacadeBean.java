@@ -6755,9 +6755,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));
             contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));
 
+            boolean isDevOnly = projectServices.isDevOnly(contest.getProjectHeader().getProjectCategory().getId());
+
             long forumId = 0;
-            // create forum
-            if (createForum) {
+            // create forum BUGR 4036: only create forum if it is dev only contest when it is dev contest
+            boolean needForum = true;
+            FullProjectData associateddesignContest = null;
+
+            // use DTO forum
+            if(autoDevCreating && isDevContest) {
+               needForum = false;
+               if (dto.getForum() != null)
+               {
+                    forumId = dto.getForum().getJiveCategoryId(); 
+               }
+
+            }
+            if (createForum && needForum) {
                 forumId = createForum(tcSubject, dto, tcSubject.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
             }
 
@@ -6795,6 +6809,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     createNewVersionForDesignDevContest(tcSubject, developmentProjectId, tcDirectProjectId, true, nextDevProdDay(startDate), minorVersion);
                 }
             }
+
+            //BUGR 4036
+            if(isDevContest) {
+                //it will link to design contest if it exists, it forwards to project link manager
+                projectServices.linkDevelopmentToDesignContest(newVersionORProject.getProjectHeader().getId());
+            }
+
             logger.debug("Exit createNewVersionForDesignDevContest");
             return newVersionORProject.getProjectHeader().getId();
         } catch (Exception e) {
