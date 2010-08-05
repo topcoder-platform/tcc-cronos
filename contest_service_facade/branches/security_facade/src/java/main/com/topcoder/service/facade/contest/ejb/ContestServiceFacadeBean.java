@@ -2944,6 +2944,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
             }
 
+            
+
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition =
                     createSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId());
@@ -2955,6 +2957,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
 
+            // set status to active
+            contest.setProjectStatus(ProjectStatus.ACTIVE);
+            projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
             double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
@@ -3912,6 +3917,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             //set the tc-direct-project-id
             contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
+
+            // set status to draft
+            contest.getProjectHeader().setProjectStatus(ProjectStatus.DRAFT);
 
             //create project now
             FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
@@ -6755,6 +6763,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));
             contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));
 
+             // set status to draft
+            contest.getProjectHeader().setProjectStatus(ProjectStatus.DRAFT);
+
             boolean isDevOnly = projectServices.isDevOnly(contest.getProjectHeader().getProjectCategory().getId());
 
             long forumId = 0;
@@ -6892,6 +6903,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_REGISTRATIONS.getId()) {
                 throw new ProjectServicesException("The project is not failed. You can not re-open it.");
             }
+
+             // set status to draft
+            contest.getProjectHeader().setProjectStatus(ProjectStatus.DRAFT);
+
             contest.setStartDate(getDate(nextReOpenNewReleaseDay()));
             //2.create the project
             FullProjectData reOpendedProject =
