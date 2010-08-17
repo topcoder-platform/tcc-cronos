@@ -40,6 +40,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.topcoder.service.permission.ProjectPermission;
 import org.jboss.logging.Logger;
 
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
@@ -266,8 +267,16 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  * - updateNotifcationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications)
  * </p>
  *
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky
- * @version 1.6.1
+ * <p>
+ * Version 1.6.2 (Direct Permissions Setting Back-end and Integration Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #getProjectPermissions(TCSubject)} method.</li>
+ *     <li>Added {@link #updateProjectPermissions(TCSubject, List)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, TCSDEVELOPER
+ * @version 1.6.2
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -2944,6 +2953,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
             }
 
+            
+
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition =
                     createSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId());
@@ -2955,6 +2966,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
 
+            // set status to active
+            contest.setProjectStatus(ProjectStatus.ACTIVE);
+            projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
             double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
@@ -3082,7 +3096,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // no need for dev that has design, so all non-dev and dev only will have spec review
             // and dont create for private, and it is not already have a spec review
             if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility 
+                  && !hasEligibility
                   && projectServices.getSpecReviewProjectId(tobeUpdatedCompetition.getProjectHeader().getId()) <= 0)
             {
                  //create spec review project
@@ -3913,6 +3927,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             //set the tc-direct-project-id
             contest.getProjectHeader().setTcDirectProjectId(tcDirectProjectId);
 
+            // set status to draft
+            contest.getProjectHeader().setProjectStatus(ProjectStatus.DRAFT);
+
             //create project now
             FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
                         contest.getProjectPhases(), contest.getProjectResources(),
@@ -4283,7 +4300,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 long billingProjectId = getBillingProjectId(contest);
 
                 // dont send wiiner email for private
-                if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) 
+                if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0)
                 {
                     contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
                 }
@@ -6737,7 +6754,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             //if it is dev only, or design, create new version here
             if (!isDevContest || !autoDevCreating) {
-        //clear the version
+                //clear the version
                 dto.setCompVersionId(null);
                 dto.setForum(null);
                 dto.setDocumentation(new ArrayList<CompDocumentation>());
@@ -6754,6 +6771,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionNumber()));
             contest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersionText()));
             contest.getProjectHeader().setProperty(ProjectPropertyType.VERSION_ID_PROJECT_PROPERTY_KEY, String.valueOf(dto.getVersion()));
+
+             // set status to draft
+            contest.getProjectHeader().setProjectStatus(ProjectStatus.DRAFT);
 
             boolean isDevOnly = projectServices.isDevOnly(contest.getProjectHeader().getProjectCategory().getId());
 
@@ -6892,6 +6912,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 && contest.getProjectHeader().getProjectStatus().getId() != ProjectStatus.CANCELLED_ZERO_REGISTRATIONS.getId()) {
                 throw new ProjectServicesException("The project is not failed. You can not re-open it.");
             }
+
+             // set status to draft
+            contest.getProjectHeader().setProjectStatus(ProjectStatus.DRAFT);
+
             contest.setStartDate(getDate(nextReOpenNewReleaseDay()));
             //2.create the project
             FullProjectData reOpendedProject =
@@ -7444,5 +7468,36 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             logger.debug("Exits getRegistrantsForProject with parameter [TCSubject " + tcSubject.getUserId() + ", projectId ="
                     + projectId + ", isStudio =" + isStudio + "].");
         }
+    }
+
+    /**
+     * <p>Gets the permissions set for projects which specified user has <code>Full Access</code> permission set for.
+     * </p>
+     *
+     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
+     * @return a <code>List</code> listing the project permissions set for projects which specified user has <code>Full
+     *         Access</code> permission set for.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.6.2
+     */
+    public List<ProjectPermission> getProjectPermissions(TCSubject tcSubject)
+        throws PermissionServiceException {
+        logger.debug("getProjectPermissions(" + tcSubject + ")");
+        return this.permissionService.getProjectPermissions(tcSubject.getUserId());
+    }
+
+    /**
+     * <p>Updates the permissions for specified user for accessing the projects.</p>
+     *
+     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
+     * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
+     *        projects.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.6.2
+     */
+    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions)
+        throws PermissionServiceException {
+        logger.debug("updateProjectPermissions(" + tcSubject +  ")");
+        this.permissionService.updateProjectPermissions(projectPermissions, tcSubject.getUserId());
     }
 }
