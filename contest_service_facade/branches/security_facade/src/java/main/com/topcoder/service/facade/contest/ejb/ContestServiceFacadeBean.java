@@ -40,6 +40,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.topcoder.service.permission.ProjectPermission;
 import org.jboss.logging.Logger;
 
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
@@ -266,8 +267,16 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  * - updateNotifcationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications)
  * </p>
  *
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky
- * @version 1.6.1
+ * <p>
+ * Version 1.6.2 (Direct Permissions Setting Back-end and Integration Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #getProjectPermissions(TCSubject)} method.</li>
+ *     <li>Added {@link #updateProjectPermissions(TCSubject, List)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, TCSDEVELOPER
+ * @version 1.6.2
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -358,7 +367,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON = "On";
 
-
+    
 
     /**
      * Private constant specifying resource ext ref id
@@ -7459,5 +7468,36 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             logger.debug("Exits getRegistrantsForProject with parameter [TCSubject " + tcSubject.getUserId() + ", projectId ="
                     + projectId + ", isStudio =" + isStudio + "].");
         }
+    }
+
+    /**
+     * <p>Gets the permissions set for projects which specified user has <code>Full Access</code> permission set for.
+     * </p>
+     *
+     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
+     * @return a <code>List</code> listing the project permissions set for projects which specified user has <code>Full
+     *         Access</code> permission set for.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.6.2
+     */
+    public List<ProjectPermission> getProjectPermissions(TCSubject tcSubject)
+        throws PermissionServiceException {
+        logger.debug("getProjectPermissions(" + tcSubject + ")");
+        return this.permissionService.getProjectPermissions(tcSubject.getUserId());
+    }
+
+    /**
+     * <p>Updates the permissions for specified user for accessing the projects.</p>
+     *
+     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
+     * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
+     *        projects.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.6.2
+     */
+    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions)
+        throws PermissionServiceException {
+        logger.debug("updateProjectPermissions(" + tcSubject +  ")");
+        this.permissionService.updateProjectPermissions(projectPermissions, tcSubject.getUserId());
     }
 }

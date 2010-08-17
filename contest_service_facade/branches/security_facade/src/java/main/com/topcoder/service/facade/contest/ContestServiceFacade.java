@@ -24,6 +24,7 @@ import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
 import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.permission.ProjectPermission;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.specreview.SpecReview;
@@ -2395,4 +2396,29 @@ public interface ContestServiceFacade {
      */
     public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long ProjectId, boolean isStudio)
             throws ContestServiceException;
+
+    /**
+     * <p>Gets the permissions set for projects which specified user has <code>Full Access</code> permission set for.
+     * </p>
+     *
+     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
+     * @return a <code>List</code> listing the project permissions set for projects which specified user has <code>Full
+     *         Access</code> permission set for.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.6.2
+     */
+    public List<ProjectPermission> getProjectPermissions(TCSubject tcSubject)
+        throws PermissionServiceException;
+
+    /**
+     * <p>Updates the permissions for specified user for accessing the projects.</p>
+     *
+     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
+     * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
+     *        projects.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.6.2
+     */
+    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions)
+        throws PermissionServiceException;
 }
