@@ -4,7 +4,11 @@
 package com.topcoder.service.permission.ejb;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -25,6 +29,7 @@ import com.topcoder.service.permission.PermissionServiceRemote;
 import com.topcoder.service.permission.PermissionServiceLocal;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.permission.ProjectPermission;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
@@ -39,15 +44,36 @@ import com.topcoder.util.log.LogManager;
  *   and DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
  * </p>
  *
- * @author waits
+ *
+ * <p>
+ * Version 1.2 (Direct Permissions Setting Back-end and Integration Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #deletePermission(long, long, EntityManager)} method.</li>
+ *     <li>Added {@link #getProjectPermissions(long)} method.</li>
+ *     <li>Added {@link #updateProjectPermissions(java.util.List, long)} method.</li>
+ *     <li>Added {@link #getProjectLevelFullPermissions(long, EntityManager)} method.</li>
+ *     <li>Added {@link #getProjectLevelPermissions(long, EntityManager)} method.</li>
+ *     <li>Added {@link #PROJECT_PERMISSION_TYPES} constant.</li>
+ *   </ol>
+ * </p>
+
+ * @author waits, TCSDEVELOPER
  *
  * @since Cockpit Project Admin Release Assembly v1.0
- * @version 1.1
+ * @version 1.2
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
 public class PermissionServiceBean implements PermissionServiceRemote,  PermissionServiceLocal{
+
+    /**
+     * <p>A <code>String</code> array listing literal presentations of the supported project permission types.</p>
+     *
+     * @since 1.2
+     */
+    private static String[] PROJECT_PERMISSION_TYPES = {"read", "write", "full"};
+
     /**
      * <p>
      * Represents the sessionContext of the EJB.
@@ -801,4 +827,214 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
         }
     }
 
+    /**
+     * <p>Gets the permissions set for projects which specified user has <code>Full Access</code> permission set for.
+     * </p>
+     *
+     * @param userId a <code>long</code> providing the ID of a user to get project permissions for.
+     * @return a <code>List</code> listing the project permissions set for projects which specified user has <code>Full
+     *         Access</code> permission set for.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.2
+     */
+    public List<ProjectPermission> getProjectPermissions(long userId) throws PermissionServiceException {
+        try {
+            logEnter("getProjectPermissions(userId)");
+            logOneParameter(userId);
+            EntityManager em = getEntityManager();
+            List<ProjectPermission> result = new ArrayList<ProjectPermission>();
+            List<Permission> userFullProjectPermissions = getProjectLevelFullPermissions(userId, em);
+            for (Permission userFullProjectPermission : userFullProjectPermissions) {
+                Long resourceId = userFullProjectPermission.getResourceId();
+                List<Permission> permissions = getProjectLevelPermissions(resourceId, em);
+                for (Permission permission : permissions) {
+                    ProjectPermission projectPermission = new ProjectPermission();
+                    projectPermission.setHandle(permission.getUserHandle());
+                    projectPermission.setPermission(PROJECT_PERMISSION_TYPES[
+                        (int) (permission.getPermissionType().getPermissionTypeId() - 1)]);
+                    projectPermission.setProjectId(permission.getResourceId());
+                    projectPermission.setProjectName(permission.getResourceName());
+                    projectPermission.setUserId(permission.getUserId());
+                    projectPermission.setStudio(permission.isStudio());
+                    result.add(projectPermission);
+                }
+            }
+            return result;
+        } finally {
+            logExit("getProjectPermissions(userId)");
+        }
+    }
+
+    /**
+     * <p>Updates the permissions for specified user for accessing the projects.</p>
+     *
+     * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
+     *        projects.
+     * @param userId a <code>long</code> providing the ID of a user to update permissions for.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @throws IllegalArgumentException if specified <code>projectPermissions</code> list is <code>null</code> or
+     *         contains <code>null</code> element. 
+     * @since 1.2
+     */
+    public void updateProjectPermissions(List<ProjectPermission> projectPermissions, long userId)
+        throws PermissionServiceException {
+        try {
+            logEnter("updateProjectPermissions(projectPermissions, userId)");
+            logTwoParameters(projectPermissions, userId);
+
+            if (projectPermissions == null) {
+                throw new IllegalArgumentException("The parameter [projectPermissions] is NULL");
+            }
+            for (ProjectPermission permission : projectPermissions) {
+                if (permission == null) {
+                    throw new IllegalArgumentException("The parameter [projectPermissions] contains NULL element");
+                }
+            }
+
+            EntityManager em = getEntityManager();
+
+            // Get existing permission types and build the mapping from names to objects
+            Map<String, PermissionType> permissionTypesMap = new HashMap<String, PermissionType>();
+            List<PermissionType> permissionTypes = getAllPermissionType();
+            for (PermissionType permissionType : permissionTypes) {
+                permissionTypesMap.put(permissionType.getName(), permissionType);
+            }
+
+            // Build the list of IDs of projects which user is granted full access to in order to authorize user for
+            // updating requested permissions
+            Set<Long> fullAccessProjectIds = new HashSet<Long>();
+            List<Permission> projectsFullPermissions = getProjectLevelFullPermissions(userId, em);
+            for (Permission fullPermission : projectsFullPermissions) {
+                fullAccessProjectIds.add(fullPermission.getResourceId());
+            }
+
+
+            // Update requested project permissions
+            for (ProjectPermission permission : projectPermissions) {
+                if (fullAccessProjectIds.contains(permission.getProjectId())) {
+                    deletePermission(permission.getUserId(), permission.getProjectId(), em);
+                    String permissionType = permission.getPermission();
+                    if ((permissionType != null) && (permissionType.trim().length() > 0)) {
+                        String permissionTypeKey = "project_" + permissionType;
+                        if (permissionTypesMap.containsKey(permissionTypeKey)) {
+                            PermissionType newPermissionType = permissionTypesMap.get(permissionTypeKey);
+                            Permission newPermission = new Permission();
+                            newPermission.setPermissionType(newPermissionType);
+                            newPermission.setResourceId(permission.getProjectId());
+                            newPermission.setResourceName(permission.getProjectName());
+                            newPermission.setStudio(permission.getStudio());
+                            newPermission.setUserHandle(permission.getHandle());
+                            newPermission.setUserId(permission.getUserId());
+                            addPermission(newPermission, em);
+                        } else {
+                            throw new PermissionServiceException("Wrong permission type: " + permissionType);
+                        }
+                    }
+                } else {
+                    throw new PermissionServiceException("User " + userId + " is not granted FULL permission for "
+                                                         + "project " + permission.getProjectId());
+                }
+            }
+        } finally {
+            logExit("updateProjectPermissions(projectPermissions, userId)");
+        }
+    }
+
+    /**
+     * <p>Deletes the project level permissions associated with specified user/project pair.</p>
+     *
+     * @param userId a <code>long</code> providing the ID for the user associated with permission.
+     * @param projectId a <code>long</code> providing the ID for the project associated with permission.
+     * @param em an <code>EntityManager</code> to be used for getting the permissions.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.2
+     */
+    private void deletePermission(long userId, long projectId, EntityManager em) throws PermissionServiceException {
+        try {
+           logEnter("deletePermission(userId, projectId)");
+           logTwoParameters(userId, projectId);
+
+           Query query = em.createNativeQuery("DELETE FROM user_permission_grant WHERE " +
+                                              "user_id = :userId AND resource_id = :projectId");
+           query.setParameter("userId", userId);
+           query.setParameter("projectId", projectId);
+
+           query.executeUpdate();
+       } catch (IllegalStateException e) {
+           throw wrapPermissionServiceException(e, "The EntityManager is closed.");
+       } catch (TransactionRequiredException e) {
+           throw wrapPermissionServiceException(e, "This method is required to run in transaction.");
+       } catch (PersistenceException e) {
+           throw wrapPermissionServiceException(e, "There are errors while deleting the entity.");
+       } finally {
+           logExit("deletePermission(userId, projectId)");
+       }
+    }
+
+    /**
+     * <p>Gets the list of <code>Full</code> permissions for projects for specified user.</p>
+     *
+     * @param userId a <code>long</code> providing the ID for user to check permission for.
+     * @param em an <code>EntityManager</code> to be used for getting the permissions.
+     * @return <code>true</code> if specified user has <code>Full Access</code> permission set for specified project;
+     *         <code>false</code> otherwise.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.2
+     */
+    @SuppressWarnings("unchecked")
+    private List<Permission> getProjectLevelFullPermissions(long userId, EntityManager em)
+        throws PermissionServiceException {
+        try {
+            logEnter("getProjectLevelFullPermissions(userId)");
+            logOneParameter(userId);
+
+            Query query = em.createQuery("select p "
+                                         + "from com.topcoder.service.permission.Permission p "
+                                         + "where p.userId = :userId "
+                                         + " and p.permissionType.id = :permissionTypeId");
+            query.setParameter("userId", userId);
+            query.setParameter("permissionTypeId", PermissionType.PERMISSION_TYPE_PROJECT_FULL);
+
+            return (List<Permission>) query.getResultList();
+        } catch (IllegalStateException e) {
+            throw wrapPermissionServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapPermissionServiceException(e, "There are errors while retrieving the permissions.");
+        } finally {
+            logExit("getProjectLevelFullPermissions(userId)");
+        }
+    }
+
+    /**
+     * <p>Gets the list of project level permissions granted to any users for accessing the specified project.</p>
+     *
+     * @param resourceId a <code>long</code> providing the ID of a project to look project level permissions for.
+     * @param em an <code>EntityManager</code> to be used for getting the permissions.
+     * @return a <code>List</code> listing project level permissions granted to any users for accessing the specified
+     *         project.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.2
+     */
+    @SuppressWarnings("unchecked")
+    private List<Permission> getProjectLevelPermissions(long resourceId, EntityManager em)
+        throws PermissionServiceException {
+        try {
+            logEnter("getProjectLevelPermissions(resourceId)");
+            logOneParameter(resourceId);
+
+            Query query = em.createQuery("select p "
+                                         + "from com.topcoder.service.permission.Permission p "
+                                         + "where p.resourceId = :resourceId "
+                                         + "and p.permissionType.id >= 1 "
+                                         + "and p.permissionType.id <= 3");
+            query.setParameter("resourceId", resourceId);
+            return (List<Permission>) query.getResultList();
+        } catch (IllegalStateException e) {
+            throw wrapPermissionServiceException(e, "The EntityManager is closed.");
+        } catch (PersistenceException e) {
+            throw wrapPermissionServiceException(e, "There are errors while retrieving the permissions.");
+        } finally {
+            logExit("getProjectLevelPermissions(resourceId)");
+        }
+    }
 }
