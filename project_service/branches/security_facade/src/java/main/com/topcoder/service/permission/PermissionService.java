@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ */
 package com.topcoder.service.permission;
 
 import java.util.List;
@@ -8,11 +11,19 @@ import javax.ejb.Remote;
  * <p>
  * It provides CRUD on permission object.
  * </p>
- * 
- * @author TCSASSEMBLER
+ *
+ * <p>
+ * Version 1.1 (Direct Permissions Setting Back-end and Integration Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #getProjectPermissions(long)} method.</li>
+ *     <li>Added {@link #updateProjectPermissions(java.util.List, long)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author TCSASSEMBLER, TCSDEVELOPER
  * 
  * @since Cockpit Project Admin Release Assembly v1.0
- * @version 1.0
+ * @version 1.1
  */
 @Remote
 public interface PermissionService {
@@ -163,4 +174,29 @@ public interface PermissionService {
      *             if any error occurs when getting permissions.
      */
     public Permission getPermissionsById(long id) throws PermissionServiceException;
+
+    /**
+     * <p>Gets the permissions set for projects which specified user has <code>Full Access</code> permission set for.
+     * </p>
+     *
+     * @param userId a <code>long</code> providing the ID of a user to get project permissions for.
+     * @return a <code>List</code> listing the project permissions set for projects which specified user has <code>Full
+     *         Access</code> permission set for.
+     * @throws com.topcoder.service.permission.PermissionServiceException if an unexpected error occurs.
+     * @since 1.1
+     */
+    public List<ProjectPermission> getProjectPermissions(long userId) throws PermissionServiceException;
+
+    /**
+     * <p>Updates the permissions for specified user for accessing the projects.</p>
+     *
+     * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
+     *        projects.
+     * @param userId a <code>long</code> providing the ID of a user to update permissions for.
+     * @throws PermissionServiceException if an unexpected error occurs.
+     * @since 1.1
+     */
+    public void updateProjectPermissions(List<ProjectPermission> projectPermissions, long userId)
+        throws PermissionServiceException;
+
 }

@@ -23,10 +23,28 @@
 
 		<property name="resourceId" column="resource_id"
 			not-null="true" />
-            
-        <!-- removed for Cockpit Project Admin Release Assembly v1.0 -->
-        <!--<property name="resourceName" formula="(NVL((SELECT p.name FROM tc_direct_project p where is_studio = true and p.project_id = project_id), (SELECT c.name from contest c where is_studio = true and c.contest_id = project_id)))"
-			not-null="true" />-->
+        <property name="resourceName"
+                  formula="(
+    CASE
+        WHEN permission_type_id BETWEEN 1 AND 3 THEN (
+            SELECT p.name
+            FROM tc_direct_project p
+            WHERE p.project_id = resource_id
+        )
+        WHEN permission_type_id BETWEEN 4 AND 6 AND is_studio = 1 THEN (
+            SELECT p.name
+            FROM studio_oltp:contest p
+            WHERE p.contest_id = resource_id
+        )
+        WHEN permission_type_id BETWEEN 4 AND 6 AND is_studio = 0 THEN (
+            SELECT pi.value
+            FROM tcs_catalog:project p JOIN tcs_catalog:project_info pi ON p.project_id = pi.project_id
+            WHERE p.project_id = resource_id
+            AND   pi.project_info_type_id = 6
+        )
+    END 
+)"
+			      not-null="true" />
 
 		<many-to-one name="permissionType"
 			class="com.topcoder.service.permission.PermissionType"
