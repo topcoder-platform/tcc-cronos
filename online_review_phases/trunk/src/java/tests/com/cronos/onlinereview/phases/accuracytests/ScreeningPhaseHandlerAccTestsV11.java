@@ -86,7 +86,7 @@ public class ScreeningPhaseHandlerAccTestsV11 extends BaseTestCase {
         // 3. insert submission
         Upload submitterUpload = createUpload(102, project.getId(), submitter.getId(), 1, 1, "parameter");
         Submission submission = createSubmission(102, submitterUpload.getId(), 1);
-        submission.setIntialScore(89.92d);
+        submission.setInitialScore(89.92d);
         submission.setFinalScore(93.92d);
         submission.setScreeningScore(100.00d);
         submission.setPlacement(new Long(2));

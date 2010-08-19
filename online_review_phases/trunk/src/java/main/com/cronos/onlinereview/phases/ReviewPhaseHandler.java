@@ -387,7 +387,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
                 // OrChange - Modified to update the submissions table instead
                 // of the resource_info table
-                submission.setIntialScore(Double.valueOf(String.valueOf(aggScore)));
+                submission.setInitialScore(Double.valueOf(String.valueOf(aggScore)));
                 getManagerHelper().getUploadManager().updateSubmission(submission, operator);
 
                 // Old Code Begins

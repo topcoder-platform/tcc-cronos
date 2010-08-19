@@ -275,7 +275,7 @@ abstract class BaseTestCase extends TestCase {
         Submission submission = new Submission(submissionId);
         submission.setUpload(new Upload(uploadId));
         submission.setSubmissionStatus(new SubmissionStatus(submissionStatusId));
-        submission.setIntialScore(89.92d);
+        submission.setInitialScore(89.92d);
         submission.setFinalScore(93.92d);
         submission.setPlacement(new Long(1));
         submission.setScreeningScore(100.00d);
@@ -640,7 +640,7 @@ abstract class BaseTestCase extends TestCase {
         Submission submission = new Submission();
         submission.setId(1);
         submission.setUpload(upload);
-        submission.setIntialScore(89.92d);
+        submission.setInitialScore(89.92d);
         submission.setFinalScore(93.92d);
         submission.setPlacement(new Long(2));
         submission.setScreeningScore(100.00d);

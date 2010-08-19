@@ -1,11 +1,9 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.phase.PhaseHandlingException;
@@ -63,12 +61,10 @@ import com.topcoder.util.log.LogFactory;
  * Version 1.4 Change notes:
  * <ol>
  * <li>Made some duplicate String values as constants of class.</li>
- * <li>Updated {@link #perform(Phase, String)} method to calculate the number of final reviewers for project and
- * bind it to map used for filling email template.</li>
  * </ol>
  * </p>
  *
- * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy, isv
+ * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy
  * @version 1.4
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
@@ -260,35 +256,11 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
-        Map<String, Object> values = new HashMap<String, Object>();
         if (!toStart) {
             checkAggregationReview(phase, operator);
-
-            Resource[] finalReviewers = getFinalReviewers(PhasesHelper.locatePhase(phase, "Final Review", true, true));
-            values.put("N_FINAL_REVIEWERS", finalReviewers.length);
         }
 
-        sendEmail(phase, values);
-    }
-
-    /**
-     * <p>Gets the list of resources assigned <code>Final Reviewer</code> role.</p>
-     *
-     * @param finalReviewPhase a <code>Phase</code> providing the details for <code>Final Review</code> phase.
-     * @return a <code>Resource</code> array listing the resources granted <code>Final Reviewer</code> role.
-     * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
-     * @since 1.4
-     */
-    private Resource[] getFinalReviewers(Phase finalReviewPhase) throws PhaseHandlingException {
-        Resource[] finalReviewers;
-        Connection connection = createConnection();
-        try {
-            finalReviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                    connection, new String[] {"Final Reviewer"}, finalReviewPhase.getId());
-        } finally {
-            PhasesHelper.closeConnection(connection);
-        }
-        return finalReviewers;
+        sendEmail(phase);
     }
 
     /**
