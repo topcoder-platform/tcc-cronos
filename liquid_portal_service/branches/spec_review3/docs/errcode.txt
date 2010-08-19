@@ -1,0 +1,28 @@
+user is null 2000
+user.firstName is null/empty 2001
+user.lastName is null/empty 2002
+user.emailAddress is null/empty 2003
+user.password is null/empty 2004
+user.handle is null/empty 2005
+user.phone is null/empty 2006
+requestorHandle is null/empty 3000
+userHandle is null/empty 3001
+cockpitProjectNames is null/empty 3002
+cockpitProjectNames contains null/empty entries 3003
+billingProjectIds is null/empty 3004
+competitionData is null 4000
+supportHandles is null 3005
+supportHandles contains null/empty elements 3006
+contestTypeName is null/empty 4001
+subContestTypeName is null/empty and contestTypeName = "studio" 4002
+contestName is null/empty 4003
+cockpitProjectName is null/empty 4004
+requestedStartDate is null 4005
+requestedStartDate in the past 4006
+contestTypeName is not in projectCategories and contestTypeName != "studio" 4007
+subContestTypeName is not in studioContestTypes and contestTypeName = "studio" 4008
+handles is null/empty 3007
+handles contains null/empty elements 3008
+reason is empty 3009
+termsAgreedDate is null 2007
+termsAgreedDate in the future 2008
