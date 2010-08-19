@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:com="com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.com.*" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.SoftwareContestPaymentResult;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.ContestPaymentResult;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
+		    import mx.rpc.events.FaultEvent;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.webservice.data.PaymentResult;
+			import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+			import mx.managers.PopUpManager;
+			import com.topcoder.flex.Helper;
+		    import mx.controls.ButtonLabelPlacement; // BUGR-1501		
+		        
+		    import mx.printing.FlexPrintJobScaleType;
+            import mx.printing.FlexPrintJob;	
+		
+		    import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+       		public var mainWidget:LaunchWidget;
+       	
+			[Bindable]
+			private var text1:String = "You are one step closer to getting your contest out there" +
+									   " to the entire TopCoder Studio community.";
+			[Bindable]
+			private var text2:String = "The TopCoder administration fee is a non-refundable charge. " +
+									   "Once your payment is received, your contest will launch at its " +
+									   "scheduled time or immediately if that option was selected. The" +
+									   " contest prizes are paid at the conclusion of the competition " +
+									   "when you are ready to select and download the winning submissions";
+		    /**
+             * confirmation after activation of contest.
+             * @since Cockpit Spec Review - Stage 2
+             */					   
+			[Bindable] private var confirmation:String = "Your contest has been submitted to the TopCoder member community for review. " + 
+            			"The contest details will be reviewed by a certified review board member. The review must pass " + 
+            			"prior to the contest launching. Return to My Projects to access your spec review."						   
+									   
+			
+		        public var contentTitleStr:String;
+	        	public var contestTotal:String;
+
+			public function initData():void{
+				init(); // BUGR-1404
+  				textContestName.text = contentTitleStr;
+				textContestTotalCost.text = contestTotal;
+				textContestLaunchFee.text = contestTotal;
+			}
+			
+			private function init():void{
+					wf1.mainWidget = mainWidget;
+					wf2.mainWidget = mainWidget;
+					//wf2.mainWidget = mainWidget; BUGR-1404
+					wf3.mainWidget = mainWidget;
+			}
+			
+			public function gotoPrev():int {
+				if (stack.selectedIndex == 0) {
+					return 0;
+				} else {
+					mainWidget.header = "Activate Your Contest";
+					text1 = "You are one step closer to getting your contest out there" +
+							" to the entire TopCoder Studio community.";
+					text2 = "The TopCoder administration fee is a non-refundable charge. " +
+						    "Once your payment is received, your contest will launch at its " +
+						    "scheduled time or immediately if that option was selected. The" +
+						    " contest prizes are paid at the conclusion of the competition " +
+						    "when you are ready to select and download the winning submissions";
+				    stack.selectedIndex = 0;
+					return 1;
+				}
+			}
+			public function goToNext():int {
+				if (stack.selectedIndex == 0) {
+					var index:int = wf1.saveData();
+					if (index > 0 && index <= stack.numChildren) {
+						stack.selectedIndex = index - 1;
+						mainWidget.header = "Confirm Your Payment";
+						text1 = "You're almost done! Please confirm that the information below is correct.";
+						text2 = "";
+						return index;
+					}
+				} 
+				else if (stack.selectedIndex == 1)
+				{
+					if(mainWidget.studioContestType) { // BUGR-1682
+				    	mainWidget.submitPurchase("PayPalCreditCard", processCreditCardPaymentResponse, paymentFaultEventHandler);
+				 	} else {
+				 		mainWidget.submitPurchase("PayPalCreditCard", processSoftwareCreditCardPaymentResponse, paymentFaultEventHandler);
+				 	}
+				    return 4;
+				}
+				else if (stack.selectedIndex == 2)
+				{
+					if(mainWidget.studioContestType) { // BUGR-1682
+				    	mainWidget.submitPurchase("TCPurchaseOrder", processPOPaymentResponse, paymentFaultEventHandler);
+				 	} else {
+				 		mainWidget.submitPurchase("TCPurchaseOrder", processSoftwarePOPaymentResponse, paymentFaultEventHandler);
+				 	}
+				    return 5;
+				}
+
+				return -1;
+            }
+            
+            private function paymentFaultEventHandler(e:FaultEvent):void {
+                mainWidget.hideLoadingProgress();
+    trace("error in payment::"+e.fault.getStackTrace());			
+                Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + 
+                        "Please be sure to save your work and try again if you think you received this message by mistake.");        
+            }
+            
+            // BUGR-1494
+            private function processCreditCardPaymentResponse(e:ResultEvent):void
+            {
+                //Helper.showAlertMessage("processCreditCardPaymentResponse: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
+			
+                if (e && e.result) {
+                    var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
+            	    trace("processCreditCardPaymentResponse:: paymentResult: " + contestPaymentResult);
+            	    
+                    mainWidget.header="Your Transaction was Approved!";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
+                    text2= confirmation;
+                    mainWidget.goNext.visible=false;
+                    mainWidget.back.visible=false;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
+                    wf2.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                
+                	// update contest data   
+                	mainWidget.competition.contestData = contestPaymentResult.contestData;
+            		var competitionType:String = "STUDIO";
+	            	mainWidget.competition.type = competitionType;
+            	}
+				mainWidget.notifyMyProjectWidget();
+            }
+
+			// BUGR-1494
+            private function processPOPaymentResponse(e:ResultEvent):void
+            {
+                //Helper.showAlertMessage("processPOPaymentResponse: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
+    			
+                if (e && e.result) {
+                    var contestPaymentResult:ContestPaymentResult = ObjectTranslatorUtils.translate(e.result, ContestPaymentResult) as ContestPaymentResult; 
+            	    trace("processPOPaymentResponse:: paymentResult: " + contestPaymentResult);
+            	    
+                    mainWidget.header="Your Transaction was Approved!";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
+                    text2=confirmation;
+                    mainWidget.goNext.visible=false;
+                    mainWidget.back.visible=false;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
+                    wf3.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                    
+                    // update contest data   
+                    mainWidget.competition.contestData = contestPaymentResult.contestData;
+            		var competitionType:String = "STUDIO";
+	            	mainWidget.competition.type = competitionType;
+                }
+				mainWidget.notifyMyProjectWidget();
+            }
+            
+            // BUGR-1682
+            private function processSoftwareCreditCardPaymentResponse(e:ResultEvent):void
+            {
+                //Helper.showAlertMessage("processCreditCardPaymentResponse: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
+			
+                if (e && e.result) {
+                    var contestPaymentResult:SoftwareContestPaymentResult = ObjectTranslatorUtils.translate(e.result, SoftwareContestPaymentResult) as SoftwareContestPaymentResult; 
+            	    trace("processSoftwareCreditCardPaymentResponse:: paymentResult: " + contestPaymentResult);
+            	    
+                    mainWidget.header="Your Transaction was Approved!";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
+                    text2= confirmation;
+                    mainWidget.goNext.visible=false;
+                    mainWidget.back.visible=false;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
+                    wf2.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                
+                	// update software competition    
+                	mainWidget.softwareCompetition = contestPaymentResult.softwareCompetition;
+            		var competitionType:String = mainWidget.softwareCompetition.type;
+	            	mainWidget.competition.type = competitionType;
+            	}
+				mainWidget.notifyMyProjectWidget();
+            }
+
+			// BUGR-1682
+            private function processSoftwarePOPaymentResponse(e:ResultEvent):void
+            {
+                //Helper.showAlertMessage("processPOPaymentResponse: " + e + ", " + e.result);
+                
+                mainWidget.hideLoadingProgress();
+    			
+                if (e && e.result) {
+                    var contestPaymentResult:SoftwareContestPaymentResult = ObjectTranslatorUtils.translate(e.result, SoftwareContestPaymentResult) as SoftwareContestPaymentResult; 
+            	    trace("processSoftwarePOPaymentResponse:: paymentResult: " + contestPaymentResult);
+            	    
+                    mainWidget.header="Your Transaction was Approved!";
+                    text1="Thank you for your order. An email confirmation will be sent as a receipt " + "for this transaction.<b>Your reference # is " + contestPaymentResult.paymentResult.referenceNumber + ".</b>";
+                    text2= confirmation;
+                    mainWidget.goNext.visible=false;
+                    mainWidget.back.visible=false;
+                    mainWidget.activateBtnPanel.visible=mainWidget.activateBtnPanel.includeInLayout=true;
+                    wf3.showApproval(contestPaymentResult.paymentResult.referenceNumber);
+                    
+                    // update software competition     
+            		mainWidget.softwareCompetition = contestPaymentResult.softwareCompetition;
+            		//var competitionType:String = mainWidget.softwareCompetition.type;
+	            	//mainWidget.competition.type = competitionType;
+                }
+				mainWidget.notifyMyProjectWidget();
+            }
+            
+            public function doPrint():void {
+                // Create an instance of the FlexPrintJob class.
+                var printJob:FlexPrintJob=new FlexPrintJob();
+                printJob.printAsBitmap=false;
+                
+                // Start the print job.
+                if (printJob.start() != true)
+                    return;
+                    
+                var oldColor:String=this.mainArea.getStyle("backgroundColor");
+                this.mainArea.setStyle("backgroundColor", "0xffffff");
+                
+                tcImageLogo.visible=tcImageLogo.includeInLayout=true;
+                mainWidget.previewContestBtn.visible=mainWidget.previewContestBtn.includeInLayout=false;
+                
+                this.mainArea.validateNow();
+                
+                // Add the object to print. 
+                printJob.addObject(mainArea, FlexPrintJobScaleType.SHOW_ALL);
+                
+                // Send the job to the printer.
+                printJob.send();
+                
+                // change the app back to normal.
+                tcImageLogo.visible=tcImageLogo.includeInLayout=false;
+                mainWidget.previewContestBtn.visible=mainWidget.previewContestBtn.includeInLayout=true;
+                
+                this.mainArea.setStyle("backgroundColor", oldColor ? oldColor : "");
+            }
+            
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%" id="mainArea" verticalScrollPolicy="off">
+	    <mx:HBox id="tcImageLogo"
+                 width="100%"
+                 horizontalAlign="right"
+                 visible="false"
+                 includeInLayout="false">
+            <mx:Image source="@Embed(source='../../assets/direct-header.png')"/>
+        </mx:HBox>
+    	<mx:VBox width="100%" height="100%" styleName="boxStyle">
+    		<mx:Text width="100%" htmlText="{text1}" styleName="content" />
+    		<mx:Text width="100%" text="{text2}" styleName="content"/>
+    		<mx:Grid width="100%" verticalGap="0">
+    			<mx:GridRow width="100%" height="28"
+    					 borderStyle="solid" borderColor="#a9a9a9" borderSides="left top right">
+    				<mx:GridItem horizontalAlign="left" width="100%" paddingLeft="7">
+    					<mx:Label text="TITLE OF CONTEST" fontSize="9" styleName="contentGrey" />
+    				</mx:GridItem>
+    				<mx:GridItem horizontalAlign="center" width="165">
+    					<mx:Label text="SERVICE TYPE" fontSize="9" styleName="contentGrey" />
+    				</mx:GridItem>
+    				<mx:GridItem horizontalAlign="center" width="159">
+    					<mx:Text text="PRICE($)" fontSize="9" styleName="contentGrey" />
+    				</mx:GridItem>
+    			</mx:GridRow>
+    			<mx:GridRow width="100%" height="42" borderStyle="solid" borderSides="top" borderColor="#d6d6d6">
+    				<mx:GridItem horizontalAlign="left" width="100%" paddingLeft="7">
+    					<mx:HBox width="100%">
+    						<mx:Text id="textContestName" text="Contest Title "
+    							fontSize="13" styleName="contentGrey" width="100%"/>
+    					</mx:HBox>
+    				</mx:GridItem>
+    				<mx:GridItem horizontalAlign="center" width="165">
+    					<mx:Text text="{mainWidget.studioContestType &amp;&amp; mainWidget.getPaidContestFee() > 0 ? 'Contest Launch Fee\n(Prize Adjustment)' : 'Contest Launch Fee'}" styleName="contentGrey" /> <!-- BUGR-1363, BUGR-1682 -->
+    				</mx:GridItem>
+    				<mx:GridItem horizontalAlign="center" width="159">
+    					<mx:Text id="textContestLaunchFee" styleName="contentGrey" />
+    				</mx:GridItem>
+    			</mx:GridRow>
+    			<mx:GridRow width="100%" height="42" borderStyle="solid" borderSides="top" borderColor="#d6d6d6">
+    				<mx:GridItem width="100%"/>
+    				<mx:GridItem horizontalAlign="center" width="165">
+    					<mx:Label text="Taxes" fontSize="9" styleName="contentGrey" />
+    				</mx:GridItem>
+    				<mx:GridItem horizontalAlign="center" width="159">
+    					<mx:Text text="$0.00" fontSize="9" styleName="contentGrey" />
+    				</mx:GridItem>
+    			</mx:GridRow>
+    			<mx:GridRow width="100%" height="28" borderStyle="solid" borderColor="#a9a9a9" >
+    				<mx:GridItem width="100%"/>
+    				<mx:GridItem horizontalAlign="center" width="165">
+    					<mx:Label text="TOTAL COST" fontSize="13" styleName="contentGrey" />
+    				</mx:GridItem>
+    				<mx:GridItem horizontalAlign="center" width="159">
+    					<mx:Text id="textContestTotalCost" fontSize="13" styleName="contentGrey" />
+    				</mx:GridItem>
+    			</mx:GridRow>
+    		</mx:Grid>
+    	</mx:VBox>
+    	
+    	<mx:ViewStack width="100%" id="stack" styleName="boxStyle" resizeToContent="true">	
+    		<com:PaymentWF id="wf1" paddingTop="20" paddingRight="6"  /> <!-- BUGR-1623 horizontalGap="126" -->
+    		<com:PaymentWFCf id="wf2" paddingTop="20" paddingRight="6" />
+    		<com:PaymentWFCfPO id="wf3" paddingTop="20" paddingRight="6" />
+    	</mx:ViewStack>
+	</mx:VBox>
+</mx:VBox>
