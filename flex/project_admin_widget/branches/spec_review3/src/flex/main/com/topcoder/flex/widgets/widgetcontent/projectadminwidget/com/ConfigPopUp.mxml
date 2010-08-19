@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements the rendering logic for access config popup.
+
+     @author snow01
+     @since Cockpit Share Submission Integration
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+                styleName="popUp"
+                headerHeight="0"
+                layout="absolute"
+                width="262"
+                height="78"
+                showCloseButton="false">
+    <mx:filters>
+        <mx:DropShadowFilter color="#000000"
+                             distance="10"
+                             angle="45"
+                             alpha="0.3"/>
+    </mx:filters>
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.Helper;
+            import mx.controls.Alert;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Contest;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.ProjectAdminWidget;
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.qs.vo.Project;
+
+            /**
+             * The current access mode in the config popup.
+             */
+            private var _mode:String;
+
+            /**
+             * The underlying data for this config popup. Data can be either project or contest.
+             */
+            [Bindable]
+            private var _data:Object;
+
+            /**
+             * Reference to the parent project admin widget.
+             */
+            [Bindable]
+            private var _parentWidget:ProjectAdminWidget=null;
+
+            /**
+             * Gets the reference of parent project admin widget.
+             *
+             * @return reference of parent project admin widget.
+             */
+            [Bindable]
+            public function get parentWidget():ProjectAdminWidget {
+                return this._parentWidget;
+            }
+
+            /**
+             * Sets the reference of parent project admin widget.
+             *
+             * @param widget parent project admin widget.
+             */
+            public function set parentWidget(widget:ProjectAdminWidget):void {
+                this._parentWidget=widget;
+            }
+
+            /**
+             * Sets the config popup mode (down arrow or up arrow)
+             *
+             * @param up true if up arrow, else false.
+             */
+            public function set upMode(up:Boolean):void {
+                if (up) {
+                    this.styleName="popUp";
+                    read.y=25;
+                    write.y=25;
+                    full.y=48;
+                    close.y=17;
+                } else {
+                    this.styleName="popUp2";
+                    read.y=10;
+                    write.y=10;
+                    full.y=33;
+                    close.y=7;
+                }
+            }
+
+            /**
+             * Sets the data for this popup. Data is either a project or contest.
+             *
+             * @param value data for this popup.
+             */
+            override public function set data(value:Object):void {
+                this._data=value;
+                super.data=value;
+                this.mode=value.access;
+            }
+
+            /**
+             * Handler for on close of config popup.
+             * It takes care of
+             *     - restricting contest permission as large as project permission.
+             *     - making sure project permission change has cascading effect on its contests permissions.
+             *     - setting the permission to the tree node.
+             */
+            public function onClose():void {
+
+                // for full mode we don't need to restrict permission.
+                
+                /*
+                if (this._data is Project && _mode != "Full") {
+                    // check all contest permissions if this is project.
+                    // silently make all contests permissions not more than project permission.
+                    for (var j:int=0; j < this._data.contests.length; j++) {
+                        var contest:Contest=this._data.contests.getItemAt(j) as Contest;
+                        //trace("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ contest:: id:" + contest.id + ", access: " + contest.access + ", project.access:" + _mode);
+                        if (_mode == "Write" && contest.access == "Full") {
+                            //trace("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ setting to write");  
+                            contest.access="Write";
+                            parentWidget.model.refreshFullTree=true;
+                        } else if (_mode == "Read" && (contest.access == "Write" || contest.access == "Full")) {
+                            //trace("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ setting to read");
+                            contest.access="Read";
+                            parentWidget.model.refreshFullTree=true;
+                        } else if (_mode == "") {
+                            //trace("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ setting to empty");
+                            contest.access="";
+                            parentWidget.model.refreshFullTree=true;
+                        }
+                    }
+
+                } 
+                else if (this._data is Contest) {
+                    // if this is contest then check parent project permissions.
+                    // show error message that contest permission can not be more than project permission.
+                    var parentProjectAccess:String=this._data.project.access;
+                    if ((parentProjectAccess != "Full" && _mode == "Full") || (parentProjectAccess != "Write" && parentProjectAccess != "Full" && _mode == "Write") || (parentProjectAccess == "" && _mode == "Read")) {
+                        Helper.showAlertMessage("Permissions more than parent project is not allowed!");
+                        return;
+                    }
+                }
+                */
+                this._data.access=_mode;
+                parentWidget.model.refreshTree=!parentWidget.model.refreshTree;
+                this.visible=false;
+            }
+
+            /**
+             * Sets the mode value - this sets the checkbox control as per the given mode.
+             *
+             * @param str the specified mode value.
+             */
+            public function set mode(str:String):void {
+                _mode=str;
+                str=str.toLowerCase();
+                if (str.indexOf("full") >= 0) {
+                    read.selected=true;
+                    write.selected=true;
+                    full.selected=true;
+                } else if (str.indexOf("write") >= 0) {
+                    read.selected=true;
+                    write.selected=true;
+                    full.selected=false;
+                } else if (str.indexOf("read") >= 0) {
+                    read.selected=true;
+                    write.selected=false;
+                    full.selected=false;
+                } else {
+                    read.selected=false;
+                    write.selected=false;
+                    full.selected=false;
+                }
+            }
+
+            /**
+             * Handler for setting the mode value on checkbox changes.
+             *
+             * @param event checkbox change event.
+             */
+            public function setValue(event:Event):void {
+                if (event && event.target) {
+                    if (event.target.selected) {
+                        if (full.selected) {
+                            mode="Full";
+                        } else if (write.selected) {
+                            mode="Write";
+                        } else if (read.selected) {
+                            mode="Read";
+                        } else {
+                            mode="";
+                        }
+                    } else {
+                        if (!read.selected) {
+                            mode="";
+                        } else if (!write.selected) {
+                            if (read.selected) {
+                                mode="Read";
+                            }
+                        } else if (!full.selected) {
+                            if (read.selected && write.selected) {
+                                mode="Write";
+                            } else if (read.selected) {
+                                mode="Read";
+                            } else if (write.selected) {
+                                mode="Write";
+                            } else {
+                                mode="";
+                            }
+                        } else {
+                            mode="";
+                        }
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:CheckBox label="Read"
+                 id="read"
+                 styleName="nomal"
+                 x="15"
+                 y="25"
+                 change="setValue(event)"/>
+    <mx:CheckBox label="Write"
+                 id="write"
+                 styleName="nomal"
+                 x="109"
+                 y="25"
+                 change="setValue(event)"/>
+    <mx:CheckBox label="Full Access"
+                 id="full"
+                 styleName="nomal"
+                 x="15"
+                 y="48"
+                 change="setValue(event)"/>
+    <mx:Label text="Close X"
+              styleName="nomal"
+              id="close"
+              top="17"
+              right="11"
+              click="onClose()"/>
+</mx:TitleWindow>
