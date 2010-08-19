@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is for the preview view of the submission.
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+                layout="vertical"
+                width="288"
+                height="307"
+                horizontalAlign="center"
+                styleName="pop"
+                showCloseButton="false"
+                borderStyle="none"
+                borderThickness="3"
+                headerHeight="0"
+                xmlns:filters="flash.filters.*"
+                xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
+    <mx:filters>
+        <mx:DropShadowFilter distance="10"
+                             angle="45"
+                             alpha="0.3"/>
+    </mx:filters>
+
+    <mx:Script>
+        <![CDATA[
+            import mx.collections.ArrayCollection;
+
+            public function resizeImage():void {
+                img.scaleContent=false;
+                img.content.width=218;
+                img.content.height=218;
+            }
+
+            public function handleUpDown(str:String):Boolean {
+                if (str == "up") {
+                    upDown.styleName="showUp";
+                } else if (str == "down") {
+                    upDown.styleName="showDown";
+                } else {
+                    return false;
+                }
+                return true;
+            }
+
+            public function handleImage(dta:Object):String {
+                var obj:Object=dta.fullsizepreview;
+                if (obj is String) {
+                    return obj as String;
+                } else {
+                    if (obj.hasOwnProperty("item") && obj.item is ArrayCollection) {
+                        var items:ArrayCollection=obj.item;
+                        return items.getItemAt(0) as String;
+                    }
+                }
+                return "";
+            }
+        ]]>
+    </mx:Script>
+    <mx:Box height="218"
+            width="218"
+            horizontalAlign="center"
+            verticalAlign="middle"
+            borderStyle="solid"
+            verticalScrollPolicy="off"
+            horizontalScrollPolicy="off"
+            creationPolicy="all">
+        <tc:TCImage id="img"
+                    width="218"
+                    height="218"
+                    source="{handleImage(data)}"
+                    complete="resizeImage()"
+                    scaleContent="false"/>
+    </mx:Box>
+    <mx:HBox width="100%"
+             horizontalAlign="center">
+        <mx:Label text="{data.id}"
+                  styleName="normalText"/>
+        <mx:Button id="upDown"
+                   width="23"
+                   height="23"
+                   visible="{handleUpDown(data.upDown)}"/>
+    </mx:HBox>
+</mx:TitleWindow>

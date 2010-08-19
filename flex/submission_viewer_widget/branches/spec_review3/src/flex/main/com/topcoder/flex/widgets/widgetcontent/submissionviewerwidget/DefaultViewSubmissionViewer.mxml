@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements UI logic for default view of submission viewer.
+     This view is also interchangably called min view.
+
+     In this view end user can just select contests and browse through the mini thumbnails of submissions.
+     Ranked submissions would be shown with numbered rank icon. While purchased submissions would be shown with $ icon.
+
+     By double clicking on a submission - submission viewer gets maximized and gallery view gets opened.
+
+     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        - BUGR-2128: For abdandoned contest, a different view is shown.
+
+     Version 1.0.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - Fixed code to show selected contest in the combo box.
+
+     @author shailendra_80, pulky
+     @since Submission Viewer Overhaul
+     @version 1.0.2
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+         width="100%"
+         height="100%"
+         paddingLeft="10"
+         paddingTop="10"
+         paddingRight="5"
+         verticalScrollPolicy="off"
+         horizontalScrollPolicy="off">
+
+    <mx:Script>
+        <![CDATA[
+            import mx.collections.ArrayCollection;
+
+            /**
+             * Reference to the parent submission viewer widget.
+             */
+            [Bindable]
+            private var _subViewer:SubmissionViewerWidget;
+
+            /**
+             * Gets the reference to the parent submission viewer widget.
+             *
+             * @return the parent submission viewer widget.
+             */
+            [Bindable]
+            public function get subViewer():SubmissionViewerWidget {
+                return this._subViewer;
+            }
+
+            /**
+             * Sets the reference of the parent submission viewer widget.
+             *
+             * @param viewer the parent submission viewer widget.
+             */
+            public function set subViewer(viewer:SubmissionViewerWidget):void {
+                this._subViewer=viewer;
+                this.abandonedContestScreen.subViewer=this._subViewer;
+            }
+
+            /**
+            * Array collection of currently active / visible submissions in the view.
+            */
+            [Bindable]
+            private var activeSubmissionForMin:ArrayCollection=new ArrayCollection();
+
+            /**
+            * This index the page index of the visible submissions in the view.
+            *
+            * At start, page index would be zero.
+            * Page index gets is a function of total submissions, number of columns, number of rows, visible rows.
+            */
+            private var currentIndexMinPage:int=0;
+
+
+            /**
+            * Gets the submisison list.
+            *
+            * @return array collection of all submissions.
+            */
+            private function getSubmissionList():ArrayCollection {
+                return this.subViewer.submissionList;
+            }
+
+            /**
+            * Gets the contest list.
+            *
+            * @return array collection of all contests.
+            */
+            private function getContestList():ArrayCollection {
+                return this.subViewer.contestList;
+            }
+
+            /**
+            * This is called whenever submission sets get loaded from web-service.
+            *
+            * This logic calculates currently visible submissions, the page index etc.
+            * It accordingly enables page navigation buttons.
+            */
+            private function setSubmissionForMin():void {
+                if (!getSubmissionList() || getSubmissionList().length <= 0) {
+                    return;
+                }
+
+                activeSubmissionForMin=new ArrayCollection();
+                for (var i:int=0; i < list_minpage.rowCount; i++) {
+                    for (var j:int=0; j < list_minpage.columnCount; j++) {
+                        var k:int=i * list_minpage.columnCount + j;
+                        if (k < getSubmissionList().length) {
+                            var item:*=getSubmissionList().getItemAt(k);
+                            trace("Get item at " + k.toString() + " with id " + item.id);
+                            activeSubmissionForMin.addItem(getSubmissionList().getItemAt(k));
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
+                if (list_minpage && !list_minpage.dataProvider && activeSubmissionForMin) {
+                    list_minpage.dataProvider=activeSubmissionForMin;
+                }
+
+                // try hiding/showing the up/down page navigation buttons/arrows.
+                hideShowUpDownArrowMinPage();
+            }
+
+            /**
+            * This is called when up (previous) page arrow gets clicked.
+            *
+            * It calculates new active/visible submission set, page index.
+            * It accordingly enables page navigation buttons.
+            */
+            private function goUpMinPage():void {
+                if (currentIndexMinPage <= 0 || getSubmissionList().length == 0) {
+                    currentIndexMinPage=0;
+                } else {
+                    if (activeSubmissionForMin.getItemAt(0) == getSubmissionList().getItemAt(0)) {
+                        // Do nothing here.
+                    } else {
+                        if (list_minpage.selectedIndex > activeSubmissionForMin.length - list_minpage.columnCount + 1) {
+                            list_minpage.selectedItem=activeSubmissionForMin.getItemAt(list_minpage.selectedIndex - list_minpage.columnCount);
+                        }
+                        var s:int=(list_minpage.rowCount - 1) * list_minpage.columnCount;
+                        while (activeSubmissionForMin.length > s) {
+                            activeSubmissionForMin.removeItemAt(activeSubmissionForMin.length - 1);
+                        }
+
+                        for (var i:int=list_minpage.columnCount - 1; i >= 0; i--) {
+                            var k:int=(currentIndexMinPage - 1) * list_minpage.columnCount + i;
+                            if (k < getSubmissionList().length) {
+                                activeSubmissionForMin.addItemAt(getSubmissionList().getItemAt(k), 0);
+                            }
+                        }
+                    }
+
+                    currentIndexMinPage--;
+                    hideShowUpDownArrowMinPage();
+                }
+            }
+
+            /**
+            * This is called when down (next) page arrow gets clicked.
+            *
+            * It calculates new active/visible submission set, page index.
+            * It accordingly enables page navigation buttons.
+            */
+            private function goDownMinPage():void {
+                if (getSubmissionList().length > 0 && currentIndexMinPage < getSubmissionList().length / list_minpage.columnCount - list_minpage.rowCount) {
+                    if (list_minpage.selectedIndex < list_minpage.columnCount) {
+                        list_minpage.selectedItem=activeSubmissionForMin.getItemAt(list_minpage.selectedIndex + list_minpage.columnCount);
+                    }
+
+                    for (var i:int=0; i < list_minpage.columnCount; i++) {
+                        activeSubmissionForMin.removeItemAt(0);
+                    }
+
+                    for (var j:int=0; j < list_minpage.columnCount; j++) {
+                        var k:int=(currentIndexMinPage + list_minpage.rowCount) * list_minpage.columnCount + j;
+                        if (k < getSubmissionList().length) {
+                            activeSubmissionForMin.addItem(getSubmissionList().getItemAt(k));
+                        }
+                    }
+                    currentIndexMinPage++;
+                    hideShowUpDownArrowMinPage();
+                }
+            }
+
+            /**
+            * This hides / shows the up / down arrow depending on if more previous / next pages are there, respectively.
+            */
+            private function hideShowUpDownArrowMinPage():void {
+                if (activeSubmissionForMin && activeSubmissionForMin.length > 0 && getSubmissionList() && getSubmissionList().length > 0) {
+                    min_up.visible=(activeSubmissionForMin[0].id != getSubmissionList().getItemAt(0).id);
+                    min_down.visible=(activeSubmissionForMin[activeSubmissionForMin.length - 1].id != getSubmissionList().getItemAt(getSubmissionList().length - 1).id);
+                }
+            }
+
+            /**
+            * Event handler for submission thumbnail double click.
+            */
+            private function handleThumbDoubleClick():void {
+                this.subViewer.maximizeScreen(list_minpage.selectedItem);
+            }
+
+            /**
+            * This logic implements the filter logic for the contest.
+            *
+            * In case of this view, all contests are shown. So filter logic is not there.
+            * It then delegates to handleContest(..) which updates the UI as per selected contest.
+            *
+            * This is basically called by parent submission viewer widget on contest set load/reload.
+            */
+            public function doFilter():void {
+                this.subViewer.contestList=new ArrayCollection();
+                var useId:int = -1;
+
+                // try to use selected contest id or to be loaded contest id
+                if (this.subViewer.selectedContestId) {
+                    useId = this.subViewer.selectedContestId;
+                } else if (this.subViewer.tobeLoadedContestId) {
+                    useId = this.subViewer.tobeLoadedContestId;
+                }
+
+                for each (var item:*in this.subViewer.contestInfoList) {
+                    this.subViewer.contestList.addItem(item);
+
+                    if (useId > 0 && item.id == useId) {
+                        contestlist_minpage.selectedItem=item;
+                    }
+                }
+
+                handleContest(null);
+            }
+
+            /**
+             * This logic updates the UI as per the selected contest.
+             *
+             * It identifies if contest has changed from last. If yes, then it loads the submission data from webservice.
+             *
+             * Updated for Version 1.0.1
+             *    - setting the selectedContestStatus to correctly identify abandoned contest.
+             */
+            public function handleContest(event:Event):void {
+                //trace("------------------ DefaultViewSubmissionViewer:: this.subViewer.selectedContestId: " + this.subViewer.selectedContestId);
+                //trace("------------------ DefaultViewSubmissionViewer:: contestlist_minpage.selectedItem.id: " + contestlist_minpage.selectedItem.id);
+                var isContestChanged:Boolean=true;
+                if (this.subViewer.selectedContestId && this.subViewer.selectedContestId == contestlist_minpage.selectedItem.id) {
+                    isContestChanged=false;
+                }
+
+                if (this.contestlist_minpage.selectedItem) {
+                    this.subViewer.selectedContestId=contestlist_minpage.selectedItem.id;
+
+                    trace("DefaultViewSubmissionViewer this.subViewer.selectedContestId: " + this.subViewer.selectedContestId);
+
+                    if (this.subViewer.contestInfoDictionary) {
+                        var statusId:int=this.subViewer.contestInfoDictionary[this.subViewer.selectedContestId].statusId;
+                        this.subViewer.selectedContestStatusId=statusId;
+
+                        trace("DefaultViewSubmissionViewer this.subViewer.selectedContestStatusId: " + this.subViewer.selectedContestStatusId);
+                        trace("DefaultViewSubmissionViewer this.subViewer.selectedContestStatusId: " + this.subViewer.statusTypeDictionary[statusId]);
+
+                        if (this.subViewer.statusTypeDictionary && this.subViewer.statusTypeDictionary[statusId] && this.subViewer.statusTypeDictionary[statusId].hasOwnProperty("name")) {
+                            this.subViewer.selectedContestStatus=this.subViewer.statusTypeDictionary[statusId].name;
+                        }
+                    }
+                }
+
+                if (isContestChanged) {
+                    this.subViewer.loadSubmissions(updateUIOnSubmission);
+                }
+            }
+
+            /**
+             * This logic updates the UI on submission data load.
+             *
+             * This works as callback function when submission data load is complete.
+             * Parent submission viewer determines when to call it.
+             *
+             * Updated for Version 1.0.1
+             *    - BUGR-2128: For abdandoned contest, a different view is shown.
+             */
+            private function updateUIOnSubmission():void {
+                //trace("-------------------------------------- Updating UI callback on submission");
+                // if there are no submissions then show no-submision screen.
+                if (this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId
+                        || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId) {
+                   min_thumbnails_stack.selectedChild=abandonedContestScreen;
+                } else if (this.subViewer.submissionList.length == 0) {
+                    min_thumbnails_stack.selectedChild=min_no_thumbnails;
+                } else {
+                    min_thumbnails_stack.selectedChild=min_thumbnails;
+                    currentIndexMinPage=0;
+                    setSubmissionForMin();
+                    list_minpage.select(activeSubmissionForMin.getItemAt(0));
+                }
+            }
+
+            // BUGR-1392
+            private function handleResize():void {
+                if (!subViewer || !getSubmissionList())
+                    return;
+                list_minpage.columnCount=width / list_minpage.columnWidth;
+                list_minpage.rowCount=(min_thumbnails.height - 10) / list_minpage.rowHeight;
+                list_minpage.validateNow();
+                list_minpage.dataProvider=null;
+                activeSubmissionForMin.removeAll();
+                /*while(currentIndexMinPage > 0 && currentIndexMinPage >= getSubmissionList().length / list_minpage.columnCount - list_minpage.rowCount) {
+                   currentIndexMinPage--;
+                 }*/
+                list_minpage.validateDisplayList();
+                currentIndexMinPage=0;
+                for (var i:int=0; i < list_minpage.rowCount; i++) {
+                    for (var j:int=0; j < list_minpage.columnCount; j++) {
+                        var k:int=(i + currentIndexMinPage) * list_minpage.columnCount + j;
+                        if (k < getSubmissionList().length) {
+                            var item:*=getSubmissionList().getItemAt(k);
+                            trace("Get item at " + k.toString() + " with id " + item.id);
+                            activeSubmissionForMin.addItem(getSubmissionList().getItemAt(k));
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                list_minpage.dataProvider = activeSubmissionForMin;
+                list_minpage.validateNow();
+                hideShowUpDownArrowMinPage();
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:DefaultTileListEffect id="myDTLE"
+                              fadeInDuration="250"
+                              fadeOutDuration="350"
+                              moveDuration="200"
+                              color="0xffffff"/>
+
+    <mx:HBox width="100%"
+             horizontalGap="0">
+        <mx:Text text="Select a contest:"
+                 fontWeight="bold"/>
+    </mx:HBox>
+    <mx:ComboBox id="contestlist_minpage"
+                 left="195"
+                 width="272"
+                 top="9"
+                 labelField="name"
+                 itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer"
+                 dataProvider="{this.subViewer.contestList}"
+                 change="handleContest(event)"/>
+    <mx:HRule width="100%"
+              strokeColor="#000000"/>
+
+
+    <mx:VBox horizontalAlign="center"
+             width="100%"
+             height="100%">
+        <mx:ViewStack id="min_thumbnails_stack"
+                      width="100%"
+                      height="100%"
+                      selectedIndex="{this.subViewer
+                        &amp;&amp; this.subViewer.selectedContestStatusId == this.subViewer.noWinnerChosenContestTypeId
+                        || this.subViewer.selectedContestStatusId == this.subViewer.abandonedContestTypeId ? 1 : 0}">
+            <mx:VBox id="min_thumbnails"
+                     width="100%"
+                     horizontalAlign="center"
+                     height="100%"
+                     paddingLeft="0"
+                     paddingTop="0"
+                     creationPolicy="all">
+                <mx:HBox width="100%">
+                    <mx:Text text="Total Submissions:"
+                             fontWeight="bold"/>
+                    <mx:Text text="{(this.subViewer.submissionList) ? this.subViewer.submissionList.length : 0}"
+                             id="SubNum"/>
+                </mx:HBox>
+
+                <mx:Button buttonMode="true"
+                           id="min_up"
+                           styleName="up"
+                           click="goUpMinPage()"
+                           visible="false"/>
+
+                <tc:CustomTileList id="list_minpage"
+                                   rowCount="4"
+                                   height="100%"
+                                   columnWidth="100"
+                                   columnCount="{((this.width)/list_minpage.columnWidth)}"
+                                   rowHeight="80"
+                                   selectionDuration="0"
+                                   dataProvider="{activeSubmissionForMin}"
+                                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer"
+                                   itemsChangeEffect="{myDTLE}"
+                                   verticalScrollPolicy="off"
+                                   horizontalScrollPolicy="off"
+                                   borderStyle="none"
+                                   doubleClickEnabled="true"
+                                   doubleClick="handleThumbDoubleClick()"
+                                   allowMultipleSelection="false"
+                                   allowDragSelection="false"
+                                   resize="{handleResize()}"/>
+
+                <mx:Button buttonMode="true"
+                           id="min_down"
+                           styleName="down"
+                           click="goDownMinPage()"
+                           visible="false"/>
+            </mx:VBox>
+            <mx:VBox id="min_no_thumbnails">
+                <mx:Label fontFamily="Arial"
+                          text="No submissions for this contest."
+                          fontWeight="bold"
+                          fontSize="16"
+                          width="100%"/>
+            </mx:VBox>
+            <tc:AbandonedContestScreen id="abandonedContestScreen"/>
+        </mx:ViewStack>
+    </mx:VBox>
+</mx:VBox>
