@@ -58,6 +58,6 @@ INSERT INTO submission(submission_id, upload_id, submission_status_id, submissio
 
 INSERT INTO submission(submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date) VALUES(2, 1, 1, 2, 'System', CURRENT, 'System', CURRENT);
 
-INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, per_submission, required, name, description, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 2, 1, 1, 'deliverable 1', 'per submission deliverable', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, name, description, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 2, null, 1, 'deliverable 1', 'per submission deliverable', 'System', CURRENT, 'System', CURRENT);
 
-INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, per_submission, required, name, description, create_user, create_date, modify_user, modify_date) VALUES(2, 3, 3, 0, 0, 'deliverable 2', 'non per submission deliverable', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, name, description, create_user, create_date, modify_user, modify_date) VALUES(2, 3, 3, null, 0, 'deliverable 2', 'non per submission deliverable', 'System', CURRENT, 'System', CURRENT);

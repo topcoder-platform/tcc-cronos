@@ -74,11 +74,11 @@ INSERT INTO submission (submission_id, upload_id, submission_status_id, submissi
     VALUES(2, 1, 1, 1, 'System', MDY(07,18,2006), 'System', MDY(07,18,2006)); 
 
 
-INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
+INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, submission_type_id, required, create_user, create_date, modify_user, modify_date)
     VALUES(1, 1, 1, "deliverable 1", "deliverable desc", 1, 1, 'System', MDY(07,18,2006), 'System', MDY(07,18,2006)); 
-INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
+INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, submission_type_id, required, create_user, create_date, modify_user, modify_date)
     VALUES(2, 2, 2, "deliverable 2", "deliverable desc", 1, 0, 'System', MDY(07,18,2006), 'System', MDY(07,18,2006)); 
-INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
-    VALUES(3, 3, 2, "deliverable 3", "deliverable desc", 0, 1, 'System', MDY(07,18,2006), 'System', MDY(07,18,2006)); 
- INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
+INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, submission_type_id, required, create_user, create_date, modify_user, modify_date)
+    VALUES(3, 3, 2, "deliverable 3", "deliverable desc", null, 1, 'System', MDY(07,18,2006), 'System', MDY(07,18,2006)); 
+ INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, submission_type_id, required, create_user, create_date, modify_user, modify_date)
     VALUES(4, 4, 1, "deliverable 4", "deliverable desc", 1, 0, 'System', MDY(07,18,2006), 'System', MDY(07,18,2006)); 

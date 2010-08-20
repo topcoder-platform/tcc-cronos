@@ -294,6 +294,7 @@ public class DemoTest extends TestCase {
         Statement statement = connection.createStatement();
 
         statement.addBatch("delete from submission");
+        statement.addBatch("delete from deliverable_lu");
         statement.addBatch("delete from submission_type_lu");
         statement.addBatch("INSERT INTO submission_type_lu(submission_type_id, name, description, create_user, "
                 + " create_date, modify_user, modify_date) "

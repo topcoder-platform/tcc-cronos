@@ -91,6 +91,14 @@ import java.sql.Connection;
  * specified for submissions when loading deliverables.
  * </p>
  *
+ * <p>Changes in 1.1.1 : LOAD_DELIVERABLES_WITH_SUBMISSION_SQL query was updated to properly link
+ * project_phase and resource tables by project_phase_id column to exclude those resources which
+ * do not correspond to project phase in use
+ *
+ * LOAD_DELIVERABLES_WITHOUT_SUBMISSION_SQL and LOAD_DELIVERABLES_WITH_SUBMISSION_SQL queries were
+ * updated to use newly added submission_type_id column instead of per_submission column.
+ * </p>
+ *
  * <p><strong>Thread Safety:</strong> This class is immutable and thread-safe in the sense that
  * multiple threads can not corrupt its internal data structures. However, the
  * results if used from multiple threads can be unpredictable as the database is
@@ -99,8 +107,8 @@ import java.sql.Connection;
  * this is not a thread-safety concern.
  * </p>
  *
- * @author aubergineanode, saarixx, urtks, TCSDEVELOPER
- * @version 1.1
+ * @author aubergineanode, saarixx, urtks, isv
+ * @version 1.1.1
  * @since 1.0
  */
 public class SqlDeliverablePersistence implements DeliverablePersistence {
@@ -136,7 +144,9 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             + "INNER JOIN submission_status_lu ON submission.submission_status_id = "
             + "submission_status_lu.submission_status_id "
             + "INNER JOIN submission_type_lu ON submission.submission_type_id = submission_type_lu.submission_type_id "
-            + "WHERE deliverable_lu.per_submission = 1 AND submission_status_lu.name = 'Active' AND ";
+            + "WHERE deliverable_lu.submission_type_id = submission.submission_type_id AND submission_status_lu.name = 'Active' "
+            + "AND (resource.project_phase_id IS NULL or resource.project_phase_id = project_phase.project_phase_id) "
+            + "AND ";
 
     /**
      * <p>
@@ -164,7 +174,7 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
             + "INNER JOIN resource ON resource.resource_role_id = deliverable_lu.resource_role_id "
             + "INNER JOIN project_phase ON project_phase.project_id = resource.project_id AND "
             + "project_phase.phase_type_id = deliverable_lu.phase_type_id "
-            + "WHERE deliverable_lu.per_submission = 0 AND ";
+            + "WHERE deliverable_lu.submission_type_id IS NULL AND ";
 
 
     /**

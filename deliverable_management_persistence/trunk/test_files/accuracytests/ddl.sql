@@ -141,7 +141,7 @@ CREATE TABLE deliverable_lu (
   resource_role_id              INTEGER                         NOT NULL,
   name                          VARCHAR(64)                     NOT NULL,
   description                   VARCHAR(64)                     NOT NULL,
-  per_submission                DECIMAL(1, 0)                   NOT NULL,
+  submission_type_id            INTEGER,
   required                      DECIMAL(1, 0)                   NOT NULL,
   create_user                   VARCHAR(64)                     NOT NULL,
   create_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
@@ -151,7 +151,9 @@ CREATE TABLE deliverable_lu (
   FOREIGN KEY(phase_type_id)
     REFERENCES phase_type_lu(phase_type_id),
   FOREIGN KEY(resource_role_id)
-    REFERENCES resource_role_lu(resource_role_id)
+    REFERENCES resource_role_lu(resource_role_id),
+  FOREIGN KEY(submission_type_id)
+    REFERENCES submission_type_lu(submission_type_id)
 );
 DROP TABLE id_sequences;
 CREATE TABLE id_sequences (

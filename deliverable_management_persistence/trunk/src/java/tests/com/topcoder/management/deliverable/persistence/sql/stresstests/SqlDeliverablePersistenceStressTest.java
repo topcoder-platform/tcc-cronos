@@ -285,15 +285,15 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
             + "VALUES (2, 1, 1, 2, 'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO deliverable_lu"
-            + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
+            + "(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, "
             + "name, description, create_user, create_date, modify_user, modify_date) "
-            + "VALUES (1, 2, 2, 1, 1, 'deliverable 1', 'per submission deliverable', "
+            + "VALUES (1, 2, 2, 2, 1, 'deliverable 1', 'per submission deliverable', "
             + "'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO deliverable_lu"
-            + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
+            + "(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, "
             + "name, description, create_user, create_date, modify_user, modify_date) "
-            + "VALUES (2, 3, 3, 0, 0, 'deliverable 2', 'non per submission deliverable', "
+            + "VALUES (2, 3, 3, null, 0, 'deliverable 2', 'non per submission deliverable', "
             + "'System', CURRENT, 'System', CURRENT)");
 
         statement.executeBatch();
