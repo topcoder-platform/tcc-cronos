@@ -905,13 +905,13 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // create a register
-            Resource resource = createResource(4, 101L, 1, 17);
+            Resource resource = createResource(110, 101L, 1, 17);
             // create a reviewer
-            Resource reviewer = createResource(5, 102L, 1, 18);
+            Resource reviewer = createResource(111, 102L, 1, 18);
             super.insertResources(conn, new Resource[] {resource, reviewer});
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
-            Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
+            Upload upload = super.createUpload(1, project.getId(), 110, 1, 1, "parameter");
             super.insertUploads(conn, new Upload[] {upload});
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
@@ -920,7 +920,7 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
 
-            Review review = createReview(11, 5, 1, 1, true, 90.0f);
+            Review review = createReview(11, 111, 1, 1, true, 90.0f);
             // add a rejected comment
             review.addComment(createComment(1111, reviewer.getId(), "Rejected", 14,
                 "Specification Review Comment"));

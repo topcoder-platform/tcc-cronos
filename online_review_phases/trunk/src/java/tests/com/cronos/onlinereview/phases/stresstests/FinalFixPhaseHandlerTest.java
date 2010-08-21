@@ -182,12 +182,12 @@ public class FinalFixPhaseHandlerTest extends StressBaseTest {
                 review1.addComment(createComment(21, aggregator.getId(), "Good Design", 1, "Comment"));
 
                 Item[] reviewItems = new Item[2];
-                reviewItems[0] = createReviewItem(11, "Answer 1", review1.getId(), 1);
-                reviewItems[1] = createReviewItem(12, "Answer 2", review1.getId(), 1);
+                reviewItems[0] = createReviewItem(111, "Answer 1", review1.getId(), 1);
+                reviewItems[1] = createReviewItem(112, "Answer 2", review1.getId(), 1);
 
                 Comment[] reviewItemComments = new Comment[2];
-                reviewItemComments[0] = createComment(11, aggregator.getId(), "Item 1", 1, "Comment");
-                reviewItemComments[1] = createComment(12, aggregator.getId(), "Item 2", 1, "Comment");
+                reviewItemComments[0] = createComment(111, aggregator.getId(), "Item 1", 1, "Comment");
+                reviewItemComments[1] = createComment(112, aggregator.getId(), "Item 2", 1, "Comment");
 
                 Connection conn = getConnection();
 
@@ -200,11 +200,11 @@ public class FinalFixPhaseHandlerTest extends StressBaseTest {
                 insertScorecards(conn, new Scorecard[]{scorecard1 });
                 insertReviews(conn, new Review[]{review1 });
 
-                insertComments(conn, new long[]{103 }, new long[]{aggregator.getId() }, new long[]{review1
+                insertComments(conn, new long[]{1003 }, new long[]{aggregator.getId() }, new long[]{review1
                     .getId() }, new String[]{"comment 1" }, new long[]{1 });
                 insertScorecardQuestion(conn, 1, 1);
                 insertReviewItems(conn, reviewItems);
-                insertReviewItemComments(conn, reviewItemComments, new long[]{11, 12 });
+                insertReviewItemComments(conn, reviewItemComments, new long[]{111, 112 });
                 insertWinningSubmitter(conn, 12, project.getId());
 
                 // call perform method
