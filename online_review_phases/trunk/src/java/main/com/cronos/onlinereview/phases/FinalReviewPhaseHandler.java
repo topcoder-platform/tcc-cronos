@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -68,10 +68,12 @@ import com.topcoder.project.phases.Project;
  * Version 1.4 Change notes:
  *   <ol>
  *     <li>Updated not to use ContestDependencyAutomation.</li>
+ *     <li>Updated {@link #perform(Phase, String)} method to calculate the number of approvers for project and bind it
+ *     to map used for filling email template.</li> 
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy
+ * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, isv
  * @version 1.4
  * @since 1.0
  */
@@ -206,10 +208,39 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             // checkFinalReview is changed in version 1.1 to add
             // an approval phase after final review is approved
             values.put("RESULT", checkFinalReview(phase, operator) ? "rejected" : "approved");
+
+            Phase approvalPhase = PhasesHelper.locatePhase(phase, "Approval", true, false);
+            if (approvalPhase != null) {
+                int approvers = getApproverNumbers(approvalPhase);
+                int approverNum = getRequiredReviewersNumber(approvalPhase);
+                values.put("N_APPROVERS", approvers);
+                values.put("N_REQUIRED_APPROVERS", approverNum);
+                values.put("NEED_APPROVER", approverNum <= approvers ? 0 : 1);
+            } else {
+                values.put("NEED_APPROVER", 0);
+            }
         }
 
         sendEmail(phase, values);
     }
+
+    /**
+     * <p>Gets the number of required reviewers for specified phase. If specified phase does not have such a value set
+     * then 1 s returned.</p>
+     *
+     * @param phase a <code>Phase</code> providing the details for current phase.
+     * @return an <code>int</code> providing number of required reviewers for specified phase.
+     * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
+     * @since 1.3.1
+     */
+    private int getRequiredReviewersNumber(Phase phase) throws PhaseHandlingException {
+        int approverNum = 1;
+        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
+            approverNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+        }
+        return approverNum;
+    }
+
     /**
      * <p>
      * Get the final reviewer number of the project.
@@ -225,6 +256,26 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                                                            new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME},
                                                            phase.getId()).length;
+        } finally {
+            PhasesHelper.closeConnection(conn);
+        }
+    }
+
+    /**
+     * Find the number of 'Approver' of the phase.
+     *
+     * @param phase the current Phase
+     * @return the number of approver
+     * @throws PhaseHandlingException if any error occurs
+     * @since 1.4
+     */
+    private int getApproverNumbers(Phase phase) throws PhaseHandlingException {
+        Connection conn = null;
+        try {
+            conn = createConnection();
+            return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
+                                                                   new String[] {"Approver"},
+                                                                   phase.getProject().getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
         }

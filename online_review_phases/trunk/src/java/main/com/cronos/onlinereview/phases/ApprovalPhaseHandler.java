@@ -201,7 +201,11 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false) && checkScorecardsCommitted(phase));
+            // Check phase dependencies
+            boolean depsMeet = PhasesHelper.arePhaseDependenciesMet(phase, false);
+
+            // Return true if dependencies are met and minimum number of reviews committed or time has ended.
+            return depsMeet && (PhasesHelper.reachedPhaseEndTime(phase) || checkScorecardsCommitted(phase));
         }
     }
 
@@ -367,9 +371,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
             // Check approval scorecards are committed and return false if there is at least one uncommited scorecard
             for (int i = 0; i < approveReviews.length; i++) {
-                if (!approveReviews[i].isCommitted()) {
-                    return false;
-                } else {
+                if (approveReviews[i].isCommitted()) {
                     commitedCount++;
                 }
             }
@@ -404,6 +406,10 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
             // check for approved/rejected comments.
             boolean rejected = false;
             for (int reviewIndex = 0; reviewIndex < approveReviews.length; reviewIndex++) {
+                if (!approveReviews[reviewIndex].isCommitted()) {
+                    continue;
+                }
+
                 Comment[] comments = approveReviews[reviewIndex].getAllComments();
 
                 for (int i = 0; i < comments.length; i++) {
@@ -454,6 +460,10 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
             // check for approved/rejected comments.
             boolean required = false;
             for (int reviewIndex = 0; reviewIndex < approveReviews.length; reviewIndex++) {
+                if (!approveReviews[reviewIndex].isCommitted()) {
+                    continue;
+                }
+
                 Comment[] comments = approveReviews[reviewIndex].getAllComments();
 
                 for (int i = 0; i < comments.length; i++) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -93,8 +93,16 @@ import java.util.Map;
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.4 Change notes:
+ *   <ol>
+ *     <li>Updated {@link #perform(Phase, String)} method to calculate the number of aggregators for project and bind it
+ *     to map used for filling email template.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, isv
+ * @version 1.4
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -250,9 +258,31 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 // insert the post-mortem phase
                 PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
             }
+            Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true, true));
+            values.put("N_AGGREGATOR", aggregators.length);
         }
 
         sendEmail(phase, values);
+    }
+
+    /**
+     * <p>Gets the list of resources assigned <code>Aggregator</code> role.</p>
+     *
+     * @param aggregationPhase a <code>Phase</code> providing the details for <code>Aggregation</code> phase.
+     * @return a <code>Resource</code> array listing the resources granted <code>Aggregator</code> role.
+     * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
+     * @since 1.4
+     */
+    private Resource[] getAggregators(Phase aggregationPhase) throws PhaseHandlingException {
+        Resource[] aggregators;
+        Connection connection = createConnection();
+        try {
+            aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), connection,
+                    new String[]{"Aggregator"}, aggregationPhase.getId());
+        } finally {
+            PhasesHelper.closeConnection(connection);
+        }
+        return aggregators;
     }
 
 

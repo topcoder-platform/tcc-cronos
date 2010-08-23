@@ -1815,9 +1815,6 @@ final class PhasesHelper {
             }
         }
 
-        // don't duplicate payments
-        newResource.setProperty(PAYMENT_PROPERTY_KEY, new Integer(0));
-
         // set phase id
         newResource.setPhase(new Long(newPhaseId));
 
