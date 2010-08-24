@@ -1,7 +1,16 @@
 /*
- * Copyright (C) 2006-2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql;
+
+import com.topcoder.db.connectionfactory.DBConnectionException;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.management.deliverable.AuditedDeliverableStructure;
+import com.topcoder.management.deliverable.NamedDeliverableStructure;
+import com.topcoder.management.deliverable.persistence.PersistenceException;
+import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,77 +23,73 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.management.deliverable.AuditedDeliverableStructure;
-import com.topcoder.management.deliverable.NamedDeliverableStructure;
-import com.topcoder.management.deliverable.persistence.PersistenceException;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
-
 /**
- * Helper class for the package
+ * <p>Helper class for the package
  * com.topcoder.management.deliverable.persistence.sql., including the methods
- * to validate arguments and the methods to access database.
+ * to validate arguments and the methods to access database.</p>
  *
- * <p>
- * Changes in v1.0.3 (Cockpit Spec Review Backend Service Update v1.0):
- * - replaced LogFactory with LogManager
- * - added flag so that container transaction demarcation can be used.
- * </p>
+ * <p><strong>Thread safety:</strong> This class is immutable and thread safe.</p>
  *
- * @author urtks, pulky
- * @version 1.0.3
+ * @author urtks, TCSDEVELOPER
+ * @version 1.1
+ * @since 1.0
  */
-class Helper {
+public final class Helper {
+
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type String or as null in case the ResultSet
      * value was null, and to specify that PreparedStatement#setString() should
      * be used for a parameter.
+     * </p>
      */
     static final DataType STRING_TYPE = new StringType();
 
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Long or as null in case the ResultSet value
      * was null, and to specify that PreparedStatement#setLong() should be used
      * for a parameter.
+     * </p>
      */
     static final DataType LONG_TYPE = new LongType();
 
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Double or as null in case the ResultSet value
      * was null, and to specify that PreparedStatement#setDouble() should be used
      * for a parameter.
+     * </p>
      */
     static final DataType DOUBLE_TYPE = new DoubleType();
-    
+
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Boolean or as null in case the ResultSet
      * value was null, and to specify that PreparedStatement#setBoolean() should
      * be used for a parameter.
+     * </p>
      */
     static final DataType BOOLEAN_TYPE = new BooleanType();
 
     /**
+     * <p>
      * This constant provides the DataType instance that can be used in the
      * query methods to specify that a ResultSet column of a query result should
      * be returned as value of type Date or as null in case the ResultSet value
      * was null, and to specify that PreparedStatement#setTimestamp() should be
      * used for a parameter.
+     * </p>
      */
     static final DataType DATE_TYPE = new DateType();
-
-    /** Logger instance using the class name as category */
-    private static final Log logger = LogManager.getLog(Helper.class.getName());
 
     /**
      * <p>
@@ -94,6 +99,12 @@ class Helper {
      * @since 1.0.3
      */
     private static final Boolean useManualCommit = false;
+
+
+     /**
+     * <p>Logger instance using the class name as category.</p>
+     */
+    private static final Log LOGGER = LogManager.getLog(Helper.class.getName());
 
     /**
      * <p>
@@ -766,7 +777,7 @@ class Helper {
     static void closeConnection(Connection conn) throws PersistenceException {
         if (conn != null) {
             try {
-                logger.log(Level.INFO, "close the connection.");
+                LOGGER.log(Level.INFO, "close the connection.");
                 conn.close();
             } catch (SQLException e) {
                 throw new PersistenceException("Error occurs when closing the connection.", e);
@@ -820,7 +831,7 @@ class Helper {
         if (conn != null) {
             try {
                 if(useManualCommit) {
-                    logger.log(Level.INFO, "commit the transaction.");
+                    LOGGER.log(Level.INFO, "commit the transaction.");
                     conn.commit();
                 }
             } catch (SQLException e) {
@@ -840,7 +851,7 @@ class Helper {
         if (conn != null) {
             try {
                 if(useManualCommit) {
-                    logger.log(Level.INFO, "rollback the transaction.");
+                    LOGGER.log(Level.INFO, "rollback the transaction.");
                     conn.rollback();
                 }
             } catch (SQLException e) {
@@ -875,9 +886,9 @@ class Helper {
                 : connectionFactory.createConnection(connectionName);
 
             if ( connectionName == null) {
-                logger.log(Level.INFO, "create db connection using default connection name");
+                LOGGER.log(Level.INFO, "create db connection using default connection name");
             } else {
-                logger.log(Level.INFO, "create db connection using connection name:" + connectionName);
+                LOGGER.log(Level.INFO, "create db connection using connection name:" + connectionName);
             }
             if(useManualCommit) {
                 conn.setAutoCommit(autoCommit);
@@ -986,7 +997,7 @@ class Helper {
      * @throws IllegalArgumentException
      *             if the given object is null
      */
-    static void assertObjectNotNull(Object obj, String name) {
+    public static void assertObjectNotNull(Object obj, String name) {
         if (obj == null) {
             throw new IllegalArgumentException(name + " should not be null.");
         }
