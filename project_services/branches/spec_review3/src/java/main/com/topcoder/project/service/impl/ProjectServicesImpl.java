@@ -21,7 +21,6 @@ import javax.xml.datatype.Duration;
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
-import com.topcoder.management.phase.ContestDependencyAutomation;
 import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.BillingProjectConfigType;
 import com.topcoder.management.project.BillingProjectConfiguration;
@@ -1694,16 +1693,6 @@ public class ProjectServicesImpl implements ProjectServices {
 
             }
 
-             // Adjust the depending projects timelines if necessary
-            ContestDependencyAutomation auto
-                = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager);
-            if (template != null)
-            {
-                auto
-                = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager, template.getWorkdays());
-            }
-            adjustDependentProjects(projectPhases, phaseManager, auto, operator);
-
 
             // call phaseManager.updatePhases(projectPhases,operator)
             Util.log(logger, Level.DEBUG, "Starts calling PhaseManager#updatePhases method.");
@@ -2186,13 +2175,54 @@ public class ProjectServicesImpl implements ProjectServices {
 
             }
 
+
+             // Start BUGR-3616
+            // get billing project id from the project information
+            String billingProject = projectHeader.getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
+
+            long billingProjectId = 0;
+
+            if (billingProject != null && !billingProject.equals("") && !billingProject.equals("0")) {
+                billingProjectId = Long.parseLong(billingProject);
+            }
+
+            // check whether billing project id requires approval phase
+            boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
+
+
+            boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
+
+            List<Long> leftoutphases = new ArrayList<Long>();
+
+            if (!requireApproval)
+            {
+                leftoutphases.add(new Long(PhaseType.APPROVAL_PHASE.getId()));
+            }
+
+            if (!requireSpecReview)
+            {
+                leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
+                leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
+            }
+
+            long[] leftOutPhaseIds = new long[leftoutphases.size()];
+
+            if (leftoutphases.size() > 0)
+            {
+                int i = 0;
+                for (Long phaseId : leftoutphases )
+                {
+                    leftOutPhaseIds[i++] = phaseId.longValue();
+                }
+            }
+
             if (templateName == null)
             {
                 throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
             }
             // apply a template with name category with a given start date
             com.topcoder.project.phases.Project newProjectPhases = template
-                    .applyTemplate(templateName, projectPhases.getStartDate());
+                    .applyTemplate(templateName, leftOutPhaseIds, PhaseType.REGISTRATION_PHASE.getId(), PhaseType.REGISTRATION_PHASE.getId(), projectPhases.getStartDate(), projectPhases.getStartDate());
 
             long screenTemplateId = 0L;
             long reviewTemplateId = 0L;
@@ -2214,32 +2244,8 @@ public class ProjectServicesImpl implements ProjectServices {
                 approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
             }
 
-            // Start BUGR-3616
-            // get billing project id from the project information
-            String billingProject = projectHeader.getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
-
-            long billingProjectId = 0;
-
-            if (billingProject != null && !billingProject.equals("") && !billingProject.equals("0")) {
-                billingProjectId = Long.parseLong(billingProject);
-            }
-
-            // check whether billing project id requires approval phase
-            boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
-
-            if (!requireApproval) {
-                // remove the approval phase from the end if not required
-                Phase lastPhase = newProjectPhases.getAllPhases()[newProjectPhases.getAllPhases().length - 1];
-
-                if (lastPhase.getPhaseType().getName().equalsIgnoreCase("Approval")) {
-
-                    newProjectPhases.removePhase(lastPhase);
-
-                    Util.log(logger, Level.DEBUG, "Approval phase is removed since Approval required is"
-                            + requireApproval);
-
-                }
-            }
+           
+            
 
             // set the project info of type "Approval Required"
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
@@ -2261,7 +2267,8 @@ public class ProjectServicesImpl implements ProjectServices {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
                     p.setScheduledStartDate(p.calcStartDate());
                     p.setScheduledEndDate(p.calcEndDate());
-                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId() 
+                        || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
                     {
                         p.setFixedStartDate(p.calcStartDate());
                     }
@@ -3166,41 +3173,6 @@ public class ProjectServicesImpl implements ProjectServices {
                                                       contest.getProjectHeader().getId(), ProjectLinkType.IS_RELATED_TO);
 
                     }
-
-
-                }
-
-                // adjust dependents dates if necessary
-                Phase[] originalPhases = phaseManager.getPhases(contest.getProjectHeader().getId()).getAllPhases();
-                Phase[] reopenedPhases = phaseManager.getPhases(reOpendedProject.getProjectHeader().getId()).getAllPhases();
-
-
-                Phase originalLastPhase = getLastPhase(originalPhases);
-                Phase reopenedLastPhase = getLastPhase(reopenedPhases);
-
-                // check diff between orignal end date and reopened end date
-                if (originalLastPhase != null && reopenedLastPhase != null) {
-                    Date originalEndDate = originalLastPhase.getScheduledEndDate();
-                    Date reopenedEndDate = reopenedLastPhase.getScheduledEndDate();
-                    if (reopenedEndDate.compareTo(originalEndDate) != 0)
-                    {
-                        long diff = reopenedEndDate.getTime() - originalEndDate.getTime();
-                        if (diff != 0)
-                        {
-                             ContestDependencyAutomation auto
-                                    = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager);
-                             if (template != null)
-                             {
-                                 auto
-                                    = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager, template.getWorkdays());
-                             }
-                             List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(reOpendedProject.getProjectHeader().getId(), diff);
-                             for (Phase[] affectedProjectPhases : affectedPhases)
-                             {
-                                phaseManager.updatePhases(affectedProjectPhases[0].getProject(), operator);
-                             }
-                        }
-                    }
                 }
             }
 
@@ -3209,10 +3181,7 @@ public class ProjectServicesImpl implements ProjectServices {
         } catch (PersistenceException e) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", e);
-        } catch (PhaseManagementException e) {
-            log(Level.ERROR, "PhaseManagementException occurred in " + method);
-            throw new ProjectServicesException("PhaseManagementException occurred when operating ProjectLinkManager.", e);
-        }finally {
+        } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
@@ -3682,28 +3651,7 @@ public class ProjectServicesImpl implements ProjectServices {
         }
     }
 
-    /**
-     * <p>Adjusts the timelines for projects depending on specified project if necessary.</p>
-     *
-     * @param mainProject a <code>Project</code> providing the project details.
-     * @param phaseManager a <code>PhaseManager</code> to be used for managing phases.
-     * @param auto a <code>ContestDependencyAutomation</code> to be used for processing dependencies.
-     * @param operator a <code>String</code> providing the operator for audit.
-     * @throws PhaseManagementException if an unexpected error occurs.
-     * @throws com.topcoder.management.project.PersistenceException if an unexpected error occurs.
-     * @since 1.3
-     */
-    static void adjustDependentProjects(com.topcoder.project.phases.Project mainProject, PhaseManager phaseManager,
-                                        ContestDependencyAutomation auto, String operator)
-        throws PhaseManagementException, com.topcoder.management.project.PersistenceException {
-        List<Phase[]> phases = auto.adjustDependingProjectPhases(mainProject.getAllPhases());
-        for (Phase[] p : phases) {
-            if (p.length > 0) {
-                com.topcoder.project.phases.Project projectPhases = p[0].getProject();
-                phaseManager.updatePhases(projectPhases, operator);
-            }
-        }
-    }
+   
 
     /**
      * <p>Gets the last phase from specified list of project phase. Current implementation looks up for the <code>Final
