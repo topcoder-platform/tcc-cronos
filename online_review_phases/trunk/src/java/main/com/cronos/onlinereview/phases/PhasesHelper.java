@@ -157,6 +157,13 @@ final class PhasesHelper {
     static final String PAYMENT_PROPERTY_KEY = "Payment";
 
     /**
+     * This constant stores Payment Status property key.
+     *
+     * @since 1.4
+     */
+    static final String PAYMENT_STATUS_PROPERTY_KEY = "Payment Status";
+
+    /**
      * This constant stores Submitter role name.
      *
      * @since 1.1
@@ -1811,9 +1818,14 @@ final class PhasesHelper {
             for (Iterator<?> itr = entries.iterator(); itr.hasNext();) {
                 Map.Entry<?, ?> entry = (Map.Entry<?, ?>) itr.next();
 
-                newResource.setProperty((String) entry.getKey(), entry.getValue());
+                if ( !PAYMENT_PROPERTY_KEY.equals((String)entry.getKey()) ) {
+                    newResource.setProperty((String) entry.getKey(), entry.getValue());
+                }
             }
         }
+
+        // don't duplicate payments
+        newResource.setProperty(PAYMENT_STATUS_PROPERTY_KEY, "N/A");
 
         // set phase id
         newResource.setPhase(new Long(newPhaseId));
