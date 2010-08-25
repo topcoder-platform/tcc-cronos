@@ -1,0 +1,9 @@
+Wed, Nov 18, 2009 12:50 PM EST
+Hello Volodymyr Kachurovskyi,
+Handle: VolodymyrK
+This is the notification on project: Online Review Phases
+OR link: http://software.topcoder.com/review/actions/ViewProjectDetails.do?method=viewProjectDetails&pid=30007860
+Version: 1.1
+This is the start of the Aggregation phase.
+
+[The project has no Aggregator assigned!]
