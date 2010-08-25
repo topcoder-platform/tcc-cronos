@@ -5106,6 +5106,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     {
                         c.setSname("Cancelled");
                     }
+                    else if (((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.DRAFT.getName()))
+                    {
+                        c.setSname("Draft");
+                    }
 					else 
                     {
                         c.setSname("Completed");
