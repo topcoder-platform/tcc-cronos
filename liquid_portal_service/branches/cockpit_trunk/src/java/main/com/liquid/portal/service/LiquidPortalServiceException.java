@@ -18,7 +18,7 @@ import java.util.HashMap;
  * user.emailAddress is null/empty                                                  2003
  * user.password is null/empty                                                      2004
  * user.handle is null/empty                                                        2005
- * user.phone is null/empty                                                         2006
+ * user.status is not Active                                                        2006
  * requestorHandle is null/empty                                                    3000
  * userHandle is null/empty                                                         3001
  * cockpitProjectNames is null/empty                                                3002
@@ -102,10 +102,10 @@ public class LiquidPortalServiceException extends Exception {
 
     /**
      * <p>
-     * Error code for user.phone is null/empty.
+     * Error code for user.status is not active.
      * </p>
      */
-    //public static final int EC_USER_PHONE_NULL_EMPTY = 2006;
+    public static final int EC_USER_STATUS_NOT_ACTIVE = 2006;
 
     /**
      * <p>
@@ -336,6 +336,7 @@ public class LiquidPortalServiceException extends Exception {
         errorMessages.put(EC_FAIL_TO_ASSIGN_PERMISSION, "Fail to assign permission.");
         errorMessages.put(EC_HANDLE_DOESNOT_EXIST, "Handle doset not exist.");
         errorMessages.put(EC_CANNOT_ADD_USER_TO_JIRA, "Can not add user to JIRA.");
+        errorMessages.put(EC_USER_STATUS_NOT_ACTIVE, "User's TopCoder Account has not been activated.  User needs to click the activation link from the registration confirmation email or request a new activation link from support@topcoder.com");
 
         
 

@@ -943,6 +943,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             warnings.add(getWarning("User info doesn't math with persisted user info", LiquidPortalServiceException.EC_USER_INFO_DOESNOT_MATCH_WITH_PERSISTENCE, null));
         }
 
+        if (!"A".equals(savedUserInfo.getStatus())) {
+            // demographic information doesn't match (Email, First or Last Name)
+            warnings.add(getWarning("User's TopCoder Account has not been activated.  User needs to click the activation link from the registration confirmation email or request a new activation link from support@topcoder.com", 
+                                     LiquidPortalServiceException.EC_USER_STATUS_NOT_ACTIVE, null));
+        }
+
         TCSubject tcsubject = getTCSubject(true);
 
         if (force || demoMatched) {
