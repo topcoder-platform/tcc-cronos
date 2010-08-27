@@ -695,7 +695,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
 
             Query query1 = em.createNativeQuery(
                     "select "
-                    + "user.user_id, user.handle, user.first_name, user.last_name, email.address "
+                    + "user.user_id, user.handle, user.first_name, user.last_name, email.address, user.status "
                     + "from user "
                     + "left outer join email on user.user_id = email.user_id "
                     + "where user.handle_lower = :handle ");
@@ -719,6 +719,10 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             userInfo.setFirstName(values[2].toString());
             userInfo.setLastName(values[3].toString());
             userInfo.setEmailAddress(values[4].toString());
+            if (values[5] != null)
+            {
+                userInfo.setStatus(values[5].toString());
+            }
 
             // this query retrieves the group IDs associated with the user
             Query query2 = em.createNativeQuery(

@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.1
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "userInfo", propOrder = { "firstName", "lastName", "emailAddress", "handle", "groupIds", "userId"})
+@XmlType(name = "userInfo", propOrder = { "firstName", "lastName", "emailAddress", "handle", "groupIds", "userId", "status"})
 public class UserInfo implements Serializable {
 
     /**
@@ -62,6 +62,13 @@ public class UserInfo implements Serializable {
      * any value. The default value is 0.
      */
     private long userId;
+
+
+    /**
+     * Represents the status attribute of the UserInfo entity. It's set and accessed in the set/get methods. It can
+     * be any value.The default value is null.
+     */
+    private String status;
 
     /**
      * Creates an instance of this class. Empty constructor.
@@ -181,5 +188,25 @@ public class UserInfo implements Serializable {
      */
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+
+    /**
+     * Sets the user's status
+     *
+     * @param status
+     *            the user's status
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * Retrieves the user's status.
+     *
+     * @return the user's status
+     */
+    public String getStatus() {
+        return status;
     }
 }
