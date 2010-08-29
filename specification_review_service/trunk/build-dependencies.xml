@@ -4,7 +4,7 @@
     <!-- Properties used in compile_targets ANT target for JDK version x -->
     <property name="component.target" value="1.5"/>
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
-	<property name="jboss.home" value="C:/tcs/ib/jboss-4.2.2.GA" />
+	  <property name="jboss.home" value="${ext_libdir}/jboss/4.2.2.GA" />
 	
     <property name="auto_screening_management.jar" value="${cronos_libdir}\auto_screening_management\1.0\auto_screening_management.jar"/>
     <property name="class_associations.jar" value="${tcs_libdir}\class_associations\1.0\class_associations.jar"/>
@@ -14,8 +14,8 @@
 	
     <property name="database_abstraction.jar" value="${tcs_libdir}\database_abstraction\1.1\database_abstraction.jar"/>
     <property name="data_validation.jar" value="${tcs_libdir}\data_validation\1.1.1\data_validation.jar"/>
-    <property name="db_connection_factory.jar" value="${tcs_libdir}\db_connection_factory\1.1\db_connection_factory.jar"/>
-    <property name="deliverable_management.jar" value="${cronos_libdir}\deliverable_management\1.1.0\deliverable_management.jar"/>
+    <property name="db_connection_factory.jar" value="${tcs_libdir}\db_connection_factory\1.1.0\db_connection_factory.jar"/>
+    <property name="deliverable_management.jar" value="${tcs_libdir}\deliverable_management\1.1.0\deliverable_management.jar"/>
     <property name="deliverable_management_persistence.jar" value="${cronos_libdir}\deliverable_management_persistence\1.1.0\deliverable_management_persistence.jar"/>
 	
     <property name="guid_generator.jar" value="${tcs_libdir}\guid_generator\1.0.1\guid_generator.jar"/>
@@ -27,28 +27,28 @@
     <property name="object_formatter.jar" value="${tcs_libdir}\object_formatter\1.0.0\object_formatter.jar"/>
     <property name="online_review_phases.jar" value="${cronos_libdir}\online_review_phases\1.4.0\online_review_phases.jar"/>
     <property name="online_review_upload_services.jar" value="${cronos_libdir}\online_review_upload_services\1.1.0\online_review_upload_services.jar"/>
-    <property name="phase_management.jar" value="${cronos_libdir}\phase_management\1.0.4\phase_management.jar"/>
+    <property name="phase_management.jar" value="${tcs_libdir}\phase_management\1.0.4\phase_management.jar"/>
     <property name="phase_management_persistence.jar" value="${cronos_libdir}\phase_management_persistence\1.0\phase_management_persistence.jar"/>
 	
-    <property name="project_management.jar" value="${cronos_libdir}\project_management\1.0\project_management.jar"/>
+    <property name="project_management.jar" value="${cronos_libdir}\project_management\1.0.1\project_management.jar"/>
     <property name="project_management_persistence.jar" value="${cronos_libdir}\project_management_persistence\1.0\project_management_persistence.jar"/>
-    <property name="project_phases.jar" value="${cronos_libdir}\project_phases\2.0.1\project_phases.jar"/>
-    <property name="project_services.jar" value="${cronos_libdir}\project_services\1.1.1\project_services.jar"/>
-    <property name="resource_management.jar" value="${cronos_libdir}\resource_management\1.1\resource_management.jar"/>
+    <property name="project_phases.jar" value="${tcs_libdir}\project_phases\2.0.1\project_phases.jar"/>
+    <property name="project_services.jar" value="${tcs_libdir}\project_services\1.1\project_services.jar"/>
+    <property name="resource_management.jar" value="${tcs_libdir}\resource_management\1.1\resource_management.jar"/>
 	
     <property name="resource_management_persistence.jar" value="${cronos_libdir}\resource_management_persistence\1.2.2\resource_management_persistence.jar"/>
-    <property name="review_data_structure.jar" value="${cronos_libdir}\review_data_structure\1.0\review_data_structure.jar"/>
-    <property name="review_management.jar" value="${cronos_libdir}\review_management\1.0\review_management.jar"/>
+    <property name="review_data_structure.jar" value="${tcs_libdir}\review_data_structure\1.0\review_data_structure.jar"/>
+    <property name="review_management.jar" value="${tcs_libdir}\review_management\1.0\review_management.jar"/>
     <property name="review_management_persistence.jar" value="${cronos_libdir}\review_management_persistence\1.0\review_management_persistence.jar"/>
-    <property name="review_score_aggregator.jar" value="${cronos_libdir}\review_score_aggregator\1.0\review_score_aggregator.jar"/>
+    <property name="review_score_aggregator.jar" value="${tcs_libdir}\review_score_aggregator\1.0\review_score_aggregator.jar"/>
 	
-    <property name="scorecard_data_structure.jar" value="${cronos_libdir}\scorecard_data_structure\1.0\scorecard_data_structure.jar"/>
-    <property name="scorecard_management.jar" value="${cronos_libdir}\scorecard_management\1.0.1\scorecard_management.jar"/>
+    <property name="scorecard_data_structure.jar" value="${tcs_libdir}\scorecard_data_structure\1.0\scorecard_data_structure.jar"/>
+    <property name="scorecard_management.jar" value="${tcs_libdir}\scorecard_management\1.0.1\scorecard_management.jar"/>
     <property name="scorecard_management_persistence.jar" value="${cronos_libdir}\scorecard_management_persistence\1.0.1\scorecard_management_persistence.jar"/>
     <property name="search_builder.jar" value="${tcs_libdir}\search_builder\1.4.1\search_builder.jar"/>
     <property name="security_manager.jar" value="${tcs_libdir}\security_manager\1.1\security_manager.jar"/>
 	
-    <property name="team_management.jar" value="${cronos_libdir}\team_management\1.0.1\team_management.jar"/>
+    <property name="team_management.jar" value="${tcs_libdir}\team_management\1.0.1\team_management.jar"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}\typesafe_enum\1.1.0\typesafe_enum.jar"/>
     <property name="user_project_data_store.jar" value="${cronos_libdir}\user_project_data_store\1.0.1\user_project_data_store.jar"/>
     <property name="workdays.jar" value="${tcs_libdir}\workdays\1.0.1\workdays.jar"/>
@@ -57,14 +57,16 @@
     <property name="ifxjdbc.jar" value="${ext_libdir}\informix\1.4.1\ifxjdbc.jar"/>
     <property name="activation.jar" value="${ext_libdir}\jaf\1.1.1\activation.jar"/>
     <property name="easyMock.jar" value="${ext_libdir}\easyMock\3.0\easymock-3.0.jar"/>
-    <property name="hibernate3.jar" value="${ext_libdir}\hibernate3\3.3.2\hibernate3.jar"/>
-    <property name="cglib.jar" value="${ext_libdir}\cglib\2.2\cglib.jar"/>
+    <property name="hibernate3.jar" value="${ext_libdir}\hibernate\3.3.2.GA\hibernate3.jar"/>
+    <property name="cglib.jar" value="${ext_libdir}\cglib\2.2\cglib-2.2.jar"/>
 	
     <property name="jboss-ejb3-client.jar" value="${jboss.home}\client\jboss-ejb3-client.jar"/>
     <property name="jboss-ejb3x.jar" value="${jboss.home}\client\jboss-ejb3x.jar"/>
     <property name="jboss-j2ee.jar" value="${jboss.home}\client\jboss-j2ee.jar"/>
     <property name="jbossall-client.jar" value="${jboss.home}\client\jbossall-client.jar"/>
     <property name="jnp-client.jar" value="${jboss.home}\client\jnp-client.jar"/>
+
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
 
     <path id="component.tcs-dependencies">
         <pathelement location="${auto_screening_management.jar}"/>
@@ -130,6 +132,7 @@
     </path>
 
     <path id="component.test.3rdParty-dependencies">
+    	  <pathelement location="${junit.jar}" />
     </path>
 </project>
 
