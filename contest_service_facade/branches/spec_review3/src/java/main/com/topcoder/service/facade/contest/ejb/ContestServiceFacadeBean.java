@@ -3966,8 +3966,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // need to remove loops before returning
                 removeDocumentationLoops(contest);
 
+                Date startDate = contest.getProjectPhases().getStartDate();
+                for (com.topcoder.project.phases.Phase p : contest.getProjectPhases().getPhases()) 
+                {       
+                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                    {
+                        startDate = p.getFixedStartDate();
+                        break;
+                    }
+                 }
+
                 // set project start date in production date
-                contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
+                contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(startDate));
             }
 
             if (billingProjectId > 0) {
@@ -4384,10 +4394,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 } */
             }
 
+             Date startDate = contest.getProjectPhases().getStartDate();
+                for (com.topcoder.project.phases.Phase p : contest.getProjectPhases().getPhases()) 
+                {       
+                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                    {
+                        startDate = p.getFixedStartDate();
+                        break;
+                    }
+                 }
+
+
             // set project start date in production date
             contest.getAssetDTO()
-                   .setProductionDate(getXMLGregorianCalendar(
-                    contest.getProjectPhases().getStartDate()));
+                   .setProductionDate(getXMLGregorianCalendar(startDate));
 
             // need to remove loops before returning
             removeDocumentationLoops(contest);
@@ -5016,10 +5036,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 allPhases[i].clearDependencies();
             }
 
+            Date startDate = contest.getProjectPhases().getStartDate();
+            for (com.topcoder.project.phases.Phase p : contest.getProjectPhases().getPhases()) 
+            {       
+                if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                {
+                    startDate = p.getFixedStartDate();
+                    break;
+                }
+             }
+
             // set project start date in production date
             contest.getAssetDTO()
-                   .setProductionDate(getXMLGregorianCalendar(
-                    contest.getProjectPhases().getStartDate()));
+                   .setProductionDate(getXMLGregorianCalendar(startDate));
 
             // set null to avoid cycle
             contest.getAssetDTO().setDependencies(null);
