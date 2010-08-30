@@ -1674,24 +1674,63 @@ public class ProjectServicesImpl implements ProjectServices {
             // recalcuate phase dates in case project start date changes
             Phase[] phases = projectPhases.getAllPhases();
             Map phasesMap = new HashMap();
-            for (Phase p : phases) {
+            
+             for (Phase p : phases) {
                         phasesMap.put(new Long(p.getId()), p);
                         p.setScheduledStartDate(null);
                         p.setScheduledEndDate(null);
                         p.setFixedStartDate(null);
              }
-            phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+             phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+            
+
             for (Phase p : phases) {
                         p.setScheduledStartDate(p.calcStartDate());
                         p.setScheduledEndDate(p.calcEndDate());
                         // only set Reg with fixed dates
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
                         {
                             p.setFixedStartDate(p.calcStartDate());
                         }
-                        
-
             }
+
+           
+
+            long diff = 0;
+            for (Phase p : phases) {
+                        phasesMap.put(new Long(p.getId()), p);
+                        // check the diff between project start date and reg phase start date
+                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
+                                diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
+                        }
+             }
+
+
+            
+            // adjust project start date so reg start date is the passed project start date
+            projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
+
+            for (Phase p : phases) {
+                        phasesMap.put(new Long(p.getId()), p);
+                        p.setScheduledStartDate(null);
+                        p.setScheduledEndDate(null);
+                        p.setFixedStartDate(null);
+            }
+            phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+
+            for (Phase p : phases) {
+                        p.setScheduledStartDate(p.calcStartDate());
+                        p.setScheduledEndDate(p.calcEndDate());
+                        // only set Reg with fixed dates
+                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+                        {
+                            p.setFixedStartDate(p.calcStartDate());
+                        }
+            }
+
+          
 
 
             // call phaseManager.updatePhases(projectPhases,operator)
