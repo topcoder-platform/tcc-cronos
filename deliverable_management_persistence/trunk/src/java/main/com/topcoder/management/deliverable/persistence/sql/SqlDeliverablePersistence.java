@@ -15,6 +15,8 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 
 import java.sql.Connection;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * <p>
@@ -345,24 +347,53 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                         + ", resourceId:" + Helper.getIdString(resourceIds) + " and phaseId:"
                         + Helper.getIdString(phaseIds)));
 
+        Set<Long> distinctDeliverableIds = new HashSet<Long>();
+        for (long deliverableId : deliverableIds) {
+            distinctDeliverableIds.add(deliverableId);
+        }
+
         // build the match condition string.
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append('(');
-        for (int i = 0; i < deliverableIds.length; ++i) {
-            if (i != 0) {
+
+        // To reduce size of the string we move the equality check for deliverable_id out of the braces.
+        // We do that by several linear traversal through the arrays each time picking up the only items with
+        // a certain deliverable ID.
+        boolean firstDeliverable = true;
+        for (Long deliverableId : distinctDeliverableIds) {
+            if (!firstDeliverable) {
                 stringBuffer.append(" OR ");
             }
-            stringBuffer.append('(');
+            firstDeliverable = false;
+
+            stringBuffer.append("(");
             stringBuffer.append("d.deliverable_id=");
-            stringBuffer.append(deliverableIds[i]);
+            stringBuffer.append(deliverableId);
             stringBuffer.append(" AND ");
-            stringBuffer.append("r.resource_id=");
-            stringBuffer.append(resourceIds[i]);
-            stringBuffer.append(" AND ");
-            stringBuffer.append("p.project_phase_id=");
-            stringBuffer.append(phaseIds[i]);
+            stringBuffer.append("(");
+
+            boolean firstCondition = true;
+            for (int i = 0; i < deliverableIds.length; ++i) {
+                if (deliverableIds[i] != deliverableId) {
+                    continue;
+                }
+                if (!firstCondition) {
+                    stringBuffer.append(" OR ");
+                }
+                firstCondition = false;
+
+                stringBuffer.append("(");
+                stringBuffer.append("r.resource_id=");
+                stringBuffer.append(resourceIds[i]);
+                stringBuffer.append(" AND ");
+                stringBuffer.append("p.project_phase_id=");
+                stringBuffer.append(phaseIds[i]);
+                stringBuffer.append(")");
+            }
+            stringBuffer.append(")");
             stringBuffer.append(")");
         }
+
         stringBuffer.append(')');
         String matchCondition = stringBuffer.toString();
 
@@ -450,27 +481,56 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                         + Helper.getIdString(phaseIds)
                         + " and submissionIds:" + Helper.getIdString(submissionIds)));
 
+        Set<Long> distinctDeliverableIds = new HashSet<Long>();
+        for (long deliverableId : deliverableIds) {
+            distinctDeliverableIds.add(deliverableId);
+        }
+
         // build the match condition string.
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append('(');
-        for (int i = 0; i < deliverableIds.length; ++i) {
-            if (i != 0) {
+
+        // To reduce size of the string we move the equality check for deliverable_id out of the braces.
+        // We do that by several linear traversal through the arrays each time picking up the only items with
+        // a certain deliverable ID.
+        boolean firstDeliverable = true;
+        for (Long deliverableId : distinctDeliverableIds) {
+            if (!firstDeliverable) {
                 stringBuffer.append(" OR ");
             }
-            stringBuffer.append('(');
+            firstDeliverable = false;
+
+            stringBuffer.append("(");
             stringBuffer.append("d.deliverable_id=");
-            stringBuffer.append(deliverableIds[i]);
+            stringBuffer.append(deliverableId);
             stringBuffer.append(" AND ");
-            stringBuffer.append("s.submission_id=");
-            stringBuffer.append(submissionIds[i]);
-            stringBuffer.append(" AND ");
-            stringBuffer.append("r.resource_id=");
-            stringBuffer.append(resourceIds[i]);
-            stringBuffer.append(" AND ");
-            stringBuffer.append("p.project_phase_id=");
-            stringBuffer.append(phaseIds[i]);
+            stringBuffer.append("(");
+
+            boolean firstCondition = true;
+            for (int i = 0; i < deliverableIds.length; ++i) {
+                if (deliverableIds[i] != deliverableId) {
+                    continue;
+                }
+                if (!firstCondition) {
+                    stringBuffer.append(" OR ");
+                }
+                firstCondition = false;
+                
+                stringBuffer.append('(');
+                stringBuffer.append("s.submission_id=");
+                stringBuffer.append(submissionIds[i]);
+                stringBuffer.append(" AND ");
+                stringBuffer.append("r.resource_id=");
+                stringBuffer.append(resourceIds[i]);
+                stringBuffer.append(" AND ");
+                stringBuffer.append("p.project_phase_id=");
+                stringBuffer.append(phaseIds[i]);
+                stringBuffer.append(")");
+            }
+            stringBuffer.append(")");
             stringBuffer.append(")");
         }
+
         stringBuffer.append(')');
         String matchCondition = stringBuffer.toString();
 
