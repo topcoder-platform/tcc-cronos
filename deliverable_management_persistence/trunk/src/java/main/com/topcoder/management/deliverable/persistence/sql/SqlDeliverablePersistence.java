@@ -130,23 +130,19 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * </p>
      */
     private static final String LOAD_DELIVERABLES_WITH_SUBMISSION_SQL = "SELECT "
-            + "upload.project_id, project_phase.project_phase_id, resource.resource_id, "
-            + "submission.submission_id, deliverable_lu.required, "
-            + "deliverable_lu.deliverable_id, deliverable_lu.create_user, deliverable_lu.create_date, "
-            + "deliverable_lu.modify_user, deliverable_lu.modify_date, "
-            + "deliverable_lu.name, deliverable_lu.description "
-            + "FROM deliverable_lu "
-            + "INNER JOIN resource ON resource.resource_role_id = deliverable_lu.resource_role_id "
-            + "INNER JOIN project_phase ON project_phase.project_id = resource.project_id AND "
-            + "project_phase.phase_type_id = deliverable_lu.phase_type_id "
-            + "INNER JOIN upload ON upload.project_id = resource.project_id "
-            + "INNER JOIN submission ON submission.upload_id = upload.upload_id "
-            + "INNER JOIN submission_status_lu ON submission.submission_status_id = "
-            + "submission_status_lu.submission_status_id "
-            + "INNER JOIN submission_type_lu ON submission.submission_type_id = submission_type_lu.submission_type_id "
-            + "WHERE deliverable_lu.submission_type_id = submission.submission_type_id AND submission_status_lu.name = 'Active' "
-            + "AND (resource.project_phase_id IS NULL or resource.project_phase_id = project_phase.project_phase_id) "
-            + "AND ";
+        + "u.project_id, p.project_phase_id, r.resource_id, "
+        + "s.submission_id, d.required, "
+        + "d.deliverable_id, d.create_user, d.create_date, "
+        + "d.modify_user, d.modify_date, "
+        + "d.name, d.description "
+        + "FROM deliverable_lu d "
+        + "INNER JOIN resource r ON r.resource_role_id = d.resource_role_id "
+        + "INNER JOIN project_phase p ON p.project_id = r.project_id AND p.phase_type_id = d.phase_type_id "
+        + "INNER JOIN upload u ON u.project_id = r.project_id "
+        + "INNER JOIN submission s ON s.upload_id = u.upload_id "
+        + "WHERE d.submission_type_id = s.submission_type_id "
+        + "AND s.submission_status_id = 1 "
+        + "AND ";
 
     /**
      * <p>
@@ -165,16 +161,15 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * </p>
      */
     private static final String LOAD_DELIVERABLES_WITHOUT_SUBMISSION_SQL = "SELECT "
-            + "resource.project_id, project_phase.project_phase_id, "
-            + "resource.resource_id, deliverable_lu.required, "
-            + "deliverable_lu.deliverable_id, deliverable_lu.create_user, deliverable_lu.create_date, "
-            + "deliverable_lu.modify_user, deliverable_lu.modify_date, "
-            + "deliverable_lu.name, deliverable_lu.description "
-            + "FROM deliverable_lu "
-            + "INNER JOIN resource ON resource.resource_role_id = deliverable_lu.resource_role_id "
-            + "INNER JOIN project_phase ON project_phase.project_id = resource.project_id AND "
-            + "project_phase.phase_type_id = deliverable_lu.phase_type_id "
-            + "WHERE deliverable_lu.submission_type_id IS NULL AND ";
+        + "r.project_id, p.project_phase_id, "
+        + "r.resource_id, d.required, "
+        + "d.deliverable_id, d.create_user, d.create_date, "
+        + "d.modify_user, d.modify_date, "
+        + "d.name, d.description "
+        + "FROM deliverable_lu d "
+        + "INNER JOIN resource r ON r.resource_role_id = d.resource_role_id "
+        + "INNER JOIN project_phase p ON p.project_id = r.project_id AND p.phase_type_id = d.phase_type_id "
+        + "WHERE d.submission_type_id IS NULL AND ";
 
 
     /**
@@ -358,13 +353,13 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                 stringBuffer.append(" OR ");
             }
             stringBuffer.append('(');
-            stringBuffer.append("deliverable_lu.deliverable_id=");
+            stringBuffer.append("d.deliverable_id=");
             stringBuffer.append(deliverableIds[i]);
             stringBuffer.append(" AND ");
-            stringBuffer.append("resource.resource_id=");
+            stringBuffer.append("r.resource_id=");
             stringBuffer.append(resourceIds[i]);
             stringBuffer.append(" AND ");
-            stringBuffer.append("project_phase.project_phase_id=");
+            stringBuffer.append("p.project_phase_id=");
             stringBuffer.append(phaseIds[i]);
             stringBuffer.append(")");
         }
@@ -463,16 +458,16 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                 stringBuffer.append(" OR ");
             }
             stringBuffer.append('(');
-            stringBuffer.append("deliverable_lu.deliverable_id=");
+            stringBuffer.append("d.deliverable_id=");
             stringBuffer.append(deliverableIds[i]);
             stringBuffer.append(" AND ");
-            stringBuffer.append("submission.submission_id=");
+            stringBuffer.append("s.submission_id=");
             stringBuffer.append(submissionIds[i]);
             stringBuffer.append(" AND ");
-            stringBuffer.append("resource.resource_id=");
+            stringBuffer.append("r.resource_id=");
             stringBuffer.append(resourceIds[i]);
             stringBuffer.append(" AND ");
-            stringBuffer.append("project_phase.project_phase_id=");
+            stringBuffer.append("p.project_phase_id=");
             stringBuffer.append(phaseIds[i]);
             stringBuffer.append(")");
         }
