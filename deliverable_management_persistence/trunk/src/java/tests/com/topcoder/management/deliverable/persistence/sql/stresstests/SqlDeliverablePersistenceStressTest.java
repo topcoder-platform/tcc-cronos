@@ -267,12 +267,12 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         statement.addBatch("INSERT INTO upload"
             + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
             + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (1, 2, 2, 2, 2, 'parameter 1', 'System', CURRENT, 'System', CURRENT)");
+            + "VALUES (1, 2, 2, 1, 1, 'parameter 1', 'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO upload"
             + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
             + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (2, 3, 3, 2, 2, 'parameter 2', 'System', CURRENT, 'System', CURRENT)");
+            + "VALUES (2, 3, 3, 1, 1, 'parameter 2', 'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO submission"
             + "(submission_id, upload_id, submission_status_id, submission_type_id, "
