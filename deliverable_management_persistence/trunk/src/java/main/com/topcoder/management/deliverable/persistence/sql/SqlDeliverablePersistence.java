@@ -140,10 +140,9 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         + "FROM deliverable_lu d "
         + "INNER JOIN resource r ON r.resource_role_id = d.resource_role_id "
         + "INNER JOIN project_phase p ON p.project_id = r.project_id AND p.phase_type_id = d.phase_type_id "
-        + "INNER JOIN upload u ON u.project_id = r.project_id "
-        + "INNER JOIN submission s ON s.upload_id = u.upload_id "
-        + "WHERE d.submission_type_id = s.submission_type_id "
-        + "AND s.submission_status_id = 1 "
+        + "INNER JOIN upload u ON u.project_id = r.project_id and u.upload_status_id=1 and u.upload_type_id=1 "
+        + "INNER JOIN submission s ON s.upload_id = u.upload_id and s.submission_type_id = d.submission_type_id AND s.submission_status_id = 1 "
+        + "WHERE d.submission_type_id IS NOT NULL "
         + "AND ";
 
     /**
