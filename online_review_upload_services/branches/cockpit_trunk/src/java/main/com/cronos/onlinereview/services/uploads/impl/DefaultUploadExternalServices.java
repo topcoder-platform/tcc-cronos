@@ -471,4 +471,117 @@ public class DefaultUploadExternalServices implements UploadExternalServices {
                     "Exited DefaultUploadExternalServices#addSubmitter(long, long)");
         }
     }
+
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project.
+     * </p>
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project, firstly it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     * 
+     * @param projectId
+     *            the project's id
+     * @param userId
+     *            the user's id
+     * @param filename
+     *            the file name to use
+     * @param submission
+     *            the submission file data
+     * @return the id of the new submission
+     * @throws RemoteException
+     *             if an internal exception occurs (wrap it)
+     * @throws UploadServicesException
+     *             if any error related to UploadService occurs
+     * @throws IllegalArgumentException
+     *             if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     */
+    public long uploadContestSubmission(long projectId, long userId, String filename, DataHandler submission)
+            throws RemoteException, UploadServicesException {
+        LOG.log(Level.DEBUG,
+                "Entered DefaultUploadExternalServices#uploadSubmission(long, long, String, DataHandler)");
+        Helper.checkId(projectId, "projectId", LOG);
+        Helper.checkId(userId, "userId", LOG);
+        Helper.checkString(filename, "filename", LOG);
+        Helper.checkNull(submission, "submission", LOG);
+
+        File newFile = createNewFile(filename, submission);
+        String filenameGenerated = newFile.getName();
+        Helper.logFormat(LOG, Level.INFO, "Submission file created {0}", new Object[] {newFile.getAbsolutePath()});
+        try {
+            // delegate to the similar method in uploadServices without DataHandler passing only
+            // filenameGenerated
+            return uploadServices.uploadContestSubmission(projectId, userId, filenameGenerated);
+            // if there is an exception during this processing then the file previous written must be deleted
+            // delete the file temp generated with Axis
+        } catch (UploadServicesException e) {
+            newFile.delete();
+            throw e;
+        } finally {
+        	if (submission.getName() != null) {
+        	    new File(submission.getName()).delete();
+        	}
+            Helper.logFormat(LOG, Level.DEBUG,
+                    "Exited DefaultUploadExternalServices#uploadSubmission(long, long, String, DataHandler)");
+        }
+    }
+
+
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project.
+     * </p>
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project, firstly it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     * 
+     * @param projectId
+     *            the project's id
+     * @param userId
+     *            the user's id
+     * @param filename
+     *            the file name to use
+     * @param submission
+     *            the submission file data
+     * @return the id of the new submission
+     * @throws RemoteException
+     *             if an internal exception occurs (wrap it)
+     * @throws UploadServicesException
+     *             if any error related to UploadService occurs
+     * @throws IllegalArgumentException
+     *             if any id is &lt; 0, if any argument is <code>null</code> or trim to empty
+     */
+    public long uploadSpecificationSubmission(long projectId, long userId, String filename, DataHandler submission)
+            throws RemoteException, UploadServicesException {
+        LOG.log(Level.DEBUG,
+                "Entered DefaultUploadExternalServices#uploadSubmission(long, long, String, DataHandler)");
+        Helper.checkId(projectId, "projectId", LOG);
+        Helper.checkId(userId, "userId", LOG);
+        Helper.checkString(filename, "filename", LOG);
+        Helper.checkNull(submission, "submission", LOG);
+
+        File newFile = createNewFile(filename, submission);
+        String filenameGenerated = newFile.getName();
+        Helper.logFormat(LOG, Level.INFO, "Submission file created {0}", new Object[] {newFile.getAbsolutePath()});
+        try {
+            // delegate to the similar method in uploadServices without DataHandler passing only
+            // filenameGenerated
+            return uploadServices.uploadSpecificationSubmission(projectId, userId, filenameGenerated);
+            // if there is an exception during this processing then the file previous written must be deleted
+            // delete the file temp generated with Axis
+        } catch (UploadServicesException e) {
+            newFile.delete();
+            throw e;
+        } finally {
+        	if (submission.getName() != null) {
+        	    new File(submission.getName()).delete();
+        	}
+            Helper.logFormat(LOG, Level.DEBUG,
+                    "Exited DefaultUploadExternalServices#uploadSubmission(long, long, String, DataHandler)");
+        }
+    }
 }

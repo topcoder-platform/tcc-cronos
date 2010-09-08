@@ -41,6 +41,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
+import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.UploadStatus;
@@ -195,6 +196,7 @@ public class DefaultUploadServices implements UploadServices {
     /**
      * <p>
      * Adds a new submission for an user in a particular project.
+     * @deprecated
      * </p>
      * <p>
      * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
@@ -223,156 +225,79 @@ public class DefaultUploadServices implements UploadServices {
      *             if any id is &lt; 0, if filename is <code>null</code> or trim to empty
      */
     public long uploadSubmission(long projectId, long userId, String filename) throws UploadServicesException {
-        Helper.logFormat(LOG, Level.DEBUG, "Entered DefaultUploadServices#uploadSubmission(long, long, String)");
-        Helper.checkId(projectId, "projectId", LOG);
-        Helper.checkId(userId, "userId", LOG);
-        Helper.checkString(filename, "filename", LOG);
+       // default to contest submission
+       return uploadSubmission(projectId, userId, filename, SubmissionType.CONTEST_SUBMISSION);
+    }
 
-        // check if the project exists
-        Project project = getProject(projectId);
 
-        // check that the user exists and has the submitter role
-        Resource resource = null;
-        try {
-        	resource = getResource(projectId, userId, new String[] {"Submitter"});
-        } catch (InvalidUserException e) {
-        	Helper.logFormat(LOG, Level.INFO, "Creating submitter role for user: {0} in project {1}",
-                    new Object[] {userId, projectId});
-			try {
-				resource = managersProvider.getResourceManager().getResource(addSubmitter(projectId, userId));
-			} catch (ResourcePersistenceException e1) {
-				Helper.logFormat(LOG, Level.ERROR, e, "Failed to create submitter for user: {0} and project {1}.",
-	                    new Object[] {userId, projectId});
-	            throw new UploadServicesException("Failed to create submitter for user: " + userId + " and project "
-	                    + projectId + ".", e);
-			}
-		}
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project as contest submission
+     * </p>
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project firstly, it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     *
+     * @param projectId
+     *            the project's id
+     * @param userId
+     *            the user's id
+     * @param filename
+     *            the file name to use
+     * @return the id of the new submission
+     * @throws InvalidProjectException
+     *             if the project does not exist
+     * @throws InvalidProjectPhaseException
+     *             if neither Submission or Screening phase are opened
+     * @throws InvalidUserException
+     *             if the user does not exist or has not the submitter role
+     * @throws PersistenceException
+     *             if some error occurs in persistence layer
+     * @throws UploadServicesException
+     *             if some other exception occurs in the process (wrap it)
+     * @throws IllegalArgumentException
+     *             if any id is &lt; 0, if filename is <code>null</code> or trim to empty
+     */
+    public long uploadContestSubmission(long projectId, long userId, String filename) throws UploadServicesException{
+       // default to contest submission
+       return uploadSubmission(projectId, userId, filename, SubmissionType.CONTEST_SUBMISSION);
+    }
 
-        try {
-            com.topcoder.project.phases.Project projectPhases = managersProvider.getPhaseManager().getPhases(
-                    projectId);
-            Phase[] phases = projectPhases.getAllPhases();
-            // iterate over the phases to find if the type is "Submission" or "Screening"
-            for (Phase phase : phases) {
-                if (phase.getPhaseType() != null) {
-                    Helper.logFormat(LOG, Level.INFO, "Looping through phase {0} of the project.",
-                            new Object[] {phase.getPhaseType().getName()});
-                }
-                if (phase.getPhaseType() != null
-                        && ("Submission".equals(phase.getPhaseType().getName()) || "Screening".equals(phase
-                                .getPhaseType().getName()))) {
-                    Helper.logFormat(LOG, Level.INFO, "Current status for the phase {0} is {1} of the project.",
-                            new Object[] {phase.getPhaseType().getName(), phase.getPhaseStatus().getName()});
-                    // check if submission or screening phase are open checking its the status
-                    if (PhaseStatus.OPEN.getName().equals(phase.getPhaseStatus().getName())) {
-                        // create a new Submission
-                        Submission submission = new Submission();
-
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Current status for the phase {0} is {1} of the project.", new Object[] {
-                                        phase.getPhaseType().getName(), phase.getPhaseStatus().getName()});
-                        // iterate over all SubmissionStatuses, get the SubmissionStatus with name "Active"
-                        // and set to submission
-                        SubmissionStatus[] submissionStatus = managersProvider.getUploadManager()
-                                .getAllSubmissionStatuses();
-                        for (SubmissionStatus status : submissionStatus) {
-                            if ("Active".equals(status.getName())) {
-                                submission.setSubmissionStatus(status);
-                                break;
-                            }
-                        }
-
-                        Upload upload = createUpload(projectId, resource.getId(), filename, "Submission");
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Upload created for the  projectId {0}, userId {1} with filename {2}.",
-                                new Object[] {projectId, userId, filename});
-
-                        String operator = "" + userId;
-                        // persist the upload
-                        managersProvider.getUploadManager().createUpload(upload, operator);
-
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Created submission Upload for project {0}, user {1} with file name {2}.",
-                                new Object[] {projectId, userId, filename});
-
-                        // set the upload.
-                        submission.setUpload(upload);
-
-                        // persist the submission with uploadManager.createSubmission with the useId as
-                        // operator
-                        managersProvider.getUploadManager().createSubmission(submission, operator);
-
-                        Helper.logFormat(LOG, Level.INFO, "Created submission for project {0}, user {1}.",
-                                new Object[] {projectId, userId});
-
-                        // associate the submission with the submitter resource
-                        resource.addSubmission(submission.getId());
-
-                        Helper.logFormat(LOG, Level.INFO, "Added submission {0} to resource.",
-                                new Object[] {submission.getId()});
-
-                        // Persist the resource using ResourceManager#updateResource
-                        managersProvider.getResourceManager().updateResource(resource, operator);
-
-                        Helper.logFormat(LOG, Level.INFO, "Updated resource using the operator {0}.",
-                                new Object[] {operator});
-
-                        // initiate the screening
-                        managersProvider.getScreeningManager().initiateScreening(upload.getId(), operator);
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Initiated screening for submission {0} using operator {1}.", new Object[] {
-                                        submission.getId(), operator});
-
-                        // If the project DOESN'T allow multiple submissions hence its property "Allow
-                        // multiple submissions" will be false
-                        Boolean allow = Boolean.parseBoolean((String) project
-                                .getProperty("Allow multiple submissions"));
-
-                        if (!allow) {
-                            deletePreviousSubmissions(userId, resource, submissionStatus);
-                            Helper.logFormat(LOG, Level.INFO,
-                                    "Marked previous submissions for deletion for the user {0}.",
-                                    new Object[] {userId});
-                        }
-
-                        return submission.getId();
-                    }
-
-                } // end of Submission or Screening
-            } // end of for loop
-            Helper.logFormat(LOG, Level.ERROR, "Failed to upload submission for the projectId {0}, userId {1}",
-                    new Object[] {project.getId(), userId});
-            throw new InvalidProjectException("Failed to upload submission for the project", project.getId());
-        } catch (PhaseManagementException e) {
-            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
-                    new Object[] {userId, projectId});
-            throw new UploadServicesException("Failed to upload submission for user " + userId + " and project "
-                    + projectId + ".", e);
-        } catch (UploadPersistenceException e) {
-            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
-                    new Object[] {userId, projectId});
-            throw new PersistenceException("Failed to upload submission for user " + userId + " and project "
-                    + projectId + ".", e);
-        } catch (com.cronos.onlinereview.autoscreening.management.PersistenceException e) {
-            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
-                    new Object[] {userId, projectId});
-            throw new PersistenceException("Failed to upload submission for user " + userId + " and project "
-                    + projectId + ".", e);
-        } catch (ScreeningTaskAlreadyExistsException e) {
-            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
-                    new Object[] {userId, projectId});
-            throw new UploadServicesException("Failed to upload submission for user " + userId + " and project "
-                    + projectId + ".", e);
-        } catch (ResourcePersistenceException e) {
-            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
-                    new Object[] {userId, projectId});
-            throw new UploadServicesException("Failed to upload submission for user " + userId + " and project "
-                    + projectId + ".", e);
-        } finally {
-            Helper
-                    .logFormat(LOG, Level.DEBUG,
-                            "Exited DefaultUploadServices#uploadSubmission(long, long, String)");
-        }
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project as specification submission
+     * </p>
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project firstly, it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     *
+     * @param projectId
+     *            the project's id
+     * @param userId
+     *            the user's id
+     * @param filename
+     *            the file name to use
+     * @return the id of the new submission
+     * @throws InvalidProjectException
+     *             if the project does not exist
+     * @throws InvalidProjectPhaseException
+     *             if neither Submission or Screening phase are opened
+     * @throws InvalidUserException
+     *             if the user does not exist or has not the submitter role
+     * @throws PersistenceException
+     *             if some error occurs in persistence layer
+     * @throws UploadServicesException
+     *             if some other exception occurs in the process (wrap it)
+     * @throws IllegalArgumentException
+     *             if any id is &lt; 0, if filename is <code>null</code> or trim to empty
+     */
+    public long uploadSpecificationSubmission(long projectId, long userId, String filename) throws UploadServicesException{
+       // default to contest submission
+       return uploadSubmission(projectId, userId, filename, SubmissionType.SPECIFICATION_SUBMISSION);
     }
 
     /**
@@ -1213,6 +1138,192 @@ public class DefaultUploadServices implements UploadServices {
             close(conn);
         }
     }
+
+
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project.
+     * </p>
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project firstly, it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     * 
+     * @param projectId
+     *            the project's id
+     * @param userId
+     *            the user's id
+     * @param filename
+     *            the file name to use
+     * @return the id of the new submission
+     * @throws PersistenceException
+     *             if some error occurs in persistence layer
+     * @throws UploadServicesException
+     *             if some other exception occurs in the process (wrap it)
+     * @throws InvalidProjectException
+     *             if the project does not exist
+     * @throws InvalidProjectPhaseException
+     *             if neither Submission or Screening phase are opened
+     * @throws InvalidUserException
+     *             if the user does not exist or has not the submitter role
+     * @throws IllegalArgumentException
+     *             if any id is &lt; 0, if filename is <code>null</code> or trim to empty
+     */
+    private long uploadSubmission(long projectId, long userId, String filename, SubmissionType subType) throws UploadServicesException {
+        Helper.logFormat(LOG, Level.DEBUG, "Entered DefaultUploadServices#uploadSubmission(long, long, String)");
+        Helper.checkId(projectId, "projectId", LOG);
+        Helper.checkId(userId, "userId", LOG);
+        Helper.checkString(filename, "filename", LOG);
+
+        // check if the project exists
+        Project project = getProject(projectId);
+
+        // check that the user exists and has the submitter role
+        Resource resource = null;
+        try {
+        	resource = getResource(projectId, userId, new String[] {"Submitter"});
+        } catch (InvalidUserException e) {
+        	Helper.logFormat(LOG, Level.INFO, "Creating submitter role for user: {0} in project {1}",
+                    new Object[] {userId, projectId});
+			try {
+				resource = managersProvider.getResourceManager().getResource(addSubmitter(projectId, userId));
+			} catch (ResourcePersistenceException e1) {
+				Helper.logFormat(LOG, Level.ERROR, e, "Failed to create submitter for user: {0} and project {1}.",
+	                    new Object[] {userId, projectId});
+	            throw new UploadServicesException("Failed to create submitter for user: " + userId + " and project "
+	                    + projectId + ".", e);
+			}
+		}
+
+        try {
+            com.topcoder.project.phases.Project projectPhases = managersProvider.getPhaseManager().getPhases(
+                    projectId);
+            Phase[] phases = projectPhases.getAllPhases();
+            // iterate over the phases to find if the type is "Submission" or "Screening"
+            for (Phase phase : phases) {
+                if (phase.getPhaseType() != null) {
+                    Helper.logFormat(LOG, Level.INFO, "Looping through phase {0} of the project.",
+                            new Object[] {phase.getPhaseType().getName()});
+                }
+                if (phase.getPhaseType() != null
+                        && ("Submission".equals(phase.getPhaseType().getName()) || "Screening".equals(phase
+                                .getPhaseType().getName()))) {
+                    Helper.logFormat(LOG, Level.INFO, "Current status for the phase {0} is {1} of the project.",
+                            new Object[] {phase.getPhaseType().getName(), phase.getPhaseStatus().getName()});
+                    // check if submission or screening phase are open checking its the status
+                    if (PhaseStatus.OPEN.getName().equals(phase.getPhaseStatus().getName())) {
+                        // create a new Submission
+                        Submission submission = new Submission();
+                        submission.setSubmissionType(subType);
+
+                        Helper.logFormat(LOG, Level.INFO,
+                                "Current status for the phase {0} is {1} of the project.", new Object[] {
+                                        phase.getPhaseType().getName(), phase.getPhaseStatus().getName()});
+                        // iterate over all SubmissionStatuses, get the SubmissionStatus with name "Active"
+                        // and set to submission
+                        SubmissionStatus[] submissionStatus = managersProvider.getUploadManager()
+                                .getAllSubmissionStatuses();
+                        for (SubmissionStatus status : submissionStatus) {
+                            if ("Active".equals(status.getName())) {
+                                submission.setSubmissionStatus(status);
+                                break;
+                            }
+                        }
+
+                        Upload upload = createUpload(projectId, resource.getId(), filename, "Submission");
+                        Helper.logFormat(LOG, Level.INFO,
+                                "Upload created for the  projectId {0}, userId {1} with filename {2}.",
+                                new Object[] {projectId, userId, filename});
+
+                        String operator = "" + userId;
+                        // persist the upload
+                        managersProvider.getUploadManager().createUpload(upload, operator);
+
+                        Helper.logFormat(LOG, Level.INFO,
+                                "Created submission Upload for project {0}, user {1} with file name {2}.",
+                                new Object[] {projectId, userId, filename});
+
+                        // set the upload.
+                        submission.setUpload(upload);
+
+                        // persist the submission with uploadManager.createSubmission with the useId as
+                        // operator
+                        managersProvider.getUploadManager().createSubmission(submission, operator);
+
+                        Helper.logFormat(LOG, Level.INFO, "Created submission for project {0}, user {1}.",
+                                new Object[] {projectId, userId});
+
+                        // associate the submission with the submitter resource
+                        resource.addSubmission(submission.getId());
+
+                        Helper.logFormat(LOG, Level.INFO, "Added submission {0} to resource.",
+                                new Object[] {submission.getId()});
+
+                        // Persist the resource using ResourceManager#updateResource
+                        managersProvider.getResourceManager().updateResource(resource, operator);
+
+                        Helper.logFormat(LOG, Level.INFO, "Updated resource using the operator {0}.",
+                                new Object[] {operator});
+
+                        // initiate the screening
+                        managersProvider.getScreeningManager().initiateScreening(upload.getId(), operator);
+                        Helper.logFormat(LOG, Level.INFO,
+                                "Initiated screening for submission {0} using operator {1}.", new Object[] {
+                                        submission.getId(), operator});
+
+                        // If the project DOESN'T allow multiple submissions hence its property "Allow
+                        // multiple submissions" will be false
+                        Boolean allow = Boolean.parseBoolean((String) project
+                                .getProperty("Allow multiple submissions"));
+
+                        if (!allow) {
+                            deletePreviousSubmissions(userId, resource, submissionStatus);
+                            Helper.logFormat(LOG, Level.INFO,
+                                    "Marked previous submissions for deletion for the user {0}.",
+                                    new Object[] {userId});
+                        }
+
+                        return submission.getId();
+                    }
+
+                } // end of Submission or Screening
+            } // end of for loop
+            Helper.logFormat(LOG, Level.ERROR, "Failed to upload submission for the projectId {0}, userId {1}",
+                    new Object[] {project.getId(), userId});
+            throw new InvalidProjectException("Failed to upload submission for the project", project.getId());
+        } catch (PhaseManagementException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
+                    new Object[] {userId, projectId});
+            throw new UploadServicesException("Failed to upload submission for user " + userId + " and project "
+                    + projectId + ".", e);
+        } catch (UploadPersistenceException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
+                    new Object[] {userId, projectId});
+            throw new PersistenceException("Failed to upload submission for user " + userId + " and project "
+                    + projectId + ".", e);
+        } catch (com.cronos.onlinereview.autoscreening.management.PersistenceException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
+                    new Object[] {userId, projectId});
+            throw new PersistenceException("Failed to upload submission for user " + userId + " and project "
+                    + projectId + ".", e);
+        } catch (ScreeningTaskAlreadyExistsException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
+                    new Object[] {userId, projectId});
+            throw new UploadServicesException("Failed to upload submission for user " + userId + " and project "
+                    + projectId + ".", e);
+        } catch (ResourcePersistenceException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "Failed to upload submission for user {0} and project {1}.",
+                    new Object[] {userId, projectId});
+            throw new UploadServicesException("Failed to upload submission for user " + userId + " and project "
+                    + projectId + ".", e);
+        } finally {
+            Helper
+                    .logFormat(LOG, Level.DEBUG,
+                            "Exited DefaultUploadServices#uploadSubmission(long, long, String)");
+        }
+    }
+
 
     /**
      * Retrieve and update next ComponentInquiryId.
