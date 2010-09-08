@@ -23,7 +23,7 @@ public interface UploadServices {
      * <p>
      * Adds a new submission for an user in a particular project.
      * </p>
-     *
+     * @deprecated, use uploadContestSubmission or uploadSpecificationSubmission
      * <p>
      * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
      * submission are not allowed for the project firstly, it will add the new submission, secondly mark previous
@@ -153,4 +153,70 @@ public interface UploadServices {
      */
     public long addSubmitter(long projectId, long userId) throws InvalidProjectException,
             InvalidUserException,UploadServicesException, InvalidProjectPhaseException;
+
+
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project as contest submission
+     * </p>
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project firstly, it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     *
+     * @param projectId
+     *            the project's id
+     * @param userId
+     *            the user's id
+     * @param filename
+     *            the file name to use
+     * @return the id of the new submission
+     * @throws InvalidProjectException
+     *             if the project does not exist
+     * @throws InvalidProjectPhaseException
+     *             if neither Submission or Screening phase are opened
+     * @throws InvalidUserException
+     *             if the user does not exist or has not the submitter role
+     * @throws PersistenceException
+     *             if some error occurs in persistence layer
+     * @throws UploadServicesException
+     *             if some other exception occurs in the process (wrap it)
+     * @throws IllegalArgumentException
+     *             if any id is &lt; 0, if filename is <code>null</code> or trim to empty
+     */
+    public long uploadContestSubmission(long projectId, long userId, String filename) throws UploadServicesException;
+
+    /**
+     * <p>
+     * Adds a new submission for an user in a particular project as specification submission
+     * </p>
+     * <p>
+     * If the project allows multiple submissions for users, it will add the new submission and return. If multiple
+     * submission are not allowed for the project firstly, it will add the new submission, secondly mark previous
+     * submissions as deleted and then return.
+     * </p>
+     *
+     * @param projectId
+     *            the project's id
+     * @param userId
+     *            the user's id
+     * @param filename
+     *            the file name to use
+     * @return the id of the new submission
+     * @throws InvalidProjectException
+     *             if the project does not exist
+     * @throws InvalidProjectPhaseException
+     *             if neither Submission or Screening phase are opened
+     * @throws InvalidUserException
+     *             if the user does not exist or has not the submitter role
+     * @throws PersistenceException
+     *             if some error occurs in persistence layer
+     * @throws UploadServicesException
+     *             if some other exception occurs in the process (wrap it)
+     * @throws IllegalArgumentException
+     *             if any id is &lt; 0, if filename is <code>null</code> or trim to empty
+     */
+    public long uploadSpecificationSubmission(long projectId, long userId, String filename) throws UploadServicesException;
+
 }
