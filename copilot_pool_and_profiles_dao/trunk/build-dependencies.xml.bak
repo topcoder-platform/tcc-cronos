@@ -1,0 +1,44 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+		<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="hibernate.jar" value="${ext_libdir}/hibernate/3.5.4/hibernate3.jar"/>
+    <property name="spring-tx.jar" value="${ext_libdir}/spring/2.5.6/spring-tx.jar"/>
+    <property name="common-annotations.jar" value="${ext_libdir}/j2ee/1.5/common-annotations.jar"/>
+    <property name="junit.jar" value="${ext_libdir}/junit/4.4/junit-4.4.jar"/>
+    <property name="informix.jar" value="${ext_libdir}/informix/11.5/ifxjdbc.jar"/>
+    <property name="mysql.jar" value="${ext_libdir}/mysql/5.1.5/mysql-connector-java-5.1.5-bin.jar"/>
+		<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15"/>
+		
+    <path id="component.tcs-dependencies">
+		    <include name="logging_wrapper.jar" />
+		    <include name="base_exception.jar" />
+		    <include name="object_formatter.jar" />
+		    <include name="typesafe_enum.jar" />
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+		    <include name="hibernate.jar" />
+		    <include name="spring-tx.jar" />
+		    <include name="common-annotations.jar" />
+		    
+		    <include name="informix.jar" />
+		    <include name="mysql.jar" />
+		    <include name="log4j.jar" />
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+				<include name="junit.jar" />
+    </path>
+
+</project>
