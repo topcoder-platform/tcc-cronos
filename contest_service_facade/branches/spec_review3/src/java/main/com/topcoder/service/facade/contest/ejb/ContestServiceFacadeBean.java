@@ -3092,6 +3092,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 hasEligibility = true;
             }
 
+/** no spec review project anymore
 
             // no need for dev that has design, so all non-dev and dev only will have spec review
             // and dont create for private, and it is not already have a spec review
@@ -3147,7 +3148,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot",
                                               Long.toString(tcSubject.getUserId()));
 
-            }
+            }  */
 
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType,
