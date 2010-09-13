@@ -58,6 +58,7 @@ import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -126,9 +127,15 @@ import java.util.Set;
  * <li>Added some constants.</li>
  * </ol>
  * </p>
+ * <p>
+ * Version 1.4.3 Change notes:
+ * <ol>
+ * <li>Phase attributes are copied for newly created Specification Review phase.</li>
+ * </ol>
+ * </p>
  *
  * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy
- * @version 1.4
+ * @version 1.4.3
  * @since 1.0
  */
 final class PhasesHelper {
@@ -1576,7 +1583,7 @@ final class PhasesHelper {
 
         // use helper method to create the new phases
         int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[] {
-            finalFixPhaseType, finalReviewPhaseType}, phaseStatus, phaseManager, operator);
+            finalFixPhaseType, finalReviewPhaseType}, phaseStatus, phaseManager, operator, false);
 
         // save the phases
         try {
@@ -1646,7 +1653,7 @@ final class PhasesHelper {
 
         // use helper method to create the new phases
         int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[] {
-            specSubmissionPhaseType, specReviewPhaseType}, phaseStatus, phaseManager, operator);
+            specSubmissionPhaseType, specReviewPhaseType}, phaseStatus, phaseManager, operator, true);
 
         // save the phases
         try {
@@ -1669,6 +1676,8 @@ final class PhasesHelper {
      * <li>creates a new Phases array with additional elements for new phase instances.</li>
      * <li>removes all phases of the project.</li>
      * <li>adds each Phase from the new Phases array to the project.</li>
+     * <li>if necessary the attributes of current phase are copied to newly created phase of same type if such a phase
+     * is created</li>
      * </ol>
      * </p>
      *
@@ -1684,10 +1693,13 @@ final class PhasesHelper {
      *            the manager
      * @param operator
      *            the operator
+     * @param copyCurrentPhaseAttributes <code>true</code> if attributes of current phase must be copied to created new
+     *        phase of same type; <code>false</code> otherwise.
      * @return returns the index of the current phase in the phases array.
      */
     static int createNewPhases(Project currentPrj, Phase currentPhase, PhaseType[] newPhaseTypes,
-        PhaseStatus newPhaseStatus, PhaseManager phaseManager, String operator) {
+                               PhaseStatus newPhaseStatus, PhaseManager phaseManager, String operator,
+                               boolean copyCurrentPhaseAttributes) {
         // find current phase index and also the lengths of aggregation and
         // aggregation review phases.
         Phase[] phases = currentPrj.getAllPhases();
@@ -1727,6 +1739,17 @@ final class PhasesHelper {
             // the new phase is dependent on the earlier phase
             newPhase.addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false,
                 true, 0));
+
+            // Copy current phase attributes if necessary
+            if (copyCurrentPhaseAttributes) {
+                if (newPhase.getPhaseType().getId() == currentPhase.getPhaseType().getId()) {
+                    Set<Serializable> currentPhaseAttributeKeys
+                        = (Set<Serializable>) currentPhase.getAttributes().keySet();
+                    for (Serializable attributeName : currentPhaseAttributeKeys) {
+                        newPhase.setAttribute(attributeName, currentPhase.getAttribute(attributeName));
+                    }
+                }
+            }
 
             newPhases[currentPhaseIndex + (p + 1)] = newPhase;
         }
