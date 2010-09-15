@@ -4281,21 +4281,23 @@ public class StudioServiceBean implements StudioService {
         if (!isWinner) {
             // BUGR-1328
             // get the second place prize amount for the contest
-            Double secondPlacePrize = null;
+            Double lowerPlacePrize = null;
 
             for (Prize prize : contestManager.getContestPrizes(contest.getContestId())) {
-                if (prize.getPlace() != null && prize.getPlace().equals(2)) {
-                    secondPlacePrize = prize.getAmount();
-                    break;
+                if (prize.getPlace() != null && prize.getAmount() > 0) {
+                    if (lowerPlacePrize == null || lowerPlacePrize > prize.getAmount() )
+                    {
+                        lowerPlacePrize = prize.getAmount();
+                    }
                 }
             }
 
-            if (secondPlacePrize == null) {
+            if (lowerPlacePrize == null) {
                 throw new ContestManagementException(
-                        "There must be a second placement prize for the contest. Contest id: " + contest.getContestId());
+                        "Cannot find the lowest placement prize for the contest. Contest id: " + contest.getContestId());
             }
 
-            amount = secondPlacePrize;
+            amount = lowerPlacePrize;
 
             Prize prize = null;
 
