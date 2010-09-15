@@ -4,18 +4,28 @@
     <property file="../topcoder_global.properties"/>
 
     <!-- Override these in ../topcoder_global.properties -->
+    <!-- need ant-contrib for <if> -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+	<if>
+		<not>
+			<available file="../topcoder_global.properties" />
+		</not>
+		<then>
+			 <property name="libdir" value="../tcs/lib"/>
+            <property name="tcs_libdir" value="${libdir}/tcs"/>
+            <property name="ext_libdir" value="${libdir}/third_party"/>
+		</then>
+	</if>
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="../tcs/lib"/>
-    <property name="tcs_libdir" value="${libdir}/tcs"/>
-    <property name="ext_libdir" value="${libdir}/third_party"/>
+   
 
     <property name="cronos_libdir" value="${libdir}/cronos"/>
     <property name="target_libdir" value="${cronos_libdir}"/>
     
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -61,6 +71,7 @@
     <property name="build_tcsdistdir" value="${build_distdir}/${distfilename}-${component_version}"/>
     <property name="manifest_file_path" value="${build_tcsdistdir}/META-INF/"/>
     <property name="manifest_file" value="${manifest_file_path}/MANIFEST.MF"/>
+    <property name="build_conf" value="${builddir}/conf" />
 
     <!-- COMPONENT DISTRIBUTION STRUCTURE -->
     <property name="dist_lib" value="${build_distdir}/lib/tcs"/>
@@ -272,7 +283,15 @@
 
     <target name="dist" depends="compile, manifest">
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
+
+        <copy todir="${build_conf}">
+			<fileset dir="${basedir}/conf" />
+			
+		</copy>
+
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
+            <metainf dir="${build_conf}"/>
+        </jar>
     </target>
 
     <target name="dist_tests" depends="compile_tests">
@@ -339,7 +358,7 @@
         </copy>
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
 
-        <mkdir dir="${dist_coverage}"/>
+    <!--    <mkdir dir="${dist_coverage}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
@@ -350,7 +369,7 @@
             <fileset dir="${javadocsdir}"/>
         </copy>
 
-        <antcall target="package_docs"/>
+        <antcall target="package_docs"/> -->
 
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" manifest="${manifest_file}" excludes="*.jar"/>
 

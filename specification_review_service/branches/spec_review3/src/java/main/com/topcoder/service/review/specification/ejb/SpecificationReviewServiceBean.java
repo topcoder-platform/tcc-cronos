@@ -253,7 +253,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      * {@link #getOpenSpecificationReviewPositions(TCSubject)}.
      * </p>
      */
-    @EJB(name = "ejb/ProjectServices")
+    @EJB(name = "ejb/ProjectServicesBean")
     private ProjectServices projectServices;
 
     /**
@@ -543,7 +543,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         checkEmpty(connectionName, "connectionName");
 
         if (loggerName != null) {
-            log = LogFactory.getLog(loggerName);
+            log = com.topcoder.util.log.LogManager.getLog(loggerName);
         }
 
         reviewManager = createObject(reviewManagerClassName, reviewManagerNamespace, ReviewManager.class);
