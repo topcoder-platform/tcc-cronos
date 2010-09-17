@@ -3065,7 +3065,7 @@ public class StudioServiceBean implements StudioService {
             getContest(contestId);
 
             if (contestManager.getDocument(documentId) == null) {
-                handlePersistenceError("Document " + documentId + "is missing.", null);
+                handlePersistenceError("Document " + documentId + "is missing.", new PersistenceException("Document " + documentId + "is missing."));
             }
 
             contestManager.addDocumentToContest(documentId, contestId);
