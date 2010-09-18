@@ -6,12 +6,12 @@
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="lib"/>
+    <property name="libdir" value="../tcs/lib"/>
     <property name="tcs_libdir" value="${libdir}/tcs"/>
     <property name="ext_libdir" value="${libdir}/third_party"/>
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-	<property name="cobertura.dir" value="E:\Dev_Lib\Java\cobertura-1.8"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9.3"/>
     <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
@@ -162,7 +162,7 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-        	<junit fork="true" haltonerror="false">
+            <junit fork="true" haltonerror="false">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
@@ -185,13 +185,13 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-        	<junit fork="true" haltonerror="false">
+            <junit fork="true" haltonerror="false">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <classpath refid="cobertura.classpath"/>
-                <test name="${package}.UnitTests" todir="${testlogdir}">
+                <test name="${package}.AllTests" todir="${testlogdir}">
                     <formatter type="plain" usefile="true"/>
                     <formatter type="xml" usefile="true"/>
                 </test>
@@ -377,7 +377,7 @@
         <copy file="${component.dist.jar}" todir="${target_libdir}/${component_path}/dist"/>
     </target>
 
-    <target name="dev_submission" depends="test">
+    <target name="dev_submission" depends="">
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
@@ -436,24 +436,6 @@
             />
     </target>
 
-
-    <taskdef resource="checkstyletask.properties" classpath="c:/tc/Java/checkstyle-4.4/checkstyle-4.4/checkstyle-all-4.4.jar" />
-
-		<target name="checkstyle" depends="compile">
-			<mkdir dir="${testlogdir}" />
-			<checkstyle config="c:\tc\Java\Commonfiles\tc_checks.xml" classpath="${build_classdir}">
-				<fileset dir="src/java/main" includes="**/*.java" />
-				<formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
-			</checkstyle>
-		</target>
-
-		<target name="checkstyle_tests" depends="compile_tests">
-			<mkdir dir="${testlogdir}" />
-			<checkstyle config="c:\tc\Java\Commonfiles\tc_test_checks.xml" classpath="${test.build.classpath}">
-				<fileset dir="${javatests}/${packagedir}/" includes="**/*.java" excludes="UnitTests.java, AllTests.java, stresstests/*, failuretests/*, accuracytests/*" />
-				<formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
-			</checkstyle>
-		</target>
     <!-- ************************************************************************** -->
     <!-- ************ END DEPLOYMENT RELATED TARGETS  *************************** -->
     <!-- ************************************************************************** -->
@@ -461,4 +443,37 @@
     <!-- Import the macro definitions used to override standard behaviour of
     some of the targets of this build file. -->
     <import file="${basedir}/build-override.xml" optional="true"/>
+	
+	
+    <taskdef resource="checkstyletask.properties"
+          classpath="${checkstyle-all.jar}"
+     />
+
+    <target name="checkstyle" depends="compile">
+        <mkdir dir="${testlogdir}"/>
+        <checkstyle failonviolation="false" config="${ext_libdir}/checkstyle/tc_checks.xml" >
+
+            <classpath>
+                <path refid="buildlibs"/>
+                <pathelement location="${build_classdir}"/>
+            </classpath>
+
+            <fileset dir="${javamain}" includes="**/*.java"/>
+            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt"/>
+        </checkstyle>
+    </target>
+
+    <target name="checkstyle_tests" depends="compile_tests">
+        <mkdir dir="${testlogdir}"/>
+        <checkstyle failonviolation="false" config="${ext_libdir}/checkstyle/tc_test_checks.xml" >
+
+            <classpath>
+                <path refid="buildlibs"/>
+                <pathelement location="${javatests}"/>
+            </classpath>
+
+            <fileset dir="${javatests}" includes="**/*.java"/>
+            <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt"/>
+        </checkstyle>
+    </target>
 </project>
