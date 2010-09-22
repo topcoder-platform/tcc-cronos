@@ -8,25 +8,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
-import javax.ejb.EJB;
+import javax.annotation.PostConstruct;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagementType;
 import javax.ejb.TransactionManagement;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.topcoder.service.contest.eligibility.ContestEligibility;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
+import org.jboss.logging.Logger;
 
 /**
  * <p>
@@ -68,8 +63,18 @@ import com.topcoder.util.log.LogManager;
  *
  * </p>
  *
+ * <p>
+ * Version 1.0.1 ((TopCoder Online Review Switch To Local Calls Assembly)) Change notes:
+ *   <ol>
+ *     <li>Updated the class to use JBoss Logging for logging the events to make the component usable in local
+ *     environment for Online Review application.</li>
+ *     <li>Changed visibility for {@link #getEntityManager()} method to protected so it could be overridden for
+ *     injection of the entity manager in local environment for Online Review application.</li>
+ *   </ol>
+ * </p>
+ *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.0.1
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -100,7 +105,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
     /**
      * The logger is used to log the methods.
      */
-    private Log logger = null;
+    private Logger logger;
 
     /**
      * Represents the log name.Default value is 'contest_eligibility_logger'.You also could change the default value
@@ -123,7 +128,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      */
     @PostConstruct
     protected void initialize() {
-        logger = LogManager.getLog(logName);
+        logger = Logger.getLogger(this.logName);
     }
 
     /**
@@ -263,7 +268,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
     /**
      * Return a list of contest ids that has eligibility.
      *
-     * @param contestIds
+     * @param contestids
      *            the contest id list
      * @param isStudio
      *            the flag used to indicate whether it is studio
@@ -333,7 +338,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      * @return the error
      */
     private <T extends Exception> T logError(T error) {
-        logger.log(Level.ERROR, error, "Error recognized: {0}", error.getMessage());
+        logger.error( "Error recognized: " +  error.getMessage(), error);
         return error;
     }
 
@@ -351,7 +356,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      */
     @SuppressWarnings("unchecked")
     private void logEntrance(String methodName, String[] paramNames, Object[] params) {
-        logger.log(Level.DEBUG, "Enter into Method: " + methodName + " At " + new Date());
+        logger.debug("Enter into Method: " + methodName + " At " + new Date());
         if (paramNames != null) {
             StringBuilder logInfo = new StringBuilder("Parameters:");
             for (int i = 0; i < paramNames.length; i++) {
@@ -377,7 +382,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
                 }
                 logInfo.append(" [ " + paramNames[i] + " = " + params[i] + " ]");
             }
-            logger.log(Level.INFO, logInfo);
+            logger.info(logInfo);
         }
     }
 
@@ -390,7 +395,7 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
      *            the name of the method
      */
     private void logExit(String methodName) {
-        logger.log(Level.DEBUG, "Exit out Method: " + methodName + " At " + new Date());
+        logger.debug("Exit out Method: " + methodName + " At " + new Date());
     }
 
     /**
@@ -432,17 +437,16 @@ public class ContestEligibilityManagerBean implements ContestEligibilityManagerL
         }
     }
 
-
     /**
      * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
      * </p>
      * 
      * @return the EntityManager looked up from the session context
-     * @throws ContestManagementException
+     * @throws ContestEligibilityPersistenceException
      *             if fail to get the EntityManager from the sessionContext.
      */
-    private EntityManager getEntityManager() throws ContestEligibilityPersistenceException {
+    protected EntityManager getEntityManager() throws ContestEligibilityPersistenceException {
         try {
             Object obj = sessionContext.lookup(unitName);
 
