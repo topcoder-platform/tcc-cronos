@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.informix.jdbc.IfxDriver"/>
+        <property name="url" value="jdbc:informix-sqli://localhost:9088/copilot:informixserver=ol_tcs"/>
+        <property name="username" value="informix"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>mapping.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=org.hibernate.dialect.InformixDialect
+                hibernate.show_sql=false                
+            </value>
+        </property>
+    </bean>
+        
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean name="copilotBaseDAO" abstract="true">
+        <property name="loggerName" value="copilotBaseDAO"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean name="baseDAO" class="com.topcoder.direct.services.copilot.dao.impl.MockBaseDAO" parent="copilotBaseDAO"/>
+
+    <bean name="genericDAO" class="com.topcoder.direct.services.copilot.dao.impl.MockGenericDAO"
+          parent="copilotBaseDAO"/>
+
+    <bean name="copilotProfileDAO" class="com.topcoder.direct.services.copilot.dao.impl.CopilotProfileDAOImpl"
+          parent="copilotBaseDAO"/>
+
+    <bean name="copilotProjectPlanDAO" class="com.topcoder.direct.services.copilot.dao.impl.CopilotProjectPlanDAOImpl"
+          parent="copilotBaseDAO"/>
+
+    <bean name="copilotProjectDAO" class="com.topcoder.direct.services.copilot.dao.impl.CopilotProjectDAOImpl"
+          parent="copilotBaseDAO"/>
+
+    <bean name="lookupDAO" class="com.topcoder.direct.services.copilot.dao.impl.LookupDAOImpl"
+          parent="copilotBaseDAO"/>
+
+    <bean name="utilityDAO" class="com.topcoder.direct.services.copilot.dao.impl.UtilityDAOImpl"
+          parent="copilotBaseDAO">
+        <property name="copilotPaymentTypeId" value="1"/>
+        <property name="copilotResourceRoleId" value="2"/>
+        <property name="userResourceInfoTypeId" value="3"/>
+        <property name="jiraSessionFactory" ref="sessionFactory"/>
+        <property name="paymentSessionFactory" ref="sessionFactory"/>
+    </bean>
+</beans>
+
