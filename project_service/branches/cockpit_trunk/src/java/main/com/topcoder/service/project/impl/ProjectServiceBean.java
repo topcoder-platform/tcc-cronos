@@ -248,7 +248,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description FROM tc_direct_project p";
+    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description, project_status_id FROM tc_direct_project p where  p.project_status_id = 1";
 
     /**
      * <p>
@@ -262,8 +262,8 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description FROM tc_direct_project p, user_permission_grant per "
-                                    + " where p.project_id = per.resource_id and per.user_id = ";
+    private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description, project_status_id FROM tc_direct_project p, user_permission_grant per "
+                                    + " where p.project_id = per.resource_id and p.project_status_id = 1 and per.user_id = ";
 
     /**
      * <p>
@@ -286,6 +286,11 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      */
     private static final String QUERY_PROJECT_BY_NAME_ONLY =
         "SELECT p FROM Project p WHERE p.name = :projectName";
+    
+    /**
+     * constant for active project id
+     */
+    private static final long PROJECT_STATUS_ACTIVE = 1;
 
     /**
      * <p>
@@ -571,6 +576,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             Project project = new Project();
             project.setName(projectData.getName());
             project.setDescription(projectData.getDescription());
+            project.setProjectStatusId(PROJECT_STATUS_ACTIVE);
 
             // Obtain the user id of caller
             long callerUserId = tcSubject.getUserId();
@@ -808,7 +814,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         Query query = null;
 
         try {
-            if (userId != null) {
+            if (userId != null) { 
                 query = getEntityManager().createNativeQuery(QUERY_PROJECTS_BY_USER + userId, "GetProjectsResult");
 
             } else {
@@ -1315,6 +1321,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         projectData.setName(project.getName());
         projectData.setDescription(project.getDescription());
         projectData.setProjectId(project.getProjectId());
+        projectData.setProjectStatusId(project.getProjectStatusId());
 
         return projectData;
     }

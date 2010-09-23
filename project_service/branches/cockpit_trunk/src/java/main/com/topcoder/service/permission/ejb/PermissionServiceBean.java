@@ -74,6 +74,17 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      */
     private static String[] PROJECT_PERMISSION_TYPES = {"read", "write", "full"};
 
+    private static final String GET_PROJECT_PERMISSIONS_BY_USER = "select p1.resource_id, t.name, p2.user_id, u2.handle, p2.permission_type_id  "
+                                                                + " from user_permission_grant p1, tc_direct_project t, user_permission_grant p2, user u1, user u2  "
+                                                                + " where p1.resource_id = t.project_id and p2.resource_id = p1.resource_id "
+                                                                + " and p1.permission_type_id  = 3 and p1.user_id = u1.user_id and p2.user_id = u2.user_id "
+                                                                + " and t.project_status_id = 1 "
+                                                                + " and p1.user_id = :userId "
+                                                                + " order by p1.resource_id desc, upper(u2.handle) ";
+
+
+
+
     /**
      * <p>
      * Represents the sessionContext of the EJB.
@@ -842,24 +853,44 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
             logEnter("getProjectPermissions(userId)");
             logOneParameter(userId);
             EntityManager em = getEntityManager();
-            List<ProjectPermission> result = new ArrayList<ProjectPermission>();
-            List<Permission> userFullProjectPermissions = getProjectLevelFullPermissions(userId, em);
-            for (Permission userFullProjectPermission : userFullProjectPermissions) {
-                Long resourceId = userFullProjectPermission.getResourceId();
-                List<Permission> permissions = getProjectLevelPermissions(resourceId, em);
-                for (Permission permission : permissions) {
-                    ProjectPermission projectPermission = new ProjectPermission();
-                    projectPermission.setHandle(permission.getUserHandle());
-                    projectPermission.setPermission(PROJECT_PERMISSION_TYPES[
-                        (int) (permission.getPermissionType().getPermissionTypeId() - 1)]);
-                    projectPermission.setProjectId(permission.getResourceId());
-                    projectPermission.setProjectName(permission.getResourceName());
-                    projectPermission.setUserId(permission.getUserId());
-                    projectPermission.setStudio(permission.isStudio());
-                    result.add(projectPermission);
+            List<ProjectPermission> permissions = new ArrayList<ProjectPermission>();
+           
+            Query query = em.createNativeQuery(GET_PROJECT_PERMISSIONS_BY_USER);
+            query.setParameter("userId", userId);
+
+            List result = query.getResultList();
+           
+            for (int i = 0; i < result.size(); i++) 
+            {
+                ProjectPermission projectPermission = new ProjectPermission();
+                Object[] os = (Object[]) result.get(i);
+
+                if (os[0] != null)
+                {
+                    projectPermission.setProjectId(Long.parseLong(os[0].toString()));
                 }
+                if (os[1] != null)
+                {
+                    projectPermission.setProjectName(os[1].toString());
+                }
+                if (os[2] != null)
+                {
+                    projectPermission.setUserId(Long.parseLong(os[2].toString()));
+                }
+                if (os[3] != null)
+                {
+                    projectPermission.setHandle(os[3].toString());
+                }
+                if (os[4] != null)
+                {
+                    projectPermission.setPermission(PROJECT_PERMISSION_TYPES[(int) (Long.parseLong(os[4].toString()) - 1)]);
+                }
+                projectPermission.setStudio(false);
+
+                permissions.add(projectPermission);
             }
-            return result;
+
+            return permissions;
         } finally {
             logExit("getProjectPermissions(userId)");
         }

@@ -13,6 +13,7 @@
     <property name="name"/>
     <property name="description" />
     <property name="userId" column="user_id" />
+    <property name="projectStatusId" column="project_status_id" />
     <property name="createDate" column="create_date" type="date"/>
     <property name="modifyDate" column="modify_date" type="date" />
     <set name="competitions">
