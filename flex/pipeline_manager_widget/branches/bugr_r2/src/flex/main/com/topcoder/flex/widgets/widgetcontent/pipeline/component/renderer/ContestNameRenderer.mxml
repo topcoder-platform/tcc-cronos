@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     A renderer for wiki link/icon.
+          
+     Version 1.0.1 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - clean up.
+     - Change the behaviro to clicks on the contest name
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.1
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         verticalScrollPolicy="off"
+         horizontalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.model.IWidget;
+            import com.topcoder.flex.Helper;
+            import flash.net.navigateToURL;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Detail;
+            import flash.utils.Dictionary;
+            /**
+             * The base url for the link of studio contents;
+             */
+            private var studioContentDetailUrlBase:String="http://studio.topcoder.com/?module=ViewContestDetails&ct=";
+            /**
+             * The base url for the link of software contents;
+             */
+            private var softwareContentDetailUrlBase:String = "http://www.topcoder.com/tc?module=ProjectDetail&pj=";
+            [Bindable]
+            private var detail:Detail;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Detail) {
+                    detail=data as Detail;
+                }
+            }
+            /*
+            public function openContest():void {
+                var mode:String="";
+        			
+        		if(detail.cperm=="contest_full" 
+        			    || detail.cperm=="contest_write"
+            		    || (detail.cperm==null && 
+            			        (detail.pperm=="project_full" 
+            				        || detail.pperm=="project_write"))) {
+                    mode="WRITE";				                
+                } else if (detail.cperm=="contest_read" || (detail.cperm==null && detail.pperm=="project_read")) {
+                    mode="READ"
+                }
+                    
+                if (!mode || mode == "") {
+                    Helper.showAlertMessage("Sorry, you do not have permission to view this contest");
+                    return;
+                } 
+                
+                var widget:IWidget=detail.widgetFramework.getWidget("Launch Contests", "Launch Contest");
+        		var props:Dictionary=new Dictionary();
+        		props["contestType"]=detail.type;
+        		props["contestid"]=detail.contestId;
+        		props["projectid"]=detail.projectId;
+        		props["projectName"]=detail.project;
+        		props["mode"]=mode;
+        			
+        		widget.setAttributes(props);
+        		detail.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+            }
+            */
+            /**
+             * Handler for contest label click.
+             */
+            private function handleClick():void {
+                if (detail.category && detail.category.toUpperCase() == "STUDIO") {
+                    navigateToURL(new URLRequest(studioContentDetailUrlBase + detail.contestId), "_blank");
+                } else if (detail.category && detail.category.toUpperCase() != "STUDIO"){
+                    navigateToURL(new URLRequest(softwareContentDetailUrlBase + detail.contestId), "_blank");
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label id="wiki" width="168" text="{detail.name}" useHandCursor="true" buttonMode="true" mouseChildren="false"
+                   click="handleClick()"/>
+</mx:VBox>

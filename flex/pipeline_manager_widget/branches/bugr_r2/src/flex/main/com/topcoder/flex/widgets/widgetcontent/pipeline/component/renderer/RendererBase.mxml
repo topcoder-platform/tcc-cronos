@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     The renderer base.
+     
+     Version 1.0.1 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - clean up.
+     
+
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.1
+-->
+<mx:Box xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Detail;
+            
+            protected var detail:Detail;
+            
+            protected var model:Model;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Detail) {
+                    detail=data as Detail;
+                    renderLabel();
+                    model=Model.getInstance(detail.uid);
+                }
+            }
+            
+            protected function renderLabel():void {
+            
+            }
+            
+            protected function doFilter():void {
+            
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label id="content"
+             textDecoration="underline" click="doFilter()" width="100%"
+             styleName="listStyle"
+             buttonMode="true"
+             useHandCursor="true"
+             mouseChildren="false"/>
+</mx:Box>

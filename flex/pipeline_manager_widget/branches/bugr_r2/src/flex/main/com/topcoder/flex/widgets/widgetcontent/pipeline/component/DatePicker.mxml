@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     The date picker.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="134"
+         paddingLeft="0"
+         paddingRight="0"
+         paddingTop="0"
+         paddingBottom="0">
+    <mx:Script>
+        <![CDATA[
+            import mx.core.Container;
+            import mx.binding.utils.BindingUtils;
+            import mx.controls.DateChooser;
+            import mx.formatters.Formatter;
+            import flash.events.Event;
+            
+            public function get value():Date {
+                var tmp:String=txt.text.replace(/-/g, "/");
+                
+                var d:Date=new Date(tmp);
+                if (d) {
+                    return d;
+                } else {
+                    return null;
+                }
+            }
+            
+            [Bindable]
+            public var date:Date;
+            
+            
+            
+            [Bindable]
+            private var _chooser:DateChooser=null;
+            
+            [Bindable]
+            public function get chooser():DateChooser {
+                return this._chooser;
+            }
+            
+            public function set chooser(c:DateChooser):void {
+                this._chooser=c;
+                this._chooser.addEventListener("change", handleChange);
+            }
+            
+            public function handleChange(event:Event):void {
+                txt.text=formater.format(chooser.selectedDate);
+                btn.selected=false;
+            }
+            
+            private function set btnVisibility(v:Boolean):void {
+                if (v) {
+                    showDateChooser();
+                } else {
+                    hideDateChooser();
+                }
+            }
+            
+            public function set setTxt(value:Date):void {
+                var txts:String=formater.format(value);
+                if (txts && txts.length > 0 && txts.search("NaN") < 0) {
+                    txt.text=txts;
+                }
+            }
+            
+            private function showDateChooser():void {
+                this._chooser.visible=true;
+                var globalPt:Point=cntnr.contentToGlobal(new Point(0, 0));
+                globalPt.y = globalPt.y + 30;
+                
+                var newPoint:Point=(this._chooser.parent as Container).globalToContent(globalPt);
+                
+                this._chooser.x=newPoint.x;
+                this._chooser.y=newPoint.y;
+            }
+            
+            private function hideDateChooser():void {
+                this._chooser.visible=false;
+            }
+        ]]>
+    </mx:Script>
+    <mx:Binding source="date"
+                destination="setTxt"/>
+    <mx:Binding source="btn.selected" destination="btnVisibility"/>
+    <mx:DateFormatter id="formater"
+                      formatString="MM-DD-YYYY"/>
+    <mx:HBox width="100%"
+             horizontalGap="2"
+             verticalAlign="middle"
+             paddingLeft="0"
+             paddingRight="0"
+             paddingTop="0"
+             paddingBottom="0"
+             id="cntnr">
+        <mx:TextInput styleName="txtInput"
+                      width="118"
+                      id="txt"
+                      editable="true"
+                      click="{btn.selected=!btn.selected}"/>
+        <mx:Button styleName="selectorBtn"
+                   toggle="true"
+                   id="btn"
+                   selected="false"/>
+    </mx:HBox>
+    <!--<mx:DateChooser id="chooser"
+                    includeInLayout="false"
+                    visible="{btn.selected}"
+                    change="handleChange()"/>-->
+</mx:VBox>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     The week panel view.
+     
+     Version 1.0.1 (Pipeline Conversion Cockpit Integration Assembly 2 v1.0) Change Notes:
+        - removed the keyword test from the deadline label.
+     Version 1.0.2(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+      - Change from grid to DataGrid
+      - Fix all the sorting issue
+      - change the link to clicks the contest name
+      - Improve the performance issue of this widget
+      
+     @author snow01, TCSASSEMBLER
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.2
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         verticalGap="0" 
+         width="100%"
+         height="100%">
+    <mx:Script>
+        <![CDATA[
+        	import com.topcoder.flex.widgets.widgetcontent.pipeline.DetailPanel;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ContestNameRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CategoryRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.TypeRenderer;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            import mx.controls.Button;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ChangeRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.AddedRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ResourceRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.StatusRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.WikiRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.NameRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ProjectRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ClientRenderer;
+            import mx.controls.Text;
+            import mx.controls.listClasses.IListItemRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ConfidenceRenderer;
+            import mx.managers.LayoutManager;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.DateRenderer;
+            import mx.containers.GridItem;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Detail;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
+            import mx.collections.ArrayCollection;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            
+            [Bindable]
+            private var model:Model;
+            
+            [Bindable]
+            private var open:Boolean=false;
+            
+            public function set puid(value:String):void {
+                model=Model.getInstance(value);
+            }
+            
+            private function handleClick(event:Event):void {
+                open=!open;
+                winCtrlBut.source=(open) ? model.winMin : model.winMax;
+                weeklyContestGrid.includeInLayout = open;
+                weeklyContestGrid.visible = open;
+
+                event.stopImmediatePropagation();
+            }
+            
+            public function doOpen(isOpen:Boolean):void {
+                open=isOpen;
+                winCtrlBut.source=(open) ? model.winMin : model.winMax;
+                
+                weeklyContestGrid.includeInLayout = open;
+                weeklyContestGrid.visible = open;
+            }
+            
+            [Bindable] private var dp:ArrayCollection = new ArrayCollection();
+            
+            public function set week(value:Summary):void {  
+            	lb.text = formatter.format(value.week);
+                dp = value.details;             	
+            }            
+            
+            private function compareDate(obj1:Object, obj2:Object):int {
+                var c1:Detail=obj1 as Detail;
+                var c2:Detail=obj2 as Detail;
+                if (c1.date.getTime() > c2.date.getTime()) {
+                    return 1;
+                } else if (c1.date.getTime() < c2.date.getTime()) {
+                    return -1;
+                }
+                return 0;
+            }
+            
+            private function compareAdded(obj1:Object, obj2:Object):int {
+                var c1:Detail=obj1 as Detail;
+                var c2:Detail=obj2 as Detail;
+                if (c1.added == null && c2.added == null) {
+                	return 0;
+                }
+                if (c1.added == null && c2.added) {
+                	return -1;
+                }
+                if (c1.added != null && c2.added == null) {
+                	return 1;
+                }
+                if (c1.added.getTime() > c2.added.getTime()) {
+                    return 1;
+                } else if (c1.added.getTime() < c2.added.getTime()) {
+                    return -1;
+                }
+                return 0;
+            }
+            
+            private function compareChange(obj1:Object, obj2:Object):int {
+                var c1:Detail=obj1 as Detail;
+                var c2:Detail=obj2 as Detail;
+                if (c1.changed == null && c2.changed == null) {
+                	return 0;
+                }
+                if (c1.changed == null && c2.changed) {
+                	return -1;
+                }
+                if (c1.changed != null && c2.changed == null) {
+                	return 1;
+                }
+                if (c1.changed.getTime() > c2.changed.getTime()) {
+                    return 1;
+                } else if (c1.changed.getTime() < c2.changed.getTime()) {
+                    return -1;
+                }
+                return 0;
+            } 
+            private function compareStatus(obj1:Object, obj2:Object):int {
+            	var c1:String=Detail(obj1).status;
+                var c2:String=Detail(obj2).status;
+                if (!c1 && !c2) {
+                	return 0;
+                }
+                if (c1&& !c2) {
+                	return 1;
+                }
+                if (c2 && !c1) {
+                	return -1;
+                }
+                c1 = c1.toLowerCase();
+                c2 = c2.toLowerCase();
+                if (c1 == "active") {
+                	if (c2 == "active") {
+                		return 0;
+                	}
+                	return 1;
+                } else
+                if (c1 == "completed") {
+                	if (c2 == 'active') {
+                		return -1;
+                	} else if (c2 == 'completed') {
+                		return 0;
+                	}
+                	return 1;
+                } else
+                if (c1 == 'draft') {
+                	if (c2 == 'active' || c2 == 'completed') {
+                		return -1;
+                	} else if (c2 == 'draft') {
+                		return 0;
+                	}
+                	return -1;
+                } else if (c1 == 'scheduled') {
+                	if (c2 == 'scheduled') {
+                		return 0;
+                	}
+                    if (c2 == 'active' || c2 == 'completed' || c2 == 'draft') {
+                		return -1;
+                	}
+                	return -1;
+                } else if (c1 == 'cancelled') {
+                	if (c2 == 'cancelled') {
+                		return 0;
+                	}
+                	return -1;
+                }
+                return 0;
+            }        
+        ]]>
+    </mx:Script>
+    <mx:DateFormatter id="formatter" formatString="MM-DD-YYYY"/>
+    <mx:HBox styleName="titleBar"
+             width="100%"
+             height="27"
+             backgroundSize="100%"
+             id="title"
+             paddingTop="0"
+             paddingBottom="0"
+             paddingLeft="20"
+             paddingRight="0"
+             click="handleClick(event)"
+             buttonMode="true" horizontalAlign="left"
+             useHandCursor="true"
+             verticalScrollPolicy="off"
+             horizontalScrollPolicy="off">
+        <mx:Image width="16"
+                  height="16"
+                  id="winCtrlBut"
+                  click="handleClick(event)"
+                  source="{model.winMax}"
+                  buttonMode="true"
+                  useHandCursor="true"/>
+        <mx:Label id="lb"
+                  styleName="nameLabel"/>
+    </mx:HBox>
+    <mx:DataGrid width="100%" id="weeklyContestGrid" dataProvider="{dp}" variableRowHeight="false" rowCount="{dp.length}"
+    	         height="{(dp.length>18)?495:((dp.length*30)+ 22)}" rowHeight="25"
+    	         visible="false" includeInLayout="false" wordWrap="false" verticalScrollPolicy="auto">
+    	<mx:columns>
+    		<mx:DataGridColumn headerText="Date" dataField="date"  width="105"
+    			               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.DateRenderer" 
+    			               sortCompareFunction="compareDate"/>
+    		<mx:DataGridColumn headerText="Member Costs" dataField="prize" width="50" />
+			<mx:DataGridColumn headerText="Contest fee" dataField="fee"  width="50"/>
+			<!--mx:DataGridColumn headerText="Type" dataField="type" width="170"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.TypeRenderer"  /-->
+			<mx:DataGridColumn headerText="Category" dataField="category" width="120"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.CategoryRenderer"  />
+			<mx:DataGridColumn headerText="Client" dataField="client" width="80"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ClientRenderer"  />
+			<mx:DataGridColumn headerText="Billing" dataField="cpname" width="80"			                   
+                                           itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.BillingRenderer"  /> 			
+                     <mx:DataGridColumn headerText="Project" dataField="project"  width="80"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ProjectRenderer"  />
+			<mx:DataGridColumn headerText="Name" dataField="name" width="170"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ContestNameRenderer"  />
+			<mx:DataGridColumn headerText="Status" dataField="status"  width="80" sortCompareFunction="compareStatus"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.StatusRenderer"  />
+			<mx:DataGridColumn headerText="Repost" dataField="repost"  width="60"
+			                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.RepostRenderer"  />             	
+			<mx:DataGridColumn headerText="Resources" dataField="manager"  width="100"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ResourceRenderer"  />
+			<mx:DataGridColumn headerText="Added" dataField="added"  width="75" sortCompareFunction="compareAdded"
+				               itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.AddedRenderer"  />
+			<mx:DataGridColumn headerText="Changed" dataField="changed"  width="115" sortCompareFunction="compareChange"
+			                   itemRenderer="com.topcoder.flex.widgets.widgetcontent.pipeline.component.renderer.ChangeRenderer"  />   
+					               	               
+    	</mx:columns>
+    </mx:DataGrid>
+</mx:VBox>
