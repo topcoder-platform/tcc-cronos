@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types>
+<type contestTypeId="1" description="Web Page Design"/>
+<type contestTypeId="5" description="Application Front End Design"/>
+<type contestTypeId="4" description="Web Elements"/>
+<type contestTypeId="3" description="Logo Design"/>
+<type contestTypeId="14" description="Icons"/>
+<!--<type contestTypeId="2" description="Prototype"/>-->
+<!--<type contestTypeId="8" description="Flash Animation"/>-->
+
+<!--<type contestTypeId="9" description="Widget"/>-->
+<!--<type contestTypeId="22" description="Flex Development"/>-->
+<type contestTypeId="12" description="Print Design"/>
+<type contestTypeId="21" description="PowerPoint Presentation"/>
+<type contestTypeId="18" description="Other Static Design"/>
+</types>
