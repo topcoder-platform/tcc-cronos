@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+         version="3.0">
+  <enterprise-beans>
+    <session>
+        <ejb-name>LiquidPortalServiceBean</ejb-name>
+        <remote>com.liquid.portal.service.bean.LiquidPortalServiceRemote</remote>
+        <local>com.liquid.portal.service.bean.LiquidPortalServiceLocal</local>
+		<service-endpoint>com.liquid.portal.service.LiquidPortalService</service-endpoint>
+        <ejb-class>com.liquid.portal.service.bean.LiquidPortalServiceBean</ejb-class>
+        <session-type>Stateless</session-type>
+        <transaction-type>Container</transaction-type>
+		<env-entry>
+			<description>the configuration file path</description>
+			<env-entry-name>configurationFileName</env-entry-name>
+			<env-entry-type>java.lang.String</env-entry-type>
+			<env-entry-value>liquidPortalService.properties</env-entry-value>
+		</env-entry>
+		<env-entry>
+			<description>the configuration namespace</description>
+			<env-entry-name>configurationNamespace</env-entry-name>
+			<env-entry-type>java.lang.String</env-entry-type>
+			<env-entry-value>com.liquid.portal.service</env-entry-value>
+		</env-entry>
+        <ejb-ref>
+        	 <ejb-ref-name>ejb/pipelineServiceFacade</ejb-ref-name>
+        	 <ejb-ref-type>Session</ejb-ref-type>
+        	 <remote>com.topcoder.service.pipeline.ejb.PipelineServiceFacadeRemote</remote>
+       	</ejb-ref>
+      
+		<ejb-ref>
+        	 <ejb-ref-name>ejb/contestServiceFacade</ejb-ref-name>
+        	 <ejb-ref-type>Session</ejb-ref-type>
+        	 <remote>com.topcoder.service.facade.contest.ejb.ContestServiceFacadeRemote</remote>
+       	</ejb-ref>
+		<ejb-ref>
+        	 <ejb-ref-name>ejb/userService</ejb-ref-name>
+        	 <ejb-ref-type>Session</ejb-ref-type>
+        	 <remote>com.topcoder.service.user.UserServiceRemote</remote>
+       	</ejb-ref>
+		<ejb-ref>
+        	 <ejb-ref-name>ejb/projectService</ejb-ref-name>
+        	 <ejb-ref-type>Session</ejb-ref-type>
+        	 <remote>com.topcoder.service.project.ProjectServiceRemote</remote>
+       	</ejb-ref>
+		<ejb-ref>
+        	 <ejb-ref-name>ejb/billingProjectDAO</ejb-ref-name>
+        	 <ejb-ref-type>Session</ejb-ref-type>
+        	 <remote>com.topcoder.clients.dao.ejb3.ProjectDAORemote</remote>
+       	</ejb-ref>
+        <ejb-ref>
+        	 <ejb-ref-name>ejb/userServiceFacade</ejb-ref-name>
+        	 <ejb-ref-type>Session</ejb-ref-type>
+        	 <remote>com.topcoder.service.facade.user.UserServiceFacadeRemote</remote>
+       	</ejb-ref>
+     
+    </session>
+  </enterprise-beans>
+
+
+  <assembly-descriptor>
+  	<security-role>
+  		<role-name>Liquid Administrator</role-name>
+  	</security-role>
+  	<method-permission>
+  		<role-name>Liquid Administrator</role-name>
+  		<method>
+  			<ejb-name>LiquidPortalServiceBean</ejb-name>
+  			<method-name>registerUser</method-name>
+  		</method>
+  	</method-permission>
+    <method-permission>
+  		<role-name>Liquid Administrator</role-name>
+  		<method>
+  			<ejb-name>LiquidPortalServiceBean</ejb-name>
+  			<method-name>provisionUser</method-name>
+  		</method>
+  	</method-permission>
+  </assembly-descriptor>
+</ejb-jar>
