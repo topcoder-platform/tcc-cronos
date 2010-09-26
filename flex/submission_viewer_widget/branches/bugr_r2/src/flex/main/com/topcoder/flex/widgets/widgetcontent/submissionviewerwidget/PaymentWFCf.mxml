@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     This mxml component implements the payment workflow (UI) for credit card.
+     
+     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        - masks credit card number and do not shows the csc.
+
+     @author TCSASSEMBLER
+     @version 1.0.1
+     @since Submission Viewer Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" verticalScrollPolicy="off">
+	<mx:Script>
+		<![CDATA[
+			[Bindable]
+			private var model:Model = Model.instance;
+			[Embed(source="../assets/verisign.png")]
+			[Bindable]private var sign:Class;
+			
+			/**
+			 * Represents the prefix Mask for the credit card.
+			 * 
+			 * @since 1.0.1
+			 */
+			private static const Mask:String="************";
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%">
+		<mx:Grid width="100%">
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%">
+					<mx:Label text="Credit Card Information" styleName="header" />
+				</mx:GridItem>
+				<mx:GridItem width="100%">
+					<mx:Label text="Billing Information" styleName="header" />
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%">
+				<mx:GridItem width="100%" verticalAlign="top">
+					<mx:VBox width="100%">
+						<mx:HBox width="100%">
+							<mx:VBox width="100">
+								<mx:Label text="Card Number:" styleName="contentBlack" />
+								<mx:Label text="Card Type:" styleName="contentBlack" />
+								<mx:Label text="Expiration Date:" styleName="contentBlack" />
+							</mx:VBox>
+							<mx:VBox width="100%">
+								<!-- BUGR-1398 -->
+								<mx:HBox width="100%" verticalScrollPolicy="off" horizontalScrollPolicy="off">
+									<mx:Label id="cardNum" text="{Mask+model.cardNum.substring(model.cardNum.length-4)}" styleName="content" />
+									<!--<mx:Label id="csc" text="{model.csc}" styleName="content" />-->	
+								</mx:HBox>
+								<mx:Label text="{model.cardType}" styleName="content" />
+								<mx:Label text="{model.cardExpDateStr}" styleName="content" />
+							</mx:VBox>
+						</mx:HBox>
+						<mx:VBox width="100%" id="approval" visible="false">
+							<mx:Label text="Approval Information" width="100%" styleName="header" />
+							<mx:HBox>
+								<mx:Label text="Reference Number:" width="100%" styleName="contentBlack" />
+								<mx:Label id="paymentReferenceNumber" width="100%" styleName="content" />
+							</mx:HBox>
+						</mx:VBox>
+					</mx:VBox>
+				</mx:GridItem>
+				<mx:GridItem>
+					<mx:VBox width="100" height="100%" styleName="contentBlack" verticalGap="13" >
+						<mx:Label text="Name on Card:" height="20" />
+						<mx:Label text="Address:" height="20" />
+						<mx:Label text="City:" height="20" />
+						<mx:Label text="State:" height="20" />
+						<mx:Label text="Zip Code:" height="20" />
+						<mx:Label text="Country:" height="20" />
+						<mx:Label text="Phone:" height="20" />
+						<mx:Label text="Email:" height="20" />
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" verticalGap="13" styleName="content" >
+						<mx:Label text="{model.cardname}" width="100%" height="20" />
+						<mx:Label text="{model.address}" width="100%" height="20" />
+						<mx:Label text="{model.city}" width="100%" height="20" />
+						<mx:Label text="{model.state}" width="100%" height="20" />
+						<mx:Label text="{model.code}" width="100%" height="20" />
+						<mx:Label text="{model.country}" width="100%" height="20" />
+						<mx:Label text="{model.phone}" width="100%" height="20" />
+						<mx:Label text="{model.email}" width="100%" height="20" />
+					</mx:VBox>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		<!--<mx:Image source="{sign}" />-->
+	</mx:HBox>
+</mx:VBox>

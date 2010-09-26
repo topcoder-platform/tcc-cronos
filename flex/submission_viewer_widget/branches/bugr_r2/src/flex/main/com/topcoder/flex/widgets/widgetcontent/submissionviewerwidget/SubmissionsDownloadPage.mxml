@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements UI logic for submission download page.
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         paddingTop="10"
+         paddingBottom="25"
+         paddingLeft="15"
+         paddingRight="15">
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.ButtonLabelPlacement;
+
+            /**
+             * Reference to the parent submission viewer widget.
+             */
+            [Bindable]
+            private var _subViewer:SubmissionViewerWidget;
+
+            /**
+             * Gets the reference to the parent submission viewer widget.
+             *
+             * @return the parent submission viewer widget.
+             */
+            [Bindable]
+            public function get subViewer():SubmissionViewerWidget {
+                return this._subViewer;
+            }
+
+            /**
+             * Sets the reference of the parent submission viewer widget.
+             *
+             * @param viewer the parent submission viewer widget.
+             */
+            public function set subViewer(viewer:SubmissionViewerWidget):void {
+                this._subViewer=viewer;
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label text="Download Submissions"
+              fontSize="16"
+              styleName="header"/>
+    <mx:Text width="100%"
+             styleName="text"
+             text="Here are the winning submissions and any submissions you decided to purchase from your contest. "/>
+    <mx:Canvas height="1"
+               width="100%"
+               backgroundColor="#797979"/>
+    <mx:TileList id="downloadList"
+                 width="100%"
+                 height="460"
+                 columnCount="3"
+		  rowHeight="160"
+                 selectionDuration="0"
+                 dataProvider="{this.subViewer.downloadList}"
+                 itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.DownloadListRenderer"
+                 borderStyle="none"
+                 allowMultipleSelection="false"
+                 allowDragSelection="false"/>
+    <mx:HBox width="100%">
+        <mx:Button buttonMode="true"
+                   labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                   label="BACK"
+                   styleName="arrowLeftBtnStyle"
+                   click="this.subViewer.gotoContestViewer()"/>
+    </mx:HBox>
+</mx:VBox>

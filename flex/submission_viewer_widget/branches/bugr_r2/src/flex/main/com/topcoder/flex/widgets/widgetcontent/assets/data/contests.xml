@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contests>
+	<contest>
+		<contestData>
+			<name>Active Contest 1</name>
+			<contestId>12345</contestId>
+			<statusId>6</statusId>
+		</contestData>
+	</contest>
+	<contest>
+		<contestData>
+			<name>Active Contest 2</name>
+			<contestId>12346</contestId>
+			<statusId>6</statusId>
+		</contestData>
+	</contest>
+</contests> 
