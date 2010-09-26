@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements the rendering logic for search bar rendering.
+
+     @author snow01
+     @since Cockpit Share Submission Integration
+-->
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         creationComplete="change()"
+         horizontalAlign="center"
+         verticalAlign="middle">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.projectadminwidget.ProjectAdminWidget;
+
+            /**
+             * Reference to the parent project admin widget.
+             */
+            [Bindable]
+            private var _parentWidget:ProjectAdminWidget=null;
+
+            /**
+             * Gets the reference of parent project admin widget.
+             *
+             * @return reference of parent project admin widget.
+             */
+            [Bindable]
+            public function get parentWidget():ProjectAdminWidget {
+                return this._parentWidget;
+            }
+
+            /**
+             * Sets the reference of parent project admin widget.
+             *
+             * @param widget parent project admin widget.
+             */
+            public function set parentWidget(widget:ProjectAdminWidget):void {
+                this._parentWidget=widget;
+            }
+
+            /**
+             * Handler for text changes in the search box.
+             *
+             * It basically identifies if default text need to be set in search box.
+             */
+            private function change():void {
+                trace("change");
+                if (searchKey.text.length <= 0) {
+                    searchKey.text="Type in your search term here";
+                    searchKey.setStyle("color", "#999999");
+                }
+            }
+
+            /**
+             * Clears the default text in the search box.
+             *
+             * It basically makes the search box ready for type-in.
+             */
+            private function clearDefault():void {
+                if (searchKey.text == "Type in your search term here") {
+                    searchKey.setStyle("color", "#000000");
+                    searchKey.text="";
+                }
+            }
+
+            /**
+             * Executes search on user for given input in search box.
+             *
+             * @param event return key event.
+             */
+            private function execUserSearch(event:KeyboardEvent=null):void {
+                if (((event && event.charCode == 13) || !event) && (searchKey.text == "Type in your search term here" || searchKey.text == "")) {
+                    parentWidget.model.keyWords="";
+                    parentWidget.model.highLight=false;
+                    parentWidget.model.clearSearch();
+                    return;
+                }
+                if (event != null && event.charCode != 13) {
+                    return;
+                }
+                parentWidget.model.keyWords=searchKey.text;
+                parentWidget.model.highLight=false;
+                //parentWidget.model.doSearch();
+                parentWidget.searchUser(searchKey.text);
+
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label text="Search:"
+              styleName="normalText"/>
+    <mx:TextInput id="searchKey"
+                  styleName="textInput"
+                  minWidth="255"
+                  height="24"
+                  focusOut="change()"
+                  focusIn="clearDefault()"
+                  keyDown="execUserSearch(event)"/>
+    <mx:Button id="execSearch"
+               click="execUserSearch()"
+               styleName="searchBtn"/>
+</mx:HBox>
