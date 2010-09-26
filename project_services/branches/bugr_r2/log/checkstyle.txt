@@ -1,0 +1,15 @@
+Starting audit...
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\ProjectServices.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseRuntimeException
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\ProjectServicesFactory.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseRuntimeException
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\Util.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseRuntimeException
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\Util.java:28: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\ejb\ProjectServicesBean.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseRuntimeException
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseRuntimeException
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:298:23: '<' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:298:24: '<' is not followed by whitespace.
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:298:28: '>' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:298:66: '<' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:298:67: '<' is not followed by whitespace.
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:298:71: '>' is not preceded with whitespace.
+F:\component\Project_Services_1.1\src\java\main\com\topcoder\project\service\impl\ProjectServicesImpl.java:298:72: '>' is not followed by whitespace.
+Audit done.
