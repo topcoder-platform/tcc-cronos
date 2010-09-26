@@ -1,0 +1,158 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    
+	<property name="jboss_home" value="E:\jboss-4.2.3.GA"/>
+	<property name="server" value="default"/>
+	<property name="ejb_name" value="studio_contest_manager.jar"/>
+	<property name="ear_name" value="studiocontestmanager.ear"/>
+	<property name="ejb_dir" value="build/${ejb_name}"/>
+	<property name="ear_dir" value="build/${ear_name}"/>
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.x"/>
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+	
+    <!-- TCS dependencies -->
+<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+<property name="class_associations.jar" value="${tcs_libdir}/class_associations/1.0.0/class_associations.jar"/>
+<property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+<property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
+<property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.0/configuration_persistence.jar"/>
+<property name="data_validation.jar" value="${tcs_libdir}/data_validation/1.1.1/data_validation.jar"/>
+<property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1.0/db_connection_factory.jar"/>
+
+
+<property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+<property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar"/>
+<property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
+<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+<property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.0/search_builder_1.4_modified.jar"/>
+<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+
+ 
+
+<property name="contest_and_submission_entities.jar" value="${cronos_libdir}/contest_and_submission_entities/1.2.0/contest_and_submission_entities.jar" />
+
+	
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
+    
+    <property name="ifxjdbc.jar" value="${ext_libdir}/ifxjdbc.jar"/>    
+     
+    <property name="antlr.jar" value="${jboss_home}/server/${server}/lib/antlr.jar"/>
+    <property name="cglib.jar" value="${jboss_home}/server/${server}/lib/cglib.jar"/>
+    <property name="dom4j.jar" value="${jboss_home}/server/${server}/lib/dom4j.jar"/>
+    <property name="log4j.jar" value="${jboss_home}/server/${server}/lib/log4j.jar"/>
+    <property name="commons-logging.jar" value="${jboss_home}/server/${server}/lib/commons-logging.jar"/>
+    <property name="commons-collections.jar" value="${jboss_home}/server/${server}/lib/commons-collections.jar"/>
+    <property name="hibernate3.jar" value="${jboss_home}/server/${server}/lib/hibernate3.jar"/>
+    <property name="hibernate-annotations.jar" value="${jboss_home}/server/${server}/lib/hibernate-annotations.jar"/>
+    <property name="hibernate-entitymanager.jar" value="${jboss_home}/server/${server}/lib/hibernate-entitymanager.jar"/>
+
+    <property name="jboss-j2ee.jar" value="${jboss_home}/client/jboss-j2ee.jar"/>
+    <property name="jboss-ejb3x.jar" value="${jboss_home}/client/jboss-ejb3x.jar"/>
+    <property name="ejb3-persistence.jar" value="${jboss_home}/client/ejb3-persistence.jar"/>
+
+    <property name="jboss-jaxws.jar" value="${jboss_home}/client/jboss-jaxws.jar"/>
+    <property name="jbossall-client.jar" value="${jboss_home}/client/jbossall-client.jar"/>
+     <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
+
+
+
+	
+ <path id="component.tcs-dependencies">
+		<pathelement location="${base_exception.jar}"/>
+		<pathelement location="${class_associations.jar}"/>
+		<pathelement location="${search_builder.jar}"/>
+		<pathelement location="${configuration_api.jar}"/>
+		<pathelement location="${configuration_manager.jar}"/>
+		<pathelement location="${configuration_persistence.jar}"/>
+		<pathelement location="${data_validation.jar}"/>
+		<pathelement location="${logging_wrapper.jar}"/>
+		<pathelement location="${object_factory.jar}"/>
+		<pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+		<pathelement location="${object_formatter.jar}"/>
+		<pathelement location="${typesafe_enum.jar}"/>
+		<pathelement location="${db_connection_factory.jar}"/>
+		<pathelement location="${contest_and_submission_entities.jar}"/>
+	</path>
+	
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${jboss-j2ee.jar}"/>
+        <pathelement location="${jboss-ejb3x.jar}"/>
+        <pathelement location="${ejb3-persistence.jar}"/>
+        <pathelement location="${jaxb-api.jar}"/>
+    </path>
+
+
+    <path id="component.test.3rdParty-dependencies">
+		    <pathelement location="${ifxjdbc.jar}"/>
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${antlr.jar}"/>
+        <pathelement location="${log4j.jar}"/>
+        <pathelement location="${cglib.jar}"/>
+        <pathelement location="${dom4j.jar}"/>
+        <pathelement location="${jboss-jaxws.jar}"/> 
+        <pathelement location="${jbossall-client.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${hibernate3.jar}"/>
+        <pathelement location="${hibernate-annotations.jar}"/>
+        <pathelement location="${hibernate-entitymanager.jar}"/>
+    </path>
+
+	<!-- Package and Deploy EJB -->
+		<target name="package_ejb" depends="compile, compile_tests">
+			<delete dir="${ejb_dir}"/>
+			<copy todir="${ejb_dir}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${build_classdir}">
+					<include name="**/*"/>
+				</fileset>
+				<fileset dir="${testfiles}/ejb/">
+					<include name="**/*"/>
+				</fileset>
+			</copy>
+			<copy todir="${ejb_dir}/mappings" overwrite="true" encoding="UTF-8">
+				<fileset dir="${testfiles}/mappings/">
+					<include name="**/*"/>
+				</fileset>
+			</copy>
+		</target>
+			
+		<target name="package_ear" depends="package_ejb">
+			<delete dir="${ear_dir}"/>
+			<copy todir="${ear_dir}/${ejb_name}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ejb_dir}"/>
+			</copy>
+			<copy todir="${ear_dir}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ear_dir}"/>
+				<fileset dir="${testfiles}/ear/">
+					<include name="**/*"/>
+			    </fileset>
+			</copy>
+			
+			<copy file="${ifxjdbc.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${base_exception.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${class_associations.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${data_validation.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${search_builder.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${configuration_api.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${configuration_manager.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${configuration_persistence.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${logging_wrapper.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${typesafe_enum.jar}" todir="${ear_dir}" overwrite="true"/>
+			<copy file="${object_formatter.jar}" todir="${ear_dir}" overwrite="true"/>  
+			<copy file="${object_factory.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${object_factory_configuration_api_plugin.jar}" todir="${ear_dir}" overwrite="true"/> 
+			<copy file="${contest_and_submission_entities.jar}" todir="${ear_dir}" overwrite="true"/>
+
+		</target>
+			
+		<target name="deploy_jboss" depends="package_ear">
+			<!--<copy file="${testfiles}/login-config.xml" tofile="${jboss_home}/server/${server}/conf/login-config.xml" overwrite="true" encoding="UTF-8"/>-->
+			<copy todir="${jboss_home}/server/${server}/deploy/${ear_name}" overwrite="true" encoding="UTF-8">
+				<fileset dir="${ear_dir}"/>
+			</copy>
+		</target>
+</project>
