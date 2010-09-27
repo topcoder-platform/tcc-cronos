@@ -67,6 +67,19 @@ public class Project extends ProjectData {
      */
     private Date modifyDate;
 
+
+    /**
+     * <p>
+     * Represents project status id
+     * </p>
+     * <p>
+     * It uses <code>Long</code> type instead of <code>long</code> type to allow for null values to be set before
+     * entity creation in persistence. This variable is mutable and is retrieved by the {@link #getProjectId()} method
+     * and set by the {@link #setProjectId(Long)} method. It is initialized to null, and may be set to ANY value.
+     * </p>
+     */
+    private Long projectStatusId;
+
     /**
      * <p>
      * Represents the competitions associated with this project.
@@ -177,5 +190,29 @@ public class Project extends ProjectData {
      */
     public void setCompetitions(Set < Competition > competitions) {
         this.competitions = competitions;
+    }
+
+
+    /**
+     * <p>
+     * Gets the project status id
+     * </p>
+     *
+     * @return The ID of the project.
+     */
+    public Long getProjectStatusId() {
+        return projectStatusId;
+    }
+
+    /**
+     * <p>
+     * Sets the project status id
+     * </p>
+     *
+     * @param projectId
+     *            The desired ID of this project. ANY value.
+     */
+    public void setProjectStatusId(Long projectStatusId) {
+        this.projectStatusId = projectStatusId;
     }
 }

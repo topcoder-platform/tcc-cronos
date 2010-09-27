@@ -32,9 +32,7 @@ import javax.persistence.SqlResultSetMapping;
 		entities={@EntityResult(entityClass=ProjectData.class,
 				fields={@FieldResult(name="projectId",      column="project_id"),
 			            @FieldResult(name="name", column="name"),
-			            @FieldResult(name="description",           column="description"),
-                        @FieldResult(name="projectStatusId",           column="project_status_id")
-			            }
+			            @FieldResult(name="description",           column="description")}
 		)})
 @Entity
 public class ProjectData implements Serializable {
@@ -81,18 +79,6 @@ public class ProjectData implements Serializable {
      */
     private String description;
 
-
-    /**
-     * <p>
-     * Represents project status id
-     * </p>
-     * <p>
-     * It uses <code>Long</code> type instead of <code>long</code> type to allow for null values to be set before
-     * entity creation in persistence. This variable is mutable and is retrieved by the {@link #getProjectId()} method
-     * and set by the {@link #setProjectId(Long)} method. It is initialized to null, and may be set to ANY value.
-     * </p>
-     */
-    private Long projectStatusId;
 
 
     /**
@@ -172,27 +158,4 @@ public class ProjectData implements Serializable {
         this.description = description;
     }
 
-
-      /**
-     * <p>
-     * Gets the project status id
-     * </p>
-     *
-     * @return The ID of the project.
-     */
-    public Long getProjectStatusId() {
-        return projectStatusId;
-    }
-
-    /**
-     * <p>
-     * Sets the project status id
-     * </p>
-     *
-     * @param projectId
-     *            The desired ID of this project. ANY value.
-     */
-    public void setProjectStatusId(Long projectStatusId) {
-        this.projectStatusId = projectStatusId;
-    }
 }

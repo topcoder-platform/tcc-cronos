@@ -1321,7 +1321,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         projectData.setName(project.getName());
         projectData.setDescription(project.getDescription());
         projectData.setProjectId(project.getProjectId());
-        projectData.setProjectStatusId(project.getProjectStatusId());
 
         return projectData;
     }
