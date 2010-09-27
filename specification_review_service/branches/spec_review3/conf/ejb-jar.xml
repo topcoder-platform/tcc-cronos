@@ -21,18 +21,18 @@
 				<env-entry>
 				<env-entry-name>mockSubmissionFilePath</env-entry-name>
 				<env-entry-type>java.lang.String</env-entry-type>
-				<env-entry-value>./mock</env-entry-value>
+				<env-entry-value>/home/cockpit/mock</env-entry-value>
 				</env-entry>
 				<env-entry>
 				<env-entry-name>mockSubmissionFileName</env-entry-name>
 				<env-entry-type>java.lang.String</env-entry-type>
-				<env-entry-value>mock_rs.rtf</env-entry-value>
+				<env-entry-value>mock.zip</env-entry-value>
 				</env-entry>
 				<env-entry>
 				<env-entry-name>searchBundleManageNamespace</env-entry-name>
 				<env-entry-type>java.lang.String</env-entry-type>
 				<env-entry-value>
-				com.topcoder.search.builder.Upload_Resource_Search
+				com.topcoder.searchbuilder.common
 				</env-entry-value>
 				</env-entry>
 				<env-entry>

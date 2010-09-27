@@ -37,7 +37,7 @@ public interface SpecificationReviewService {
      * @throws SpecificationReviewServiceException
      *             if there are any errors during this operation.
      */
-    public void scheduleSpecificationReview(TCSubject tcSubject, long projectId, Date reviewStartDate)
+    public void scheduleSpecificationReview(TCSubject tcSubject, long projectId, boolean startnow)
         throws SpecificationReviewServiceException;
 
     /**

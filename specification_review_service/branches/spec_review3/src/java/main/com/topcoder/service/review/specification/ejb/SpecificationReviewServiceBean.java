@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -26,6 +30,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
+import com.cronos.onlinereview.external.ExternalUser;
+import com.cronos.onlinereview.external.UserRetrieval;
+import com.cronos.onlinereview.external.impl.DBUserRetrieval;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
@@ -41,6 +48,7 @@ import com.topcoder.management.deliverable.persistence.UploadPersistenceExceptio
 import com.topcoder.management.deliverable.persistence.sql.SqlUploadPersistence;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.resource.ResourceManager;
+import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.resource.persistence.PersistenceResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistence;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
@@ -240,6 +248,24 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      * Represents the &quot;Specification Reviewer&quot; resource role.
      */
     private static final String SPECIFICATION_REVIEWER = "Specification Reviewer";
+
+    /**
+     * <p>
+     * Represents on value for the autopilot option project property
+     * </p>
+     *
+     */
+    private static final String AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON = "On";
+
+
+     /**
+     * <p>
+     * Represents the "Autopilot option" project property key
+     * </p>
+     */
+    private static final String AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY = "Autopilot Option";
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
 
     /**
      * <p>
@@ -773,50 +799,82 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      *             if there are any errors during this operation.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void scheduleSpecificationReview(TCSubject tcSubject, long projectId, Date reviewStartDate)
+    public void scheduleSpecificationReview(TCSubject tcSubject, long projectId, boolean startnow)
         throws SpecificationReviewServiceException {
         assertNotNull(tcSubject, "tcSubject");
         assertPositive(projectId, "projectId");
+        try
+        {
+            
+      
+            FullProjectData fullProjectData = getFullProjectData(projectId);
+            Phase[] allPhases = fullProjectData.getAllPhases();
 
-        FullProjectData fullProjectData = getFullProjectData(projectId);
-        Phase[] allPhases = fullProjectData.getAllPhases();
-
-        // immediately if null or in the past
-        Date now = new Date();
-        if (reviewStartDate == null || reviewStartDate.before(now)) {
-            fullProjectData.setStartDate(now);
-        } else {
-            fullProjectData.setStartDate(reviewStartDate);
-        }
-
-        // find specification submission phase
-        Phase specificationSubmissionPhase = null;
-        for (Phase phase : allPhases) {
-            PhaseType phaseType = phase.getPhaseType();
-            if (SPECIFICATION_SUBMISSION.equals(phaseType.getName())) {
-                specificationSubmissionPhase = phase;
-                break;
+            
+            // find specification submission phase
+            Phase specificationReviewPhase = null;
+            Phase specificationSubmissionPhase = null;
+            for (Phase phase : allPhases) {
+                PhaseType phaseType = phase.getPhaseType();
+                if (SPECIFICATION_SUBMISSION.equals(phaseType.getName())) {
+                    specificationSubmissionPhase = phase;
+                    break;
+                }
             }
+            for (Phase phase : allPhases) {
+                PhaseType phaseType = phase.getPhaseType();
+                if (SPECIFICATION_REVIEW.equals(phaseType.getName())) {
+                    specificationReviewPhase = phase;
+                    break;
+                }
+            }
+
+            if (specificationReviewPhase == null || specificationSubmissionPhase == null) {
+                throw logException(new SpecificationReviewServiceException(
+                    "Specification submission/reivew phase does not exist for the project: " + projectId));
+            }
+
+            // immediately if null or in the past
+            Date now = new Date();
+            if (startnow) {
+                fullProjectData.setStartDate(now);
+                for (Phase phase : allPhases) {
+                    PhaseType phaseType = phase.getPhaseType();
+                    if (SPECIFICATION_SUBMISSION.equals(phaseType.getName())) {
+                        phase.setScheduledStartDate(fullProjectData.getStartDate());
+                        phase.setFixedStartDate(fullProjectData.getStartDate());
+                        break;
+                    }
+                }
+            } 
+
+
+            // set to open
+            specificationSubmissionPhase.setPhaseStatus(PhaseStatus.OPEN);
+            String operator = Long.toString(tcSubject.getUserId());
+            updatePhases(fullProjectData, operator);
+            // add user as specification submitter
+            addSpecificationSubmitter(projectId, tcSubject.getUserId());
+            // upload a mock submission
+           // FileDataSource fileDataSource = new FileDataSource(
+           //    new File(mockSubmissionFilePath mockSubmissionFileName).getPath());
+
+            java.net.URL url = SpecificationReviewServiceBean.class.getClassLoader().getResource(mockSubmissionFileName);
+            FileDataSource fileDataSource = new FileDataSource(url.getFile());
+            
+            DataHandler dataHandler = new DataHandler(fileDataSource);
+            submitSpecification(tcSubject, projectId, mockSubmissionFileName, dataHandler);
+
+            // set to scheduled and update
+            specificationSubmissionPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+            updatePhases(fullProjectData, operator);
+
+            //turn on AP
+            fullProjectData.getProjectHeader().setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY, AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
+            updateProject(fullProjectData.getProjectHeader(), "Turn on AP", operator);
+        } catch (Exception e) {
+            throw logException(new SpecificationReviewServiceException("Error in scheduleSpecificationReview" + e, e));
         }
-        if (specificationSubmissionPhase == null) {
-            throw logException(new SpecificationReviewServiceException(
-                "Specification submission phase does not exist for the project: " + projectId));
-        }
-
-        // set to open
-        specificationSubmissionPhase.setPhaseStatus(PhaseStatus.OPEN);
-        String operator = Long.toString(tcSubject.getUserId());
-        updatePhases(fullProjectData, operator);
-
-        // upload a mock submission
-        FileDataSource fileDataSource = new FileDataSource(
-            new File(mockSubmissionFilePath, mockSubmissionFileName).getPath());
-        DataHandler dataHandler = new DataHandler(fileDataSource);
-        submitSpecification(tcSubject, projectId, mockSubmissionFileName, dataHandler);
-
-        // set to scheduled and update
-        specificationSubmissionPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
-        updatePhases(fullProjectData, operator);
     }
 
     /**
@@ -831,7 +889,9 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
     private FullProjectData getFullProjectData(long projectId)
         throws SpecificationReviewServiceException {
         try {
-            return projectServices.getFullProjectData(projectId);
+            FullProjectData project = projectServices.getFullProjectData(projectId);
+            project.setId(projectId);
+            return project;
         } catch (ProjectServicesException e) {
             throw logException(new SpecificationReviewServiceException(
                 "Fails to retrieve the project with id[" + projectId
@@ -882,6 +942,26 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         throws SpecificationReviewServiceException {
         try {
             projectServices.updatePhases(fullProjectData, operator);
+        } catch (ProjectServicesException e) {
+            throw logException(new SpecificationReviewServiceException("Fails to update phase.", e));
+        }
+    }
+
+
+    /**
+     * Updates given project data.
+     *
+     * @param fullProjectData
+     *            the full project data.
+     * @param operator
+     *            the operator.
+     * @throws SpecificationReviewServiceException
+     *             if any error occurs when updating phases.
+     */
+    private void updateProject(com.topcoder.management.project.Project project, String reason, String operator)
+        throws SpecificationReviewServiceException {
+        try {
+            projectServices.updateProject(project, reason, operator);
         } catch (ProjectServicesException e) {
             throw logException(new SpecificationReviewServiceException("Fails to update phase.", e));
         }
@@ -1276,5 +1356,49 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         log.log(Level.ERROR, buffer.toString());
 
         return exception;
+    }
+
+    /**
+     * <p>
+     * Add specification submitter resource to a user on a given project.
+     * </p>
+     *
+     * @param projectId the id of the given project
+     * @param userId the id of the user
+     * @throws SpecificationReviewServiceException if some error occurred.
+     * @since 1.1
+     */
+    private void addSpecificationSubmitter(long projectId, long userId) throws SpecificationReviewServiceException{
+        try {
+            ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
+            ResourceRole specificationSubmitterRole = null;
+            for (int i = 0; i < resourceRoles.length; i++) {
+                ResourceRole role = resourceRoles[i];
+                if ("Specification Submitter".equals(role.getName())) {
+                    specificationSubmitterRole = role;
+                    break;
+                }
+            }
+            
+            if (resourceManager.resourceExists(projectId, specificationSubmitterRole.getId(), userId)) {
+                return;
+            }
+            
+            UserRetrieval userRetrieval = new DBUserRetrieval(dbConnectionFactoryNamespace);
+            ExternalUser user = userRetrieval.retrieveUser(userId);
+            
+            com.topcoder.management.resource.Resource resource = new com.topcoder.management.resource.Resource();
+            // set resource properties
+            resource.setProject(new Long(projectId));
+            resource.setResourceRole(specificationSubmitterRole);
+            resource.setProperty("Handle", user.getHandle());
+            resource.setProperty("Payment", null);
+            resource.setProperty("Payment Status", "No");
+            resource.setProperty("External Reference ID", Long.toString(userId));
+            resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
+            resourceManager.updateResource(resource, Long.toString(userId));
+        } catch (Exception e) {
+            throw logException(new SpecificationReviewServiceException("Fails to add specification submitter role to user", e));
+        }
     }
 }
