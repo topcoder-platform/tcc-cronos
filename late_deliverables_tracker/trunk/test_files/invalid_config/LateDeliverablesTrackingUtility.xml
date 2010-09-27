@@ -259,7 +259,7 @@
 			                        <Value>com.informix.jdbc.IfxDriver</Value>
 			                    </Property>
 			                    <Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://192.168.1.3:9090/tcs:informixserver=topcoder</Value>
+			                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tc:informixserver=tc</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>
@@ -566,7 +566,7 @@
 			                        <Value>com.informix.jdbc.IfxDriver</Value>
 			                    </Property>
 			                    <Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://192.168.1.3:9090/tcs:informixserver=topcoder</Value>
+			                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tc:informixserver=tc</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>
@@ -875,7 +875,7 @@
 			                        <Value>com.informix.jdbc.IfxDriver</Value>
 			                    </Property>
 			                    <Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://192.168.1.3:9090/tcs:informixserver=topcoder</Value>
+			                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tc:informixserver=tc</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>
@@ -1181,7 +1181,7 @@
 			                        <Value>com.informix.jdbc.IfxDriver</Value>
 			                    </Property>
 			                    <Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://192.168.1.3:9090/tcs:informixserver=topcoder</Value>
+			                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tc:informixserver=tc</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>

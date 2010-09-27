@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <CMConfig>
-    <Config name="com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl">
-		<Property name="loggerName">
-			<Value>myLogger</Value>
-		</Property>
+    <Config name="failuretests">
 		<Property name="connectionName">
 			<Value>informix_connection</Value>
 		</Property>
@@ -86,9 +83,6 @@
 		<Property name="dbConnectionFactoryConfig">
 		    <Property name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
 		        <Property name="connections">
-		            <Property name="default">
-                        <Value>unknown</Value>
-                    </Property>
 		            <Property name="informix_connection">
 		                <Property name="producer">
 		                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
