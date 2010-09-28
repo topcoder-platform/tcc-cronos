@@ -621,6 +621,13 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_PAYMENT_STATUS_NA = "N/A";
+    
+
+    /**
+     * Represents the project category id for development contests.
+     *
+     */
+    private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
 
 
     /**
@@ -2238,7 +2245,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 leftoutphases.add(new Long(PhaseType.APPROVAL_PHASE.getId()));
             }
 
-            if (!requireSpecReview)
+            if (!requireSpecReview || (projectHeader.getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID && !projectHeader.isDevOnly()))
             {
                 leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
                 leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
