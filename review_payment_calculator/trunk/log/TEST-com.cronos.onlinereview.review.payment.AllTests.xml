@@ -1,0 +1,1367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="PC001" name="com.cronos.onlinereview.review.payment.AllTests" tests="93" time="0.641" timestamp="2010-09-28T14:33:31">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="package" value="com.cronos.onlinereview.review.payment" />
+    <property name="docpackage.jar" value="review_payment_calculator_docs.jar" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="eclipse.pdebuild.templates" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="manifest_file_path" value="build/dist/review_payment_calculator-1.0.0/META-INF/" />
+    <property name="verbose" value="no" />
+    <property name="os.name" value="Windows XP" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_21\jre\classes" />
+    <property name="docsdir" value="docs" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="design_submission.jar" value="review_payment_calculator_1.0.0_design_submission.jar" />
+    <property name="sun.desktop" value="windows" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/review_payment_calculator_tests.jar" />
+    <property name="object_formatter.jar" value="e:/tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910" />
+    <property name="java.runtime.version" value="1.5.0_21-b01" />
+    <property name="component_path" value="review_payment_calculator/1.0.0" />
+    <property name="cobertura.dir" value="e:/tcs/lib/third_party/cobertura/1.8" />
+    <property name="component.version.micro" value="0" />
+    <property name="user.name" value="Administrator" />
+    <property name="manifest_file" value="build/dist/review_payment_calculator-1.0.0/META-INF//MANIFEST.MF" />
+    <property name="logging_wrapper.jar" value="e:/tcs/lib/tcs/logging_wrapper/1.2/logging_wrapper.jar" />
+    <property name="debug" value="off" />
+    <property name="reports" value="log/reports" />
+    <property name="testfiles" value="test_files" />
+    <property name="component.version.major" value="1" />
+    <property name="component_version" value="1.0.0" />
+    <property name="dist_coverage" value="build/dist/review_payment_calculator-1.0.0/docs/coverage" />
+    <property name="component.packagedir" value="com/cronos/onlinereview/review/payment" />
+    <property name="user.language" value="en" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="javadoc.locale" value="en_US" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin" />
+    <property name="configuration_persistence.jar" value="e:/tcs/lib/tcs/configuration_persistence/1.0/configuration_persistence.jar" />
+    <property name="tcs_libdir" value="e:/tcs/lib/tcs" />
+    <property name="srcdir" value="src" />
+    <property name="junit4.jar" value="e:/tcs/lib/third_party/junit/4.5/junit.jar" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+    <property name="component.version.minor" value="0" />
+    <property name="java.version" value="1.5.0_21" />
+    <property name="user.timezone" value="" />
+    <property name="dev_dist.jar" value="review_payment_calculator_1.0.0_dev_dist.jar" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="cobertura.format" value="html" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="packagedir" value="com/cronos/onlinereview/review/payment" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="dev_submission.jar" value="review_payment_calculator_1.0.0_dev_submission.jar" />
+    <property name="java.class.version" value="49.0" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="user.country" value="US" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_21\jre" />
+    <property name="component.distfilename" value="review_payment_calculator" />
+    <property name="component.version.build" value="1" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="ant.file" value="E:\review\review_payment_calculator_1.0.0_dev_submission\build.xml" />
+    <property name="os.version" value="5.1" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="build_tcsdistdir" value="build/dist/review_payment_calculator-1.0.0" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="1.5.0_21-b01" />
+    <property name="testlogdir" value="log" />
+    <property name="user.variant" value="" />
+    <property name="resource_management.jar" value="./test_files/resource_management_mock.jar" />
+    <property name="ant.library.dir" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib" />
+    <property name="component.name" value="Review Payment Calculator" />
+    <property name="base_exception.jar" value="e:/tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" />
+    <property name="javamain" value="src/java/main" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="dist_javadocs" value="build/dist/review_payment_calculator-1.0.0/docs/javadocs" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="component" value="Review Payment Calculator" />
+    <property name="eclipse.pdebuild.scripts" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/" />
+    <property name="user.home" value="D:" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;d:\progra~1\f-secure\sshtri~1;c:\program files\ibm\gsk8\lib;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;E:\Program Files\TortoiseSVN\bin;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;e:\oracle\product\10.1.0\Db_1\bin;e:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin\client;e:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin;C:\Program Files\ThinkPad Wireless LAN Adapter Software;C:\Program Files\ThinkPad\ConnectUtilities;D:\PROGRA~1\IBM\SQLLIB\BIN;D:\PROGRA~1\IBM\SQLLIB\FUNCTION;D:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL;D:\apache-ant-1.7.1\bin;C:\Program Files\StormII\Codec;C:\Program Files\StormII;E:\cpp\boost_1_43_0" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="configdir" value="conf" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.file.TopCoder Java Generic Build" value="E:\review\review_payment_calculator_1.0.0_dev_submission\build.xml" />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="java.class.path" value="E:\review\review_payment_calculator_1.0.0_dev_submission\build\testClasses;e:\tcs\lib\third_party\junit\4.5\junit.jar;e:\tcs\lib\tcs\base_exception\2.0.0\base_exception.jar;e:\tcs\lib\tcs\logging_wrapper\1.2\logging_wrapper.jar;e:\tcs\lib\tcs\configuration_api\1.0.0\configuration_api.jar;e:\tcs\lib\tcs\object_formatter\1.0.0\object_formatter.jar;e:\tcs\lib\tcs\typesafe_enum\1.1.0\typesafe_enum.jar;e:\tcs\lib\tcs\configuration_persistence\1.0\configuration_persistence.jar;e:\tcs\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;E:\review\review_payment_calculator_1.0.0_dev_submission\test_files\resource_management_mock.jar;E:\review\review_payment_calculator_1.0.0_dev_submission\build\classes;E:\review\review_payment_calculator_1.0.0_dev_submission\test_files;E:\review\review_payment_calculator_1.0.0_dev_submission\conf;E:\review\review_payment_calculator_1.0.0_dev_submission;D:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-launcher.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-junit.jar" />
+    <property name="configuration_manager.jar" value="e:/tcs/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+    <property name="ext_libdir" value="e:/tcs/lib/third_party" />
+    <property name="builddir" value="build" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="component.dist.jar" value="build/dist/review_payment_calculator-1.0.0.jar" />
+    <property name="junit.jar" value="e:/tcs/lib/third_party/junit/3.8.2/junit.jar" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="sun.os.patch.level" value="Service Pack 3" />
+    <property name="component.mainclass" value="" />
+    <property name="eclipse.pdebuild.home" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./" />
+    <property name="component.target" value="1.5" />
+    <property name="java.io.tmpdir" value="D:\TEMP\" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="javatests" value="src/java/tests" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="os.arch" value="x86" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\ext" />
+    <property name="typesafe_enum.jar" value="e:/tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" />
+    <property name="user.dir" value="E:\review\review_payment_calculator_1.0.0_dev_submission" />
+    <property name="design_dist.jar" value="review_payment_calculator_1.0.0_design_dist.jar" />
+    <property name="libdir" value="../tcs/lib" />
+    <property name="javasrc" value="src/java" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="distfilename" value="review_payment_calculator" />
+    <property name="basedir" value="E:\review\review_payment_calculator_1.0.0_dev_submission" />
+    <property name="ant.java.version" value="1.5" />
+    <property name="configuration_api.jar" value="e:/tcs/lib/tcs/configuration_api/1.0.0/configuration_api.jar" />
+    <property name="ant.core.lib" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="dist_docs" value="build/dist/review_payment_calculator-1.0.0/docs" />
+    <property name="component.jar" value="build/dist/lib/tcs/review_payment_calculator/1.0.0/review_payment_calculator.jar" />
+    <property name="java.specification.version" value="1.5" />
+    <property name="target_libdir" value="e:/tcs/lib/tcs" />
+    <property name="ant.file.Dependency Import" value="E:\review\review_payment_calculator_1.0.0_dev_submission\build-dependencies.xml" />
+    <property name="component.package" value="com.cronos.onlinereview.review.payment" />
+  </properties>
+  <testcase classname="com.cronos.onlinereview.review.payment.Demo" name="testDemo" time="0.078" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="testCtor" time="0.015" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_2" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_configNull" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_loggerNameEmpty" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_loggerNameNotString" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_bonusPercentageEmpty" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_bonusPercentageNotString" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_bonusPercentageInvalid1" time="0.015" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_bonusPercentageInvalid2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_configure_bonusPercentageInvalid3" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_2" time="0.015" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_3" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_NoLogging" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_primaryPaymentZero" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_primaryPaymentZero_NoLogging" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_secondaryPaymentPoolZero" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_projectIdZero" time="0.015" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_statisticsNull" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_statisticsContainsNull" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_statisticsLengthInvalid" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_StatisticsTypeInvalid1" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_StatisticsTypeInvalid2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_NoPrimaryReviewer" time="0.015" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_MultiplePrimaryReviewers" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_TimelineReliabilityInvalid1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_TimelineReliabilityInvalid2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_TimelineReliabilityInvalid3" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_CoverageInvalid1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_CoverageInvalid2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_AccuracyInvalid1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_AccuracyInvalid2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_TotalEvaluationCoefficientInvalid1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_TotalEvaluationCoefficientInvalid2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests" name="test_computeReviewPayment_totalEvaluationCoefficientSumZero_NoLogging" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewerPaymentUnitTests" name="testCtor" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewerPaymentUnitTests" name="test_getReviewerId" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewerPaymentUnitTests" name="test_setReviewerId" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewerPaymentUnitTests" name="test_getProjectId" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewerPaymentUnitTests" name="test_setProjectId" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewerPaymentUnitTests" name="test_getPaymentAmount" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewerPaymentUnitTests" name="test_setPaymentAmount" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorExceptionUnitTests" name="testInheritance" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorExceptionUnitTests" name="testCtor1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorExceptionUnitTests" name="testCtor2" time="0.016" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorExceptionUnitTests" name="testCtor3" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorExceptionUnitTests" name="testCtor4" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsExceptionUnitTests" name="testInheritance" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsExceptionUnitTests" name="testCtor1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsExceptionUnitTests" name="testCtor2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsExceptionUnitTests" name="testCtor3" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsExceptionUnitTests" name="testCtor4" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorConfigurationExceptionUnitTests" name="testInheritance" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorConfigurationExceptionUnitTests" name="testCtor1" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorConfigurationExceptionUnitTests" name="testCtor2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorConfigurationExceptionUnitTests" name="testCtor3" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.ReviewPaymentCalculatorConfigurationExceptionUnitTests" name="testCtor4" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.InvalidReviewersStatisticsExceptionAccuracyTests" name="testInvalidReviewersStatisticsExceptionString" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.InvalidReviewersStatisticsExceptionAccuracyTests" name="testInvalidReviewersStatisticsExceptionStringThrowable" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.InvalidReviewersStatisticsExceptionAccuracyTests" name="testInvalidReviewersStatisticsExceptionStringExceptionData" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.InvalidReviewersStatisticsExceptionAccuracyTests" name="testInvalidReviewersStatisticsExceptionStringThrowableExceptionData" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorExceptionAccuracyTests" name="testReviewPaymentCalculatorExceptionString" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorExceptionAccuracyTests" name="testReviewPaymentCalculatorExceptionStringThrowable" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorExceptionAccuracyTests" name="testReviewPaymentCalculatorExceptionStringExceptionData" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorExceptionAccuracyTests" name="testReviewPaymentCalculatorExceptionStringThrowableExceptionData" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorConfigurationExceptionAccuracyTests" name="testReviewPaymentCalculatorConfigurationExceptionString" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorConfigurationExceptionAccuracyTests" name="testReviewPaymentCalculatorConfigurationExceptionStringThrowable" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorConfigurationExceptionAccuracyTests" name="testReviewPaymentCalculatorConfigurationExceptionStringExceptionData" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewPaymentCalculatorConfigurationExceptionAccuracyTests" name="testReviewPaymentCalculatorConfigurationExceptionStringThrowableExceptionData" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewerPaymentAccuracyTests" name="testSetGetReviewerIdAccuracy" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewerPaymentAccuracyTests" name="testSetGetProjectIdAccuracy" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.ReviewerPaymentAccuracyTests" name="testSetGetPaymentAmountAccuracy" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.DefaultReviewPaymentCalculatorAccuracyTests" name="testConfigureLoggerName" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.DefaultReviewPaymentCalculatorAccuracyTests" name="testConfigureBonusPercentage" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.DefaultReviewPaymentCalculatorAccuracyTests" name="testComputePrimaryReviewerPayment" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.DefaultReviewPaymentCalculatorAccuracyTests" name="testComputeAccuracyReviewerPayment" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.accuracytests.DefaultReviewPaymentCalculatorAccuracyTests" name="testComputeStressReviewerPayment" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_configure" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_configure2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_configure3" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_configure5" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment1" time="0.015" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment2" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment3" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment4" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment5" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment6" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment7" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment8" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest" name="test_computeReviewPayment9" time="0.0" />
+  <testcase classname="com.cronos.onlinereview.review.payment.stresstests.DefaultReviewPaymentCalculatorStressTest" name="test_test" time="0.016" />
+  <system-out><![CDATA[Run computeReviewPayment for 50 times takes 16ms
+]]></system-out>
+  <system-err><![CDATA[Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Exiting method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], time spent in the method: 16 milliseconds.
+The return value: [com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1001, projectId=1, paymentAmount=102.0}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1002, projectId=1, paymentAmount=142.7877586420518}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1003, projectId=1, paymentAmount=57.212241357948216}]
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Exiting method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], time spent in the method: 0 milliseconds.
+The return value: [com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1001, projectId=1, paymentAmount=102.0}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1002, projectId=1, paymentAmount=142.7877586420518}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1003, projectId=1, paymentAmount=57.212241357948216}]
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=0.5185, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Exiting method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], time spent in the method: 0 milliseconds.
+The return value: [com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1001, projectId=1, paymentAmount=102.0}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1002, projectId=1, paymentAmount=142.7877586420518}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1003, projectId=1, paymentAmount=57.212241357948216}]
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1004, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Exiting method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], time spent in the method: 0 milliseconds.
+The return value: [com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1001, projectId=1, paymentAmount=102.0}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1002, projectId=1, paymentAmount=115.71415533448936}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1003, projectId=1, paymentAmount=42.14292233275532}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1004, projectId=1, paymentAmount=42.14292233275532}]
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=0.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'primaryPayment' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:523)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:332)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_primaryPaymentZero(DefaultReviewPaymentCalculatorUnitTests.java:446)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=0.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'secondaryPaymentPool' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:523)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:333)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_secondaryPaymentPoolZero(DefaultReviewPaymentCalculatorUnitTests.java:484)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=0, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'projectId' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:504)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:331)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_projectIdZero(DefaultReviewPaymentCalculatorUnitTests.java:501)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=null}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'statistics' should not be null.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkNull(DefaultReviewPaymentCalculator.java:634)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:334)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_statisticsNull(DefaultReviewPaymentCalculatorUnitTests.java:518)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[null, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'element of statistics' should not be null.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkNull(DefaultReviewPaymentCalculator.java:634)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:339)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_statisticsContainsNull(DefaultReviewPaymentCalculatorUnitTests.java:536)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'statistics.length' should contain at least 3 elements.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:336)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_statisticsLengthInvalid(DefaultReviewPaymentCalculatorUnitTests.java:554)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=AVERAGE, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The statistics type must be 'HISTORY'.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:348)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_StatisticsTypeInvalid1(DefaultReviewPaymentCalculatorUnitTests.java:571)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=null, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The statistics type must be 'HISTORY'.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:348)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_StatisticsTypeInvalid2(DefaultReviewPaymentCalculatorUnitTests.java:588)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=0.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: No primary reviewer statistics found.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:375)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_NoPrimaryReviewer(DefaultReviewPaymentCalculatorUnitTests.java:606)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: More than one primary reviewer statistics found.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:354)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_MultiplePrimaryReviewers(DefaultReviewPaymentCalculatorUnitTests.java:625)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=-0.0010, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The timeline reliability must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:360)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_TimelineReliabilityInvalid1(DefaultReviewPaymentCalculatorUnitTests.java:643)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=1.001, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The timeline reliability must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:360)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_TimelineReliabilityInvalid2(DefaultReviewPaymentCalculatorUnitTests.java:661)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.001, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The timeline reliability must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_TimelineReliabilityInvalid3(DefaultReviewPaymentCalculatorUnitTests.java:679)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=-0.0010, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The coverage value must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_CoverageInvalid1(DefaultReviewPaymentCalculatorUnitTests.java:697)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=1.001, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The coverage value must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_CoverageInvalid2(DefaultReviewPaymentCalculatorUnitTests.java:715)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-0.0010, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The accuracy value must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_AccuracyInvalid1(DefaultReviewPaymentCalculatorUnitTests.java:733)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.001, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The accuracy value must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_AccuracyInvalid2(DefaultReviewPaymentCalculatorUnitTests.java:751)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-0.0010, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The calculated total evaluation coefficient must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:446)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_TotalEvaluationCoefficientInvalid1(DefaultReviewPaymentCalculatorUnitTests.java:769)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=-1.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=1.001, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The calculated total evaluation coefficient must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:446)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculatorUnitTests.test_computeReviewPayment_TotalEvaluationCoefficientInvalid2(DefaultReviewPaymentCalculatorUnitTests.java:787)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:22)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=0.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Exiting method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], time spent in the method: 0 milliseconds.
+The return value: [com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1001, projectId=1, paymentAmount=102.0}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1002, projectId=1, paymentAmount=142.7877586420518}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1003, projectId=1, paymentAmount=57.212241357948216}]
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=0.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Exiting method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], time spent in the method: 0 milliseconds.
+The return value: [com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1001, projectId=1, paymentAmount=102.0}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1002, projectId=1, paymentAmount=142.7877586420518}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1003, projectId=1, paymentAmount=57.212241357948216}]
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=1, primaryPayment=120.0, secondaryPaymentPool=200.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.85, totalEvaluationCoefficient=0.0, reviewerId=1001, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.85, coverage=0.61, timelineReliability=1.0, totalEvaluationCoefficient=-1.0, reviewerId=1002, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=1.0, coverage=0.39, timelineReliability=0.74, totalEvaluationCoefficient=-1.0, reviewerId=1003, competitionTypeId=0, projectId=1, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Exiting method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], time spent in the method: 0 milliseconds.
+The return value: [com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1001, projectId=1, paymentAmount=102.0}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1002, projectId=1, paymentAmount=142.7877586420518}, com.cronos.onlinereview.review.payment.ReviewerPayment {reviewerId=1003, projectId=1, paymentAmount=57.212241357948216}]
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=0, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'projectId' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:504)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:331)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment1(DefaultReviewPaymentCalculatorFailureTest.java:150)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=0.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'primaryPayment' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:523)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:332)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment1(DefaultReviewPaymentCalculatorFailureTest.java:156)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=0.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'secondaryPaymentPool' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:523)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:333)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment1(DefaultReviewPaymentCalculatorFailureTest.java:162)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=-1, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'projectId' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:504)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:331)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment1(DefaultReviewPaymentCalculatorFailureTest.java:168)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=-1.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'primaryPayment' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:523)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:332)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment1(DefaultReviewPaymentCalculatorFailureTest.java:174)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=-1.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'secondaryPaymentPool' should be a positive number.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkPositive(DefaultReviewPaymentCalculator.java:523)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:333)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment1(DefaultReviewPaymentCalculatorFailureTest.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'statistics.length' should contain at least 3 elements.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:336)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment2(DefaultReviewPaymentCalculatorFailureTest.java:195)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=null}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'statistics' should not be null.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkNull(DefaultReviewPaymentCalculator.java:634)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:334)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment2(DefaultReviewPaymentCalculatorFailureTest.java:201)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'statistics.length' should contain at least 3 elements.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:336)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment3(DefaultReviewPaymentCalculatorFailureTest.java:218)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, null]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: IllegalArgumentException is thrown.
+java.lang.IllegalArgumentException: 'element of statistics' should not be null.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkNull(DefaultReviewPaymentCalculator.java:634)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:339)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment3(DefaultReviewPaymentCalculatorFailureTest.java:225)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=AVERAGE, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The statistics type must be 'HISTORY'.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:348)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment4(DefaultReviewPaymentCalculatorFailureTest.java:242)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=0.8, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: No primary reviewer statistics found.
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:375)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment5(DefaultReviewPaymentCalculatorFailureTest.java:260)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=1.1, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The coverage value must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment6(DefaultReviewPaymentCalculatorFailureTest.java:277)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=-0.1, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The coverage value must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment7(DefaultReviewPaymentCalculatorFailureTest.java:294)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=-0.1, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=0.91, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The timeline reliability must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:360)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment8(DefaultReviewPaymentCalculatorFailureTest.java:311)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Entering method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)].
+The parameters: {projectId=100, primaryPayment=300.0, secondaryPaymentPool=400.0, statistics=[com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=-1.0, coverage=-1.0, timelineReliability=0.9, totalEvaluationCoefficient=-1.0, reviewerId=3001, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.8, coverage=0.9, timelineReliability=1.1, totalEvaluationCoefficient=-1.0, reviewerId=3002, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}, com.topcoder.management.resource.ReviewerStatistics {creationUser=null, creationTimestamp=null, modificationUser=null, modificationTimestamp=null, id=0, accuracy=0.7, coverage=0.6, timelineReliability=0.92, totalEvaluationCoefficient=-1.0, reviewerId=3003, competitionTypeId=0, projectId=100, statisticsType=HISTORY, eligibilityPoints=0.0}]}
+Error in method [com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(long projectId, double primaryPayment, double secondaryPaymentPool, ReviewerStatistics[] statistics)], details: InvalidReviewersStatisticsException is thrown when computing the review payments.
+com.cronos.onlinereview.review.payment.InvalidReviewersStatisticsException: The timeline reliability must be in range [0, 1].
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.checkRange(DefaultReviewPaymentCalculator.java:544)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:441)
+	at com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator.computeReviewPayment(DefaultReviewPaymentCalculator.java:379)
+	at com.cronos.onlinereview.review.payment.failuretests.DefaultReviewPaymentCalculatorFailureTest.test_computeReviewPayment9(DefaultReviewPaymentCalculatorFailureTest.java:328)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at junit.framework.TestCase.runTest(TestCase.java:168)
+	at junit.framework.TestCase.runBare(TestCase.java:134)
+	at junit.framework.TestResult$1.protect(TestResult.java:110)
+	at junit.framework.TestResult.runProtected(TestResult.java:128)
+	at junit.framework.TestResult.run(TestResult.java:113)
+	at junit.framework.TestCase.run(TestCase.java:124)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+]]></system-err>
+</testsuite>

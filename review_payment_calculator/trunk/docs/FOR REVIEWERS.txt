@@ -1,0 +1,13 @@
+Please note that:
+
+1. During the last OR update (Specification Submission/Review specific) all OR components were updated to support Logging Wrapper 1.2 (not 2.0 that is the latest one). Thus Logging Wrapper 1.2 should be used in this component too.
+The difference is that Logging Wrapper 1.2 doesn't provide LogManager and requires LogFactory to be used directly.
+And since LogFactory always creates a new Log instance in getLog(), the relationship to Log must be composition, but not aggregation.
+
+2. Classes that accept ConfigurationObject in constructor cannot be created with Object Factory. Thus I added the configure() method.
+
+3. ReviewerPayment is not DTO (despite a comment in the architecute TCUML says so). ReviewerPayment is not used for transfering data from one subsystem to another (e.g. from server to client, from DB to application, etc), thus it's a simple container for aggregating values returned from ReviewPaymentCalculator#computeReviewPayment() method.
+
+4. I didn't suggest that the number of secondary reviewers is always equal to 2 in my design. This flexibility will allow TopCoder to experiment with 3 or even more secondary reviewers for very complex projects (that need a better review).
+
+Good luck and thanks for review!
