@@ -1,0 +1,5 @@
+3.1.5 >> But I still don't see how an interface (i.e. no code) can create an object.
+<<creates>> relationship from interface doesn't mean that interface does something
+itself in the code, it means that the caller can create object instances via this interface.
+
+4.1.2 Fixed (see step 3.1 in impl notes)

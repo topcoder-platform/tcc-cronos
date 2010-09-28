@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.cronos.onlinereview.review.payment.impl.DefaultReviewPaymentCalculator">
+    <Property name="loggerName">
+      <Value>myLogger</Value>
+    </Property>
+    <Property name="bonusPercentage">
+      <Value>0.2</Value>
+    </Property>
+  </Config>
+</CMConfig>
