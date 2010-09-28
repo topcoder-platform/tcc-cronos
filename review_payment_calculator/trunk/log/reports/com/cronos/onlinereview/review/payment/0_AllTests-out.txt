@@ -1,2 +1,0 @@
-Run computeReviewPayment for 50 times takes 16ms
-
