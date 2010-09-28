@@ -11,4 +11,4 @@ component.version.build=1
 # Defines the Main-Class property for the manifest file (e.g. com.topcoder.utility.SomeClass)
 # This property is only used for components that can be run from command line.
 # Leave the property value empty if not applicable.
-component.mainclass=
+component.mainclass=com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
