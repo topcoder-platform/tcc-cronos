@@ -4041,6 +4041,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 assetDTO = catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
                 // for dev, we need to insert a row in comp version dates
                 catalogService.createDevComponent(assetDTO);
+                // set dev only flag
+            }
+            // dev only
+            else if (isDevContest)
+            {
+                contest.getProjectHeader().setDevOnly(true);
             }
 
             if (!useExistingAsset) {
