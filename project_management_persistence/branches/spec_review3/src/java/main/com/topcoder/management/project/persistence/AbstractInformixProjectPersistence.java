@@ -966,7 +966,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "and not exists (" + 
         "select 1 from project_info q1 , project q " + 
         " where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> p.project_id and q1.value = pi.value " +
-        " and (q.project_status_id = 1 or q.project_status_id = 7)  and q.project_category_id == 2) ";
+        " and (q.project_status_id = 1 or q.project_status_id = 7 or q.project_status_id = 2)  and q.project_category_id == 2) ";
         
 
 
@@ -1036,7 +1036,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "               AND project_category_lu.project_type_id = project_type_lu.project_type_id "
 			+ "               AND pi1.project_id = project.project_id AND pi1.project_info_type_id = 6 "
             + "               AND pi2.project_id = project.project_id AND pi2.project_info_type_id = 7 " 				 
-            + "               AND (project.project_status_id != 3 and project.project_status_id != 2)"
+            + "               AND (project.project_status_id != 3)"
 			+ "			      AND date(project.create_date) > date(current) - ";
 
     
@@ -1383,7 +1383,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
       + " from project_info q1 , project q, project_info pi "
       + "   where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> pi.project_id and q1.value = pi.value "
       + "   and pi.project_info_type_id = 1 "
-      + "   and (q.project_status_id = 1 or q.project_status_id = 7) and q.project_category_id = 1 "
+      + "   and (q.project_status_id = 1 or q.project_status_id = 7 or q.project_status_id = 2) and q.project_category_id = 1 "
       + "     and pi.project_id = ? ";
    
     /**
@@ -4986,7 +4986,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("           WHERE ce.is_studio = 0 AND ce.contest_id = c.project_id) "); */
             sb.append(" AND ");
             // not show inactive or deleted
-            sb.append(" (c.project_status_id != 2 AND c.project_status_id != 3)  ");
+            sb.append(" (c.project_status_id != 3)  ");
             // dont show spec review project
             sb.append(" and c.project_category_id != 27 ");
             sb.append(" AND ");
