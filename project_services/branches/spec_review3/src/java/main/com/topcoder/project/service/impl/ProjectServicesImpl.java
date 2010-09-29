@@ -2273,6 +2273,7 @@ public class ProjectServicesImpl implements ProjectServices {
             long screenTemplateId = 0L;
             long reviewTemplateId = 0L;
             long approvalTemplateId = 0L;
+            long specReviewTemplateId = 0L;
             long projectTypeId = projectHeader.getProjectCategory().getId();
 
             try
@@ -2280,6 +2281,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
                 reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
                 approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+                specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
             }
             catch (Exception e)
             {
@@ -2288,6 +2290,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 screenTemplateId = projectManager.getScorecardId(6, 1);
                 reviewTemplateId = projectManager.getScorecardId(6, 2);
                 approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+                specReviewTemplateId = projectManager.getScorecardId(6, 5);
             }
 
            
@@ -2349,6 +2352,11 @@ public class ProjectServicesImpl implements ProjectServices {
                     else if (p.getPhaseType().getName().equals("Approval"))
                     {
                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
+                       p.setAttribute("Reviewer Number", "1");
+                    }
+                    else if (p.getPhaseType().getName().equals("Specification Review"))
+                    {
+                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(specReviewTemplateId));
                        p.setAttribute("Reviewer Number", "1");
                     }
             }
@@ -3156,7 +3164,7 @@ public class ProjectServicesImpl implements ProjectServices {
             //1.1 copy the project header
             Project projectHeader = new Project();
             projectHeader.setProjectCategory(contest.getProjectHeader().getProjectCategory());
-            projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
+            projectHeader.setProjectStatus(ProjectStatus.DRAFT);
             ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
             spec.setProjectSpecId(-1);
             projectHeader.setProjectSpec(spec);
