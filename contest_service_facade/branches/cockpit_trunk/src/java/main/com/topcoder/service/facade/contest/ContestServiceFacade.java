@@ -138,8 +138,13 @@ import com.topcoder.service.user.Registrant;
  * - updateNotifcationsForUser(TCSubject subject, long userId, List<ProjectNotification> notifications)
  * </p>
  *
- * @author pulky, murphydog, waits, BeBetter, hohosky
- * @version 1.6.1
+ * <p>
+ * Changes in v1.6.2 (Direct Submission Viewer Release 4 Assembly):
+ * - Added {@link #updateSubmissionsGeneralFeedback(TCSubject, long, String)} method.
+ * </p>
+ *
+ * @author pulky, murphydog, waits, BeBetter, hohosky, isv
+ * @version 1.6.2
  */
 public interface ContestServiceFacade {
     /**
@@ -2421,4 +2426,18 @@ public interface ContestServiceFacade {
      */
     public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions)
         throws PermissionServiceException;
+
+    /**
+     * <p>Updates the general feedback for contest round.</p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user.
+     * @param contestId a <code>long</code> providing the ID of a contest.
+     * @param generalFeedback an array of <code>SubmissionFeedback</code>.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException if any error occurs when retrieving/updating the data.
+     * @throws PermissionServiceException if user is not granting a permission for updating the contest.
+     * @since 1.6.2
+     */
+    public boolean updateSubmissionsGeneralFeedback(TCSubject tcSubject, long contestId, String generalFeedback)
+        throws PersistenceException, PermissionServiceException;
 }

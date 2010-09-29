@@ -275,8 +275,15 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  *   </ol>
  * </p>
  *
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, TCSDEVELOPER
- * @version 1.6.2
+ * <p>
+ * Version 1.6.3 (Direct Submission Viewer Release 4 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #updateSubmissionsGeneralFeedback(TCSubject, long, String)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv
+ * @version 1.6.3
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -7499,5 +7506,33 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         throws PermissionServiceException {
         logger.debug("updateProjectPermissions(" + tcSubject +  ")");
         this.permissionService.updateProjectPermissions(projectPermissions, tcSubject.getUserId());
+    }
+
+    /**
+     * <p>Updates the general feedback for contest round.</p>
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user.
+     * @param contestId a <code>long</code> providing the ID of a contest.
+     * @param generalFeedback an array of <code>SubmissionFeedback</code>.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException if any error occurs when retrieving/updating the data.
+     * @throws PermissionServiceException if user is not granting a permission for updating the contest.
+     * @since 1.6.3
+     */
+    public boolean updateSubmissionsGeneralFeedback(TCSubject tcSubject, long contestId, String generalFeedback)
+            throws PersistenceException, PermissionServiceException {
+        logger.debug("updateSubmissionsGeneralFeedback");
+
+        checkStudioContestPermission(tcSubject, contestId, false);
+        try {
+            this.studioService.updateSubmissionsGeneralFeedback(contestId, generalFeedback);
+
+            logger.debug("Exit updateSubmissionsGeneralFeedback");
+            return true;
+        } catch (PersistenceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw e;
+        }
     }
 }
