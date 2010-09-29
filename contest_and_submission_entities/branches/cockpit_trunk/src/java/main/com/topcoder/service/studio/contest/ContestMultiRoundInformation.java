@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -18,8 +18,15 @@ import java.util.Date;
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  *
- * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.0
+ * <p>
+ *   Version 1.2.1 (Direct Submission Viewer Release 4) change notes:
+ *   <ul>
+ *     <li>Added {@link #generalFeedbackText} property with respective accessor/mutator methods.</li>
+ *   </ul>
+ * </p>
+ *
+ * @author TCSDESIGNER, isv
+ * @version 1.2.1
  * @since 1.2
  */
 public class ContestMultiRoundInformation implements Serializable {
@@ -65,6 +72,13 @@ public class ContestMultiRoundInformation implements Serializable {
      * </p>
      */
     private String roundTwoIntroduction;
+
+    /**
+     * <p>A <code>String</code> providing the text for general feedback on milestone round.</p>
+     * 
+     * @since 1.2.1
+     */
+    private String generalFeedbackText;
 
     /**
      * <p>
@@ -220,4 +234,23 @@ public class ContestMultiRoundInformation implements Serializable {
         return Helper.calculateHash(contestMultiRoundInformationId);
     }
 
+    /**
+     * <p>Gets the text for general feedback on milestone round.</p>
+     *
+     * @return a <code>String</code> providing the text for general feedback on milestone round.
+     * @since 1.2.1
+     */
+    public String getGeneralFeedbackText() {
+        return this.generalFeedbackText;
+    }
+
+    /**
+     * <p>Sets the text for general feedback on milestone round.</p>
+     *
+     * @param generalFeedbackText a <code>String</code> providing the text for general feedback on milestone round.
+     * @since 1.2.1
+     */
+    public void setGeneralFeedbackText(String generalFeedbackText) {
+        this.generalFeedbackText = generalFeedbackText;
+    }
 }
