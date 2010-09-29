@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio;
 
@@ -26,22 +26,36 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * </p>
  *
  * <p>
+ * Changes in v1.4 (Studio Multi-Rounds Assembly - Launch Contest): Added id attribute 
+ * with corresponding getter and setter. Changed milestoneDate type to XMLGregorianCalendar.
+ * 'XmlType' was also updated to include this new field.
+ * Default serialVersionUID was also added.
+ * </p>
+ * <p>
+ * Version 1.5.1 (Direct Submission Viewer Release 4 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #generalFeedbackText} property with respective accessor/mutator methods.</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * This class is not thread safe because it's highly mutable.
  * </p>
  *
- * @author pulky
- * @version 1.4
+ * @author pulky, isv
+ * @version 1.5.1
+ * @since 1.0
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contestMultiRoundInformationData", propOrder = { "id", "milestoneDate",
-        "submittersLockedBetweenRounds", "roundOneIntroduction", "roundTwoIntroduction" })
+        "submittersLockedBetweenRounds", "roundOneIntroduction", "roundTwoIntroduction", "generalFeedbackText" })
 public class ContestMultiRoundInformationData implements Serializable {
     /**
      * Default serial version id.
      *
      * @since 1.4
      */
-    private static final long serialVersionUID = 3075278936505863275L;
+    private static final long serialVersionUID = 3075278936505863276L;
 
     /**
      * <p>
@@ -70,6 +84,13 @@ public class ContestMultiRoundInformationData implements Serializable {
      * The second round introduction. Can be any value. Has getter and setter.
      */
     private String roundTwoIntroduction;
+
+    /**
+     * <p>A <code>String</code> providing the text for general feedback on milestone round.</p>
+     *
+     * @since 1.5.1
+     */
+    private String generalFeedbackText;
 
     /**
      * Creates an instance of ContestMultiRoundInformationData.
@@ -174,5 +195,25 @@ public class ContestMultiRoundInformationData implements Serializable {
      */
     public void setRoundTwoIntroduction(String roundTwoIntroduction) {
         this.roundTwoIntroduction = roundTwoIntroduction;
+    }
+
+    /**
+     * <p>Gets the text for general feedback on milestone round.</p>
+     *
+     * @return a <code>String</code> providing the text for general feedback on milestone round.
+     *     <li>Added {@link #generalFeedbackText} property with respective accessor/mutator methods.</li>
+     */
+    public String getGeneralFeedbackText() {
+        return this.generalFeedbackText;
+    }
+
+    /**
+     * <p>Sets the text for general feedback on milestone round.</p>
+     *
+     * @param generalFeedbackText a <code>String</code> providing the text for general feedback on milestone round.
+     *     <li>Added {@link #generalFeedbackText} property with respective accessor/mutator methods.</li>
+     */
+    public void setGeneralFeedbackText(String generalFeedbackText) {
+        this.generalFeedbackText = generalFeedbackText;
     }
 }

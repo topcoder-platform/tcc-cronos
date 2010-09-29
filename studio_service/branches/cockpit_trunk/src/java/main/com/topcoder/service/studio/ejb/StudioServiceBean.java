@@ -221,13 +221,21 @@ import com.topcoder.web.ejb.pacts.BasePayment;
  * Changes in v1.5.1(Cockpit Security Facade V1.0)
  *  - Methods add paremeter TCSubject in order to replacing the current permission checking security info.
  * </p>
+ *
+ * <p>
+ * Version 1.5.2 (Direct Submission Viewer Release 4 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #updateSubmissionsGeneralFeedback(long, String)} method.</li>
+ *   </ol>
+ * </p>
+ *
  * <p>
  * Thread safety: this class is thread safe if the managers used are thread safe. Considering that probably the managers
  * beans will use the transactions, this stateless bean is thread safe
  * </p>
  *
- * @author fabrizyo, saarixx, pulky
- * @version 1.5.1
+ * @author fabrizyo, saarixx, pulky, isv
+ * @version 1.5.2
  * @since 1.0
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -1578,6 +1586,7 @@ public class StudioServiceBean implements StudioService {
         info.setRoundOneIntroduction(data.getRoundOneIntroduction());
         info.setRoundTwoIntroduction(data.getRoundTwoIntroduction());
         info.setSubmittersLockedBetweenRounds(data.getSubmittersLockedBetweenRounds());
+        info.setGeneralFeedbackText(data.getGeneralFeedbackText());
         return info;
     }
 
@@ -1932,6 +1941,7 @@ public class StudioServiceBean implements StudioService {
         data.setRoundOneIntroduction(info.getRoundOneIntroduction());
         data.setRoundTwoIntroduction(info.getRoundTwoIntroduction());
         data.setSubmittersLockedBetweenRounds(info.isSubmittersLockedBetweenRounds());
+        data.setGeneralFeedbackText(info.getGeneralFeedbackText());
         return data;
     }
 
@@ -4748,6 +4758,40 @@ public class StudioServiceBean implements StudioService {
 
         return false;
     }
+
+    /**
+     * <p>Updates the general feedback for contest round.</p>
+     *
+     * @param contestId a <code>long</code> providing the ID of a contest.
+     * @param generalFeedback an array of <code>SubmissionFeedback</code>.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException if any error occurs when retrieving/updating the data.
+     * @since 1.5.2
+     */
+    public void updateSubmissionsGeneralFeedback(long contestId, String generalFeedback) throws PersistenceException {
+        try {
+            Contest contest = this.contestManager.getContest(contestId);
+            if (contest == null) {
+                String message = "contest not found. contest id: " + contestId;
+                logDebug(message);
+                logExit("updateSubmissionsGeneralFeedback");
+                throw new PersistenceException(message, message);
+            }
+            ContestMultiRoundInformation information = contest.getMultiRoundInformation();
+            if (information == null) {
+                String message = "no multi-round information. contest id: " + contestId;
+                logDebug(message);
+                logExit("updateSubmissionsGeneralFeedback");
+                throw new PersistenceException(message, message);
+            }
+
+            this.contestManager.updateSubmissionsGeneralFeedback(information.getContestMultiRoundInformationId(),
+                                                                 generalFeedback);
+        } catch (ContestManagementException e) {
+            handlePersistenceError("ContestManagement reports error.", e);
+        }
+    }
+
     /**
      * <p>
      * Get the user-name for the login user represented by TCSubject.

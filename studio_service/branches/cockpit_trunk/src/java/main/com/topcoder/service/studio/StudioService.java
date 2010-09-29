@@ -69,8 +69,15 @@ import com.topcoder.service.studio.submission.Submission;
  *  - Methods add paremeter TCSubject in order to replacing the current permission checking security info.
  * </p>
  *
- * @author fabrizyo, pulky
- * @version 1.2.1
+ * <p>
+ * Version 1.2.2 (Direct Submission Viewer Release 4 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #updateSubmissionsGeneralFeedback(long, String)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author fabrizyo, pulky, isv
+ * @version 1.2.2
  */
 @Remote
 public interface StudioService {
@@ -936,4 +943,15 @@ public interface StudioService {
      *
      */
     public boolean checkProjectPermission(long projectId, boolean readonly, long userId) throws PersistenceException;
+
+    /**
+     * <p>Updates the general feedback for contest round.</p>
+     *
+     * @param contestId a <code>long</code> providing the ID of a contest.
+     * @param generalFeedback an array of <code>SubmissionFeedback</code>.
+     * @return a <code>boolean</code> true if successful, else false.
+     * @throws PersistenceException if any error occurs when retrieving/updating the data.
+     * @since 1.2.2
+     */
+    void updateSubmissionsGeneralFeedback(long contestId, String generalFeedback) throws PersistenceException;
 }
