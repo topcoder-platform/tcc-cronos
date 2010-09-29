@@ -1,0 +1,277 @@
+{\rtf1\ansi\ansicpg936\deff0\deflang2052\deflangfe2052{\fonttbl{\f0\fmodern\fprq6\fcharset134 \'cb\'ce\'cc\'e5;}{\f1\fnil\fcharset134 \'cb\'ce\'cc\'e5;}{\f2\fnil\fcharset204{\*\fname Times New Roman;}Times New Roman CYR;}{\f3\fswiss Arial;}{\f4\fmodern Courier New;}{\f5\fnil\fcharset134 \'a8\'ac;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue255;\red163\green21\blue21;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}{\s3 heading 3;}}
+{\*\generator Msftedit 5.41.21.2500;}{\info{\horzdoc}{\*\lchars{\uc1 \u40 ?}{\uc1 \u91 ?}{\uc1 \u123 ?}{\uc1 \u183 ?}{\uc1 \u8216 ?}{\uc1 \u8220 ?}{\uc1 \u12296 ?}{\uc1 \u12298 ?}{\uc1 \u12300 ?}{\uc1 \u12302 ?}{\uc1 \u12304 ?}{\uc1 \u12308 ?}{\uc1 \u12310 ?}{\uc1 \u65288 ?}{\uc1 \u65294 ?}{\uc1 \u65339 ?}{\uc1 \u65371 ?}{\uc1 \u65505 ?}{\uc1 \u65509 ?}}{\*\fchars{\uc1 \u33 ?}{\uc1 \u41 ?}{\uc1 \u44 ?}{\uc1 \u46 ?}{\uc1 \u58 ?}{\uc1 \u59 ?}{\uc1 \u63 ?}{\uc1 \u93 ?}{\uc1 \u125 ?}{\uc1 \u168 ?}{\uc1 \u183 ?}{\uc1 \u711 ?}{\uc1 \u713 ?}{\uc1 \u8213 ?}{\uc1 \u8214 ?}{\uc1 \u8217 ?}{\uc1 \u8221 ?}{\uc1 \u8230 ?}{\uc1 \u8758 ?}{\uc1 \u12289 ?}{\uc1 \u12290 ?}{\uc1 \u12291 ?}{\uc1 \u12293 ?}{\uc1 \u12297 ?}{\uc1 \u12299 ?}{\uc1 \u12301 ?}{\uc1 \u12303 ?}{\uc1 \u12305 ?}{\uc1 \u12309 ?}{\uc1 \u12311 ?}{\uc1 \u65281 ?}{\uc1 \u65282 ?}{\uc1 \u65287 ?}{\uc1 \u65289 ?}{\uc1 \u65292 ?}{\uc1 \u65294 ?}{\uc1 \u65306 ?}{\uc1 \u65307 ?}{\uc1 \u65311 ?}{\uc1 \u65341 ?}{\uc1 \u65344 ?}{\uc1 \u65372 ?}{\uc1 \u65373 ?}{\uc1 \u65374 ?}{\uc1 \u65504 ?}}}
+\viewkind4\uc1\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx720\f0\fs20\u203?\u206?\u229?\u206?\u209?\u197?\u186?\kerning32\ul\b\f1\fs28 Specification Review Service 1.0 Component Specification\par
+\pard\li720\sa120\lang1033\kerning0\ulnone\b0\f2\fs24\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\lang2052\kerning32\b\f1\fs32 Design\par
+\pard\li720\sa60\lang1033\kerning0\b0\f3\fs20 TopCoder is performing an improvement the competition review process, which includes altering the way reviews are obtained by applicants, and how the reviews are performed. This undertaking involves modifications and additions to the existing Online Review application. Currently there are two applications involved in review process. TopCoder Website application is used by the reviewers for signing up for the review positions and listing the statistics for projects and users. Online Review application is actually used for managing the review process providing the users with abilities to upload submissions for contests, fill the screening and review scorecards, submitting and resolving appeals, performing contest results aggregation, submitting final fixes and approving the results of contests. It is the later application that is being improved.\par
+This component provides functionality for managing aspects of a specification review.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Design Patterns \par
+\pard\li720\sa60\lang1033\kerning0\b\i0\f3\fs20 Strategy pattern\b0  \lang2052\f1\endash\lang1033\f3  this component provides SpecificationReviewService interface and its implementation that can possibly be used in some external strategy context.\par
+\b DAO/DTO pattern\b0  \lang2052\f1\endash\lang1033\f3  SpecificationReviewService acts as a DAO for SpecificationReview DTO (but provides only a retrieval operation for it).\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Industry Standards \par
+\pard\li720\lang1033\kerning0\i0\f3\fs20 EJB 3.0, IoC\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Required Algorithms\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i0\fs26 Logging\par
+\pard\li720\sa120\lang1033\kerning0\f3\fs20 This component must perform logging in all public methods of SpecificationReviewServiceBean.\par
+All information must be logged using log:Log attribute. If log attribute is null, then logging is not required to be performed.\par
+All errors (for all thrown exceptions) must be logged at ERROR level with exception message and stack trace.\par
+\pard\li720 Other information is not required to be logged.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa120\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Component Class Overview\par
+\pard\li720\lang1049\kerning0\b\i0\f3\fs20 SpecificationReview\b0\par
+\pard\li1440\sa120\lang1033 This class is a container for information about a single specification review. It holds Review and Scorecard instances. It is a simple JavaBean (POJO) that provides getters and setters for all private attributes and performs no argument validation in the setters.\par
+\pard\li720\b SpecificationReviewService [interface]\b0\par
+\pard\li1440\sa120 This interface represents a specification review service. It provides methods for scheduling specification review, submitting specification as a file or a string, retrieving specification review, retrieving specification review status and retrieving IDs of projects for which specification review positions are open.\par
+\pard\li720\b SpecificationReviewServiceBean\b0\par
+\pard\li1440\sa120 This class is an EJB that implements SpecificationReviewService business interface. This bean uses Logging Wrapper component to log all occurred errors. This class uses pluggable implementations of UploadManager, UploadExternalServices, ProjectServices, ReviewManager, ScorecardManager and ResourceManager interfaces to access data in persistence and perform the actual specification review management.\par
+\pard\li720\b SpecificationReviewServiceLocal [interface]\b0\par
+\pard\li1440\sa120 This interface represents the local interface for SpecificationReviewService session bean. It extends that interface and provides no additional methods.\par
+\pard\li720\b SpecificationReviewServiceRemote [interface]\b0\par
+\pard\li1440\sa120 This interface represents the remote interface for SpecificationReviewService session bean. It extends that interface and provides no additional methods.\par
+\pard\li720\b SpecificationReviewStatus [enum]\b0\par
+\pard\li1440\sa120 This is an enumeration for specification review statuses.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa120\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Component Exception Definitions\par
+\pard\li720\lang1049\kerning0\b\i0\f3\fs20 SpecificationReviewServiceConfigurationException\b0\par
+\pard\li1440\sa120\lang1033 This exception is thrown by SpecificationReviewServiceBean when error occurs while initializing this bean.\par
+\pard\li720\b SpecificationReviewServiceException\b0\par
+\pard\li1440\sa120 This exception is thrown by implementations of SpecificationReviewService when some error occurs in the business methods.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Thread Safety\par
+\pard\li720\sa60\lang1033\kerning0\i0\f3\fs20 This component is thread safe.\par
+Implementations of SpecificationReviewService, SpecificationReviewServiceLocal and SpecificationReviewServiceRemote must be thread safe.\par
+SpecificationReview is mutable and not thread safe entity.\par
+SpecificationReviewStatus is immutable and thread safe.\par
+SpecificationReviewServiceBean is mutable and not thread safe. But it is always used in thread safe manner in EJB container because its state doesn't change after initialization. Instances of ProjectServices, UploadExternalServices and DBConnectionFactory used by this class are thread safe. Instances of UploadManager, ReviewManager, ScorecardManager and ResourceManager are not thread safe, thus all calls of their methods are synchronized in this class.\par
+SpecificationReviewServiceBean uses container managed transactions. All methods of this class that can change data in the persistence have @TransactionAttribute(TransactionAttributeType.REQUIRED) annotation.\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\lang2052\kerning32\b\f1\fs32 Environment Requirements\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b0\i\fs28 Environment\par
+\pard\li720\lang1033\kerning0\i0\f3\fs20 Development language: Java1.5, J2EE 1.5\par
+Compile target: Java1.5, J2EE 1.5\par
+QA Environment: Java 1.5, JBoss 4.0.2, Informix 11, JSP 2, Flex 3\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 TopCoder Software Components\par
+\pard\li720\sa120\lang1033\kerning0\b\i0\f2\fs24 Base Exception 2.0\b0  \lang2052\f1\endash\lang1033\f2  is used by custom exceptions defined in this component.\par
+\b Logging Wrapper \cf1\lang2052\f1 1.2\cf0\lang1033\b0\f2  \lang2052\f1\endash\lang1033\f2  is used for logging errors in this component.\par
+\b\f3\fs20 Deliverable Management 1.1\b0  \lang2052\f1\endash\lang1033\f3  defines UploadManager together with Submission entity and SubmissionFilterBuilder used in this component for retrieving specification submissions.\par
+\b Project Services 1.1\b0  \lang2052\f1\endash\lang1033\f3  defines ProjectSerives and FullProjectData used in this component.\par
+\b Project Management 1.0\b0  \lang2052\f1\endash\lang1033\f3  defines Project entity used in this component.\par
+\b Scorecard Management 1.0.1\b0  \lang2052\f1\endash\lang1033\f3  defines ScorecardManager used in this component for retrieving scorecards.\par
+\b Scorecard Data Structure 1.0\b0  \lang2052\f1\endash\lang1033\f3  defines Scorecard entity used in this component.\par
+\b Review Management 1.0\b0  \lang2052\f1\endash\lang1033\f3  defines ReviewManager used in this component for retrieving specification review worksheets.\par
+\b Review Data Structure 1.0\b0  \lang2052\f1\endash\lang1033\f3  defines Review entity used in this component.\par
+\b Resource Management 1.1\b0  \lang2052\f1\endash\lang1033\f3  defines ResourceManager and ResourceFilterBuilder used in this component for checking specification reviewers for projects.\par
+\b Online Review Upload Services 1.1\b0  \lang2052\f1\endash\lang1033\f3  defines UploadExternalServices used in this component for uploading specification submissions.\par
+\b Online Review Phases 1.4\b0  \lang2052\f1\endash\lang1033\f3  defines SubmissionStatusLookupUtility, SubmissionTypeLookupUtility and ResourceRoleLookupUtility used in this component.\par
+\b Security Manager 1.1\b0  \lang2052\f1\endash\lang1033\f3  defines TCSubject entity used in this component.\par
+\b DB Connection Factory 1.1\b0  \lang2052\f1\endash\lang1033\f3  is used for establishing database connections.\par
+\b Search Builder 1.4.1 \lang2052\b0\f1\endash\lang1033\f3  defines Filter, EqualToFilter and AndFilter entities used in this component for filtering submissions, projects and resource roles.\par
+\b Project Phases 2.0.1 \lang2052\b0\f1\endash\lang1033\f3  defines Phase, PhaseStatus and PhaseType entities used in this component for checking/updating project phases.\par
+\pard\li720\i\f2\fs24 NOTE: The default location for TopCoder Software component jars is../lib/tcs/COMPONENT_NAME/COMPONENT_VERSION relative to the component installation.\cf2   Setting the tcs_libdir property in topcoder_global.properties will overwrite this default location.\cf0\i0\f3\fs20\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Third Party Components\par
+\pard\li720\sa120\lang1033\kerning0\i0\f3\fs20 None\par
+\pard\keepn\nowidctlpar\s3\li720\sb120\sa60\sl240\slmult0\tx720\cf2\lang2052\kerning32\f1\fs26 NOTE: The default location for 3\super rd\nosupersub  party packages is ../lib relative to this component installation.  Setting the ext_libdir property in topcoder_global.properties will overwrite this default location.\cf0\lang1033\f2\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\lang2052\b\f1\fs32 Installation and Configuration\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b0\i\fs28 Package Name\par
+\pard\li720\lang1049\kerning0\i0\f3\fs20 com.topcoder.service.review.specification\lang1033\par
+com.topcoder.service.review.specification.ejb\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Configuration Parameters\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i0\fs26 EJB configuration of SpecificationReviewServiceBean\par
+\pard\li720\sb120\sa120\lang1033\kerning0\f3\fs20 SpecificationReviewServiceBean is configured with the following EJBs via container injection:\par
+\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3169\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7577\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9928\pard\intbl\brdrl\brdrs\brdrw10 \brdrt\brdrs\brdrw10 \brdrr\brdrs\brdrw10 \brdrb\brdrs\brdrw10 \b EJB name\cell\pard\intbl Description\cell Type\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx3169\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7577\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9928\pard\intbl\b0\f2\fs24 ejb/ProjectServices\cell\lang2057 The project services instance used by this class.\cell Project\lang1033 Services\cell\row\pard\li720\sb120\sa120\f3\fs20 Also SpecificationReviewServiceBean uses the following resources injected by EJB container:\par
+\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl\brdrl\brdrs\brdrw10 \brdrt\brdrs\brdrw10 \brdrr\brdrs\brdrw10 \brdrb\brdrs\brdrw10 \b Resource name\cell\pard\intbl Description\cell Values\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl\b0\f2\fs24 loggerName\cell\lang2057 The name of the Logger Wrapper logger to be used by this class for logging errors and debug information.\par
+When not specified, logging is not performed.\cell\lang1033 String. Not empty.\par
+Optional.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl connectionName\cell\lang2057 The connection passed to DBConnectionFactory when establishing a database connection. If not specified, the default connection is used.\cell\lang1033 String. Not empty.\par
+Optional.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl mockSubmissionFilePath\cell\lang2057 The mock specification submission file path (without file name).\cell\lang1033 String. Not empty.\par
+Required.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl mockSubmissionFileName\cell\lang2057 The mock specification submission file name (without file path).\cell\cf1\lang1033 String. Not empty.\par
+Required.\cf0\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl\cf1\highlight3 searchBundleManageNamespace\cf0\highlight0\cell\cf1\highlight3 The namespace to create search bundle manager.\highlight0\lang2057\cell\lang1033 String. Not empty.\par
+Required.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl\cf0 reviewManagerClassName\cell\lang2057 The full class name of review manager to be used by this class.\cell\lang1033 String. Not empty.\par
+Required.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl reviewManagerNamespace\cell\lang2057 The namespace of review manager to be used by this class.\cell\lang1033 String.\par
+Optional.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl scorecardManagerClassName\cell\lang2057 The full class name of scorecard manager to be used by this class.\cell\lang1033 String. Not empty.\par
+Required.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl scorecardManagerNamespace\cell\lang2057 The namespace of scorecard manager to be used by this class.\cell\lang1033 String.\par
+Optional.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl uploadExternalServicesClassName\cell\lang2057 The full class name of upload external services to be used by this class.\cell\lang1033 String. Not empty.\par
+Required.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl uploadExternalServicesNamespace\cell\lang2057 The namespace of upload external services to be used by this class.\cell\lang1033 String.\par
+Optional.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl dbConnectionFactoryClassName\cell\lang2057 The full class name of DB connection factory to be used by this class.\cell\lang1033 String. Not empty.\par
+Required.\cell\row\trowd\trgaph10\trleft709\trbrdrl\brdrs\brdrw10 \trbrdrt\brdrs\brdrw10 \trbrdrr\brdrs\brdrw10 \trbrdrb\brdrs\brdrw10 \trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx4259\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx7976\clbrdrl\brdrw10\brdrs\clbrdrt\brdrw10\brdrs\clbrdrr\brdrw10\brdrs\clbrdrb\brdrw10\brdrs \cellx9745\pard\intbl dbConnectionFactoryNamespace\cell\lang2057 The namespace of DB connection factory to be used by this class.\cell\lang1033 String.\par
+Optional.\cell\row\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Dependencies Configuration\par
+\pard\li720\lang1033\kerning0\i0\f3\fs20 Please see docs of all the dependency components to configure them properly.\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\lang2052\kerning32\b\f1\fs32 Usage Notes\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\b0\i\fs28 Required steps to test the component\par
+\pard\fi-360\li1080\sa120\tx1080\lang1033\kerning0\i0\f2\fs24 Extract the component distribution.\par
+Follow {\field{\*\fldinst{HYPERLINK "C:\\\\filez\\\\work\\\\tc\\\\tcs_corp\\\\templates\\\\component\\\\" \\\\l "_Dependencies_Configuration" }}{\fldrslt{\cf4\ul\f3 Dependencies Configuration\f3 }}}\cf0\ulnone\f2\fs24 .\par
+\cf1 Create database in informix server then use all.sql under test_files/sql to populate tables.\par
+Modify '\highlight3 jboss.home'\highlight0  property in build-override.xml file to your local path of jboss.\par
+\pard\fi-360\li1080\tx1080 Execute 'ant deploy' to compile and deploy the ear to jboss, this target will also copy the necessary files to the jboss.\par
+Start jboss and wait for the application runs.\par
+Modify the database connnection information in test_files/DB_Factory.xml and User_Project_Data_Store.xml\lang2052\f1  and other filies\lang1033\f2  according to your local environment.\par
+\pard\fi-360\li1080\sa120\tx1080\cf0 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Required steps to use the component\par
+\pard\li720\lang1033\kerning0\i0\f3\fs20 Please see the demo.\par
+\pard\keepn\nowidctlpar\s2\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\i\f1\fs28 Demo\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\i0\fs26 API usage\par
+\pard\li720\lang1033\kerning0\f4\fs16 // Get specification review service\par
+Context context = new InitialContext();\par
+\cf1 SpecificationReviewService specificationReviewService =\par
+    (SpecificationReviewServiceRemote) context.lookup(\lang2052\f1 EAR_NAME + \lang1033\f4 "SpecificationReviewServiceBean/remote");\par
+\cf0\par
+\cf1 TCSubject tcSubject = \lang2052\f1 new TCSubject(null, 1000);\lang1033\f4\par
+\cf0\par
+// Schedule specification review for the project with ID=1 to start immediately\par
+long projectId = 1;\par
+Date reviewStartDate = new Date();\par
+specificationReviewService.scheduleSpecificationReview(tcSubject, projectId, reviewStartDate);\par
+\par
+// Retrieve the open specification review positions\par
+List<Long> projectIds = specificationReviewService.getOpenSpecificationReviewPositions(tcSubject);\par
+// projectIds must contain 1\par
+\par
+// Assume that specification reviewer registered for this project\par
+\par
+// Retrieve the open specification review positions again\par
+projectIds = specificationReviewService.getOpenSpecificationReviewPositions(tcSubject);\par
+// projectIds must not contain 1\par
+\par
+// Assume that specification was rejected here\par
+\par
+// Re-submit specification as file for this project\par
+String filename = "sample_component_1.0_requirements_specification.rtf";\par
+long submissionId = specificationReviewService.submitSpecificationAsFile(tcSubject, projectId, filename);\par
+\par
+// Retrieve the specification review status\par
+SpecificationReviewStatus specificationReviewStatus = specificationReviewService.getSpecificationReviewStatus(tcSubject, projectId);\par
+// specificationReviewStatus must be SpecificationReviewStatus.PENDING_REVIEW\par
+\par
+// Assume that specification was rejected here again\par
+\par
+// Retrieve the specification review status\par
+specificationReviewStatus = specificationReviewService.getSpecificationReviewStatus(tcSubject, projectId);\par
+// specificationReviewStatus must be SpecificationReviewStatus.WAITING_FOR_FIXES\par
+\par
+// Re-submit specification as content string\par
+String content = "This is a text for sample specification";\par
+submissionId = specificationReviewService.submitSpecificationAsString(tcSubject, projectId, content);\par
+\par
+// Assume that specification was accepted here\par
+// Retrieve the specification review for this project\par
+SpecificationReview specificationReview = specificationReviewService.getSpecificationReview(tcSubject, projectId);\par
+// specificationReview.getReview() should not be not\par
+// specificationReview.getScorecard() should not be null\par
+\pard\keepn\nowidctlpar\s3\sb120\sa60\sl240\slmult0\tx0\lang2052\kerning32\f1\fs26 Sample EJB configuration (ejb-jar.xml)\par
+\pard\li709\cf4\lang1024\kerning0\f4\fs16 <?\cf5 xml\cf4  \cf1 version\cf4 =\cf0 "\cf4 1.0\cf0 "\cf4  \cf1 encoding\cf4 =\cf0 "\cf4 utf-8\cf0 "\cf4 ?>\par
+<\cf5 ejb-jar\cf4  \cf1 xmlns\cf4 =\cf0 "\cf4 http://java.sun.com/xml/ns/javaee\cf0 "\par
+\cf4          \cf1 xmlns:xsi\cf4 =\cf0 "\cf4 http://www.w3.org/2001/XMLSchema-instance\cf0 "\par
+\cf4          \cf1 xsi:schemaLocation\cf4 =\par
+    \cf0 "\cf4 http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd\cf0 "\par
+\cf4          \cf1 version\cf4 =\cf0 "\cf4 3.0\cf0 "\cf4 >\par
+  <\cf5 description\cf4 >\cf0 Specification Review Service EJB\cf4 </\cf5 description\cf4 >\par
+  <\cf5 display-name\cf4 >\cf0 Specification Review Service EJB\cf4 </\cf5 display-name\cf4 >\par
+  <\cf5 enterprise-beans\cf4 >\par
+    <\cf5 session\cf4 >\par
+      <\cf5 ejb-name\cf4 >\cf0 SpecificationReviewServiceBean\cf4 </\cf5 ejb-name\cf4 >\par
+      <\cf5 remote\cf4 >\par
+\cf0         com.topcoder.service.review.specification.ejb.SpecificationReviewServiceRemote\par
+\cf4       </\cf5 remote\cf4 >\par
+      <\cf5 local\cf4 >\par
+\cf0         com.topcoder.service.review.specification.ejb.SpecificationReviewServiceLocal\par
+\cf4       </\cf5 local\cf4 >\par
+      <\cf5 ejb-class\cf4 >\par
+\cf0         com.topcoder.service.review.specification.ejb.SpecificationReviewServiceBean\par
+\cf4       </\cf5 ejb-class\cf4 >\par
+      <\cf5 session-type\cf4 >\cf0 Stateless\cf4 </\cf5 session-type\cf4 >\par
+      <\cf5 transaction-type\cf4 >\cf0 Container\cf4 </\cf5 transaction-type\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 loggerName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\cf0 specification_review_service_log\cf4 </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 connectionName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\cf1\lang2052\f1 informix\cf0\lang1024\f4 _connection\cf4 </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 mockSubmissionFilePath\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\cf0 ../mock\cf4 </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 mockSubmissionFileName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\cf0 mock_rs.rtf\cf4 </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 uploadManagerClassName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\par
+\cf0           com.topcoder.management.deliverable.PersistenceUploadManager\par
+\cf4         \lang1049 </\cf5 env-entry-value\cf4 >\par
+\lang1024       </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 reviewManagerClassName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\par
+\cf0           com.topcoder.management.review.DefaultReviewManager\par
+\cf4         </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 scorecardManagerClassName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\par
+\cf0           com.topcoder.management.scorecard.ScorecardManagerImpl\par
+\cf4         </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 resourceManagerClassName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\par
+\cf0           com.topcoder.management.resource.persistence.PersistenceResourceManager\par
+\cf4         </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 uploadExternalServicesClassName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\par
+\cf0           com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices\par
+\cf4         </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+      <\cf5 env-entry\cf4 >\par
+        <\cf5 env-entry-name\cf4 >\cf0 dbConnectionFactoryClassName\cf4 </\cf5 env-entry-name\cf4 >\par
+        <\cf5 env-entry-type\cf4 >\cf0 java.lang.String\cf4 </\cf5 env-entry-type\cf4 >\par
+        <\cf5 env-entry-value\cf4 >\par
+\cf0           com.topcoder.db.connectionfactory.DBConnectionFactoryImpl\par
+\cf4         </\cf5 env-entry-value\cf4 >\par
+      </\cf5 env-entry\cf4 >\par
+\pard\nowidctlpar\cf0\lang2052\f5              \cf1\lang1033\f4 <env-entry>\par
+\tab\tab <env-entry-name>dbConnectionFactoryNamespace</env-entry-name>\par
+\tab\tab <env-entry-type>java.lang.String</env-entry-type>\par
+\tab\tab <env-entry-value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl\par
+\lang2052\f5                 \lang1033\f4 </env-entry-value>\par
+\pard\tab\tab </env-entry>\lang1024\par
+\pard\nowidctlpar\cf0\lang2052\f5              \cf1\lang1033\f4 <ejb-local-ref>\par
+\lang2052\f5                  \lang1033\f4 <ejb-ref-name>ejb/ProjectServices</ejb-ref-name>\par
+\tab\tab\lang2052\f5   \lang1033\f4 <ejb-ref-type>Session</ejb-ref-type>\par
+\tab\lang2052\f5           \lang1033\f4 <local>com.topcoder.project.service.ejb.ProjectServicesLocal</local>\par
+                  <ejb-link>ProjectServicesBean</ejb-link>\par
+\pard\li709\tab\tab </ejb-local-ref>\par
+\cf0\lang2052\f5       \cf4\lang1024\f4 </\cf5 session\cf4 >\par
+  </\cf5 enterprise-beans\cf4 >\par
+\lang1049 </\cf5 ejb-jar\cf4 >\par
+\pard\li720\cf0\lang1033\par
+\pard\keepn\nowidctlpar\s1\sb120\sa60\sl240\slmult0\tx360\lang2052\kerning32\b\f1\fs32 Future Enhancements\par
+\pard\li720\sa120\lang1033\kerning0\b0\f3\fs20 None\par
+}
+ 
