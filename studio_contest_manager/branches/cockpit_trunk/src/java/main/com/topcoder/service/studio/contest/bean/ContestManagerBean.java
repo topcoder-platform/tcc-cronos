@@ -47,6 +47,7 @@ import com.topcoder.service.studio.contest.ContestChangeHistory;
 import com.topcoder.service.studio.contest.ContestChannel;
 import com.topcoder.service.studio.contest.ContestConfig;
 import com.topcoder.service.studio.contest.ContestConfigurationException;
+import com.topcoder.service.studio.contest.ContestMultiRoundInformation;
 import com.topcoder.service.studio.contest.SimplePipelineData;
 
 import com.topcoder.service.studio.contest.ContestManagementException;
@@ -282,11 +283,18 @@ import com.topcoder.util.log.LogManager;
  * class can be used thread-safely in EJB container.
  * </p>
  *
+ * <p>
+ * Version 1.5.1 (Direct Submission Viewer Release 4 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #updateSubmissionsGeneralFeedback(long, String)} method.</li>
+ *   </ol>
+ * </p>
+ *
  * @author Standlove, TCSDEVELOPER, waits
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
- * @author saarixx, murphydog, pulky, BeBetter
- * @version 1.5
+ * @author saarixx, murphydog, pulky, BeBetter, isv
+ * @version 1.5.1
  * @since 1.0
  */
 @Stateless
@@ -5810,6 +5818,40 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             throw wrapContestManagementException(e, "The EntityManager is closed.");
         } catch (PersistenceException e) {
             throw wrapContestManagementException(e, "There are errors while retrieving the information.");
+        }
+    }
+
+    /**
+     * <p>Updates the general feedback for specified multi-round information.</p>
+     *
+     * @param contestMultiRoundInfoId a <code>long</code> providing the ID of multi-round information.
+     * @param generalFeedback a <code>String</code> providing the feedback text.
+     * @throws ContestManagementException if an unexpected error occurs.
+     * @since 1.5.1
+     */
+    public void updateSubmissionsGeneralFeedback(long contestMultiRoundInfoId, String generalFeedback)
+        throws ContestManagementException {
+        try {
+            logEnter("updateSubmissionsGeneralFeedback()");
+            logTwoParameters(contestMultiRoundInfoId, generalFeedback);
+
+            EntityManager em = getEntityManager();
+            ContestMultiRoundInformation data = em.find(ContestMultiRoundInformation.class,
+                                                        new Long(contestMultiRoundInfoId));
+            if (data == null) {
+                throw wrapEntityNotFoundException("The contest multi-round information with id '"
+                                                  + contestMultiRoundInfoId + "' doesn't exist.");
+            }
+            data.setGeneralFeedbackText(generalFeedback);
+            em.merge(data);
+        } catch (IllegalStateException e) {
+            throw wrapContestManagementException(e, "The EntityManager is closed.");
+        } catch (TransactionRequiredException e) {
+            throw wrapContestManagementException(e, "This method is required to run in transaction.");
+        } catch (PersistenceException e) {
+            throw wrapContestManagementException(e, "There are errors while persisting the entity.");
+        } finally {
+            logExit("updateSubmissionsGeneralFeedback()");
         }
     }
 }

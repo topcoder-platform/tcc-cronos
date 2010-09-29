@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.studio.contest;
 
@@ -65,13 +65,20 @@ import com.topcoder.service.studio.PaymentType;
  * </p>
  *
  * <p>
+ * Version 1.3.3 (Direct Submission Viewer Release 4 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #updateSubmissionsGeneralFeedback(long, String)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * <strong>Thread safety:</strong> It's up to concrete implementations.
  * </p>
  *
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
- * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.3.2
+ * @author TCSDESIGNER, isv
+ * @version 1.3.3
  * @since 1.0
  */
 public interface ContestManager {
@@ -1219,4 +1226,15 @@ public interface ContestManager {
      *
      */
     public boolean checkProjectPermission(long projectId, boolean readonly, long userId) throws ContestManagementException;
+
+    /**
+     * <p>Updates the general feedback for specified multi-round information.</p>
+     *
+     * @param contestMultiRoundInfoId a <code>long</code> providing the ID of multi-round information.
+     * @param generalFeedback a <code>String</code> providing the feedback text.
+     * @throws ContestManagementException if an unexpected error occurs.
+     * @since 1.3.3
+     */
+    public void updateSubmissionsGeneralFeedback(long contestMultiRoundInfoId, String generalFeedback)
+        throws ContestManagementException;
 }
