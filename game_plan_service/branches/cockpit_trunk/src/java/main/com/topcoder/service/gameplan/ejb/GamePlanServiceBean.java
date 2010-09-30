@@ -87,7 +87,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
     private static final String RETRIEVE_SOFTWARE_PROJECT_DATA = "SELECT p.tc_direct_project_id, p.project_id,"
             + "(select pi.value from project_info pi where pi.project_id = p.project_id AND pi.project_info_type_id = 6) as project_name,"
             + "(SELECT MIN(NVL(actual_start_time, scheduled_start_time)) FROM project_phase ph"
-            + "    WHERE ph.project_id = p.project_id) as start_time,"
+            + "    WHERE ph.project_id = p.project_id and ph.phase_type_id = 1) as start_time,"
             + "(SELECT MAX(NVL(actual_end_time, scheduled_end_time)) FROM project_phase ph"
             + "    WHERE ph.project_id = p.project_id) as end_time,"
             + "tcd.user_id, psl.name as project_status,"
