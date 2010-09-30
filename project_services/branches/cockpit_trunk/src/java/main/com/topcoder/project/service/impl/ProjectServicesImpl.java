@@ -21,7 +21,6 @@ import javax.xml.datatype.Duration;
 import com.cronos.onlinereview.external.ProjectRetrieval;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
-import com.topcoder.management.phase.ContestDependencyAutomation;
 import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.BillingProjectConfigType;
 import com.topcoder.management.project.BillingProjectConfiguration;
@@ -622,6 +621,13 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_PAYMENT_STATUS_NA = "N/A";
+    
+
+    /**
+     * Represents the project category id for development contests.
+     *
+     */
+    private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
 
 
     /**
@@ -1675,34 +1681,63 @@ public class ProjectServicesImpl implements ProjectServices {
             // recalcuate phase dates in case project start date changes
             Phase[] phases = projectPhases.getAllPhases();
             Map phasesMap = new HashMap();
-            for (Phase p : phases) {
+            
+             for (Phase p : phases) {
                         phasesMap.put(new Long(p.getId()), p);
                         p.setScheduledStartDate(null);
                         p.setScheduledEndDate(null);
                         p.setFixedStartDate(null);
              }
-            phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+             phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+            
+
             for (Phase p : phases) {
                         p.setScheduledStartDate(p.calcStartDate());
                         p.setScheduledEndDate(p.calcEndDate());
                         // only set Reg with fixed dates
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
                         {
                             p.setFixedStartDate(p.calcStartDate());
                         }
-                        
-
             }
 
-             // Adjust the depending projects timelines if necessary
-            ContestDependencyAutomation auto
-                = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager);
-            if (template != null)
-            {
-                auto
-                = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager, template.getWorkdays());
+           
+
+            long diff = 0;
+            for (Phase p : phases) {
+                        phasesMap.put(new Long(p.getId()), p);
+                        // check the diff between project start date and reg phase start date
+                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
+                                diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
+                        }
+             }
+
+
+            
+            // adjust project start date so reg start date is the passed project start date
+            projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
+
+            for (Phase p : phases) {
+                        phasesMap.put(new Long(p.getId()), p);
+                        p.setScheduledStartDate(null);
+                        p.setScheduledEndDate(null);
+                        p.setFixedStartDate(null);
             }
-            adjustDependentProjects(projectPhases, phaseManager, auto, operator);
+            phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+
+            for (Phase p : phases) {
+                        p.setScheduledStartDate(p.calcStartDate());
+                        p.setScheduledEndDate(p.calcEndDate());
+                        // only set Reg with fixed dates
+                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+                        {
+                            p.setFixedStartDate(p.calcStartDate());
+                        }
+            }
+
+          
 
 
             // call phaseManager.updatePhases(projectPhases,operator)
@@ -2186,35 +2221,8 @@ public class ProjectServicesImpl implements ProjectServices {
 
             }
 
-            if (templateName == null)
-            {
-                throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
-            }
-            // apply a template with name category with a given start date
-            com.topcoder.project.phases.Project newProjectPhases = template
-                    .applyTemplate(templateName, projectPhases.getStartDate());
 
-            long screenTemplateId = 0L;
-            long reviewTemplateId = 0L;
-            long approvalTemplateId = 0L;
-            long projectTypeId = projectHeader.getProjectCategory().getId();
-
-            try
-            {
-                screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
-                reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
-                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
-            }
-            catch (Exception e)
-            {
-                //TODO default to user spec (6) for now
-                Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
-                screenTemplateId = projectManager.getScorecardId(6, 1);
-                reviewTemplateId = projectManager.getScorecardId(6, 2);
-                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
-            }
-
-            // Start BUGR-3616
+             // Start BUGR-3616
             // get billing project id from the project information
             String billingProject = projectHeader.getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
 
@@ -2227,19 +2235,66 @@ public class ProjectServicesImpl implements ProjectServices {
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
 
-            if (!requireApproval) {
-                // remove the approval phase from the end if not required
-                Phase lastPhase = newProjectPhases.getAllPhases()[newProjectPhases.getAllPhases().length - 1];
 
-                if (lastPhase.getPhaseType().getName().equalsIgnoreCase("Approval")) {
+            boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
 
-                    newProjectPhases.removePhase(lastPhase);
+            List<Long> leftoutphases = new ArrayList<Long>();
 
-                    Util.log(logger, Level.DEBUG, "Approval phase is removed since Approval required is"
-                            + requireApproval);
+            if (!requireApproval)
+            {
+                leftoutphases.add(new Long(PhaseType.APPROVAL_PHASE.getId()));
+            }
 
+            if (!requireSpecReview || (projectHeader.getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID && !projectHeader.isDevOnly()))
+            {
+                leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
+                leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
+            }
+
+            long[] leftOutPhaseIds = new long[leftoutphases.size()];
+
+            if (leftoutphases.size() > 0)
+            {
+                int i = 0;
+                for (Long phaseId : leftoutphases )
+                {
+                    leftOutPhaseIds[i++] = phaseId.longValue();
                 }
             }
+
+            if (templateName == null)
+            {
+                throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
+            }
+            // apply a template with name category with a given start date
+            com.topcoder.project.phases.Project newProjectPhases = template
+                    .applyTemplate(templateName, leftOutPhaseIds, PhaseType.REGISTRATION_PHASE.getId(), PhaseType.REGISTRATION_PHASE.getId(), projectPhases.getStartDate(), projectPhases.getStartDate());
+
+            long screenTemplateId = 0L;
+            long reviewTemplateId = 0L;
+            long approvalTemplateId = 0L;
+            long specReviewTemplateId = 0L;
+            long projectTypeId = projectHeader.getProjectCategory().getId();
+
+            try
+            {
+                screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
+                reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
+                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+                specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
+            }
+            catch (Exception e)
+            {
+                //TODO default to user spec (6) for now
+                Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
+                screenTemplateId = projectManager.getScorecardId(6, 1);
+                reviewTemplateId = projectManager.getScorecardId(6, 2);
+                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+                specReviewTemplateId = projectManager.getScorecardId(6, 5);
+            }
+
+           
+            
 
             // set the project info of type "Approval Required"
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
@@ -2261,7 +2316,8 @@ public class ProjectServicesImpl implements ProjectServices {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
                     p.setScheduledStartDate(p.calcStartDate());
                     p.setScheduledEndDate(p.calcEndDate());
-                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId() 
+                        || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
                     {
                         p.setFixedStartDate(p.calcStartDate());
                     }
@@ -2296,6 +2352,11 @@ public class ProjectServicesImpl implements ProjectServices {
                     else if (p.getPhaseType().getName().equals("Approval"))
                     {
                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
+                       p.setAttribute("Reviewer Number", "1");
+                    }
+                    else if (p.getPhaseType().getName().equals("Specification Review"))
+                    {
+                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(specReviewTemplateId));
                        p.setAttribute("Reviewer Number", "1");
                     }
             }
@@ -3103,7 +3164,7 @@ public class ProjectServicesImpl implements ProjectServices {
             //1.1 copy the project header
             Project projectHeader = new Project();
             projectHeader.setProjectCategory(contest.getProjectHeader().getProjectCategory());
-            projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
+            projectHeader.setProjectStatus(ProjectStatus.DRAFT);
             ProjectSpec spec = contest.getProjectHeader().getProjectSpec();
             spec.setProjectSpecId(-1);
             projectHeader.setProjectSpec(spec);
@@ -3166,41 +3227,6 @@ public class ProjectServicesImpl implements ProjectServices {
                                                       contest.getProjectHeader().getId(), ProjectLinkType.IS_RELATED_TO);
 
                     }
-
-
-                }
-
-                // adjust dependents dates if necessary
-                Phase[] originalPhases = phaseManager.getPhases(contest.getProjectHeader().getId()).getAllPhases();
-                Phase[] reopenedPhases = phaseManager.getPhases(reOpendedProject.getProjectHeader().getId()).getAllPhases();
-
-
-                Phase originalLastPhase = getLastPhase(originalPhases);
-                Phase reopenedLastPhase = getLastPhase(reopenedPhases);
-
-                // check diff between orignal end date and reopened end date
-                if (originalLastPhase != null && reopenedLastPhase != null) {
-                    Date originalEndDate = originalLastPhase.getScheduledEndDate();
-                    Date reopenedEndDate = reopenedLastPhase.getScheduledEndDate();
-                    if (reopenedEndDate.compareTo(originalEndDate) != 0)
-                    {
-                        long diff = reopenedEndDate.getTime() - originalEndDate.getTime();
-                        if (diff != 0)
-                        {
-                             ContestDependencyAutomation auto
-                                    = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager);
-                             if (template != null)
-                             {
-                                 auto
-                                    = new ContestDependencyAutomation(phaseManager, projectManager, projectLinkManager, template.getWorkdays());
-                             }
-                             List<Phase[]> affectedPhases = auto.adjustDependingProjectPhases(reOpendedProject.getProjectHeader().getId(), diff);
-                             for (Phase[] affectedProjectPhases : affectedPhases)
-                             {
-                                phaseManager.updatePhases(affectedProjectPhases[0].getProject(), operator);
-                             }
-                        }
-                    }
                 }
             }
 
@@ -3209,10 +3235,7 @@ public class ProjectServicesImpl implements ProjectServices {
         } catch (PersistenceException e) {
             log(Level.ERROR, "PersistenceException occurred in " + method);
             throw new ProjectServicesException("PersistenceException occurred when operating ProjectLinkManager.", e);
-        } catch (PhaseManagementException e) {
-            log(Level.ERROR, "PhaseManagementException occurred in " + method);
-            throw new ProjectServicesException("PhaseManagementException occurred when operating ProjectLinkManager.", e);
-        }finally {
+        } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
     }
@@ -3682,28 +3705,7 @@ public class ProjectServicesImpl implements ProjectServices {
         }
     }
 
-    /**
-     * <p>Adjusts the timelines for projects depending on specified project if necessary.</p>
-     *
-     * @param mainProject a <code>Project</code> providing the project details.
-     * @param phaseManager a <code>PhaseManager</code> to be used for managing phases.
-     * @param auto a <code>ContestDependencyAutomation</code> to be used for processing dependencies.
-     * @param operator a <code>String</code> providing the operator for audit.
-     * @throws PhaseManagementException if an unexpected error occurs.
-     * @throws com.topcoder.management.project.PersistenceException if an unexpected error occurs.
-     * @since 1.3
-     */
-    static void adjustDependentProjects(com.topcoder.project.phases.Project mainProject, PhaseManager phaseManager,
-                                        ContestDependencyAutomation auto, String operator)
-        throws PhaseManagementException, com.topcoder.management.project.PersistenceException {
-        List<Phase[]> phases = auto.adjustDependingProjectPhases(mainProject.getAllPhases());
-        for (Phase[] p : phases) {
-            if (p.length > 0) {
-                com.topcoder.project.phases.Project projectPhases = p[0].getProject();
-                phaseManager.updatePhases(projectPhases, operator);
-            }
-        }
-    }
+   
 
     /**
      * <p>Gets the last phase from specified list of project phase. Current implementation looks up for the <code>Final
