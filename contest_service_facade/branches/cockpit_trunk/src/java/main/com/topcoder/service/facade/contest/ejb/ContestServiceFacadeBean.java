@@ -3100,62 +3100,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
 
-            // no need for dev that has design, so all non-dev and dev only will have spec review
-            // and dont create for private, and it is not already have a spec review
-            if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility
-                  && projectServices.getSpecReviewProjectId(tobeUpdatedCompetition.getProjectHeader().getId()) <= 0)
-            {
-                 //create spec review project
-                FullProjectData specReview = this.createSpecReview(tcSubject, tobeUpdatedCompetition.getProjectHeader().getId());
-                logger.info("spec review project for contest " + specReview.getProjectHeader().getId() + " is created.");
-
-                com.topcoder.project.phases.Phase[] allPhases = specReview.getAllPhases();
-                com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
-                projectPhases.setStartDate(new Date());
-                projectPhases.setId(specReview.getProjectHeader().getId());
-
-                // open submission and registration
-                for (int i = 0; i < allPhases.length; i++) {
-                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
-                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
-                    {
-                        allPhases[i].setPhaseStatus(PhaseStatus.OPEN);
-                    }
-                    projectPhases.addPhase(allPhases[i]);
-                }
-
-                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
-
-
-                 // prepare mock file for upload
-                DataHandler dataHandler = new DataHandler(new FileDataSource(mockSubmissionFilePath +
-                       mockSubmissionFileName));
-
-                uploadSubmission(tcSubject, specReview.getId(), mockSubmissionFileName, dataHandler);
-                logger.info("spec review project ready for reivew ");
-
-                projectPhases.setStartDate(new Date());
-                // set submission and registration back to scheduled
-                allPhases = projectPhases.getAllPhases();
-                for (int i = 0; i < allPhases.length; i++) {
-                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
-                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
-                    {
-                        allPhases[i].setPhaseStatus(PhaseStatus.SCHEDULED);
-                    }
-                }
-
-                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
-
-                //  now turn on auto pilot
-                specReview.getProjectHeader().setProperty(ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
-                    PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON);
-                projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot",
-                                              Long.toString(tcSubject.getUserId()));
-
-            }
-
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType,
                 tobeUpdatedCompetition.getProjectHeader()
@@ -3973,8 +3917,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // need to remove loops before returning
                 removeDocumentationLoops(contest);
 
+                Date startDate = contest.getProjectPhases().getStartDate();
+                for (com.topcoder.project.phases.Phase p : contest.getProjectPhases().getPhases()) 
+                {       
+                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                    {
+                        startDate = p.getFixedStartDate();
+                        break;
+                    }
+                 }
+
                 // set project start date in production date
-                contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(contest.getProjectPhases().getStartDate()));
+                contest.getAssetDTO().setProductionDate(getXMLGregorianCalendar(startDate));
             }
 
             if (billingProjectId > 0) {
@@ -4037,6 +3991,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 assetDTO = catalogService.getAssetByVersionId(assetDTO.getVersionNumber());
                 // for dev, we need to insert a row in comp version dates
                 catalogService.createDevComponent(assetDTO);
+                // set dev only flag
+            }
+            // dev only
+            else if (isDevContest)
+            {
+                contest.getProjectHeader().setDevOnly(true);
             }
 
             if (!useExistingAsset) {
@@ -4391,10 +4351,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 } */
             }
 
+             Date startDate = contest.getProjectPhases().getStartDate();
+                for (com.topcoder.project.phases.Phase p : contest.getProjectPhases().getPhases()) 
+                {       
+                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                    {
+                        startDate = p.getFixedStartDate();
+                        break;
+                    }
+                 }
+
+
             // set project start date in production date
             contest.getAssetDTO()
-                   .setProductionDate(getXMLGregorianCalendar(
-                    contest.getProjectPhases().getStartDate()));
+                   .setProductionDate(getXMLGregorianCalendar(startDate));
 
             // need to remove loops before returning
             removeDocumentationLoops(contest);
@@ -5023,10 +4993,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 allPhases[i].clearDependencies();
             }
 
+            Date startDate = contest.getProjectPhases().getStartDate();
+            for (com.topcoder.project.phases.Phase p : contest.getProjectPhases().getPhases()) 
+            {       
+                if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId())
+                {
+                    startDate = p.getFixedStartDate();
+                    break;
+                }
+             }
+
             // set project start date in production date
             contest.getAssetDTO()
-                   .setProductionDate(getXMLGregorianCalendar(
-                    contest.getProjectPhases().getStartDate()));
+                   .setProductionDate(getXMLGregorianCalendar(startDate));
 
             // set null to avoid cycle
             contest.getAssetDTO().setDependencies(null);
