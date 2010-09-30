@@ -714,7 +714,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+ " (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph "
 			+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
 			+ " (select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
-			+ " (select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+			+ " (select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id and ph.phase_type_id = 1) as start_date, "
 			+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
@@ -817,7 +817,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
 	+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
 	+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
-	+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+	+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id and ph.phase_type_id = 1) as start_date, "
 	+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
 	+ "  pcl.name as contest_type, psl.name as status, "
 	+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
@@ -966,7 +966,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "and not exists (" + 
         "select 1 from project_info q1 , project q " + 
         " where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> p.project_id and q1.value = pi.value " +
-        " and (q.project_status_id = 1 or q.project_status_id = 7)  and q.project_category_id == 2) ";
+        " and (q.project_status_id = 1 or q.project_status_id = 7 or q.project_status_id = 2)  and q.project_category_id == 2) ";
         
 
 
@@ -1383,7 +1383,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
       + " from project_info q1 , project q, project_info pi "
       + "   where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> pi.project_id and q1.value = pi.value "
       + "   and pi.project_info_type_id = 1 "
-      + "   and (q.project_status_id = 1 or q.project_status_id = 7) and q.project_category_id = 1 "
+      + "   and (q.project_status_id = 1 or q.project_status_id = 7 or q.project_status_id = 2) and q.project_category_id = 1 "
       + "     and pi.project_id = ? ";
    
     /**
@@ -4169,7 +4169,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 			+		" (select ptl.name from phase_type_lu ptl where phase_type_id = (select min(phase_type_id) from project_phase ph " 
 			+ " where ph.phase_status_id = 2 and ph.project_id=p.project_id)) as current_phase, "
 			+ "(select value from project_info where project_id = p.project_id and project_info_type_id =6) as contest_name, "
-			+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id) as start_date, "
+			+ "(select min(nvl(actual_start_time, scheduled_start_time)) from project_phase ph where ph.project_id=p.project_id and ph.phase_type_id = 1) as start_date, "
 			+ " (select max(nvl(actual_end_time, scheduled_end_time)) from project_phase ph where ph.project_id=p.project_id) as end_date, "
 			+ "  pcl.name as contest_type, psl.name as status, "
 			+ " (select count(resource_id) from resource r where r.project_id = p.project_id and resource_role_id = 1) as num_reg, "
@@ -5169,7 +5169,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         queryBuffer.append(" select");
         queryBuffer.append(" (select min(date(nvl(actual_start_time, scheduled_start_time))) ");
-        queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id) as start_date,");
+        queryBuffer.append(" from project_phase ph where ph.project_id=p.project_id and ph.phase_type_id = 1) as start_date,");
         queryBuffer.append(" p.project_id");
         queryBuffer.append(" from project p, contest_sale c");
         queryBuffer.append(" where p.project_category_id = ").append(contestType);
