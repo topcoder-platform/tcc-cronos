@@ -577,7 +577,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *
      * @since 1.6
      */
-    private final static List<String> SCHEDULED_STATUS = Arrays.asList("Scheduled");
+    private final static List<String> SCHEDULED_STATUS = Arrays.asList("Scheduled", "Specification Submission", "Specification Review", "Passed Spec Review");
 
     /**
      * Active status list.
