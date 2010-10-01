@@ -2005,7 +2005,7 @@ public class SubmissionManagerBean implements SubmissionManagerLocal,
             " (select submission_type_desc from submission_type_lu as stlu where stlu.submission_type_id = s.submission_type_id) as submission_type_desc," +
             " mime_type_id," +
             " (select mime_type_desc from mime_type_lu as mtlu where mtlu.mime_type_id = s.mime_type_id) as mime_type_desc," +
-            " rank," + " submission_date," + " height," + " width," +
+            " rank," + " create_date," + " height," + " width," +
             " submission_status_id," +
             " (select submission_status_desc from submission_status_lu as sslu where sslu.submission_status_id = s.submission_type_id) as submission_status_desc," +
             " modify_date," + " or_submission_id," + " payment_id," +
