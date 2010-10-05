@@ -1,0 +1,12 @@
+1. convertContest(Contest contest, boolean loadForumInfo)
+checking the null status, adding the unbox operation to ensure there is no null value passing to setDetailedStatusId.
+
+2. adding "contest.isLaunchImmediately() != null" checking.
+
+3. adding "contest.getPrizes() != null" checking.
+
+4. adding "contest.getEndDate() != null && contest.getStartDate() != null" checking.
+
+5. adding "contest.getMedia() != null" checking.
+
+6. createForum#log.log(..)/log.log(Level.ERROR) is changed to use logDebug/logError method since log instance may be null. Same to addPayment.
