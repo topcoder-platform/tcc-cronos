@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is to render contest page.
+     
+     Updated for Cockpit Release Assembly 2 [BUGR-1830]
+        - Made Model class and its uses non singleton. 
+
+     @author TCSDEVELOPER
+     @since My Project Widget Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         xmlns:flex="com.topcoder.flex.widgets.widgetcontent.projectwidget.*"
+         horizontalScrollPolicy="auto"
+         verticalScrollPolicy="off"
+         width="100%"
+         height="100%"
+         creationComplete="init()">
+    <mx:Canvas horizontalScrollPolicy="off"
+               verticalScrollPolicy="off"
+               id="cnvs"
+               width="100%">
+        <mx:Script>
+            <![CDATA[
+                import mx.binding.utils.BindingUtils;
+                import mx.collections.SortField;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.utils.Status;
+                import mx.utils.ObjectUtil;
+                import mx.collections.Sort;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Cate;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Contest;
+                import com.topcoder.flex.widgets.widgetcontent.projectwidget.vo.Project;
+                import mx.managers.PopUpManager;
+                import mx.collections.ArrayCollection;
+                import mx.controls.ButtonLabelPlacement;
+                
+                /**
+                 * Reference to the instance of Project Widget class.
+                 * 
+                 * @since Cockpit Release Assembly 2 [BUGR-1830]
+                 */
+                [Bindable]
+                public var _parentWidget:ProjectWidget=null;
+                
+                /**
+                 * Gets the reference to the instance of the parent Project Widget class.
+                 * 
+                 * @return  the reference to the instance of the parent Project Widget class.
+                 * @since Cockpit Release Assembly 2 [BUGR-1830]
+                 */
+                [Bindable]
+                public function get parentWidget():ProjectWidget {
+                    return this._parentWidget;
+                }
+                
+                /**
+                 * Sets the reference to the instance of the parent Project Widget class.
+                 * 
+                 * It additionally sets the parentWidget instance to the child elements.
+                 * 
+                 * @param p  the reference to the instance of the parent Project Widget class.
+                 * @since Cockpit Release Assembly 2 [BUGR-1830]
+                 */
+                public function set parentWidget(p:ProjectWidget):void {
+                    this._parentWidget=p;
+                    
+                    if (this.shower) {
+                        this.shower.parentWidget=this._parentWidget;
+                    }
+                    
+                    if (this.group) {
+                        this.group.parentWidget=this._parentWidget;
+                    }
+                    
+                    if (this.popUp) {
+                        this.popUp.parentWidget=this._parentWidget;
+                    }
+                }
+                
+                /**
+                 * Project for this contest page.
+                 */
+                public var proj:Project;
+                
+                /**
+                 * Status group for this contest page.
+                 */
+                [Bindable]
+                public var statusGroup:Dictionary=new Dictionary();
+                
+                /**
+                 * Type group for this contest page.
+                 */
+                [Bindable]
+                public var typeGroup:Dictionary=new Dictionary();
+                
+                [Bindable]
+                public var maxPossibleWidth:Number=0;
+                
+                [Bindable]
+                public var minPossibleWidth:Number=0;
+                
+                /**
+                 * It gets called on this component initialization
+                 */
+                private function init():void {
+                    this.shower.parentWidget=this.parentWidget;
+                    this.group.parentWidget=this.parentWidget;
+                    this.popUp.parentWidget=this.parentWidget;
+                    //trace(">>>>>>>> init start: " + new Date());
+                    if (this.proj) {
+                        this.shower.dataProvider=proj.contests;
+                        setContest=this.proj;
+                    }
+                    
+                    //trace(">>>>>>>> init end: " + new Date());
+                }
+                
+                /**
+                 * Updates this contests page data.
+                 * It simply calls setContest.
+                 */
+                public function set update(nouse:Boolean):void {
+                    //trace(">>>>>>>> update start: " + new Date());
+                    setContest=parentWidget.model.currentProj;
+                    //trace(">>>>>>>> update end: " + new Date());
+                }
+                
+                /**
+                 * Sets the contest for this contests page.
+                 *
+                 * @param value project for this contest.
+                 */
+                public function set setContest(value:Project):void {
+                    //trace(">>>>>>>> setContest start: " + new Date());
+                    this.proj=value;
+                    if (initialized && proj) {
+                        statusGroup=proj.statusGroup;
+                        typeGroup=proj.typeGroup;
+                        changeGroup();
+                    }
+                    
+                    //trace(">>>>>>>> setContest end: " + new Date());
+                    this.dispatchEvent(new Event("SET_CONTEST_COMPLETE"));
+                }
+
+                /**
+                 * Handler logic for contest group change.
+                 */
+                private function changeGroup():void {
+                    //trace(">>>>>>>> changeGroup start: " + new Date());
+                    if (!this.proj) {
+                        return;
+                    }
+                    if (groupCB.selectedIndex == 0) {
+                        stack.selectedChild=shower;
+                        
+                        shower.dataProvider=proj.contests;
+                    } else {
+                        stack.selectedChild=group;
+                        parentWidget.model.contest=new ArrayCollection();
+                        if (groupCB.selectedIndex == 1) {
+                            
+                            for (var i:int=0; i < Status.STATUS_SORT_ORDER.length; i++) {
+                                var status:String=Status.STATUS_SORT_ORDER[i];
+                                var a1:Cate=statusGroup[status] as Cate;
+                                if (a1) {
+                                    parentWidget.model.contest.addItem(a1);
+                                }
+                            }
+                        } else {
+                            for (var type:String in typeGroup) {
+                                var a2:Cate=typeGroup[type] as Cate;
+                                if (a2) {
+                                    parentWidget.model.contest.addItem(a2);
+                                }
+                            }
+                        }
+                        group.dataProvider=parentWidget.model.contest;
+                    }
+                    
+                    invalidateDisplayList();
+                    
+                    //trace(">>>>>>>> changeGroup end: " + new Date());
+                }
+                
+                /**
+                 * Shows the date picker.
+                 */
+                private function showDatePicker():void {
+                    parentWidget.model.showDateChooser=!parentWidget.model.showDateChooser;
+                }
+                
+                /**
+                 * Over-rides this component's updateDisplayList
+                 *
+                 * @param unscaledWidth unscaled width of the component.
+                 * @param unscaledHeight unscaled height of the component.
+                 */
+                override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+                    //trace(">>>>>>>> updateDisplayList start: " + new Date());
+                    if (cnvs) {
+                        if (cnvs.width > 0 && (minPossibleWidth <= 0 || cnvs.width < minPossibleWidth)) {
+                            minPossibleWidth=cnvs.width;
+                            cnvs.minWidth=minPossibleWidth;
+                        }
+                    }
+                    
+                    if (this.width && this.width > maxPossibleWidth) {
+                        maxPossibleWidth=this.width;
+                        if (cnvs) {
+                            cnvs.maxWidth=maxPossibleWidth;
+                        }
+                    }
+                    
+                    super.updateDisplayList(unscaledWidth, unscaledHeight);
+                    if (initialized) {
+                        stack.height=this.height - topBar.height - bottomBar.height;
+                    }
+                    //trace(">>>>>>>> updateDisplayList end: " + new Date());
+                }
+                
+                /**
+                 * Handler for click on add contest button.
+                 */
+                private function addContest():void {
+                    //trace(">>>>>>>> addContest start: " + new Date());
+                    var dict:Dictionary=new Dictionary();
+                    var tabDict:Dictionary=new Dictionary();
+                    tabDict["columnNum"]=1;
+                    
+                    parentWidget.widgetFramework.openWidget("Launch Contests", "Launch Contest");
+                    
+                    //trace(">>>>>>>> addContest end: " + new Date());
+                }
+                
+                /**
+                 * Sorts the given collection by name
+                 *
+                 * @param coll specified array collection to be sorted.
+                 */
+                private function sortByName(coll:ArrayCollection):void {
+                    //trace(">>>>>>>> sortByName start: " + new Date());
+                    var sort:Sort=new Sort();
+                    sort.compareFunction=compareName;
+                    coll.sort=sort;
+                    
+                    coll.refresh();
+                    
+                    //trace(">>>>>>>> sortByName end: " + new Date());
+                }
+                
+                /**
+                 * Callback function on sorting by name.
+                 */
+                private function compareName(a:Object, b:Object, fields:Array=null):int {
+                    return ObjectUtil.stringCompare(b.name, a.name, true);
+                }
+            ]]>
+        </mx:Script>
+        
+        <mx:VBox width="100%"
+                 height="100%"
+                 verticalGap="0"
+                 paddingTop="0"
+                 paddingBottom="5">
+            <mx:VBox width="100%"
+                     horizontalAlign="right"
+                     verticalAlign="middle"
+                     paddingRight="5"
+                     verticalGap="0"
+                     id="topBar">
+                <mx:HBox horizontalAlign="right">
+                    <mx:Label text="From:"
+                              width="75"/>
+                    <mx:Label text="To:"
+                              width="75"/>
+                </mx:HBox>
+                <mx:HBox verticalAlign="middle">
+                    <mx:Label text="Group By:"
+                              styleName="normalStyle"/>
+                    <mx:ComboBox id="groupCB"
+                                 width="85"
+                                 styleName="normalStyle"
+                                 change="changeGroup()"
+                                 enabled="{!parentWidget.model.showDateChooser}">
+                        <mx:dataProvider>
+                            <mx:String>No Group</mx:String>
+                            <mx:String>Status Type</mx:String>
+                            <mx:String>Contest Type</mx:String>
+                        </mx:dataProvider>
+                    </mx:ComboBox>
+                    <mx:Label text="Date Filter:"
+                              styleName="normalStyle"/>
+                    <mx:Button styleName="miniButton"
+                               buttonMode="true"
+                               width="14"
+                               height="14"
+                               click="showDatePicker()"/>
+                    <mx:TextInput id="fromDate"
+                                  text="{parentWidget.model.currentProj.startDateFilter}"
+                                  editable="false"
+                                  width="75"/>
+                    <mx:TextInput id="toDate"
+                                  text="{parentWidget.model.currentProj.endDateFilter}"
+                                  editable="false"
+                                  width="75"/>
+                </mx:HBox>
+            </mx:VBox>
+            <mx:ViewStack width="100%"
+                          id="stack">
+                <flex:ContestShower id="shower"
+                                    height="100%"
+                                    width="100%"
+                                    horizontalScrollPolicy="{parentWidget.model.isMax ? 'off' : 'auto'}"
+                                    isTabMode="false"/>
+                <flex:DragAbleAccordion width="100%"
+                                        horizontalScrollPolicy="{parentWidget.model.isMax ? 'off' : 'auto'}"
+                                        id="group"/>
+            </mx:ViewStack>
+            <mx:Spacer height="100%"/>
+            <mx:HBox width="100%"
+                     horizontalAlign="right"
+                     paddingRight="2"
+                     paddingTop="5"
+                     paddingBottom="2"
+                     id="bottomBar">
+                <mx:Button label="ADD NEW CONTEST"
+                           labelPlacement="{ButtonLabelPlacement.LEFT}"
+                           styleName="button"
+                           buttonMode="true"
+                           click="addContest()"/>
+            </mx:HBox>
+            <mx:Spacer width="100%"
+                       height="20"
+                       visible="{!parentWidget.model.isMax}"
+                       includeInLayout="{!parentWidget.model.isMax}"/>
+        </mx:VBox>
+        <flex:DateChooser right="5"
+                          top="30"
+                          id="popUp"
+                          visible="{parentWidget.model.showDateChooser}"/>
+    </mx:Canvas>
+    <mx:Binding source="parentWidget.model.currentProj"
+                destination="setContest"/>
+    <mx:Binding source="parentWidget.model.changeProj"
+                destination="update"/>
+</mx:VBox>
