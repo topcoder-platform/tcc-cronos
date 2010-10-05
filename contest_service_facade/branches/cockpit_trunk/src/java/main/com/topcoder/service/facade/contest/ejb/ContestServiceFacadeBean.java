@@ -3100,6 +3100,63 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
 
+            // no need for dev that has design, so all non-dev and dev only will have spec review
+            // and dont create for private, and it is not already have a spec review
+            if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
+                  && !hasEligibility
+                  && projectServices.getSpecReviewProjectId(tobeUpdatedCompetition.getProjectHeader().getId()) <= 0
+                  && !hasSpecReview(tobeUpdatedCompetition))
+            {
+                 //create spec review project
+                FullProjectData specReview = this.createSpecReview(tcSubject, tobeUpdatedCompetition.getProjectHeader().getId());
+                logger.info("spec review project for contest " + specReview.getProjectHeader().getId() + " is created.");
+
+                com.topcoder.project.phases.Phase[] allPhases = specReview.getAllPhases();
+                com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
+                projectPhases.setStartDate(new Date());
+                projectPhases.setId(specReview.getProjectHeader().getId());
+
+                // open submission and registration
+                for (int i = 0; i < allPhases.length; i++) {
+                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
+                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
+                    {
+                        allPhases[i].setPhaseStatus(PhaseStatus.OPEN);
+                    }
+                    projectPhases.addPhase(allPhases[i]);
+                }
+
+                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
+
+
+                 // prepare mock file for upload
+                DataHandler dataHandler = new DataHandler(new FileDataSource(mockSubmissionFilePath +
+                       mockSubmissionFileName));
+
+                uploadSubmission(tcSubject, specReview.getId(), mockSubmissionFileName, dataHandler);
+                logger.info("spec review project ready for reivew ");
+
+                projectPhases.setStartDate(new Date());
+                // set submission and registration back to scheduled
+                allPhases = projectPhases.getAllPhases();
+                for (int i = 0; i < allPhases.length; i++) {
+                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
+                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
+                    {
+                        allPhases[i].setPhaseStatus(PhaseStatus.SCHEDULED);
+                    }
+                }
+
+                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
+
+                //  now turn on auto pilot
+                specReview.getProjectHeader().setProperty(ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
+                    PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON);
+                projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot",
+                                              Long.toString(tcSubject.getUserId()));
+
+            }  
+
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType,
                 tobeUpdatedCompetition.getProjectHeader()
@@ -7336,8 +7393,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // Get all the registrants of this studio contest
                 Set<ContestRegistrationData> regs = contest.getContestRegistrations();
                 
-                // Get all the final submissions of this studio contest 
-                List<SubmissionData> finalSubs = this.studioService.getFinalSubmissionsForContest(projectId);
+                // Get all the submissions of this studio contest 
+                List<SubmissionData> finalSubs = this.studioService.retrieveSubmissionsForContest(tcSubject, projectId);
                 
                 // Create a map to store the mapping between submitter ID and Submission Data
                 Map<Long, SubmissionData> map = new HashMap<Long, SubmissionData>();
@@ -7513,5 +7570,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             logger.error(e.getMessage());
             throw e;
         }
+    }
+
+    private boolean hasSpecReview(SoftwareCompetition SoftwareCompetition)
+    {
+
+
+        Set<com.topcoder.project.phases.Phase> allPhases = SoftwareCompetition.getProjectPhases().getPhases();
+        for (com.topcoder.project.phases.Phase phase : allPhases) {
+            PhaseType phaseType = phase.getPhaseType();
+            if ("Specification Submission".equals(phaseType.getName())) {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 }
