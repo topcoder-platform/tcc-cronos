@@ -399,6 +399,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * </p>
      */
     public static final int POST_MORTEM_REVIEWER_ROLE_ID = 16;
+
+    /**
+     * <p>
+     * Represents the default value for specification reviewer role id. 
+     * @since 1.2.1
+     * </p>
+     */
+    public static final int SPECIFICATION_REVIEWER_ROLE_ID = 18;
+
+
     /**
 
     /**
@@ -464,7 +474,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         STRESS_REVIEWER_ROLE_ID, AGGREGATOR_ROLE_ID, FINAL_REVIEWER_ROLE_ID,
         APPROVER_ROLE_ID, DESIGNER_ROLE_ID, OBSERVER_ROLE_ID, MANAGER_ROLE_ID, DEACTIVATED_ROLE_ID,
         TEAM_CAPTAIN_ROLE_ID, FREE_AGENT_ROLE_ID, PAYMENT_MANAGER_ROLE_ID, COPILOT_ROLE_ID, CLIENT_MANAGER_ROLE_ID,
-        POST_MORTEM_REVIEWER_ROLE_ID};
+        POST_MORTEM_REVIEWER_ROLE_ID, SPECIFICATION_REVIEWER_ROLE_ID};
     
 
 	/**
@@ -4679,6 +4689,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
                 createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);  
                 createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+                createProjectRoleTermsOfUse(projectId, SPECIFICATION_REVIEWER_ROLE_ID, reviewerTermsId, conn);
             }
 
         } catch (ConfigurationException e) {
