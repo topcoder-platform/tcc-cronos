@@ -841,33 +841,43 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
                 for (Phase phase : allPhases) {
                     PhaseType phaseType = phase.getPhaseType();
                     if (SPECIFICATION_SUBMISSION.equals(phaseType.getName())) {
+                        phase.setScheduledEndDate(null);
                         phase.setScheduledStartDate(fullProjectData.getStartDate());
                         phase.setFixedStartDate(fullProjectData.getStartDate());
+                        phase.setScheduledEndDate(new Date(fullProjectData.getStartDate().getTime() + phase.getLength()));
                         break;
                     }
                 }
             } 
 
-
-            // set to open
-            specificationSubmissionPhase.setPhaseStatus(PhaseStatus.OPEN);
+            // add user as specification submitter, if already exists, added will be false
+            boolean added = addSpecificationSubmitter(projectId, tcSubject.getUserId());
             String operator = Long.toString(tcSubject.getUserId());
-            updatePhases(fullProjectData, operator);
-            // add user as specification submitter
-            addSpecificationSubmitter(projectId, tcSubject.getUserId());
-            // upload a mock submission
-           // FileDataSource fileDataSource = new FileDataSource(
-           //    new File(mockSubmissionFilePath mockSubmissionFileName).getPath());
 
-            java.net.URL url = SpecificationReviewServiceBean.class.getClassLoader().getResource(mockSubmissionFileName);
-            FileDataSource fileDataSource = new FileDataSource(url.getFile());
+            //if added, upload mock, 
+            if (added)
+            {
+                // set to open
+                specificationSubmissionPhase.setPhaseStatus(PhaseStatus.OPEN);
+                updatePhases(fullProjectData, operator);
+                
+                // upload a mock submission
+                java.net.URL url = SpecificationReviewServiceBean.class.getClassLoader().getResource(mockSubmissionFileName);
+                FileDataSource fileDataSource = new FileDataSource(url.getFile());
+                
+                DataHandler dataHandler = new DataHandler(fileDataSource);
+                submitSpecification(tcSubject, projectId, mockSubmissionFileName, dataHandler);
+
+                // set to scheduled and update
+                specificationSubmissionPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+                updatePhases(fullProjectData, operator);
+            }
+            // resource already exists, we assume submission is already done, so no sub here
+            else
+            {
+                updatePhases(fullProjectData, operator);
+            }
             
-            DataHandler dataHandler = new DataHandler(fileDataSource);
-            submitSpecification(tcSubject, projectId, mockSubmissionFileName, dataHandler);
-
-            // set to scheduled and update
-            specificationSubmissionPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
-            updatePhases(fullProjectData, operator);
 
             //turn on AP
             fullProjectData.getProjectHeader().setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY, AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
@@ -1365,10 +1375,11 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      *
      * @param projectId the id of the given project
      * @param userId the id of the user
+     * @return boolean if resource already exists return false, otherwise true
      * @throws SpecificationReviewServiceException if some error occurred.
      * @since 1.1
      */
-    private void addSpecificationSubmitter(long projectId, long userId) throws SpecificationReviewServiceException{
+    private boolean addSpecificationSubmitter(long projectId, long userId) throws SpecificationReviewServiceException{
         try {
             ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
             ResourceRole specificationSubmitterRole = null;
@@ -1381,7 +1392,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             }
             
             if (resourceManager.resourceExists(projectId, specificationSubmitterRole.getId(), userId)) {
-                return;
+                return false;
             }
             
             UserRetrieval userRetrieval = new DBUserRetrieval(dbConnectionFactoryNamespace);
@@ -1397,6 +1408,9 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             resource.setProperty("External Reference ID", Long.toString(userId));
             resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
             resourceManager.updateResource(resource, Long.toString(userId));
+
+            return true;
+
         } catch (Exception e) {
             throw logException(new SpecificationReviewServiceException("Fails to add specification submitter role to user", e));
         }
