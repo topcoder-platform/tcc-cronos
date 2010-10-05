@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name='LiquidPortalServiceBeanService' targetNamespace='http://bean.service.portal.liquid.com/' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:ns1='http://service.portal.liquid.com/' xmlns:ns2='com.topcoder.service.project' xmlns:ns3='com.topcoder.project.phases' xmlns:ns4='com.topcoder.management.project' xmlns:ns5='clientsmodel.clients.topcoder.com' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://bean.service.portal.liquid.com/' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <import location='LiquidPortalService_PortType37171.wsdl' namespace='http://service.portal.liquid.com/'/>
+ <service name='LiquidPortalServiceBeanService'>
+  <port binding='ns1:LiquidPortalServiceBinding' name='LiquidPortalServiceBeanPort'>
+   <soap:address location='http://cockpit.cloud.topcoder.com:80/cockpit2.1-liquid_portal_service/LiquidPortalServiceBean'/>
+  </port>
+ </service>
+</definitions>
