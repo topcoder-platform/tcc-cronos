@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (c) 2009, TopCoder, Inc. All rights reserved.
+-->
+<!--
+    Version 1.0.1 (Cockpit Release Assembly 5 v1.0) Change Notes:
+        - Updated to remove the "Other Payment Options" section.
+    
+    @author TCSASSEMBLER
+    @version 1.0.1
+    @since 1.0
+-->
+<mx:Grid xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
+	<mx:Script>
+		<![CDATA[
+		    
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.ResultEvent;
+		import mx.controls.Button;
+		import mx.core.UIComponent;
+		import mx.validators.Validator;
+		import mx.validators.ValidationResult;
+		import com.topcoder.flex.Helper;
+		import mx.events.ValidationResultEvent;
+		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.qs.Model;
+		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.LaunchWidget;
+		import mx.controls.ButtonLabelPlacement; // BUGR-1505			
+		import com.topcoder.flex.widgets.widgetcontent.LaunchAContestWidget.utils.ObjectTranslatorUtils;
+		import mx.rpc.AbstractOperation;
+		import flash.external.ExternalInterface;
+		import mx.collections.SortField;
+                import mx.collections.Sort;
+		
+			 [Bindable]
+       		public var mainWidget:LaunchWidget;
+       		
+       		//[Bindable]
+       		//public var clientProjectNames:ArrayCollection;
+       		
+			public function saveData():int {
+				var inputs:Array = [cardname, csc, address, city, state, code, country, phone, email]; // BUGR-1398
+				var model:Model = Model.instance;
+				//Helper.showAlertMessage("MAIN-Widget: " + mainWidget);
+
+				//removeValidate(order);
+				var errors:Array = Validator.validateAll([ccv]);
+				var result:Boolean = true;
+				if (errors && errors.length > 0) {
+					result = false;
+				} else {
+					// Valid format for visa 4013 0714 3157 6550
+					// TODO: capture the price too.
+					result = true;
+					model.cardType = cardTypeCombo.selectedItem.data;
+					model.cardNum = cardNum.text;
+					model.cardExpMonth = month.selectedItem.data;
+					model.cardExpYear = year.selectedItem.data;
+					model.cardExpDateStr = month.selectedItem.data + "/" + year.selectedItem.data;
+					model.cardname = cardname.text;
+					model.firstName = cardname.text;
+					model.lastName = cardname.text;
+					model.address = address.text;
+					model.city = city.text;
+					model.state = state.text;
+					model.code = code.text;
+					model.country = country.text;
+					model.phone = phone.text;
+					model.email = email.text;
+					model.csc = csc.text; // BUGR-1398
+				}
+				for each (var item:TextInput in inputs) {
+					result = result && doValidate(item);
+					model[item.id] = item.text;
+				}
+				if (result) {
+					return 2;
+				} else {
+					showErrorMsg();
+					return -1;
+				}
+				return true;
+			}
+			
+			private function showErrorMsg():void {
+				Helper.showAlertMessage("Some fields are missing or incorrect. Please check! For incorrect field, you can hover to the input box to see the error message.");
+			}
+			
+			private function removeValidate(target:TextInput):void {
+				if (target.text.length <= 0) {
+					target.text = "12";
+					doValidate(target);
+					commonValidator.source = null;
+					target.text = "";
+				}
+			}
+			
+			private function doValidate(target:TextInput):Boolean {
+				commonValidator.source = target;
+				var errors:Array = Validator.validateAll([commonValidator]);
+
+				if (errors && errors.length > 0) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+			
+			//private function checkMonth():void {
+			//	if (month.value > 12) {
+			//		month.value = 1;
+			//		year.value++;
+			//	} else if (month.value < 1) {
+			//		month.value = 12;
+			//		year.value--;
+			//	}
+			//}
+			
+			private function gotoPayPal():void {
+			    var openNewWindow:String = "function navToPayPal(){" +
+			            "javascript:window.open('https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=400, height=350');" +
+			            "}" ;
+			    ExternalInterface.call(openNewWindow);
+			}
+
+			// BUGR-1398
+			private function gotoCSC():void {
+			    var openNewWindow:String = "function navToPayPalCSC(){" +
+			            "javascript:window.open('https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Help/popup/CVVInfoPopC-outside','CVVInfoPopC','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=850, height=400');" +
+			            "}" ;
+			    ExternalInterface.call(openNewWindow);
+			}
+	
+			 // BUGR-1531
+            private function sortComboBox(original : ArrayCollection) : ArrayCollection {
+                var sorted:ArrayCollection = new ArrayCollection(original.source);
+                var sort:Sort = new Sort();
+                sort.fields = [new SortField("label")];
+                sorted.sort = sort;
+                sorted.refresh();   
+                return sorted;
+            }
+
+		]]>
+	</mx:Script>
+	<mx:Model id="creditcard">
+		<card>    
+            <cardType>{cardTypeCombo.selectedItem.data}</cardType>
+            <cardNumber>{cardNum.text}</cardNumber>
+        </card>
+	</mx:Model>
+	<mx:CreditCardValidator id="ccv" cardTypeSource="{creditcard}" cardTypeProperty="cardType"
+        	cardNumberSource="{creditcard}" cardNumberProperty="cardNumber"
+        	cardTypeListener="{cardTypeCombo}"
+        	cardNumberListener="{cardNum}" />
+	<mx:StringValidator id="commonValidator" property="text"  required="true"/>
+	<mx:GridRow width="100%">
+		<mx:GridItem width="100%">
+			<mx:Label text="Credit Card Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+		</mx:GridItem>
+	</mx:GridRow>
+	<mx:GridRow  width="100%">
+		<mx:GridItem width="100%">
+			<mx:VBox width="100">
+				<mx:Label text="Card Number:" styleName="contentBlack" />
+				<mx:Label text="Card Type:" styleName="contentBlack" />
+				<mx:Label text="Expiration Date:" styleName="contentBlack" />
+			</mx:VBox>
+			<mx:VBox width="100%">
+				<mx:HBox verticalScrollPolicy="off" horizontalScrollPolicy="off">	 <!-- BUGR-1398 -->	
+					<mx:TextInput id="cardNum" width="125"/>
+					<mx:TextInput id="csc" width="45"/>
+					<mx:LinkButton label="What's this?" click="gotoCSC();"/>
+				</mx:HBox>
+				<mx:ComboBox width="100%" height="20" id="cardTypeCombo">
+					<mx:dataProvider>
+						<mx:Object label="Visa" data="Visa"/>
+						<mx:Object label="MasterCard" data="MasterCard"/>
+						<mx:Object label="American Express" data="American Express"/>
+					</mx:dataProvider>
+				</mx:ComboBox>
+        <mx:HBox width="100%">
+          <mx:ComboBox width="50" height="20" id="month">
+            <mx:dataProvider>
+              <mx:Object label="1" data="1"/>
+              <mx:Object label="2" data="2"/>
+              <mx:Object label="3" data="3"/>
+              <mx:Object label="4" data="4"/>
+              <mx:Object label="5" data="5"/>
+              <mx:Object label="6" data="6"/>
+              <mx:Object label="7" data="7"/>
+              <mx:Object label="8" data="8"/>
+              <mx:Object label="9" data="9"/>
+              <mx:Object label="10" data="10"/>
+              <mx:Object label="11" data="11"/>
+              <mx:Object label="12" data="12"/>
+            </mx:dataProvider>
+          </mx:ComboBox>
+          <mx:Text text="/" />
+          <mx:ComboBox width="70" height="20" id="year">
+            <mx:dataProvider>
+              <mx:Object label="2009" data="2009"/>
+              <mx:Object label="2010" data="2010"/>
+              <mx:Object label="2011" data="2011"/>
+              <mx:Object label="2012" data="2012"/>
+              <mx:Object label="2013" data="2013"/>
+              <mx:Object label="2014" data="2014"/>
+              <mx:Object label="2015" data="2015"/>
+              <mx:Object label="2016" data="2016"/>
+              <mx:Object label="2017" data="2017"/>
+              <mx:Object label="2018" data="2018"/>
+              <mx:Object label="2019" data="2019"/>
+              <mx:Object label="2020" data="2020"/>
+              <mx:Object label="2021" data="2021"/>
+              <mx:Object label="2022" data="2022"/>
+              <mx:Object label="2023" data="2023"/>
+              <mx:Object label="2024" data="2024"/>
+              <mx:Object label="2025" data="2025"/>
+              <mx:Object label="2026" data="2026"/>
+              <mx:Object label="2027" data="2027"/>
+              <mx:Object label="2028" data="2028"/>
+              <mx:Object label="2029" data="2029"/>
+              <mx:Object label="2030" data="2030"/>
+              <mx:Object label="2031" data="2031"/>
+              <mx:Object label="2032" data="2032"/>
+              <mx:Object label="2033" data="2033"/>
+              <mx:Object label="2034" data="2034"/>
+              <mx:Object label="2035" data="2035"/>
+              <mx:Object label="2036" data="2036"/>
+              <mx:Object label="2037" data="2037"/>
+              <mx:Object label="2038" data="2038"/>
+              <mx:Object label="2039" data="2039"/>
+              <mx:Object label="2040" data="2040"/>
+              <mx:Object label="2041" data="2041"/>
+              <mx:Object label="2042" data="2042"/>
+              <mx:Object label="2043" data="2043"/>
+              <mx:Object label="2044" data="2044"/>
+              <mx:Object label="2045" data="2045"/>
+              <mx:Object label="2046" data="2046"/>
+              <mx:Object label="2047" data="2047"/>
+              <mx:Object label="2048" data="2048"/>
+              <mx:Object label="2049" data="2049"/>
+              <mx:Object label="2050" data="2050"/>
+            </mx:dataProvider>
+          </mx:ComboBox>
+          <!--Replaced by drapdown list (BUGR-1082)
+					<mx:NumericStepper minimum="0" maximum="13" value="12" id="month"
+							height="20" width="50" styleName="NumericStepper" valueCommit="checkMonth()" />
+					<mx:Text text="/" />
+					<mx:NumericStepper minimum="1800" maximum="2800" value="2008" id="year"
+							height="20" width="70" styleName="NumericStepper" /-->
+        </mx:HBox>
+            </mx:VBox>
+            <mx:VBox width="10" height="100%" />
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%" >
+        <mx:GridItem width="100%">
+            <mx:Label text="Billing Information" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+        </mx:GridItem>
+        <mx:GridItem width="100%">
+            <mx:Label text="Not Ready to Activate?" styleName="subsectionTitle" /> <!-- BUGR-1503 -->
+        </mx:GridItem>
+    </mx:GridRow>
+    <mx:GridRow width="100%">
+        <mx:GridItem width="100%">
+            <mx:VBox width="100%" 
+                height="100%" 
+                styleName="contentBlack" 
+                verticalGap="13">
+                <mx:HBox width="100%">
+                    <mx:Label text="Name on Card:" width="100" />
+                    <mx:TextInput id="cardname" width="100%" />
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox width="100%">
+                    <mx:Label text="Address:" width="100" />
+                    <mx:TextInput id="address" width="100%"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox width="100%">
+                    <mx:Label text="City:" width="100" />
+                    <mx:TextInput id="city" width="100%"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox width="100%">
+                    <mx:Label text="State:" width="100" />
+                    <mx:TextInput id="state" width="100%"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox width="100%">
+                    <mx:Label text="Zip Code:" width="100" />
+                    <mx:TextInput id="code" width="100%"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox width="100%">
+                    <mx:Label text="Country:" width="100" />
+                    <mx:TextInput id="country" width="100%"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox width="100%">
+                    <mx:Label text="Phone:" width="100" />
+                    <mx:TextInput id="phone" width="100%"/>
+                    <mx:Label text="*" />
+                </mx:HBox>
+                <mx:HBox width="100%">
+                    <mx:Label text="Email:" width="100" />
+                    <mx:TextInput id="email" width="100%" />
+                    <mx:Label text="*" height="20" />
+                </mx:HBox>
+            </mx:VBox>
+        </mx:GridItem>
+        <mx:GridItem width="100%">
+            <mx:VBox width="100%" height="100%">
+                <mx:VBox width="100%" height="124" borderStyle="solid" 
+                        paddingLeft="10" paddingTop="10" paddingBottom="10" paddingRight="19">
+                    <mx:Text width="100%" text="Save your contest as a draft and activate it later." styleName="content" />
+                    <mx:Text width="100%" text="Want to add another contest? Save this contest as a draft and pay for all of your contest at once." styleName="content" />
+                    <mx:Spacer width="100%" height="100%" />
+                    <mx:HBox width="100%" horizontalAlign="center">
+                        <mx:Button label="SAVE AS DRAFT" buttonMode="true" click="this.mainWidget.saveAsDraft()" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                        <mx:Button label="ADD A CONTEST" buttonMode="true" click="this.mainWidget.resetWidget(true)" styleName="arrowRightBtnStyle" labelPlacement="{ButtonLabelPlacement.LEFT}"/> <!-- BUGR-1505 -->
+                    </mx:HBox>
+                </mx:VBox>
+                <mx:HBox verticalAlign="middle" width="100%" paddingRight="8">
+                    <mx:Text text="* Required Field" fontSize="14" styleName="contentBlack" />
+                    <mx:Spacer width="100%" />
+                    <!--<mx:Image source="../assets/verisign.png" />-->
+                </mx:HBox>
+                <mx:Image source="https://www.paypal.com/en_US/i/bnr/horizontal_solution_PPeCheck.gif" width="253" height="80" buttonMode="true" click="gotoPayPal()"/>
+            </mx:VBox>
+        </mx:GridItem>
+    </mx:GridRow>
+</mx:Grid>
