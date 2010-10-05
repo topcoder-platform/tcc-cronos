@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			private var _list:ArrayCollection = new ArrayCollection();
+			[Bindable]
+			public function get listData():ArrayCollection {
+				return _list;
+			}
+			public function set listData(value:ArrayCollection):void {
+				_list = new ArrayCollection();
+				if (value) {
+					var item:Object = new Object();
+					item.add = "Taxes";
+					item.price = 0;
+					var total:Object = new Object();
+					total.add = "TOTAL COST";
+					total.price = 0;
+					for each (var i:Object in value) {
+						_list.addItem(i);
+						if (i.hasOwnProperty("price") && i.price > 0) {
+							total.price += i.price;
+						}
+					}
+					_list.addItem(item);
+					_list.addItem(total);
+				}
+			}
+	        // Skins, BUGR-1142
+	        [Bindable]
+	        [Embed(source="../assets/headerseparator.png")]
+	        private var headerSeparatorSkin:Class;
+	
+	        [Bindable]
+	        [Embed(source="../assets/sortarrow.png")]
+	        private var sortArrowSkin:Class;
+
+		]]>
+	</mx:Script>
+	<tc:TCDataGrid 
+		width="100%" height="100%" dataProvider="{listData}"
+	    verticalScrollPolicy="auto" horizontalScrollPolicy="off"
+        styleName="TCDataGrid" headerStyleName="DataGridHeader"
+        headerSeparatorSkin="{headerSeparatorSkin}" sortArrowSkin="{sortArrowSkin}"
+        headerHeight="29" rowHeight="26">
+		<tc:columns>
+			<mx:DataGridColumn headerText="SUBMISSION #" sortable="false" dataField="id" />
+			<mx:DataGridColumn headerText="SUBMISSION TYPE" sortable="false" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.TypeRenderer" />
+			<mx:DataGridColumn headerText="PRICE($)" sortable="false" itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.PriceRenderer" />
+		</tc:columns>
+	</tc:TCDataGrid>
+</mx:VBox>
+	

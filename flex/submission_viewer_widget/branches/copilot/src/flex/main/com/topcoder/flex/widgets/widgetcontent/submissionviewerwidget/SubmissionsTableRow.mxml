@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
+    <mx:VBox id="c0" paddingLeft="0" paddingRight="0" paddingBottom="0" paddingTop="0" borderStyle="solid" borderColor="#000000"/>
+    <mx:VBox id="c1" paddingLeft="0" paddingRight="0" paddingBottom="0" paddingTop="0" borderStyle="solid" borderColor="#000000"/>
+    <mx:VBox id="c2" paddingLeft="0" paddingRight="0" paddingBottom="0" paddingTop="0" borderStyle="solid" borderColor="#000000"/>
+</mx:HBox>

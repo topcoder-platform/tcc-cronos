@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     This mxml component renders the purchase list.
+
+     Version 1.0.1 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - Added support for milestone prizes.
+
+     @author pulky
+     @version 1.0.1
+     @since 1.0
+-->
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" >
+    <mx:Script>
+        <![CDATA[
+            private function getPurchase(dta:Object):String {
+                var temp:String = "";
+                if ((dta.hasOwnProperty("purchased") && dta.purchased == true) ||
+                    (dta.hasOwnProperty("awardMilestonePrize") && dta.awardMilestonePrize)) {
+                    temp += "Prize: $";
+                } else {
+                    temp += "Cost: $";
+                }
+                if (dta.hasOwnProperty("price")) {
+                    return temp + dta.price;
+                } else {
+                    return "";
+                }
+            }
+
+            private function getPurchased(dta:Object):String {
+                if (dta.hasOwnProperty("purchased") && dta.purchased == true) {
+                    return "Purchase: Yes";
+                } else {
+                    if (dta.hasOwnProperty("awardMilestonePrize") && dta.awardMilestonePrize) {
+                        return "Milestone Prize";
+                    } else {
+                        return "Purchase: No";
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+<mx:HBox styleName="BoxStyle" width="100%" height="164">
+    <mx:VBox id="left" horizontalAlign="center" verticalGap="0" height="160"
+            paddingTop="0" paddingLeft="0" paddingBottom="0" paddingRight="0">
+        <mx:Canvas width="116" height="94">
+            <mx:Canvas id="thumbnail" top="9" left="8" bottom="0" right="8"
+                backgroundImage="{data.thumbnail}" backgroundSize="100%"/>
+            <mx:Button styleName="rankLogo" buttonMode="true" id="rank" label="{(data.rank)?data.rank:'+'}"
+                width="25" height="26" textAlign="center" />
+        </mx:Canvas>
+        <mx:Label id="content" textAlign="center" text="{'#' + data.id}" bottom="0"
+                fontWeight="bold" />
+        <mx:Label text="{getPurchase(data)}" textAlign="center" styleName="text" />
+        <mx:Label text="{getPurchased(data)}" textAlign="center" styleName="text" />
+    </mx:VBox>
+    <mx:VBox id="right" width="100%">
+        <mx:Label styleName="normalText" />
+        <mx:Text width="100%" textAlign="left" styleName="text"
+                htmlText="Your feedback notes will be visible here in the next release..." />
+    </mx:VBox>
+</mx:HBox>
+</mx:HBox>
