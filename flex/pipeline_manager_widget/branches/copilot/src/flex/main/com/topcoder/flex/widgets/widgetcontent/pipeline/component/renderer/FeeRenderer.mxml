@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     The contest fee renderer.
+     
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0
+-->
+<mx:Box xmlns:mx="http://www.adobe.com/2006/mxml"
+        paddingLeft="15">
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.Summary;
+            
+            [Bindable]
+            private var summaryData:Summary;
+            
+            override public function set data(value:Object):void {
+                super.data=value;
+                if (data is Summary) {
+                    summaryData=data as Summary;
+                    if (summaryData.isTotal) {
+                        content.styleName="listStyleBold";
+                        content.setStyle("fontSize", 14);
+                    } else {
+                        content.styleName="listStyle";
+                        content.setStyle("fontSize", 12);
+                    }
+                }
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label id="content"
+              styleName="listStyle"
+              text="{summaryData.fee}"/>
+</mx:Box>
