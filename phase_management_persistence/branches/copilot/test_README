@@ -1,0 +1,15 @@
+Modify the "build.xml" to update the value of "junit", maybe you also need to configure the path for dependencies.
+And
+1.modify
+test_files\configV11.xml
+test_files\db_conf.xml
+test_files\DBConfig.xml
+test_files\accuracy\DBConnectionFactory.xml
+test_files\failure\config.xml
+test_files\stress\db_conf.xml
+According your Informix server setting.
+
+2.execute
+test_files\phase_management.sql
+
+then run test.
