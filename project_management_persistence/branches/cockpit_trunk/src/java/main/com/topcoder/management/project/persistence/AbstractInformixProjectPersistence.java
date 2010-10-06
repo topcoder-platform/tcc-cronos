@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -155,12 +155,17 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *  - add payment information into getSimpleProjectContestData functions.
  *  </p>
  *
+ *  <p>
+ *  Version 1.3.1 - Direct Pipeline Integration Assembly
+ *  - updated {@link #getSimplePipelineData(long, Date, Date, boolean)} method to return details for copilots.
+ *  </p>
+ *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter
- * @version 1.3
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter, isv
+ * @version 1.3.1
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -1359,7 +1364,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+            Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to find the corresponding develop contest for the design contest.
@@ -4937,7 +4943,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     left outer join tt_client as cl ");
             sb.append("     on cpx.client_id = cl.client_id ");
             sb.append("     where pi.project_id = c.project_id and pi.project_info_type_id = 32), '') as cpname, ");	
-            sb.append("  (select 'Repost' from linked_project_xref where link_type_id = 5 and source_project_id = c.project_id) as repost ");
+            sb.append("  (select 'Repost' from linked_project_xref where link_type_id = 5 and source_project_id = c.project_id) as repost, ");
+            sb.append("    replace(replace(replace(replace(  ");
+            sb.append("      multiset (SELECT  item cpri.value FROM resource cpr INNER JOIN resource_info cpri  ");
+            sb.append("             ON cpr.resource_id = cpri.resource_id  ");
+            sb.append("              WHERE cpr.project_id = c.project_id AND cpr.resource_role_id = 14 AND cpri.resource_info_type_id = 2)::lvarchar,  ");
+            sb.append("          'MULTISET{'''), '''}'),''''),'MULTISET{}') AS copilot ");
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -5133,7 +5144,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 if (os[37] != null)
                     c.setWasReposted(Boolean.TRUE);
 
-                
+                if (os[38] != null) {
+                    c.setCopilots(new String[] {os[38].toString()});
+                }
+
                 result.add(c);
                 
                 
