@@ -1365,7 +1365,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE};
+            Helper.STRING_TYPE, Helper.LONG_TYPE};
 
     /**
      * Represents the sql statement to find the corresponding develop contest for the design contest.
@@ -4948,7 +4948,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("      multiset (SELECT  item cpri.value FROM resource cpr INNER JOIN resource_info cpri  ");
             sb.append("             ON cpr.resource_id = cpri.resource_id  ");
             sb.append("              WHERE cpr.project_id = c.project_id AND cpr.resource_role_id = 14 AND cpri.resource_info_type_id = 2)::lvarchar,  ");
-            sb.append("          'MULTISET{'''), '''}'),''''),'MULTISET{}') AS copilot ");
+            sb.append("          'MULTISET{'''), '''}'),''''),'MULTISET{}') AS copilot, c.project_category_id ");
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -5146,6 +5146,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
                 if (os[38] != null) {
                     c.setCopilots(new String[] {os[38].toString()});
+                }
+
+                if (os[39] != null)
+                {
+                    c.setContestTypeId((Long)os[39]);
                 }
 
                 result.add(c);
