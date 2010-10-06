@@ -92,13 +92,17 @@ import com.topcoder.util.log.LogManager;
  * Version 1.1.1(Cockpit Security Facade V1.0) change:
  *  -Add TCSubject as parameter for the method getCommonPipelineData.
  * </p>
+ *  <p>
+ *  Version 1.1.2 - Direct Pipeline Integration Assembly
+ *  - updated {@link #getCommonPipelineData(TCSubject, Date, Date, boolean)} method to return details for copilots.
+ *  </p>
  *
  * <p>
  * Thread-safty: This is an CMT bean, so it transaction is managed by the container.
  * </p>
  *
- * @author waits, snow01, pulky
- * @version 1.1.1
+ * @author waits, snow01, pulky, isv
+ * @version 1.1.2
  * @since Pipeline Conversion Service v1.0
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -1399,6 +1403,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     cp.setEndDate(getXMLGregorianCalendar(p.getEndDate()));
                     cp.setDurationStartTime(getXMLGregorianCalendar(p.getDurationStartTime()));
                     cp.setDurationEndTime(getXMLGregorianCalendar(p.getDurationEndTime()));
+                    cp.setCopilots(p.getCopilots());
 
                     ret.add(cp);
                 }

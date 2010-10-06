@@ -12,19 +12,23 @@ import java.io.Serializable;
  * <p>
  * Represents the entity class for pipeline info DTO
  * </p>
- * 
+ *  <p>
+ *  Version 1.1 - Direct Pipeline Integration Assembly
+ *  - Added {@link #copilots} property with respective accessor/mutator methods.
+ *  </p>
+ *
  * <p>
  * Thread Safety: This entity is not thread safe since it is mutable.
  * </p>
  * 
- * @author TCSASSEMBLER
- * @version 1.0
+ * @author TCSASSEMBLER, isv
+ * @version 1.1
  * @since Cockpit Pipeline Release Assembly 1 v1.0
  */
 public class CommonPipelineData implements Serializable, Comparable<CommonPipelineData>{
 
     /** Generated serial version id. */
-    private static final long serialVersionUID = 1154431097193493913L;
+    private static final long serialVersionUID = 1154431097193493915L;
 
     /** Represents the client project name. */
     private String cpname;
@@ -143,8 +147,14 @@ public class CommonPipelineData implements Serializable, Comparable<CommonPipeli
     /** Represents the permission for project. */
     private String pperm;
 
+    /**
+     * <p>A <code>String[]</code> providing the list of copilots assigned to contest.</p>
+     * 
+     * @since 1.1
+     */
+    private String[] copilots;
 
-     /**
+    /**
      * Returns the client project name.
      * 
      * @return the client project name.
@@ -923,5 +933,23 @@ public class CommonPipelineData implements Serializable, Comparable<CommonPipeli
         return true;
     }
     
-    
+    /**
+     * <p>Gets the list of copilots assigned to contest.</p>
+     *
+     * @return a <code>String[]</code> providing the list of copilots assigned to contest.
+     * @since 1.1
+     */
+    public String[] getCopilots() {
+        return this.copilots;
+    }
+
+    /**
+     * <p>Sets the list of copilots assigned to contest.</p>
+     *
+     * @param copilots a <code>String[]</code> providing the list of copilots assigned to contest.
+     * @since 1.1
+     */
+    public void setCopilots(String[] copilots) {
+        this.copilots = copilots;
+    }
 }
