@@ -154,6 +154,14 @@ public class CommonPipelineData implements Serializable, Comparable<CommonPipeli
      */
     private String[] copilots;
 
+    
+    /** Represents the contest type id. */
+    private Long contestTypeId;
+
+
+    /** The is studio */
+    private Boolean isStudio;
+
     /**
      * Returns the client project name.
      * 
@@ -951,5 +959,45 @@ public class CommonPipelineData implements Serializable, Comparable<CommonPipeli
      */
     public void setCopilots(String[] copilots) {
         this.copilots = copilots;
+    }
+
+
+     /**
+     * Returns the contestTypeId.
+     * 
+     * @return the contestTypeId.
+     */
+    public Long getContestTypeId() {
+        return contestTypeId;
+    }
+
+    /**
+     * Updates the contestTypeId with the specified value.
+     * 
+     * @param contestTypeId
+     *            the contestId to set.
+     */
+    public void setContestTypeId(Long contestTypeId) {
+        this.contestTypeId = contestTypeId;
+    }
+
+
+    /**
+     * Gets the  isStudio.
+     * 
+     * @return the isStudio
+     */
+    public Boolean isStudio() {
+        return this.isStudio;
+    }
+
+    /**
+     * Sets the was isStudio.
+     * 
+     * @param isStudio
+     *            the isStudio
+     */
+    public void setIsStudio(Boolean isStudio) {
+        this.isStudio = isStudio;
     }
 }

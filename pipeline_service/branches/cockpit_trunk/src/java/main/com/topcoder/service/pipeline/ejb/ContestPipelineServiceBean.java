@@ -1352,6 +1352,8 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     cp.setEndDate(getXMLGregorianCalendar(p.getEndDate()));
                     cp.setDurationStartTime(getXMLGregorianCalendar(p.getDurationStartTime()));
                     cp.setDurationEndTime(getXMLGregorianCalendar(p.getDurationEndTime()));
+                    cp.setIsStudio(true);
+                    cp.setContestTypeId(p.getContestTypeId());
 
                     ret.add(cp);
                 }
@@ -1404,6 +1406,8 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
                     cp.setDurationStartTime(getXMLGregorianCalendar(p.getDurationStartTime()));
                     cp.setDurationEndTime(getXMLGregorianCalendar(p.getDurationEndTime()));
                     cp.setCopilots(p.getCopilots());
+                    cp.setIsStudio(false);
+                    cp.setContestTypeId(p.getContestTypeId());
 
                     ret.add(cp);
                 }
