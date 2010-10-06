@@ -5455,7 +5455,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("    NVL((select unique ttp.name      from contest_config as cf   ");
             sb.append("     left outer join tt_project as ttp       on CAST (cf.property_value as DECIMAL(10,2)) = ttp.project_id      left outer join tt_client_project cpx");
             sb.append("     on ttp.project_id = cpx.project_id        left outer join tt_client as cl      on cpx.client_id = cl.client_id");
-            sb.append("     where cf.contest_id = c.contest_id and cf.property_id = 28), '') as cpname ");
+            sb.append("     where cf.contest_id = c.contest_id and cf.property_id = 28), '') as cpname,  c.contest_type_id ");
             sb.append(" from contest as c ");
             sb.append(" left outer join tc_direct_project as p ");
             sb.append(" on c.tc_direct_project_id = p.project_id ");
