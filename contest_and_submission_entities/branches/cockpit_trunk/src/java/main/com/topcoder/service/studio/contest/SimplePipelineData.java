@@ -78,7 +78,8 @@ import javax.persistence.Transient;
         
         @FieldResult(name = "cperm", column = "cperm"),
         @FieldResult(name = "pperm", column = "pperm"),
-        @FieldResult(name = "cpname", column = "cpname")}) })
+        @FieldResult(name = "cpname", column = "cpname"),
+        @FieldResult(name = "contestTypeId", column = "contest_type_id")}) })
 @Entity
 public class SimplePipelineData {
 
@@ -205,6 +206,9 @@ public class SimplePipelineData {
      * The status id.
      */
     private Long statusId;
+
+    /** Represents the contest type id. */
+    private Long contestTypeId;
 
 	/**
      * Returns the client project name.
@@ -946,4 +950,25 @@ public class SimplePipelineData {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+
+    /**
+     * Returns the contestTypeId.
+     * 
+     * @return the contestTypeId.
+     */
+    public Long getContestTypeId() {
+        return contestTypeId;
+    }
+
+    /**
+     * Updates the contestId with the specified value.
+     * 
+     * @param contestId
+     *            the contestTypeId to set.
+     */
+    public void setContestTypeId(Long contestTypeId) {
+        this.contestTypeId = contestTypeId;
+    }
+
 }
