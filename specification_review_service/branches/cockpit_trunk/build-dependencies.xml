@@ -54,6 +54,11 @@
     <property name="workdays.jar" value="${tcs_libdir}\workdays\1.0.1\workdays.jar"/>
     <property name="security.jar" value="${tcs_libdir}/security/1.0/security.jar" />
 
+    <property name="user_service.version" value="1.0.0" />
+    <property name="user_service.jar.name" value="user_service.jar" />
+    <property name="user_service.path" value="user_service/${user_service.version}" />
+    <property name="user_service.jar" value="${tcs_libdir}/${user_service.path}/${user_service.jar.name}" />
+
 	
     <property name="ifxjdbc.jar" value="${ext_libdir}\informix\1.4.1\ifxjdbc.jar"/>
     <property name="activation.jar" value="${jboss.home}/client/activation.jar"/>
@@ -67,6 +72,7 @@
     <property name="jbossall-client.jar" value="${jboss.home}\client\jbossall-client.jar"/>
     <property name="jnp-client.jar" value="${jboss.home}\client\jnp-client.jar"/>
     <property name="jaxb-api.jar" value="${jboss.home}/client/jaxb-api.jar"/>
+    <property name="jbossws-client.jar" value="${jboss.home}/client/jbossws-client.jar"/>
 
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
 
@@ -118,6 +124,8 @@
         <pathelement location="${user_project_data_store.jar}"/>
         <pathelement location="${workdays.jar}"/>		
         <pathelement location="${security.jar}" />
+        <pathelement location="${user_service.jar}" />
+        
     </path>
 
     <path id="component.3rdParty-dependencies">
@@ -133,6 +141,7 @@
         <pathelement location="${jbossall-client.jar}"/>
         <pathelement location="${jnp-client.jar}"/>
         <pathelement location="${jaxb-api.jar}"/>
+        <pathelement location="${jbossws-client.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">

@@ -73,6 +73,8 @@ import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.TCSubject;
+import com.topcoder.service.user.UserService;
+import com.topcoder.service.user.UserServiceException;
 import com.topcoder.service.review.specification.SpecificationReview;
 import com.topcoder.service.review.specification.SpecificationReviewServiceConfigurationException;
 import com.topcoder.service.review.specification.SpecificationReviewServiceException;
@@ -281,6 +283,17 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      */
     @EJB(name = "ejb/ProjectServicesBean")
     private ProjectServices projectServices;
+
+    /**
+     * <p>
+     * A <code>UserService</code> providing access to available
+     * <code>User Service EJB</code>.
+     * </p>
+     *
+     * @since Cockpit Release Assembly for Receipts
+     */
+    @EJB(name = "ejb/UserService")
+    private UserService userService = null;
 
     /**
      * <p>
@@ -1395,16 +1408,15 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
                 return false;
             }
             
-            UserRetrieval userRetrieval = new DBUserRetrieval(dbConnectionFactoryNamespace);
-            ExternalUser user = userRetrieval.retrieveUser(userId);
+            String handle = userService.getUserHandle(userId);
             
             com.topcoder.management.resource.Resource resource = new com.topcoder.management.resource.Resource();
             // set resource properties
             resource.setProject(new Long(projectId));
             resource.setResourceRole(specificationSubmitterRole);
-            resource.setProperty("Handle", user.getHandle());
+            resource.setProperty("Handle", handle);
             resource.setProperty("Payment", null);
-            resource.setProperty("Payment Status", "No");
+            resource.setProperty("Payment Status", "N/A");
             resource.setProperty("External Reference ID", Long.toString(userId));
             resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
             resourceManager.updateResource(resource, Long.toString(userId));
