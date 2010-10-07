@@ -1,0 +1,172 @@
+/* CSS file */
+@font-face 
+{
+	src:url("./assets/font/MyriadPro-Regular.otf");
+	font-family: "Myriad Pro Regular";
+}
+
+@font-face 
+{
+	src:url("./assets/font/MyriadPro-Semibold.otf");
+	fontFamily: "Myriad Pro Semibold";  
+	fontWeight: bold;  
+	advancedAntiAliasing: true;
+}
+
+.grid {
+	header-separator-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	color: #000000;
+	font-size: 13;
+	font-weight: normal;
+	font-family: "Myriad Pro Regular";
+	alternating-item-colors: #eeeeee, #ffffff;
+}
+.nameLabel {
+	padding-top: 0;
+	padding-left: 0;
+	color: #000000;
+	font-size: 15;
+	font-weight: normal;
+	fontFamily: "Myriad Pro Regular";
+}
+.headerStyle {
+	color: #ffffff;
+	font-size: 14;
+	font-weight: normal;
+	font-family: "Myriad Pro Regular";
+	border-style: solid;
+	border-sides: bottom;
+	padding-left: 18;
+}
+.normalBox {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0;
+	padding-right: 0;
+	horizontal-gap: 0;
+}
+.headerStyle2 {
+	color: #ffffff;
+	font-size: 14;
+	font-weight: normal;
+	font-family: "Myriad Pro Regular";
+	border-style: solid;
+	border-sides: bottom;
+	padding-left: 10;
+}
+.linkBtn {
+	color: #ff0000;
+	font-size: 13;
+	font-weight: normal;
+	font-family: "Myriad Pro Regular";
+	text-decoration: underline;
+}
+	
+.listStyle {
+	color: #000000;
+	font-size: 13;
+	font-weight: normal;
+	font-family: "Myriad Pro Regular";
+}
+.listStyleBold {
+	color: #000000;
+	font-size: 13;
+	font-weight: bold;
+	font-family: "Myriad Pro Semibold";
+}
+
+.titleBar {
+	vertical-align: middle;
+	horizontal-gap: 10;
+	padding-left: 8;
+	padding-right: 11;
+	background-image:Embed(source="./assets/image/titleBG.png",scaleGridTop="8",scaleGridLeft="10",scaleGridRight="257",scaleGridBottom="17"); 
+}
+
+.txtInput {
+	background-skin: Embed(source="./assets/txtInput.png",scaleGridTop="3",scaleGridLeft="4",scaleGridRight="113",scaleGridBottom="20");
+	color: #000000;
+	font-size: 13;
+	font-weight: normal;
+	fontFamily: "Myriad Pro Regular";
+}
+
+
+.arrowBtnStyle {
+	skin: Embed("./assets/tab-slide-open.png");
+	up-skin: Embed("./assets/tab-slide-open.png");
+	over-skin: Embed("./assets/tab-slide-open-hover.png");
+	down-skin: Embed("./assets/tab-slide-open.png");
+	selected-up-skin: Embed("./assets/tab-slide-close.png");
+	selected-over-skin: Embed("./assets/tab-slide-close.png");
+	selected-up-skin: Embed("./assets/tab-slide-close-hover.png");
+	selected-down-skin: Embed("./assets/tab-slide-close.png");
+}
+.greyBtn {
+	skin: Embed(source="./assets/arrow-right-button.png",scaleGridTop="3",scaleGridLeft="4",scaleGridRight="61",scaleGridBottom="4");
+	over-skin: Embed(source="./assets/arrow-right-button-over.png",scaleGridTop="3",scaleGridLeft="4",scaleGridRight="61",scaleGridBottom="4");
+	up-skin: Embed(source="./assets/arrow-right-button.png",scaleGridTop="3",scaleGridLeft="4",scaleGridRight="61",scaleGridBottom="4");
+	down-skin: Embed(source="./assets/arrow-right-button-over.png",scaleGridTop="3",scaleGridLeft="4",scaleGridRight="61",scaleGridBottom="4");
+	font-family: "Myriad Pro Regular";
+	font-size: 12;
+	font-weight: normal;
+	color: #1a1a1a;
+	text-roll-over-color: #000000;
+	text-selected-color: #000000;
+	padding-left: 5;
+	padding-right: 24;
+}
+.btn {
+	skin: Embed(source="./assets/btn.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="135",scaleGridBottom="25");
+	over-skin: Embed(source="./assets/button-over.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="135",scaleGridBottom="25");
+	up-skin: Embed(source="./assets/btn.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="135",scaleGridBottom="25");
+	down-skin: Embed(source="./assets/button-over.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="135",scaleGridBottom="25");
+	font-family: "Myriad Pro Regular";
+	font-size: 12;
+	font-weight: normal;
+	color: #444444;
+	text-roll-over-color: #000000;
+	text-selected-color: #000000;
+	padding-left: 5;
+	padding-right: 24;
+}
+
+.selectorBtn {
+	skin: Embed(source="./assets/dateSelector.png");
+	over-skin: Embed(source="./assets/dateSelector.png");
+	up-skin: Embed(source="./assets/dateSelector.png");
+	down-skin: Embed(source="./assets/dateSelector.png");
+	selected-up-skin: Embed("./assets/dateSelector.png");
+	selected-over-skin: Embed("./assets/dateSelector.png");
+	selected-up-skin: Embed("./assets/dateSelector.png");
+	selected-down-skin: Embed("./assets/dateSelector.png");
+}
+.lateBtn {
+	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	up-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	icon: Embed(source="./assets/icon/warn.png");
+	color: #000000;
+	font-size: 13;
+	font-weight: bold;
+	font-family: "Myriad Pro Semibold";
+}
+.ascStyle {
+	background-image: Embed(source="./assets/s1.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="23",scaleGridBottom="18");
+	background-size: "100%";
+}
+.descStyle {
+	background-image: Embed(source="./assets/s2.png",scaleGridTop="1",scaleGridLeft="1",scaleGridRight="23",scaleGridBottom="18");
+	background-size: "100%";
+}
+.noSortStyle {
+	background-color: #000000;
+}
+.wikiStyle {
+	skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	over-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	up-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	down-skin: ClassReference('com.topcoder.flex.widgets.widgetcontent.pipeline.component.skin.NullSkin');
+	icon: Embed(source="./assets/icon/icon_wiki.png");
+}

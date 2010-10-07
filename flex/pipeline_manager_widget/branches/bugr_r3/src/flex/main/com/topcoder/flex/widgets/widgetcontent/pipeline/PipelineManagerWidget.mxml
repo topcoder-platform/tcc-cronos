@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is the main entry point for the pipeline manager widget.
+
+     Version 1.0.1 (Pipeline Conversion Cockpit Integration Assembly 2 v1.0) Change Notes:
+     - removed dead code that was there for overdue contests.
+     - added a checkbox that includes / excludes overdue contests.
+     - checkbox value is considered during filtering of results by date.
+     - added handler for click on add new contest button.
+
+     Version 1.0.2 (Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+     - remove the overdue contests checkbox
+     - update some scroll bar setting and performance issue
+     
+     @author snow01, TCSASSEMBLER
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.2
+-->
+<tc:PipelineManagerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+                                    width="100%"
+                                    horizontalGap="-1"
+                                    creationComplete="init()"
+                                    paddingLeft="0"
+                                    paddingRight="7"
+                                    paddingTop="9"
+                                    paddingBottom="11"
+                                    xmlns:mxeffects="com.adobe.ac.mxeffects.*"
+                                    xmlns:tccomp="com.topcoder.flex.widgets.widgetcontent.pipeline.component.*"
+                                    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.pipeline.*">
+    <mx:Style source="./Style.css"/>
+    <mx:Script>
+        <![CDATA[
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.log.TCLog;
+            import mx.collections.ArrayCollection;
+            import mx.rpc.soap.SOAPHeader;
+            import com.topcoder.flex.Helper;
+            import mx.core.Application;
+            import mx.rpc.events.FaultEvent;
+            import mx.rpc.events.ResultEvent;
+            import mx.events.ResizeEvent;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            import mx.core.UIComponent;
+            
+            /**
+             * The blazedDS server end point url.
+             * This is used to load password.
+             */
+            [Bindable]
+            private var blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+            
+            /**
+             * The pipeline service wsdl url.
+             */
+            [Bindable]
+            private var pipelineServiceFacadeWsdl:String=Application.application.parameters.pipelineServiceFacadeWsdl;
+            
+            /**
+             * Initializes this widget.
+             */
+            private function init():void {
+               // timer.addEventListener(TimerEvent.TIMER_COMPLETE, rotate);
+                model.addEventListener("clearType", handleClearType);
+                model.addEventListener("lock", handleUpdated);
+                model.addEventListener("modeChange", handleModeChange);
+                
+                model.widget=this;
+                model.widgetFramework=this.widgetFramework;
+                
+                initWebServices();
+                getDataService();
+            }
+            
+            /**
+             * Handles the close.
+             */
+            public function handleClose():void {
+                list.visible=list.includeInLayout=false;
+            }
+            
+            /**
+             * Handles the clear for type.
+             */
+            private function handleClearType(event:Event):void {
+                if (list) {
+                    list.selectedIndex=0;
+                }
+            }
+            
+            /**
+             * Handles the select of various modes.
+             */
+            private function handleSelect():void {
+                if (list.selectedItem || (model.list && list.selectedIndex >= 0 && list.selectedIndex < 5)) {
+                    if (model.mode == "MAIN") {
+                        model.filter.type=model.typeValues[list.selectedIndex];
+                        model.filter.typeLabel=model.typeLabels[list.selectedIndex];
+                        model.filterDetail();
+                    } else if (model.mode == "BREAK") {
+                        model.breakIdx=list.selectedIndex;
+                        model.breakField=model.breakArray[list.selectedIndex];
+                        model.updateBreak();
+                    } else if (model.mode == "DATE" || model.mode == "PRICE") {
+                        model.navigateToMode(model.hist[list.selectedIndex]);
+                        model.updateHistory();
+                    }
+
+                } else {
+                    return;
+                }
+            }
+            
+            /**
+             * Update display list.
+             */
+        /*    override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+                super.updateDisplayList(unscaledWidth, unscaledHeight);
+                if (cover && proDetail.contains(cover)) {
+                    
+                    cover.graphics.clear();
+                    cover.graphics.beginFill(0x111111, 0.3);
+                    cover.graphics.drawRect(0, 0, unscaledWidth - left.width, unscaledHeight - 5);
+                    cover.graphics.endFill();
+                }
+                
+                if (this.height != this.measuredHeight) {
+                    this.height=this.measuredHeight;
+                }
+                
+                if (left.height != left.measuredHeight) {
+                    left.height=left.measuredHeight;
+                }
+            }
+            */
+            public function showHideNoResultPanel(show:Boolean):void {
+                if (show) {
+                    switch (model.mode) {
+                        case "MAIN":
+                            stack.selectedIndex=4;
+                            list.dataProvider=model.typeLabels;
+                            backBtn.visible=false;
+                            break;
+                        case "BREAK":
+                            stack.selectedIndex=4;
+                            list.dataProvider=model.breakCate;
+                            backBtn.visible=true;
+                            break;
+                        case "DATE":
+                            stack.selectedIndex=4;
+                            list.dataProvider=model.hist;
+                            backBtn.visible=true;
+                            break;
+                        case "PRICE":
+                            stack.selectedIndex=4;
+                            backBtn.visible=true;
+                            list.dataProvider=model.hist;
+                            list.selectedIndex=1;
+                       
+                            return;
+                    }
+                } else {
+                    switch (model.mode) {
+                        case "MAIN":
+                            stack.selectedIndex=0;
+                            list.dataProvider=model.typeLabels;
+                            backBtn.visible=false;
+                            break;
+                        case "BREAK":
+                            stack.selectedIndex=1;
+                            list.dataProvider=model.breakCate;
+                            backBtn.visible=true;
+                            break;
+                        case "DATE":
+                            stack.selectedIndex=2;
+                            list.dataProvider=model.hist;
+                            backBtn.visible=true;
+                            break;
+                        case "PRICE":
+                            stack.selectedIndex=3;
+                            backBtn.visible=true;
+                            list.dataProvider=model.hist;
+                            list.selectedIndex=1;
+                           
+                            return;
+                    }
+                    
+                    list.selectedIndex=0;
+                }
+            }
+            
+            /**
+             * Handles mode change.
+             */
+            private function handleModeChange(event:Event):void {
+                
+                switch (model.mode) {
+                    case "MAIN":
+                        stack.selectedIndex=0;
+                        list.dataProvider=model.typeLabels;
+                        backBtn.visible=false;
+                        break;
+                    case "BREAK":
+                        stack.selectedIndex=1;
+                        list.dataProvider=model.breakCate;
+                        backBtn.visible=true;
+                        break;
+                    case "DATE":
+                        stack.selectedIndex=2;
+                        list.dataProvider=model.hist;
+                        backBtn.visible=true;
+                        break;
+                    case "PRICE":
+                        stack.selectedIndex=3;
+                        backBtn.visible=true;
+                        list.dataProvider=model.hist;
+                        list.selectedIndex=1;
+                     
+                        return;
+                }
+                
+                list.selectedIndex=0;
+                model.filterDetail();
+               
+            }
+            
+            /**
+             * Animation effect related mask.
+             */
+            private var cover:UIComponent;
+            
+            /**
+             * Handles update to the UI in animated form.
+             *
+             * @param event the event.
+             */
+            private function handleUpdated(event:Event):void {
+                if (!cover) {
+                    cover=new UIComponent();
+                }
+                if (!proDetail.contains(cover)) {
+                    proDetail.addChild(cover);
+                    
+                }
+                cover.percentWidth=100;
+                cover.percentHeight=100;
+                cover.graphics.clear();
+                cover.graphics.beginFill(0x111111, 0.3);
+                cover.graphics.drawRect(0, 0, unscaledWidth - left.width, unscaledHeight - 5);
+                cover.graphics.endFill();
+                var timer:Timer=new Timer(1000, 1);
+                timer.addEventListener(TimerEvent.TIMER_COMPLETE, unLock);
+                timer.start();
+            }
+            
+            /**
+             * Animation effect related
+             */
+            private function unLock(event:TimerEvent):void {
+                if (cover) {
+                    if (proDetail.contains(cover)) {
+                        proDetail.removeChild(cover);
+                    }
+                    cover=null;
+                }
+            }
+            
+            /**
+             * Animation effect related
+             */
+            private var timer:Timer=new Timer(300, 1);
+            
+            /**
+             * Animation effect related
+             */
+            private var coms:UIComponent=new UIComponent();
+            
+            /**
+             * Animation effect related
+             */
+            private var _direction:String;
+            
+            /**
+             * Animation effect related
+             */
+            private var v:Boolean=false;
+            
+            
+            /**
+             * Animation effect related
+             */
+            private function rotate(event:TimerEvent):void {
+                
+                if (list.selectedItem) {
+                    //model.currentProj = proList.selectedItem as Project;
+                } else if (model.list && list.selectedIndex >= 0 && list.selectedIndex < model.list.length) {
+                    //model.currentProj = model.proList.getItemAt(proList.selectedIndex) as Project;
+                }
+                flipIn.target=coms;
+                flipIn.siblings=[stack];
+                flipIn.direction=_direction;
+                flipIn.duration=1000;
+                flipIn.play();
+            }
+            
+           
+            
+            /**
+             * Animation effect related
+             */
+            [Bindable]
+            private var index:int=0;
+            
+            /**
+             * Animation effect related
+             */
+            private function openCloseLeft():void {
+                open=!open;
+                arrow.selected=open;
+                if (open) {
+                    list.visible=list.includeInLayout=true;
+                    openEffect.play()
+                } else {
+                    closeEffect.play();
+                }
+            }
+            
+            /**
+             * Animation effect related
+             */
+            private var open:Boolean=true;
+            
+            /**
+             * Applies the specified date filters.
+             *
+             * Updated for Version 1.0.1
+             *    - overdue checkbox value is considered to include/exclude overdue contests.
+             */
+            private function filterDate():void {
+                if (!start.value || (start.value as Date) == null) {
+                    Helper.showAlertMessage("Start date must be specified");
+                    return;
+                }
+                
+                if (!end.value || (end.value as Date) == null) {
+                    Helper.showAlertMessage("End date must be specified");
+                }
+                // if loaded data did not have overdue contest included
+                // and now we want, then reload the data from backend.
+                if (/*model.overdueIncluded == overdueCheckBox.selected && */start.value >= model.startDate && end.value <= model.endDate) {
+                    model.filter.start=start.value;
+                    model.filter.end=end.value;
+                    model.filter.startAdd=null;
+                    model.filter.endAdd=null;
+                    model.filterDetail();
+                } else {
+                    model.startDate=start.value;
+                    model.endDate=end.value;
+                    //model.overdueIncluded=overdueCheckBox.selected;
+                    this.loadContests(model.startDate, model.endDate, model.overdueIncluded);
+                }
+            }
+            
+            /**
+             * Shows the webservice error.
+             *
+             * @param opName the webservice operation name.
+             * @event the webservice fault event.
+             */
+            private function showWebserviceError(opName:String, event:FaultEvent):void {
+                TCLog.instance.debug(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
+                hideLoadingProgress();
+                
+                Helper.showAlertMessage(opName + ":: " + event.fault.content + "," + event.fault.message + "," + event.fault.faultCode + "," + event.fault.faultString);
+            }
+            
+            /**
+             * Handles the contest load.
+             *
+             * @param event the result event for contests load.
+             */
+            private function handleContestsLoad(event:ResultEvent):void {
+                hideLoadingProgress();
+                
+                if (event && event.result) {
+                    TCLog.instance.debug("Result: " + event.result as XMLList);
+                    model.loadData(event.result as XMLList);
+                }
+            }
+            
+            /**
+             * Initializes the webservices.
+             */
+            private function initWebServices():void {
+                var header:SOAPHeader=getHeader(username, password);
+                
+                PipelineServiceFacadeBean.clearHeaders();
+                PipelineServiceFacadeBean.addHeader(header);
+                this.pws=PipelineServiceFacadeBean;
+            }
+            
+            /**
+             * Loads password from the webservices.
+             */
+            private function getDataService():void {
+                if (isLocalTesting) {
+                    Security.allowDomain("*");
+                    Security.allowInsecureDomain("*");
+                    initWidget();
+                } else {
+                    dataservice.getPassword();
+                }
+            }
+            
+            /**
+             * Processes the password.
+             *
+             * @param e the result event.
+             */
+            private function processPassword(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    password=e.result.toString();
+                    
+                }
+                
+                initWidget();
+            }
+            
+            /**
+             * Initializes the widget.
+             * This gets called on successful password retrieval.
+             */
+            private function initWidget():void {
+                loadData();
+            }
+            
+            /**
+             * Handler for click on add contest button.
+             *
+             * @since 1.0.1
+             */
+            private function addContest():void {
+                var dict:Dictionary=new Dictionary();
+                var tabDict:Dictionary=new Dictionary();
+                tabDict["columnNum"]=1;
+                
+                this.widgetFramework.addWidgetEx2("Launch Contest", "Launch Contest", "Launch Contest", dict, tabDict);
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:WebService id="PipelineServiceFacadeBean"
+                   wsdl="{pipelineServiceFacadeWsdl}"
+                   useProxy="false">
+        <mx:operation name="getCommonPipelineData"
+                      resultFormat="e4x"
+                      result="handleContestsLoad(event);"
+                      fault="showWebserviceError('getCommonPipelineData', event);">
+        </mx:operation>
+
+        <mx:operation name="getContestDateChangeHistories"
+                      resultFormat="e4x"
+                      fault="showWebserviceError('getContestDateChangeHistories', event);">
+        </mx:operation>
+
+        <mx:operation name="getContestPrizeChangeHistories"
+                      resultFormat="e4x"
+                      fault="showWebserviceError('getContestPrizeChangeHistories', event);">
+        </mx:operation>
+    </mx:WebService>
+
+    <mx:RemoteObject id="dataservice"
+                     destination="remoteDataService"
+                     endpoint="{blazedsendpoint}"
+                     fault="showWebserviceError('dataservice', event);">
+        <mx:method name="getPassword"
+                   result="processPassword(event)"
+                   fault="showWebserviceError('getPassword', event);"/>
+
+    </mx:RemoteObject>
+
+    <mx:DefaultTileListEffect id="myDTLE"
+                              fadeInDuration="10"
+                              fadeOutDuration="10"
+                              moveDuration="200"
+                              color="0xffffff"/>
+    <mxeffects:CubeRotate id="flipIn"
+                          duration="1000"/>
+    <mx:Resize id="widgetResize"/> 
+    <mx:Resize widthFrom="160"
+               widthTo="1"
+               heightFrom="{proDetail.height}"
+               heightTo="{proDetail.height}"
+               id="closeEffect"
+               effectEnd="handleClose()"
+               target="{left}"/>
+    <mx:Resize widthFrom="1"
+               widthTo="160"
+               heightFrom="{proDetail.height}"
+               heightTo="{proDetail.height}"
+               id="openEffect"
+               target="{left}"/>
+    <mx:VBox width="160"
+             paddingLeft="0"
+             paddingRight="0"
+             borderSides="right"
+             borderStyle="solid"
+             borderColor="#a9a9a9"
+             id="left"
+             horizontalAlign="center"
+             horizontalScrollPolicy="off"
+             verticalScrollPolicy="off">
+        <mx:TileList id="list"
+                     width="152"
+                     variableRowHeight="false"
+                     selectedIndex="0"
+                     paddingLeft="0"
+                     paddingRight="0"
+                     borderStyle="none"
+                     rowCount="20"
+                     dataProvider="{model.typeLabels}"
+                     labelField="name"
+                     wordWrap="true"
+                     allowMultipleSelection="false"
+                     allowDragSelection="false"
+                     change="handleSelect()"
+                     verticalScrollPolicy="off"
+                     horizontalScrollPolicy="off"
+                     selectable="true"
+                     columnCount="1"
+                     styleName="listStyle"
+                     itemsChangeEffect="{myDTLE}"/>
+  
+    </mx:VBox>
+    <mx:VBox id="proDetail" width="100%">
+        <mx:HBox id="buttonBar"
+                 width="100%"
+                 height="38"
+                 left="0"
+                 top="0"
+                 right="0"
+                 verticalAlign="middle"
+                 paddingTop="0"
+                 paddingBottom="0"
+                 paddingLeft="0"
+                 paddingRight="0">
+            <mx:Button id="arrow"
+                       styleName="arrowBtnStyle"
+                       selected="true"
+                       click="openCloseLeft()"/>
+            
+            <mx:Button id="backBtn"
+                       label="BACK" paddingLeft="5"
+                       styleName="greyBtn"
+                       click="model.goBack()"
+                       height="24"
+                       visible="false"/>
+            <mx:Spacer width="100%"/>
+            <mx:Button label="ADD NEW CONTEST"
+                       styleName="greyBtn"
+                       click="addContest()"/>
+        </mx:HBox>
+        <mx:HBox id="filterBar"
+                 width="100%"
+                 height="57"
+                 verticalAlign="middle"
+                 left="0"
+                 top="39"
+                 right="0"
+                 paddingTop="0"
+                 paddingBottom="0"
+                 paddingLeft="20"
+                 paddingRight="0"
+                 clipContent="false">
+            <mx:Label text="View contests in this date range:"
+                      styleName="listStyle"/>
+            <tccomp:DatePicker id="start"
+                               chooser="{startDateChooser}"
+                               date="{model.filter.start ? model.filter.start : model.startDate}"/>
+            <mx:Label text="to"
+                      styleName="listStyle"/>
+            <tccomp:DatePicker id="end"
+                               chooser="{endDateChooser}"
+                               date="{model.filter.end ? model.filter.end : model.endDate}"/>
+             <!-- exclude for now 
+            <mx:CheckBox id="overdueCheckBox"
+                         label="Include Overdue"
+                         includeInLayout="false"
+                         selected="false"/>
+                         -->
+            <mx:Spacer width="100%"/>
+            <mx:Button label="UPDATE"
+                       styleName="greyBtn"
+                       height="24"
+                       click="filterDate()"/>
+        </mx:HBox>
+        <mx:VBox minHeight="368" verticalGap="2"
+                 id="pnlContainer"
+                 width="100%"
+                 left="0"
+                 top="96"
+                 right="0">
+            <tccomp:FilterPanel width="100%" id="filter" puid="{uid}" />
+			<tccomp:FilterShower width="100%" puid="{uid}" filterPanel="{filter}"/>
+			<mx:Spacer width="100%" height="10" />
+            <mx:ViewStack width="100%"
+                          left="3"
+                          minHeight="368"
+                          height="100%"
+                          backgroundAlpha="1.0"
+                          paddingLeft="12"
+                          paddingRight="0"
+                          paddingTop="15"
+                          paddingBottom="0"
+                          id="stack"
+                          resizeToContent="true">
+                <tc:DetailPanel width="100%" puid="{uid}"/>
+                <tc:BreakDownPanel width="100%" puid="{uid}"/>
+                <tc:DatePanel width="100%" puid="{uid}"/>
+                <tc:PricePanel width="100%" puid="{uid}"/>
+                <tc:NoResultPanel width="100%" />           
+            </mx:ViewStack>
+        </mx:VBox>
+    </mx:VBox>
+    <mx:Canvas includeInLayout="false">
+        <mx:DateChooser id="startDateChooser"
+                    includeInLayout="false"
+                    visible="false"/>
+        <mx:DateChooser id="endDateChooser"
+                    includeInLayout="false"
+                    visible="false"/>
+    </mx:Canvas>
+</tc:PipelineManagerWidgetCodeBehind>

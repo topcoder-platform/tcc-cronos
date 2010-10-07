@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+     The filter panel.
+     Version 1.0.1(Cockpit Pipeline Manager Widget Release Assembly V1.0) Change Notes:
+      - Add the exclude status filter
+
+     @author snow01
+     @since Pipeline Conversion Cockpit Integration Assembly 1 v1.0
+     @version 1.0.1
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         creationComplete="init()"
+         verticalGap="0">
+    <mx:Script>
+        <![CDATA[
+        	import mx.events.FlexEvent;
+        	import mx.collections.ArrayCollection;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.vo.NumbericFilter;
+            import com.topcoder.flex.widgets.widgetcontent.pipeline.model.Model;
+            
+            [Bindable]
+            private var model:Model;
+            
+            [Bindable]
+            private var open:Boolean=false;
+            
+            private var _puid:String;
+            
+            public function set puid(value:String):void {
+                _puid=value;
+                model=Model.getInstance(value);
+                trace("PUID for FilterPanel:"+value);
+            }
+            
+            private function handleClick(event:Event):void {
+                
+                open=!open;
+                winCtrlBut.source=(open) ? model.winMin : model.winMax;
+                
+                shower.includeInLayout=open;
+                shower.visible=open;
+                updateView();
+
+                event.stopImmediatePropagation();
+            }
+
+            public function updateView():void {
+                trace("Updating FilterPanelView:"+this._puid);
+                if (!open) return;
+                clientList.selectedItems=model.filter.excludeClients;
+                
+                if (model.filter.excludedStatus && model.filter.excludedStatus.length == 0) {
+                	draftStatusCB.selected = true;
+                	this.activeStatusCB.selected = true;
+                	this.scheduledStatusCB.selected = true;
+                	this.completedStatusCB.selected = true;
+                    this.cancelledStatusCB.selected = true;
+                } else {
+                	for each(var s:String in model.filter.excludedStatus) {
+                		if (s.toLowerCase() == 'draft') {
+                			draftStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'scheduled') {
+                			scheduledStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'active') {
+                			activeStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'completed') {
+                			completedStatusCB.selected = false;
+                		} else if (s.toLowerCase() == 'cancelled') {
+                			cancelledStatusCB.selected = false;
+                		}
+                	}
+                }
+                this.repostRBG.selectedValue = model.filter.repost;
+                // we do not select anything on numeric filter - as it has multiple values.
+                combo2.selectedIndex=0;
+                less.text="";
+                more.text="";
+
+
+		        //shower.validateNow();
+            }
+            
+            private function resetShower():void {
+                if (open) {
+                    // Reset
+                    //eq.selected=false;
+                    //lesser.selected=false;
+                    //great.selected=false;
+                    //combo1.selectedIndex=0;
+                    clientList.selectedItem=null;
+                    combo2.selectedIndex=0;
+                    less.text="";
+                    more.text="";
+                }    
+            }
+            
+            private function closeShower():void {
+                open=false;
+                winCtrlBut.source=(open) ? model.winMin : model.winMax;
+                
+                shower.includeInLayout=open;
+                shower.visible=open;
+            }
+            
+            private function init():void {
+                if (!model && _puid && _puid.length > 0) {
+                    model=Model.getInstance(_puid);
+                }
+                lb1.text="(Hold down \"Control\" to select more than one)";
+            }
+            
+            /*private function filterConfidence():void {
+                
+                if (!eq.selected && !lesser.selected && !great.selected) {
+                    model.filter.co[0]=1;
+                    model.filter.co[0]=1;
+                    model.filter.co[0]=1;
+                    model.filter.confidence=combo1.selectedItem as String;
+                    closeShower();
+                    model.filterDetail();
+                    return;
+                }
+                model.filter.co[0]=(eq.selected) ? 1 : 0;
+                model.filter.co[1]=(lesser.selected) ? 1 : 0;
+                model.filter.co[2]=(great.selected) ? 1 : 0;
+                model.filter.confidence=combo1.selectedItem as String;
+                closeShower();
+                model.filterDetail();
+            }*/
+            
+            private function filterClient():void {
+                
+                model.filter.excludeClients=clientList.selectedItems;
+                //updateView();
+                model.filterDetail();
+            }
+            
+            private function filterField():void {
+                
+                var field:String=model.itemList[combo2.selectedIndex];
+                
+                if (less.text.length == 0 && more.text.length == 0) {
+                    return;
+                }
+                for each (var nf:NumbericFilter in model.filter.numFilter) {
+                    if (nf.field == field) {
+                        nf.setFilter(field, less.text, more.text);
+                        //updateView();
+                        model.filterDetail();
+                        return;
+                    }
+                }
+                var nf2:NumbericFilter=new NumbericFilter();
+                nf2.setFilter(field, less.text, more.text);
+                model.filter.numFilter.push(nf2);
+                //updateView();
+                model.filterDetail();
+                return;
+            }
+            
+            private function filterBoolean():void {
+                
+
+                //updateView();
+                model.filterDetail();
+            }           
+           
+
+            private function filterByRepost(event:Event):void {                     		
+            	model.filter.repost = repostRBG.selectedValue.toString();            			
+            	model.filterDetail();
+            }
+
+            private function filterByStatus(event:Event):void {
+            	clearOrAddExcluded(model.filter.excludedStatus, CheckBox(event.currentTarget).label, !CheckBox(event.currentTarget).selected);
+            	model.filterDetail();
+            }
+            
+            private function clearOrAddExcluded(excludedSatus:ArrayCollection, status:String, exclude:Boolean):void {
+            	if (exclude) {
+            		excludedSatus.addItem(status);
+            		return;
+            	}
+            	for(var i:int = 0; i < excludedSatus.length; i++) {
+            		if (excludedSatus.getItemAt(i) == status) {
+            			excludedSatus.removeItemAt(i);
+            			break;
+            		}
+            	}
+            }
+        ]]>
+    </mx:Script>
+    <mx:HBox styleName="titleBar"
+             width="100%"
+             height="27"
+             backgroundSize="100%"
+             id="title"
+             paddingTop="0"
+             paddingBottom="0"
+             paddingLeft="20"
+             paddingRight="0"
+             click="handleClick(event)"
+             buttonMode="true"
+             useHandCursor="true"
+             verticalScrollPolicy="off"
+             horizontalScrollPolicy="off">
+        <mx:Image width="16"
+                  height="16"
+                  id="winCtrlBut"
+                  click="handleClick(event)"
+                  source="{model.winMax}"
+                  buttonMode="true"
+                  useHandCursor="true"/>
+        <mx:Label text="Custom Filters"
+                  id="lb"
+                  styleName="nameLabel"/>
+        <mx:Spacer width="100%"/>
+    </mx:HBox>
+    <mx:VBox width="100%"
+             height="100%"
+             id="shower"
+             includeInLayout="false"
+             visible="false"
+             verticalGap="0">
+        
+        <!-- add the new filter status -->
+        
+        <mx:HBox width="100%" height="60" backgroundColor="#e3e3e3" horizontalScrollPolicy="off"
+                 borderStyle="solid" borderSides="left right bottom"
+                 borderColor="#cccccc" paddingTop="5" paddingLeft="17" paddingBottom="5" verticalAlign="bottom">
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+                <mx:Label text="Contest Status"
+                          styleName="listStyleBold"
+                          fontSize="14"/>
+                          <!--
+                <mx:Label text="unSelect status to exclude:"
+                          styleName="listStyle"
+                          fontSize="14"/> -->
+            </mx:VBox>
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+            	<mx:CheckBox id="draftStatusCB" selected="true" label="Draft" change="filterByStatus(event)"/>
+        		<mx:CheckBox id="scheduledStatusCB" selected="true" label="Scheduled" change="filterByStatus(event)"/>
+            </mx:VBox>
+        	<mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+	        	<mx:CheckBox id="activeStatusCB" selected="true" label="Active" change="filterByStatus(event)"/>
+	        	<mx:CheckBox id="completedStatusCB" selected="true" label="Completed" change="filterByStatus(event)"/>
+	        </mx:VBox>	
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+	        	<mx:CheckBox id="cancelledStatusCB" selected="true" label="Cancelled" change="filterByStatus(event)"/>
+	        </mx:VBox>	
+        </mx:HBox>
+             
+        <!--<mx:HBox width="100%"
+                 height="70"
+                 backgroundColor="#e3e3e3"
+                 borderStyle="solid"
+                 borderSides="left right bottom"
+                 borderColor="#cccccc"
+                 paddingTop="13"
+                 paddingLeft="17"
+                 paddingBottom="5"
+                 verticalAlign="bottom">
+            <mx:VBox verticalGap="0"
+                     paddingTop="0"
+                     paddingBottom="0"
+                     paddingRight="0"
+                     paddingLeft="0">
+                <mx:Label text="Filter by confidence"
+                          styleName="listStyleBold"
+                          fontSize="14"/>
+                <mx:Label text="Get contests with confidence that is:"
+                          styleName="listStyle"
+                          fontSize="14"/>
+            </mx:VBox>
+            <mx:CheckBox label="Equal"
+                         styleName="listStyle"
+                         id="eq"
+                         fontSize="14"/>
+            <mx:CheckBox label="Lesser"
+                         styleName="listStyle"
+                         id="lesser"
+                         fontSize="14"/>
+            <mx:CheckBox label="Greater"
+                         styleName="listStyle"
+                         id="great"
+                         fontSize="14"/>
+            <mx:Label text="to/than"
+                      styleName="listStyle"
+                      fontSize="14"/>
+            <mx:ComboBox id="combo1"
+                         dataProvider="{model.confidenceList}"
+                         styleName="txtInput"/>
+            <mx:Spacer width="100%"/>
+            <mx:Button styleName="greyBtn"
+                       label="UPDATE"
+                       click="filterConfidence()"/>
+        </mx:HBox>-->
+        <mx:HBox width="100%"
+                 height="102"
+                 backgroundColor="#fafafa"
+                 borderStyle="solid"
+                 borderSides="left right bottom"
+                 borderColor="#cccccc"
+                 paddingTop="10"
+                 paddingLeft="17"
+                 paddingBottom="5"
+                 verticalAlign="bottom">
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+                <mx:Label text="Exclude client"
+                          styleName="listStyleBold"
+                          fontSize="14"/>
+                <mx:Label text="select client to exclude:"
+                          styleName="listStyle"
+                          fontSize="14"/>
+            </mx:VBox>
+            <mx:List id="clientList"
+                     allowMultipleSelection="true"
+                     height="100%"
+                     width="200"
+                     borderStyle="solid"
+                     borderColor="#828790"
+                     styleName="listStyle"
+                     fontSize="14"
+                     dataProvider="{model.clientList}"
+                     change="filterClient()"/>
+            <mx:Label id="lb1"
+                      color="#afafaf"
+                      styleName="listStyle"
+                      fontSize="14"/>
+            <!--<mx:Spacer width="100%"/>
+            <mx:Button styleName="greyBtn"
+                       label="UPDATE"
+                       click="filterClient()"/>-->
+        </mx:HBox>
+        <mx:HBox width="100%"
+                 height="74"
+                 backgroundColor="#e3e3e3"
+                 borderStyle="solid"
+                 borderSides="left right bottom"
+                 borderColor="#cccccc"
+                 paddingTop="13"
+                 paddingLeft="17"
+                 paddingBottom="5"
+                 verticalAlign="bottom">
+            <mx:VBox verticalGap="0"
+                     paddingTop="0"
+                     paddingBottom="0"
+                     paddingRight="0"
+                     paddingLeft="0">
+                <mx:Label text="Numerical Filter"
+                          styleName="listStyleBold"
+                          fontSize="14"/>
+                <mx:Label text="Get contests that have:"
+                          styleName="listStyle"
+                          fontSize="14"/>
+            </mx:VBox>
+            <mx:VBox verticalGap="0"
+                     height="100%"
+                     verticalAlign="bottom"
+                     paddingTop="0"
+                     paddingBottom="0"
+                     paddingRight="0"
+                     paddingLeft="0">
+                <mx:HBox verticalGap="0"
+                         paddingTop="0"
+                         paddingBottom="0"
+                         paddingRight="0"
+                         paddingLeft="0">
+                    <mx:TextInput styleName="txtInput"
+                                  width="59"
+                                  id="less"
+                                  restrict="[0-9]"
+                                  editable="true"/>
+                    <mx:Label text="&lt;"
+                              textDecoration="underline"
+                              styleName="listStyle"
+                              fontSize="14"/>
+                    <mx:ComboBox id="combo2"
+                                 dataProvider="{model.fieldList}"
+                                 styleName="txtInput"/>
+                    <mx:Label text="&lt;"
+                              textDecoration="underline"
+                              styleName="listStyle"
+                              fontSize="14"/>
+                    <mx:TextInput styleName="txtInput"
+                                  width="59"
+                                  id="more"
+                                  restrict="[0-9]"
+                                  editable="true"/>
+                </mx:HBox>
+                <mx:Label text="(leave bounds blank if not applicable)"
+                          color="#afafaf"
+                          styleName="listStyle"
+                          fontSize="14"/>
+
+            </mx:VBox>
+            <mx:Spacer width="100%"/>
+            <mx:Button styleName="greyBtn"
+                       label="UPDATE"
+                       click="filterField()"/>
+        </mx:HBox>
+       <mx:HBox width="100%" height="90" backgroundColor="#e3e3e3" horizontalScrollPolicy="off"
+                 borderStyle="solid" borderSides="left right bottom"
+                 borderColor="#cccccc" paddingTop="5" paddingLeft="17" paddingBottom="5" verticalAlign="bottom">
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+                <mx:Label text="Repost"
+                          styleName="listStyleBold"
+                          fontSize="14"/>                          
+            </mx:VBox>
+            <mx:VBox height="100%"
+                     paddingTop="0"
+                     paddingLeft="0"
+                     verticalGap="0">
+            	<mx:RadioButtonGroup id="repostRBG" selectedValue="All" itemClick="filterByRepost(event)"/>        		
+		        <mx:RadioButton groupName="repostRBG" id="repost_all" value="N/A" 
+		            label="All" width="150" />
+		        <mx:RadioButton groupName="repostRBG" id="repost_new" value="NO" 
+		            label="New" width="150" />
+		        <mx:RadioButton groupName="repostRBG" id="repost_repost" value="YES" 
+		            label="Repost" width="150" />
+
+            </mx:VBox>        	
+        </mx:HBox>
+    </mx:VBox>
+</mx:VBox>
