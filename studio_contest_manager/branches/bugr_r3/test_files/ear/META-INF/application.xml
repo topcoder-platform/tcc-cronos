@@ -1,0 +1,31 @@
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN"
+ "http://java.sun.com/dtd/application_1_3.dtd">
+<application>
+	<display-name>studio contest manager</display-name>
+	
+	<module><java>informix-ds.xml</java></module>
+
+	<module><ejb>studio_contest_manager.jar</ejb></module>
+
+	<module><java>base_exception.jar</java></module>
+	<module><java>class_associations.jar</java></module>
+	<module><java>configuration_api.jar</java></module>
+	<module><java>configuration_manager.jar</java></module>
+	<module><java>configuration_persistence.jar</java></module>
+	<module><java>data_validation.jar</java></module>
+	<!-- 
+	<module><java>db_connection_factory.jar</java></module>
+	<module><java>database_abstraction.jar</java></module>
+	<module><java>ldap_sdk_interface.jar</java></module> -->
+	<module><java>search_builder.jar</java></module>
+	<module><java>logging_wrapper.jar</java></module>
+	<module><java>object_factory.jar</java></module>
+	<module><java>object_factory_configuration_api_plugin.jar</java></module>
+	<module><java>object_formatter.jar</java></module>
+	<module><java>typesafe_enum.jar</java></module>
+	
+	<module><java>project_service.jar</java></module>
+	<module><java>contest_and_submission_entities.jar</java></module>
+	
+	<module><java>ifxjdbc.jar</java></module>
+</application>
