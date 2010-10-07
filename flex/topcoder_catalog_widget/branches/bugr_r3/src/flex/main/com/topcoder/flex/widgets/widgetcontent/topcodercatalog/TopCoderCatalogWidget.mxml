@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component is the main entry point for the topcoder catalog widget.
+     
+     Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        - BUGR-2129: (1) On refresh button click, catalog is reloaded.
+                     (2) Catalog is not loaded at initialize time.
+                     (3) On initialization, Load catalog screen is presented to user.
+
+     @author TCSDEVELOPER
+     @since Cockpit Catalog Widget Integration
+     @version 1.0.1
+-->
+<tc:TopCoderCatalogWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+                                    minHeight="470"
+                                    width="100%"
+                                    height="100%"
+                                    creationComplete="init()"
+                                    xmlns:tc="com.topcoder.flex.widgets.widgetcontent.topcodercatalog.*"
+                                    horizontalScrollPolicy="off"
+                                    verticalScrollPolicy="off">
+    <mx:Style source="./Style.css"/>
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.Alert;
+
+            /**
+             * Handler that gets called on creation complete of this component.
+             * It loads the data from service.
+             * 
+             * Updated for Version 1.0.1
+             *    - loadCatalog is no more called during initialization of the widget.
+             *    - a refresh callback function is defined, to be called on the refresh button click. 
+             */
+            private function init():void {
+                //this.currentMode=model.currentMode;
+                //loadCatalog();
+                this.refreshCallbackFn=function():void {
+                    if (main && main.selectedIndex != 0) {
+                        loadCatalog();
+                    }
+                }
+            }
+
+            /**
+             * Loads the data from json service.
+             */
+            private function loadCatalog():void {
+                showLoadingProgress();
+                jsonRequest.send();
+            }
+
+            /**
+             * Go to the main view of the widget.
+             */
+            private function gotoMain():void {
+                if (searchBtn.selected) {
+                    searchPanel.showHidePanel(false);
+                }
+                if (filterBtn.selected) {
+                    filterPanel.showHidePanel(false);
+                }
+                mainBtn.selected=true;
+                searchBtn.selected=false;
+                filterBtn.selected=false;
+                list.selectedIndex=0;
+                model.currentMode="main";
+
+                model.filteredComponentList=null;
+                model.searchedComponentList=null;
+                model.keyWords="";
+
+                if (filterPanel.activeCheck) {
+                    filterPanel.activeCheck.selected=false;
+                    filterPanel.activeCheck=filterPanel.defaultCheck;
+                }
+                if (filterPanel.defaultCheck) {
+                    filterPanel.defaultCheck.selected=true;
+                }
+
+            }
+
+            /**
+             * Click handler to show hide the search bar
+             */
+            private function doSearch():void {
+                if (!searchBtn.selected || searchPanel.isShown == false) {
+                    mainBtn.selected=false;
+                    searchBtn.selected=true;
+                    filterBtn.selected=false;
+                    filterBtn.enabled=false;
+                    //searchBtn.enabled=false;
+                    mainBtn.enabled=false;
+                    searchPanel.showHidePanel(true);
+                } else if (searchPanel.isShown == true) {
+                    searchPanel.showHidePanel(false);
+                }
+            }
+
+            /**
+             * Click handler to show / hide the filter bar.
+             */
+            private function doFilter():void {
+                if (!filterBtn.selected || filterPanel.isShown == false) {
+                    mainBtn.selected=false;
+                    searchBtn.selected=false;
+                    filterBtn.selected=true;
+                    //filterBtn.enabled=false;
+                    searchBtn.enabled=false;
+                    mainBtn.enabled=false;
+                    filterPanel.showHidePanel(true);
+                } else if (filterPanel.isShown == true) {
+                    filterPanel.showHidePanel(false);
+                }
+            }
+
+            /**
+             * Updates the ui to display the search view.
+             */
+            private function gotoSearch():void {
+                mainBtn.selected=false;
+                searchBtn.selected=true;
+                filterBtn.selected=false;
+                list.selectedIndex=3;
+            }
+
+            /**
+             * Updates the ui to display the filter view.
+             */
+            private function gotoFilter():void {
+                mainBtn.selected=false;
+                searchBtn.selected=false;
+                filterBtn.selected=true;
+                list.selectedIndex=2;
+            }
+
+            /**
+             * Updates the ui to display the detail view.
+             */
+            private function gotoDetail():void {
+                mainBtn.selected=false;
+                searchBtn.selected=false;
+                filterBtn.selected=false;
+                list.selectedIndex=1;
+            }
+
+            /**
+             * Handles close of filter panel.
+             */
+            private function handleFilterClose():void {
+                filterBtn.enabled=true;
+                searchBtn.enabled=true;
+                mainBtn.enabled=true;
+            }
+
+            /**
+             * Sets the current mode (main, search, filter, detail) of the widget.
+             *
+             * @param value the mode value.
+             */
+            public function set currentMode(value:String):void {
+                if (initialized) {
+                    switch (value) {
+                        case "main":
+                            gotoMain();
+                            break;
+                        case "search":
+                            gotoSearch();
+                            break;
+                        case "filter":
+                            gotoFilter();
+                            break;
+                        case "detail":
+                            gotoDetail();
+                            break;
+                    }
+                }
+            }
+            
+            /**
+             * Handles the click on 'Load Catalog' button.
+             * 
+             * @since 1.0.1 
+             */
+            private function handleLoadCatalogClick():void {
+                // switch to the main view.
+                main.selectedIndex=1;
+                loadCatalog();
+            }
+        ]]>
+    </mx:Script>
+
+    <!-- HTTP Service for loading the catalog data from service url -->
+    <mx:HTTPService id="jsonRequest"
+                    url="tc?"
+                    resultFormat="text"
+                    fault="hideLoadingProgress(); Alert.show('Error in retrieving catalog data in ' + this.name + '. Specific error: ' + event.fault)"
+                    result="hideLoadingProgress(); model.handleCatalogLoad(event)">
+        <mx:request>
+            <module>BasicData</module>
+            <c>dd_component_catalog</c>
+            <dsid>28</dsid>
+            <drt>json</drt>
+        </mx:request>
+    </mx:HTTPService>
+
+    <mx:Binding source="model.currentMode"
+                destination="currentMode"/>
+    <mx:ViewStack id="main"
+                  width="100%"
+                  height="100%"
+                  verticalGap="0"
+                  paddingTop="0"
+                  paddingRight="0"
+                  paddingLeft="0"
+                  paddingBottom="0"
+                  creationPolicy="all">
+        <mx:VBox width="100%"
+                 height="100%"
+                 horizontalAlign="center"
+                 verticalAlign="middle"
+                 id="loadCatalogView">
+            <mx:Button styleName="downloadBtn"
+                   label="Load Catalog"
+                   click="handleLoadCatalogClick()"/>
+        </mx:VBox >
+    
+        <mx:VBox width="100%"
+                 height="100%"
+                 id="content"
+                 verticalGap="0"
+                 paddingTop="0"
+                 paddingRight="0"
+                 paddingLeft="0"
+                 paddingBottom="0"
+                 creationComplete="{this.currentMode=model.currentMode}">
+            <mx:HBox width="100%"
+                     height="31"
+                     styleName="toolBar"
+                     horizontalGap="0"
+                     paddingTop="0"
+                     paddingRight="0"
+                     paddingLeft="0"
+                     paddingBottom="0">
+                <mx:Button width="100%"
+                           height="100%"
+                           label="Main components"
+                           id="mainBtn"
+                           icon="@Embed('../assets/mainIcon.png')"
+                           selectedUpIcon="@Embed('../assets/mainIconSelected.png')"
+                           selectedDownIcon="@Embed('../assets/mainIconSelected.png')"
+                           selectedOverIcon="@Embed('../assets/mainIconSelected.png')"
+                           buttonMode="true"
+                           styleName="toolButton"
+                           click="gotoMain()"/>
+                <mx:VRule styleName="toolSeparator"
+                          width="3"
+                          height="30"/>
+                <mx:Button width="70%"
+                           height="100%"
+                           label="Search"
+                           id="searchBtn"
+                           icon="@Embed('../assets/searchIcon.png')"
+                           selectedUpIcon="@Embed('../assets/searchIconSelected.png')"
+                           selectedDownIcon="@Embed('../assets/searchIconSelected.png')"
+                           selectedOverIcon="@Embed('../assets/searchIconSelected.png')"
+                           buttonMode="true"
+                           styleName="toolButton"
+                           click="doSearch()"/>
+                <mx:VRule styleName="toolSeparator"
+                          width="3"
+                          height="30"/>
+                <mx:Button width="100%"
+                           height="100%"
+                           label="Filter Categories"
+                           id="filterBtn"
+                           icon="@Embed('../assets/filterIcon.png')"
+                           selectedUpIcon="@Embed('../assets/filterIconSelected.png')"
+                           selectedDownIcon="@Embed('../assets/filterIconSelected.png')"
+                           selectedOverIcon="@Embed('../assets/filterIconSelected.png')"
+                           buttonMode="true"
+                           styleName="toolButton"
+                           click="doFilter()"
+                           textSelectedColor="0x363636"/>
+    
+            </mx:HBox>
+            <mx:ViewStack id="list"
+                          width="100%"
+                          height="{height - 66}"
+                          horizontalScrollPolicy="off"
+                          verticalScrollPolicy="off">
+                <tc:MainView width="100%"
+                             id="mainView"
+                             height="{height - 66}"/>
+                <tc:DetailPanel width="100%"
+                                id="detailView"
+                                height="{height - 66}"/>
+                <tc:FilteredView width="{width}"
+                                 id="filteredView"
+                                 height="{height - 66}"/>
+                <tc:SearchView width="{width}"
+                               id="searchView"
+                               height="{height - 66}"/>
+            </mx:ViewStack>
+            <mx:HBox id="bottom"
+                     width="100%"
+                     height="35"
+                     paddingTop="9"
+                     paddingRight="7"
+                     paddingLeft="0"
+                     paddingBottom="4"
+                     horizontalAlign="right"
+                     horizontalGap="6">
+            </mx:HBox>
+        </mx:VBox>
+    </mx:ViewStack>
+    <tc:FilterPopUp width="{width}"
+                    id="filterPanel"
+                    includeInLayout="false"
+                    visible="false"
+                    top="33"
+                    popupData="{model.categoryList}"
+                    onClose="handleFilterClose()"/>
+    <tc:SearchPopUp width="{width}"
+                    id="searchPanel"
+                    includeInLayout="false"
+                    visible="false"
+                    top="33"
+                    onClose="handleFilterClose()"/>
+</tc:TopCoderCatalogWidgetCodeBehind>
