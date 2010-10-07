@@ -1,0 +1,46 @@
+/* CSS file */
+.WidgetPanel {
+   borderColor: #B7BABC;
+   borderThicknessLeft: 10;
+   borderThicknessTop: 1;
+   borderThicknessBottom: 1;
+   borderThicknessRight: 10;
+   borderAlpha: 1;
+   dropShadowEnabled: false;
+   headerColors: #cccccc, #cccccc;
+   titleStyleName: "panelTitle";
+}
+.panelTitle {
+   textAlign: left;
+   color: #000000;
+   fontWeight: bold;
+}
+
+.header {
+	font-family: Arial;
+	font-size: 16;
+	font-weight: bold;
+	color: #000000;
+}
+.content {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: normal;
+	color: #000000;
+}
+
+.contentBlack {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #000000;
+}
+
+.contentGrey {
+	font-family: Arial;
+	font-size: 12;
+	font-weight: bold;
+	color: #797979;
+}
+
+
