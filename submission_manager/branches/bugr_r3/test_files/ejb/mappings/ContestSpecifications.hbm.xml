@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.contest">
+  <class name="ContestSpecifications" table="contest_specifications"
+    lazy="false">
+    <id name="contestSpecificationsId"
+      column="contest_specifications_id" type="long" unsaved-value="-1">
+      <generator class="sequence">
+        <param name="sequence">
+          CONTEST_SPECIFICATIONS_SEQ
+        </param>
+      </generator>
+    </id>
+
+    <property name="colors" update="true" insert="true"
+      column="colors" not-null="false" />
+
+    <property name="fonts" update="true" insert="true"
+      column="fonts" not-null="false" />
+
+    <property name="layoutAndSize" update="true" insert="true"
+      column="layout_and_size" not-null="false" />
+
+    <property name="additionalRequirementsAndRestrictions"
+      update="true" insert="true"
+      column="additional_requirements_and_restrictions" not-null="false" />
+
+
+  </class>
+
+
+</hibernate-mapping>
+
