@@ -4894,9 +4894,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("         where pp.create_user = u.user_id ");
             sb.append("         and pp.project_id = c.project_id) as manager, ");
             sb.append("  "); 
-            sb.append("     NVL((select u.handle from spec_review sr, spec_review_reviewer_xref srr, user u ");
-            sb.append("     where sr.spec_review_id = srr.spec_review_id and srr.review_user_id = u.user_id ");
-            sb.append("  and sr.contest_id = c.project_id) , 'Reviewer') as reviewer, ");
+            sb.append("      ('Reviewer') as reviewer, ");
             sb.append("  ");
             sb.append("         ('Architect') as architect, ");
             sb.append("  ");
