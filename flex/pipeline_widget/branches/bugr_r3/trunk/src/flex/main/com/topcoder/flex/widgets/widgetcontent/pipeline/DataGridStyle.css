@@ -1,0 +1,40 @@
+/* CSS file */
+.TCDataGrid {
+    border-sides: "top";
+    border-style: "solid";
+    border-color: #d6d6d6;
+    vertical-grid-lines: false;
+    horizontal-grid-lines: true;
+    horizontal-grid-line-color: #c8c8be;
+    font-family: "Arial";
+    font-size: 11px;
+    header-colors: #ececec, #cecece;
+    alternating-item-colors: #fcfcfc, #fbfbfb;
+    sorted-header-colors: #920000, #ef6769;
+    row-selection-colors: #fffbb9, #ffe681;
+}
+
+.DataGridHeader {
+    font-weight: bold;
+    text-align: center;
+    color: #333333
+}
+
+.SortedDataGridHeader {
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff
+}
+
+.DataGridContestLink {
+    skin: Embed(source="assets/nobg.png");
+    over-skin: Embed(source="assets/nobg.png");
+    up-skin: Embed(source="assets/nobg.png");
+    down-skin: Embed(source="assets/nobg.png");
+    font-weight: normal;
+    text-align: left;
+    color: #333333;
+    text-decoration: underline;
+    padding-top: 5px;
+    font-size: 11px
+}
