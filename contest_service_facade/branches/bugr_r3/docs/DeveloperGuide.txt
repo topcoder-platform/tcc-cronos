@@ -1,0 +1,58 @@
+The usage of the Contest Service Facade web service invlolves the following
+steps:
+
+1) Import the dependent classes:
+
+import com.topcoder.service.project.ProjectData;
+import com.topcoder.service.project.AuthorizationFailedFault;
+import com.topcoder.service.project.ProjectNotFoundFault;
+import com.topcoder.service.project.UserNotFoundFault;
+import com.topcoder.service.project.ProjectHasCompetitionsFault;
+import com.topcoder.service.project.IllegalArgumentFault;
+
+import com.topcoder.service.facade.contest.ContestSerficeFacade;
+
+2) Instanitate the web service client
+
+String username = ...;
+String password = ...;
+
+URL wsdlUrl
+    = new URL("http://127.0.0.1:8380/services-topcoder_contest_service_facade/ContestServiceFacadeBean?wsdl");
+QName serviceName = new QName("http://ejb.contest.facade.service.topcoder.com/", "ContestServiceFacadeBeanService");
+ContestServiceFacade service = Service.create(wsdlUrl, serviceName).getPort(TopCoderServiceFacade.class);
+
+StubExt stubExt = (StubExt) service;
+URL securityConfigURL = getClass().getClassLoader().getResource("jboss-wsse-client.xml");
+stubExt.setSecurityConfig(securityConfigURL.toURI().toString());
+stubExt.setConfigName("Standard WSSecurity Client");
+Map<String,Object> context = ((BindingProvider) service).getRequestContext();
+context.put(BindingProvider.USERNAME_PROPERTY, username);
+context.put(BindingProvider.PASSWORD_PROPERTY, password);
+
+3) Call the web service operations
+
+List<ContestTypeData> types = service.getAllContestTypes();
+List<MediumData> mediums = service.getAllMediums();
+List<ContestStatusData> statuses = service.getStatusList();
+String fileTypes = service.getSubmissionFileTypes();
+List<StudioCompetition> contests = service.getAllContestHeaders();
+
+GregorianCalendar calendar = new GregorianCalendar();
+calendar.setTime(new Date(System.currentTimeMillis() + 10  * 24 * 3600 * 1000L));
+StudioCompetition newContest = new StudioCompetition();
+newContest.setAdminFee(100);
+newContest.setCompetitionId(-1L);
+newContest.setCreatorUserId(((UserProfilePrincipal) request.getUserPrincipal()).getUserId());
+newContest.setDrPoints(50);
+newContest.setEligibility(request.getParameter("ce16"));
+newContest.setEndTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar));
+newContest.setId(-1);
+newContest.setPrizes(new ArrayList<CompetitionPrize>());
+newContest.setProject(null);
+newContest.setShortSummary(request.getParameter("cs16"));
+newContest.setStartTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
+newContest.setType(CompetionType.STUDIO);
+newContest = service.createContest(newContest, Long.parseLong(request.getParameter("pid16")));
+
+service.updateContestStatus(2, 1);
