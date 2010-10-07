@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+     This mxml component implements UI logic for submission purchase confirmation page.
+
+     @author shailendra_80
+     @since Submission Viewer Overhaul
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+         width="100%"
+         height="100%"
+         paddingTop="10"
+         paddingBottom="25"
+         paddingLeft="15"
+         paddingRight="15"
+         verticalScrollPolicy="off"
+         horizontalScrollPolicy="off">
+
+    <mx:Script>
+        <![CDATA[
+            import mx.controls.ButtonLabelPlacement;
+
+            /**
+             * Reference to the parent submission viewer widget.
+             */
+            [Bindable]
+            private var _subViewer:SubmissionViewerWidget;
+
+            /**
+             * Gets the reference to the parent submission viewer widget.
+             *
+             * @return the parent submission viewer widget.
+             */
+            [Bindable]
+            public function get subViewer():SubmissionViewerWidget {
+                return this._subViewer;
+            }
+
+            /**
+             * Sets the reference of the parent submission viewer widget.
+             *
+             * @param viewer the parent submission viewer widget.
+             */
+            public function set subViewer(viewer:SubmissionViewerWidget):void {
+                this._subViewer=viewer;
+            }
+        ]]>
+    </mx:Script>
+    <mx:Label text="Confirm your Selections"
+              fontSize="16"
+              styleName="header"/>
+    <mx:Text width="100%"
+             styleName="text"
+             text="Please confirm your selection of the winning submissions as well as any additional submissions you wish to purchase."/>
+    <mx:Canvas height="1"
+               width="100%"
+               backgroundColor="#797979"/>
+    <mx:TileList id="purchaseList"
+                 width="100%"
+                 columnCount="2"
+                 selectionDuration="0"
+                 dataProvider="{this.subViewer.purchaseList}"
+                 itemRenderer="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.PurchaseListRenderer"
+                 borderStyle="none"
+                 allowMultipleSelection="false"
+                 allowDragSelection="false"
+                 height="460"/>
+    <mx:Spacer height="100%"/>
+    <mx:HBox width="100%">
+        <mx:Button buttonMode="true"
+                   styleName="arrowLeftBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.RIGHT}"
+                   label="Modify Selections"
+                   click="this.subViewer.gotoContestViewer()"/>
+        <mx:Spacer width="100%"/>
+        <mx:Button buttonMode="true"
+                   styleName="arrowRightBtnStyle"
+                   labelPlacement="{ButtonLabelPlacement.LEFT}"
+                   label="Checkout"
+                   click="this.subViewer.continueToSubmissionCheckoutScreen()"/>
+    </mx:HBox>
+</mx:VBox>

@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+     Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+-->
+
+<!--
+
+    This mxml component is the main entry point for the submission viewer widget.
+
+    Version 1.0.1 (Cockpit Release Assembly 4 v1.0) Change notes:
+        - correctly setting the view index for case of maximize.
+
+     Version 1.0.2 (Prototype Conversion Studio Multi-Rounds Assembly - Submission Viewer UI) Change notes:
+        - Fixed code to show selected contest in the combo box.
+
+    @author shailendra_80, pulky
+    @since Submission Viewer Overhaul
+    @version 1.0.2
+-->
+<tc:SubmissionViewerWidgetCodeBehind xmlns:mx="http://www.adobe.com/2006/mxml"
+                                     xmlns:tc="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.*"
+                                     xmlns:tcimg="com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.*"
+                                     creationComplete="init()"
+                                     width="100%"
+                                     height="100%"
+                                     styleName="NewWidgetPanel"
+                                     horizontalAlign="left"
+                                     resizeEffect="{resize}">
+
+
+    <mx:Style source="Style.css"/>
+
+    <mx:Script>
+        <![CDATA[
+            import mx.events.ResizeEvent;
+            import mx.core.Application;
+            import mx.binding.utils.BindingUtils;
+            import mx.controls.scrollClasses.ScrollBar;
+            import mx.rpc.xml.SimpleXMLDecoder;
+            import mx.events.FlexEvent;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+            import com.topcoder.flex.Helper;
+            import mx.collections.ArrayCollection;
+            import mx.rpc.events.ResultEvent;
+            import mx.rpc.events.FaultEvent;
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ListRenderer;
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.ComboRenderer;
+
+            import mx.core.Container;
+            import flash.system.Security;
+            import mx.controls.ButtonLabelPlacement;
+            import mx.collections.SortField;
+            import mx.collections.Sort;
+
+            import mx.rpc.soap.SOAPHeader;
+
+            import com.topcoder.flex.widgets.widgetcontent.submissionviewerwidget.imagezoomviewer.ImageViewer;
+
+            /**
+             * Reference to the blazeds end point url. This gets loaded from application parameters.
+             */
+            [Bindable]
+            private var _blazedsendpoint:String=Application.application.parameters.blazedsendpoint;
+
+            /**
+             * Reference to the contest service facade url. This gets loaded from application parameters.
+             */
+            [Bindable]
+            private var _contestServiceFacadeWsdl:String=Application.application.parameters.contestServiceFacadeWsdl;
+
+            /**
+             * Reference to the project service facade url. This gets loaded from application parameters.
+             */
+            [Bindable]
+            private var _projectServiceFacadeWsdl:String=Application.application.parameters.projectServiceFacadeWsdl;
+
+            /**
+             * Current selected contest label.
+             */
+            [Bindable]
+            public var _currentItemLabel:String="";
+
+            /**
+            * To be shown submission on maximize.
+            */
+            public var _tobeShownSubOnMaximize:Object=null;
+
+            /**
+             * Handler that gets called on creation complete of this component.
+             *
+             * - It assigns itself to various child viewers.
+             * - It initializes webservices.
+             * - It defines filter, maximize and restore callback functions
+             * - It calls data services to load password and hence load the data from webservices.
+             *
+             * Updated for Version 1.0.1
+             *    - for maximize case, correctly setting the view index.
+             */
+            private function init():void {
+                trace("----------------------- init");
+
+                this.model.subViewer=this;
+
+                // assigns itself to various child viewers.
+                ThumbnailGallerySubmissionViewer(gallery).subViewer=this;
+                DefaultViewSubmissionViewer(minPage).subViewer=this;
+                AbandonConfirmationScreen(abandonConfirmationScreen).subViewer=this;
+                SubmissionsConfirmationPage(submissionsConfirmationScreen).subViewer=this;
+                SubmissionsCheckoutPage(submissionCheckoutScreen).subViewer=this;
+                SubmissionsDownloadPage(submissionsDownloadScreen).subViewer=this;
+
+                //
+                // Setting self reference to the Air Viewer
+                //
+                // since Cockpit Submission Viewer Widget Enhancement Part 1.
+                //
+                airViewer.subViewer=this;
+
+                // defines filter, maximize and restore callback functions
+                this.contestFilterFn=doFilter;
+
+                this.maximizeFn=function():void {
+                    trace("@@@@ Maximizing");
+                    subViewer.selectedChild=gallery;
+
+
+                    //ThumbnailGallerySubmissionViewer(gallery).doFilter();
+
+                    /*if (!_tobeShownSubOnMaximize && submissionList.length > 0) {
+                        _tobeShownSubOnMaximize=submissionList.getItemAt(0);
+                    } */
+
+                    if (_tobeShownSubOnMaximize) {
+                        trace("_tobeShownSubOnMaximize::" + _tobeShownSubOnMaximize.id);
+                        if (gallery.initialized) {
+                            ThumbnailGallerySubmissionViewer(gallery).showSubmission(_tobeShownSubOnMaximize);
+                        } else {
+                            gallery._tobeShownSubmission=_tobeShownSubOnMaximize;
+                        }
+                    } else {
+                         if (gallery.initialized) {
+                             gallery.model.selectedIndex=-1;
+                             gallery.handleContest(null);
+                             if (gallery.model.selectedIndex==-1) {
+                                gallery.model.selectedIndex=0;
+                            }
+                        }
+                        //gallery.handleContest(null);
+
+                    }
+
+                    _tobeShownSubOnMaximize=null;
+                }
+
+                this.restoreFn=function():void {
+                    trace("@@@@ Restoring");
+                    subViewer.selectedChild=minPage;
+                    minPage.list_minpage.dispatchEvent(new ResizeEvent("resize")); // BUGR-1392
+                    minPage.doFilter();
+                }
+
+                // initialize webservices.
+                var header:SOAPHeader=getHeader(username, password);
+
+                ContestServiceFacadeBean.clearHeaders();
+                ContestServiceFacadeBean.addHeader(header);
+                this.contestServiceFacadeWS=ContestServiceFacadeBean;
+
+                ProjectServiceFacadeBean.clearHeaders();
+                ProjectServiceFacadeBean.addHeader(header);
+                this.projectServiceFacadeWS=ProjectServiceFacadeBean;
+
+                // restores the widget to default view.
+                restore();
+
+                // initializes components and download data from webservices.
+                if (!this._isLocalTesting) {
+                    //getDataService();
+                    dummyService.send();
+                } else {
+                    initComponent();
+                }
+            }
+
+            private function dummyServiceResultHandler(event:ResultEvent):void {
+                    getDataService();
+            }
+
+            private function dummyServiceFaultHandler(event:FaultEvent):void {
+                    getDataService();
+            }
+
+            /**
+             * Gets the password from remote service.
+             */
+            private function getDataService():void {
+                dataservice.getPassword();
+            }
+
+            /**
+             * Handler for password retrieval.
+             */
+            private function processPassword(e:ResultEvent):void {
+                if (e != null && e.result != null) {
+                    this.password=e.result.toString();
+                }
+
+                // initialize component.
+                initComponent();
+            }
+
+            /**
+             * Initializes various components and loads data from webservices.
+             */
+            private function initComponent():void {
+                //trace("----------------------- initComponent");
+                this.loadData();
+            }
+
+            /**
+             * Handle successful credit card purchase.
+             *
+             * Updated for Cockpit Release Assembly for Receipts.
+             *
+             * @param event the webservice result event.
+             */
+            private function handleProcessSubmissionCreditCardPayment(event:ResultEvent):void {
+                // BUGR-1393
+                hideLoadingProgress();
+
+                Helper.showAlertMessage("Process submission payment successfully!!");
+                this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
+                if (event && event.result) {
+                    this.paymentReferenceNumber=event.result.referenceNumber as String;
+
+                    submissionCheckoutScreen.header.text="Your Transaction was Approved!";
+                    submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
+                    submissionCheckoutScreen.sub1.label="Download Submissions";
+                    submissionCheckoutScreen.wf2.paymentReferenceNumber.text=this.paymentReferenceNumber;
+                    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
+                }
+            }
+
+            /**
+             * Handle successful puchase order payment.
+             */
+            private function handleProcessSubmissionPurchaseOrderPayment(event:ResultEvent):void {
+                hideLoadingProgress();
+
+                Helper.showAlertMessage("Process submission payment successfully!!");
+                this.contestInfoDictionary[this.selectedContestId].statusId=this.completedContestTypeId;
+                if (event && event.result) {
+                    this.paymentReferenceNumber=event.result.referenceNumber as String;
+
+                    submissionCheckoutScreen.header.text="Your Transaction was Approved!";
+                    submissionCheckoutScreen.text1.htmlText="Thank you for your order. An email confirmation will be sent as a receipt for this transaction. <b>Your reference # is " + this.paymentReferenceNumber + ".</b>";
+                    submissionCheckoutScreen.sub2.label="Download Submissions";
+                    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=true;
+                }
+            }
+
+            /**
+             * Handler for purchase fault.
+             */
+            private function paymentFaultEventHandler(e:FaultEvent):void {
+                hideLoadingProgress();
+                Helper.showAlertMessage("We're sorry. Your payment could not be processed. " + "Please be sure to save your work and try again if you think you received this message by mistake.");
+            }
+
+            /**
+             * Selects the gallery view.
+             */
+            public function gotoContestViewer():void {
+                trace("----------------------------------------------------------------- goToContestViewer");
+                subViewer.selectedChild=gallery;
+                handleContest(null);
+            }
+
+            /**
+             * Handles select of contest.
+             *
+             * It simply delegates to gallery or default view, depending which is visible.
+             */
+            public function handleContest(event:Event):void {
+                if (subViewer.selectedChild == gallery) {
+                    ThumbnailGallerySubmissionViewer(gallery).handleContest(event);
+                } else if (subViewer.selectedChild == minPage) {
+                    DefaultViewSubmissionViewer(minPage).handleContest(event);
+                }
+            }
+
+            /**
+             * Handles filter of contest.
+             *
+             * It simply delegates to gallery or default view, depending which is visible.
+             */
+            public function doFilter():void {
+                if (subViewer.selectedChild == gallery) {
+                    ThumbnailGallerySubmissionViewer(gallery).doFilter();
+                } else if (subViewer.selectedChild == minPage) {
+                    DefaultViewSubmissionViewer(minPage).doFilter();
+                }
+            }
+
+            /**
+             * Defines the logic for 'next' / 'continue' button click on gallery view.
+             * Depending on various options, flow goes to either submission confirmation, download, or abandon screen.
+             */
+            public function continueFromGallery():void {
+                // action required
+                //        continue to confirmation screen if everything okay.
+                //        shows error text if  no submission selections + no winner not selected.
+                //        continue to abandon screen if no winner is selected.
+                if (this.selectedContestStatusId == this.actionRequiredContestTypeId || this.selectedContestStatusId == this.inDangerContestTypeId) {
+                    if (!ThumbnailGallerySubmissionViewer(gallery).isWinnerSelected()) {
+                        subViewer.selectedChild=abandonConfirmationScreen;
+                    } else if (!areProperRanking()) { // no submissions ranked.
+                        // show error text.
+                        var submissionsCount:int=this.submissionList.length;
+                        var requiredRatingCount:int=Math.min(5, submissionsCount);
+                        Helper.showAlertMessage("You must rank your top "+ requiredRatingCount +" selections. If you do not wish to purchase any submissions, select 'I can not choose a winner.");
+                    } else {
+                        subViewer.selectedChild=submissionsConfirmationScreen;
+                    }
+                } else if (this.selectedContestStatusId == this.completedContestTypeId || this.pastContestTypeIds[this.selectedContestStatusId] == true) {
+                    continueToSubmissionDownloadScreen();
+                }
+            }
+
+            /**
+             * Defines the ui logic to go to submission checkout screen.
+             */
+            public function continueToSubmissionCheckoutScreen():void {
+                subViewer.selectedChild=submissionCheckoutScreen;
+            }
+
+            /**
+             * Defines the ui logic to got to submission download screen.
+             */
+            public function continueToSubmissionDownloadScreen():void {
+                subViewer.selectedChild=submissionsDownloadScreen;
+            }
+
+            /**
+             * Defines the ui logic to go to submission purchase screens.
+             */
+            public function gotoPurchase():void {
+                if (submissionCheckoutScreen.pay.selectedIndex == 0) {
+                    submissionCheckoutScreen.printReceiptButton.visible=submissionCheckoutScreen.printReceiptButton.includeInLayout=false;
+                    var index:int=submissionCheckoutScreen.wf1.saveData();
+                    if (index > 0 && index <= submissionCheckoutScreen.pay.numChildren) {
+                        submissionCheckoutScreen.pay.selectedIndex=index - 1;
+                        submissionCheckoutScreen.header.text="Confirm Your Payment";
+                        submissionCheckoutScreen.text1.htmlText="You're almost done! Please confirm that the information below is correct.";
+                        if (submissionCheckoutScreen.sub1) {
+                            submissionCheckoutScreen.sub1.label="Submit Purchase";
+                        }
+                        if (submissionCheckoutScreen.sub2) {
+                            submissionCheckoutScreen.sub2.label="Submit Purchase";
+                        }
+                    }
+                } else if (submissionCheckoutScreen.pay.selectedIndex == 1) {
+                    if (submissionCheckoutScreen.sub1.label == "Submit Purchase") {
+                        updatePurchaseToWS(submissionCheckoutScreen);
+                    } else {
+                        submissionCheckoutScreen.pay.selectedIndex=0;
+                        continueToSubmissionDownloadScreen();
+                    }
+                } else if (submissionCheckoutScreen.pay.selectedIndex == 2) {
+                    if (submissionCheckoutScreen.sub2.label == "Submit Purchase") {
+                        updatePurchaseToWS(submissionCheckoutScreen);
+                    } else {
+                        submissionCheckoutScreen.pay.selectedIndex=0;
+                        continueToSubmissionDownloadScreen();
+                    }
+                }
+            }
+
+            /**
+             * Defines the ui logic to maximize the widget.
+             */
+            public function maximizeScreen(data:Object):void {
+                this._tobeShownSubOnMaximize=data;
+                if (this.container) {
+                    this.container.startMaximize();
+                } else {
+                    maximize();
+                }
+            }
+
+            /**
+             * Defines the ui logic to restore the widget.
+             */
+            public function restoreScreen():void {
+                if (this.container) {
+                    this.container.startRestore();
+                } else {
+                    restore();
+                }
+            }
+
+            /**
+             * Success handlers for submission feedback save.
+             */
+            private function handleUpdateSubmissionsFeedback(event:ResultEvent):void {
+                //this.hideLoadingProgress();
+
+                if (event) {
+                    trace("Feedback successfully persisted!");
+                }
+            }
+
+            /**
+             * Success handlers for submission rank save.
+             */
+            private function handleRankSubmissions(event:ResultEvent):void {
+                //this.hideLoadingProgress();
+
+                if (event) {
+                    trace("Submissions rank saved!");
+                }
+            }
+        ]]>
+    </mx:Script>
+     <mx:HTTPService
+        id="dummyService"
+        url="http://www.topcoder.com/"
+        resultFormat="e4x"
+        result="dummyServiceResultHandler(event);"
+        fault="dummyServiceFaultHandler(event);"
+    />
+
+    <mx:WebService id="ProjectServiceFacadeBean"
+                   wsdl="{_projectServiceFacadeWsdl}">
+
+        <mx:operation name="getClientProjectsByUser"
+                      resultFormat="object"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('SUB-Viewer::getClientProjectsByUser: ' + event.fault.faultString);">
+        </mx:operation>
+
+    </mx:WebService>
+
+     <mx:WebService id="ContestServiceFacadeBean" useProxy="true"
+         destination="contest-facade">
+        <mx:channelSet>
+            <mx:ChannelSet id="contestfacadeChannelSet">
+                <mx:channels>
+                <mx:SecureAMFChannel uri="{_blazedsendpoint}"/>
+                </mx:channels>
+            </mx:ChannelSet>
+        </mx:channelSet>
+        <mx:operation name="getContestDataOnly"
+                      resultFormat="object"
+                      result="handleResult(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnly: ' + event.fault.faultString);">
+        </mx:operation>
+
+        <mx:operation name="getStatusList"
+                      resultFormat="object"
+                      result="handleStatusList(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getStatusList: ' + event.fault.faultString);">
+        </mx:operation>
+
+        <mx:operation name="getContestDataOnlyByPID"
+                      resultFormat="object"
+                      result="handleResult(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('getContestDataOnlyByPID: ' + event.fault.faultString);">
+        </mx:operation>
+
+        <mx:operation name="retrieveSubmissionsForContest"
+                      resultFormat="object"
+                      result="handleSubResult(event)"
+                      fault="hideLoadingProgress(); Helper.showAlertMessage('retrieveSubmissionsForContest: ' + event.fault.faultString);">
+        </mx:operation>
+
+        <mx:operation name="processSubmissionCreditCardPayment"
+                      resultFormat="object"
+                      result="handleProcessSubmissionCreditCardPayment(event)"
+                      fault="paymentFaultEventHandler(event)">
+        </mx:operation>
+
+        <mx:operation name="processSubmissionPurchaseOrderPayment"
+                      resultFormat="object"
+                      result="handleProcessSubmissionPurchaseOrderPayment(event)"
+                      fault="paymentFaultEventHandler(event)">
+        </mx:operation>
+
+        <mx:operation name="updateSubmissionsFeedback"
+                      resultFormat="object"
+                      result="handleUpdateSubmissionsFeedback(event)"
+                      fault="Helper.showAlertMessage('updateSubmissionsFeedback: ' + event.fault.faultString);">
+        </mx:operation>
+
+        <mx:operation name="rankSubmissions"
+                      resultFormat="object"
+                      result="handleRankSubmissions(event)"
+                      fault="Helper.showAlertMessage('rankSubmissions: ' + event.fault.faultString);">
+        </mx:operation>
+
+    </mx:WebService>
+
+    <mx:RemoteObject id="dataservice"
+                     destination="remoteDataService"
+                     endpoint="{_blazedsendpoint}"
+                     fault="Helper.showAlertMessage('dataservice: ' + event.fault.faultString);">
+        <mx:method name="getPassword"
+                   result="processPassword(event)"
+                   fault="Helper.showAlertMessage('getPassword: ' + event.fault.faultString);"/>
+
+    </mx:RemoteObject>
+
+    <mx:ViewStack id="subViewer"
+                  width="100%"
+                  height="100%"
+                  resizeToContent="true">
+        <tc:DefaultViewSubmissionViewer id="minPage"/>
+        <tc:ThumbnailGallerySubmissionViewer id="gallery"/>
+        <tc:AbandonConfirmationScreen id="abandonConfirmationScreen"/>
+        <tc:SubmissionsConfirmationPage id="submissionsConfirmationScreen"/>
+        <tc:SubmissionsCheckoutPage id="submissionCheckoutScreen"/>
+        <tc:SubmissionsDownloadPage id="submissionsDownloadScreen"/>
+    </mx:ViewStack>
+  <mx:Resize id="resize" />
+</tc:SubmissionViewerWidgetCodeBehind>
