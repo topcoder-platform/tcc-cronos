@@ -1,0 +1,70 @@
+@font-face {
+	src:url("../assets/fonts/MyriadPro-Regular.otf");
+	font-family: "Myriad Pro Regular";
+}
+
+@font-face {
+	src:url("../assets/fonts/MyriadPro-Semibold.otf");
+	fontFamily: "Myriad Pro Semibold";    
+	fontWeight: bold;    
+	advancedAntiAliasing: true;
+}
+.input {
+	border-skin: Embed(source="./../assets/textInput.png",
+			scaleGridTop="2",scaleGridLeft="1",scaleGridRight="126",scaleGridBottom="21");
+	font-family: Arial;
+	font-weight: normal;
+	font-size: 12;
+}
+.errorBoldLabel {
+	color: #ff0000;
+	text-roll-over-color: #ff0000;
+	text-selected-color: #ff0000;
+	skin: Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 12;
+	text-align: center;
+	font-weight: bold;
+}
+.normalBoldLabel {
+	color: #000000;
+	text-roll-over-color: #000000;
+	text-selected-color: #000000;
+	skin: Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-family: "Myriad Pro Semibold";
+	font-size: 12;
+	text-align: center;
+	font-weight: bold;
+}
+.normalContentLabel {
+	font-size: 12;
+	text-align: center;
+	color: #000000;
+	font-family: "Myriad Pro Regular";
+}
+.widgetHeading {
+	horizontal-gap: 0;
+	color: #000000;
+	text-roll-over-color: #000000;
+	text-selected-color: #000000;
+	skin: Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	over-skin: Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	up-skin:  Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	down-skin:  Embed(source="../assets/noBG.png",scaleGridTop="3",scaleGridLeft="5",scaleGridRight="24",scaleGridBottom="9");
+	font-size: 13;
+	font-family: "Myriad Pro Semibold";
+	font-weight: bold;
+}
+.button {
+	icon: Embed(source="../assets/arrow_right_icon.png");
+	font-weight: bold;
+	font-size: 11;
+	font-family: Arial;
+    themeColor: #AAAAAA;
+}

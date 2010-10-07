@@ -1,0 +1,29 @@
+<project name="Dependency Import" default="dist" basedir=".">
+
+	<!-- TCS dependencies -->
+	<property name="flex_widget_base_services.swc" value="${tcs_flex_libdir}/flex_widget_base_services/1.0.0/flex_widget_base_services.swc"/>
+    <property name="flex_widget_layout_framework.swc" value="${tcs_flex_libdir}/flex_widget_layout_framework/1.0.0/flex_widget_layout_framework.swc"/>
+
+	<!-- 3rd party dependencies -->
+    <property name="datavisualization" value="${ext_flex_libdir}/datavisualization/3.2.0/datavisualization.swc" />
+    <property name="as3corelib" value="${ext_flex_libdir}/as3corelib/0.9/as3corelib.swc" />
+	<property name="flexunit" value="${flexunitdir}/bin/FlexUnit.swc" />
+	<property name="flexunitoptional" value="${flexunitdir}/bin/FlexUnitOptional.swc" />
+
+	<!-- Path elements required in the master buiild file (they MUST be defined even if empty). -->
+	<path id="component.tcs-dependencies">
+		<pathelement location="${flex_widget_base_services.swc}"/>
+        <pathelement location="${flex_widget_layout_framework.swc}"/>
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+        <pathelement location="${datavisualization}" />
+		<pathelement location="${as3corelib}" />
+    </path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${flexunit}" />
+		<pathelement location="${flexunitoptional}" />
+	</path>
+
+</project>
