@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="loggerNameError">
+		<Property name="loggerName">
+			<Value></Value>
+		</Property>
+	</Config>
+	<Config name="minimumCoefficientError">
+		<Property name="minimumCoefficient">
+			<Value>-1.0</Value>
+		</Property>
+	</Config>
+	<Config name="invalidNumber">
+		<Property name="minimumCoefficient">
+			<Value>xxx</Value>
+		</Property>
+	</Config>
+	<Config name="pointsForAccurateEvaluationTypeError">
+		<Property name="noPoints">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+		</Property>
+		<Property name="invalidPoints">
+			<Property name="pointsForAccurateEvaluationType1">
+				<Value>-1.0</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="pointsForInAccurateEvaluationTypeError">
+		<Property name="noPoints">
+			<Property name="pointsForAccurateEvaluationType1">
+				<Value>10</Value>
+			</Property>
+		</Property>
+		<Property name="invalidPoints">
+			<Property name="pointsForAccurateEvaluationType1">
+				<Value>10</Value>
+			</Property>
+			<Property name="pointsForInaccurateEvaluationType1">
+				<Value>-2.0</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="pointsForEvaluationTypeError">
+		<Property name="noPoints">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+		</Property>
+		<Property name="invalidPoints">
+			<Property name="pointsForEvaluationType1">
+				<Value>-1.0</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="penaltyPerHourForPhaseTypeError">
+		<Property name="invalidDefault">
+			<Property name="defaultPenaltyPerHour">
+				<Value>-1.0</Value>
+			</Property>
+		</Property>
+		<Property name="invalidPoints">
+			<Property name="penaltyPerHourForPhaseType3">
+				<Value>-1.0</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="classExceptionError">
+		<Property name="objectFactoryConfig">
+			<Property name="timelineReliabilityCalculator">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.impl.CoverageCalculatorImpl</Value>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="timelineReliabilityCalculatorKey">
+			<Value>timelineReliabilityCalculator</Value>
+		</Property>
+	</Config>
+	<Config
+		name="com.cronos.onlinereview.review.statistics.impl.ReviewerStatisticsCalculator">
+		<Property name="objectFactoryConfig">
+			<Property name="timelineReliabilityCalculator">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.impl.TimelineReliabilityCalculatorImpl</Value>
+				</Property>
+			</Property>
+			<Property name="coverageCalculator">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.impl.CoverageCalculatorImpl</Value>
+				</Property>
+			</Property>
+			<Property name="accuracyCalculator">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.impl.AccuracyCalculatorImpl</Value>
+				</Property>
+			</Property>		
+			<Property name="resourceManager">
+				<Property name="type">
+					<Value>com.topcoder.management.resource.persistence.PersistenceResourceManager</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>persistence</Value>
+						</Property>
+					</Property>
+					<Property name="param2">
+						<Property name="name">
+							<Value>resourceSearchBundle</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="persistence">
+				<Property name="type">
+					<Value>com.topcoder.management.resource.persistence.sql.SqlResourcePersistence</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="type">
+							<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="resourceSearchBundle">
+				<Property name="type">
+					<Value>com.topcoder.search.builder.SearchBundle</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="type">
+							<Value>java.lang.String</Value>
+						</Property>
+						<Property name="value">
+							<Value>resourceBunlde</Value>
+						</Property>
+					</Property>
+					<Property name="param2">
+						<Property name="name">
+							<Value>alias</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="alias">
+				<Property name="arrayType">
+					<Value>java.util.HashMap</Value>
+				</Property>
+				<Property name="dimension">
+					<Value>2</Value>
+				</Property>						
+				<Property name="values">
+					<Value>{{id, id}, {id, id}, {id, id}}</Value>
+				</Property>
+			</Property>
+			<Property name="id">
+				<Property name="type">
+					<Value>java.lang.String</Value>
+				</Property>
+				<Property name="value">
+					<Value>id</Value>
+				</Property>
+			</Property>
+		</Property>
+		<Property name="loggerName">
+			<Value></Value>
+		</Property>
+		<Property name="timelineReliabilityCalculatorKey">
+			<Value>timelineReliabilityCalculator</Value>
+		</Property>
+		<Property name="timelineReliabilityCalculatorConfig">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+			<Property name="minimumCoefficient">
+				<Value>0.5</Value>
+			</Property>
+			<Property name="defaultPenaltyPerHour">
+				<Value>0.02</Value>
+			</Property>
+			<Property name="penaltyPerHourForPhaseType3">
+				<Value>0.04</Value>
+			</Property>
+		</Property>
+		<Property name="coverageCalculatorKey">
+			<Value>coverageCalculator</Value>
+		</Property>
+		<Property name="coverageCalculatorConfig">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+			<Property name="minimumCoefficient">
+				<Value>0.1</Value>
+			</Property>
+			<Property name="pointsForEvaluationType1">
+				<Value>10</Value>
+			</Property>
+			<Property name="pointsForEvaluationType2">
+				<Value>3</Value>
+			</Property>
+			<Property name="pointsForEvaluationType3">
+				<Value>1</Value>
+			</Property>
+		</Property>
+		<Property name="accuracyCalculatorKey">
+			<Value>accuracyCalculator</Value>
+		</Property>
+		<Property name="accuracyCalculatorConfig">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+			<Property name="minimumCoefficient">
+				<Value>0.1</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType1">
+				<Value>10</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType2">
+				<Value>3</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType3">
+				<Value>1</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType6">
+				<Value>10</Value>
+			</Property>
+		</Property>
+		<Property name="resourceManagerKey">
+			<Value>resourceManager</Value>
+		</Property>
+		<Property name="phaseManagerKey">
+			<Value>phaseManager</Value>
+		</Property>
+		<Property name="deliverableManagerKey">
+			<Value>deliverableManager</Value>
+		</Property>
+		<Property name="reviewManagerKey">
+			<Value>reviewManager</Value>
+		</Property>
+		<Property name="projectManagerKey">
+			<Value>projectManager</Value>
+		</Property>
+		<Property name="screeningPhaseTypeId">
+			<Value>3</Value>
+		</Property>
+		<Property name="secondaryReviewerReviewPhaseTypeId">
+			<Value>13</Value>
+		</Property>
+		<Property name="primaryReviewEvaluationPhaseTypeId">
+			<Value>14</Value>
+		</Property>
+		<Property name="primaryReviewAppealsResponsePhaseTypeId">
+			<Value>17</Value>
+		</Property>
+		<Property name="aggregationReviewPhaseTypeId">
+			<Value>18</Value>
+		</Property>
+		<Property name="finalReviewPhaseTypeId">
+			<Value>10</Value>
+		</Property>
+		<Property name="secondaryReviewerResourceRoleId">
+			<Value>16</Value>
+		</Property>
+		<Property name="primaryReviewEvaluatorResourceRoleId">
+			<Value>17</Value>
+		</Property>
+	</Config>
+</CMConfig>

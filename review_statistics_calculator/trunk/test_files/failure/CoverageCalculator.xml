@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="CoverageCalculator">
+      <Property name="loggerName">
+        <Value>myLogger</Value>
+      </Property>
+      <Property name="minimumCoefficient">
+        <Value>0.1</Value>
+      </Property>
+      <Property name="pointsForEvaluationType1">
+        <Value>10</Value>
+      </Property>
+      <Property name="pointsForEvaluationType2">
+        <Value>3</Value>
+      </Property>
+      <Property name="pointsForEvaluationType3">
+        <Value>1</Value>
+      </Property>
+  </Config>
+</CMConfig>

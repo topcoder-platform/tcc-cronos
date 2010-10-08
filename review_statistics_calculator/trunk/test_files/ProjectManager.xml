@@ -1,0 +1,24 @@
+<CMConfig>
+    <!-- Namespace for ProjectManagerImpl class -->
+    <Config name="com.topcoder.management.project">
+        <Property name="SearchBuilderNamespace">
+            <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+        </Property>
+        
+        <Property name="PersistenceClass">
+            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+        </Property>
+        
+        <Property name="PersistenceNamespace">
+            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+        </Property>
+        
+        <Property name="ValidatorClass">
+            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+        </Property>
+        
+        <Property name="ValidatorNamespace">
+            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+        </Property>
+    </Config>
+ </CMConfig>

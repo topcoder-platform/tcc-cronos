@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<CMConfig>
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<!-- the "default" property refers to a configured connection -->
+			<Property name="default">
+				<Value>sysuser</Value>
+			</Property>
+			<Property name="sysuser">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://127.0.0.1:9088/topcoder:informixserver=topcoder</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>123456</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.cronos.onlinereview.review.statistics.impl.ReviewerStatisticsCalculator">
+		<Property name="objectFactoryConfig">
+			<Property name="timelineReliabilityCalculator">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.impl.TimelineReliabilityCalculatorImpl</Value>
+				</Property>
+			</Property>
+			<Property name="coverageCalculator">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.impl.CoverageCalculatorImpl</Value>
+				</Property>
+			</Property>
+			<Property name="accuracyCalculator">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.impl.AccuracyCalculatorImpl</Value>
+				</Property>
+			</Property>
+			<Property name="resourceManager">
+				<Property name="type">
+					<Value>com.topcoder.management.resource.persistence.PersistenceResourceManager</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>persistence</Value>
+						</Property>
+					</Property>
+					<Property name="param2">
+						<Property name="name">
+							<Value>searchBundleManager</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="persistence">
+				<Property name="type">
+					<Value>com.topcoder.management.resource.persistence.sql.SqlResourcePersistence</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="type">
+							<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="searchBundleManager">
+				<Property name="type">
+					<Value>com.topcoder.search.builder.SearchBundleManager</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="type">
+							<Value>String</Value>
+						</Property>
+						<Property name="value">
+							<Value>com.topcoder.search.builder.SearchBundleManager</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="phaseManager">
+				<Property name="type">
+					<Value>com.topcoder.management.phase.DefaultPhaseManager</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="type">
+							<Value>String</Value>
+						</Property>
+						<Property name="value">
+							<Value>com.topcoder.management.phase.Default</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="mockDeliverablePersistence">
+				<Property name="type">
+					<Value>com.cronos.onlinereview.review.statistics.stresstests.MockDeliverablePersistence</Value>
+				</Property>
+			</Property>
+			<Property name="map">
+				<Property name="type">
+					<Value>java.util.HashMap</Value>
+				</Property>
+			</Property>
+			<Property name="deliverableManager">
+				<Property name="type">
+					<Value>com.topcoder.management.deliverable.PersistenceDeliverableManager</Value>
+				</Property>
+				<Property name="params">
+					<Property name="param1">
+						<Property name="name">
+							<Value>mockDeliverablePersistence</Value>
+						</Property>
+					</Property>
+					<Property name="param2">
+						<Property name="name">
+							<Value>map</Value>
+						</Property>
+					</Property>
+					<Property name="param3">
+						<Property name="name">
+							<Value>searchBundleManager</Value>
+						</Property>
+					</Property>
+				</Property>
+			</Property>
+			<Property name="reviewManager">
+				<Property name="type">
+					<Value>com.topcoder.management.review.DefaultReviewManager</Value>
+				</Property>
+			</Property>
+			<Property name="projectManager">
+				<Property name="type">
+					<Value>com.topcoder.management.project.ProjectManagerImpl</Value>
+				</Property>
+			</Property>
+			 <Property name="searchBundleManager">
+                <Property name="type">
+                    <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="type">
+                            <Value>String</Value>
+                        </Property>
+                        <Property name="value">
+                            <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+            <Property name="individualReviewDeliverableChecker">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.stresstests.MockDeliverableChecker</Value>
+                </Property>
+            </Property>
+		</Property>
+		<Property name="loggerName">
+			<Value>myLogger</Value>
+		</Property>
+		<Property name="minimumCoefficient">
+			<Value>80.0</Value>
+		</Property>
+		<Property name="timelineReliabilityCalculatorKey">
+			<Value>timelineReliabilityCalculator</Value>
+		</Property>
+		<Property name="timelineReliabilityCalculatorConfig">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+			<Property name="minimumCoefficient">
+				<Value>0.5</Value>
+			</Property>
+			<Property name="defaultPenaltyPerHour">
+				<Value>0.02</Value>
+			</Property>
+			<Property name="penaltyPerHourForPhaseType1">
+				<Value>0.04</Value>
+			</Property>
+		</Property>
+		<Property name="coverageCalculatorKey">
+			<Value>coverageCalculator</Value>
+		</Property>
+		<Property name="coverageCalculatorConfig">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+			<Property name="minimumCoefficient">
+				<Value>0.1</Value>
+			</Property>
+			<Property name="pointsForEvaluationType1">
+				<Value>10</Value>
+			</Property>
+			<Property name="pointsForEvaluationType2">
+				<Value>3</Value>
+			</Property>
+			<Property name="pointsForEvaluationType3">
+				<Value>1</Value>
+			</Property>
+		</Property>
+		<Property name="accuracyCalculatorKey">
+			<Value>accuracyCalculator</Value>
+		</Property>
+		<Property name="accuracyCalculatorConfig">
+			<Property name="loggerName">
+				<Value>myLogger</Value>
+			</Property>
+			<Property name="minimumCoefficient">
+				<Value>0.1</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType1">
+				<Value>10</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType2">
+				<Value>3</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType3">
+				<Value>1</Value>
+			</Property>
+			<Property name="pointsForAccurateEvaluationType4">
+				<Value>10</Value>
+			</Property>
+			<Property name="pointsForInaccurateEvaluationType6">
+				<Value>10</Value>
+			</Property>
+		</Property>
+		<Property name="deliverablePersistenceKey">
+            <Value>mockDeliverablePersistence</Value>
+        </Property>
+        <Property name="searchBundleManagerKey">
+            <Value>searchBundleManager</Value>
+        </Property>
+		<Property name="resourceManagerKey">
+			<Value>resourceManager</Value>
+		</Property>
+		<Property name="phaseManagerKey">
+			<Value>phaseManager</Value>
+		</Property>
+		<Property name="deliverableManagerKey">
+			<Value>deliverableManager</Value>
+		</Property>
+		<Property name="reviewManagerKey">
+			<Value>reviewManager</Value>
+		</Property>
+		<Property name="projectManagerKey">
+			<Value>projectManager</Value>
+		</Property>
+ 		<Property name="deliverableCheckers">
+            <Property name="screening_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="primary_review_evaluation_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="primary_review_appeals_response_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="final_review_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="aggregation_review_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="secondary_reviewer_reivew_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+        </Property>
+		<Property name="screeningPhaseTypeId">
+			<Value>3</Value>
+		</Property>
+		<Property name="secondaryReviewerReviewPhaseTypeId">
+			<Value>13</Value>
+		</Property>
+		<Property name="primaryReviewEvaluationPhaseTypeId">
+			<Value>14</Value>
+		</Property>
+		<Property name="primaryReviewAppealsResponsePhaseTypeId">
+			<Value>17</Value>
+		</Property>
+		<Property name="aggregationReviewPhaseTypeId">
+			<Value>18</Value>
+		</Property>
+		<Property name="finalReviewPhaseTypeId">
+			<Value>10</Value>
+		</Property>
+		<Property name="secondaryReviewerResourceRoleId">
+			<Value>16</Value>
+		</Property>
+		<Property name="primaryReviewEvaluatorResourceRoleId">
+			<Value>20</Value>
+		</Property>
+	</Config>
+</CMConfig> 

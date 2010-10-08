@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="TimelineReliabilityCalculator">
+      <Property name="loggerName">
+        <Value>myLogger</Value>
+      </Property>
+      <Property name="minimumCoefficient">
+        <Value>0.5</Value>
+      </Property>
+      <Property name="defaultPenaltyPerHour">
+        <Value>0.02</Value>
+      </Property>
+      <Property name="penaltyPerHourForPhaseType3">
+        <Value>0.04</Value>
+      </Property>
+  </Config>
+</CMConfig>
