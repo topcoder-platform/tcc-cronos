@@ -20,7 +20,7 @@
 		<pathelement location="${tcs_libdir}/command_line_utility/1.0/command_line_utility.jar" />
 		<pathelement location="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
 		<pathelement location="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar" />
-		<pathelement location="${tcs_libdir}/configuration_persistence/1.0.2/configuration_persistence.jar" />
+		<pathelement location="${tcs_libdir}/configuration_persistence/1.0.1/configuration_persistence.jar" />
 		<pathelement location="${tcs_libdir}/data_validation/1.1.1/data_validation.jar" />
 		<pathelement location="${tcs_libdir}/database_abstraction/1.1.1/database_abstraction.jar" />
 		<pathelement location="${tcs_libdir}/db_connection_factory/1.1/db_connection_factory.jar" />
@@ -64,7 +64,6 @@
 		<pathelement location="${javamail.jar}" />
 		<pathelement location="${activation.jar}" />
 		<pathelement location="${dumbster.jar}" />
-    	</fileset>
 	</path>
 
 	<path id="component.test.3rdParty-dependencies">
