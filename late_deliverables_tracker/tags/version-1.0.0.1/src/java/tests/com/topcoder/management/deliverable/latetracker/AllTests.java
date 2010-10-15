@@ -1,0 +1,31 @@
+/*
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ */
+package com.topcoder.management.deliverable.latetracker;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * <p>This test case aggregates all test cases.</p>
+ *
+ * @author TCSDEVELOPER
+ * @version 1.0
+ */
+public class AllTests extends TestCase {
+
+    /**
+     * <p>Creates test suite for all tests.</p>
+     *
+     * @return test suite for all tests
+     */
+    public static Test suite() {
+        final TestSuite suite = new TestSuite();
+
+        //unit tests
+        suite.addTest(UnitTests.suite());
+        return suite;
+    }
+
+}
