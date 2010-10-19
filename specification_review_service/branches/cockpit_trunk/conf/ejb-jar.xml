@@ -29,6 +29,13 @@
 				<env-entry-value>mock.zip</env-entry-value>
 				</env-entry>
 				<env-entry>
+				<env-entry-name>mockSubmissionContent</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>Please review the contest as if you were going to compete in it. You can access the contest at the following link:
+http://www.topcoder.com/tc?module=ProjectDetail&amp;pj=[pj]
+Submit the specification review scorecard when you are finished reviewing the contest. If any elements of the contest are missing or difficult to find/understand you should fail the spec and comment appropriately in the scorecard.</env-entry-value>
+				</env-entry>
+				<env-entry>
 				<env-entry-name>searchBundleManageNamespace</env-entry-name>
 				<env-entry-type>java.lang.String</env-entry-type>
 				<env-entry-value>

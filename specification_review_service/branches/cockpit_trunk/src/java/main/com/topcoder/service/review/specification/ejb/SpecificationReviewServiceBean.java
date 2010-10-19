@@ -446,6 +446,14 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
 
     /**
      * <p>
+     * The text content of the mock specification submission.
+     * </p>
+     */
+    @Resource(name = "mockSubmissionContent")
+    private String mockSubmissionContent;
+
+    /**
+     * <p>
      * The namespace to create search bundle manager.
      * </p>
      * <p>
@@ -573,6 +581,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         checkNull(projectServices, "projectServices");
         checkNullOrEmpty(mockSubmissionFileName, "mockSubmissionFileName");
         checkNullOrEmpty(mockSubmissionFilePath, "mockSubmissionFilePath");
+        checkNullOrEmpty(mockSubmissionContent, "mockSubmissionContent");
         checkNullOrEmpty(searchBundleManageNamespace, "searchBundleManageNamespace");
         checkNullOrEmpty(reviewManagerClassName, "reviewManagerClassName");
         checkNullOrEmpty(scorecardManagerClassName, "scorecardManagerClassName");
@@ -873,13 +882,9 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
                 // set to open
                 specificationSubmissionPhase.setPhaseStatus(PhaseStatus.OPEN);
                 updatePhases(fullProjectData, operator);
-                
+
                 // upload a mock submission
-                java.net.URL url = SpecificationReviewServiceBean.class.getClassLoader().getResource(mockSubmissionFileName);
-                FileDataSource fileDataSource = new FileDataSource(url.getFile());
-                
-                DataHandler dataHandler = new DataHandler(fileDataSource);
-                submitSpecification(tcSubject, projectId, mockSubmissionFileName, dataHandler);
+                submitSpecificationAsString(tcSubject, projectId, mockSubmissionContent.replace("[pj]", new Long(projectId).toString()));
 
                 // set to scheduled and update
                 specificationSubmissionPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
@@ -1047,7 +1052,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         FileWriter fileWriter = null;
 
         try {
-            file = File.createTempFile("specification", ".tmp");
+            file = File.createTempFile("specification", ".txt");
             fileWriter = new FileWriter(file);
             fileWriter.write(content);
             // need to flush, otherwise the data handler can not get
