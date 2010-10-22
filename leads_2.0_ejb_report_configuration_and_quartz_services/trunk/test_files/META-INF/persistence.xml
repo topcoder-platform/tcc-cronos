@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"  
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+   version="1.0">  
+  <persistence-unit name="persistenceUnit">
+  <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+		<mapping-file>orm.xml</mapping-file>
+    
+    <properties>
+    
+      <property name="openjpa.ConnectionURL" value="jdbc:db2://localhost:50000/test:currentSchema=DB2ADMIN;"/>
+      <property name="openjpa.ConnectionDriverName" value="com.ibm.db2.jcc.DB2Driver"/>
+      <property name="openjpa.ConnectionUserName" value="db2admin"/>
+      <property name="openjpa.ConnectionPassword" value="topcoder"/>
+    </properties>
+  </persistence-unit>
+  
+</persistence>

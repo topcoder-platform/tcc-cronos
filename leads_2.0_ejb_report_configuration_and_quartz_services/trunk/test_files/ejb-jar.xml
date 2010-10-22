@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+	version="3.0">
+	<description>System Configuration Property service EJB</description>
+	<display-name>System Configuration Property service EJB</display-name>
+	<enterprise-beans>
+		<session>
+			<ejb-name>SystemConfigurationPropertyService</ejb-name>
+			<local>hr.leads.services.ejb.SystemConfigurationPropertyServiceLocal</local>
+			<ejb-class>hr.leads.services.ejb.SystemConfigurationPropertyServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<env-entry-name>pipelineCycleStatusPropertyName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>pipelineCycleStatus</env-entry-value>
+			</env-entry>
+		</session>
+		
+		<session>
+			<ejb-name>reportService</ejb-name>
+			<local>hr.leads.services.ejb.ReportServiceLocal</local>
+			<ejb-class>hr.leads.services.ejb.ReportServiceBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<env-entry-name>submittedStatusName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>SubmittedStatus</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>notSubmittedStatusName</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>NotSubmitttedStatus</env-entry-value>
+			</env-entry>
+			<ejb-ref>
+                <ejb-ref-name>employeeProfileService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <home>hr.leads.services.EmployeeProfileServiceLocal</home>
+            </ejb-ref>
+           	<ejb-ref>
+                <ejb-ref-name>ldapUserService</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <home>hr.leads.services.LDAPUserServiceLocal</home>
+            </ejb-ref>
+		</session>
+		
+	</enterprise-beans>
+</ejb-jar>
