@@ -16,8 +16,8 @@
 	  <property name="db2jcc.jar" value="${ext_libdir}/db2/9.7/db2jcc.jar"/>
     <property name="db2jcc_license_cu.jar" value="${ext_libdir}/db2/9.7/db2jcc_license_cu.jar"/>
     
-    <property name="ejb_model_and_exceptions.jar" value="test_files/ejb_model_and_exceptions.jar"/>
-    <property name="ejb_user_service.jar" value="test_files/ejb_user_service.jar"/>
+    <property name="ejb_model_and_exceptions.jar" value="test_reflib/ejb_model_and_exceptions.jar"/>
+    <property name="ejb_user_service.jar" value="test_reflib/ejb_user_service.jar"/>
     
     <path id="component.tcs-dependencies">
     	<pathelement location="${javaee.jar}"/>
