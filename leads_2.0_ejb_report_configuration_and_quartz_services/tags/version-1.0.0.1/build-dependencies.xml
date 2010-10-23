@@ -1,0 +1,44 @@
+<project name="Dependency Import" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.6"/>
+    <property name="component.bootclasspath" value="${java_1_6_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar"/>
+    <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
+	  <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15.jar"/>
+    <property name="quartz.dir" value="${ext_libdir}/quartz/1.8.3"/>
+    <property name="openjpa.dir" value="${ext_libdir}/openjpa/1.2.2"/>
+	  <property name="db2jcc.jar" value="${ext_libdir}/db2/9.7/db2jcc.jar"/>
+    <property name="db2jcc_license_cu.jar" value="${ext_libdir}/db2/9.7/db2jcc_license_cu.jar"/>
+    
+    <property name="ejb_model_and_exceptions.jar" value="test_reflib/ejb_model_and_exceptions.jar"/>
+    <property name="ejb_user_service.jar" value="test_reflib/ejb_user_service.jar"/>
+    
+    <path id="component.tcs-dependencies">
+    	<pathelement location="${javaee.jar}"/>
+	  </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${ejb_model_and_exceptions.jar}"/>
+    	<pathelement location="${ejb_user_service.jar}"/>
+        <pathelement location="${log4j.jar}"/>
+        <fileset dir="${quartz.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${openjpa.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${db2jcc.jar}"/>
+        <pathelement location="${db2jcc_license_cu.jar}"/>
+    </path>
+
+</project>
