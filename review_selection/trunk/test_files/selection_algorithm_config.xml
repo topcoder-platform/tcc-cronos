@@ -1,0 +1,738 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="valid_config1">
+        <Property name="connectionFactory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseIdGenerator">
+            <Property name="type">
+                <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>phase_id_seq</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phasePersistence">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.db.InformixPhasePersistence</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>connectionFactory</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>dbconnection</Value>
+                    </Property>
+                </Property>
+                <Property name="param3">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseManager">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.DefaultPhaseManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>phasePersistence</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewerStatisticsManager">
+            <Property name="type">
+                <Value>com.topcoder.management.resource.MockReviewerStatisticsManagerImpl</Value>
+            </Property>
+        </Property>
+        <Property name="projectManager">
+            <Property name="type">
+                <Value>com.topcoder.management.project.ProjectManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.project.ProjectManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewApplicationProcessor">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.DefaultReviewApplicationProcessor</Value>
+            </Property>
+        </Property>
+        <Property name="rboardApplicationBean">
+            <Property name="type">
+                <Value>com.topcoder.apps.review.rboard.RBoardApplicationBean</Value>
+            </Property>
+        </Property>
+        <Property name="workloadFactorCalculator">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.workloadfactorcalculator.DefaultWorkloadFactorCalculator</Value>
+            </Property>
+        </Property>
+        <Property name="workloadFactorBase">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.9</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewNumberMultiplier">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.01</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewPhaseName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>primaryReviewEvaluation</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="rboardDataSourceName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>rboardDataSource</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="valid_config2">
+        <Property name="connectionFactory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseIdGenerator">
+            <Property name="type">
+                <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>phase_id_seq</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phasePersistence">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.db.InformixPhasePersistence</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>connectionFactory</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>dbconnection</Value>
+                    </Property>
+                </Property>
+                <Property name="param3">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseManager">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.DefaultPhaseManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>phasePersistence</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewerStatisticsManager">
+            <Property name="type">
+                <Value>com.topcoder.management.resource.MockReviewerStatisticsManagerImpl</Value>
+            </Property>
+        </Property>
+        <Property name="projectManager">
+            <Property name="type">
+                <Value>com.topcoder.management.project.ProjectManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.project.ProjectManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewApplicationProcessor">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.DefaultReviewApplicationProcessor</Value>
+            </Property>
+        </Property>
+        <Property name="rboardApplicationBean">
+            <Property name="type">
+                <Value>com.topcoder.apps.review.rboard.RBoardApplicationBean</Value>
+            </Property>
+        </Property>
+        <Property name="workloadFactorCalculator">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.workloadfactorcalculator.DefaultWorkloadFactorCalculator</Value>
+            </Property>
+        </Property>
+        <Property name="reviewPhaseName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>primaryReviewEvaluation</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="rboardDataSourceName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>rboardDataSource</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="loggerName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>myLogger</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="timelineReliabilitySubtractor">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.9</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="primaryReviewerResponsibilityId">
+            <Property name="type">
+                <Value>java.lang.Integer</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>5</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewerResponsibilityId">
+            <Property name="type">
+                <Value>java.lang.Integer</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>4</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="secondaryReviewersNumber">
+            <Property name="type">
+                <Value>java.lang.Integer</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>int</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>2</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.management.project.ProjectManager">
+        <Property name="SearchBuilderNamespace">
+            <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+        </Property>
+        <Property name="PersistenceClass">
+            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+        </Property>
+        <Property name="PersistenceNamespace">
+            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+        </Property>
+        <Property name="ValidatorClass">
+            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+        </Property>
+        <Property name="ValidatorNamespace">
+            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.management.project.persistence.InformixProjectPersistence">
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+    </Config>
+
+    <Config name="invalid_config1">
+        <Property name="connectionFactory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseIdGenerator">
+            <Property name="type">
+                <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>phase_id_seq</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phasePersistence">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.db.InformixPhasePersistence</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>connectionFactory</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>dbconnection</Value>
+                    </Property>
+                </Property>
+                <Property name="param3">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseManager">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.DefaultPhaseManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>phasePersistence</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewerStatisticsManager">
+            <Property name="type">
+                <Value>com.topcoder.management.resource.MockReviewerStatisticsManagerImpl</Value>
+            </Property>
+        </Property>
+        <Property name="projectManager">
+            <Property name="type">
+                <Value>com.topcoder.management.project.ProjectManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.project.ProjectManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewApplicationProcessor">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.DefaultReviewApplicationProcessor</Value>
+            </Property>
+        </Property>
+        <Property name="rboardApplicationBean">
+            <Property name="type">
+                <Value>com.topcoder.apps.review.rboard.RBoardApplicationBean</Value>
+            </Property>
+        </Property>
+        <Property name="workloadFactorCalculator">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.workloadfactorcalculator.DefaultWorkloadFactorCalculator</Value>
+            </Property>
+        </Property>
+        <Property name="reviewPhaseName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>primaryReviewEvaluation</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="rboardDataSourceName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>rboardDataSource</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="loggerName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>myLogger</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="timelineReliabilitySubtractor">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>-1</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="invalid_config2">
+        <Property name="connectionFactory">
+            <Property name="type">
+                <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseIdGenerator">
+            <Property name="type">
+                <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>phase_id_seq</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phasePersistence">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.db.InformixPhasePersistence</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>connectionFactory</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>dbconnection</Value>
+                    </Property>
+                </Property>
+                <Property name="param3">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="phaseManager">
+            <Property name="type">
+                <Value>com.topcoder.management.phase.DefaultPhaseManager</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>phasePersistence</Value>
+                    </Property>
+                </Property>
+                <Property name="param2">
+                    <Property name="name">
+                        <Value>phaseIdGenerator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewerStatisticsManager">
+            <Property name="type">
+                <Value>com.topcoder.management.resource.MockReviewerStatisticsManagerImpl</Value>
+            </Property>
+        </Property>
+        <Property name="projectManager">
+            <Property name="type">
+                <Value>com.topcoder.management.project.ProjectManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.project.ProjectManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewApplicationProcessor">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.DefaultReviewApplicationProcessor</Value>
+            </Property>
+        </Property>
+        <Property name="rboardApplicationBean">
+            <Property name="type">
+                <Value>com.topcoder.apps.review.rboard.RBoardApplicationBean</Value>
+            </Property>
+        </Property>
+        <Property name="workloadFactorCalculator">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.impl.workloadfactorcalculator.DefaultWorkloadFactorCalculator</Value>
+            </Property>
+        </Property>
+        <Property name="reviewPhaseName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>primaryReviewEvaluation</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="rboardDataSourceName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value></Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="loggerName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>myLogger</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+</CMConfig>
+

@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="valid_config">
+        <Property name="reviewerStatisticsManager">
+            <Property name="type">
+                <Value>com.topcoder.management.resource.MockReviewerStatisticsManagerImpl</Value>
+            </Property>
+        </Property>
+        <Property name="projectManager">
+            <Property name="type">
+                <Value>com.topcoder.management.project.ProjectManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.project.ProjectManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="loggerName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>myLogger</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="invalid_config">
+        <Property name="reviewerStatisticsManager">
+            <Property name="type">
+                <Value>com.topcoder.management.resource.MockReviewerStatisticsManagerImpl</Value>
+            </Property>
+        </Property>
+        <Property name="projectManager">
+            <Property name="type">
+                <Value>com.topcoder.management.project.ProjectManagerImpl</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>com.topcoder.management.project.ProjectManager</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="loggerName">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>myLogger</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="primaryEligibilityPoints">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>-1</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.management.project.ProjectManager">
+        <Property name="SearchBuilderNamespace">
+            <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+        </Property>
+        <Property name="PersistenceClass">
+            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+        </Property>
+        <Property name="PersistenceNamespace">
+            <Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+        </Property>
+        <Property name="ValidatorClass">
+            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+        </Property>
+        <Property name="ValidatorNamespace">
+            <Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+        </Property>
+    </Config>
+
+    <Config name="com.topcoder.management.project.persistence.InformixProjectPersistence">
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+    </Config>
+</CMConfig>

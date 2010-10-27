@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="valid_config1">
+        <Property name="reviewerStatisticsManager">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.accuracytests.MockReviewerStatisticsManager</Value>
+            </Property>
+        </Property>
+        <Property name="projectManager">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.accuracytests.MockProjectManager</Value>
+            </Property>           
+        </Property>              
+    </Config>  
+</CMConfig>
