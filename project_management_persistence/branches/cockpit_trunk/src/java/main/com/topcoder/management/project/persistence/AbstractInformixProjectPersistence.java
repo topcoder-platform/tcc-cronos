@@ -159,6 +159,11 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *  Version 1.3.1 - Direct Pipeline Integration Assembly
  *  - updated {@link #getSimplePipelineData(long, Date, Date, boolean)} method to return details for copilots.
  *  </p>
+ *  <p>
+ *  Version 1.3.2 - Launch Copilot Selection Contest assembly 1.0
+ *  - add private description support in project spec operation
+ *  </p>
+ *
  *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
@@ -262,6 +267,26 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @since 1.1.2
      */
     public static final long MANAGER_TERMS_ID = 20794;
+
+
+    /**
+     * <p>
+     * Represents the default value for copilot MSA
+     * </p>
+     * 
+     * @since 1.1.2
+     */
+    public static final long COPILOT_MSA_TERMS_ID = 20893 ;
+
+
+    /**
+     * <p>
+     * Represents the default value for copilot MSA
+     * </p>
+     * 
+     * @since 1.1.2
+     */
+    public static final long COPILOT_ASSIGNMENT_2_0_TERMS_ID = 20753  ;
 
 
 	/**
@@ -1281,6 +1306,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	    /**
      * Represents the sql statement to query project_spec for specified project_id.
      * 
+     * <p>
+     * Updated since 1.3.1 to add private description support
+     * </p>
+     * 
      * @since Cockpit Launch Contest - Update for Spec Creation v1.0
      */
     private static final String QUERY_PROJECT_SPEC_SQL = "SELECT " 
@@ -1293,7 +1322,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         + " ps1.create_user, " 
         + " ps1.create_date, "
         + " ps1.modify_user, "
-        + " ps1.modify_date "
+        + " ps1.modify_date, "
+        + " ps1.private_description "
         + " FROM project_spec as ps1 " 
         + " WHERE ps1.project_id = ? "
         + " AND ps1.version = (SELECT max(ps2.version) FROM project_spec as ps2 WHERE ps2.project_id = ?)";
@@ -1307,12 +1337,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
 
+    /**
+     * Represents the column types for query project spec.
+     * 
+     * <p>
+     * Updated since 1.3.1 to add private description support
+     * </p>
+     */
     private static final DataType[] QUERY_PROJECT_SPEC_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.LONG_TYPE, 
         Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE,
-        Helper.STRING_TYPE, Helper.DATE_TYPE};
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE};
     
     /**
      * Represents the column types for the result set which is returned by
@@ -1327,30 +1364,38 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     /**
      * Represents the sql statement to create project spec.
      * 
+     * <p>
+     * Updated since 1.3.1 to add private description support
+     * </p>
+     * 
      * @since Cockpit Launch Contest - Update for Spec Creation v1.0
      */
     private static final String CREATE_PROJECT_SPEC_SQL = "INSERT INTO project_spec "
             + "(project_spec_id, project_id, version, " 
             + "detailed_requirements, submission_deliverables, environment_setup_instruction, final_submission_guidelines, "
-            + "create_user, create_date, modify_user, modify_date) "
+            + "create_user, create_date, modify_user, modify_date, private_description) "
             + "VALUES (?, ?, 1, " 
             + "?, ?, ?, ?, "
-            + "?, CURRENT, ?, CURRENT)";
+            + "?, CURRENT, ?, CURRENT, ?)";
     
     /**
      * Represents the sql statement to update project spec.
      * 
      * Since the project_spec table maintains all the versions of the records, we just need to insert the entry with the next version.
      * 
+     * <p>
+     * Updated since 1.3.1 to add private description support
+     * </p>
+     * 
      * @since Cockpit Launch Contest - Update for Spec Creation v1.0
      */
     private static final String UPDATE_PROJECT_SPEC_SQL = "INSERT INTO project_spec "
             + "(project_spec_id, project_id, version, " 
             + "detailed_requirements, submission_deliverables, environment_setup_instruction, final_submission_guidelines, "
-            + "create_user, create_date, modify_user, modify_date) "
+            + "create_user, create_date, modify_user, modify_date, private_description) "
             + "VALUES (?, ?, (select NVL(max(ps.version), 0)  + 1 from project_spec as ps where ps.project_id = ?), " 
             + "?, ?, ?, ?, "
-            + "?, CURRENT, ?, CURRENT)";
+            + "?, CURRENT, ?, CURRENT, ?)";
     
     /**
      * Represents the column types mapping for retrieving simple pipeline data.
@@ -2351,6 +2396,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // get the standard cca value from project property. 
         boolean standardCCA = (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC));
 
+        // copilot contests are always CCA
+        if (project.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId())
+        {
+            standardCCA = true;
+        }
+
         // get the billing project id
         long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));
 
@@ -2366,6 +2417,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Persists the specified ProjectSpec instance for the specified projectId.
      * It basically creates a new row in table corresponding to ProjectSpec - version number for the row is choosen as 1.
      * </p>
+     * 
+     * <p>
+     * Updated since 1.3.1 to add private description support
+     * </p> 
      * 
      * @param projectId the project id for which project spec need to be persisted.
      * @param projectSpec the project spec
@@ -2402,12 +2457,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         Object[] queryArgs = new Object[] {newId,
             projectId, 
 			// TODO replace &lt; to <, should not need manually do this
-            projectSpec.getDetailedRequirements().replace("&lt;", "<"),
-            projectSpec.getSubmissionDeliverables().replace("&lt;", "<"),
-            projectSpec.getEnvironmentSetupInstructions().replace("&lt;", "<"),
-            projectSpec.getFinalSubmissionGuidelines().replace("&lt;", "<"), 
+            projectSpec.getDetailedRequirements() != null ? projectSpec.getDetailedRequirements().replace("&lt;", "<") : "",
+            projectSpec.getSubmissionDeliverables() != null ? projectSpec.getSubmissionDeliverables().replace("&lt;", "<") : "",
+            projectSpec.getEnvironmentSetupInstructions() != null ? projectSpec.getEnvironmentSetupInstructions().replace("&lt;", "<") : "",
+            projectSpec.getFinalSubmissionGuidelines() != null ? projectSpec.getFinalSubmissionGuidelines().replace("&lt;", "<") : "", 
             operator,
-            operator};
+            operator,
+            projectSpec.getPrivateDescription() != null ? projectSpec.getPrivateDescription().replace("&lt;", "<") : ""};
         Helper.doDMLQuery(conn, CREATE_PROJECT_SPEC_SQL, queryArgs);
         
         // get the creation date.
@@ -2499,6 +2555,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * It basically creates a new row in table corresponding to ProjectSpec - version number for the row is earlier version number + 1.
      * </p>
      * 
+     * <p>
+     * Updated since 1.3.1 to add private description support
+     * </p>
+     * 
      * @param projectId the project id for which project spec need to be persisted.
      * @param projectSpec the project spec
      * @param operator the operator/user who is creating this project spec.
@@ -2525,12 +2585,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             projectId, 
             projectId,
 			// TODO replace &lt; to <, should not need manually do this
-            projectSpec.getDetailedRequirements().replace("&lt;", "<"),
-            projectSpec.getSubmissionDeliverables().replace("&lt;", "<"),
-            projectSpec.getEnvironmentSetupInstructions().replace("&lt;", "<"),
-            projectSpec.getFinalSubmissionGuidelines().replace("&lt;", "<"), 
+             projectSpec.getDetailedRequirements() != null ? projectSpec.getDetailedRequirements().replace("&lt;", "<") : "",
+            projectSpec.getSubmissionDeliverables() != null ? projectSpec.getSubmissionDeliverables().replace("&lt;", "<") : "",
+            projectSpec.getEnvironmentSetupInstructions() != null ? projectSpec.getEnvironmentSetupInstructions().replace("&lt;", "<") : "",
+            projectSpec.getFinalSubmissionGuidelines() != null ? projectSpec.getFinalSubmissionGuidelines().replace("&lt;", "<") : "", 
             operator,
-            operator};
+            operator,
+            projectSpec.getPrivateDescription() != null ? projectSpec.getPrivateDescription().replace("&lt;", "<") : ""};
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SPEC_SQL, queryArgs);
         
         // get the creation date.
@@ -3742,6 +3803,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * for the specified projectId's spec.
      * </p>
      * 
+     * <p>
+     * Updated since 1.3.1 to add private description support
+     * </p>
+     * 
      * @param projectId the project id for which project spec need to be persisted.
      * @param conn the db connection to be used to create this project spec
      * 
@@ -3775,7 +3840,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             spec.setCreationTimestamp((Date) rows[i][7]);
             spec.setModificationUser((String) rows[i][8]);
             spec.setModificationTimestamp((Date) rows[i][9]);
-            
+            spec.setPrivateDescription((String) rows[i][10]);
+
             specs[i] = spec;
         }
         
@@ -4635,6 +4701,29 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 }
 
             } 
+
+            if (projectCategoryId == ProjectCategory.COPILOT_POSTING.getId())
+            {
+                preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
+                preparedStatement.setLong(1, projectId);
+
+                for (int roleId : ALL_ROLES_ID) {
+                    if (roleId != MANAGER_ROLE_ID 
+                        && roleId != APPROVER_ROLE_ID
+                        && roleId != OBSERVER_ROLE_ID
+                        && roleId != CLIENT_MANAGER_ROLE_ID
+                        && roleId != COPILOT_ROLE_ID)
+                {
+                        preparedStatement.setInt(2, roleId);
+
+                        preparedStatement.setLong(3, COPILOT_MSA_TERMS_ID);
+                        preparedStatement.execute(); 
+
+                        preparedStatement.setLong(3, COPILOT_ASSIGNMENT_2_0_TERMS_ID);
+                        preparedStatement.execute(); 
+                    }
+                }
+            }
 
             //3. insert stardard terms
             if (!hasClientTerm)
@@ -6046,6 +6135,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         return null;
     }
+
+
+
     
     
 }
