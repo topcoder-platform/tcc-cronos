@@ -70,6 +70,7 @@ import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.resource.ResourceRole;
@@ -281,9 +282,17 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  *     <li>Added {@link #updateSubmissionsGeneralFeedback(TCSubject, long, String)} method.</li>
  *   </ol>
  * </p>
+ * 
+ * <p>
+ * Version 1.6.4 (TC Direct - Launch Copilot Selection Contest assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #COPILOT_CONTEST_PROJECT_CATEGORY_ID} field and 
+ *     {@link #isCopilotContest(SoftwareCompetition)} method, update {@link #createUpdateAssetDTO} method.</li>
+ *   </ol>
+ * </p>
  *
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv
- * @version 1.6.3
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, TCSASSEMBLER
+ * @version 1.6.4
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -3099,64 +3108,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 hasEligibility = true;
             }
 
-
-            // no need for dev that has design, so all non-dev and dev only will have spec review
-            // and dont create for private, and it is not already have a spec review
-            if ((!isDevContest || projectServices.isDevOnly(tobeUpdatedCompetition.getProjectHeader().getId()))
-                  && !hasEligibility
-                  && projectServices.getSpecReviewProjectId(tobeUpdatedCompetition.getProjectHeader().getId()) <= 0
-                  && !hasSpecReview(tobeUpdatedCompetition))
-            {
-                 //create spec review project
-                FullProjectData specReview = this.createSpecReview(tcSubject, tobeUpdatedCompetition.getProjectHeader().getId());
-                logger.info("spec review project for contest " + specReview.getProjectHeader().getId() + " is created.");
-
-                com.topcoder.project.phases.Phase[] allPhases = specReview.getAllPhases();
-                com.topcoder.project.phases.Project projectPhases = new com.topcoder.project.phases.Project();
-                projectPhases.setStartDate(new Date());
-                projectPhases.setId(specReview.getProjectHeader().getId());
-
-                // open submission and registration
-                for (int i = 0; i < allPhases.length; i++) {
-                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
-                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
-                    {
-                        allPhases[i].setPhaseStatus(PhaseStatus.OPEN);
-                    }
-                    projectPhases.addPhase(allPhases[i]);
-                }
-
-                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
-
-
-                 // prepare mock file for upload
-                DataHandler dataHandler = new DataHandler(new FileDataSource(mockSubmissionFilePath +
-                       mockSubmissionFileName));
-
-                uploadSubmission(tcSubject, specReview.getId(), mockSubmissionFileName, dataHandler);
-                logger.info("spec review project ready for reivew ");
-
-                projectPhases.setStartDate(new Date());
-                // set submission and registration back to scheduled
-                allPhases = projectPhases.getAllPhases();
-                for (int i = 0; i < allPhases.length; i++) {
-                    if (allPhases[i].getPhaseType().getName().equals(PhaseType.SUBMISSION)
-                         || allPhases[i].getPhaseType().getName().equals(PhaseType.REGISTRATION))
-                    {
-                        allPhases[i].setPhaseStatus(PhaseStatus.SCHEDULED);
-                    }
-                }
-
-                projectServices.updatePhases(projectPhases, Long.toString(tcSubject.getUserId()));
-
-                //  now turn on auto pilot
-                specReview.getProjectHeader().setProperty(ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY,
-                    PROJECT_TYPE_INFO_AUTOPILOT_OPTION_VALUE_ON);
-                projectServices.updateProject(specReview.getProjectHeader(), "Turn on auto pilot",
-                                              Long.toString(tcSubject.getUserId()));
-
-            }  
-
             sendActivateContestReceiptEmail(toAddr, purchasedByUser,
                 paymentData, competitionType,
                 tobeUpdatedCompetition.getProjectHeader()
@@ -3165,7 +3116,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 competition.getAssetDTO().getProductionDate()
                            .toGregorianCalendar().getTime(), fee, fee,
                 result.getReferenceNumber());
-
 
 
             return softwareContestPaymentResult;
@@ -3881,6 +3831,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         return contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
     }
 
+    /**
+     * Checks if the contest is copilot contest.
+     * 
+     * @param contest the contest
+     * @return true if yes
+     * @since 1.6.4
+     */
+    private boolean isCopilotContest(SoftwareCompetition contest) {
+        return contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId();
+    }
 
     /**
      * <p>
@@ -4029,6 +3989,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>
      * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
      * </p>
+     * <p>
+     * Update in v1.6.4: set digital run flag to 'Off' and rated to 'No' if it's copilot selection contest.
+     * </p>
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contest the contest
      * @throws EntityNotFoundException if any error occurs
@@ -4103,6 +4066,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, "Open");
             contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
 
+            if (isCopilotContest(contest)) {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
+                contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
+            }
+            
             if (forumId > 0) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY, String.valueOf(forumId));
             }
