@@ -848,6 +848,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             field.setValue((String) project.getProperty(PROJECT_NAME));
         } else if ("PROJECT_VERSION".equals(field.getName())) {
             field.setValue((String) project.getProperty(PROJECT_VERSION));
+        } else if ("PROJECT_CATEGORY".equals(field.getName())) {
+            field.setValue((String) project.getProjectCategory().getName());
         } else if ("PHASE_OPERATION".equals(field.getName())) {
             field.setValue(bStart ? "start" : "end");
         } else if ("PHASE_TYPE".equals(field.getName())) {
