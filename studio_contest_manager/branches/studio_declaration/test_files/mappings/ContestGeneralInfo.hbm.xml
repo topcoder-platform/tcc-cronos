@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.contest">
+  <class name="ContestGeneralInfo" table="contest_general_info"
+    lazy="false">
+    <id name="contestGeneralInfoId" column="contest_general_info_id"
+      type="long" unsaved-value="-1">
+      <generator class="sequence">
+        <param name="sequence">CONTEST_GENERAL_INFO_SEQ</param>
+      </generator>
+    </id>
+
+    <property name="goals" update="true" insert="true"
+      column="goals" not-null="false" />
+
+    <property name="targetAudience" update="true" insert="true"
+      column="target_audience" not-null="false" />
+
+    <property name="brandingGuidelines" update="true" insert="true"
+      column="branding_guidelines" not-null="false" />
+
+    <property name="dislikedDesignsWebsites" update="true"
+      insert="true" column="disliked_designs_websites" not-null="false" />
+
+    <property name="otherInstructions" update="true" insert="true"
+      column="other_instructions" not-null="false" />
+
+    <property name="winningCriteria" update="true" insert="true"
+      column="winning_criteria" not-null="false" />
+
+
+  </class>
+
+
+</hibernate-mapping>
+
