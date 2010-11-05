@@ -2984,6 +2984,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             // set status to active
             contest.setProjectStatus(ProjectStatus.ACTIVE);
+            // if contest does not have spec review, turn on AP here
+            if (!hasSpecReview(competition))
+            {
+                contest.setProperty(ProjectPropertyType.AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY, "On");
+            }
+            
             projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
