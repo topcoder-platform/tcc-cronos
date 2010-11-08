@@ -3913,6 +3913,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 projectServices.linkDevelopmentToDesignContest(projectData.getProjectHeader().getId());
             }
 
+
+            // set timeline notification
+            projectServices.addNotifications(tcSubject.getUserId(), new long[]{projectData.getProjectHeader().getId()}, String.valueOf(tcSubject.getUserId()));
+
+
             //preparing the result
             com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
             // for now have to do these to avoid cycle
@@ -5315,6 +5320,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                                     if (delRes != null)
                                     {
                                         projectServices.removeResource(delRes, String.valueOf(tcSubject.getUserId()));
+                                        projectServices.removeNotifications(delRes.getId(), new long[]{pid.longValue()}, String.valueOf(delRes.getId()));
                                     }
 
                                     // delete forum watch
@@ -7022,6 +7028,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 newRes.setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
 
                 projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
+                projectServices.addNotifications(userId, new long[]{projectId}, String.valueOf(tcSubject.getUserId()));
 
                 // create forum watch
                 long forumId = projectServices.getForumId(projectId);
