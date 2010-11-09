@@ -4009,7 +4009,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws com.topcoder.catalog.service.PersistenceException if any error occurs
      */
     private void createUpdateAssetDTO(TCSubject tcSubject, SoftwareCompetition contest) throws EntityNotFoundException,
-            com.topcoder.catalog.service.PersistenceException {
+            com.topcoder.catalog.service.PersistenceException, DAOException {
         //check if it is going to create development contest
         boolean isDevContest = isDevContest(contest);
         XMLGregorianCalendar productionDate = null;
@@ -4076,6 +4076,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "Yes");
             contest.getProjectHeader().setProperty(ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, "Open");
             contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
+
+            boolean hasEligibility = false;
+
+            long billingProjectId = getBillingProjectId(contest);
+
+            // if creating contest, eligiblity is not commited, so above will not get back result
+            if (billingProjectId != 0
+                    && getEligibilityGroupId(billingProjectId) != null) {
+                hasEligibility = true;
+            }
+
+            if (isDevContest && !hasEligibility && billingProjectId > 0)
+            {
+                String codename = billingProjectDAO.getProjectById(billingProjectId).getClient().getCodeName();
+                String compname = contest.getAssetDTO().getName();
+                if (codename != null && !codename.equals(""))
+                {
+                    compname = compname.toLowerCase().replaceAll(" ", "_");
+                    codename = codename.toLowerCase().replaceAll(" ", "");
+                    contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "https://coder.topcoder.com/tcs/clients/"+codename+"/components/"+compname+"/trunk");
+                }
+            }
 
             if (isCopilotContest(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
@@ -4306,10 +4328,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0)
                 {
                     contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
+                    contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
+                    
                 }
                 else
                 {
                     contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "true");
+                    boolean isDevContest = isDevContest(contest);
+
+                    if (isDevContest && billingProjectId > 0)
+                    {
+
+                        String codename = billingProjectDAO.getProjectById(billingProjectId).getClient().getCodeName();
+                        String compname = contest.getAssetDTO().getName();
+                        if (codename != null && !codename.equals(""))
+                        {
+                            compname = compname.toLowerCase().replaceAll(" ", "_");
+                            codename = codename.toLowerCase().replaceAll(" ", "");
+                            contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "https://coder.topcoder.com/tcs/clients/"+codename+"/components/"+compname+"/trunk");
+                        }
+                        else 
+                        {
+                            contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "");
+                        }
+                    }
                 }
 
                 FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(),
