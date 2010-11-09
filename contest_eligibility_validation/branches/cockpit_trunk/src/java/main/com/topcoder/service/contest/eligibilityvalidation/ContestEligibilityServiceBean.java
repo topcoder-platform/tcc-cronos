@@ -4,7 +4,6 @@
 package com.topcoder.service.contest.eligibilityvalidation;
 
 import javax.ejb.EJB;
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -14,18 +13,12 @@ import javax.ejb.TransactionManagementType;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.jboss.logging.Logger;
 
 import com.topcoder.service.contest.eligibility.ContestEligibility;
 import com.topcoder.service.contest.eligibility.dao.ContestEligibilityManager;
 import com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenceException;
-import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManager;
-import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManagerException;
-
-
-
 
 /**
  * <p>
@@ -33,7 +26,18 @@ import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityVali
  * in form of stateless session EJB. It holds a reference to
  * {@link StudioService} which is delegated the fulfillment of requests.
  * </p>
-
+ * 
+ * <p>
+ * Version 1.0.1 ((TopCoder Online Review Switch To Local Calls Assembly)) Change notes:
+ *   <ol>
+ *     <li>Added protected {@link #setContestEligibilityManager(ContestEligibilityManager)} and
+ *     {@link #setContestEligibilityValidationManager(ContestEligibilityValidationManager)} methods to be used for
+ *     injection of the managers in local environment for Online Review application.</li>
+ *   </ol>
+ * </p>
+ * 
+ * @author TCSDEVELOPER
+ * @version 1.0.1
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -161,4 +165,35 @@ public class ContestEligibilityServiceBean implements ContestEligibilityServiceL
 		}
     }
 
+    /**
+     * <p>Sets the contest eligibility validation manager to be used by this service in local environment.</p>
+     *
+     * @param contestEligibilityValidationManager a <code>ContestEligibilityValidationManager</code> to be used by this
+     *        service in local environment.
+     * @throws IllegalArgumentException if specified <code>contestEligibilityValidationManager</code> is
+     *         <code>null</code>.
+     * @since 1.0.1
+     */
+    protected void setContestEligibilityValidationManager(
+        ContestEligibilityValidationManager contestEligibilityValidationManager) {
+        if (contestEligibilityValidationManager == null) {
+            throw new IllegalArgumentException("The parameter [contestEligibilityValidationManager] is NULL");
+        }
+        this.contestEligibilityValidationManager = contestEligibilityValidationManager;
+    }
+
+    /**
+     * <p>Sets the contest eligibility manager to be used by this service in local environment.</p>
+     *
+     * @param contestEligibilityManager a <code>ContestEligibilityManager</code> to be used by this
+     *        service in local environment.
+     * @throws IllegalArgumentException if specified <code>contestEligibilityManager</code> is <code>null</code>.
+     * @since 1.0.1
+     */
+    protected void setContestEligibilityManager(ContestEligibilityManager contestEligibilityManager) {
+        if (contestEligibilityManager == null) {
+            throw new IllegalArgumentException("The parameter [contestEligibilityManager] is NULL");
+        }
+        this.contestEligibilityManager = contestEligibilityManager;
+    }
 }

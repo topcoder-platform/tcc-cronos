@@ -18,13 +18,11 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.configuration.persistence.ConfigurationPersistenceException;
 import com.topcoder.service.contest.eligibility.ContestEligibility;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
 import com.topcoder.util.objectfactory.InvalidClassSpecificationException;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.SpecificationFactoryException;
 import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFactory;
+import org.jboss.logging.Logger;
 
 /**
  * <p>
@@ -62,8 +60,16 @@ import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFact
  * initialize method.
  * </p>
  *
+ * <p>
+ * Version 1.0.1 ((TopCoder Online Review Switch To Local Calls Assembly)) Change notes:
+ *   <ol>
+ *     <li>Updated the class to use JBoss Logging for logging the events to make the component usable in local
+ *     environment for Online Review application.</li>
+ *   </ol>
+ * </p>
+ *
  * @author TCSDEVELOPER
- * @version 1.0
+ * @version 1.0.1
  */
 @Stateless
 public class ContestEligibilityValidationManagerBean implements ContestEligibilityValidationManagerLocal,
@@ -72,7 +78,7 @@ public class ContestEligibilityValidationManagerBean implements ContestEligibili
     /**
      * The logger is used to log the method.Never be null.It is always required.
      */
-    private Log logger = null;
+    private Logger logger;
 
     /**
      * Represents the log name.Default value is 'contest_eligibility_logger'.You also could change the default value
@@ -124,7 +130,7 @@ public class ContestEligibilityValidationManagerBean implements ContestEligibili
         checkEmpty(namespace, "namespace");
         checkEmpty(configFileName, "configFileName");
         // note logName can be empty if user really need,it will not raise IAE
-        logger = LogManager.getLog(logName);
+        logger = Logger.getLogger(this.logName);
         try {
             ConfigurationFileManager manager = new ConfigurationFileManager();
             manager.loadFile(namespace, configFileName);
@@ -249,7 +255,7 @@ public class ContestEligibilityValidationManagerBean implements ContestEligibili
      * @return the error
      */
     private <T extends Exception> T logError(T error) {
-        logger.log(Level.ERROR, error, "Error recognized: {0}", error.getMessage());
+        logger.error("Error recognized: " + error.getMessage(), error);
         return error;
     }
 
@@ -267,7 +273,7 @@ public class ContestEligibilityValidationManagerBean implements ContestEligibili
      */
     @SuppressWarnings("unchecked")
     private void logEntrance(String methodName, String[] paramNames, Object[] params) {
-        logger.log(Level.DEBUG, "Enter into Method: " + methodName + " At " + new Date());
+        logger.debug("Enter into Method: " + methodName + " At " + new Date());
         if (paramNames != null) {
             StringBuilder logInfo = new StringBuilder("Parameters:");
             for (int i = 0; i < paramNames.length; i++) {
@@ -287,7 +293,7 @@ public class ContestEligibilityValidationManagerBean implements ContestEligibili
                 }
                 logInfo.append(" [ " + paramNames[i] + " = " + params[i] + " ]");
             }
-            logger.log(Level.INFO, logInfo);
+            logger.info(logInfo);
         }
     }
 
@@ -300,7 +306,7 @@ public class ContestEligibilityValidationManagerBean implements ContestEligibili
      *            the name of the method
      */
     private void logExit(String methodName) {
-        logger.log(Level.DEBUG, "Exit out Method: " + methodName + " At " + new Date());
+        logger.debug("Exit out Method: " + methodName + " At " + new Date());
     }
 
     /**
