@@ -666,7 +666,7 @@ public class ProjectServicesImpl implements ProjectServices {
         ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY,
         ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY,
         ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY,
-        ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY};
+        ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY};
 
     /**
      * <p>
@@ -1666,6 +1666,9 @@ public class ProjectServicesImpl implements ProjectServices {
             projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
                     .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
 
+            projectHeader.setProperty(ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.TRACK_LATE_DELIVERABLES)));
+
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
@@ -2294,8 +2297,6 @@ public class ProjectServicesImpl implements ProjectServices {
             }
 
            
-            
-
             // set the project info of type "Approval Required"
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
                     .valueOf(requireApproval));
@@ -2311,6 +2312,10 @@ public class ProjectServicesImpl implements ProjectServices {
 
             projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
                     .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
+
+            projectHeader.setProperty(ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.TRACK_LATE_DELIVERABLES)));
+
 
             for (Phase p : newProjectPhases.getAllPhases()) {
                     p.setPhaseStatus(PhaseStatus.SCHEDULED);
