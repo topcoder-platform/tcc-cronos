@@ -280,4 +280,24 @@ public interface ProjectDAO extends GenericDAO<Project, Long> {
      * @since 1.1
      */
     public List<Project> getProjectsByClientId(long clientId) throws DAOException;
+
+    /**
+     * <p>
+     * Get all project associated with the given id.
+     * </p>
+     *
+     * @param projectId
+     *            the project ID.
+     * @return project which are associated with the given id, if no project is found null will
+     *         be returned.
+     * @throws IllegalArgumentException
+     *             if clientId is &lt;= 0.
+     * @throws DAOConfigurationException
+     *             if the configured entityManager is invalid (invalid means null here).
+     * @throws DAOException
+     *             if any error occurs while performing this operation.
+     * @since 1.1
+     */
+    @SuppressWarnings("unchecked")
+    public Project getProjectById(long projectId) throws DAOException;
 }
