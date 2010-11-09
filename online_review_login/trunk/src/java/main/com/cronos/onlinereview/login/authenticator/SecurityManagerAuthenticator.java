@@ -9,7 +9,6 @@ package com.cronos.onlinereview.login.authenticator;
 import com.cronos.onlinereview.login.ConfigurationException;
 import com.cronos.onlinereview.login.Util;
 
-import com.topcoder.naming.jndiutility.JNDIUtils;
 import com.topcoder.security.GeneralSecurityException;
 import com.topcoder.security.TCSubject;
 import com.topcoder.security.authenticationfactory.AbstractAuthenticator;
@@ -21,14 +20,10 @@ import com.topcoder.security.authenticationfactory.Response;
 import com.topcoder.security.login.AuthenticationException;
 import com.topcoder.security.login.LoginRemote;
 import com.topcoder.security.login.LoginRemoteHome;
-import com.topcoder.util.config.ConfigManagerException;
 
 import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
 
 /**
  * This class is used to authenticate user.
@@ -49,8 +44,15 @@ import javax.naming.NamingException;
  * from {@link AuthenticateException} in case of failure. 
  * </p>
  *
+ * <p>
+ * Changes in 1.0.2: Updated constructor to interpret login_bean_name parameter from configuration not as name in JNDI
+ * context for Home interface for Login EJB but as as name of the class which is to be used for creating LoginRemote
+ * objects. As result constructor no longer uses JNDI context but instead uses Java Reflection API for instantiating the
+ * objects of LoginRemoteHome type.
+ * </p>
+ *
  * @author woodjohn, maone, isv
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class SecurityManagerAuthenticator extends AbstractAuthenticator {
 
@@ -86,35 +88,20 @@ public class SecurityManagerAuthenticator extends AbstractAuthenticator {
 
         super(Util.validateNotNullOrEmpty(namespace, "namespace"));
 
-        // retrieve the context from the JDNIUtils
-        Context context = null;
-
+        // retrieve the login remote home class name from the configuration
         try {
-            String contextName = Util.getOptionalPropertyString(namespace, "context_name");
-
-            if ((contextName != null) && (contextName.trim().length() != 0)) {
-                context = JNDIUtils.getContext(contextName);
-            } else {
-                context = JNDIUtils.getDefaultContext();
-            }
-        } catch (ConfigManagerException e) {
-            throw new ConfigurationException("Cannot get context.", e);
-        } catch (NamingException e) {
-            throw new ConfigurationException("Cannot get context.", e);
-        }
-
-        // retrieve the login remote home from the context
-        try {
-            String loninBeanName = Util.getRequiredPropertyString(namespace, "login_bean_name");
-            Object namedObject = context.lookup(loninBeanName);
-
+            String homeInterfaceClassName = Util.getRequiredPropertyString(namespace, "login_bean_name");
+            Object namedObject = Class.forName(homeInterfaceClassName).newInstance();
             if (!LoginRemoteHome.class.isInstance(namedObject)) {
                 throw new ConfigurationException("The named object is not instanceof " + LoginRemoteHome.class);
             }
 
             this.loginRemoteHome = (LoginRemoteHome) namedObject;
-
-        } catch (NamingException e) {
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationException("Cannot get loginRemoteHome.", e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationException("Cannot get loginRemoteHome.", e);
+        } catch (IllegalAccessException e) {
             throw new ConfigurationException("Cannot get loginRemoteHome.", e);
         }
 
