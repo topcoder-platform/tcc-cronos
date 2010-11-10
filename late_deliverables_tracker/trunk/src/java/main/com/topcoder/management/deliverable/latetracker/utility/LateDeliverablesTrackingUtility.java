@@ -20,6 +20,7 @@ import com.topcoder.util.commandline.IllegalSwitchException;
 import com.topcoder.util.commandline.IntegerValidator;
 import com.topcoder.util.commandline.Switch;
 import com.topcoder.util.commandline.UsageException;
+import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.scheduler.processor.JobProcessor;
@@ -72,8 +73,16 @@ import java.io.IOException;
  * (configured to use the same persistence) at a time.
  * </p>
  *
- * @author saarixx, TCSDEVELOPER
- * @version 1.0
+ * <p>
+ * Version 1.0.1 (SVN Automation and Late Deliverables Tracker Integration Assembly Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated the class so it could be launched and run in background thread and stopped if a guard file exists.
+ *     </li>
+ *   </ol>
+ * </p>
+
+ * @author saarixx, TCSDEVELOPER, isv
+ * @version 1.0.1
  */
 public class LateDeliverablesTrackingUtility {
     /**
@@ -178,6 +187,22 @@ public class LateDeliverablesTrackingUtility {
         + " the value from the scheduler configuration is used.";
 
     /**
+     * Represents the usage documentation for the guardFile switch.
+     *
+     * @since 1.0.1
+     */
+    private static final String GUARD_FILE_SWITCH_USAGE = "Specify the path to guard file which should be used to " +
+                                                          "signal to Late Deliverables Tracker that it has to stop";
+
+    /**
+     * Represents the usage documentation for the background switch.
+     *
+     * @since 1.0.1
+     */
+    private static final String BACKGROUND_SWITCH_USAGE = "Set the flag indicating whether the tracker is going to " +
+                                                          "run in background thread or not";
+
+    /**
      * <p>
      * Represents the milliseconds of one day, 24x3600x1000.
      * </p>
@@ -206,6 +231,20 @@ public class LateDeliverablesTrackingUtility {
     private static Switch intervalSwitch;
 
     /**
+     * <p>This is a Command Line switch that is used to retrieve the path to guard file.</p>
+     *
+     * @since 1.0.1
+     */
+    private static Switch guardFileSwitch;
+
+    /**
+     * <p>This is a Command Line switch that is used to retrieve the flag on running in background thread.</p>
+     *
+     * @since 1.0.1
+     */
+    private static Switch backgroundSwitch;
+
+    /**
      * This is the command line utility which holds all switches.
      */
     private static CommandLineUtility commandLineUtility;
@@ -219,11 +258,15 @@ public class LateDeliverablesTrackingUtility {
             configSwitch = new Switch(CONFIG, false, 1, 1, null, CONFIG_SWITCH_USAGE);
             namespaceSwitch = new Switch(NAMESPACE, false, 1, 1, null, NAMESPACE_SWITCH_USAGE);
             intervalSwitch = new Switch(INTERVAL, false, 1, 1, new IntegerValidator(1, null), INTERVAL_SWITCH_USAGE);
+            guardFileSwitch = new Switch("guardFile", true, 1, 1, null, GUARD_FILE_SWITCH_USAGE);
+            backgroundSwitch = new Switch("background", true, 1, 1, null, BACKGROUND_SWITCH_USAGE);
             // create command line utility
             commandLineUtility = new CommandLineUtility();
             commandLineUtility.addSwitch(configSwitch);
             commandLineUtility.addSwitch(intervalSwitch);
             commandLineUtility.addSwitch(namespaceSwitch);
+            commandLineUtility.addSwitch(guardFileSwitch);
+            commandLineUtility.addSwitch(backgroundSwitch);
         } catch (IllegalSwitchException e) {
             // never happens
         }
@@ -314,8 +357,21 @@ public class LateDeliverablesTrackingUtility {
         String intervalStr = intervalSwitch.getValue();
         Integer interval = (intervalStr == null) ? null : Integer.parseInt(intervalStr);
 
+        // Guard file
+        String guardFileName = guardFileSwitch.getValue();
+        File guardFile = new File(guardFileName);
+        if (guardFile.exists()) {
+            System.out.println("Guard file '" + guardFileName
+                               + "' exists. Late Deliverables Tracker exits immediately");
+            return;
+        }
+
+        // Background flag
+        String backgroundFlag = backgroundSwitch.getValue();
+        boolean isBackground = "true".equalsIgnoreCase(backgroundFlag);
+
         Log log = null;
-        doTrack(configFileName, namespace, interval, log, signature);
+        doTrack(configFileName, namespace, interval, log, signature, guardFile, isBackground);
         Helper.logExit(log, signature, null, start);
     }
 
@@ -327,9 +383,11 @@ public class LateDeliverablesTrackingUtility {
      * @param interval the interval.
      * @param log the log to use.
      * @param signature the method name.
+     * @param guardFile a file to monitor for presence of.
+     * @param background <code>true</code> if tracke is running in background thread; <code>false</code> otherwise.
      */
     private static void doTrack(String configFileName, String namespace, Integer interval, Log log,
-        String signature) {
+                                String signature, File guardFile, boolean background) {
         try {
             ConfigurationObject config = loadConfiguration(configFileName, namespace);
 
@@ -363,9 +421,23 @@ public class LateDeliverablesTrackingUtility {
             JobProcessor jobProcessor = new JobProcessor(scheduler, ONE_DAY, log);
             jobProcessor.start();
 
-            System.out.println("Press Enter to terminate the late deliverables tracker...");
             // Wait until the user presses Enter
-            System.in.read();
+            if (background) {
+                while (!guardFile.exists()) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt(); 
+                    }
+                }
+                log.log(Level.INFO,
+                        "Got a signal to stop the entire Late Deliverables Tracke process by presence of file "
+                        + guardFile);
+            } else {
+                System.out.println("Press Enter to terminate the late deliverables tracker...");
+                System.in.read();
+            }
+
             // Shutdown the job processor
             jobProcessor.shutdown();
         } catch (LateDeliverablesTrackerConfigurationException e) {
