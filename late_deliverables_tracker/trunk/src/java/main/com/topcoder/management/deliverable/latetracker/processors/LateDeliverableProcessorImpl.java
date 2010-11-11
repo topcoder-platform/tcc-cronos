@@ -648,12 +648,12 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
         // Get notification deliverable IDs string from config
         String notificationDeliverableIdsStr = Helper.getPropertyValue(config,
-            NOTIFICATION_DELIVERABLE_IDS, false, false);
+            NOTIFICATION_DELIVERABLE_IDS, false, true);
         // Create set for parsed notification deliverable IDs
         notificationDeliverableIds = new HashSet<Long>();
 
         // Split ID substrings in the comma separated string
-        if (notificationDeliverableIdsStr != null) {
+        if ((notificationDeliverableIdsStr != null) && (notificationDeliverableIdsStr.trim().length() > 0)) {
             String[] notificationDeliverableIdsArray = notificationDeliverableIdsStr.split(Helper.COMMA);
 
             for (String notificationDeliverableIdStr : notificationDeliverableIdsArray) {
