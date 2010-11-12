@@ -899,7 +899,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                 }
 
                 // log data for record added to late_deliverables table
-                Helper.logInfo(log, "late deliverable data : project id[" + project.getId() + "phase id["
+                Helper.logInfo(log, "late deliverable data : project id[" + project.getId() + "], phase id["
                     + phaseId + "]," + " resource id[" + resourceId + "], deliverable id[" + deliverableId + "].");
             } else if (canSendNotification) {
                 doDMLQuery(UPDATE_SQL, connection, new Object[] {
