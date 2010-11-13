@@ -12,7 +12,6 @@ import java.io.PrintStream;
 
 import java.util.List;
 
-
 /**
  * Unit tests for <code>{@link LateDeliverablesTrackingUtility}</code> class.
  *
@@ -63,14 +62,7 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
         runMain(new String[] {"-interval=20"});
 
         List<LateDeliverableData> datas = getLateDeliverable();
-        assertEquals("should have one record", 1, datas.size());
-
-        LateDeliverableData data = datas.get(0);
-        assertFalse("forgive should be false", data.isForgive());
-        assertTrue("last notified time wrong",
-            (System.currentTimeMillis() - data.getLastNotified().getTime()) < (2 * 60 * 1000));
-        assertEquals("should be equal", data.getCreateDate(), data.getLastNotified());
-        assertEquals("deliverable id wrong", 4, data.getDeliverableId());
+        assertEquals("should have one record", 0, datas.size());
     }
 
     /**
@@ -142,94 +134,65 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     /**
      * <p>Failure test case for main method.</p>
      * <p>The configuration file type is invalid.</p>
+     * @throws Exception to JUnit.
      */
-    public void test_main_6() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {"-c=xxx.xxx"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_6() throws Exception {
+        String result = callMainOut(new String[] {"-c=xxx.xxx"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
      * <p>Failure test case for main method.</p>
      * <p>The configuration file does not exist.</p>
      */
-    public void test_main_7() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {"-c=notexist.properties"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_7() throws Exception {
+        String result = callMainOut(new String[] {"-c=notexist.properties"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
      * <p>Failure test case for main method.</p>
      * <p>The namespace is unknown.</p>
      */
-    public void test_main_8() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {"-c=" + INVALID_CONFIG, "-ns=unknown"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_8() throws Exception {
+        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=unknown"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
      * <p>Failure test case for main method.</p>
      * <p>Fails to parse the configuration file.</p>
      */
-    public void test_main_9() {
-        try {
-            LateDeliverablesTrackingUtility.main(
-                new String[] {"-c=test_files/invalid_config/ConfigurationParserException.xml"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_9() throws Exception {
+        String result = callMainOut(new String[] {"-c=test_files/invalid_config/ConfigurationParserException.xml"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
      * <p>Failure test case for main method.</p>
      * <p>The given file has namespace conflict issue.</p>
      */
-    public void test_main_10() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {
-                "-c=test_files/invalid_config/namespace_conflict.properties"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_10() throws Exception {
+        String result = callMainOut(new String[] {"-c=test_files/invalid_config/namespace_conflict.properties"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
      * <p>Failure test case for main method.</p>
      * <p>Fails to create scheduler.</p>
      */
-    public void test_main_11() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail1"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_11() throws Exception {
+        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail1"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
      * <p>Failure test case for main method.</p>
      * <p>Fails to create scheduler.</p>
      */
-    public void test_main_12() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail2"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_12() throws Exception {
+        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail2"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
@@ -237,26 +200,18 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
      * <p>The configured job can not be created(reference an class can not be found) in
      * this case.</p>
      */
-    public void test_main_13() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail3"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_13() throws Exception {
+        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail3"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
      * <p>Failure test case for main method.</p>
      * <p>The job name reference an unknown job.</p>
      */
-    public void test_main_14() {
-        try {
-            LateDeliverablesTrackingUtility.main(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail4"});
-            fail("should have thrown SecurityException");
-        } catch (SecurityException e) {
-            // pass
-        }
+    public void test_main_14() throws Exception {
+        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail4"});
+        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
@@ -267,8 +222,7 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
      */
     public void test_main_15() throws Exception {
         String result = callMainOut(new String[] {"-interval=xxx", "-interval=123"});
-        assertTrue("check the output message",
-            result.contains("Fails to validate the value of interval argument."));
+        assertTrue("check the output message", result.contains("Fails to validate the value of interval argument."));
     }
 
     /**
@@ -328,4 +282,5 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
             System.setOut(oldOut);
         }
     }
+
 }

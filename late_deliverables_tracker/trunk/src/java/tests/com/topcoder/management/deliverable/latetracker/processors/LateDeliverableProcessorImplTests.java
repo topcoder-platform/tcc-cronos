@@ -97,14 +97,11 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target = new LateDeliverableProcessorImpl();
         assertNull("defaultEmailSubjectTemplateText field should be null", getField(target,
             "defaultEmailSubjectTemplateText"));
-        assertNull("defaultEmailBodyTemplatePath field should be null", getField(target,
-            "defaultEmailBodyTemplatePath"));
-        assertNull("emailBodyTemplatePaths field should be null", getField(target,
-            "emailBodyTemplatePaths"));
-        assertNull("emailSubjectTemplateTexts field should be null", getField(target,
-            "emailSubjectTemplateTexts"));
-        assertNull("notificationDeliverableIds field should be null", getField(target,
-            "notificationDeliverableIds"));
+        assertNull("defaultEmailBodyTemplatePath field should be null",
+            getField(target, "defaultEmailBodyTemplatePath"));
+        assertNull("emailBodyTemplatePaths field should be null", getField(target, "emailBodyTemplatePaths"));
+        assertNull("emailSubjectTemplateTexts field should be null", getField(target, "emailSubjectTemplateTexts"));
+        assertNull("notificationDeliverableIds field should be null", getField(target, "notificationDeliverableIds"));
         assertNull("dbConnectionFactory field should be null", getField(target, "dbConnectionFactory"));
         assertNull("log field should be null", getField(target, "log"));
         assertNull("connectionName field should be null", getField(target, "connectionName"));
@@ -112,8 +109,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         assertNull("resourceManager field should be null", getField(target, "resourceManager"));
         assertNull("userRetrieval field should be null", getField(target, "userRetrieval"));
         assertNull("timestampFormat field should be null", getField(target, "timestampFormat"));
-        assertEquals("notificationInterval field should be zero", new Long(0), getField(target,
-            "notificationInterval"));
+        assertEquals("notificationInterval field should be zero", new Long(0), getField(target, "notificationInterval"));
     }
 
     /**
@@ -132,36 +128,30 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         assertEquals("defaultEmailSubjectTemplateText field should be null",
             "WARNING\\: You are late when providing a deliverable for %PROJECT_NAME%", getField(target,
                 "defaultEmailSubjectTemplateText"));
-        assertEquals("defaultEmailBodyTemplatePath field should be null",
-            "test_files/warn_email_template.html", getField(target, "defaultEmailBodyTemplatePath"));
+        assertEquals("defaultEmailBodyTemplatePath field should be null", "test_files/warn_email_template.html",
+            getField(target, "defaultEmailBodyTemplatePath"));
 
         Map<?, ?> body = (Map) getField(target, "emailBodyTemplatePaths");
         assertEquals("emailBodyTemplatePaths field wrong", 1, body.size());
-        assertEquals("emailBodyTemplatePaths field wrong", "test_files/warn_email_template.html", body
-            .get(new Long(3)));
+        assertEquals("emailBodyTemplatePaths field wrong", "test_files/warn_email_template.html", body.get(new Long(3)));
 
         Map<?, ?> subject = (Map) getField(target, "emailSubjectTemplateTexts");
         assertEquals("emailSubjectTemplateTexts field wrong", 1, subject.size());
         assertEquals("emailSubjectTemplateTexts field wrong",
-            "WARNING\\: You are late when providing a deliverable for %PROJECT_NAME%", subject
-                .get(new Long(3)));
+            "WARNING\\: You are late when providing a deliverable for %PROJECT_NAME%", subject.get(new Long(3)));
 
         Set<?> notificationDeliverableIds = (Set) getField(target, "notificationDeliverableIds");
         assertEquals("notificationDeliverableIds field wrong", 1, notificationDeliverableIds.size());
-        assertTrue("notificationDeliverableIds field wrong", notificationDeliverableIds
-            .contains(new Long(4)));
-        assertNotNull("dbConnectionFactory field should be null",
-            getField(target, "dbConnectionFactory"));
+        assertTrue("notificationDeliverableIds field wrong", notificationDeliverableIds.contains(new Long(4)));
+        assertNotNull("dbConnectionFactory field should be null", getField(target, "dbConnectionFactory"));
         assertNotNull("log field should be null", getField(target, "log"));
-        assertEquals("connectionName field should be null", "informix_connection", getField(target,
-            "connectionName"));
-        assertNotNull("emailSendingUtility field should be null",
-            getField(target, "emailSendingUtility"));
+        assertEquals("connectionName field should be null", "informix_connection", getField(target, "connectionName"));
+        assertNotNull("emailSendingUtility field should be null", getField(target, "emailSendingUtility"));
         assertNotNull("resourceManager field should be null", getField(target, "resourceManager"));
         assertNotNull("userRetrieval field should be null", getField(target, "userRetrieval"));
         assertNotNull("timestampFormat field should be null", getField(target, "timestampFormat"));
-        assertEquals("notificationInterval field should be zero", new Long(10), getField(target,
-            "notificationInterval"));
+        assertEquals("notificationInterval field should be zero", new Long(10),
+            getField(target, "notificationInterval"));
     }
 
     /**
@@ -225,30 +215,6 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     public void test_Configure_4() throws Exception {
         config.setPropertyValue("loggerName", new Exception());
-
-        try {
-            target.configure(config);
-            fail("should have thrown LateDeliverablesTrackerConfigurationException");
-        } catch (LateDeliverablesTrackerConfigurationException e) {
-            // pass
-        }
-    }
-
-    /**
-     * <p>
-     * Failure test case for the {@link
-     * LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
-     * </p>
-     * <p>
-     * The notificationDeliverableIds property is empty in config,
-     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
-     */
-    public void test_Configure_5() throws Exception {
-        config.setPropertyValue("notificationDeliverableIds", "");
 
         try {
             target.configure(config);
@@ -1013,8 +979,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
 
         LateDeliverableData data = datas.get(0);
         assertFalse("forgive should be false", data.isForgive());
-        assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified()
-            .getTime()) < 5000);
+        assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified().getTime()) < 5000);
         assertEquals("should be equal", data.getCreateDate(), data.getLastNotified());
         assertEquals("should be equal", retriever.retrieve().get(0).getPhase().getScheduledEndDate(),
             data.getDeadline());
@@ -1122,12 +1087,11 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.processLateDeliverable(d);
         // extends the deadline
         // delay time : 1 day 12 hours
-        d.getPhase().setScheduledEndDate(
-            new Date(d.getPhase().getScheduledEndDate().getTime() + (DAY / 2)));
+        d.getPhase().setScheduledEndDate(new Date(d.getPhase().getScheduledEndDate().getTime() + (DAY / 2)));
         target.processLateDeliverable(d);
 
-        checkResult(getLateDeliverable(), new Date(d.getPhase().getScheduledEndDate().getTime()
-            - (DAY / 2)), d.getPhase().getScheduledEndDate());
+        checkResult(getLateDeliverable(), new Date(d.getPhase().getScheduledEndDate().getTime() - (DAY / 2)),
+            d.getPhase().getScheduledEndDate());
     }
 
     /**
@@ -1142,20 +1106,16 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
 
         LateDeliverableData data = result.get(0);
         assertFalse("forgive should be false", data.isForgive());
-        assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified()
-            .getTime()) < 5000);
+        assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified().getTime()) < 5000);
         assertEquals("should be equal", data.getCreateDate(), data.getLastNotified());
-        assertEquals("should be equal", first,
-            data.getDeadline());
+        assertEquals("should be equal", first, data.getDeadline());
         assertEquals("deliverable id wrong", 4, data.getDeliverableId());
 
         data = result.get(1);
         assertFalse("forgive should be false", data.isForgive());
-        assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified()
-            .getTime()) < 5000);
+        assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified().getTime()) < 5000);
         assertEquals("should be equal", data.getCreateDate(), data.getLastNotified());
-        assertEquals("should be equal", second,
-            data.getDeadline());
+        assertEquals("should be equal", second, data.getDeadline());
         assertEquals("deliverable id wrong", 4, data.getDeliverableId());
     }
 
@@ -1178,12 +1138,11 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.processLateDeliverable(d);
         // extends the deadline
         // delay time : 1 minute
-        d.getPhase().setScheduledEndDate(
-            new Date(d.getPhase().getScheduledEndDate().getTime() + (DAY * 2)));
+        d.getPhase().setScheduledEndDate(new Date(d.getPhase().getScheduledEndDate().getTime() + (DAY * 2)));
         target.processLateDeliverable(d);
 
-        checkResult(getLateDeliverable(), new Date(d.getPhase().getScheduledEndDate().getTime()
-            - (DAY * 2)), d.getPhase().getScheduledEndDate());
+        checkResult(getLateDeliverable(), new Date(d.getPhase().getScheduledEndDate().getTime() - (DAY * 2)),
+            d.getPhase().getScheduledEndDate());
     }
 
     /**
@@ -1205,12 +1164,12 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.processLateDeliverable(d);
         // extends the deadline
         // delay time : 20 minutes
-        d.getPhase().setScheduledEndDate(
-            new Date(d.getPhase().getScheduledEndDate().getTime() + ((DAY * 2) - 1200000)));
+        d.getPhase().setScheduledEndDate(new Date(d.getPhase().getScheduledEndDate().getTime() + ((DAY * 2) - 1200000)));
         target.processLateDeliverable(d);
 
-        checkResult(getLateDeliverable(), new Date(d.getPhase().getScheduledEndDate().getTime()
-            - ((DAY * 2) - 1200000)), d.getPhase().getScheduledEndDate());
+        checkResult(getLateDeliverable(),
+            new Date(d.getPhase().getScheduledEndDate().getTime() - ((DAY * 2) - 1200000)),
+            d.getPhase().getScheduledEndDate());
     }
 
     /**
@@ -1910,8 +1869,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     public void test_processLateDeliverable_35() throws Exception {
         LateDeliverable d = createLateDeliverable(0);
-        d.setPhase(new Phase(new com.topcoder.project.phases.Project(new Date(),
-            new DefaultWorkdays()), 100));
+        d.setPhase(new Phase(new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 100));
 
         try {
             target.processLateDeliverable(d);
@@ -1933,12 +1891,11 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         Deliverable deliverable = new Deliverable(1, 112, 1000, null, false);
         deliverable.setId(4);
 
-        Phase phase = new Phase(new com.topcoder.project.phases.Project(new Date(),
-            new DefaultWorkdays()), 100);
+        Phase phase = new Phase(new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 100);
         phase.setScheduledEndDate(new Date());
 
-        Project project = new Project(1, new ProjectCategory(1, "Dev", new ProjectType(1, "type")),
-            new ProjectStatus(2, "Active"));
+        Project project = new Project(1, new ProjectCategory(1, "Dev", new ProjectType(1, "type")), new ProjectStatus(
+            2, "Active"));
 
         project.setProperty("Project Name", "name");
         project.setProperty("Project Version", "version");

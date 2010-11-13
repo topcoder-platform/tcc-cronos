@@ -53,7 +53,8 @@
 	<property name="javamail.jar" value="${ext_libdir}/javamail/1.4.3/mail.jar" />
 	<property name="activation.jar" value="${ext_libdir}/jaf/1.1.1/activation.jar" />
 	<property name="dumbster.jar" value="${ext_libdir}/dumbster/1.6/dumbster1.6.jar" />
-	
+	<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j.jar" />
+		
 	<path id="component.tcs-dependencies">
 		<pathelement location="${base_exception.jar}" />
 		<pathelement location="${class_associations.jar}" />
@@ -104,6 +105,7 @@
 		<pathelement location="${javamail.jar}" />
 		<pathelement location="${activation.jar}" />
 		<pathelement location="${dumbster.jar}" />
+		<pathelement location="${log4j.jar}" />
 	</path>
 
 	<path id="component.test.3rdParty-dependencies">
