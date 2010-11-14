@@ -26,6 +26,9 @@ import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
 
+import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceManager;
+import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.project.phases.Phase;
 
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
@@ -198,6 +201,13 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
     /**
      * <p>
+     * Represents &quot;resourceManagerKey&quot; property key in configuration.
+     * </p>
+     */
+    private static final String RESOURCE_MANAGER_KEY = "resourceManagerKey";
+
+    /**
+     * <p>
      * Represents &quot;deliverablePersistenceKey&quot; property key in configuration.
      * </p>
      */
@@ -353,6 +363,21 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     private Set<Long> trackingDeliverableIds;
 
     /**
+     * <p>
+     * The resource manager to be used by this class for retrieving user ID by resource
+     * ID.
+     * </p>
+     * <p>
+     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
+     * that.
+     * </p>
+     * <p>
+     * Cannot be null after initialization.
+     * </p>
+     */
+    private ResourceManager resourceManager;
+
+    /**
      * Creates an instance of <code>LateDeliverablesRetrieverImpl</code>.
      */
     public LateDeliverablesRetrieverImpl() {
@@ -401,6 +426,9 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
         // // create phase manager via object factory
         phaseManager = Helper.createObject(config, objectFactory, PHASE_MANAGER_KEY, PhaseManager.class);
+
+        // Create resource manager with OF
+        resourceManager = Helper.createObject(config, objectFactory, RESOURCE_MANAGER_KEY, ResourceManager.class);
 
         Map<String, DeliverableChecker> deliverableCheckers = getDeliverableCheckers(config,
             objectFactory);
@@ -565,11 +593,15 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
         Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
 
-        List<LateDeliverable> result = createResult(deliverables, projectById, phaseById);
+        try {
+            List<LateDeliverable> result = createResult(deliverables, projectById, phaseById);
 
-        Helper.logExit(log, signature, result, start);
+            Helper.logExit(log, signature, result, start);
 
-        return result;
+            return result;
+        } catch (ResourcePersistenceException e) {
+            throw new LateDeliverablesRetrievalException("Failed to retrieve resource", e);
+        }
     }
 
     /**
@@ -604,8 +636,8 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      *            the map contains phases.
      * @return the created list of <code>LateDeliverable</code>.
      */
-    private static List<LateDeliverable> createResult(Deliverable[] deliverables,
-        Map<Long, Project> projectById, Map<Long, Phase> phaseById) {
+    private List<LateDeliverable> createResult(Deliverable[] deliverables,
+        Map<Long, Project> projectById, Map<Long, Phase> phaseById) throws ResourcePersistenceException {
         List<LateDeliverable> result = new ArrayList<LateDeliverable>(deliverables.length);
 
         for (Deliverable deliverable : deliverables) {
@@ -627,6 +659,20 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
             Phase phase = phaseById.get(phaseId);
             // Set phase to the late deliverable instance
             lateDeliverable.setPhase(phase);
+
+            // Filter out Final Fixes for non-winning submitters
+            if (deliverable.getId() == 20) {
+                long resourceId = deliverable.getResource();
+                Resource resource = this.resourceManager.getResource(resourceId);
+                if (resource != null) {
+                    Object userId = resource.getProperty("External Reference ID");
+                    Object winnerExtRefId = project.getProperty("Winner External Reference ID");
+                    if (!winnerExtRefId.equals(userId)) {
+                        continue;
+                    }
+                }
+            }
+
             // add to result
             result.add(lateDeliverable);
         }

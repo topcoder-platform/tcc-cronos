@@ -413,12 +413,10 @@ public class LateDeliverablesTrackingUtility {
 
             LateDeliverablesTrackingJobRunner.setConfig(jobConfig);
 
-            if (interval != null) {
-                job.setIntervalUnit(new Second());
-                job.setIntervalValue(interval);
-            }
-
             JobProcessor jobProcessor = new JobProcessor(scheduler, ONE_DAY, log);
+            if (interval != null) {
+                jobProcessor.setExecuteInternal(interval);
+            }
             jobProcessor.start();
 
             // Wait until the user presses Enter
