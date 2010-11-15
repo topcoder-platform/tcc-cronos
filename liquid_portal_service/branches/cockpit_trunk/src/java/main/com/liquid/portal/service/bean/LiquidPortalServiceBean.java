@@ -558,6 +558,30 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     private long liquidStudioContestsEmailBilling;
     
+	/************************* BUGR 4394 fix goes here ********************************/
+	/**
+	 * <p>
+	 * Represents the email template name for contest creation notification.
+	 * </p>
+	 */
+	private String ccnEmailTemplateName;
+
+	/**
+	 * <p>
+	 * Represents the email from address for contest creation notification.
+	 * </p>
+	 */
+	private String ccnEmailFrom;
+
+	/**
+	 * <p>
+	 * Represents the email to address for contest creation notification.
+	 * </p>
+	 */
+	private String ccnEmailTo;
+
+	/************************* BUGR 4394 fix ends here ********************************/
+
     private Pattern allowedCharacters;
 
     /**
@@ -623,6 +647,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             liquidStudioContestsEmailCC = getConfigurationValue("liquidStudioContestsEmailCC", configObject);
 	        liquidStudioContestsEmailTemplateName = getConfigurationValue("liquidStudioContestsEmailTemplateName", configObject);
             liquidStudioContestsEmailBilling = getConfigurationLongValue("liquidStudioContestsEmailBilling", configObject);
+
+
+            /*********************************************  BUGR 4394 fix goes here ***************************************/
+			ccnEmailTo = getConfigurationValue("ccnEmailTo", configObject);
+			ccnEmailFrom = getConfigurationValue("ccnEmailFrom", configObject);
+			ccnEmailTemplateName = getConfigurationValue("ccnEmailTemplateName", configObject);
+			/*********************************************  BUGR 4394 fix ends here ***************************************/
+
 
             // Create a new instance of Log
             logName = getConfigurationValue("logName", configObject);
@@ -1695,7 +1727,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                 result.setStudioCompetition(comp);
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getContestData().getContestId() + ".");
-                
+                contestId = comp.getContestData().getContestId();
                 if (competitionData.getBillingProjectId() == liquidStudioContestsEmailBilling)
                 {
                     try {
@@ -2084,6 +2116,8 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         
             result.setWarnings(warnings);
             logExit(methodName);
+			
+			sendContestCreationNotification(requestorInfo, competitionData, contestId); 
             return result;
         } catch (DAOException e) {
             sessionContext.setRollbackOnly();
@@ -2561,6 +2595,68 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         }
     }
 
+ /********************* Added by BUGR-4394 begins ****************************/
+    /**
+     * <p>
+     * Send a notification that when a contest was created successfully.
+     * </p>
+     * <p>
+	 * Added by BUGR-4394.
+	 * </p>
+     * @param requestorInfo
+     *            the information of the contest owner.
+	 * @param competitionData the competition data
+	 * @param contestId the contest id.
+     * @throws LiquidPortalServiceException
+     *             If there is an error during the creation and sending of the
+     *             notification
+     */
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    private void sendContestCreationNotification(UserInfo requestorInfo, CompetitionData competitionData,
+		long contestId) throws LiquidPortalServiceException {
+        String methodName = "sendContestCreationNotification";
+        logEntrance(methodName);
+
+        try {
+            Template template = documentGenerator.getTemplate(ccnEmailTemplateName);
+            String data = "<DATA><CONTEST_NAME>" + competitionData.getContestName() + "</CONTEST_NAME>";
+			data += "<LAUNCH_TIME>" + competitionData.getRequestedStartDate() + "</LAUNCH_TIME>";
+			data += "<CONTEST_ID>" + contestId + "</CONTEST_ID>";
+			data += "<ACCOUNT_CODE>" + competitionData.getCockpitProjectName() + "</ACCOUNT_CODE>";
+			data += "<CREATOR_HANDLE>" + requestorInfo.getHandle() + "</CREATOR_HANDLE></DATA>";
+            String message = documentGenerator.applyTemplate(template, data);
+
+            TCSEmailMessage emailMessage = new TCSEmailMessage();
+            emailMessage.setFromAddress(ccnEmailFrom);
+            emailMessage.setBody(message);
+            emailMessage.setToAddress(ccnEmailTo, TCSEmailMessage.TO);
+			emailMessage.setToAddress(requestorInfo.getEmailAddress(), TCSEmailMessage.CC);
+            emailMessage.setSubject(competitionData.getContestName() + " - " + competitionData.getContestTypeName());
+            EmailEngine.send(emailMessage);
+
+            logExit(methodName);
+        } catch (TemplateSourceException e) {
+            throw logError(new LiquidPortalServiceException(
+                    "Error occurs when sending contest creation notification to handle:" + requestorInfo.getHandle(), e), methodName);
+        } catch (TemplateFormatException e) {
+            throw logError(new LiquidPortalServiceException(
+           
+			"Error occurs when sending contest creation notification to handle:" + requestorInfo.getHandle(), e), methodName);
+        } catch (TemplateDataFormatException e) {
+            throw logError(new LiquidPortalServiceException(
+                    "Error occurs when sending contest creation notification to handle:" + requestorInfo.getHandle(), e), methodName);
+        } catch (AddressException e) {
+            throw logError(new LiquidPortalServiceException(
+                    "Error occurs when sending contest creation notification to handle:" + requestorInfo.getHandle(), e), methodName);
+        } catch (ConfigManagerException e) {
+            throw logError(new LiquidPortalServiceException(
+                    "Error occurs when sending contest creation notification to handle:" + requestorInfo.getHandle(), e), methodName);
+        } catch (SendingException e) {
+            throw logError(new LiquidPortalServiceException(
+                    "Error occurs when sending contest creation notification to handle:" + requestorInfo.getHandle(), e), methodName);
+        }
+    }
+/********************* Added by BUGR-4394 ends ****************************/
     /**
      * <p>
      * Send a jira notification that the given user cannot be added.
