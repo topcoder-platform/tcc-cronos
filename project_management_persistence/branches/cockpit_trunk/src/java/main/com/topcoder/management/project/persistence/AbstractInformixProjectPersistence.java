@@ -1422,7 +1422,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
             Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE, Helper.LONG_TYPE};
+            Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to find the corresponding develop contest for the design contest.
@@ -5053,7 +5053,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("      multiset (SELECT  item cpri.value FROM resource cpr INNER JOIN resource_info cpri  ");
             sb.append("             ON cpr.resource_id = cpri.resource_id  ");
             sb.append("              WHERE cpr.project_id = c.project_id AND cpr.resource_role_id = 14 AND cpri.resource_info_type_id = 2)::lvarchar,  ");
-            sb.append("          'MULTISET{'''), '''}'),''''),'MULTISET{}') AS copilot, c.project_category_id ");
+            sb.append("          'MULTISET{'''), '''}'),''''),'MULTISET{}') AS copilot, c.project_category_id,  ");
+            sb.append("   (case when exists (select project_phase_id from project_phase where c.project_id = project_id and phase_status_id != 3) then 'true' else null end) as scheduled_or_open_phase  ");
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -5224,6 +5225,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 				 // any contest that has an open phase in Online Review
 					c.setSname("Active");
 				} else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
+                    // all phases are done, then it is completed
+                    if (rows[i][40] == null)
+                    {
+                        c.setSname("Completed");
+                    }
 				    //scheduled or draft
 					c.setSname(((String)rows[i][35]).trim());
 				} else if(!((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
