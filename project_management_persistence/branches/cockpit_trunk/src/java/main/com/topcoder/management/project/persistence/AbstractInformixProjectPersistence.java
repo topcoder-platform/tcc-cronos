@@ -5054,7 +5054,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("             ON cpr.resource_id = cpri.resource_id  ");
             sb.append("              WHERE cpr.project_id = c.project_id AND cpr.resource_role_id = 14 AND cpri.resource_info_type_id = 2)::lvarchar,  ");
             sb.append("          'MULTISET{'''), '''}'),''''),'MULTISET{}') AS copilot, c.project_category_id,  ");
-            sb.append("   (case when exists (select project_phase_id from project_phase where c.project_id = project_id and phase_status_id != 3) then 'true' else null end) as scheduled_or_open_phase  ");
+            sb.append("   (case when exists (select project_phase_id from project_phase where c.project_id = project_id and phase_status_id = 3)  ");
+            sb.append("              and exists (select project_phase_id from project_phase where c.project_id = project_id and phase_status_id = 1) then 'Active'   ");
+            sb.append("         when not exists (select project_phase_id from project_phase where c.project_id = project_id and phase_status_id = 2)   ");
+            sb.append("              and not exists (select project_phase_id from project_phase where c.project_id = project_id and phase_status_id = 1) then 'Completed'  ");
+            sb.append("         else null end) as phases  ");
             sb.append(" from project as c ");
             sb.append(" join project_info as piccat ");
             sb.append("     on c.project_id = piccat.project_id ");
@@ -5226,12 +5230,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 					c.setSname("Active");
 				} else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
                     // all phases are done, then it is completed
-                    if (rows[i][40] == null)
+                    if (rows[i][40] != null && ((String)rows[i][40]).trim().equalsIgnoreCase("Completed"))
                     {
                         c.setSname("Completed");
                     }
-				    //scheduled or draft
-					c.setSname(((String)rows[i][35]).trim());
+                    else if (rows[i][40] != null && ((String)rows[i][40]).trim().equalsIgnoreCase("Active"))
+                    {
+                        c.setSname("Active");
+                    }
+                    else 
+                    {
+                        //scheduled or draft
+                        c.setSname(((String)rows[i][35]).trim());
+                    }
 				} else if(!((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
 
                     if (((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_CLIENT_REQUEST.getName()) 
