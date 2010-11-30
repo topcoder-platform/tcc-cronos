@@ -1,0 +1,1268 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0081)http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings -->
+<HTML><HEAD><TITLE>Component Development Reliability Ratings - TopCoder Wiki</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META http-equiv=Pragma content=no-cache>
+<META http-equiv=Expires content=-1>
+<SCRIPT language=javascript>
+        var contextPath = '/wiki';
+        var i18n = [];
+    </SCRIPT>
+<LINK 
+href="Component Development Reliability Ratings - TopCoder Wiki.files/main-action.css" 
+type=text/css rel=stylesheet>
+<SCRIPT 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/effects.js" 
+type=text/javascript></SCRIPT>
+<LINK href="/i/favicon.ico" type=image/x-icon rel="shortcut icon"><LINK 
+href="Component Development Reliability Ratings - TopCoder Wiki.files/tcStyles.css" 
+type=text/css rel=stylesheet><LINK 
+href="Component Development Reliability Ratings - TopCoder Wiki.files/coders.css" 
+type=text/css rel=stylesheet><LINK 
+href="Component Development Reliability Ratings - TopCoder Wiki.files/wiki.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.6003" name=GENERATOR></HEAD>
+<BODY onload="">
+<SCRIPT 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/popup.js" 
+type=text/javascript></SCRIPT>
+
+<DIV id=shortcutBar>
+<DIV class=icon><A href="http://www.topcoder.com/tc"><IMG 
+onmouseover="postPopUpText('globalPopupText','Home'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scHome.png"></A></DIV>
+<DIV class=icon><A href="javascript:arena();"><IMG 
+onmouseover="postPopUpText('globalPopupText','Algorithm Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scAlgo.png"></A></DIV>
+<DIV class=icon><A 
+href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=23"><IMG 
+onmouseover="postPopUpText('globalPopupText','Software Conceptualization Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scConceptualization.png"></A></DIV>
+<DIV class=icon><A 
+href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=6"><IMG 
+onmouseover="postPopUpText('globalPopupText','Software Specification Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scSpecification.png"></A></DIV>
+<DIV class=icon><A 
+href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=7"><IMG 
+onmouseover="postPopUpText('globalPopupText','Software Architecture Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scArchitecture.png"></A></DIV>
+<DIV class=icon><A 
+href="http://www.topcoder.com/tc?module=ViewActiveContests&amp;ph=112"><IMG 
+onmouseover="postPopUpText('globalPopupText','Component Design Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scDesign.png"></A></DIV>
+<DIV class=icon><A 
+href="http://www.topcoder.com/tc?module=ViewActiveContests&amp;ph=113"><IMG 
+onmouseover="postPopUpText('globalPopupText','Component Development Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scDevelopment.png"></A></DIV>
+<DIV class=icon><A 
+href="http://www.topcoder.com/tc?module=ViewAssemblyActiveContests"><IMG 
+onmouseover="postPopUpText('globalPopupText','Software Assembly Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scAssembly.png"></A></DIV>
+<DIV class=icon><A href="javascript:arena();"><IMG 
+onmouseover="postPopUpText('globalPopupText','High School Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scTCHS.png"></A></DIV>
+<DIV class=icon><A 
+href="http://www.topcoder.com/longcontest/?module=ViewActiveContests"><IMG 
+onmouseover="postPopUpText('globalPopupText','Marathon Matches'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scMarathon.png"></A></DIV>
+<DIV class=icon><A 
+href="http://studio.topcoder.com/?module=ViewActiveContests"><IMG 
+onmouseover="postPopUpText('globalPopupText','TopCoder Studio Competitions'); popUp(this,'globalPopup');" 
+onmouseout=popHide() alt="" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/scStudio.png"></A></DIV></DIV>
+<DIV class=popUp id=globalPopup>
+<DIV id=globalPopupText></DIV></DIV>
+<DIV style="RIGHT: 0px; POSITION: absolute; TOP: 31px"><A 
+href="http://www.topcoder.com/tc?module=MyHome"><IMG style="DISPLAY: block" 
+alt="My TopCoder" 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/myTopCoder.png"></A></DIV>
+<DIV style="MARGIN: 0px 290px 0px 280px" align=center>
+<DIV id=outerLogo>
+<DIV id=innerLogo><A href="http://www.topcoder.com/"><IMG style="DISPLAY: block" 
+alt=TopCoder 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/topcoder.gif"></A> 
+</DIV></DIV></DIV>
+<DIV class=memberCountBox>Member Count: 271,660 - November 17, 2010 &nbsp;<A 
+class=gMetal href="javascript:tcTime()">[Get Time]</A> </DIV>
+<DIV class=topBar>
+<DIV style="FLOAT: right; MARGIN: 5px 0px 0px">Hello,&nbsp;<A 
+class=coderTextWhite 
+href="http://www.topcoder.com/tc?module=MemberProfile&amp;cr=22903446">pkuwood</A> 
+| <A class=gMetal href="http://www.topcoder.com/tc?module=Logout">Logout</A> 
+</DIV></DIV>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD width=180>
+      <SCRIPT language=JavaScript 
+      src="Component Development Reliability Ratings - TopCoder Wiki.files/arena.js" 
+      type=text/javascript></SCRIPT>
+
+      <SCRIPT language=JavaScript type=text/javascript>
+<!--
+function toggleMenu(menuTitle,menuID){
+   var menu = document.getElementById(menuID);
+   if(menu.style.display == 'block') menu.className = 'CLOSED';
+   else if(menu.className == 'OPEN' && menu.style.display != 'none') menu.className = 'CLOSED';
+   else {
+      menu.className = 'OPEN';
+   }
+   if(menuTitle.blur)menuTitle.blur();
+   if(menuTitle.className == 'exp') menuTitle.className = 'exp_ed';
+   else menuTitle.className = 'exp';
+   return;
+}
+function flipMenu(myMenuName){
+   var menuName = document.getElementById(myMenuName);
+   menuName.className = 'exp_ed';
+}
+
+// -->
+</SCRIPT>
+
+      <DIV 
+      style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><IMG 
+      alt="" 
+      src="Component Development Reliability Ratings - TopCoder Wiki.files/leftnav_top.gif"></DIV>
+      <DIV id=navbar>
+      <UL>
+        <LI class=exp_ed><A 
+        onclick="Javascript:toggleMenu(this.parentNode,'m_competitions')" 
+        href="javascript:void(0)">Competitions</A> 
+        <UL class=OPEN id=m_competitions>
+          <LI><A href="http://www.topcoder.com/tc">Home</A> </LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_competitor_stats')" 
+          href="javascript:void(0)">The Tops</A> 
+          <UL id=m_competitor_stats>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_top_rated_competitors')" 
+            href="javascript:void(0)">Top Ranked</A> 
+            <UL id=m_top_rated_competitors>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=AlgoRank">Algorithm</A> 
+              </LI>
+              <LI><A href="http://www.topcoder.com/tc?module=HSRank">High 
+              School</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/stats/?module=CoderRank">Marathon 
+              Match</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/stat?c=top_conceptors">Conceptualization</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/stat?c=top_specificators">Specification</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/stat?c=top_architects">Architecture</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/stat?c=top_designers">Design</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/stat?c=top_developers">Development</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/stat?c=top_assemblers">Assembly</A> 
+              </LI>
+              <LI><A href="http://www.topcoder.com/stat?c=top_testers">Test 
+              Suites</A> </LI></UL></LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_recordbook')" 
+            href="javascript:void(0)">Record Book</A> 
+            <UL id=m_recordbook>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=Static&amp;d1=statistics&amp;d2=recordbook_home">Algorithm</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=Static&amp;d1=compstats&amp;d2=comp_recordbook_home">Component</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/?module=Static&amp;d1=stats&amp;d2=recordbook_home">Marathon 
+              Match</A> </LI></UL></LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_com')" 
+            href="javascript:void(0)">Coder of the Month</A> 
+            <UL id=m_com>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=COMHistory&amp;achtid=5">Algorithm</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=COMHistory&amp;achtid=6">Design</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=COMHistory&amp;achtid=7">Development</A> 
+              </LI></UL></LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_algo_competitions')" 
+          href="javascript:void(0)">Algorithm</A> 
+          <UL id=m_algo_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Algorithm+Overview">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_algo_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_algo_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Algorithm+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Algorithm+Competition+FAQs">FAQs</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Algorithm+Competition+Rating+System">Rating 
+              System</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Write+Problems+for+TopCoder">Write 
+              Problems</A> </LI></UL></LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_algo_stats')" 
+            href="javascript:void(0)">Statistics</A> 
+            <UL id=m_algo_stats>
+              <LI><A href="http://www.topcoder.com/tc?module=MatchList">Match 
+              Archive</A> </LI>
+              <LI><A href="http://www.topcoder.com/stat?c=round_overview">Match 
+              Overviews</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=SrmDivisionWins">Match 
+              Winners</A> </LI>
+              <LI><A href="http://www.topcoder.com/stat?c=last_match">Match 
+              Results</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Algorithm+Problem+Set+Analysis">Match 
+              Editorials</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=ProblemArchive">Problem 
+              Archive</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=ColorChange&amp;ratid=1">Recent 
+              Color Changes</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Algorithm+Data+Feeds">Data 
+              Feeds</A> </LI></UL></LI>
+            <LI><A href="javascript:arena();">Launch Arena</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_copilot_opportunities')" 
+          href="javascript:void(0)">Copilot Opportunities</A> 
+          <UL id=m_copilot_opportunities>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Copilot+Overview">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_copilot_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_copilot_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Copilot+Opportunities">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Copilot+Documentation">Documentation</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Copilot+Submission+Instructions">Tutorial</A> 
+              </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=29">Active 
+            Contests</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_conceptualization_competitions')" 
+          href="javascript:void(0)">Conceptualization</A> 
+          <UL id=m_conceptualization_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+Conceptualization+Contests">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_conceptualization_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_conceptualization_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Conceptualization+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Conceptualization+Documentation">Documentation</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Conceptualization+Submission+Instructions">Tutorial</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Conceptualization+Reliability+Bonus">Reliability 
+              Ratings</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=23">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=23">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;ph=134">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=23">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=23">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_specification_competitions')" 
+          href="javascript:void(0)">Specification</A> 
+          <UL id=m_specification_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+Specification+Contests">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_specification_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_specification_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Specification+Competitions">How 
+              to Compete</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=6">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=6">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;ph=117">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=6">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=6">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_architecture_competitions')" 
+          href="javascript:void(0)">Architecture</A> 
+          <UL id=m_architecture_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Architecture+Overview">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_architecture_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_architecture_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Architecture+Competitions">How 
+              to Compete</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=7">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=7">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;ph=118">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=7">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=7">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_des_competitions')" 
+          href="javascript:void(0)">Component Design</A> 
+          <UL id=m_des_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Component+Design+Overview">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_des_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_des_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Component+Design+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Design+Documentation">Documentation</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Design+Ratings">Ratings</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Design+Reliability+Ratings">Reliability 
+              Ratings</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=ColorChange&amp;ph=112">Recent 
+              Color Changes</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Design+Data+Feeds">Data 
+              Feeds</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewActiveContests&amp;ph=112">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=1">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;ph=112">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=1">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=1">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp_ed><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_dev_competitions')" 
+          href="javascript:void(0)">Component Development</A> 
+          <UL class=OPEN id=m_dev_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Component+Development+Competitions">Overview</A> 
+            </LI>
+            <LI class=exp_ed><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_dev_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL class=OPEN id=m_dev_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Component+Development+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Development+Documentation">Documentation</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Development+Ratings">Ratings</A> 
+              </LI>
+              <LI class=highlight><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings">Reliability 
+              Ratings</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=ColorChange&amp;ph=113">Recent 
+              Color Changes</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Development+Data+Feeds">Data 
+              Feeds</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewActiveContests&amp;ph=113">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=2">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;ph=113">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=2">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=2">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_assembly_competitions')" 
+          href="javascript:void(0)">Assembly</A> 
+          <UL id=m_assembly_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Assembly">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_assembly_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_assembly_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Assembly+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Assembly+Competition+Tutorial">Tutorial</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Assembly+Competition+Documentation">Documentation</A> 
+              </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewAssemblyActiveContests">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=14">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;ph=125">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=14">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=14">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_test_scenarios_competitions')" 
+          href="javascript:void(0)">Test Scenarios</A> 
+          <UL id=m_test_scenarios_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Test+Scenarios+and+Scripts">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_test_scenarios_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_test_scenarios_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Testing+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Testing+Competition+Tutorial">Tutorial</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Testing+Competition+Documentation">Documentation</A> 
+              </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=26">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=26">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;pt=26">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=26">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=26">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_test_suites_competitions')" 
+          href="javascript:void(0)">Test Suites</A> 
+          <UL id=m_test_suites_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Test+Scenarios+and+Scripts">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_test_suites_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_test_suites_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Testing+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Testing+Competition+Tutorial">Tutorial</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/Testing+Competition+Documentation">Documentation</A> 
+              </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=13">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=13">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;pt=13">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=13">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=13">Meet 
+            the Review Board</A> </LI>
+            <LI><A href="http://software.topcoder.com/review">Submit &amp; 
+            Review</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/TopCoder+UML+Tool">UML 
+            Tool</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_ui_prototype_competitions')" 
+          href="javascript:void(0)">UI Prototype</A> 
+          <UL id=m_ui_prototype_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/UI+Prototype+Competitions">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_ui_prototype_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_ui_prototype_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+UI+Prototype+Competitions">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/UI+Prototype+Ratings">Ratings</A> 
+              </LI>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/UI+Prototype+Reliability+Ratings">Reliability 
+              Ratings</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=19">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=19">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;pt=19">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=19">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=19">Meet 
+            the Review Board</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_ria_build_competitions')" 
+          href="javascript:void(0)">RIA Build</A> 
+          <UL id=m_ria_build_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/RIA+Build+Competitions">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_ria_build_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_ria_build_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+RIA+Builds">How 
+              to Compete</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ActiveContests&amp;pt=24">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ContestStatus&amp;pt=24">Contest 
+            Status</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CompList&amp;pt=24">Past 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ViewReviewProjects&amp;pt=24">Review 
+            Opportunities</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=ReviewBoard&amp;pt=24">Meet 
+            the Review Board</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_bugraces_competitions')" 
+          href="javascript:void(0)">Bug Race</A> 
+          <UL id=m_bugraces_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Bug+Race+Competition+Overview">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_bugraces_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_bugraces_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Bug+Race+Competitions">How 
+              to Compete</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Active+Bug+Race+Competitions">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Bug+Races+Reviews">Review 
+            Opportunities</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_long_contests')" 
+          href="javascript:void(0)">Marathon Match</A> 
+          <UL id=m_long_contests>
+            <LI><A 
+            href="http://www.topcoder.com/wiki/display/tc/Marathon+Match+Overview">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_long_support')" 
+            href="javascript:void(0)">Track Information</A> 
+            <UL id=m_long_support>
+              <LI><A 
+              href="http://www.topcoder.com/wiki/display/tc/How+to+Compete+in+Marathon+Match+Events">How 
+              to Compete</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/?module=Static&amp;d1=support&amp;d2=ratings">Rating 
+              System</A> </LI></UL></LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_long_stats')" 
+            href="javascript:void(0)">Statistics</A> 
+            <UL id=m_long_stats>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/stats/?module=MatchList">Match 
+              Archive</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/stats/?module=ViewOverview">Match 
+              Overview</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/stats/?module=MatchWinners">Match 
+              Winners</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/?module=Static&amp;d1=match_editorials&amp;d2=archive">Match 
+              Editorials</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/longcontest/?module=Static&amp;d1=support&amp;d2=dataFeed">Data 
+              Feeds</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/longcontest/?module=ViewActiveContests">Active 
+            Contests</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/longcontest/?module=ViewPractice">Practice</A> 
+            </LI>
+            <LI><A 
+            href="http://www.topcoder.com/longcontest/?module=ViewQueue">Queue 
+            Status</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_hs_competitions')" 
+          href="javascript:void(0)">High School</A> 
+          <UL id=m_hs_competitions>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=Static&amp;d1=hs&amp;d2=home">Overview</A> 
+            </LI>
+            <LI class=exp><A 
+            onclick="Javascript:toggleMenu(this.parentNode,'m_hs_stats')" 
+            href="javascript:void(0)">Statistics</A> 
+            <UL id=m_hs_stats>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=HSRoundOverview">Match 
+              Overview</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=HSRoundStatsTeam">Match 
+              Results (Team)</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=HSRoundStatsInd">Match 
+              Results (Indiv.)</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=Static&amp;d1=hs&amp;d2=match_editorials&amp;d3=archive">Match 
+              Editorials</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=ColorChange&amp;ratid=2">Recent 
+              Color Changes</A> </LI>
+              <LI><A 
+              href="http://www.topcoder.com/tc?module=Static&amp;d1=hs&amp;d2=support&amp;d3=dataFeed">Data 
+              Feeds</A> </LI></UL></LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=Static&amp;d1=hs&amp;d2=spotlightSessions">Spotlight 
+            Sessions</A> </LI>
+            <LI><A href="javascript:arena();">Launch Arena</A> </LI></UL></LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_tournaments')" 
+          href="javascript:void(0)">Tournaments</A> 
+          <UL id=m_tournaments>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=Static&amp;d1=tournaments&amp;d2=home">TopCoder</A> 
+            </LI>
+            <LI><A href="http://www.topcoder.com/pl/">Powered by TopCoder</A> 
+            </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=CRPFStatic&amp;d1=crpf&amp;d2=crpf_overview">Charity</A> 
+            </LI></UL></LI>
+          <LI><A href="http://www.topcoder.com/dr">The Digital Run</A> </LI>
+          <LI class=exp><A 
+          onclick="Javascript:toggleMenu(this.parentNode,'m_edu_content')" 
+          href="javascript:void(0)">Educational Content</A> 
+          <UL id=m_edu_content>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=Static&amp;d1=education&amp;d2=overview">Overview</A> 
+            </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=alg_index">Algorithm 
+            Tutorials</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=comp_index">Component 
+            Tutorials</A> </LI>
+            <LI><A 
+            href="http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=mm_index">Marathon 
+            Tutorials</A> </LI></UL></LI>
+          <LI><A 
+          href="http://www.topcoder.com/wiki/display/tc/How+to+Get+Paid+for+Competing">How 
+          to Get Paid</A> </LI></UL></LI>
+        <LI><A href="http://forums.topcoder.com/">Forums</A> </LI>
+        <LI><A href="http://www.topcoder.com/wiki/dashboard.action">TopCoder 
+        Wiki</A> </LI>
+        <LI><A 
+        href="http://www.topcoder.com/tc?module=Static&amp;d1=calendar&amp;d2=thisMonth">Event 
+        Calendar</A> </LI>
+        <LI><A 
+        href="http://www.topcoder.com/tc?module=Static&amp;d1=pressroom&amp;d2=index">Press 
+        Room</A> </LI>
+        <LI><A 
+        href="http://www.topcoder.com/tc?&amp;module=SurveyList">Surveys</A> 
+        </LI>
+        <LI><A href="http://www.topcoder.com/tc?module=MyHome">My TopCoder</A> 
+        </LI>
+        <LI class=exp><A 
+        onclick="Javascript:toggleMenu(this.parentNode,'m_about_tc')" 
+        href="javascript:void(0)">About TopCoder</A> 
+        <UL id=m_about_tc>
+          <LI><A href="http://www.topcoder.com/home">Overview</A> </LI>
+          <LI><A 
+          href="http://www.topcoder.com/tc?module=Static&amp;d1=about&amp;d2=whyjoin">Why 
+          Join TopCoder?</A> </LI>
+          <LI><A 
+          href="http://www.topcoder.com/tc?module=Static&amp;d1=about&amp;d2=jobs">Working 
+          at TopCoder</A> </LI>
+          <LI><A 
+          href="http://www.topcoder.com/tc?module=Static&amp;d1=about&amp;d2=management">Management 
+          Team</A> </LI></UL></LI></UL>
+      <DIV 
+      style="PADDING-RIGHT: 0px; PADDING-LEFT: 17px; FLOAT: left; PADDING-BOTTOM: 0px; PADDING-TOP: 10px"><A 
+      href="http://www.topcoder.com/tc?module=LinkTracking&amp;link=http://software.topcoder.com/&amp;refer=leftnav"><IMG 
+      alt="TopCoder Direct" 
+      src="Component Development Reliability Ratings - TopCoder Wiki.files/tc_direct.png"></A> 
+      </DIV>
+      <DIV id=navbarSearch><B>Member Search:</B> 
+      <FORM class=noSpace id=simpleSearchForm name=simpleSearchForm 
+      action=http://www.topcoder.com/tc method=get><INPUT class=noSpace 
+      type=hidden value=SimpleSearch name=module> <INPUT class=noSpace 
+      onblur="javascript:if (document.simpleSearchForm.ha.value == '')document.simpleSearchForm.ha.value = 'Handle:';" 
+      onfocus="javascript: if (document.simpleSearchForm.ha.value=='Handle:') document.simpleSearchForm.ha.value = '';" 
+      maxLength=15 size=12 value=Handle: name=ha> <A class=gMetal 
+      href="javascript:void%20document.simpleSearchForm.submit();">Go</A><BR><A 
+      class=gMetal 
+      href="http://www.topcoder.com/tc?module=ViewAdvanced">Advanced Search</A> 
+      </FORM></DIV></DIV>
+      <DIV 
+      style="CLEAR: left; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FLOAT: left; PADDING-BOTTOM: 23px; PADDING-TOP: 0px"><IMG 
+      alt="" 
+      src="Component Development Reliability Ratings - TopCoder Wiki.files/leftnav_bottom.gif"></DIV>
+      <DIV style="CLEAR: left; FLOAT: left; MARGIN: 0px; WIDTH: 170px" 
+      align=center><IMG style="MARGIN-BOTTOM: 23px" alt="" 
+      src="Component Development Reliability Ratings - TopCoder Wiki.files/brackets.png"> 
+      </DIV></TD>
+    <TD class=bodyColumn align=left width="100%">
+      <SCRIPT type=text/javascript>
+        function hideMessage(messageId)
+        {
+            var message = document.getElementById(messageId)
+            message.style.display = "none";
+            setCookie(messageId, true);
+        }
+    </SCRIPT>
+
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR class=topBar>
+          <TD align=left><SPAN class=topBarDiv>
+            <SCRIPT language=JavaScript>
+        function showBreadcrumbsEllipsis()
+        {
+            document.getElementById('breadcrumbsEllipsis').style.display = 'none';
+            document.getElementById('breadcrumbsExpansion').style.display = 'inline';
+        }
+    </SCRIPT>
+            <A 
+            href="http://www.topcoder.com/wiki/dashboard.action">Dashboard</A> 
+            &gt; <A href="http://www.topcoder.com/wiki/display/tc">TopCoder 
+            Competitions</A> &gt; <A 
+            href="http://www.topcoder.com/wiki/pages/viewpage.action?pageId=4096400">Component 
+            Development Support &amp; FAQs</A> &gt; <A 
+            href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings">Component 
+            Development Reliability Ratings</A> </SPAN></TD>
+          <TD style="WHITE-SPACE: nowrap" vAlign=center align=right>
+            <FORM id=quickSearch name=searchForm 
+            action=/wiki/dosearchsite.action method=post><INPUT type=hidden 
+            value=true name=quickSearch> <INPUT type=hidden value=conf_global 
+            name=searchQuery.spaceKey> <INPUT accessKey=s size=25 
+            name=searchQuery.queryString> <INPUT type=submit value=Search> 
+            </FORM></TD></TR>
+        <TR>
+          <TD 
+          style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 5px; PADDING-TOP: 5px" 
+          colSpan=2>
+            <TABLE 
+            style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; WIDTH: 100%; PADDING-TOP: 0px" 
+            cellSpacing=0 cellPadding=0 border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=bottom noWrap align=left width="1%"><SPAN 
+                  class=logoSpaceLink><A 
+                  href="http://www.topcoder.com/wiki/display/tc">TopCoder 
+                  Competitions</A> </SPAN></TD>
+                <TD vAlign=top align=right width="98%"><SPAN class=smalltext 
+                  id=userNavBar></SPAN><A 
+                  href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings?decorator=printable" 
+                  rel=nofollow><IMG 
+                  title="View a printable version of the current page." 
+                  height=16 alt="View a printable version of the current page." 
+                  hspace=1 
+                  src="Component Development Reliability Ratings - TopCoder Wiki.files/print_16.gif" 
+                  width=16 align=absMiddle vspace=1 border=0></A> <A 
+                  href="http://www.topcoder.com/wiki/pages/doexportpage.action?pageId=4096406&amp;type=TYPE_PDF" 
+                  rel=nofollow><IMG title="Export Page as PDF" height=16 
+                  src="Component Development Reliability Ratings - TopCoder Wiki.files/pdf.gif" 
+                  width=16 align=absMiddle border=0></A> &nbsp; </TD></TR>
+              <TR>
+                <TD align=left colSpan=2 height=22><SPAN class=pagetitle 
+                  style="MARGIN: 0px; LINE-HEIGHT: 1; TEXT-DECORATION: none">Component 
+                  Development Reliability Ratings 
+        </SPAN></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!--
+    Root decorator: all decisions about how a page is to be decorated via the
+                    inline decoration begins here.
+--><!--
+    Switch based upon the context. However, for now, just delegate to a decorator
+    identified directly by the context.
+-->
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <DIV class=greynavbar><SPAN 
+            style="PADDING-RIGHT: 10px; PADDING-LEFT: 0px; FLOAT: right; PADDING-BOTTOM: 4px; PADDING-TOP: 6px"><A 
+            href="http://www.topcoder.com/wiki/spaces/browsespace.action?key=tc"><IMG 
+            title="Browse Space" height=16 
+            src="Component Development Reliability Ratings - TopCoder Wiki.files/browse_space.gif" 
+            width=16 align=absMiddle border=0>&nbsp;<SPAN>Browse 
+            Space</SPAN></A> <A 
+            href="http://www.topcoder.com/wiki/pages/createpage.action?spaceKey=tc&amp;fromPageId=4096406"><IMG 
+            title="Add Page" height=16 
+            src="Component Development Reliability Ratings - TopCoder Wiki.files/add_page_16.gif" 
+            width=16 align=absMiddle border=0>&nbsp;<SPAN>Add Page</SPAN></A> 
+            </SPAN>
+            <UL id=foldertab style="MARGIN-BOTTOM: 0px; PADDING-TOP: 10px">
+              <LI><A class=current id=viewPageLink accessKey=v 
+              href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings"><U>V</U>iew</A> 
+
+              <LI><A id=viewAttachmentsLink accessKey=a 
+              href="http://www.topcoder.com/wiki/pages/viewpageattachments.action?pageId=4096406"><U>A</U>ttachments 
+              (0)</A> 
+              <LI><A id=viewPageInfoLink accessKey=i 
+              href="http://www.topcoder.com/wiki/pages/viewinfo.action?pageId=4096406"><U>I</U>nfo</A> 
+              </LI></UL></DIV></TD></TR>
+        <TR>
+          <TD class=pagebody vAlign=top>
+            <TABLE style="CLEAR: both" cellSpacing=0 cellPadding=0 width="100%" 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD class=pagecontent vAlign=top width="100%">
+                  <TABLE style="MARGIN-BOTTOM: 5px" cellSpacing=0 
+                    width="100%"><TBODY>
+                    <TR>
+                      <TD vAlign=top align=left><SPAN class=smalltext>Added by 
+                        ntrefz , last edited by thorgan on Jan 04, 2010 
+                        &nbsp;(<A 
+                        href="http://www.topcoder.com/wiki/pages/diffpages.action?pageId=4096406&amp;originalId=38018804">view 
+                        change</A>) 
+                        <STYLE type=text/css>DIV.auto_complete {
+	BACKGROUND: #fff; WIDTH: 350px
+}
+DIV.auto_complete UL {
+	BORDER-RIGHT: #888 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #888 1px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: #888 1px solid; WIDTH: 100%; PADDING-TOP: 0px; BORDER-BOTTOM: #888 1px solid; LIST-STYLE-TYPE: none
+}
+DIV.auto_complete UL LI {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; MARGIN: 0px; PADDING-TOP: 3px
+}
+DIV.auto_complete UL LI.selected {
+	BACKGROUND-COLOR: #ffb
+}
+DIV.auto_complete UL STRONG.highlight {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; COLOR: #800; PADDING-TOP: 0px
+}
+</STYLE>
+<!-- Delay the loading of the external javascript file needed for labels (as it takes too long to load and visibly holds loading of the page body) --><!-- To do this without javascript errors over undefined functions, we need to declare stubs here (that are overrided later by the proper implementations) -->
+                        <SCRIPT language=JavaScript type=text/javascript>
+    function doAddLabel(hideTextfieldAfterAddParam)
+    {
+        // stub
+    }
+
+    function onAddLabel()
+    {
+        // stub
+    }
+
+    function showLabelsInput()
+    {
+        // stub
+    }
+</SCRIPT>
+<!-- This is a hack to work around an apparent SiteMesh bug - http://jira.opensymphony.com/browse/SIM-198 --><SPAN 
+                        class=error><SPAN class=errorMessage 
+                        id=errorSpan></SPAN></SPAN>
+                        <FORM 
+                        style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px" 
+                        name=addLabelForm 
+                        onsubmit="doAddLabel(false); return false;" action="">
+                        <DIV style="FLOAT: left">Labels:&nbsp;</DIV>
+                        <DIV id=labelsInfo style="FLOAT: left; WIDTH: 90%"><SPAN 
+                        id=labelsList>(None) </SPAN><SPAN 
+                        class="inline-control-link fontSizeTiny" 
+                        id=editLabelsLink style="DISPLAY: none"><A 
+                        onclick="onAddLabel(); showLabelsInput(); return false;" 
+                        href="http://www.topcoder.com/wiki/display/tc/">EDIT</A> 
+                        </SPAN></DIV><BR clear=all><!-- Do not remove this line-break. You will make Safari cry. -->
+                        <DIV id=labelInputSpan 
+                        style="CLEAR: both; DISPLAY: none">
+                        <DIV 
+                        style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 8px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 8px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #f0f0f0; align: center">
+                        <DIV id=labelOperationErrorContainer 
+                        style="DISPLAY: none"><SPAN class=error><SPAN 
+                        class=errorMessage 
+                        id=labelOperationErrorMessage></SPAN></SPAN></DIV>
+                        <TABLE width="100%">
+                          <TBODY>
+                          <TR>
+                            <TD>
+                              <DIV class=formtitle 
+                              style="FONT-SIZE: 13px; PADDING-BOTTOM: 3px">Add 
+                              Labels</DIV></TD>
+                            <TD align=right>
+                              <DIV id=waitImageAndStatus 
+                              style="DISPLAY: none; HEIGHT: 16px"><IMG 
+                              alt="Wait Image" 
+                              src="Component Development Reliability Ratings - TopCoder Wiki.files/wait.gif" 
+                              align=absMiddle border=0>&nbsp;<SPAN 
+                              class=smalltext id=labelOperationStatus 
+                              style="VERTICAL-ALIGN: middle"></SPAN></DIV></TD></TR>
+                          <TR>
+                            <TD width="50%">Enter labels to add to this 
+                              page:<BR><INPUT class=monospaceInput id=labelName 
+                              size=40 name=labelsString autocomplete="off"> <INPUT onclick="doAddLabel(false); return false;" type=submit value=Add><INPUT onclick="doAddLabel(true); return false;" type=button value=Done> 
+
+                              <DIV class=auto_complete 
+                              id=labelsAutocompleteList></DIV>
+                              <DIV class=smalltext><EM>Tip:</EM> Looking for a 
+                              label? Just start typing. </DIV></TD>
+                            <TD vAlign=top width="50%">
+                              <DIV 
+                        id=suggestedLabelsSpan></DIV></TD></TR></TBODY></TABLE></DIV></DIV></FORM>
+                        <SCRIPT type=text/javascript>
+        // if there is javascript support, enable the [Edit] link that enables AJAX label adding/removing functionality
+        if (document.getElementById('editLabelsLink'))
+        {
+            document.getElementById('editLabelsLink').style.display = 'inline';
+        }
+    </SCRIPT>
+                        </SPAN></TD>
+                      <TD vAlign=top align=right>
+                        <DIV 
+                        style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 5px; FLOAT: right; PADDING-BOTTOM: 5px; MARGIN: 0px; BORDER-LEFT: #cccccc 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: #cccccc 1px solid">
+                        <CENTER><A id=pageFavourite 
+                        href="http://www.topcoder.com/wiki/labels/addfavourite.action?entityId=4096406"><IMG 
+                        title="Add this page to your favourites list" height=16 
+                        alt="Add this page to your favourites list" 
+                        src="Component Development Reliability Ratings - TopCoder Wiki.files/star_grey.gif" 
+                        width=16 align=absMiddle border=0></A> <A id=pageWatch 
+                        href="http://www.topcoder.com/wiki/pages/addpagenotification.action?pageId=4096406"><IMG 
+                        title="Watch this page" height=16 alt="Watch this page" 
+                        src="Component Development Reliability Ratings - TopCoder Wiki.files/watch_16.gif" 
+                        width=16 align=absMiddle border=0></A> 
+                    </CENTER></DIV></TD></TR></TBODY></TABLE>
+                  <DIV class=wiki-content><!-- wiki content -->
+                  <P><BR clear=all>
+                  <DIV align=center><IMG 
+                  src="Component Development Reliability Ratings - TopCoder Wiki.files/certified.png" 
+                  border=0></DIV><BR clear=all>Member profiles have been 
+                  modified to reflect a reliability factor for the last 15 
+                  component design and 15 development competitions. The 
+                  reliability factor is calculated as the percent of the last 15 
+                  projects that a member registers for in which that same member 
+                  presents a timely submission that scores at least a 75 in 
+                  review. <BR clear=all>
+                  <P></P>
+                  <P>Separate reliability ratings will be kept for design and 
+                  development projects.</P>
+                  <P>When figuring out the reliability bonus for a project, the 
+                  reliability rating used will take into account those projects 
+                  that were signed up for prior to the current project. A 
+                  participant with no previous projects is considered to have no 
+                  reliability rating, and therefore gets no bonus.</P>
+                  <P>TopCoder will not reset reliability statuses for projects 
+                  posted prior to October 5th, 2005. Projects prior to this date 
+                  will be marked reliable, if the user submitted a solution that 
+                  passed screening. Additionally, for those that had never 
+                  submitted prior to October 5th, 2005 they will not be given a 
+                  reliability rating until they submit a project that scores at 
+                  least a 70 in review. As of January 12th 2006, TopCoder has 
+                  increased the minimum score to 75.</P>
+                  <P>Members will be eligible to receive a bonus on top of any 
+                  prize money won if their Reliability Ratings are equal to or 
+                  exceed 80%. Winning members with Reliability Ratings equal to 
+                  or exceeding 80% and less than 90% will receive a bonus equal 
+                  to 10% of the prize. For Reliability Ratings equal to or 
+                  exceeding 90% and less than 95%, winning members will receive 
+                  a bonus equal to 15% of the prize. And winning members with a 
+                  Reliability Rating equal to or exceeding of 95% will receive a 
+                  bonus equal to 20% of the prize. The new pay outs go into 
+                  effect for projects launched after 9 am on 5/24/2007. The 
+                  following is an example of payouts based on the member's 
+                  Reliability Rating:</P>
+                  <TABLE class=confluenceTable>
+                    <TBODY>
+                    <TR>
+                      <TH class=confluenceTh>0% - 79% </TH>
+                      <TH class=confluenceTh>80% - 89% </TH>
+                      <TH class=confluenceTh>90% - 94% </TH>
+                      <TH class=confluenceTh>95 - 100% </TH></TR>
+                    <TR>
+                      <TD class=confluenceTd>$5,000 </TD>
+                      <TD class=confluenceTd>$5,500 </TD>
+                      <TD class=confluenceTd>$5,750 </TD>
+                      <TD class=confluenceTd>$6,000 </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>$2,000 </TD>
+                      <TD class=confluenceTd>$2,200 </TD>
+                      <TD class=confluenceTd>$2,300 </TD>
+                      <TD class=confluenceTd>$2,400 </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>$500 </TD>
+                      <TD class=confluenceTd>$550 </TD>
+                      <TD class=confluenceTd>$575 </TD>
+                      <TD class=confluenceTd>$600 </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>$200 </TD>
+                      <TD class=confluenceTd>$220 </TD>
+                      <TD class=confluenceTd>$230 </TD>
+                      <TD class=confluenceTd>$240 </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>$100 </TD>
+                      <TD class=confluenceTd>$110 </TD>
+                      <TD class=confluenceTd>$115 </TD>
+                      <TD class=confluenceTd>$120 </TD></TR></TBODY></TABLE>
+                  <P>Please note: reliability bonuses do not apply to Digital 
+                  Run winnings.</P>
+                  <P>Since reliability rating is based on the past 15 projects, 
+                  it can only have 15 discrete values (assuming you have 
+                  submitted at least 15 times). Here are the bonuses earned for 
+                  these actual reliability levels:</P>
+                  <TABLE class=confluenceTable>
+                    <TBODY>
+                    <TR>
+                      <TH class=confluenceTh>Detail </TH>
+                      <TH class=confluenceTh>Rating </TH>
+                      <TH class=confluenceTh>Bonus </TH></TR>
+                    <TR>
+                      <TD class=confluenceTd>15/15 </TD>
+                      <TD class=confluenceTd>100% </TD>
+                      <TD class=confluenceTd>20% bonus </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>14/15 </TD>
+                      <TD class=confluenceTd>93% </TD>
+                      <TD class=confluenceTd>15% bonus </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>13/15 </TD>
+                      <TD class=confluenceTd>87% </TD>
+                      <TD class=confluenceTd>10% bonus </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>12/15 </TD>
+                      <TD class=confluenceTd>80% </TD>
+                      <TD class=confluenceTd>10% bonus </TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>11/15 </TD>
+                      <TD class=confluenceTd>73% </TD>
+                      <TD class=confluenceTd>Can sign up for 3+ projects 
+</TD></TR>
+                    <TR>
+                      <TD class=confluenceTd>other </TD>
+                      <TD class=confluenceTd>&lt;70% </TD>
+                      <TD class=confluenceTd>No bonus 
+                  </TD></TR></TBODY></TABLE></DIV><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+    rdf:about="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings"
+    dc:identifier="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings"
+    dc:title="Component Development Reliability Ratings"
+    trackback:ping="http://www.topcoder.com/wiki/rpc/trackback/4096406"/>
+</rdf:RDF>
+--><!--
+    Root decorator: all decisions about how a page is to be decorated via the
+                    inline decoration begins here.
+--><!--
+    Switch based upon the context. However, for now, just delegate to a decorator
+    identified directly by the context.
+-->
+                  <DIV class=wiki-content style="MARGIN-RIGHT: 10px">
+                  <P style="CLEAR: both"><!-- comments should always display underneath the content. we should have a 'clear:both' here just in case there are floats or aligned images in the content -->
+                  <DIV class=tabletitle 
+                  style="BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px"><A 
+                  name=comments>Comments</A> <SPAN class=smalltext>&nbsp;(<A 
+                  href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings?showComments=false">Hide 
+                  Comments</A>)</SPAN> </DIV>
+                  <DIV 
+                  style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><A 
+                  name=comment-38011421></A>
+                  <DIV class=commentBox>
+                  <DIV class=commentblock>
+                  <P>You should update table above to meet up-to-date bonus 
+                  rates.</P></DIV>
+                  <DIV class=smallfont style="WIDTH: 98%; COLOR: #666666" 
+                  align=left><IMG height=16 
+                  src="Component Development Reliability Ratings - TopCoder Wiki.files/comment_16.gif" 
+                  width=16 align=absMiddle border=0> Posted by dixond at <A 
+                  href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings?focusedCommentId=38011421#comment-38011421">Nov 
+                  09, 2009 14:02</A> | <A id=reply-38011421 
+                  href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings?replyToComment=38011421#comment-38011421">Reply 
+                  To This</A> </DIV><!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+    rdf:about="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings?focusedCommentId=38011421#comment-38011421"
+    dc:identifier="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings?focusedCommentId=38011421#comment-38011421"
+    dc:title="$comment.title"
+    trackback:ping="http://www.topcoder.com/wiki/rpc/trackback/38011421"/>
+</rdf:RDF>
+--></DIV></DIV>
+                  <DIV ?><IMG height=16 
+                  src="Component Development Reliability Ratings - TopCoder Wiki.files/add_comment_16.gif" 
+                  width=16 align=absMiddle border=0></A> <A 
+                  href="http://www.topcoder.com/wiki/display/tc/Component+Development+Reliability+Ratings?showComments=true&amp;showCommentArea=true#addcomment">Add 
+                  Comment</A> 
+      </DIV></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=footer width="100%"><A class=footerLinks 
+      href="http://www.topcoder.com/">Home</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A 
+      class=footerLinks 
+      href="http://www.topcoder.com/tc?module=Static&amp;d1=about&amp;d2=index">About 
+      TopCoder</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A class=footerLinks 
+      href="http://www.topcoder.com/tc?module=Static&amp;d1=pressroom&amp;d2=index">Press 
+      Room</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A class=footerLinks 
+      href="http://www.topcoder.com/tc?module=Static&amp;d1=about&amp;d2=contactus">Contact 
+      Us</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A class=footerLinks 
+      href="http://www.topcoder.com/tc?module=Static&amp;d1=about&amp;d2=privacy">Privacy</A>&nbsp;&nbsp;|&nbsp;&nbsp; 
+      <A class=footerLinks 
+      href="http://www.topcoder.com/tc?module=Static&amp;d1=about&amp;d2=terms">Terms</A> 
+      <BR><A class=footerLinks href="http://www.topcoder.com/tc">Developer 
+      Center</A>&nbsp;&nbsp;|&nbsp;&nbsp; <A class=footerLinks 
+      href="http://www.topcoder.com/corp/?module=Static&amp;d1=corp&amp;d2=index">Corporate 
+      Services</A> </TD></TR>
+  <TR>
+    <TD class=copyright width="100%">Copyright © 2001-2007, TopCoder, Inc. All 
+      rights reserved.</TD></TR></TBODY></TABLE><!-- delay the loading of large javascript files to the end so that they don't interfere with the loading of page content --><SPAN 
+style="DISPLAY: none">
+<SCRIPT language=JavaScript type=text/javascript>var domainName = 'http://www.topcoder.com/wiki'; var entityId = '4096406'; var spaceKey = 'tc'</SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Component Development Reliability Ratings - TopCoder Wiki.files/labels-javascript" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT>new Ajax.Autocompleter('labelName', 'labelsAutocompleteList', '4096406', { tokens: new Array(',', ' '), dwrFunction: GenerateAutocompleteLabelsListForEntity.autocompleteLabels});</SCRIPT>
+</SPAN></BODY></HTML>
