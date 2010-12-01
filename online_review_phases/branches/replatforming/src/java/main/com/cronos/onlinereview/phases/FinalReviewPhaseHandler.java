@@ -18,59 +18,49 @@ import com.topcoder.project.phases.Project;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a
- * phase can be executed and to add extra logic to execute a phase. It will be
- * used by Phase Management component. It is configurable using an input
- * namespace. The configurable parameters include database connection, email
- * sending. This class handle the final review phase. If the input is of other
- * phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add extra
+ * logic to execute a phase. It will be used by Phase Management component. It is configurable using an input namespace.
+ * The configurable parameters include database connection, email sending. This class handle the final review phase. If
+ * the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
- * The final review phase can start as soon as the dependencies are met and can
- * stop when the following conditions met: the dependencies are met and the
- * final review is committed by the final reviewer.
+ * The final review phase can start as soon as the dependencies are met and can stop when the following conditions met:
+ * the dependencies are met and the final review is committed by the final reviewer.
  * </p>
  * <p>
- * The additional logic for executing this phase is: when Final Review phase is
- * stopping, if the final review is rejected, another final fix/review cycle is
- * inserted.
+ * The additional logic for executing this phase is: when Final Review phase is stopping, if the final review is
+ * rejected, another final fix/review cycle is inserted.
  * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
  * <p>
- * version 1.1 change notes: Add an approval phase when the final review is
- * approved. The logic is modified in method <code>checkFinalReview</code>
+ * version 1.1 change notes: Add an approval phase when the final review is approved. The logic is modified in method
+ * <code>checkFinalReview</code>
  * </p>
  * <p>
  * Version 1.2 changes note:
  * <ul>
- * <li>
- * Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager, etc).
+ * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager, etc).
  * </li>
- * <li>
- * Support for more information in the email generated:
- * for start, find the number of final reviewers. for stop, add the result..
- * </li>
+ * <li>Support for more information in the email generated: for start, find the number of final reviewers. for stop, add
+ * the result..</li>
  * </ul>
  * </p>
- *
  * <p>
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
- *   <ol>
- *     <li>Updated {@link #checkFinalReview(Phase, String)} method to use corrected logic for creating
- *     <code>Approval</code> phase.</li>
- *   </ol>
+ * <ol>
+ * <li>Updated {@link #checkFinalReview(Phase, String)} method to use corrected logic for creating <code>Approval</code>
+ * phase.</li>
+ * </ol>
  * </p>
- *
  * <p>
  * Version 1.4 Change notes:
- *   <ol>
- *     <li>Updated not to use ContestDependencyAutomation.</li>
- *     <li>Updated {@link #perform(Phase, String)} method to calculate the number of approvers for project and bind it
- *     to map used for filling email template.</li> 
- *   </ol>
+ * <ol>
+ * <li>Updated not to use ContestDependencyAutomation.</li>
+ * <li>Updated {@link #perform(Phase, String)} method to calculate the number of approvers for project and bind it to
+ * map used for filling email template.</li>
+ * </ol>
  * </p>
  *
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, isv
@@ -160,7 +150,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
-     * Management component. This method can send email to a group os users
+     * Management component. This method can send email to a group of users
      * associated with timeline notification for the project. The email can be
      * send on start phase or end phase base on configuration settings.
      * <p>

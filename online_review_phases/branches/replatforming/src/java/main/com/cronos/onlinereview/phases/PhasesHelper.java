@@ -36,6 +36,7 @@ import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
+import com.topcoder.management.review.scoreaggregator.RankedSubmission;
 import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -133,10 +134,19 @@ import java.util.Set;
  * <li>Phase attributes are copied for newly created Specification Review phase.</li>
  * </ol>
  * </p>
+ * <p>
+ * Version 1.6 Change notes:
+ * <ol>
+ * <li>Added {@link #getSubmissionById(Submission[], long)} method.</li>
+ * <li>Added {@link #breakTies(RankedSubmission, Submission[], RankedSubmission[])} method.</li>
+ * <li>Added {@link #searchActiveMilestoneSubmissions(UploadManager, Connection, long, long, Log)}
+ * method.</li>
+ * <li>Change to use getUploads().get(0) to retrieve the unique upload for software competitions.</li>
+ * </ol>
+ * </p>
  *
- * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy
- * @version 1.4.3
- * @since 1.0
+ * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, TCSDEVELOPER
+ * @version 1.6
  */
 final class PhasesHelper {
     /**
@@ -243,6 +253,13 @@ final class PhasesHelper {
      * @since 1.4
      */
     static final String CONTEST_SUBMISSION_TYPE = "Contest Submission";
+
+    /**
+     * Constant for &quot;Milestone Submission&quot; submission type.
+     *
+     * @since 1.6
+     */
+    static final String MILESTONE_SUBMISSION_TYPE = "Milestone Submission";
 
     /**
      * Constant for &quot;Approved&quot; comment extra info.
@@ -841,11 +858,9 @@ final class PhasesHelper {
      * @return Review[] which match filter conditions.
      * @throws PhaseHandlingException
      *             if there was an error during retrieval.
-     * @throws SQLException
-     *             in case of error when looking up resource role id.
      */
     static Review[] searchReviewsForResources(Connection conn, ManagerHelper managerHelper,
-        Resource[] reviewers, Long submissionId) throws PhaseHandlingException, SQLException {
+        Resource[] reviewers, Long submissionId) throws PhaseHandlingException {
         if (reviewers.length == 0) {
             return new Review[0];
         }
@@ -1087,7 +1102,7 @@ final class PhasesHelper {
             long[] uploadIds = new long[submissions.length];
 
             for (int i = 0; i < submissions.length; i++) {
-                uploadIds[i] = submissions[i].getUpload().getId();
+                uploadIds[i] = submissions[i].getUploads().get(0).getId();
             }
 
             // get screening tasks for the upload ids
@@ -1181,6 +1196,35 @@ final class PhasesHelper {
             throw new PhaseHandlingException("There was a submission retrieval error", e);
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException("There was a search builder error", e);
+        }
+    }
+
+    /**
+     * retrieves all active milestone submissions for the given project id.
+     *
+     * @param uploadManager
+     *            UploadManager instance to use for searching.
+     * @param conn
+     *            the connection.
+     * @param projectId
+     *            project id.
+     * @param phaseId
+     *            the phase id.
+     * @param logger
+     *            the logger
+     * @return all active milestone submissions for the given project id.
+     * @throws PhaseHandlingException
+     *             if an error occurs during retrieval.
+     * @since 1.6
+     */
+    static Submission[] searchActiveMilestoneSubmissions(UploadManager uploadManager, Connection conn, long projectId,
+            long phaseId, Log logger) throws PhaseHandlingException {
+        try {
+            return searchActiveSubmissions(uploadManager, conn, projectId, MILESTONE_SUBMISSION_TYPE);
+        } catch (SQLException e) {
+            logger.log(Level.ERROR,
+                    new LogMessage(new Long(phaseId), null, "Fail to search active milestone submissions", e));
+            throw new PhaseHandlingException("Fail to search active milestone submissions", e);
         }
     }
 
@@ -2071,7 +2115,7 @@ final class PhasesHelper {
             for (Submission submission : submissions) {
                 Map<String, Object> values = new HashMap<String, Object>();
                 values.put("SUBMITTER_HANDLE", notNullValue(helper.getResourceManager().getResource(
-                    submission.getUpload().getOwner()).getProperty("Handle")));
+                    submission.getUploads().get(0).getOwner()).getProperty("Handle")));
                 values.put(appealPhase ? "SUBMITTER_SCORE" : "SUBMITTER_PRE_APPEALS_SCORE", submission
                     .getInitialScore());
                 result.add(values);
@@ -2108,7 +2152,7 @@ final class PhasesHelper {
                 Map<String, Object> values = new HashMap<String, Object>();
 
                 // find the submitter (it is a resource) by the id
-                Resource submitter = resourceManager.getResource(submission.getUpload().getOwner());
+                Resource submitter = resourceManager.getResource(submission.getUploads().get(0).getOwner());
                 values.put("SUBMITTER_HANDLE", notNullValue(submitter.getProperty("Handle")));
 
                 if (!screeningEnd) {
@@ -2117,10 +2161,13 @@ final class PhasesHelper {
                     values.put("SUBMITTER_RATING", notNullValue(submitter.getProperty("Rating")));
                 } else {
                     values.put("SUBMITTER_SCORE", notNullValue(submission.getScreeningScore()));
-                    values.put("SUBMITTER_RESULT",
-                        ((submission.getSubmissionStatus() != null) && submission.getSubmissionStatus()
-                            .getName().equalsIgnoreCase("Failed Screening")) ? "Failed Screening"
-                            : "Pass Screening");
+                    values
+                            .put("SUBMITTER_RESULT",
+                                    ((submission.getSubmissionStatus() != null)
+                                            && submission.getSubmissionStatus().getName().equalsIgnoreCase(
+                                                    "Failed Screening") || submission.getSubmissionStatus().getName()
+                                            .equalsIgnoreCase("Failed Milestone Screening")) ? "Failed Screening"
+                                            : "Pass Screening");
                 }
 
                 result.add(values);
@@ -2265,7 +2312,7 @@ final class PhasesHelper {
                 CONTEST_SUBMISSION_TYPE);
 
             for (Submission s : activeSubmissions) {
-                if (!earlyAppealResourceIds.contains(new Long(s.getUpload().getOwner()))) {
+                if (!earlyAppealResourceIds.contains(new Long(s.getUploads().get(0).getOwner()))) {
                     return false;
                 }
             }
@@ -2726,5 +2773,55 @@ final class PhasesHelper {
         } finally {
             PhasesHelper.closeConnection(conn);
         }
+    }
+
+    /**
+     * Break ties by submission timestamp.
+     *
+     * @param submission
+     *            the submission to calculate
+     * @param submissions
+     *            all the submission records
+     * @param placements
+     *            all the ranked submission records
+     * @return the submission with fixed placement
+     * @throws PhaseHandlingException
+     *             if an error occurs when retrieving data.
+     */
+    static RankedSubmission breakTies(RankedSubmission submission, Submission[] submissions,
+            RankedSubmission[] placements) throws PhaseHandlingException {
+        int rank = submission.getRank();
+        Date timestamp1 = getSubmissionById(submissions, submission.getId()).getUploads().get(0).getCreationTimestamp();
+        for (int i = 0; i < placements.length; ++i) {
+            if (placements[i].getRank() == submission.getRank()) {
+                Submission tie = getSubmissionById(submissions, placements[i].getId());
+                Date timestamp2 = tie.getUploads().get(0).getCreationTimestamp();
+
+                if (timestamp1 != null && timestamp2 != null && timestamp2.before(timestamp1)) {
+                    ++rank;
+                }
+            }
+        }
+        return new RankedSubmission(submission, rank);
+    }
+
+    /**
+     * Return suitable submission for given submissionId.
+     *
+     * @param submissions
+     *            the submission array
+     * @param submissionId
+     *            the submissionId
+     * @return submission
+     * @throws PhaseHandlingException
+     *             if no submission found
+     */
+    static Submission getSubmissionById(Submission[] submissions, long submissionId) throws PhaseHandlingException {
+        for (int i = 0; i < submissions.length; i++) {
+            if (submissions[i].getId() == submissionId) {
+                return submissions[i];
+            }
+        }
+        throw new PhaseHandlingException("submissions not found for submissionId: " + submissionId);
     }
 }

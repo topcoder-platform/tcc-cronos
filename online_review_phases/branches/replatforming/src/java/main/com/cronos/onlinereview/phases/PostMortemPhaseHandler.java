@@ -26,9 +26,7 @@ import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
-import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseLocator;
 import com.topcoder.web.ejb.user.UserTermsOfUse;
-import com.topcoder.web.ejb.user.UserTermsOfUseLocator;
 
 import javax.ejb.CreateException;
 import javax.naming.NamingException;
@@ -70,11 +68,18 @@ import javax.naming.NamingException;
  * </p>
  *
  * <p>
+ * Version 1.6 Change notes:
+ *   <ol>
+ *     <li>Updated to use the cached ProjectRoleTermsOfUse and UserTermsOfUse instance.</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author argolite, waits, isv
- * @version 1.4
+ * @author argolite, waits, isv, FireIce, TCSDEVELOPER
+ * @version 1.6
  * @since 1.1
  */
 public class PostMortemPhaseHandler extends AbstractPhaseHandler {
@@ -231,13 +236,24 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * <p>Provides additional logic to execute a phase. If the phase starts then all submitters who have submitted for
+     * <p>
+     * Provides additional logic to execute a phase. If the phase starts then all submitters who have submitted for
      * project and all reviewers are assigned <code>Post-Mortem Reviewer</code> role for project (if not already) and
-     * emails are sent on phase state transition.</p>
+     * emails are sent on phase state transition.
+     * </p>
+     * <p>
+     * Version 1.6 Change notes:
+     * <ol>
+     * <li>Updated to use the cached ProjectRoleTermsOfUse and UserTermsOfUse instance.</li>
+     * </ol>
+     * </p>
      *
-     * @param phase the input phase.
-     * @param operator the operator name.
-     * @throws PhaseHandlingException if there is any error occurs.
+     * @param phase
+     *            the input phase.
+     * @param operator
+     *            the operator name.
+     * @throws PhaseHandlingException
+     *             if there is any error occurs.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         // perform parameters checking
@@ -414,13 +430,15 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * @throws NamingException if any errors occur during EJB lookup.
      * @throws RemoteException if any errors occur during EJB remote invocation.
      * @throws CreateException if any errors occur during EJB creation.
+     * @version 1.6
      * @since 1.4
      */
+    @SuppressWarnings("unchecked")
     private boolean hasPendingTermsOfUse(long projectId, long userId, long roleId)
         throws CreateException, NamingException, RemoteException {
-        // get remote services
-        ProjectRoleTermsOfUse projectRoleTermsOfUse = ProjectRoleTermsOfUseLocator.getService();
-        UserTermsOfUse userTermsOfUse = UserTermsOfUseLocator.getService();
+        // now the services will be cached in ManagerHelper class.
+        ProjectRoleTermsOfUse projectRoleTermsOfUse = getManagerHelper().getProjectRoleTermsOfUse();
+        UserTermsOfUse userTermsOfUse = getManagerHelper().getUserTermsOfUse();
 
         List<Long>[] necessaryTerms = projectRoleTermsOfUse.getTermsOfUse(
             (int) projectId, new int[] {new Long(roleId).intValue()}, DBMS.COMMON_OLTP_DATASOURCE_NAME);

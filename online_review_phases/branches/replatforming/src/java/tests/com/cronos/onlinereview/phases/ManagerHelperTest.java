@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006, 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -8,8 +8,15 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * Test cases for ManagerHelper class.
  *
+ * <p>
+ * Changes in version 1.6:
+ * <ul>
+ * <li>Added test cases for new APIs, like getUserTermsOfUse and getProjectRoleTermsOfUse.</li>
+ * </ul>
+ * </p>
+ *
  * @author bose_java, TCSDEVELOPER
- * @version 1.3
+ * @version 1.6
  */
 public class ManagerHelperTest extends BaseTest {
 
@@ -150,6 +157,22 @@ public class ManagerHelperTest extends BaseTest {
     public void testGetScorecardAggregator() {
         assertNotNull("getScorecardAggregator() returned null.", managerHelper
                         .getScorecardAggregator());
+    }
+
+    /**
+     * Tests that ManagerHelper.getUserTermsOfUse() returns non-null value.
+     */
+    public void testGetUserTermsOfUse() {
+        assertNotNull("getUserTermsOfUse() returned null.", managerHelper
+                        .getUserTermsOfUse());
+    }
+
+    /**
+     * Tests that ManagerHelper.getProjectRoleTermsOfUse() returns non-null value.
+     */
+    public void testGetProjectRoleTermsOfUse() {
+        assertNotNull("ProjectRoleTermsOfUse() returned null.", managerHelper
+                        .getProjectRoleTermsOfUse());
     }
 
 }

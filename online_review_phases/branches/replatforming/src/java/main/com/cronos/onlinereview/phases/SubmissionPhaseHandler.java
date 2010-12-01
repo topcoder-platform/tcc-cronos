@@ -182,7 +182,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
     /**
      * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
-     * Management component. This method can send email to a group os users
+     * Management component. This method can send email to a group of users
      * associated with timeline notification for the project. The email can be
      * send on start phase or end phase base on configuration settings.
      * <p>

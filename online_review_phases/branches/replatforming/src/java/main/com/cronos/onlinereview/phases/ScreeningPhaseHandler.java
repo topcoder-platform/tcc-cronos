@@ -424,7 +424,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         Float screeningScore = review.getScore();
 
         // Store the screening score for the submission
-        // long submitterId = submission.getUpload().getOwner();
+        // long submitterId = submission.getUploads().get(0).getOwner();
 
         try {
             // Old Code
@@ -582,7 +582,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                                             .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
             // If the number of reviews doesn't match submission number - not
-            // all reviews are commited for sure
+            // all reviews are committed for sure
             if (screenReviews.length != submissions.length) {
                 return false;
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -222,8 +222,17 @@ import java.util.Map;
  * </ul>
  * </p>
  *
- * @author tuenm, bose_java, pulky, argolite, waits
- * @version 1.2
+ * <p>
+ * Version 1.6 changes note:
+ * <ul>
+ * <li>
+ * Added link to studio contest for email template.
+ * </li>
+ * </ul>
+ * </p>
+ *
+ * @author tuenm, bose_java, pulky, argolite, waits, FireIce, TCSDEVELOPER
+ * @version 1.6
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** constant for "Project Name" project info. */
@@ -301,6 +310,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @since 1.1
      */
     private final String projectDetailsBaseURL;
+
+    /**
+     * This constant stores Studio project details page URL.
+     *
+     * @since 1.6
+     */
+    private final String studioProjectDetailsBaseURL;
 
     /**
      * <p>
@@ -436,6 +452,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
         // get project details base url
         projectDetailsBaseURL = managerHelper.getProjectDetailsBaseURL();
+
+        // get studio project details base url
+        studioProjectDetailsBaseURL = managerHelper.getStudioProjectDetailsBaseURL();
     }
 
     /**
@@ -827,6 +846,10 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * This method sets the values of the Field with user, project information and lookup values
      * based on bStart variable which is true if phase is to start, false if phase is to end.
      *
+     * <p>
+     * Changes in version 1.6: a new field called STUDIO_LINK is added, which can be referenced in email template.
+     * </p>
+     *
      * @param field the Field in template
      * @param user the user to be notified.
      * @param project project instance.
@@ -856,6 +879,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             field.setValue(phase.getPhaseType().getName());
         } else if ("OR_LINK".equals(field.getName())) {
             field.setValue("<![CDATA[" + projectDetailsBaseURL + project.getId() + "]]>");
+        } else if ("STUDIO_LINK".equals(field.getName())) {
+            field.setValue("<![CDATA[" + studioProjectDetailsBaseURL + project.getId() + "]]>");
         } else if (values.containsKey(field.getName())) {
             if (values.get(field.getName()) != null) {
                 field.setValue(values.get(field.getName()).toString());

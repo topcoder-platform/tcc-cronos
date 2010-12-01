@@ -59,9 +59,13 @@ import java.util.Map;
  * <p>
  * Version 1.4, change notes: add utility methods for testing version 1.4.
  * </p>
+ * <p>
+ * Version 1.6, change notes, change and add utility methods to support testing version 1.6.
+ * Like, Studio project, support multiple uploads for a submission etc.
+ * </p>
  *
- * @author bose_java, waits, myxgyy
- * @version 1.4
+ * @author bose_java, waits, myxgyy, TCSDEVELOPER
+ * @version 1.6
  */
 public class BaseTest extends TestCase {
     /**
@@ -506,6 +510,56 @@ public class BaseTest extends TestCase {
      *
      * @param conn
      *            connection to use.
+     * @throws Exception
+     *             not under test.
+     * @since 1.6
+     */
+    protected void insertStudioProject(Connection conn) throws Exception {
+        PreparedStatement preparedStmt = null;
+
+        try {
+            // insert a project
+            String insertProject = "insert into project(project_id, project_status_id, project_category_id,"
+                + "create_user, create_date, modify_user, modify_date) values "
+                + "(1, 1, 15, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertProject);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert into comp_catalog
+            String insertCatalog = "insert into comp_catalog(component_id, current_version, component_name,"
+                + "description, create_time, status_id) values "
+                + "(1, 1, 'Online Review Phases', 'Online Review Phases', ?, 1)";
+            preparedStmt = conn.prepareStatement(insertCatalog);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert into comp_catalog
+            String insertVersion = "insert into comp_versions(comp_vers_id, component_id, version,version_text,"
+                + "create_time, phase_id, phase_time, price, comments) values "
+                + "(1, 1, 1, '1.0', ?, 112, ?, 500, 'Comments')";
+            preparedStmt = conn.prepareStatement(insertVersion);
+            preparedStmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStmt.executeUpdate();
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+        } finally {
+            closeStatement(preparedStmt);
+        }
+    }
+
+    /**
+     * inserts a project into the database. Inserts records into the project, comp_catalog
+     * and comp_versions tables.
+     *
+     * @param conn
+     *            connection to use.
      * @param active whether the dependency is active or not.
      * @throws Exception
      *             not under test.
@@ -868,11 +922,12 @@ public class BaseTest extends TestCase {
 
             // insert all standard phases
             long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
-                113};
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14};
-            String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review",
-                "Appeals", "Appeals Response", "Aggregation", "Aggregation Review", "Final Fix",
-                "Final Review", "Approval", "Specification Submission", "Specification Review"};
+                113, 114, 115, 116};
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17};
+            String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review", "Appeals",
+                "Appeals Response", "Aggregation", "Aggregation Review", "Final Fix", "Final Review", "Approval",
+                "Specification Submission", "Specification Review", "Milestone Submission", "Milestone Screening",
+                "Milestone Review"};
             int step = phaseIds.length - 1;
 
             for (int i = 0; i < phaseTypeNames.length; i++) {
@@ -935,9 +990,131 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertDependency);
 
             long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-                112, 113};
+                112, 113, 114, 115, 116};
             long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
-                113, 101};
+                113, 101, 115, 116, 101};
+            Phase[] phases = project.getAllPhases();
+
+            for (int i = 0; i < step; i++) {
+                preparedStmt.setLong(1, dependencyPhaseIds[i]);
+                preparedStmt.setLong(2, dependentPhaseIds[i]);
+                preparedStmt.setBoolean(3, false);
+                preparedStmt.setBoolean(4, true);
+                preparedStmt.setLong(5, 0);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                Dependency dependency = new Dependency(phases[i], phases[i + 1], false, true, 0);
+                phases[i + 1].addDependency(dependency);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            if (project.getAllPhases().length > 3) {
+                // insert phase_criteria
+                Statement stmt = conn.createStatement();
+                stmt.execute("insert into phase_criteria(project_phase_id, phase_criteria_type_id,"
+                    + " parameter,create_user, create_date, modify_user, modify_date) values(104,"
+                    + " 6, '1', user, CURRENT, user, CURRENT)");
+                project.getAllPhases()[3].setAttribute("Reviewer Number", "1");
+                stmt.close();
+            }
+        } finally {
+            closeStatement(preparedStmt);
+            closeConnection();
+        }
+
+        return project;
+    }
+
+    /**
+     * inserts a project and the standard phases into the database.
+     *
+     * @param stepPhase
+     *            the step phase
+     * @param hasDependentProject
+     *            has Dependent project or not
+     * @param dependentProjectActive
+     *            whether Dependent project active or not
+     * @param past
+     *            the phase is past or not
+     * @return project instance with phases populated.
+     * @throws Exception
+     *             not under test.
+     */
+    protected Project setupPhasesForStudio() throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement preparedStmt = null;
+        Project project = null;
+
+        try {
+            project = new Project(new Date(), new DefaultWorkdays());
+            project.setId(1);
+
+            // insert project first
+            insertStudioProject(conn);
+
+            String insertPhase = "insert into project_phase(project_phase_id, project_id, phase_type_id,"
+                + " phase_status_id, scheduled_start_time, scheduled_end_time, duration,"
+                + " create_user, create_date, modify_user, modify_date)"
+                + "values (?, 1, ?, 1, ?, ?, ?, 'user', ?, 'user', ?)";
+
+            preparedStmt = conn.prepareStatement(insertPhase);
+
+            // insert all standard phases
+            long[] phaseIds = new long[] {101, 102, 103, 104, 109, 110, 111};
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 9, 10, 11};
+            String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review", "Final Fix",
+                "Final Review", "Approval"};
+            int step = phaseIds.length - 1;
+
+            long now = System.currentTimeMillis();
+            Timestamp scheduledStart = new Timestamp(now - DAY * 2);
+            Timestamp scheduledEnd = null;
+            scheduledEnd = new Timestamp(scheduledStart.getTime() + DAY / 1000);
+
+            for (int i = 0; i < (step + 1); i++) {
+                // insert into db
+                preparedStmt.setLong(1, phaseIds[i]);
+                preparedStmt.setLong(2, phaseTypeIds[i]);
+                preparedStmt.setTimestamp(3, scheduledStart);
+                preparedStmt.setTimestamp(4, scheduledEnd);
+                preparedStmt.setLong(5, DAY);
+                preparedStmt.setTimestamp(6, new Timestamp(now));
+                preparedStmt.setTimestamp(7, new Timestamp(now));
+                preparedStmt.executeUpdate();
+
+                // create phase instance
+                Phase phase = new Phase(project, DAY);
+                phase.setId(phaseIds[i]);
+                phase.setPhaseType(new PhaseType(phaseTypeIds[i], phaseTypeNames[i]));
+                phase.setPhaseStatus(PhaseStatus.SCHEDULED);
+                phase.setActualStartDate(scheduledStart);
+                phase.setActualEndDate(scheduledEnd);
+                phase.setScheduledStartDate(scheduledStart);
+                phase.setScheduledEndDate(scheduledEnd);
+
+                project.addPhase(phase);
+
+                // re-calculate scheduled start and end.
+                scheduledStart = new Timestamp(scheduledEnd.getTime());
+                scheduledEnd = new Timestamp(scheduledStart.getTime() + DAY / 1000);
+            }
+
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            // insert dependencies
+            String insertDependency = "INSERT INTO phase_dependency "
+                + "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, lag_time,"
+                + " create_user, create_date, modify_user, modify_date)"
+                + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
+            preparedStmt = conn.prepareStatement(insertDependency);
+
+            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 109, 110};
+            long[] dependentPhaseIds = new long[] {102, 103, 104, 110, 111, 101};
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < step; i++) {
@@ -1164,7 +1341,7 @@ public class BaseTest extends TestCase {
 
             for (int i = 0; i < submissions.length; i++) {
                 preparedStmt.setLong(1, submissions[i].getId());
-                preparedStmt.setLong(2, submissions[i].getUpload().getId());
+                preparedStmt.setLong(2, submissions[i].getUploads().get(0).getId());
                 preparedStmt.setLong(3, submissions[i].getSubmissionStatus().getId());
                 preparedStmt.setLong(4, submissions[i].getSubmissionType().getId());
                 preparedStmt.setTimestamp(5, now);

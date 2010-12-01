@@ -24,7 +24,7 @@ import java.util.Map;
  * </p>
  *
  * @author bose_java, waits, TCSDEVELOPER
- * @version 1.3
+ * @version 1.6
  */
 public class AbstractPhaseHandlerTest extends BaseTest {
     /**
@@ -276,7 +276,7 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         Map<String, EmailOptions> startPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
                 AbstractPhaseHandler.class, handler, "startPhaseEmailOptions");
         assertNotNull("The field is null.", startPhaseEmailOptions);
-        assertEquals("The field is invalid.", 22, startPhaseEmailOptions.size());
+        assertEquals("The field is invalid.", 25, startPhaseEmailOptions.size());
         assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Manager"));
         assertNotNull("The value is invalid.", startPhaseEmailOptions.get("Reviewer"));
 
@@ -284,7 +284,7 @@ public class AbstractPhaseHandlerTest extends BaseTest {
         Map<String, EmailOptions> endPhaseEmailOptions = (Map<String, EmailOptions>) getPrivateField(
                 AbstractPhaseHandler.class, handler, "endPhaseEmailOptions");
         assertNotNull("The field is null.", endPhaseEmailOptions);
-        assertEquals("The field is invalid.", 22, endPhaseEmailOptions.size());
+        assertEquals("The field is invalid.", 25, endPhaseEmailOptions.size());
         assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Manager"));
         assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Reviewer"));
     }

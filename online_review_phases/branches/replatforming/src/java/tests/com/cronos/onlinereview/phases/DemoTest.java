@@ -4,6 +4,7 @@
 package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
+import java.util.Date;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
@@ -23,15 +24,17 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * Shows a demo of how to use this component.
  * <p>
- * For version 1.2, the email templates and email options for different role has been
- * enhanced.
+ * For version 1.2, the email templates and email options for different role has been enhanced.
  * </p>
  * <p>
  * For version 1.4, add demo tests to show the newly added two handlers.
  * </p>
+ * <p>
+ * For version 1.6, add demo tests to show the newly added three handlers for milestone.
+ * </p>
  *
- * @author bose_java, waits, myxgyy
- * @version 1.4
+ * @author bose_java, waits, myxgyy, TCSDEVELOPER
+ * @version 1.6
  */
 public class DemoTest extends BaseTest {
     /**
@@ -67,9 +70,9 @@ public class DemoTest extends BaseTest {
     }
 
     /**
-     * This method shows a demo of how to use the RegistrationPhaseHandler with Phase
-     * Management component. Use of other Phase Handlers is similar to the Registration
-     * Phase Handler as the same set of APIs are to be used in those cases as well.
+     * This method shows a demo of how to use the RegistrationPhaseHandler with Phase Management component. Use of other
+     * Phase Handlers is similar to the Registration Phase Handler as the same set of APIs are to be used in those cases
+     * as well.
      *
      * @throws Exception
      *             not under test.
@@ -142,12 +145,12 @@ public class DemoTest extends BaseTest {
             Scorecard scorecard1 = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // insert a screening review result for submission one
-            Review screenReview = createReview(11, screener.getId(), submission1.getId(), scorecard1
-                .getId(), true, 90.0f);
+            Review screenReview = createReview(11, screener.getId(), submission1.getId(), scorecard1.getId(), true,
+                    90.0f);
             Scorecard scorecard2 = createScorecard(2, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             // insert a screening review result for submission two
-            Review screenReview2 = createReview(13, screener.getId(), submission2.getId(), scorecard2
-                .getId(), true, 70.0f);
+            Review screenReview2 = createReview(13, screener.getId(), submission2.getId(), scorecard2.getId(), true,
+                    70.0f);
             this.insertScorecards(conn, new Scorecard[] {scorecard1, scorecard2});
             this.insertReviews(conn, new Review[] {screenReview, screenReview2});
 
@@ -173,8 +176,7 @@ public class DemoTest extends BaseTest {
      * @since 1.4
      */
     public void testDemoV14_SpecificationSubmission() throws Exception {
-        SpecificationSubmissionPhaseHandler handler = new SpecificationSubmissionPhaseHandler(
-            PHASE_HANDLER_NAMESPACE);
+        SpecificationSubmissionPhaseHandler handler = new SpecificationSubmissionPhaseHandler(PHASE_HANDLER_NAMESPACE);
 
         try {
             cleanTables();
@@ -228,8 +230,7 @@ public class DemoTest extends BaseTest {
      * @since 1.4
      */
     public void testDemoV14_SpecificationReview() throws Exception {
-        SpecificationReviewPhaseHandler handler = new SpecificationReviewPhaseHandler(
-            PHASE_HANDLER_NAMESPACE);
+        SpecificationReviewPhaseHandler handler = new SpecificationReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
 
         try {
             cleanTables();
@@ -263,14 +264,13 @@ public class DemoTest extends BaseTest {
             insertResourceInfo(conn, reviewer.getId(), 1, "3");
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(11, 5, 1, 1, true, 90.0f);
-            //  add a rejected comment
-            review.addComment(createComment(1111, reviewer.getId(), "Approved", 14,
-                "Specification Review Comment"));
+            // add a rejected comment
+            review.addComment(createComment(1111, reviewer.getId(), "Approved", 14, "Specification Review Comment"));
             insertScorecards(conn, new Scorecard[] {scorecard});
             insertReviews(conn, new Review[] {review});
             insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {reviewer.getId()},
-                new long[] {review.getId()}, new String[] {"Approved Comment"}, new long[] {14},
-                new String[] {"Approved"});
+                    new long[] {review.getId()}, new String[] {"Approved Comment"}, new long[] {14},
+                    new String[] {"Approved"});
 
             // change the phase status to open
             phase.setPhaseStatus(PhaseStatus.OPEN);
@@ -279,6 +279,191 @@ public class DemoTest extends BaseTest {
                 // stop the phase
                 handler.perform(phase, "1001");
             }
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * Demo to show the usage of <code>MilestoneSubmissionPhaseHandler</code> class.
+     *
+     * @throws Exception
+     *             to Junit.
+     * @since 1.6
+     */
+    public void testDemoV16_MilestoneSubmission() throws Exception {
+        MilestoneSubmissionPhaseHandler handler = new MilestoneSubmissionPhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase phase = phases[13];
+
+            // set with scheduled status.
+            phase.setPhaseStatus(PhaseStatus.SCHEDULED);
+
+            Connection conn = getConnection();
+            // phase can be start now
+            if (handler.canPerform(phase)) {
+                // start the phase
+                handler.perform(phase, "operator");
+            }
+            // we will stop the phase now
+            // set with open status.
+            phase.setPhaseStatus(PhaseStatus.OPEN);
+            Resource screener = createResource(1, 102L, 1, 20);
+            insertResources(conn, new Resource[] {screener});
+            insertResourceInfo(conn, screener.getId(), 1, "3");
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 19);
+            insertResources(conn, new Resource[] {resource});
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+
+            // insert upload/submission
+            Upload upload = createUpload(1, project.getId(), 1, 1, 1, "parameter");
+            insertUploads(conn, new Upload[] {upload});
+            Submission submission = createSubmission(1, upload.getId(), 1, 3);
+            insertSubmissions(conn, new Submission[] {submission});
+            // we can stop the phase
+            if (handler.canPerform(phase)) {
+                // stop it now
+                handler.perform(phase, "operator");
+            }
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * Demo to show the usage of <code>MilestoneScreeningPhaseHandler</code> class.
+     *
+     * @throws Exception
+     *             to Junit.
+     * @since 1.6
+     */
+    public void testDemoV16_MilestoneScreening() throws Exception {
+        MilestoneScreeningPhaseHandler handler = new MilestoneScreeningPhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = setupPhases();
+            Phase[] phases = project.getAllPhases();
+
+            // assume following positions are the desired phases.
+            Phase submissionPhase = phases[13];
+            Phase screeningPhase = phases[14];
+            submissionPhase.setPhaseStatus(PhaseStatus.CLOSED);
+            screeningPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+
+            // insert a submission with milestone submission type
+            Connection conn = getConnection();
+            Resource resource = createResource(4, 101L, 1, 19);
+            insertResources(conn, new Resource[] {resource});
+            Upload upload = createUpload(1, project.getId(), 4, 1, 1, "parameter");
+            insertUploads(conn, new Upload[] {upload});
+
+            // assume the milestone submission type id is 3.
+            Submission submission = createSubmission(1, upload.getId(), 1, 3);
+            insertSubmissions(conn, new Submission[] {submission});
+            // it now can perform start
+            if (handler.canPerform(screeningPhase)) {
+                // start
+                handler.perform(screeningPhase, "1001");
+            }
+            // we will close the phase now
+            // create a milestone screener
+            Resource screener = createResource(5, 102L, 1, 20);
+            insertResources(conn, new Resource[] {screener});
+            insertResourceInfo(conn, screener.getId(), 1, "3");
+            Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
+            Review review = createReview(11, 5, 1, 1, true, 90.0f);
+            insertScorecards(conn, new Scorecard[] {scorecard});
+            insertReviews(conn, new Review[] {review});
+            // change the phase status to open
+            screeningPhase.setPhaseStatus(PhaseStatus.OPEN);
+            // we can stop the phase now
+            if (handler.canPerform(screeningPhase)) {
+                // stop the phase
+                handler.perform(screeningPhase, "1001");
+            }
+
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * Demo to show the usage of <code>MilestoneReviewPhaseHandler</code> class.
+     *
+     * @throws Exception
+     *             to Junit.
+     * @since 1.6
+     */
+    public void testDemoV16_MilestoneReview() throws Exception {
+        MilestoneReviewPhaseHandler handler = new MilestoneReviewPhaseHandler(PHASE_HANDLER_NAMESPACE);
+
+        try {
+            cleanTables();
+
+            Project project = setupPhases();
+            Phase[] phases = project.getAllPhases();
+            Phase submissionPhase = phases[13];
+            Phase reviewPhase = phases[15];
+
+            // test with scheduled status.
+            reviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
+
+            // time has passed, but dependency not met.
+            reviewPhase.setActualStartDate(new Date());
+
+            // time has passed and dependency met.
+            reviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
+
+            // And we set up a active submission in screening phase
+            Connection conn = getConnection();
+
+            Resource submitter = createResource(1, submissionPhase.getId(), 1, 19);
+
+            Upload upload = createUpload(1, 1, submitter.getId(), 1, 1, "parameter");
+            Submission submission = createSubmission(1, 1, 1, 3);
+
+            insertResources(conn, new Resource[] {submitter});
+            insertResourceInfo(conn, submitter.getId(), 1, "11111");
+            insertUploads(conn, new Upload[] {upload});
+            insertSubmissions(conn, new Submission[] {submission});
+
+            // it now can perform start
+            if (handler.canPerform(reviewPhase)) {
+                // start
+                handler.perform(reviewPhase, "1001");
+            }
+
+            // we will close the phase now
+            // create a milestone reviewer
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 21);
+            insertResources(conn, new Resource[] {reviewer});
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+            // insert scorecard
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[] {sc});
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            insertReviews(conn, new Review[] {review});
+
+            // change the phase status to open
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+            // we can stop the phase now
+            if (handler.canPerform(reviewPhase)) {
+                // stop the phase
+                handler.perform(reviewPhase, "1001");
+            }
+
         } finally {
             cleanTables();
             closeConnection();

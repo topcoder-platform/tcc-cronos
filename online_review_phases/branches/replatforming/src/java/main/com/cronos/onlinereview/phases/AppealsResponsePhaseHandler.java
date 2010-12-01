@@ -26,7 +26,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,8 +100,16 @@ import java.util.Map;
  *   </ol>
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits, isv
- * @version 1.4
+ * <p>
+ * Version 1.6 Change notes:
+ *   <ol>
+ *     <li>Refactor breakTies and getSubmissionById methods to PhaseHelper to reduce code redundancy.</li>
+ *     <li>Change to use getUploads().get(0) to retrieve the only upload for software competitions.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, isv, TCSDEVELOPER
+ * @version 1.6
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -188,7 +195,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Provides additional logic to execute a phase. This method will be called
      * by start() and end() methods of PhaseManager implementations in Phase
-     * Management component. This method can send email to a group os users
+     * Management component. This method can send email to a group of users
      * associated with timeline notification for the project. The email can be
      * send on start phase or end phase base on configuration settings.
      * </p>
@@ -411,14 +418,14 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             // placement
             for (int iSub = 0; iSub < placements.length; iSub++) {
                 RankedSubmission rankedSubmission = placements[iSub];
-                rankedSubmission = breakTies(rankedSubmission, subs, placements);
-                Submission submission = getSubmissionById(subs,
+                rankedSubmission = PhasesHelper.breakTies(rankedSubmission, subs, placements);
+                Submission submission = PhasesHelper.getSubmissionById(subs,
                                 rankedSubmission.getId());
                 float aggScore = rankedSubmission.getAggregatedScore();
                 int placement = rankedSubmission.getRank();
 
                 // update submitter's final score
-                long submitterId = submission.getUpload().getOwner();
+                long submitterId = submission.getUploads().get(0).getOwner();
                 Resource submitter = getManagerHelper().getResourceManager()
                                 .getResource(submitterId);
 
@@ -499,9 +506,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
             for (Submission submission : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
-                infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(
-                                              getManagerHelper().getResourceManager().getResource(
-                                               submission.getUpload().getOwner()).getProperty(PhasesHelper.HANDLE)));
+                infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(getManagerHelper().getResourceManager()
+                        .getResource(submission.getUploads().get(0).getOwner()).getProperty(PhasesHelper.HANDLE)));
                 infos.put("SUBMITTER_PRE_APPEALS_SCORE", submission.getInitialScore());
                 infos.put("SUBMITTER_POST_APPEALS_SCORE", submission.getFinalScore());
                 infos.put("SUBMITTER_RESULT", submission.getPlacement());
@@ -532,55 +538,6 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         // return whether there is at least one submission passes review after
         // appeal response
         return !allSubmissionFailed;
-    }
-
-    /**
-     * Return suitable submission for given submissionId.
-     *
-     * @param submissions the submission array
-     * @param submissionId the submissionId
-     * @return submission
-     * @throws PhaseHandlingException if no submission found
-     */
-    private Submission getSubmissionById(Submission[] submissions,
-                    long submissionId) throws PhaseHandlingException {
-        for (int i = 0; i < submissions.length; i++) {
-            if (submissions[i].getId() == submissionId) {
-                return submissions[i];
-            }
-        }
-        throw new PhaseHandlingException(
-                        "submissions not found for submissionId: "
-                                        + submissionId);
-    }
-
-    /**
-     * Break ties by submission timestamp.
-     *
-     * @param submission the submission to calculate
-     * @param submissions all the submission records
-     * @param placements all the ranked submission records
-     * @return the submission with fixed placement
-     * @throws PhaseHandlingException if an error occurs when retrieving data.
-     */
-    private RankedSubmission breakTies(RankedSubmission submission,
-                    Submission[] submissions, RankedSubmission[] placements) throws PhaseHandlingException {
-        int rank = submission.getRank();
-        Date timestamp1 = getSubmissionById(submissions, submission.getId())
-                        .getUpload().getCreationTimestamp();
-        for (int i = 0; i < placements.length; ++i) {
-            if (placements[i].getRank() == submission.getRank()) {
-                Submission tie = getSubmissionById(submissions, placements[i]
-                                .getId());
-                Date timestamp2 = tie.getUpload().getCreationTimestamp();
-
-                if (timestamp1 != null && timestamp2 != null
-                                && timestamp2.before(timestamp1)) {
-                    ++rank;
-                }
-            }
-        }
-        return new RankedSubmission(submission, rank);
     }
 
     /**

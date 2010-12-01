@@ -994,7 +994,9 @@ CREATE SEQUENCE PROJECT_USER_AUDIT_SEQ;
 INSERT INTO project_type_lu(project_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'Component', 'Component', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO project_type_lu(project_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(2, 'Application', 'Application', 'System', CURRENT, 'System', CURRENT);
+  VALUES(2, 'Application', 'Application', 'System', CURRENT, 'System', CURRENT);  
+INSERT INTO project_type_lu(project_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(3, 'Studio', 'Studio', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO project_category_lu(project_category_id, project_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 1, 'Design', 'Design', 'System', CURRENT, 'System', CURRENT);
@@ -1024,6 +1026,8 @@ INSERT INTO project_category_lu(project_category_id, project_type_id, name, desc
   VALUES(13, 2, 'Testing Competition', 'Testing Competition', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO project_category_lu(project_category_id, project_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(14, 2, 'Assembly Competition', 'Assembly Competition', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_category_lu(project_category_id, project_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(15, 3, 'Studio', 'Studio', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO scorecard_type_lu(scorecard_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'Screening', 'Screening', 'System', CURRENT, 'System', CURRENT);
@@ -1289,6 +1293,8 @@ INSERT INTO submission_status_lu(submission_status_id, name, description, create
   VALUES(4, 'Completed Without Win', 'Completed Without Win', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO submission_status_lu(submission_status_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(5, 'Deleted', 'Deleted', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO submission_status_lu(submission_status_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(6, 'Failed Milestone Screening', 'Failed Milestone Screening', 'System', CURRENT, 'System', CURRENT);
 
 INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'Comment', 'Comment', 'System', CURRENT, 'System', CURRENT);
@@ -1500,11 +1506,20 @@ INSERT INTO submission_type_lu(submission_type_id, name, description, create_use
   VALUES(1, 'Contest Submission', 'The contest submission', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO submission_type_lu(submission_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(2, 'Specification Submission', 'The specification submission', 'System', CURRENT, 'System', CURRENT);
-
+INSERT INTO submission_type_lu(submission_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(3, 'Milestone Submission', 'The milestone submission', 'System', CURRENT, 'System', CURRENT);
+  
 INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(13, 'Specification Submission', 'Specification Submission', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(14, 'Specification Review', 'Specification Review', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(15, 'Milestone Submission', 'Milestone Submission', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(16, 'Milestone Screening', 'Milestone Screening', 'System', CURRENT, 'System', CURRENT);  
+INSERT INTO phase_type_lu(phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(17, 'Milestone Review', 'Milestone Review', 'System', CURRENT, 'System', CURRENT);
+
 
 INSERT INTO comment_type_lu(comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(14, 'Specification Review Comment', 'Specification Review Comment', 'System', CURRENT, 'System', CURRENT);
@@ -1513,6 +1528,13 @@ INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description,
   VALUES(17, 13, 'Specification Submitter', 'Specification Submitter', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(18, 14, 'Specification Reviewer', 'Specification Reviewer', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(19, 15, 'Milestone Submitter', 'Milestone Submitter', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(20, 16, 'Milestone Screener', 'Milestone Screener', 'System', CURRENT, 'System', CURRENT);  
+INSERT INTO resource_role_lu(resource_role_id, phase_type_id, name, description, create_user, create_date, modify_user, modify_date)
+  VALUES(21, 17, 'Milestone Reviewer', 'Milestone Reviewer', 'System', CURRENT, 'System', CURRENT);  
+  
 
 INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, per_submission, required, create_user, create_date, modify_user, modify_date)
   VALUES (25, 13, 1, 'Specification Submission', 'Specification Submission', 0, 0, 'System', CURRENT, 'System', CURRENT );

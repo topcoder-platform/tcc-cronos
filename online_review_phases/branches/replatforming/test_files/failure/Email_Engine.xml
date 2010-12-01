@@ -5,7 +5,7 @@
 	        <Value>localhost</Value>
 	      </Property>
 	      <Property name="smtp_host_port">
-	         <Value>2222</Value>
+	         <Value>25</Value>
 	      </Property>
 	      <Property name="username">
 	          <Value></Value>

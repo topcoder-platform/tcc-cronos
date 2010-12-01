@@ -24,8 +24,8 @@ import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtilityTest;
  * This test case aggregates all Unit test cases.
  * </p>
  *
- * @author myxgyy
- * @version 1.4
+ * @author myxgyy, TCSDEVELOPER
+ * @version 1.6
  */
 public class UnitTests extends TestCase {
     /**
@@ -77,6 +77,11 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(SpecificationSubmissionPhaseHandlerTest.class);
         suite.addTestSuite(SpecificationReviewPhaseHandlerTest.class);
         suite.addTestSuite(PhasesHelperTest.class);
+
+        // added in version 1.6
+        suite.addTestSuite(MilestoneSubmissionPhaseHandlerTest.class);
+        suite.addTestSuite(MilestoneScreeningPhaseHandlerTest.class);
+        suite.addTestSuite(MilestoneReviewPhaseHandlerTest.class);
 
         // demo test
         suite.addTestSuite(DemoTest.class);

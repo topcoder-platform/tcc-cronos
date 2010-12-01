@@ -447,7 +447,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the perform with Scheduled statuses. The 
+     * Tests the perform with Scheduled statuses.
      *
      * @throws Exception not under test.
      * @since 1.4
