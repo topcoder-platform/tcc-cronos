@@ -38,7 +38,8 @@ public class SqlDeliverablePersistenceTest extends TestCase {
     /**
      * Sets up the test environment. The configuration will be loaded.
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     protected void setUp() throws Exception {
         tearDown();
@@ -54,7 +55,8 @@ public class SqlDeliverablePersistenceTest extends TestCase {
     /**
      * Clean up the test environment. The configuration will be unloaded.
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfig();
@@ -67,14 +69,14 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test of the constructor
-     * <code>SqlDeliverablePersistence(DBConnectionFactory connectionFactory)</code>.
+     * Accuracy test of the constructor <code>SqlDeliverablePersistence(DBConnectionFactory connectionFactory)</code>.
      * </p>
      * <p>
      * An instance of SqlDeliverablePersistence can be created.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyConstructorA1() throws Exception {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory);
@@ -84,14 +86,14 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the constructor
-     * <code>SqlDeliverablePersistence(DBConnectionFactory connectionFactory)</code>.
+     * Failure test of the constructor <code>SqlDeliverablePersistence(DBConnectionFactory connectionFactory)</code>.
      * </p>
      * <p>
      * connectionFactory is null. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureConstructorA1() throws Exception {
         try {
@@ -111,11 +113,11 @@ public class SqlDeliverablePersistenceTest extends TestCase {
      * An instance of SqlDeliverablePersistence can be created.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyConstructorB1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         assertNotNull("Unable to create SqlUploadPersistence.", persistence);
     }
@@ -126,11 +128,11 @@ public class SqlDeliverablePersistenceTest extends TestCase {
      * <code>SqlDeliverablePersistence(DBConnectionFactory connectionFactory, String connectionName)</code>.
      * </p>
      * <p>
-     * An instance of SqlDeliverablePersistence can be created. connectionName
-     * is null.
+     * An instance of SqlDeliverablePersistence can be created. connectionName is null.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyConstructorB2() throws Exception {
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, null);
@@ -147,7 +149,8 @@ public class SqlDeliverablePersistenceTest extends TestCase {
      * connectionFactory is null. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureConstructorB1() throws Exception {
         try {
@@ -160,19 +163,17 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long deliverableId)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long deliverableId)</code>.
      * </p>
      * <p>
-     * Check if the "per submission" deliverables are loaded correctly from the
-     * database.
+     * Check if the "per submission" deliverables are loaded correctly from the database.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesA1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         Deliverable[] deliverables = persistence.loadDeliverables(1, 2, 2);
 
@@ -186,27 +187,24 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         assertEquals("check submission id", new Long(2), deliverable.getSubmission());
         assertEquals("check required", true, deliverable.isRequired());
         assertEquals("check name", "deliverable 1", deliverable.getName());
-        assertEquals("check description", "per submission deliverable", deliverable
-                .getDescription());
+        assertEquals("check description", "per submission deliverable", deliverable.getDescription());
         assertEquals("check create user", "System", deliverable.getCreationUser());
         assertEquals("check modify user", "System", deliverable.getModificationUser());
     }
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long deliverableId)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long deliverableId)</code>.
      * </p>
      * <p>
-     * Check if the non-"per submission" deliverables are loaded correctly from
-     * the database.
+     * Check if the non-"per submission" deliverables are loaded correctly from the database.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesA2() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         Deliverable[] deliverables = persistence.loadDeliverables(2, 3, 3);
 
@@ -220,8 +218,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         assertNull("check submission id", deliverable.getSubmission());
         assertEquals("check required", false, deliverable.isRequired());
         assertEquals("check name", "deliverable 2", deliverable.getName());
-        assertEquals("check description", "non per submission deliverable", deliverable
-                .getDescription());
+        assertEquals("check description", "non per submission deliverable", deliverable.getDescription());
         assertEquals("check create user", "System", deliverable.getCreationUser());
         assertEquals("check modify user", "System", deliverable.getModificationUser());
 
@@ -229,19 +226,17 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long deliverableId)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long deliverableId)</code>.
      * </p>
      * <p>
-     * Check if the deliverable is loaded correctly from the database. empty
-     * array is returned.
+     * Check if the deliverable is loaded correctly from the database. empty array is returned.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesA3() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         Deliverable[] deliverables = persistence.loadDeliverables(10, 1, 1);
 
@@ -250,18 +245,17 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long deliverableId)</code>.
+     * Failure test of the method <code>loadDeliverables(long deliverableId)</code>.
      * </p>
      * <p>
      * deliverableId is -1. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesA1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
             persistence.loadDeliverables(-1, 1, 1);
@@ -273,22 +267,20 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long[] deliverableIds)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long[] deliverableIds)</code>.
      * </p>
      * <p>
-     * Check if the "per submission" deliverables are loaded correctly from the
-     * database.
+     * Check if the "per submission" deliverables are loaded correctly from the database.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesB1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[]{1, 3}, new long[]{2, 2},
-                new long[]{2, 1});
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 3}, new long[] {2, 2}, new long[] {2,
+            1});
 
         assertEquals("1 results", 1, deliverables.length);
 
@@ -296,33 +288,31 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         assertEquals("check id", 1, deliverable.getId());
         assertEquals("check project id", 2, deliverable.getProject());
         assertEquals("check phase type id", 2, deliverable.getPhase());
-        assertEquals("check resourceid", 2, deliverable.getResource());
+        assertEquals("check resource id", 2, deliverable.getResource());
         assertEquals("check submission id", new Long(2), deliverable.getSubmission());
         assertEquals("check required", true, deliverable.isRequired());
         assertEquals("check name", "deliverable 1", deliverable.getName());
-        assertEquals("check description", "per submission deliverable", deliverable
-                .getDescription());
+        assertEquals("check description", "per submission deliverable", deliverable.getDescription());
         assertEquals("check create user", "System", deliverable.getCreationUser());
         assertEquals("check modify user", "System", deliverable.getModificationUser());
     }
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long[] deliverableIds)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long[] deliverableIds)</code>.
      * </p>
      * <p>
-     * Check if the non-"per submission" deliverables are loaded correctly from
-     * the database.
+     * Check if the non-"per submission" deliverables are loaded correctly from the database.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesB2() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[]{1, 2}, new long[]{2, 3}, new long[]{2, 3});
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 2}, new long[] {2, 3}, new long[] {2,
+            3});
 
         assertEquals("2 results", 2, deliverables.length);
 
@@ -334,8 +324,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         assertNull("check submission id", deliverable.getSubmission());
         assertEquals("check required", false, deliverable.isRequired());
         assertEquals("check name", "deliverable 2", deliverable.getName());
-        assertEquals("check description", "non per submission deliverable", deliverable
-                .getDescription());
+        assertEquals("check description", "non per submission deliverable", deliverable.getDescription());
         assertEquals("check create user", "System", deliverable.getCreationUser());
         assertEquals("check modify user", "System", deliverable.getModificationUser());
 
@@ -347,8 +336,7 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         assertEquals("check submission id", new Long(2), deliverable.getSubmission());
         assertEquals("check required", true, deliverable.isRequired());
         assertEquals("check name", "deliverable 1", deliverable.getName());
-        assertEquals("check description", "per submission deliverable", deliverable
-                .getDescription());
+        assertEquals("check description", "per submission deliverable", deliverable.getDescription());
         assertEquals("check create user", "System", deliverable.getCreationUser());
         assertEquals("check modify user", "System", deliverable.getModificationUser());
 
@@ -356,19 +344,18 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long[] deliverableIds)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long[] deliverableIds)</code>.
      * </p>
      * <p>
-     * Check if the deliverables are loaded correctly from the database.
-     * deliverableIds is empty and empty array is returned.
+     * Check if the deliverables are loaded correctly from the database. deliverableIds is empty and empty array is
+     * returned.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesB3() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         Deliverable[] deliverables = persistence.loadDeliverables(new long[0], new long[0], new long[0]);
 
@@ -377,18 +364,17 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long[] deliverableIds)</code>.
+     * Failure test of the method <code>loadDeliverables(long[] deliverableIds)</code>.
      * </p>
      * <p>
      * deliverableIds is null. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesB1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
             persistence.loadDeliverables(null, null, null);
@@ -400,21 +386,20 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long[] deliverableIds)</code>.
+     * Failure test of the method <code>loadDeliverables(long[], long[], long[])</code>.
      * </p>
      * <p>
      * deliverableIds contains -1. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesB2() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[]{1, -1}, new long[]{1, 1}, new long[]{1, 1});
+            persistence.loadDeliverables(new long[] {1, -1}, new long[] {1, 1}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableIds should only contain positive values.", e.getMessage());
@@ -423,20 +408,20 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test for the <code>loadDeliverables(long[], long[], long[])</code> method when connection
-     * to database is invalid.</p>
-     *
+     * Failure test for the <code>loadDeliverables(long[], long[], long[])</code> method when connection to database is
+     * invalid.
+     * </p>
      * <p>
      * DeliverablePersistenceException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesB3() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "invalid_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "invalid_connection");
         try {
-            persistence.loadDeliverables(new long[]{1, 2}, new long[]{2, 3}, new long[]{2, 3});
+            persistence.loadDeliverables(new long[] {1, 2}, new long[] {2, 3}, new long[] {2, 3});
             fail("DeliverablePersistenceException should be thrown.");
         } catch (DeliverablePersistenceException e) {
             // test passed
@@ -445,19 +430,17 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
+     * Accuracy test of the method <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
      * </p>
      * <p>
-     * Check if the per submission deliverable is loaded correctly from the
-     * database.
+     * Check if the per submission deliverable is loaded correctly from the database.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverable1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         Deliverable deliverable = persistence.loadDeliverable(1, 2, 2, 2);
 
@@ -468,27 +451,24 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         assertEquals("check submission id", new Long(2), deliverable.getSubmission());
         assertEquals("check required", true, deliverable.isRequired());
         assertEquals("check name", "deliverable 1", deliverable.getName());
-        assertEquals("check description", "per submission deliverable", deliverable
-                .getDescription());
+        assertEquals("check description", "per submission deliverable", deliverable.getDescription());
         assertEquals("check create user", "System", deliverable.getCreationUser());
         assertEquals("check modify user", "System", deliverable.getModificationUser());
     }
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
+     * Accuracy test of the method <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
      * </p>
      * <p>
-     * Check if the per submission deliverable is loaded correctly from the
-     * database. null should be returned.
+     * Check if the per submission deliverable is loaded correctly from the database. null should be returned.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverable2() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         Deliverable deliverable = persistence.loadDeliverable(2, 1, 1, 1);
 
@@ -497,18 +477,17 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
+     * Failure test of the method <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
      * </p>
      * <p>
      * deliverableId is -1. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverable1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
             persistence.loadDeliverable(-1, 2, 2, 1);
@@ -520,18 +499,17 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
+     * Failure test of the method <code>Deliverable loadDeliverable(long deliverableId, long submissionId)</code>.
      * </p>
      * <p>
      * submissionId is -1. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverable2() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
             persistence.loadDeliverable(1, -1, 2, 1);
@@ -543,18 +521,18 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test for the <code>loadDeliverable(long, long, long, long)</code> method when connection
-     * to database is invalid.</p>
-     *
+     * Failure test for the <code>loadDeliverable(long, long, long, long)</code> method when connection to database is
+     * invalid.
+     * </p>
      * <p>
      * DeliverablePersistenceException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverable3() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "invalid_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "invalid_connection");
         try {
             persistence.loadDeliverable(2, 1, 1, 1);
             fail("DeliverablePersistenceException should be thrown.");
@@ -565,21 +543,20 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long[] deliverableIds, long[] submissionIds)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long[], long[], long[])</code>.
      * </p>
      * <p>
      * Check if the deliverables are loaded correctly from the database.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesC1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[]{1, 1, 2, 2},
-                new long[]{1, 2, 1, 2}, new long[]{1, 2, 1, 1});
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[] {1, 1, 2, 2}, new long[] {1, 2, 1, 2},
+                new long[] {1, 2, 1, 1});
 
         assertEquals("1 result", 1, deliverables.length);
 
@@ -591,51 +568,47 @@ public class SqlDeliverablePersistenceTest extends TestCase {
         assertEquals("check submission id", new Long(2), deliverable.getSubmission());
         assertEquals("check required", true, deliverable.isRequired());
         assertEquals("check name", "deliverable 1", deliverable.getName());
-        assertEquals("check description", "per submission deliverable", deliverable
-                .getDescription());
+        assertEquals("check description", "per submission deliverable", deliverable.getDescription());
         assertEquals("check create user", "System", deliverable.getCreationUser());
         assertEquals("check modify user", "System", deliverable.getModificationUser());
     }
 
     /**
      * <p>
-     * Accuracy test of the method
-     * <code>loadDeliverables(long[] deliverableIds, long[] submissionIds)</code>.
+     * Accuracy test of the method <code>loadDeliverables(long[], long[], long[], long[])</code>.
      * </p>
      * <p>
-     * Check if the deliverable is loaded correctly from the database.
-     * deliverableIds and submissionIds is empty and empty array is returned.
+     * Check if the deliverable is loaded correctly from the database. deliverableIds and submissionIds is empty and
+     * empty array is returned.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testAccuracyLoadDeliverablesC2() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
-        Deliverable[] deliverables = persistence.loadDeliverables(new long[0], new long[0], new long[0],
-                new long[0]);
+        Deliverable[] deliverables = persistence.loadDeliverables(new long[0], new long[0], new long[0], new long[0]);
 
         assertEquals("0 results", 0, deliverables.length);
     }
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long[] deliverableIds, long[] submissionIds)</code>.
+     * Failure test of the method <code>loadDeliverables(long[], long[])</code>.
      * </p>
      * <p>
      * deliverableIds is null. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesC1() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
-            persistence.loadDeliverables(null, new long[]{1}, new long[]{1});
+            persistence.loadDeliverables(null, new long[] {1}, new long[] {1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableIds should not be null.", e.getMessage());
@@ -644,21 +617,20 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long[] deliverableIds, long[] submissionIds)</code>.
+     * Failure test of the method <code>loadDeliverables(long[], long[], long[])</code>.
      * </p>
      * <p>
      * submissionIds is null. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesC2() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[]{1}, null, new long[]{1});
+            persistence.loadDeliverables(new long[] {1}, null, new long[] {1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("resourceIds should not be null.", e.getMessage());
@@ -667,21 +639,20 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long[] deliverableIds, long[] submissionIds)</code>.
+     * Failure test of the method <code>loadDeliverables(long[], long[], long[])</code>.
      * </p>
      * <p>
      * deliverableIds contains -1. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesC3() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[]{1, -1}, new long[]{1, 2}, new long[]{1, 1});
+            persistence.loadDeliverables(new long[] {1, -1}, new long[] {1, 2}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("deliverableIds should only contain positive values.", e.getMessage());
@@ -690,21 +661,20 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long[] deliverableIds, long[] submissionIds)</code>.
+     * Failure test of the method <code>loadDeliverables(long[], long[], long[])</code>.
      * </p>
      * <p>
      * submissionIds contains -1. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesC4() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[]{1, 2}, new long[]{1, -1}, new long[]{1, 1});
+            persistence.loadDeliverables(new long[] {1, 2}, new long[] {1, -1}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             assertEquals("resourceIds should only contain positive values.", e.getMessage());
@@ -713,27 +683,24 @@ public class SqlDeliverablePersistenceTest extends TestCase {
 
     /**
      * <p>
-     * Failure test of the method
-     * <code>loadDeliverables(long[] deliverableIds, long[] submissionIds)</code>.
+     * Failure test of the method <code>loadDeliverables(long[], long[], long[])</code>.
      * </p>
      * <p>
-     * deliverableIds and submissionIds contain different number of items.
-     * IllegalArgumentException is expected.
+     * deliverableIds and submissionIds contain different number of items. IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testFailureLoadDeliverablesC5() throws Exception {
-        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
 
         try {
-            persistence.loadDeliverables(new long[]{1, 2, 3}, new long[]{1, 2}, new long[]{1, 1});
+            persistence.loadDeliverables(new long[] {1, 2, 3}, new long[] {1, 2}, new long[] {1, 1});
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
-            assertEquals(
-                    "deliverableIds, resourceIds and phaseIds should have the same number of elements.", e
-                            .getMessage());
+            assertEquals("deliverableIds, resourceIds and phaseIds should have the same number of elements.", e
+                    .getMessage());
         }
     }
 }

@@ -41,12 +41,13 @@ INSERT INTO submission_type_lu(submission_type_id, name, description, create_use
 
 
 INSERT INTO upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 2, 1, 1, 'parameter 1', 'System', CURRENT, 'System', CURRENT);
-
 INSERT INTO upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) VALUES(2, 3, 3, 1, 1, 'parameter 2', 'System', CURRENT, 'System', CURRENT);
 
-INSERT INTO submission(submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 3, 1, 'System', CURRENT, 'System', CURRENT);
+INSERT INTO submission(submission_id, submission_status_id, submission_type_id, feedback_thumb, user_rank, mark_for_purchase, create_user, create_date, modify_user, modify_date) VALUES(1, 3, 1, 't', 1, 't', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO submission(submission_id, submission_status_id, submission_type_id, feedback_thumb, user_rank, mark_for_purchase, create_user, create_date, modify_user, modify_date) VALUES(2, 1, 2, 'f', 1, 'f', 'System', CURRENT, 'System', CURRENT);
 
-INSERT INTO submission(submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date) VALUES(2, 1, 1, 2, 'System', CURRENT, 'System', CURRENT);
+INSERT INTO upload_submission(upload_id, submission_id) values (1, 2);
+INSERT INTO upload_submission(upload_id, submission_id) values (2, 1);
 
 INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, name, description, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 2, 2, 1, 'deliverable 1', 'per submission deliverable', 'System', CURRENT, 'System', CURRENT);
 

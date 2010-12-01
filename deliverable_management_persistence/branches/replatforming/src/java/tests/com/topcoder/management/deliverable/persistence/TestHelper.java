@@ -48,6 +48,7 @@ public final class TestHelper {
      *
      * @throws UnknownNamespaceException if there is no namespace
      */
+    @SuppressWarnings("unchecked")
     public static void clearConfig() throws UnknownNamespaceException {
         ConfigManager cm = ConfigManager.getInstance();
 
