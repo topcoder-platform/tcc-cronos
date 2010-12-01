@@ -6,15 +6,14 @@ package com.topcoder.management.project.persistence.logging;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-
 /**
  * Encapsulates the entry log data and generates consistent log messages.
  */
 public class LogMessage {
-    /** project id for the log message */
+    /** project id for the log message. */
     private Long projectId;
 
-    /** Operator doing the action */
+    /** Operator doing the action. */
     private String operator;
 
     /** free text message to log */
@@ -29,10 +28,14 @@ public class LogMessage {
     /**
      * Creates a log message. Any parameter can be null.
      *
-     * @param projectId the project id to log.
-     * @param operator the operator to log.
-     * @param message a free text message.
-     * @param error an exception to append to the log message.
+     * @param projectId
+     *            the project id to log.
+     * @param operator
+     *            the operator to log.
+     * @param message
+     *            a free text message.
+     * @param error
+     *            an exception to append to the log message.
      */
     public LogMessage(Long projectId, String operator, String message, Throwable error) {
         this.projectId = projectId;
@@ -47,9 +50,12 @@ public class LogMessage {
     /**
      * Creates a log message. Any parameter can be null
      *
-     * @param projectId the project id to log.
-     * @param operator the operator to log.
-     * @param message a free text message.
+     * @param projectId
+     *            the project id to log.
+     * @param operator
+     *            the operator to log.
+     * @param message
+     *            a free text message.
      */
     public LogMessage(Long projectId, String operator, String message) {
         this(projectId, operator, message, null);
@@ -100,12 +106,12 @@ public class LogMessage {
         if (logMessage == null) {
             StringBuffer buffer = new StringBuffer();
 
-            buffer.append("operator: ").append((operator == null) ? "Unknown" : operator).append("projectId: ")
-                  .append((projectId == null) ? "Unknown" : projectId.toString()).append(" - ").append(message);
+            buffer.append("operator: ").append((operator == null) ? "Unknown" : operator).append("projectId: ").append(
+                (projectId == null) ? "Unknown" : projectId.toString()).append(" - ").append(message);
 
-            //This should be done while the Logging Wrapper 1.2 is used.
+            // This should be done while the Logging Wrapper 1.2 is used.
 
-            //When the LW 1.3 would be ready, it will be possible pass the exception directly to LW.   
+            // When the LW 1.3 would be ready, it will be possible pass the exception directly to LW.
             if (error != null) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
 

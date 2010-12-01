@@ -30,7 +30,6 @@ import com.topcoder.management.project.link.ProjectLink;
 import com.topcoder.management.project.link.ProjectLinkType;
 import com.topcoder.management.project.link.ProjectLinkCycleException;
 
-
 /**
  * <p>
  * Project link manager. It handles persistence operations for project link as well as project link type. It currently
@@ -39,7 +38,6 @@ import com.topcoder.management.project.link.ProjectLinkCycleException;
  * <p>
  * It is created for "OR Project Linking" assembly.
  * </p>
- *
  * <p>
  * Change log for version 1.1: Updated the code for initializing the retrieved project link types with value of
  * allow_overlap flag; update {@link #updateProjectLinks(long, long[], long[])} method to validate the project links
@@ -85,7 +83,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * Column types for return row of above SQL.
      * </p>
      */
-    private static final DataType[] QUERY_ALL_PROJECT_LINK_TYPES_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
+    private static final DataType[] QUERY_ALL_PROJECT_LINK_TYPES_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
@@ -101,7 +99,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * Column types for return row of above SQL.
      * </p>
      */
-    private static final DataType[] QUERY_DEST_PROJECT_LINK_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
+    private static final DataType[] QUERY_DEST_PROJECT_LINK_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE,
         Helper.LONG_TYPE};
 
     /**
@@ -117,7 +115,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * Column types for return row of above SQL.
      * </p>
      */
-    private static final DataType[] QUERY_SOURCE_PROJECT_LINK_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
+    private static final DataType[] QUERY_SOURCE_PROJECT_LINK_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE,
         Helper.LONG_TYPE};
 
     /**
@@ -147,8 +145,8 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
 
     /**
      * <p>
-     * Represents the database connection name that will be used by DBConnectionFactory. This variable is initialized
-     * in the constructor and never changed after that. It will be used in create/update/retrieve method to create
+     * Represents the database connection name that will be used by DBConnectionFactory. This variable is initialized in
+     * the constructor and never changed after that. It will be used in create/update/retrieve method to create
      * connection. This variable can be null, which mean connection name is not defined in the configuration namespace
      * and default connection will be created.
      * </p>
@@ -167,10 +165,12 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * The default constructor for project link manager.
      * </p>
      *
-     * @param projectManager the project manager
-     * @throws IllegalArgumentException if the project manager is null
-     * @throws ConfigurationException if error occurs while loading configuration settings, or required configuration
-     *             parameter is missing.
+     * @param projectManager
+     *            the project manager
+     * @throws IllegalArgumentException
+     *             if the project manager is null
+     * @throws ConfigurationException
+     *             if error occurs while loading configuration settings, or required configuration parameter is missing.
      */
     public ProjectLinkManagerImpl(ProjectManager projectManager) throws ConfigurationException {
         this(ProjectLinkManagerImpl.class.getName(), projectManager);
@@ -181,11 +181,14 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * The constructor for project link manager.
      * </p>
      *
-     * @param namespace the name space value. It should not be null or empty
-     * @param projectManager the project manager
-     * @throws IllegalArgumentException if the namespace is null or empty string or the project manager is null
-     * @throws ConfigurationException if error occurs while loading configuration settings, or required configuration
-     *             parameter is missing.
+     * @param namespace
+     *            the name space value. It should not be null or empty
+     * @param projectManager
+     *            the project manager
+     * @throws IllegalArgumentException
+     *             if the namespace is null or empty string or the project manager is null
+     * @throws ConfigurationException
+     *             if error occurs while loading configuration settings, or required configuration parameter is missing.
      */
     public ProjectLinkManagerImpl(String namespace, ProjectManager projectManager) throws ConfigurationException {
         Helper.assertStringNotNullNorEmpty(namespace, "namespace");
@@ -210,8 +213,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
         }
 
         // get the connection name
-        connectionName = Helper.getConfigurationParameterValue(cm, namespace, CONNECTION_NAME_PARAMETER, false,
-            LOGGER);
+        connectionName = Helper.getConfigurationParameterValue(cm, namespace, CONNECTION_NAME_PARAMETER, false, LOGGER);
 
     }
 
@@ -221,7 +223,8 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * </p>
      *
      * @return all project link types
-     * @throws PersistenceException if any persistence error occurs
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     public ProjectLinkType[] getAllProjectLinkTypes() throws PersistenceException {
         Connection conn = null;
@@ -249,13 +252,15 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * Gets all project link types.
      * </p>
      *
-     * @param conn the db connection
+     * @param conn
+     *            the db connection
      * @return all project link types
-     * @throws PersistenceException if any persistence error occurs
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     private ProjectLinkType[] getAllProjectLinkTypes(Connection conn) throws PersistenceException {
         // find all project types in the table.
-        Object[][] rows = Helper.doQuery(conn, QUERY_ALL_PROJECT_LINK_TYPES_SQL, new Object[] {},
+        Object[][] rows = Helper.doQuery(conn, QUERY_ALL_PROJECT_LINK_TYPES_SQL, new Object[]{},
             QUERY_ALL_PROJECT_LINK_TYPES_COLUMN_TYPES);
 
         // create the ProjectLinkType array.
@@ -265,8 +270,8 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
             Object[] row = rows[i];
 
             // create a new instance of ProjectLinkType class
-            projectLinkTypes[i] = new ProjectLinkType(((Long) row[0]).longValue(), (String) row[1], 
-                                                      Boolean.valueOf("1".equals((String) row[2])));
+            projectLinkTypes[i] = new ProjectLinkType(((Long) row[0]).longValue(), (String) row[1], Boolean.valueOf("1"
+                .equals((String) row[2])));
         }
 
         return projectLinkTypes;
@@ -277,9 +282,11 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * Gets all project links based on source project id.
      * </p>
      *
-     * @param sourceProjectId source project id
+     * @param sourceProjectId
+     *            source project id
      * @return all project link types
-     * @throws PersistenceException if any persistence error occurs
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     public ProjectLink[] getDestProjectLinks(long sourceProjectId) throws PersistenceException {
         Connection conn = null;
@@ -307,13 +314,16 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * It is internal method and it gets all project links based on source project id.
      * </p>
      *
-     * @param sourceProjectId source project id
-     * @param conn the db connection
+     * @param sourceProjectId
+     *            source project id
+     * @param conn
+     *            the db connection
      * @return all project link types
-     * @throws PersistenceException if any persistence error occurs
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     private ProjectLink[] getDestProjectLinks(long sourceProjectId, Connection conn) throws PersistenceException {
-        Object[][] rows = Helper.doQuery(conn, QUERY_DEST_PROJECT_LINK_SQL, new Object[] {new Long(sourceProjectId)},
+        Object[][] rows = Helper.doQuery(conn, QUERY_DEST_PROJECT_LINK_SQL, new Object[]{new Long(sourceProjectId)},
             QUERY_DEST_PROJECT_LINK_COLUMN_TYPES);
 
         ProjectLink[] projectLinks = new ProjectLink[rows.length];
@@ -349,9 +359,11 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * Gets all project links based on destination project id.
      * </p>
      *
-     * @param destProjectId destination project id
+     * @param destProjectId
+     *            destination project id
      * @return all project link types
-     * @throws PersistenceException if any persistence error occurs
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     public ProjectLink[] getSourceProjectLinks(long destProjectId) throws PersistenceException {
         Connection conn = null;
@@ -379,13 +391,16 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * It is internal method and it gets all project links based on destination project id.
      * </p>
      *
-     * @param destProjectId destination project id
-     * @param conn the db connection
+     * @param destProjectId
+     *            destination project id
+     * @param conn
+     *            the db connection
      * @return all project link types
-     * @throws PersistenceException if any persistence error occurs
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     private ProjectLink[] getSourceProjectLinks(long destProjectId, Connection conn) throws PersistenceException {
-        Object[][] rows = Helper.doQuery(conn, QUERY_SOURCE_PROJECT_LINK_SQL, new Object[] {new Long(destProjectId)},
+        Object[][] rows = Helper.doQuery(conn, QUERY_SOURCE_PROJECT_LINK_SQL, new Object[]{new Long(destProjectId)},
             QUERY_SOURCE_PROJECT_LINK_COLUMN_TYPES);
 
         ProjectLink[] projectLinks = new ProjectLink[rows.length];
@@ -421,9 +436,12 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * Fills full blown link type information.
      * </p>
      *
-     * @param projectLinks project links to be filled
-     * @param conn db the connection
-     * @throws PersistenceException if any persistence error occurs
+     * @param projectLinks
+     *            project links to be filled
+     * @param conn
+     *            db the connection
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     private void fillLinkTypes(ProjectLink[] projectLinks, Connection conn) throws PersistenceException {
         ProjectLinkType[] allTypes = getAllProjectLinkTypes(conn);
@@ -440,21 +458,26 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
 
     /**
      * <p>
-     * Updates project links for given source project id. It will delete all old links and use passed in project
-     * links. There are 2 arrays passed in, one is for destination project ids and other for link type ids. The id at
-     * the same position in each array represents a project link information.
+     * Updates project links for given source project id. It will delete all old links and use passed in project links.
+     * There are 2 arrays passed in, one is for destination project ids and other for link type ids. The id at the same
+     * position in each array represents a project link information.
      * </p>
      *
-     * @param sourceProjectId the source project id
-     * @param destProjectIds the destination project ids
-     * @param linkTypeIds the type ids
-     * @throws IllegalArgumentException if any array is null or it is not equal in length for dest project id array
-     *             and link type array
-     * @throws PersistenceException if any persistence error occurs
-     * @throws ProjectLinkCycleException if there is a cycle detected in the project links.
+     * @param sourceProjectId
+     *            the source project id
+     * @param destProjectIds
+     *            the destination project ids
+     * @param linkTypeIds
+     *            the type ids
+     * @throws IllegalArgumentException
+     *             if any array is null or it is not equal in length for dest project id array and link type array
+     * @throws PersistenceException
+     *             if any persistence error occurs
+     * @throws ProjectLinkCycleException
+     *             if there is a cycle detected in the project links.
      */
     public void updateProjectLinks(long sourceProjectId, long[] destProjectIds, long[] linkTypeIds)
-            throws PersistenceException {
+        throws PersistenceException {
         LOGGER.log(Level.INFO, new LogMessage(null, null, "Enter updateProjectLinks method."));
         Helper.assertObjectNotNull(destProjectIds, "destProjectIds");
         Helper.assertObjectNotNull(linkTypeIds, "linkTypeIds");
@@ -485,11 +508,16 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
     }
 
     /**
-     * <p>Checks if specified project is a part of cycle in project dependencies.</p>
+     * <p>
+     * Checks if specified project is a part of cycle in project dependencies.
+     * </p>
      *
-     * @param sourceProjectId a <code>long</code> providing the ID of a project.
-     * @throws PersistenceException if any persistence error occurs.
-     * @throws ProjectLinkCycleException if there is a cycle detected in the project links.
+     * @param sourceProjectId
+     *            a <code>long</code> providing the ID of a project.
+     * @throws PersistenceException
+     *             if any persistence error occurs.
+     * @throws ProjectLinkCycleException
+     *             if there is a cycle detected in the project links.
      */
     public void checkForCycle(long sourceProjectId) throws PersistenceException {
         ProjectLink[] destProjectLinks = getDestProjectLinks(sourceProjectId);
@@ -499,20 +527,27 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
         for (int i = 0; i < destProjectLinks.length; i++) {
             ProjectLink link = destProjectLinks[i];
             destProjectIds[i] = link.getDestProject().getId();
-            linkTypeIds[i] = link.getType().getId(); 
+            linkTypeIds[i] = link.getType().getId();
         }
-        
+
         checkForCycle(sourceProjectId, destProjectIds, linkTypeIds);
     }
 
     /**
-     * <p>Checks if specified project referring to specified projects is a part of a cycle.</p>
+     * <p>
+     * Checks if specified project referring to specified projects is a part of a cycle.
+     * </p>
      *
-     * @param sourceProjectId the source project id.
-     * @param destProjectIds the destination project ids.
-     * @param linkTypeIds the type ids.
-     * @throws PersistenceException if any persistence error occurs.
-     * @throws ProjectLinkCycleException if there is a cycle detected in the project links.
+     * @param sourceProjectId
+     *            the source project id.
+     * @param destProjectIds
+     *            the destination project ids.
+     * @param linkTypeIds
+     *            the type ids.
+     * @throws PersistenceException
+     *             if any persistence error occurs.
+     * @throws ProjectLinkCycleException
+     *             if there is a cycle detected in the project links.
      */
     private void checkForCycle(long sourceProjectId, long[] destProjectIds, long[] linkTypeIds)
         throws PersistenceException {
@@ -545,8 +580,7 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
             if (type != null) {
                 if (!type.isAllowOverlap()) {
                     open.put(destProjectIds[i], this.projectManager.getProject(destProjectIds[i]));
-                    cycles.put(destProjectIds[i],
-                               new LinkedList(Arrays.asList(currentProject)));
+                    cycles.put(destProjectIds[i], new LinkedList(Arrays.asList(currentProject)));
                 }
             }
         }
@@ -557,10 +591,10 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
 
         // Do BFS
         while (!open.isEmpty()) {
-            Iterator<Map.Entry<Long,Project>> iterator = open.entrySet().iterator();
+            Iterator<Map.Entry<Long, Project>> iterator = open.entrySet().iterator();
             Project project = iterator.next().getValue();
             iterator.remove();
-            
+
             Long projectId = project.getId();
 
             if (!closed.containsKey(projectId)) {
@@ -602,11 +636,16 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * It is internal method and it updates the project links for given source project id.
      * </p>
      *
-     * @param sourceProjectId the source project id
-     * @param destProjectIds the destination project ids
-     * @param linkTypeIds the type ids
-     * @param conn the db connection
-     * @throws PersistenceException if any persistence error occurs
+     * @param sourceProjectId
+     *            the source project id
+     * @param destProjectIds
+     *            the destination project ids
+     * @param linkTypeIds
+     *            the type ids
+     * @param conn
+     *            the db connection
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     private void updateProjectLinks(long sourceProjectId, long[] destProjectIds, long[] linkTypeIds, Connection conn)
         throws PersistenceException {
@@ -638,11 +677,16 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * It is internal method and it updates the project links for given source project id.
      * </p>
      *
-     * @param sourceProjectId the source project id
-     * @param destProjectIds the destination project ids
-     * @param linkTypeIds the type ids
-     * @param conn the db connection
-     * @throws PersistenceException if any persistence error occurs
+     * @param sourceProjectId
+     *            the source project id
+     * @param destProjectIds
+     *            the destination project ids
+     * @param linkTypeIds
+     *            the type ids
+     * @param conn
+     *            the db connection
+     * @throws PersistenceException
+     *             if any persistence error occurs
      */
     private void addProjectLinks(long sourceProjectId, long[] destProjectIds, long[] linkTypeIds, Connection conn)
         throws PersistenceException {
@@ -686,23 +730,23 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
     /**
      * <p>
      * It uses the DB connection factory to create the connection to underlying database. If the connection is not
-     * configured, the default connection from DB connection factory will be created, otherwise, the connection with
-     * the specified name in DB connection factory will be created.
+     * configured, the default connection from DB connection factory will be created, otherwise, the connection with the
+     * specified name in DB connection factory will be created.
      * </p>
      * <p>
      * Once the connection is retrieved, the auto commit property will be set false to manage the transaction itself.
      * </p>
      *
      * @return an open Connection to underlying database.
-     * @throws PersistenceException if there's a problem getting the Connection
+     * @throws PersistenceException
+     *             if there's a problem getting the Connection
      */
     private Connection openConnection() throws PersistenceException {
         if (connectionName == null) {
-            LOGGER
-                .log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
+            LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using default connection"));
         } else {
-            LOGGER.log(Level.INFO,
-                new LogMessage(null, null, "creating db connection using connection name: " + connectionName));
+            LOGGER.log(Level.INFO, new LogMessage(null, null, "creating db connection using connection name: "
+                + connectionName));
         }
         Connection conn = Helper.createConnection(getConnectionFactory(), connectionName);
         try {
@@ -721,9 +765,12 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * It is used to commit the transaction and close the connection after an operation successfully completes.
      * </p>
      *
-     * @param connection a Connection to close
-     * @throws PersistenceException if any problem occurs trying to close the connection
-     * @throws IllegalArgumentException if the argument is null
+     * @param connection
+     *            a Connection to close
+     * @throws PersistenceException
+     *             if any problem occurs trying to close the connection
+     * @throws IllegalArgumentException
+     *             if the argument is null
      */
     protected void closeConnection(Connection connection) throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
@@ -741,9 +788,12 @@ public class ProjectLinkManagerImpl implements ProjectLinkManager {
      * It is used to rollback the transaction and close the connection after an operation fails to complete.
      * </p>
      *
-     * @param connection a connection to close
-     * @throws IllegalArgumentException if the argument is null
-     * @throws PersistenceException if any problem occurs trying to close the connection
+     * @param connection
+     *            a connection to close
+     * @throws IllegalArgumentException
+     *             if the argument is null
+     * @throws PersistenceException
+     *             if any problem occurs trying to close the connection
      */
     protected void closeConnectionOnError(Connection connection) throws PersistenceException {
         Helper.assertObjectNotNull(connection, "connection");
