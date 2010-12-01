@@ -290,11 +290,18 @@ import com.topcoder.util.log.LogManager;
  *   </ol>
  * </p>
  *
+ * <p>
+ * Version 1.5.2 (Direct Release 6 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #searchUser(String)} method to perform strict search for user name.</li>
+ *   </ol>
+ * </p>
+ *
  * @author Standlove, TCSDEVELOPER, waits
  * @author Standlove, pulky
  * @author AleaActaEst, BeBetter
- * @author saarixx, murphydog, pulky, BeBetter, isv
- * @version 1.5.1
+ * @author saarixx, murphydog, pulky, BeBetter, isv, TCSDEVELOPER
+ * @version 1.5.2
  * @since 1.0
  */
 @Stateless
@@ -5194,8 +5201,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             EntityManager em = getEntityManager();
 
-            String qstr = "select user_id, handle from user where UPPER(handle) like UPPER('%"
-                    + key + "%')";
+            String qstr = "select user_id, handle from user where UPPER(handle) like UPPER('" + key + "')";
 
             Query query = em.createNativeQuery(qstr);
 
