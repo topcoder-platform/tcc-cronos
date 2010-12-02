@@ -73,8 +73,8 @@ import javax.naming.NamingException;
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author argolite, waits, isv
- * @version 1.4
+ * @author argolite, waits, isv, VolodymyrK
+ * @version 1.4.5
  * @since 1.1
  */
 public class PostMortemPhaseHandler extends AbstractPhaseHandler {
@@ -109,7 +109,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
     private static final String[] POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES = new String[] {
         PhasesHelper.SUBMITTER_ROLE_NAME, REVIEWER_ROLE_NAME,
         PhasesHelper.ACCURACY_REVIEWER_ROLE_NAME, PhasesHelper.FAILURE_REVIEWER_ROLE_NAME,
-        PhasesHelper.STRESS_REVIEWER_ROLE_NAME};
+        PhasesHelper.STRESS_REVIEWER_ROLE_NAME, PhasesHelper.COPILOT_REVIEWER_ROLE_NAME};
 
     /**
      * <p>A <code>String</code> array listing the name for Post-Mortem Reviewer role.</p>
@@ -314,8 +314,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                                 newPostMortemReviewer.setProperty(PhasesHelper.HANDLE, candidateUserHandle);
                                 newPostMortemReviewer.setProperty(EMAIL, resource.getProperty(EMAIL));
                                 newPostMortemReviewer.setProperty(RATING, resource.getProperty(RATING));
-                                newPostMortemReviewer.setProperty(PhasesHelper.PAYMENT_PROPERTY_KEY, "0.00");
-                                newPostMortemReviewer.setProperty(PAYMENT_STATUS, "No");
+                                newPostMortemReviewer.setProperty(PAYMENT_STATUS, "N/A");
                                 newPostMortemReviewer.setProperty(REGISTRATION_DATE, dateFormatter.format(new Date()));
 
                                 resourceManager.updateResource(newPostMortemReviewer, operator);

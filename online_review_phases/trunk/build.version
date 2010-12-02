@@ -5,5 +5,5 @@ component.package=com.cronos.onlinereview.phases
 component.packagedir=com/cronos/onlinereview/phases
 component.version.major=1
 component.version.minor=4
-component.version.micro=4
+component.version.micro=5
 component.version.build=1

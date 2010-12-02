@@ -230,6 +230,15 @@ final class PhasesHelper {
 
     /**
      * <p>
+     * A <code>String</code> providing the Copilot role name.
+     * </p>
+     *
+     * @since 1.4.5
+     */
+    static final String COPILOT_REVIEWER_ROLE_NAME = "Copilot";
+
+    /**
+     * <p>
      * A <code>String</code> providing the name for handle property of the resource.
      * </p>
      *
