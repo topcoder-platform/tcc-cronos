@@ -4092,7 +4092,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 String compname = contest.getAssetDTO().getName();
                 if (codename != null && !codename.equals(""))
                 {
-                    compname = compname.toLowerCase().replaceAll(" ", "_");
+                    compname = compname.toLowerCase().replaceAll(" ", "_").replaceAll("/", "_").replaceAll("&", "_");
                     codename = codename.toLowerCase().replaceAll(" ", "");
                     contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "https://coder.topcoder.com/tcs/clients/"+codename+"/components/"+compname+"/trunk");
                 }
@@ -4342,7 +4342,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         String compname = contest.getAssetDTO().getName();
                         if (codename != null && !codename.equals(""))
                         {
-                            compname = compname.toLowerCase().replaceAll(" ", "_");
+                            compname = compname.toLowerCase().replaceAll(" ", "_").replaceAll("/", "_").replaceAll("&", "_");
                             codename = codename.toLowerCase().replaceAll(" ", "");
                             contest.getProjectHeader().setProperty(ProjectPropertyType.SVN_MODULE_PROJECT_PROPERTY_KEY, "https://coder.topcoder.com/tcs/clients/"+codename+"/components/"+compname+"/trunk");
                         }
