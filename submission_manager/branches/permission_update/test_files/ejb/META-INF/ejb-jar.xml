@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar>
+  <enterprise-beans>
+    <session>
+      <ejb-name>SubmissionManagerBean</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>java:submissionMananger</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <env-entry-name>logger</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>myLogger</env-entry-value>
+      </env-entry>
+    </session>
+
+    <session>
+      <ejb-name>SubmissionManagerBeanWithoutUnitName</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+    </session>
+    <session>
+      <ejb-name>SubmissionManagerBeanEmptyUnitName</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value></env-entry-value>
+      </env-entry>
+    </session>
+    <session>
+      <ejb-name>SubmissionManagerBeanTrimmedEmptyUnitName</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value> </env-entry-value>
+      </env-entry>
+    </session>
+    <session>
+      <ejb-name>SubmissionManagerBeanTrimmedNotFoundUnitName</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>notfound</env-entry-value>
+      </env-entry>
+    </session>
+
+    <session>
+      <ejb-name>SubmissionManagerBean</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>java:submissionMananger</env-entry-value>
+      </env-entry>
+    </session>
+
+
+    <session>
+      <ejb-name>SubmissionManagerBeanWithoutLog</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>java:submissionMananger</env-entry-value>
+      </env-entry>
+    </session>
+
+    <session>
+      <ejb-name>SubmissionManagerBeanEmptyLogName</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>java:submissionMananger</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <env-entry-name>logger</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value></env-entry-value>
+      </env-entry>
+    </session>
+
+     <session>
+      <ejb-name>SubmissionManagerBeanTrimmedEmptyLogName</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>java:submissionMananger</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <env-entry-name>logger</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>  </env-entry-value>
+      </env-entry>
+    </session>
+
+    <session>
+      <ejb-name>SubmissionManagerBeanTrimmedInvalidType</ejb-name>
+      <ejb-class>
+        com.topcoder.service.studio.submission.SubmissionManagerBean
+      </ejb-class>
+      <env-entry>
+        <env-entry-name>unitName</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>java:submissionMananger</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <env-entry-name>logger</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>1</env-entry-value>
+      </env-entry>
+    </session>
+  </enterprise-beans>
+</ejb-jar>

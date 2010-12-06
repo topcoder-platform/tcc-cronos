@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Submission Manager
+component.distfilename=submission_manager
+component.package=com.topcoder.service.studio.submission
+component.packagedir=com/topcoder/service/studio/submission
+component.version.major=1
+component.version.minor=2
+component.version.micro=0
+component.version.build=1
