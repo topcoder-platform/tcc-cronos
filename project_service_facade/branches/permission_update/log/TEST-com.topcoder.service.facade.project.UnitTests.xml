@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="42" failures="0" hostname="CNU7212GSF" name="com.topcoder.service.facade.project.UnitTests" tests="42" time="1.922" timestamp="2009-01-06T01:08:37">
+  <properties>
+    <property name="object_factory.path" value="object_factory/2.0.1" />
+    <property name="component.version.major" value="1" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="ant.file.Project Service Facade Build" value="C:\cockpitdocs\project_service_facade\build.xml" />
+    <property name="security_facade.path" value="security_facade/2.0" />
+    <property name="java.home" value="C:\jdk1.5.0_12\jre" />
+    <property name="configuration_persistence.version" value="1.0" />
+    <property name="dist_javadocs" value="build/dist/services-1.0.0/docs/javadocs" />
+    <property name="debug" value="off" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="distfilename" value="services" />
+    <property name="cglib.jar" value="C:/jboss-4.2.3.GA/server/default/lib/cglib.jar" />
+    <property name="component.version.micro" value="0" />
+    <property name="java.endorsed.dirs" value="C:\jdk1.5.0_12\jre\lib\endorsed" />
+    <property name="object_factory.jar" value="lib/tcs/object_factory/2.0.1/object_factory.jar" />
+    <property name="jboss_config_name" value="default" />
+    <property name="project_service.path" value="project_service/1.0.1" />
+    <property name="sun.os.patch.level" value="Service Pack 2" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="jbossws-client.jar" value="C:/jboss-4.2.3.GA/client/jbossws-client.jar" />
+    <property name="java.version" value="1.5.0_12" />
+    <property name="data_entitlement.jar" value="lib/tcs/data_entitlement/1.1.4/data_entitlement.jar" />
+    <property name="configuration_manager.jar.name" value="configuration_manager.jar" />
+    <property name="mockejb.jar" value="lib/third_party/mockejb/0.6/mockejb.jar" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="user.name" value="SMa" />
+    <property name="packagedir" value="com/topcoder/service/facade/project" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="component_version" value="1.0.0" />
+    <property name="sun.jnu.encoding" value="Cp1252" />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="reports" value="log/reports" />
+    <property name="search_builder.path" value="search_builder/1.3.2" />
+    <property name="component.jar" value="build/project_service_facade.jar" />
+    <property name="user_group_manager.path" value="user_group_manager/1.0" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="javamain" value="src/java/main" />
+    <property name="user.timezone" value="" />
+    <property name="component.version.build" value="1" />
+    <property name="path.separator" value=";" />
+    <property name="auditor.jar.name" value="auditor.jar" />
+    <property name="srcdir" value="src" />
+    <property name="user_group_manager.version" value="1.0" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="jboss_login_module.jar" value="lib/tcs/jboss_login_module/2.0/jboss_login_module.jar" />
+    <property name="typesafe_enum.version" value="1.1" />
+    <property name="project_service.jar" value="lib/tcs/project_service/1.0.1/project_service.jar" />
+    <property name="jboss_login_module.jar.name" value="jboss_login_module.jar" />
+    <property name="commons-collections.jar" value="C:/jboss-4.2.3.GA/server/default/lib/commons-collections.jar" />
+    <property name="configuration_manager.path" value="configuration_manager/2.1.5" />
+    <property name="ant.file" value="C:\cockpitdocs\project_service_facade\build.xml" />
+    <property name="javasrc" value="src/java" />
+    <property name="search_builder.jar" value="lib/tcs/search_builder/1.3.2/search_builder.jar" />
+    <property name="component.target" value="1.5" />
+    <property name="configuration_persistence.jar.name" value="configuration_persistence.jar" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\SMA~1.COR\LOCALS~1\Temp\" />
+    <property name="user.language" value="en" />
+    <property name="manifest_file_path" value="build/dist/services-1.0.0/META-INF/" />
+    <property name="base_exception.path" value="base_exception/2.0" />
+    <property name="line.separator" value="
+" />
+    <property name="component.name" value="Project Service Facade" />
+    <property name="jboss_login_module.path" value="jboss_login_module/2.0" />
+    <property name="ant.file.Project Service Override Macrodef Standard Behaviour Import" value="C:\cockpitdocs\project_service_facade\build-override.xml" />
+    <property name="verbose" value="no" />
+    <property name="project_service.jar.name" value="project_service.jar" />
+    <property name="manifest_file" value="build/dist/services-1.0.0/META-INF//MANIFEST.MF" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="component_path" value="services/1.0.0" />
+    <property name="sun.desktop" value="windows" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="jboss-ejb3x.jar" value="C:/jboss-4.2.3.GA/client/jboss-ejb3x.jar" />
+    <property name="object_factory_configuration_api_plugin.jar.name" value="object_factory_configuration_api_plugin.jar" />
+    <property name="dist_coverage" value="build/dist/services-1.0.0/docs/coverage" />
+    <property name="builddir" value="build" />
+    <property name="authentication_manager.version" value="1.0.2" />
+    <property name="object_factory.version" value="2.0.1" />
+    <property name="configuration_manager.jar" value="lib/tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="auditor.version" value="2.0" />
+    <property name="data_entitlement.version" value="1.1.4" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="data_entitlement.jar.name" value="data_entitlement.jar" />
+    <property name="base_exception.version" value="2.0" />
+    <property name="jdbc.informix.jar" value="lib/third_party/informix/ifxjdbc.jar" />
+    <property name="ejb3-persistence.jar" value="C:/jboss-4.2.3.GA/client/ejb3-persistence.jar" />
+    <property name="junit.jar" value="lib/third_party/junit/3.8.1/junit.jar" />
+    <property name="configdir" value="conf" />
+    <property name="jboss.config.name" value="default" />
+    <property name="build_tcsdistdir" value="build/dist/services-1.0.0" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="dist_docs" value="build/dist/services-1.0.0/docs" />
+    <property name="object_factory_configuration_api_plugin.version" value="1.0" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="testlogdir" value="log" />
+    <property name="functional_entitlement.version" value="1.0" />
+    <property name="configuration_api.jar" value="lib/tcs/configuration_api/1.0/configuration_api.jar" />
+    <property name="os.name" value="Windows XP" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="xercesImpl.jar" value="C:/jboss-4.2.3.GA/lib/endorsed/xercesImpl.jar" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="authentication_manager.jar" value="lib/tcs/authentication_manager/1.0.2/authentication_manager.jar" />
+    <property name="java.library.path" value="C:\jdk1.5.0_12\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727;C:\Program Files\Java\jdk1.5.0_12\bin;C:\Program Files\NUnit 2.4.7\bin;c:\Program Files\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Microsoft SQL Server\80\Tools\Binn\;c:\Program Files\Microsoft SQL Server\90\DTS\Binn\;C:\nant-0.85\bin;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\TortoiseSVN\bin;c:\ant\bin" />
+    <property name="user_group_manager.jar" value="lib/tcs/user_group_manager/1.0/user_group_manager.jar" />
+    <property name="functional_entitlement.jar.name" value="functional_entitlement.jar" />
+    <property name="logging_wrapper.version" value="2.0" />
+    <property name="ant.java.version" value="1.5" />
+    <property name="basedir" value="C:\cockpitdocs\project_service_facade" />
+    <property name="java.class.version" value="49.0" />
+    <property name="antlr.jar" value="C:/jboss-4.2.3.GA/client/antlr.jar" />
+    <property name="configuration_api.path" value="configuration_api/1.0" />
+    <property name="base_exception.jar.name" value="base_exception.jar" />
+    <property name="ant.home" value="C:\ant" />
+    <property name="logging_wrapper.path" value="logging_wrapper/2.0" />
+    <property name="component.war" value="build/project_service_facade_demo.war" />
+    <property name="hibernate3.jar" value="C:/jboss-4.2.3.GA/server/default/lib/hibernate3.jar" />
+    <property name="object_factory_configuration_api_plugin.jar" value="lib/tcs/object_factory_configuration_api_plugin/1.0/object_factory_configuration_api_plugin.jar" />
+    <property name="jbossall-client.jar" value="C:/jboss-4.2.3.GA/client/jbossall-client.jar" />
+    <property name="log4j.jar" value="C:/jboss-4.2.3.GA/server/default/lib/log4j.jar" />
+    <property name="sun.boot.library.path" value="C:\jdk1.5.0_12\jre\bin" />
+    <property name="ext_libdir" value="lib/third_party" />
+    <property name="hibernate-annotations.jar" value="C:/jboss-4.2.3.GA/server/default/lib/hibernate-annotations.jar" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="user.variant" value="" />
+    <property name="security_facade.version" value="2.0" />
+    <property name="configuration_persistence.path" value="configuration_persistence/1.0" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="authentication_manager.path" value="authentication_manager/1.0.2" />
+    <property name="docsdir" value="docs" />
+    <property name="hibernate-entitymanager.jar" value="C:/jboss-4.2.3.GA/server/default/lib/hibernate-entitymanager.jar" />
+    <property name="jboss-jaxws.jar" value="C:/jboss-4.2.3.GA/server/default/lib/jboss-jaxws.jar" />
+    <property name="authentication_manager.jar.name" value="authentication_manager.jar" />
+    <property name="configuration_api.jar.name" value="configuration_api.jar" />
+    <property name="user_group_manager.jar.name" value="user_group_manager.jar" />
+    <property name="data_entitlement.path" value="data_entitlement/1.1.4" />
+    <property name="ant.project.name" value="Project Service Facade Build" />
+    <property name="security_facade.jar" value="lib/tcs/security_facade/2.0/security_facade.jar" />
+    <property name="functional_entitlement.path" value="functional_entitlement/1.0" />
+    <property name="ant.file.Project Service Facade Dependency Import" value="C:\cockpitdocs\project_service_facade\build-dependencies.xml" />
+    <property name="component.version.minor" value="0" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+    <property name="db_connection_factory.version" value="1.1" />
+    <property name="db_connection_factory.jar.name" value="db_connection_factory.jar" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="webdir" value="src/web" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="java.ext.dirs" value="C:\jdk1.5.0_12\jre\lib\ext" />
+    <property name="os.version" value="5.1" />
+    <property name="auditor.path" value="auditor/2.0" />
+    <property name="user.home" value="C:\Documents and Settings\SMa.CORP" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="libdir" value="lib" />
+    <property name="component.ear" value="build/services.ear" />
+    <property name="object_factory.jar.name" value="object_factory.jar" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="typesafe_enum.path" value="typesafe_enum/1.1" />
+    <property name="component.distfilename" value="services" />
+    <property name="component.package" value="com.topcoder.service.facade.project" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="package" value="com.topcoder.service.facade.project" />
+    <property name="base_exception.jar" value="lib/tcs/base_exception/2.0/base_exception.jar" />
+    <property name="typesafe_enum.jar" value="lib/tcs/typesafe_enum/1.1/typesafe_enum.jar" />
+    <property name="user.dir" value="C:\cockpitdocs\project_service_facade" />
+    <property name="security_facade.jar.name" value="security_facade.jar" />
+    <property name="component.packagedir" value="com/topcoder/service/facade/project" />
+    <property name="configuration_persistence.jar" value="lib/tcs/configuration_persistence/1.0/configuration_persistence.jar" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="functional_entitlement.jar" value="lib/tcs/functional_entitlement/1.0/functional_entitlement.jar" />
+    <property name="search_builder.jar.name" value="search_builder.jar" />
+    <property name="java.vm.version" value="1.5.0_12-b04" />
+    <property name="java.class.path" value="C:\cockpitdocs\project_service_facade\build\testClasses;C:\jboss-4.2.3.GA\lib\endorsed\xercesImpl.jar;C:\jboss-4.2.3.GA\client\antlr.jar;C:\jboss-4.2.3.GA\server\default\lib\log4j.jar;C:\jboss-4.2.3.GA\server\default\lib\cglib.jar;C:\jboss-4.2.3.GA\server\default\lib\dom4j.jar;C:\jboss-4.2.3.GA\server\default\lib\commons-collections.jar;C:\jboss-4.2.3.GA\server\default\lib\hibernate3.jar;C:\jboss-4.2.3.GA\server\default\lib\hibernate-annotations.jar;C:\jboss-4.2.3.GA\server\default\lib\hibernate-entitymanager.jar;C:\cockpitdocs\project_service_facade\lib\third_party\junit\3.8.1\junit.jar;C:\cockpitdocs\project_service_facade\lib\third_party\informix\ifxjdbc.jar;C:\cockpitdocs\project_service_facade\lib\tcs\jboss_login_module\2.0\jboss_login_module.jar;C:\cockpitdocs\project_service_facade\lib\tcs\base_exception\2.0\base_exception.jar;C:\cockpitdocs\project_service_facade\lib\tcs\logging_wrapper\2.0\logging_wrapper.jar;C:\cockpitdocs\project_service_facade\lib\tcs\security_facade\2.0\security_facade.jar;C:\cockpitdocs\project_service_facade\lib\tcs\configuration_api\1.0\configuration_api.jar;C:\cockpitdocs\project_service_facade\lib\tcs\configuration_persistence\1.0\configuration_persistence.jar;C:\cockpitdocs\project_service_facade\lib\tcs\object_factory\2.0.1\object_factory.jar;C:\cockpitdocs\project_service_facade\lib\tcs\object_factory_configuration_api_plugin\1.0\object_factory_configuration_api_plugin.jar;C:\cockpitdocs\project_service_facade\lib\tcs\user_group_manager\1.0\user_group_manager.jar;C:\cockpitdocs\project_service_facade\lib\tcs\authentication_manager\1.0.2\authentication_manager.jar;C:\cockpitdocs\project_service_facade\lib\tcs\db_connection_factory\1.1\db_connection_factory.jar;C:\cockpitdocs\project_service_facade\lib\tcs\data_entitlement\1.1.4\data_entitlement.jar;C:\cockpitdocs\project_service_facade\lib\tcs\functional_entitlement\1.0\functional_entitlement.jar;C:\cockpitdocs\project_service_facade\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;C:\cockpitdocs\project_service_facade\lib\tcs\auditor\2.0\auditor.jar;C:\cockpitdocs\project_service_facade\lib\tcs\search_builder\1.3.2\search_builder.jar;C:\cockpitdocs\project_service_facade\lib\tcs\typesafe_enum\1.1\typesafe_enum.jar;C:\cockpitdocs\project_service_facade\lib\tcs\project_service\1.0.1\project_service.jar;C:\jboss-4.2.3.GA\client\jbossws-client.jar;C:\jboss-4.2.3.GA\client\jboss-ejb3x.jar;C:\jboss-4.2.3.GA\client\ejb3-persistence.jar;C:\jboss-4.2.3.GA\client\jbossall-client.jar;C:\jboss-4.2.3.GA\server\default\lib\jboss-jaxws.jar;C:\cockpitdocs\project_service_facade\build\classes;C:\cockpitdocs\project_service_facade\conf;C:\cockpitdocs\project_service_facade\test_files;C:\cockpitdocs\project_service_facade;C:\Program Files\Java\jre1.5.0_12\lib\ext\QTJava.zip;C:\ant\lib\ant-launcher.jar;C:\ant\lib\ant.jar;C:\ant\lib\ant-junit.jar" />
+    <property name="jboss_login_module.version" value="2.0" />
+    <property name="ant.library.dir" value="C:\ant\lib" />
+    <property name="os.arch" value="x86" />
+    <property name="db_connection_factory.path" value="db_connection_factory/1.1" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="search_builder.version" value="1.3.2" />
+    <property name="project_service.version" value="1.0.1" />
+    <property name="logging_wrapper.jar.name" value="logging_wrapper.jar" />
+    <property name="ant.core.lib" value="C:\ant\lib\ant.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="file.separator" value="\" />
+    <property name="java.runtime.version" value="1.5.0_12-b04" />
+    <property name="sun.boot.class.path" value="C:\jdk1.5.0_12\jre\lib\rt.jar;C:\jdk1.5.0_12\jre\lib\i18n.jar;C:\jdk1.5.0_12\jre\lib\sunrsasign.jar;C:\jdk1.5.0_12\jre\lib\jsse.jar;C:\jdk1.5.0_12\jre\lib\jce.jar;C:\jdk1.5.0_12\jre\lib\charsets.jar;C:\jdk1.5.0_12\jre\classes" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="dom4j.jar" value="C:/jboss-4.2.3.GA/server/default/lib/dom4j.jar" />
+    <property name="user.country" value="US" />
+    <property name="configuration_manager.version" value="2.1.5" />
+    <property name="tcs_libdir" value="lib/tcs" />
+    <property name="component" value="Project Service Facade" />
+    <property name="logging_wrapper.jar" value="lib/tcs/logging_wrapper/2.0/logging_wrapper.jar" />
+    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar" />
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="auditor.jar" value="lib/tcs/auditor/2.0/auditor.jar" />
+    <property name="jboss_home" value="C:/jboss-4.2.3.GA" />
+    <property name="db_connection_factory.jar" value="lib/tcs/db_connection_factory/1.1/db_connection_factory.jar" />
+    <property name="configuration_api.version" value="1.0" />
+    <property name="java.specification.version" value="1.5" />
+    <property name="testfiles" value="test_files" />
+    <property name="javatests" value="src/java/tests" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="object_factory_configuration_api_plugin.path" value="object_factory_configuration_api_plugin/1.0" />
+  </properties>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetAllProjects_User" time="0.812">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetAllProjects_Admin" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProject_User_OwnProjects" time="0.016">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProject_User_AlienProjects" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProject_User_NonExistingProject" time="0.016">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProject_Admin_OwnProjects" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProject_Admin_AlienProjects" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProject_Admin_NonExistingProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProjectsForUser_User_OwnId" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProjectsForUser_User_AlienId" time="0.016">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProjectsForUser_Admin_OwnId" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProjectsForUser_Admin_AlienId" time="0.015">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testGetProjectsForUser_Admin_NonExistingUser" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_User_OwnProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_User_NonExistingProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_User_AlienProjects" time="0.016">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_User_OwnProjectsWithCompetition" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_Admin_OwnProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_Admin_AlienProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_Admin_NonExistingProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_Admin_OwnProjectsWithCompetition" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testDeleteProject_Admin_AlienProjectsWithCompetition" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_User_OwnProjects" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_User_AlienProjects" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_User_NonExistingProjects" time="0.015">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_User_NullProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_User_NullProjectName" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_User_EmptyProjectName" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_Admin_OwnProjects" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_Admin_AlienProjects" time="0.016">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_Admin_NonExistingProjects" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_Admin_NullProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_Admin_NullProjectName" time="0.016">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testUpdateProject_Admin_EmptyProjectName" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_User" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_User_NullProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_User_NullProjectName" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_User_EmptyProjectName" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_Admin" time="0.015">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_Admin_NullProject" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_Admin_NullProjectName" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <testcase classname="com.topcoder.service.facade.project.ProjectServiceFacadeTest" name="testCreateProject_Admin_EmptyProjectName" time="0.0">
+    <error message="error occurs while creating the connection." type="com.topcoder.db.connectionfactory.DBConnectionException">com.topcoder.db.connectionfactory.DBConnectionException: error occurs while creating the connection.
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:450)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:406)
+	at com.topcoder.service.facade.project.ProjectServiceFacadeTest.setUp(ProjectServiceFacadeTest.java:114)
+Caused by: java.sql.SQLException: com.informix.asf.IfxASFException: Attempt to connect to database server (informixoltp_tcp) failed.
+	at com.informix.jdbc.IfxSqliConnect.&lt;init&gt;(IfxSqliConnect.java:883)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:494)
+	at com.informix.jdbc.IfxDriver.connect(IfxDriver.java:251)
+	at java.sql.DriverManager.getConnection(DriverManager.java:525)
+	at java.sql.DriverManager.getConnection(DriverManager.java:140)
+	at com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer.createConnection(JDBCConnectionProducer.java:448)
+</error>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
