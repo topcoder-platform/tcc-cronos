@@ -1609,7 +1609,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             throws PermissionServiceException, PersistenceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
 
-            if (!studioService.checkSubmissionPermission(submissionId, false, tcSubject.getUserId())) {
+            if (!studioService.checkSubmissionPermission(submissionId, readonly, tcSubject.getUserId())) {
                 throw new PermissionServiceException("No " + (readonly ? "Read" : "write") + "permission on contest");
             }
         }
