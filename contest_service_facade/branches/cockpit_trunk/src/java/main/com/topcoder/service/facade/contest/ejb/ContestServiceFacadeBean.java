@@ -40,6 +40,17 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.cronos.onlinereview.services.uploads.InvalidProjectException;
+import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
+import com.cronos.onlinereview.services.uploads.InvalidUserException;
+import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
+import com.topcoder.management.phase.PhaseManagementException;
+import com.topcoder.management.review.ReviewManagementException;
+import com.topcoder.management.review.data.Review;
+import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.facade.contest.ContestServiceFacade;
 import com.topcoder.service.permission.ProjectPermission;
 import org.jboss.logging.Logger;
 
@@ -290,9 +301,15 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  *     {@link #isCopilotContest(SoftwareCompetition)} method, update {@link #createUpdateAssetDTO} method.</li>
  *   </ol>
  * </p>
- *
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, TCSASSEMBLER
- * @version 1.6.4
+ * <p>
+ * Version 1.6.5 (Manage Copilot Postings Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #addReviewer(TCSubject, long, long)} method.</li>
+ *     <li>Added {@link ContestServiceFacade#getReview(long,long,long)} method.</li>
+ *   </ol>
+ * </p> *
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
+ * @version 1.6.5
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -7592,6 +7609,82 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             logger.error(e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Adds the given user as a new reviewer to the given project id.
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user.
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws ContestServiceException if any error occurs from UploadServices
+     * @throws IllegalArgumentException if any id is &lt; 0
+     * @since 1.6.5
+     */
+    public com.topcoder.management.resource.Resource addReviewer(TCSubject tcSubject, long projectId, long userId)
+        throws ContestServiceException {
+        logger.debug("addReviewer (tcSubject = " + tcSubject.getUserId() + ", " + projectId + "," + userId + ")");
+
+        try {
+            return uploadExternalServices.addReviewer(projectId, userId);
+        } catch (UploadServicesException e) {
+            logger.error("Operation failed in the uploadExternalServices.", e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (PhaseManagementException e) {
+            logger.error("Operation failed in the uploadExternalServices.", e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
+     * <p>Gets the review for specified submission.</p>
+     *
+     * @param projectId a <code>long</code> providing the project ID.
+     * @param reviewerResourceId a <code>long</code> providing the ID for reviewer resource.
+     * @param submissionId a <code>long</code> providing the ID for submission.   
+     * @return a <code>ScorecardReviewData</code> providing the details for review or <code>null</code> if review and
+     *         scorecard is not found,
+     * @since 1.6.5
+     */
+    public ScorecardReviewData getReview(long projectId, long reviewerResourceId, long submissionId) {
+        List<ScorecardReviewData> data = projectServices.getScorecardAndReviews(projectId, reviewerResourceId);
+        for (ScorecardReviewData r : data) {
+            Review review = r.getReview();
+            if (review != null) {
+                if (review.getSubmission() == submissionId) {
+                    return r;
+                }
+            }
+        }
+        
+        return data.get(0);
+    }
+
+    /**
+     * <p>Gets the submissions for specified software project.</p>
+     *
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @return a <code>List</code> listing the submissions for project.
+     * @throws SearchBuilderException if an unexpected error occurs.
+     * @throws UploadPersistenceException if an unexpected error occurs.
+     * @since 1.6.5
+     */
+    public Submission[] getSoftwareProjectSubmissions(long projectId)
+        throws SearchBuilderException, UploadPersistenceException {
+        Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId); 
+        return uploadManager.searchSubmissions(filter);
+    }
+
+    /**
+     * <p>Creates specified review for software project.</p>
+     *
+     * @param review a <code>Review</code> providing the details for review to be created.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.6.5
+     */
+    public void createReview(Review review) throws ReviewManagementException {
+        projectServices.createReview(review);
     }
 
     private boolean hasSpecReview(SoftwareCompetition SoftwareCompetition)

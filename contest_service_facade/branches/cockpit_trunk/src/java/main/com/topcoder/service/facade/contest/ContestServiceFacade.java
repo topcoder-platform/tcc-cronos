@@ -7,14 +7,24 @@ import java.util.List;
 
 import javax.activation.DataHandler;
 
+import com.cronos.onlinereview.services.uploads.InvalidProjectException;
+import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
+import com.cronos.onlinereview.services.uploads.InvalidUserException;
+import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
 import com.topcoder.clients.model.ProjectContestFee;
+import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.resource.Resource;
+import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.Review;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ScorecardReviewData;
+import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.facade.contest.notification.ProjectNotification;
 import com.topcoder.service.payment.CreditCardPaymentData;
@@ -143,8 +153,16 @@ import com.topcoder.service.user.Registrant;
  * - Added {@link #updateSubmissionsGeneralFeedback(TCSubject, long, String)} method.
  * </p>
  *
+ * <p>
+ * Version 1.6.3 (Manage Copilot Postings Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #addReviewer(TCSubject, long, long)} method.</li>
+ *     <li>Added {@link #getReview(long,long,long)} method.</li>
+ *   </ol>
+ * </p>
+ *
  * @author pulky, murphydog, waits, BeBetter, hohosky, isv
- * @version 1.6.2
+ * @version 1.6.3
  */
 public interface ContestServiceFacade {
     /**
@@ -2440,4 +2458,50 @@ public interface ContestServiceFacade {
      */
     public boolean updateSubmissionsGeneralFeedback(TCSubject tcSubject, long contestId, String generalFeedback)
         throws PersistenceException, PermissionServiceException;
+    
+    /**
+     * Adds the given user as a new reviewer to the given project id.
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user.
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws ContestServiceException      if any error occurs from UploadServices
+     * @throws IllegalArgumentException     if any id is &lt; 0
+     * @since 1.6.3
+     */
+    Resource addReviewer(TCSubject tcSubject, long projectId, long userId) throws ContestServiceException;
+
+    /**
+     * <p>Gets the review for specified submission.</p>
+     *  
+     * @param projectId a <code>long</code> providing the project ID.
+     * @param reviewerResourceId a <code>long</code> providing the ID for reviewer resource.
+     * @param submissionId a <code>long</code> providing the ID for submission.   
+     * @return a <code>ScorecardReviewData</code> providing the details for review or <code>null</code> if review and 
+     *         scorecard is not found.
+     * @since 1.6.3
+     */
+    ScorecardReviewData getReview(long projectId, long reviewerResourceId, long submissionId);
+
+    /**
+     * <p>Gets the submissions for specified software project.</p>
+     * 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @return a <code>List</code> listing the submissions for project.
+     * @throws SearchBuilderException if an unexpected error occurs.
+     * @throws UploadPersistenceException if an unexpected error occurs.
+     * @since 1.6.3 
+     */
+    Submission[] getSoftwareProjectSubmissions(long projectId) throws SearchBuilderException, 
+                                                                      UploadPersistenceException;
+
+    /**
+     * <p>Creates specified review for software project.</p>
+     * 
+     * @param review a <code>Review</code> providing the details for review to be created.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.6.3 
+     */
+    void createReview(Review review) throws ReviewManagementException;
 }
