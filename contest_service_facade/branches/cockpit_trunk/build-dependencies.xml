@@ -132,6 +132,12 @@
     <property name="review_data_structure.jar.name" value="review_data_structure.jar"/>
     <property name="review_data_structure.path" value="review_data_structure/${review_data_structure.version}"/>
     <property name="review_data_structure.jar" value="${tcs_libdir}/${review_data_structure.path}/${review_data_structure.jar.name}"/>
+    
+    <property name="review_management.version" value="1.0.0"/>
+    <property name="review_management.jar.name" value="review_management.jar"/>
+    <property name="review_management.path" value="review_management/${review_management.version}"/>
+    <property name="review_management.jar" value="${tcs_libdir}/${review_management.path}/${review_management.jar.name}"/>
+    
     <!-- cockpit Security facade v1.0 -->
 	<property name="user_service.version" value="1.0.0" />
     <property name="user_service.jar.name" value="user_service.jar" />
@@ -271,6 +277,7 @@
         <pathelement location="${jiveforums.jar}"/>
         <pathelement location="${jivebase_modified.jar}"/>
         <pathelement location="${review_data_structure.jar}"/>
+        <pathelement location="${review_management.jar}"/>
 
         <pathelement location="${email_engine.jar}"/>
         <pathelement location="${document_generator.jar}"/>
