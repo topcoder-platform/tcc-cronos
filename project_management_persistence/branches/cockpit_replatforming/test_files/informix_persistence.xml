@@ -16,6 +16,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NoFactoryNamespace">
@@ -28,6 +37,15 @@
     </Property>
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
     </Property>
 </Config>
 
@@ -46,6 +64,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NonExistFactoryNamespace">
@@ -63,6 +90,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NoConnectionName">
@@ -75,6 +111,15 @@
     </Property>
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
     </Property>
 </Config>
 
@@ -93,6 +138,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NonExistConnectionName">
@@ -110,6 +164,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NoProjectIdSequenceName">
@@ -123,6 +186,15 @@
     </Property>
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
     </Property>
 </Config>
 
@@ -141,6 +213,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NonExistProjectIdSequenceName">
@@ -158,6 +239,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>project_audit_id_seq</Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NoProjectAuditIdSequenceName">
@@ -171,6 +261,15 @@
     </Property>
     <Property name="ProjectIdSequenceName">
         <Value>project_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
     </Property>
 </Config>
 
@@ -189,6 +288,15 @@
     <Property name="ProjectAuditIdSequenceName">
         <Value>    </Value>
     </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
 </Config>
 
 <Config name="InformixProjectPersistence.CustomNamespace.NonExistProjectAuditIdSequenceName">
@@ -205,6 +313,238 @@
     </Property>
     <Property name="ProjectAuditIdSequenceName">
         <Value>do_not_exist</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
+</Config>
+
+<Config name="InformixProjectPersistence.CustomNamespace.NoFileTypeIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
+</Config>
+
+<Config name="InformixProjectPersistence.CustomNamespace.EmptyFileTypeIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>  </Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
+</Config>
+
+<Config name="InformixProjectPersistence.CustomNamespace.NonExistFileTypeIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>invalid_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
+</Config>
+<Config name="InformixProjectPersistence.CustomNamespace.NoPrizeIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
+</Config>
+
+<Config name="InformixProjectPersistence.CustomNamespace.EmptyPrizeIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>   </Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
+</Config>
+
+<Config name="InformixProjectPersistence.CustomNamespace.NonExistPrizeIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>invalid_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>studio_spec_id_seq</Value>
+    </Property>
+</Config>
+<Config name="InformixProjectPersistence.CustomNamespace.NoStudioSpecIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+</Config>
+
+<Config name="InformixProjectPersistence.CustomNamespace.EmptyStudioSpecIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>  </Value>
+    </Property>
+</Config>
+
+<Config name="InformixProjectPersistence.CustomNamespace.NonExistStudioSpecIdGeneratorSequenceName">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>informix_connection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+    <Property name="FileTypeIdGeneratorSequenceName">
+        <Value>file_type_id_seq</Value>
+    </Property>
+    <Property name="PrizeIdGeneratorSequenceName">
+        <Value>prize_id_seq</Value>
+    </Property>
+    <Property name="StudioSpecIdGeneratorSequenceName">
+        <Value>invalid_id_seq</Value>
     </Property>
 </Config>
 
