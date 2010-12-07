@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql.stresstests;
 
@@ -21,8 +21,8 @@ import com.topcoder.util.config.ConfigManager;
 /**
  * This is a base(helper) class for stress tests.
  *
- * @author kinfkong
- * @version 1.0
+ * @author kinfkong, FireIce
+ * @version 1.1
  */
 public class DbStressTest extends TestCase {
 
@@ -31,6 +31,12 @@ public class DbStressTest extends TestCase {
      */
     public static final String DBCONFIG =
         "test_files" + File.separator + "stresstests" + File.separator + "dbconfig.xml";
+
+    /**
+     * The config file of Logging.
+     */
+    public static final String LOGCONFIG =
+        "test_files" + File.separator + "stresstests" + File.separator + "logging.xml";
 
     /**
      * The namespace of the DBConnectionFactory.
@@ -49,6 +55,7 @@ public class DbStressTest extends TestCase {
         "deliverable_lu",
         "submission",
         "submission_status_lu",
+        "submission_type_lu",
         "upload",
         "resource",
         "upload_status_lu",
@@ -88,12 +95,14 @@ public class DbStressTest extends TestCase {
      * @throws Exception to JUnit
      */
     private void loadConfig() throws Exception {
+        clearNamespaces();
         // load the config file
         File file = new File(DBCONFIG);
 
         // load it to the ConfigManager
         ConfigManager cm = ConfigManager.getInstance();
         cm.add(file.getCanonicalPath());
+        cm.add(new File(LOGCONFIG).getCanonicalPath());
     }
 
     /**
@@ -382,6 +391,15 @@ public class DbStressTest extends TestCase {
         // insert into submission_status_lu
         sql = "INSERT INTO submission_status_lu("
             + "submission_status_id, name, description, create_user, create_date, modify_user, modify_date) "
+            + "VALUES(?, 'test', 'for test', 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
+
+        for (int i = 0; i < 10; i++) {
+            doSQLUpdate(sql, new Object[] {new Long(i + 1)});
+        }
+
+        // insert into submission_type_lu
+        sql = "INSERT INTO submission_type_lu("
+            + "submission_type_id, name, description, create_user, create_date, modify_user, modify_date) "
             + "VALUES(?, 'test', 'for test', 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
 
         for (int i = 0; i < 10; i++) {
