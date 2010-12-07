@@ -24,7 +24,9 @@ import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceRole;
 
+import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.Review;
 import com.topcoder.project.service.ConfigurationException;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
@@ -141,13 +143,22 @@ import com.topcoder.util.log.LogManager;
  *  - add method addNotifications(long userId, long[] projectIds, String operator)
  *  - add method removeNotifications(long userId, long[] projectIds, String operator)
  * </p>
+ *
+ * <p>
+ * Version 1.4.3 (Manage Copilot Postings Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #getScorecardAndReviews(long, long)} method.</li>
+ *     <li>Added {@link #createReview(Review)} method.</li>
+ *   </ol>
+ * </p>
+ * 
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is required to be thread
  * safe.
  * </p>
  *
- * @author fabrizyo, znyyddf, pulky, murphydog, waits, hohosky
- * @version 1.4.2
+ * @author fabrizyo, znyyddf, pulky, murphydog, waits, hohosky, isv
+ * @version 1.4.3
  * @since 1.0
  */
 @Stateless
@@ -1792,6 +1803,51 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
 
         try {
             return getProjectServices().resourceExists(projectId, roleId, userId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter. Note: a
+     * single reviewer / review is assumed.
+     *
+     * @param projectId  the project id to search for.
+     * @param reviewerId the reviewer ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid number of
+     * reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId)
+        throws ProjectServicesException {
+        String method = "ProjectServicesBean#getScorecardAndReviews method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return getProjectServices().getScorecardAndReviews(projectId, reviewerId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
+    /**
+     * <p>Creates specified review for software project.</p>
+     *
+     * @param review a <code>Review</code> providing the details for review to be created.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.4.3
+     */
+    public void createReview(Review review) throws ReviewManagementException {
+        String method = "ProjectServicesBean#createReview method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            getProjectServices().createReview(review);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;

@@ -4,6 +4,7 @@
 package com.topcoder.project.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -47,6 +48,7 @@ import com.topcoder.management.project.link.ProjectLinkType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.resource.NotificationType;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.management.review.ReviewManagementException;
@@ -263,14 +265,23 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *  - add method addNotifications(long userId, long[] projectIds, String operator)
  *  - add method removeNotifications(long userId, long[] projectIds, String operator)
  * </p>
+ *
+ * <p>
+ * Version 1.4.3 (Manage Copilot Postings Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #getScorecardAndReviews(long, long)} method.</li>
+ *     <li>Added {@link #createReview(Review)} method.</li>
+ *   </ol>
+ * </p>
+ * 
  * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog, waits, hohosky
- * @version 1.4.2
+ * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv
+ * @version 1.4.3
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -2343,8 +2354,8 @@ public class ProjectServicesImpl implements ProjectServices {
                     else if (p.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME))
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
-                        if (category.equals(SPEC_REVIEW_PROJECT_CATEGORY)) {
-                            // specification reviews only require one reviewer.
+                        if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
+                            // copilot posting only requires one reviewer.
                             p.setAttribute("Reviewer Number", "1");
                         } else {
                             p.setAttribute("Reviewer Number", "3");
@@ -3660,6 +3671,104 @@ public class ProjectServicesImpl implements ProjectServices {
         return ret;
     }
 
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     *
+     * @param projectId the project id to search for.
+     * @param reviewerId the reviewer ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId) 
+        throws ProjectServicesException {
+        String method = "ProjectServicesImpl#getScorecardAndReviews(" + projectId + ") method.";
+
+        List<ScorecardReviewData> scorecardReviewData = new ArrayList<ScorecardReviewData>();
+
+        log(Level.INFO, "Enters " + method);
+        try {
+            // Build resources filter
+            Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
+
+            // Search for the reviewers
+            Resource[] reviewers = resourceManager.searchResources(filterRoles);
+            if (reviewers.length > 1) {
+                throw new ProjectServicesException("Invalid number of reviewers found: " + reviewers.length);
+            }
+
+            Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
+            Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
+            for (int i = 0; i < reviews.length; i++) {
+                Review review = reviews[i];
+                ScorecardReviewData data = new ScorecardReviewData();
+                data.setReview(review);
+                data.setScorecard(scorecardManager.getScorecard(review.getScorecard()));
+                scorecardReviewData.add(data);
+            }
+            
+            if (scorecardReviewData.isEmpty()) {
+                com.topcoder.project.phases.Project projectPhases = phaseManager.getPhases(projectId);
+                long scorecardId = -1;
+                if (projectPhases != null) {
+                    Set<Phase> phases = projectPhases.getPhases();
+                    Iterator<Phase> iter = phases.iterator();
+                    while (iter.hasNext() && scorecardId < 0) {
+                        Phase phase = iter.next();
+                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                            scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
+                        }
+                    }
+                }
+                
+                if (scorecardId < 0) {
+                    throw new ProjectServicesException("Failed to find scorecard id");
+                }
+                ScorecardReviewData data = new ScorecardReviewData();
+                data.setScorecard(scorecardManager.getScorecard(scorecardId));
+                scorecardReviewData.add(data);
+            }
+
+        } catch (ReviewManagementException ex) {
+            log(Level.ERROR, "ReviewManagementException occurred in " + method);
+            throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
+        } catch (com.topcoder.management.scorecard.PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating Scorecard Manager.", ex);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR, "ResourcePersistenceException occurred in " + method);
+            throw new ProjectServicesException("ResourcePersistenceException occurred when operating Resource Manager.",
+                ex);
+        } catch (PhaseManagementException ex) {
+            log(Level.ERROR, "PhaseManagementException occurred in " + method);
+            throw new ProjectServicesException("PhaseManagementException occurred when operating Phase Manager.", ex);
+        } catch (SearchBuilderException ex) {
+            log(Level.ERROR, "SearchBuilderException occurred in " + method);
+            throw new ProjectServicesException("SearchBuilderException occurred when operating Search Builder.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+        return scorecardReviewData;
+    }
+
+    /**
+     * <p>Creates specified review for software project.</p>
+     *
+     * @param review a <code>Review</code> providing the details for review to be created.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.4.3
+     */
+    public void createReview(Review review) throws ReviewManagementException {
+        if (review == null) {
+            throw new IllegalArgumentException("The parameter [review] is NULL");
+        }
+        reviewManager.createReview(review, review.getCreationUser());
+    }
 
     /**
      * <p>
@@ -3871,7 +3980,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
 
         try {
-            this.resourceManager.addNotifications(userId, projectIds, 1, operator);
+            this.resourceManager.addNotifications(userId, projectIds, NotificationType.TIMELINE_NOTIFICATION, operator);
         } catch (ResourcePersistenceException ex) {
             log(Level.ERROR,
                     "ResourcePersistenceException occurred in ProjectServicesImpl#addNotifications method.");
@@ -3897,7 +4006,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
 
         try {
-            this.resourceManager.removeNotifications(userId, projectIds, 1, operator);
+            this.resourceManager.removeNotifications(userId, projectIds, NotificationType.TIMELINE_NOTIFICATION, operator);
         } catch (ResourcePersistenceException ex) {
             log(Level.ERROR,
                     "ResourcePersistenceException occurred in ProjectServicesImpl#removeNotifications method.");
