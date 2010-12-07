@@ -5,13 +5,10 @@ package com.topcoder.management.deliverable.persistence.failuretests;
 
 import java.util.Date;
 
-import junit.framework.TestCase;
-
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
-import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.UploadType;
@@ -19,22 +16,27 @@ import com.topcoder.management.deliverable.persistence.UploadPersistenceExceptio
 import com.topcoder.management.deliverable.persistence.sql.SqlUploadPersistence;
 import com.topcoder.util.config.ConfigManager;
 
+import junit.framework.TestCase;
 
 /**
  * Failure test cases for class <code>SqlUploadPersistence</code>.
  *
- * @author Chenhong, onsky
- * @version 1.1
- * @since 1.0
+ *
+ * @author Chenhong
+ * @version 1.0
  */
 public class FailureTestForSqlUploadPersistence extends TestCase {
-    /** Represents the SqlUploadPersistence instance for test. */
+
+    /**
+     * Represents the SqlUploadPersistence instance for test.
+     */
     private SqlUploadPersistence persistence = null;
 
     /**
      * Set up the environment.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void setUp() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -49,12 +51,14 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
         DBConnectionFactory factory = new DBConnectionFactoryImpl(namespace);
 
         persistence = new SqlUploadPersistence(factory);
+
     }
 
     /**
      * Tear down the environment.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void tearDown() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -66,8 +70,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
-     * Test SqlUploadPersistence(DBConnectionFactory). If parameter connectionFactory is null,
-     * IllegalArgumentException should be thrown.
+     * Test SqlUploadPersistence(DBConnectionFactory).
+     * If parameter connectionFactory is null, IllegalArgumentException should be thrown.
      */
     public void testSqlUploadPersistenceDBConnectionFactory() {
         try {
@@ -79,8 +83,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
-     * Test SqlUploadPersistence(DBConnectionFactory, String). If parameter connectionFactory is null,
-     * IllegalArgumentException should be thrown.
+     * Test SqlUploadPersistence(DBConnectionFactory, String).
+     * If parameter connectionFactory is null, IllegalArgumentException should be thrown.
      */
     public void testSqlUploadPersistenceDBConnectionFactoryString() {
         try {
@@ -94,7 +98,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void addUploadType(UploadType uploadType) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testAddUploadType_1() throws Exception {
         for (int i = 0; i < 7; i++) {
@@ -102,7 +107,6 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
 
             // create invalid UploadType instance with level.
             type = (UploadType) Util.getNamedDeliverableStructure(type, i);
-
             try {
                 persistence.addUploadType(type);
                 fail("IllegalArgumentException should be thrown.");
@@ -115,7 +119,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void addUploadType(UploadType uploadType) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testAddUploadType_2() throws Exception {
         try {
@@ -129,7 +134,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code> void addUploadStatus(UploadStatus uploadStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testAddUploadStatus_1() throws Exception {
         try {
@@ -143,13 +149,13 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code> void addUploadStatus(UploadStatus uploadStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testAddUploadStatus_2() throws Exception {
         for (int i = 0; i < 7; i++) {
             UploadStatus status = new UploadStatus();
             status = (UploadStatus) Util.getNamedDeliverableStructure(status, i);
-
             try {
                 persistence.addUploadStatus(status);
                 fail("IllegalArgumentException should be thrown.");
@@ -162,7 +168,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void addSubmissionStatus(SubmissionStatus submissionStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testAddSubmissionStatus() throws Exception {
         try {
@@ -176,7 +183,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void addSubmissionStatus(SubmissionStatus submissionStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testAddSubmissionStatus_2() throws Exception {
         for (int i = 0; i < 7; i++) {
@@ -196,14 +204,14 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void removeUploadType(UploadType uploadType) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testRemoveUploadType() throws Exception {
         for (int i = -1; i < 1; i++) {
             UploadType type = new UploadType();
 
             type = (UploadType) Util.getNamedDeliverableStructure(type, i);
-
             try {
                 persistence.removeUploadType(type);
                 fail("IllegalArgumentException should be thrown.");
@@ -216,7 +224,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void removeUploadStatus(UploadStatus uploadStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testRemoveUploadStatus() throws Exception {
         for (int i = -1; i < 1; i++) {
@@ -236,10 +245,13 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void removeSubmissionStatus(SubmissionStatus submissionStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
+     *
      */
     public void testRemoveSubmissionStatus() throws Exception {
         for (int i = -1; i < 1; i++) {
+
             SubmissionStatus status = new SubmissionStatus();
             status = (SubmissionStatus) Util.getNamedDeliverableStructure(status, i);
 
@@ -255,7 +267,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void removeUpload(Upload upload) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testRemoveUpload_1() throws Exception {
         try {
@@ -269,7 +282,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void removeUpload(Upload upload) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testRemoveUpload_2() throws Exception {
         try {
@@ -281,9 +295,20 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
+     * Test method <code>void removeUpload(Upload upload) </code>.
+     *
+     * @throws Exception
+     *             to junit.
+     */
+    public void testRemoveUpload_3() throws Exception {
+        persistence.removeUpload(new Upload(10001));
+    }
+
+    /**
      * Test method <code>void removeSubmission(Submission submission) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testRemoveSubmission_1() throws Exception {
         try {
@@ -297,7 +322,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     /**
      * Test method <code>void removeSubmission(Submission submission) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
      */
     public void testRemoveSubmission_2() throws Exception {
         try {
@@ -309,9 +335,21 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
+     * Test method <code>void removeSubmission(Submission submission) </code>.
+     *
+     * @throws Exception
+     *             to junit.
+     */
+    public void testRemoveSubmission_3() throws Exception {
+        persistence.removeSubmission(new Submission(1099999));
+    }
+
+    /**
      * Test method <code>void updateUploadType(UploadType uploadType)  </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
+     *
      */
     public void testUpdateUploadType_1() throws Exception {
         for (int i = -1; i < 7; i++) {
@@ -328,9 +366,22 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
+     * Test method <code>void updateUploadType(UploadType uploadType)  </code>.
+     *
+     * @throws Exception
+     *             to junit.
+     *
+     */
+    public void testUpdateUploadType_2() throws Exception {
+        persistence.updateUploadType((UploadType) Util.getNamedDeliverableStructure(new UploadType(), 10));
+    }
+
+    /**
      * Test method <code>void updateUploadStatus(UploadStatus uploadStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
+     *
      */
     public void testUpdateUploadStatus_1() throws Exception {
         for (int i = -1; i < 7; i++) {
@@ -347,9 +398,22 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
+     * Test method <code>void updateUploadStatus(UploadStatus uploadStatus) </code>.
+     *
+     * @throws Exception
+     *             to junit.
+     *
+     */
+    public void testUpdateUploadStatus_2() throws Exception {
+        persistence.updateUploadStatus((UploadStatus) Util.getNamedDeliverableStructure(new UploadStatus(), 10));
+    }
+
+    /**
      * Test method <code>void updateSubmissionStatus(SubmissionStatus submissionStatus) </code>.
      *
-     * @throws Exception to junit.
+     * @throws Exception
+     *             to junit.
+     *
      */
     public void testUpdateSubmissionStatus() throws Exception {
         for (int i = -1; i < 7; i++) {
@@ -363,6 +427,33 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
                 // ok.
             }
         }
+    }
+
+    /**
+     * Test method <code>long[] getAllUploadTypeIds() </code>.
+     *
+     * @throws Exception
+     *             to junit.
+     */
+    public void testGetAllUploadTypeIds() throws Exception {
+        long[] ret = persistence.getAllUploadTypeIds();
+    }
+
+    /**
+     * Test method <code>long[] getAllUploadStatusIds() </code>.
+     * @throws Exception to junit.
+     */
+    public void testGetAllUploadStatusIds() throws Exception {
+        long[] ret = persistence.getAllUploadStatusIds();
+    }
+
+    /**
+     * Test method <code>long[] getAllSubmissionStatusIds() </code>.
+     *
+     * @throws Exception to junit.
+     */
+    public void testGetAllSubmissionStatusIds() throws Exception {
+        long[] ret = persistence.getAllSubmissionStatusIds();
     }
 
     /**
@@ -542,7 +633,6 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
      */
     public void testAddUpload_2() throws Exception {
         Upload u = new Upload();
-
         try {
             persistence.addUpload(u);
             fail("IllegalArgumentException should be thrown.");
@@ -763,6 +853,27 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
+     * Test method <code>void updateUpload(Upload upload) </code>.
+     *
+     * @throws Exception to junit.
+     */
+    public void testUpdateUpload_2() throws Exception {
+        Upload u = new Upload();
+        u.setId(1);
+        u.setOwner(1);
+        u.setProject(10);
+        u.setUploadStatus((UploadStatus) Util.getNamedDeliverableStructure(new UploadStatus(), 10));
+        u.setUploadType((UploadType) Util.getNamedDeliverableStructure(new UploadType(), 10));
+        u.setCreationTimestamp(new Date());
+        u.setCreationUser("user");
+        u.setModificationTimestamp(new Date());
+        u.setModificationUser("m");
+        u.setParameter("parameter");
+
+        persistence.updateUpload(u);
+    }
+
+    /**
      * Test method <code> void updateSubmission(Submission submission) </code>.
      *
      * @throws Exception to junit.
@@ -783,7 +894,6 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
      */
     public void testAddSubmission_2() throws Exception {
         Submission s = new Submission();
-
         try {
             persistence.addSubmission(s);
             fail("IllegalArgumentException should be thrown.");
@@ -800,7 +910,6 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     public void testAddSubmission_3() throws Exception {
         Submission s = new Submission();
         s.setId(10);
-
         try {
             persistence.addSubmission(s);
             fail("IllegalArgumentException should be thrown.");
@@ -818,7 +927,6 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
         Submission s = new Submission();
         s.setId(10);
         s.setSubmissionStatus((SubmissionStatus) Util.getNamedDeliverableStructure(new SubmissionStatus(), 10));
-
         try {
             persistence.addSubmission(s);
             fail("IllegalArgumentException should be thrown.");
@@ -873,7 +981,7 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     }
 
     /**
-     * Failure test <code> void updateSubmission(Submission submission) </code>.
+     * Test method <code> void updateSubmission(Submission submission) </code>.
      *
      * @throws Exception to junit.
      */
@@ -902,8 +1010,8 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
 
         try {
             persistence.addSubmission(s);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
+            fail("UploadPersistenceException should be thrown.");
+        } catch (UploadPersistenceException e) {
             // ok.
         }
     }
@@ -950,12 +1058,7 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
         s.setModificationUser("m");
         s.setUpload(u);
 
-        try {
-            persistence.updateSubmission(s);
-            fail("IAE expected");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
+        persistence.updateSubmission(s);
     }
 
     /**
@@ -981,7 +1084,7 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
      */
     public void testLoadUploads_1() throws Exception {
         try {
-            persistence.loadUploads((long[]) null);
+            persistence.loadUploads((long[])null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -1025,7 +1128,7 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
      */
     public void testLoadSubmissions_1() throws Exception {
         try {
-            persistence.loadSubmissions((long[]) null);
+            persistence.loadSubmissions((long[])null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.
@@ -1040,160 +1143,6 @@ public class FailureTestForSqlUploadPersistence extends TestCase {
     public void testLoadSubmissions_2() throws Exception {
         try {
             persistence.loadSubmissions(new long[] { 1, -1, 0 });
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>addSubmissionType(SubmissionType) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testaddSubmissionType_1() throws Exception {
-        try {
-            persistence.addSubmissionType(null);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>addSubmissionType(SubmissionType) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testaddSubmissionType_2() throws Exception {
-        try {
-            persistence.addSubmissionType(new SubmissionType());
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>removeSubmissionType(SubmissionType) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testremoveSubmissionType_1() throws Exception {
-        try {
-            persistence.removeSubmissionType(null);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>removeSubmissionType(SubmissionType) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testremoveSubmissionType_2() throws Exception {
-        try {
-            persistence.removeSubmissionType(new SubmissionType());
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>updateSubmissionType(SubmissionType) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testupdateSubmissionType_1() throws Exception {
-        try {
-            persistence.updateSubmissionType(null);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>updateSubmissionType(SubmissionType) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testupdateSubmissionType_2() throws Exception {
-        try {
-            persistence.updateSubmissionType(new SubmissionType());
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>loadSubmissionType(long) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testloadSubmissionType_1() throws Exception {
-        try {
-            persistence.loadSubmissionType(-1);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>loadSubmissionType(long) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testloadSubmissionType_2() throws Exception {
-        try {
-            persistence.loadSubmissionType(0);
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>loadSubmissionTypes(long[]) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testloadSubmissionTypes_1() throws Exception {
-        try {
-            persistence.loadSubmissionTypes(new long[]{-1});
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>loadSubmissionTypes(long[]) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testloadSubmissionTypes_2() throws Exception {
-        try {
-            persistence.loadSubmissionTypes(new long[]{0});
-            fail("IllegalArgumentException should be thrown.");
-        } catch (IllegalArgumentException e) {
-            // ok.
-        }
-    }
-
-    /**
-     * Test method <code>loadSubmissionTypes(long[]) </code>.
-     *
-     * @throws Exception to junit.
-     */
-    public void testloadSubmissionTypes_3() throws Exception {
-        try {
-            persistence.loadSubmissionTypes(null);
             fail("IllegalArgumentException should be thrown.");
         } catch (IllegalArgumentException e) {
             // ok.

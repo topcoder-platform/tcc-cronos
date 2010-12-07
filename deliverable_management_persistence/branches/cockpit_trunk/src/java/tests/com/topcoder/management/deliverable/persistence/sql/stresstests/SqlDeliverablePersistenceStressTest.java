@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql.stresstests;
 
@@ -15,8 +15,8 @@ import com.topcoder.management.deliverable.persistence.sql.SqlDeliverablePersist
 /**
  * Stress tests for the class: SqlDeliverablePersistence.
  *
- * @author kinfkong, FireIce
- * @version 1.1
+ * @author kinfkong
+ * @version 1.0
  */
 public class SqlDeliverablePersistenceStressTest extends DbStressTest {
 
@@ -26,7 +26,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
     private SqlDeliverablePersistence persistence = null;
 
     /**
-     * Stress tests for the method: loadDeliverables(long, long, long).
+     * Stress tests for the method: loadDeliverables(long).
      *
      * @throws Exception to JUnit
      */
@@ -39,7 +39,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         // stress tests
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
             // load the deliverables
-            Deliverable[] deliverables = persistence.loadDeliverables(1, 2, 2);
+            Deliverable[] deliverables = persistence.loadDeliverables(1, 2, 1);
             // assert the accuracy
             assertEquals("The length of the deliverables is not correct.", 1, deliverables.length);
 
@@ -60,6 +60,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
      * @throws Exception to JUnit
      */
     public void testLoadDeliverable() throws Exception {
+
         Date start = new Date();
 
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
@@ -91,7 +92,7 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
         for (int i = 0; i < 10; i++) {
             ids[i] = i + 1;
             idstwo[i] = i + 2;
-            idsthree[i] = i + 2;
+            idsthree[i] = 1;
         }
 
         long[] expected = new long[] {2, 1};
@@ -251,49 +252,38 @@ public class SqlDeliverablePersistenceStressTest extends DbStressTest {
             + "create_user, create_date, modify_user, modify_date) "
             + "VALUES (5, 'Deleted', 'Deleted', 'System', CURRENT, 'System', CURRENT)");
 
-        // add submission type
-        statement.addBatch("INSERT INTO submission_type_lu"
-            + "(submission_type_id, name, description, "
-            + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (1, 'Specification Submission', 'Specification Submission', 'System', CURRENT, 'System', CURRENT)");
-        statement.addBatch("INSERT INTO submission_type_lu"
-            + "(submission_type_id, name, description, "
-            + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (2, 'Contest Submission', 'Contest Submission', "
-            + "'System', CURRENT, 'System', CURRENT)");
-
 
 
         statement.addBatch("INSERT INTO upload"
             + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
             + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (1, 2, 2, 1, 1, 'parameter 1', 'System', CURRENT, 'System', CURRENT)");
+            + "VALUES (1, 2, 2, 2, 2, 'parameter 1', 'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO upload"
             + "(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, "
             + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (2, 3, 3, 1, 1, 'parameter 2', 'System', CURRENT, 'System', CURRENT)");
+            + "VALUES (2, 3, 3, 2, 2, 'parameter 2', 'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO submission"
-            + "(submission_id, upload_id, submission_status_id, submission_type_id, "
+            + "(submission_id, upload_id, submission_status_id, "
             + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (1, 2, 3, 1, 'System', CURRENT, 'System', CURRENT)");
+            + "VALUES (1, 2, 3, 'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO submission"
-            + "(submission_id, upload_id, submission_status_id, submission_type_id, "
+            + "(submission_id, upload_id, submission_status_id, "
             + "create_user, create_date, modify_user, modify_date) "
-            + "VALUES (2, 1, 1, 2, 'System', CURRENT, 'System', CURRENT)");
+            + "VALUES (2, 1, 1, 'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO deliverable_lu"
-            + "(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, "
+            + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
             + "name, description, create_user, create_date, modify_user, modify_date) "
-            + "VALUES (1, 2, 2, 2, 1, 'deliverable 1', 'per submission deliverable', "
+            + "VALUES (1, 2, 2, 1, 1, 'deliverable 1', 'per submission deliverable', "
             + "'System', CURRENT, 'System', CURRENT)");
 
         statement.addBatch("INSERT INTO deliverable_lu"
-            + "(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, "
+            + "(deliverable_id, phase_type_id, resource_role_id, per_submission, required, "
             + "name, description, create_user, create_date, modify_user, modify_date) "
-            + "VALUES (2, 3, 3, null, 0, 'deliverable 2', 'non per submission deliverable', "
+            + "VALUES (2, 3, 3, 0, 0, 'deliverable 2', 'non per submission deliverable', "
             + "'System', CURRENT, 'System', CURRENT)");
 
         statement.executeBatch();

@@ -3,9 +3,9 @@
     <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
         <Property name="connections">
             <Property name="default">
-                <Value>informix_connection</Value>
+                <Value>informix</Value>
             </Property>
-            <Property name="informix_connection">
+            <Property name="informix">
                 <Property name="producer">
                     <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
                 </Property>
@@ -14,14 +14,14 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <!-- this database [deliverable1] should not contain any table -->
-                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.1.114:9088/test2:informixserver=ol_topcoder</Value>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://wishingbone:15260/dmp:INFORMIXSERVER=or</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>system</Value>
+                        <Value>informix</Value>
                     </Property>
                 </Property>
             </Property>

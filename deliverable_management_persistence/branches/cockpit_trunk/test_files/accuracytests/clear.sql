@@ -1,7 +1,6 @@
 delete from deliverable_lu;
 delete from submission;
 delete from submission_status_lu;
-delete from submission_type_lu;
 delete from upload;
 delete from resource;
 delete from project_phase;

@@ -13,38 +13,17 @@
                     <Property name="jdbc_driver">
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
-                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://localhost:9088/deliverable_management:informixserver=ol_topcoder</Value>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://63.118.154.218:1526/tcs_test_or:INFORMIXSERVER=devinformix10_shm</Value>
                     </Property>
                     <Property name="user">
-                        <Value>informix</Value>
+                        <Value>coder</Value>
                     </Property>
                     <Property name="password">
-                        <Value>topcoder</Value>
+                        <Value>altec</Value>
                     </Property>
                 </Property>
             </Property>
-
-            <!-- do not modify this settings - there should be invalid-->
-            <Property name="invalid_connection">
-                   <Property name="producer">
-                      <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
-                   </Property>
-                   <Property name="parameters">
-                      <Property name="jdbc_driver">
-                          <Value>com.informix.jdbc.IfxDriver</Value>
-                      </Property>
-                      <Property name="jdbc_url">
-                         <Value>jdbc:informix-sqli://localhost:1526/test:informixserver=test</Value>
-                      </Property>
-                      <Property name="user">
-                         <Value>test</Value>
-                      </Property>
-                      <Property name="password">
-                         <Value>test</Value>
-                      </Property>
-                   </Property>
-              </Property>
         </Property>
     </Config>
 </CMConfig>
