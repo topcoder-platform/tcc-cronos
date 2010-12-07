@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql.stresstests;
 
@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
+import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.UploadType;
@@ -14,8 +15,8 @@ import com.topcoder.management.deliverable.persistence.sql.SqlUploadPersistence;
 
 /**
  * Stress tests for the class: SqlUploadPersistence.
- * @author kinfkong
- * @version 1.0
+ * @author kinfkong, FireIce
+ * @version 1.1
  */
 public class SqlUploadPersistenceStressTest extends DbStressTest {
 
@@ -73,7 +74,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "addUploadType");
 
     }
@@ -122,7 +123,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         Date start = new Date();
         Date finish = new Date(start.getTime() + time);
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "removeUploadType");
     }
 
@@ -170,7 +171,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "updateUploadType");
     }
 
@@ -214,7 +215,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "loadUploadType");
     }
 
@@ -257,7 +258,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "loadUploadType (returns null)");
     }
 
@@ -308,7 +309,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
             assertEquals("The method getAllUploadstatusIds does not work correctly.", i + 1, ids[i]);
         }
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "getAllUploadTypes");
     }
 
@@ -350,7 +351,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "addUploadStatus");
     }
 
@@ -398,7 +399,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         Date start = new Date();
         Date finish = new Date(start.getTime() + time);
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "removeUploadStatus");
     }
 
@@ -446,7 +447,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "updateUploadStatus");
     }
 
@@ -490,7 +491,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "loadUploadStatus");
     }
 
@@ -533,7 +534,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "loadUploadStatus (returns null)");
     }
 
@@ -584,7 +585,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
             assertEquals("The method getAllUploadstatusIds does not work correctly.", i + 1, ids[i]);
         }
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "getAllUploadStatuseIds");
     }
 
@@ -626,7 +627,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "addSubmissionStatus");
 
     }
@@ -723,7 +724,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "updateSubmissionStatus");
     }
 
@@ -767,7 +768,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "loadSubmissionStatus");
     }
 
@@ -810,7 +811,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "loadSubmissionStatus (returns null)");
     }
 
@@ -861,9 +862,293 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
                 ids[i]);
         }
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "getAllSubmissionStatuseIds");
     }
+
+    /**
+     * Stress tests for the method: addSubmissionType(SubmissionType).
+     * @throws Exception
+     *             to JUnit
+     * @since 1.1
+     */
+    public void testAddSubmissionType() throws Exception {
+        // gets the current time
+        Date current = new Date();
+
+        // stress test
+        Date start = new Date();
+        for (int i = 0; i < STRESS_TEST_NUM; i++) {
+            // creates the SubmissionType
+            SubmissionType type = new SubmissionType(i + 1);
+
+            // set the values
+            type.setCreationTimestamp(current);
+
+            type.setCreationUser("STRESS_REVIEWER");
+
+            type.setDescription("FOR TESTS");
+
+            type.setModificationTimestamp(current);
+
+            type.setModificationUser("STRESS_REVIEWER");
+
+            type.setName("SOME_ONE");
+
+            // add it
+            persistence.addSubmissionType(type);
+
+            // check record exists
+            String sql = "SELECT * FROM submission_type_lu WHERE submission_type_id=?";
+            assertTrue("The record does not exist.", existsRecord(sql,
+                new Object[] {new Long(i + 1)}));
+        }
+        Date finish = new Date();
+
+        // output the information
+        outputStressInfo(start, finish, "addSubmissionType");
+
+    }
+
+    /**
+     * Stress tests for method removeSubmissionType(SubmissionType).
+     * @throws Exception
+     *             to JUnit
+     * @since 1.1
+     */
+    public void testRemoveSubmissionType() throws Exception {
+        // gets the current time
+        Date current = new Date();
+
+        // stress test
+        long time = 0;
+        for (int i = 0; i < STRESS_TEST_NUM; i++) {
+            // creates the SubmissionType
+            SubmissionType type = new SubmissionType(i + 1);
+
+            // set the values
+            type.setCreationTimestamp(current);
+
+            type.setCreationUser("STRESS_REVIEWER");
+
+            type.setDescription("FOR TESTS");
+
+            type.setModificationTimestamp(current);
+
+            type.setModificationUser("STRESS_REVIEWER");
+
+            type.setName("SOME_ONE");
+
+            // add it
+            persistence.addSubmissionType(type);
+
+            Date start = new Date();
+            // remove it
+            persistence.removeSubmissionType(type);
+            time += new Date().getTime() - start.getTime();
+
+            // check record exists
+            String sql = "SELECT * FROM submission_type_lu WHERE submission_type_id=?";
+            assertFalse("The record should be removed.", existsRecord(sql, new Object[] {new Long(
+                i + 1)}));
+        }
+        Date start = new Date();
+        Date finish = new Date(start.getTime() + time);
+
+        // output the information
+        outputStressInfo(start, finish, "removeSubmissionType");
+    }
+
+    /**
+     * Stress tests for method updateSubmissionType(SubmissionType).
+     * @throws Exception
+     *             to JUnit
+     * @since 1.1
+     */
+    public void testUpdateSubmissionType() throws Exception {
+        // gets the current time
+        Date current = new Date();
+
+        // creates the SubmissionType
+        SubmissionType type = new SubmissionType(1);
+
+        // set the values
+        type.setCreationTimestamp(current);
+
+        type.setCreationUser("STRESS_REVIEWER");
+
+        type.setDescription("FOR TESTS");
+
+        type.setModificationTimestamp(current);
+
+        type.setModificationUser("STRESS_REVIEWER");
+
+        type.setName("SOME_ONE");
+
+        // add it
+        persistence.addSubmissionType(type);
+
+        // stress test
+        Date start = new Date();
+        for (int i = 0; i < STRESS_TEST_NUM; i++) {
+
+            type.setModificationUser("Name" + i);
+
+            // update it
+            persistence.updateSubmissionType(type);
+
+            // check record exists
+            String sql = "SELECT * FROM submission_type_lu WHERE submission_type_id=1 AND modify_user=?";
+            assertTrue("The record should be updated.",
+                existsRecord(sql, new Object[] {"Name" + i}));
+        }
+        Date finish = new Date();
+
+        // output the information
+        outputStressInfo(start, finish, "updateSubmissionType");
+    }
+
+    /**
+     * Stress tests for the method loadSubmissionType(long).
+     * @throws Exception
+     *             to JUnit
+     * @since 1.1
+     */
+    public void testLoadSubmissionType() throws Exception {
+        // gets the current time
+        Date current = new Date();
+
+        // creates the SubmissionType
+        SubmissionType type = new SubmissionType(1);
+
+        // set the values
+        type.setCreationTimestamp(current);
+
+        type.setCreationUser("STRESS_REVIEWER");
+
+        type.setDescription("FOR TESTS");
+
+        type.setModificationTimestamp(current);
+
+        type.setModificationUser("STRESS_REVIEWER");
+
+        type.setName("SOME_ONE");
+
+        // add it
+        persistence.addSubmissionType(type);
+
+        // stress test
+        Date start = new Date();
+        for (int i = 0; i < STRESS_TEST_NUM; i++) {
+
+            // update it
+            SubmissionType newType = persistence.loadSubmissionType(1);
+
+            assertEquals("The record is not correct.", "STRESS_REVIEWER", newType
+                .getModificationUser());
+        }
+        Date finish = new Date();
+
+        // output the information
+        outputStressInfo(start, finish, "loadSubmissionType");
+    }
+
+    /**
+     * Stress tests for the method loadSubmissionType(long).
+     * @throws Exception
+     *             to JUnit
+     * @since 1.1
+     */
+    public void testLoadSubmissionType_NotFound() throws Exception {
+        // gets the current time
+        Date current = new Date();
+
+        // creates the SubmissionType
+        SubmissionType type = new SubmissionType(1);
+
+        // set the values
+        type.setCreationTimestamp(current);
+
+        type.setCreationUser("STRESS_REVIEWER");
+
+        type.setDescription("FOR TESTS");
+
+        type.setModificationTimestamp(current);
+
+        type.setModificationUser("STRESS_REVIEWER");
+
+        type.setName("SOME_ONE");
+
+        // add it
+        persistence.addSubmissionType(type);
+
+        // stress test
+        Date start = new Date();
+        for (int i = 0; i < STRESS_TEST_NUM; i++) {
+
+            // update it
+            SubmissionType newType = persistence.loadSubmissionType(2);
+
+            assertNull("The record is not correct.", newType);
+        }
+        Date finish = new Date();
+
+        // output the information
+        outputStressInfo(start, finish, "loadSubmissionType (returns null)");
+    }
+
+    /**
+     * Stress tests for the method: getAllSubmissionTypeIds().
+     * @throws Exception
+     *             to JUnit
+     * @since 1.1
+     */
+    public void testGetAllSubmissionTypeIds() throws Exception {
+        // gets the current time
+        Date current = new Date();
+
+        for (int i = 0; i < 10; i++) {
+            // creates the SubmissionType
+            SubmissionType type = new SubmissionType(i + 1);
+
+            // set the values
+            type.setCreationTimestamp(current);
+
+            type.setCreationUser("STRESS_REVIEWER");
+
+            type.setDescription("FOR TESTS");
+
+            type.setModificationTimestamp(current);
+
+            type.setModificationUser("STRESS_REVIEWER");
+
+            type.setName("SOME_ONE");
+
+            // add it
+            persistence.addSubmissionType(type);
+        }
+
+        // stress test
+        long[] ids = null;
+
+        Date start = new Date();
+        for (int i = 0; i < STRESS_TEST_NUM; i++) {
+            // get it
+            ids = persistence.getAllSubmissionTypeIds();
+        }
+        Date finish = new Date();
+
+        // check correctness
+
+        for (int i = 0; i < 10; i++) {
+            assertEquals("The method getAllSubmissionTypeIds does not work correctly.", i + 1,
+                ids[i]);
+        }
+
+        // output the information
+        outputStressInfo(start, finish, "getAllSubmissionTypeIds");
+    }
+
 
     /**
      * Stress tests for the method: addUpload(Upload).
@@ -911,7 +1196,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "addUpload");
     }
 
@@ -970,6 +1255,24 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
     }
 
     /**
+     * Returns a valid Submission type of a specific id.
+     * @param id
+     *            the id
+     * @return the Submission type
+     */
+    private SubmissionType getSubmissionType(long id) {
+        SubmissionType type = new SubmissionType(id);
+        Date current = new Date();
+        type.setCreationTimestamp(current);
+        type.setModificationTimestamp(current);
+        type.setCreationUser("USER");
+        type.setModificationUser("USER");
+        type.setDescription("SOMETHING");
+        type.setName("name");
+        return type;
+    }
+
+    /**
      * Stress tests for method removeUpload(Upload).
      * @throws Exception
      *             to JUnit
@@ -1022,7 +1325,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         Date start = new Date();
         Date finish = new Date(start.getTime() + time);
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "removeUpload");
     }
 
@@ -1075,7 +1378,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "updateUpload");
     }
 
@@ -1105,7 +1408,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         assertEquals("The loadUpload does not work correctly.", 1, res.getProject());
         assertEquals("The loadUpload does not work correctly.", "parameter", res.getParameter());
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "loadUpload");
     }
 
@@ -1165,6 +1468,8 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
 
             submission.setSubmissionStatus(getSubmissionStatus(1));
 
+            submission.setSubmissionType(getSubmissionType(1));
+
             // add it
             persistence.addSubmission(submission);
 
@@ -1175,7 +1480,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         }
         Date finish = new Date();
 
-        // output the infomation
+        // output the information
         outputStressInfo(start, finish, "addSubmission");
 
     }
@@ -1228,8 +1533,8 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         doSQLUpdate(sql, new Object[] {});
 
         String sql1 = "INSERT INTO submission ("
-            + " submission_id, upload_id, submission_status_id, create_user, create_date, modify_user, modify_date)"
-            + " VALUES (1, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
+            + " submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date)"
+            + " VALUES (1, 1, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
 
         long time = 0;
         for (int i = 0; i < STRESS_TEST_NUM; i++) {
@@ -1268,8 +1573,8 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         doSQLUpdate(sql, new Object[] {});
 
         String sql1 = "INSERT INTO submission ("
-            + " submission_id, upload_id, submission_status_id, create_user, create_date, modify_user, modify_date)"
-            + " VALUES (1, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
+            + " submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date)"
+            + " VALUES (1, 1, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
 
         doSQLUpdate(sql1, new Object[] {});
 
@@ -1282,6 +1587,7 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
             submission.setCreationUser("REVIEWER");
 
             submission.setSubmissionStatus(getSubmissionStatus(2));
+            submission.setSubmissionType(getSubmissionType(1));
             submission.setModificationUser("NEW_REVIEWER");
             submission.setModificationTimestamp(current);
 
@@ -1313,8 +1619,8 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         doSQLUpdate(sql, new Object[] {});
 
         String sql1 = "INSERT INTO submission ("
-            + " submission_id, upload_id, submission_status_id, create_user, create_date, modify_user, modify_date)"
-            + " VALUES (1, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
+            + " submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date)"
+            + " VALUES (1, 1, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
 
         doSQLUpdate(sql1, new Object[] {});
 
@@ -1346,8 +1652,8 @@ public class SqlUploadPersistenceStressTest extends DbStressTest {
         doSQLUpdate(sql, new Object[] {});
 
         String sql1 = "INSERT INTO submission ("
-            + " submission_id, upload_id, submission_status_id, create_user, create_date, modify_user, modify_date)"
-            + " VALUES (?, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
+            + " submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date)"
+            + " VALUES (?, 1, 1, 1, 'REVIEWER', CURRENT, 'REVIEWER', CURRENT)";
 
         // insert 10 submissions
         for (int i = 0; i < 10; i++) {
