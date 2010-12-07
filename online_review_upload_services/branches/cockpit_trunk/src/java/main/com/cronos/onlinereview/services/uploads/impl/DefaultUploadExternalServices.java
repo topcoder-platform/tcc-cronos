@@ -4,12 +4,17 @@
 package com.cronos.onlinereview.services.uploads.impl;
 
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
+import com.cronos.onlinereview.services.uploads.InvalidProjectException;
+import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
 import com.cronos.onlinereview.services.uploads.InvalidSubmissionException;
 import com.cronos.onlinereview.services.uploads.InvalidSubmissionStatusException;
+import com.cronos.onlinereview.services.uploads.InvalidUserException;
 import com.cronos.onlinereview.services.uploads.PersistenceException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
 import com.cronos.onlinereview.services.uploads.UploadServices;
 import com.cronos.onlinereview.services.uploads.UploadServicesException;
+import com.topcoder.management.phase.PhaseManagementException;
+import com.topcoder.management.resource.Resource;
 import com.topcoder.util.generator.guid.UUID;
 import com.topcoder.util.generator.guid.UUIDType;
 import com.topcoder.util.generator.guid.UUIDUtility;
@@ -57,12 +62,18 @@ import java.text.MessageFormat;
  * <code>{@link DefaultUploadExternalServices#uploadSpecification(long, long, String, DataHandler)}</code> method.
  * </p>
  * <p>
+ * Version 1.1.1 (Manage Copilot Postings Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #addReviewer(long, long)} method.</li>
+ *   </ol>
+ * </p>
+ * <p>
  * Thread safe: The thread safety is completely relied to the uploadServices implementation because it's impossible
  * to change the other variables
  * </p>
  *
  * @author fabrizyo, saarixx, cyberjag, TCSDEVELOPER
- * @version 1.1
+ * @version 1.1.1
  * @since 1.0
  */
 public class DefaultUploadExternalServices implements UploadExternalServices {
@@ -499,6 +510,29 @@ public class DefaultUploadExternalServices implements UploadExternalServices {
         } finally {
             Helper.logFormat(LOG, Level.DEBUG,
                     "Exited DefaultUploadExternalServices#addSubmitter(long, long)");
+        }
+    }
+
+    /**
+     * Adds the given user as a new reviewer to the given project id.
+     *
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws InvalidProjectException      if the project id is unknown
+     * @throws InvalidUserException         if the user id is unknown
+     * @throws InvalidProjectPhaseException if the phase of the project is not Registration.
+     * @throws UploadServicesException      if any error occurs from UploadServices
+     * @throws PhaseManagementException if an unexpected error occurs.
+     * @throws IllegalArgumentException     if any id is &lt; 0
+     * @since 1.1.1
+     */
+    public Resource addReviewer(long projectId, long userId) throws UploadServicesException, PhaseManagementException {
+        Helper.logFormat(LOG, Level.DEBUG, "Entered DefaultUploadExternalServices#addReviewer(long, long)");
+        try {
+            return uploadServices.addReviewer(projectId, userId);
+        } finally {
+            Helper.logFormat(LOG, Level.DEBUG, "Exited DefaultUploadExternalServices#addReviewer(long, long)");
         }
     }
 

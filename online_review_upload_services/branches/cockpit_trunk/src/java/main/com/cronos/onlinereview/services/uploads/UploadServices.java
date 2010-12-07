@@ -3,6 +3,9 @@
  */
 package com.cronos.onlinereview.services.uploads;
 
+import com.topcoder.management.phase.PhaseManagementException;
+import com.topcoder.management.resource.Resource;
+
 
 /**
  * <p>
@@ -14,11 +17,18 @@ package com.cronos.onlinereview.services.uploads;
  * </p>
  *
  * <p>
+ * Version 1.1.1 (Manage Copilot Postings Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #addReviewer(long, long)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * Thread safety: the implementations must be thread safe.
  * </p>
  *
  * @author fabrizyo, saarixx, cyberjag, TCSDEVELOPER
- * @version 1.1
+ * @version 1.1.1
  * @since 1.0
  */
 public interface UploadServices {
@@ -150,4 +160,20 @@ public interface UploadServices {
      */
     long addSubmitter(long projectId, long userId) throws InvalidProjectException,
             InvalidUserException, UploadServicesException, InvalidProjectPhaseException;
+
+    /**
+     * Adds the given user as a new reviewer to the given project id.
+     *
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws InvalidProjectException      if the project id is unknown
+     * @throws InvalidUserException         if the user id is unknown
+     * @throws InvalidProjectPhaseException if the phase of the project is not Registration.
+     * @throws UploadServicesException      if any error occurs from UploadServices
+     * @throws PhaseManagementException if an unexpected error occurs.
+     * @throws IllegalArgumentException     if any id is &lt; 0
+     * @since 1.1.1
+     */
+    Resource addReviewer(long projectId, long userId) throws UploadServicesException, PhaseManagementException;
 }

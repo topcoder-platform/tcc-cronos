@@ -64,6 +64,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * <p>
@@ -93,12 +97,19 @@ import java.util.Set;
  * </p>
  * 
  * <p>
+ * Version 1.1.1 (Manage Copilot Postings Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #addReviewer(long, long)} method.</li>
+ *   </ol>
+ * </p>
+ * 
+ * <p>
  * Thread safety: the thread safety is completely relied to the managers implementations because it's impossible to
  * change the other variables.
  * </p>
  *
  * @author fabrizyo, saarixx, cyberjag, TCSDEVELOPER
- * @version 1.1
+ * @version 1.1.1
  */
 public class DefaultUploadServices implements UploadServices {
 
@@ -123,6 +134,8 @@ public class DefaultUploadServices implements UploadServices {
      */
     private static final com.topcoder.util.log.Log LOG = com.topcoder.util.log.LogManager
             .getLog(DefaultUploadServices.class.getName());
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
 
     
     /**
@@ -1210,6 +1223,131 @@ public class DefaultUploadServices implements UploadServices {
         } catch (RetrievalException e) {
             Helper.logFormat(LOG, Level.ERROR, e, "Failed to get the user information for the userId {0}",
                     new Object[]{userId});
+            throw new InvalidUserException("Exception occurred while getting the user information.", e, userId);
+        } finally {
+            Helper.logFormat(LOG, Level.DEBUG, "Exited DefaultUploadServices#addSubmitter(long, long)");
+        }
+    }
+
+    /**
+     * Adds the given user as a new reviewer to the given project id.
+     *
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws InvalidProjectException if the project id is unknown
+     * @throws InvalidUserException if the user id is unknown
+     * @throws InvalidProjectPhaseException if the phase of the project is not Registration.
+     * @throws UploadServicesException if any error occurs from UploadServices
+     * @throws PhaseManagementException if an unexpected error occurs.
+     * @throws IllegalArgumentException if any id is &lt; 0
+     * @since 1.1.1
+     */
+    public Resource addReviewer(long projectId, long userId) throws UploadServicesException, PhaseManagementException {
+        Helper.logFormat(LOG, Level.DEBUG, "Entered DefaultUploadServices#addReviewer(long, long)");
+        Helper.checkId(projectId, "projectId", LOG);
+        Helper.checkId(userId, "userId", LOG);
+        Resource resource = null;
+        try {
+            resource = getResource(projectId, userId, new String[] {"Reviewer"});
+        } catch (InvalidUserException e) {
+            // ignore
+        }
+        if (resource != null) {
+            return resource;
+        }
+        try {
+            Project project = managersProvider.getProjectManager().getProject(projectId);
+            LOG.log(Level.INFO, "Project successfully retrieved for the project id : " + projectId);
+            // Obtain the instance of the Resource Manager
+            ResourceManager resourceManager = managersProvider.getResourceManager();
+            UserRetrieval userRetrieval = new DBUserRetrieval(DB_CONNECTION_NAMESPACE);
+
+            // Get info about user with the specified userId
+            ExternalUser user = userRetrieval.retrieveUser(userId);
+            LOG.log(Level.INFO, "User information successfully retrieved for the user id : " + userId);
+            // If there is no user with such handle, indicate an error
+            if (user == null) {
+                Helper.logFormat(LOG, Level.ERROR, "Failed to get the user details for the userId {0}", userId);
+                throw new InvalidUserException("The user id  is not found.", userId);
+            }
+            // Get all types of resource roles
+            ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
+
+            ResourceRole reviewerRole = null;
+            for (int i = 0; i < resourceRoles.length && reviewerRole == null; i++) {
+                ResourceRole role = resourceRoles[i];
+                if ("Reviewer".equals(role.getName())) {
+                    reviewerRole = role;
+                }
+            }
+
+            // Get all types of notifications
+            NotificationType[] types = resourceManager.getAllNotificationTypes();
+            long timelineNotificationId = Long.MIN_VALUE;
+
+            // get the id for the timelineNotification
+            for (int i = 0; i < types.length; ++i) {
+                if (types[i].getName().equals("Timeline Notification")) {
+                    timelineNotificationId = types[i].getId();
+                    break;
+                }
+            }
+
+            Phase reviewPhase = null;
+            com.topcoder.project.phases.Project projectPhases = managersProvider.getPhaseManager().getPhases(
+                    projectId);
+            Phase[] phases = projectPhases.getAllPhases();
+            for (int i = 0; i < phases.length; i++) {
+                Phase phase = phases[i];
+                if ("Review".equalsIgnoreCase(phase.getPhaseType().getName())) {
+                    reviewPhase = phase;
+                    break;
+                }
+            }
+            
+            resource = new Resource();
+
+            // Set resource properties
+            resource.setProject(project.getId());
+            resource.setResourceRole(reviewerRole);
+            if (reviewPhase != null) {
+                resource.setPhase(reviewPhase.getId());
+            }
+            resource.setProperty("Handle", user.getHandle());
+            resource.setProperty("Payment", null);
+            resource.setProperty("Payment Status", "No");
+            // Set resource properties copied from external user
+            resource.setProperty("External Reference ID", Long.toString(userId));
+
+            resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
+
+            // Save the resource in the persistence level
+            resourceManager.updateResource(resource, Long.toString(userId));
+            LOG.log(Level.INFO, "Resource successfully persisted into" + " to the DB with the id : "
+                    + resource.getId());
+
+            // Update all the time line notifications if the timelineNotificationId is retrieved properly
+            if ("On".equals(project.getProperty("Timeline Notification"))
+                    && timelineNotificationId != Long.MIN_VALUE) {
+                resourceManager.addNotifications(new long[]{userId}, project.getId(), timelineNotificationId,
+                        Long.toString(userId));
+            }
+            return resource;
+        } catch (com.topcoder.management.project.PersistenceException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "Failed to get the project for the projectId {0}", projectId);
+            throw new InvalidProjectException("Exception occurred while getting the project.", e, projectId);
+        } catch (ResourcePersistenceException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "ResourcePersistenceException occurred while "
+                    + "creating the resource for userId : {0} and projectId : {1}.", userId, projectId);
+            throw new UploadServicesException(
+                    "ResourcePersistenceException occurred while creating the resource.", e);
+        } catch (ConfigException e) {
+            Helper.logFormat(LOG, Level.ERROR, e,
+                    "Config exception occurred while getting the user information for userId {0}.", userId);
+            throw new UploadServicesException("Config exception occurred while getting the user information.", e);
+        } catch (RetrievalException e) {
+            Helper.logFormat(LOG, Level.ERROR, e, "Failed to get the user information for the userId {0}", userId);
             throw new InvalidUserException("Exception occurred while getting the user information.", e, userId);
         } finally {
             Helper.logFormat(LOG, Level.DEBUG, "Exited DefaultUploadServices#addSubmitter(long, long)");
