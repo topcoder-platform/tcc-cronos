@@ -1278,6 +1278,13 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Util.checkPositiveValue(notificationType, "notificationType");
         Util.checkNull(operator, "operator");
 
+        if (loadNotification(user, project, notificationType) != null)
+        {
+            LOGGER.log(Level.INFO, new LogMessage(null, operator, "notification (type="
+        		+ notificationType+ " in the project:" + project + " with external_ref user:" + user) + "already exists");
+            return;
+        }
+
         LOGGER.log(Level.INFO, new LogMessage(null, operator, "add notification(type="
         		+ notificationType+ " in the project:" + project + " with external_ref user:" + user));
         
