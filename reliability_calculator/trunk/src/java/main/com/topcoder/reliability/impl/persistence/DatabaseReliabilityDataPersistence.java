@@ -107,7 +107,7 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
         + " INNER JOIN component_inquiry ci ON ci.project_id = pr.project_id"
         + " INNER JOIN project_phase pp1 ON pr.project_id = pp1.project_id"
         + " LEFT OUTER JOIN project_phase pp2 ON pr.project_id = pp2.project_id"
-        + " INNER JOIN project_phase pp3 ON pr.project_id = pp3.project_id"
+        + " LEFT OUTER JOIN project_phase pp3 ON pr.project_id = pp3.project_id"
         + " LEFT OUTER JOIN upload u ON pr.project_id = u.project_id"
         + " LEFT OUTER JOIN submission s ON u.upload_id = s.upload_id"
         + " LEFT OUTER JOIN resource r ON u.resource_id = r.resource_id"
@@ -119,11 +119,13 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
         + " pp1.phase_type_id = 2 AND" // "Submission" phase type
         + " pp1.scheduled_start_time >= ? AND"
         + " pp2.phase_type_id = 3 AND" // "Screening" phase type
-        + " pp3.phase_type_id = 6 AND" // "Appeals Response" phase type
-        + " u.upload_type_id = 1 AND" // "Submission" upload type
-        + " s.submission_status_id != 5 AND" // "Deleted" submission status
-        + " ri.value = pr.user_id AND"
-        + " ri.resource_info_type_id = 1"; // "External Reference ID" resource info type
+        + " (pp3.phase_type_id IS NULL OR pp3.phase_type_id = 6) AND" // "Appeals Response" phase type
+        + " (u.upload_type_id IS NULL OR u.upload_type_id = 1) AND" // User didn't submit or "Submission" upload type
+        // User didn't submit or not "Deleted" submission status
+        + " (s.submission_status_id IS NULL OR s.submission_status_id != 5) AND"
+        + " (ri.value IS NULL OR ri.value = pr.user_id) AND"
+        // "External Reference ID" resource info type
+        + " (ri.resource_info_type_id IS NULL OR ri.resource_info_type_id = 1)";
 
     /**
      * <p>
