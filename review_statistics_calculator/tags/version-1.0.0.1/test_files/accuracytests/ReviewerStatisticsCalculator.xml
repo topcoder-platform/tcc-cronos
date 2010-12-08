@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.cronos.onlinereview.review.statistics.impl.ReviewerStatisticsCalculator">
+        <Property name="objectFactoryConfig">
+            <Property name="timelineReliabilityCalculator">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.impl.TimelineReliabilityCalculatorImpl</Value>
+                </Property>
+            </Property>
+            <Property name="coverageCalculator">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.impl.CoverageCalculatorImpl</Value>
+                </Property>
+            </Property>
+            <Property name="accuracyCalculator">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.impl.AccuracyCalculatorImpl</Value>
+                </Property>
+            </Property>
+
+            <Property name="connectionFactory">
+                <Property name="type">
+                    <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="type">
+                            <Value>String</Value>
+                        </Property>
+                        <Property name="value">
+                            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="sqlResourcePersistence">
+                <Property name="type">
+                    <Value>com.topcoder.management.resource.persistence.sql.SqlResourcePersistence</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="name">
+                            <Value>connectionFactory</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="searchBundleManagerForResourceManager">
+                <Property name="type">
+                    <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="type">
+                            <Value>String</Value>
+                        </Property>
+                        <Property name="value">
+                            <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="resourceManager">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.accuracytests.MockResourceManager</Value>
+                </Property>
+            </Property>
+
+            <Property name="phaseIdGenerator">
+                <Property name="type">
+                    <Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="type">
+                            <Value>String</Value>
+                        </Property>
+                        <Property name="value">
+                            <Value>phase_id_seq</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="phasePersistence">
+                <Property name="type">
+                    <Value>com.topcoder.management.phase.db.InformixPhasePersistence</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="name">
+                            <Value>connectionFactory</Value>
+                        </Property>
+                    </Property>
+                    <Property name="param2">
+                        <Property name="type">
+                            <Value>String</Value>
+                        </Property>
+                        <Property name="value">
+                            <Value>dbconnection</Value>
+                        </Property>
+                    </Property>
+                    <Property name="param3">
+                        <Property name="name">
+                            <Value>phaseIdGenerator</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="phaseManager">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.accuracytests.MockPhaseManager</Value>
+                </Property>
+            </Property>
+            <Property name="reviewPersistence">
+                <Property name="type">
+                    <Value>com.topcoder.management.review.persistence.InformixReviewPersistence</Value>
+                </Property>
+            </Property>
+
+            <Property name="reviewManager">
+                <Property name="type">
+                    <Value>com.topcoder.management.review.DefaultReviewManager</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="name">
+                            <Value>reviewPersistence</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="projectManager">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.accuracytests.MockProjectManager</Value>
+                </Property>
+            </Property>
+
+            <Property name="deliverableManager">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.review.statistics.accuracytests.MockDeliverableManager</Value>
+                </Property>
+            </Property>
+
+            <Property name="searchBundleManager">
+                <Property name="type">
+                    <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="type">
+                            <Value>String</Value>
+                        </Property>
+                        <Property name="value">
+                            <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+
+            <Property name="individualReviewDeliverableChecker">
+                <Property name="type">
+                    <Value>com.cronos.onlinereview.deliverables.IndividualReviewDeliverableChecker</Value>
+                </Property>
+                <Property name="params">
+                    <Property name="param1">
+                        <Property name="name">
+                            <Value>connectionFactory</Value>
+                        </Property>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+
+
+        <Property name="loggerName">
+            <Value>myLogger</Value>
+        </Property>
+
+        <Property name="timelineReliabilityCalculatorKey">
+            <Value>timelineReliabilityCalculator</Value>
+        </Property>
+        <Property name="timelineReliabilityCalculatorConfig">
+            <Property name="loggerName">
+                <Value>myLogger</Value>
+            </Property>
+            <Property name="minimumCoefficient">
+                <Value>0.5</Value>
+            </Property>
+            <Property name="defaultPenaltyPerHour">
+                <Value>0.02</Value>
+            </Property>
+            <Property name="penaltyPerHourForPhaseType3">
+                <Value>0.04</Value>
+            </Property>
+        </Property>
+        <Property name="coverageCalculatorKey">
+            <Value>coverageCalculator</Value>
+        </Property>
+        <Property name="coverageCalculatorConfig">
+            <Property name="loggerName">
+                <Value>myLogger</Value>
+            </Property>
+            <Property name="minimumCoefficient">
+                <Value>0.1</Value>
+            </Property>
+            <Property name="pointsForEvaluationType1">
+                <Value>10</Value>
+            </Property>
+            <Property name="pointsForEvaluationType2">
+                <Value>3</Value>
+            </Property>
+            <Property name="pointsForEvaluationType3">
+                <Value>1</Value>
+            </Property>
+        </Property>
+        <Property name="accuracyCalculatorKey">
+            <Value>accuracyCalculator</Value>
+        </Property>
+        <Property name="accuracyCalculatorConfig">
+            <Property name="loggerName">
+                <Value>myLogger</Value>
+            </Property>
+            <Property name="minimumCoefficient">
+                <Value>0.1</Value>
+            </Property>
+            <Property name="pointsForAccurateEvaluationType1">
+                <Value>10</Value>
+            </Property>
+            <Property name="pointsForAccurateEvaluationType2">
+                <Value>3</Value>
+            </Property>
+            <Property name="pointsForAccurateEvaluationType3">
+                <Value>1</Value>
+            </Property>
+            <Property name="pointsForInaccurateEvaluationType1">
+                <Value>10</Value>
+            </Property>
+            <Property name="pointsForInaccurateEvaluationType2">
+                <Value>20</Value>
+            </Property>
+            <Property name="pointsForInaccurateEvaluationType3">
+                <Value>30</Value>
+            </Property>
+        </Property>
+
+        <Property name="resourceManagerKey">
+            <Value>resourceManager</Value>
+        </Property>
+        <Property name="phaseManagerKey">
+            <Value>phaseManager</Value>
+        </Property>
+
+        <Property name="deliverableManagerKey">
+            <Value>deliverableManager</Value>
+        </Property>
+
+        <Property name="deliverableCheckers">
+            <Property name="screening_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="primary_review_evaluation_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="primary_review_appeals_response_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="final_review_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="aggregation_review_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+            <Property name="secondary_reviewer_reivew_deliverable">
+                <Value>individualReviewDeliverableChecker</Value>
+            </Property>
+        </Property>
+
+        <Property name="reviewManagerKey">
+            <Value>reviewManager</Value>
+        </Property>
+        <Property name="projectManagerKey">
+            <Value>projectManager</Value>
+        </Property>
+
+        <Property name="screeningPhaseTypeId">
+            <Value>3</Value>
+        </Property>
+        <Property name="secondaryReviewerReviewPhaseTypeId">
+            <Value>13</Value>
+        </Property>
+        <Property name="primaryReviewEvaluationPhaseTypeId">
+            <Value>14</Value>
+        </Property>
+        <Property name="primaryReviewAppealsResponsePhaseTypeId">
+            <Value>17</Value>
+        </Property>
+        <Property name="aggregationReviewPhaseTypeId">
+            <Value>18</Value>
+        </Property>
+        <Property name="finalReviewPhaseTypeId">
+            <Value>10</Value>
+        </Property>
+
+        <Property name="secondaryReviewerResourceRoleId">
+            <Value>16</Value>
+        </Property>
+        <Property name="primaryReviewEvaluatorResourceRoleId">
+            <Value>17</Value>
+        </Property>
+    </Config>
+</CMConfig>

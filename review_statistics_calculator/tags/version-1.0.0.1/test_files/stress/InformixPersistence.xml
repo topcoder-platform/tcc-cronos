@@ -1,0 +1,43 @@
+<CMConfig>
+
+<Config name="com.topcoder.management.review.persistence.InformixReviewPersistence">
+    <Property name="connection">
+        <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+        <Property name="name">
+            <Value>DefaultSequence</Value>
+        </Property>
+        <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+        <Property name="factory_namespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="factory_class">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+    </Property>
+    <Property name="search_bundle_manager_namespace">
+        <Value>com.topcoder.search.builder.SearchBundleManager</Value>
+    </Property>
+    <Property name="search_bundle_name">
+        <Value>ReviewSearchBundle</Value>
+    </Property>
+</Config>
+
+<!-- Namespace for InformixProjectPersistence class -->
+<Config name="com.topcoder.management.project.persistence.InformixProjectPersistence">
+    <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
+    <Property name="ConnectionFactoryNS">
+        <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+    </Property>
+    <!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    <Property name="ConnectionName">
+        <Value>dbconnection</Value>
+    </Property>
+    <Property name="ProjectIdSequenceName">
+        <Value>project_id_seq</Value>
+    </Property>
+    <Property name="ProjectAuditIdSequenceName">
+        <Value>project_audit_id_seq</Value>
+    </Property>
+</Config>
+
+</CMConfig>

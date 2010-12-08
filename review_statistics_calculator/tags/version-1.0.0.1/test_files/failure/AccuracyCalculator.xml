@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="AccuracyCalculator">
+      <Property name="loggerName">
+        <Value>myLogger</Value>
+      </Property>
+      <Property name="minimumCoefficient">
+        <Value>0.1</Value>
+      </Property>
+      <Property name="pointsForAccurateEvaluationType1">
+        <Value>10</Value>
+      </Property>
+      <Property name="pointsForAccurateEvaluationType2">
+        <Value>3</Value>
+      </Property>
+      <Property name="pointsForAccurateEvaluationType3">
+        <Value>1</Value>
+      </Property>
+      <Property name="pointsForAccurateEvaluationType6">
+        <Value>10</Value>
+      </Property>
+      <Property name="pointsForInaccurateEvaluationType1">
+        <Value>10</Value>
+      </Property>
+      <Property name="pointsForInaccurateEvaluationType2">
+        <Value>3</Value>
+      </Property>
+  </Config>
+</CMConfig>

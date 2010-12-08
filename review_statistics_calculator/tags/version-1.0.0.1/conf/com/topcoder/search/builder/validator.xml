@@ -1,0 +1,9 @@
+<CMConfig>
+	<Config name="com.topcoder.search.builder.validator.factory">
+		<Property name="validator:null">
+			<Property name="type">
+				<Value>com.topcoder.util.datavalidator.NullValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

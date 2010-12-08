@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.cronos.onlinereview.review.statistics.impl.TimelineReliabilityCalculatorImpl">
+      <Property name="loggerName">
+        <Value>accuracy</Value>
+      </Property>
+      <Property name="minimumCoefficient">
+        <Value>0.1</Value>
+      </Property>
+      <Property name="defaultPenaltyPerHour">
+        <Value>0.2</Value>
+      </Property>
+      <Property name="penaltyPerHourForPhaseType1">
+        <Value>0.1</Value>
+      </Property>
+      <Property name="penaltyPerHourForPhaseType2">
+        <Value>0.2</Value>
+      </Property>
+      <Property name="penaltyPerHourForPhaseType3">
+        <Value>0.3</Value>
+      </Property>
+  </Config>
+</CMConfig>

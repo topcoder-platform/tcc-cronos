@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Config name="com.topcoder.management.phase.Default">
+		<Property name="PhasePersistence">
+			<Property name="className">
+				<Value>com.topcoder.management.phase.db.InformixPhasePersistence</Value>
+			</Property>
+		</Property>
+
+		<Property name="Idgenerator">
+			<Property name="sequenceName">
+				<Value>Notification Type Id Generator</Value>
+			</Property>
+			<Property name="className">
+				<Value>com.topcoder.util.idgenerator.IDGeneratorImpl</Value>
+			</Property>
+		</Property>
+		
+		<Property name="ConnectionFactory">
+			<Property name="className">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="namespace">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		</Property>		
+		<Property name="connectionName">
+			<Value>DefaultSequence</Value>
+		</Property>
+
+		<!-- The handlers are defined here -->
+		<Property name="Handlers">
+			<Value>handler1</Value>
+		</Property>
+
+		<!-- The details about each handler -->
+		<Property name="handler1">
+			<Property name="phaseType">
+				<Value>type1</Value>
+			</Property>
+			<Property name="operation">
+				<Value>start</Value>
+			</Property>
+			<Property name="handler">
+				<Value>handlerDef1</Value>
+			</Property>
+		</Property>
+
+		<!-- The object factory configurations -->
+		<Property name="ObjectFactoryNamespace">
+			<Value>com.topcoder.management.phase.ObjectFactory</Value>
+		</Property>
+	</Config>
+
+	<Config name="com.topcoder.management.phase.ObjectFactory">
+		<!-- The definition for phase type -->
+		<Property name="type1">
+			<Property name="type">
+				<Value>com.topcoder.project.phases.PhaseType</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>long</Value>
+					</Property>
+					<Property name="value">
+						<Value>1</Value>
+					</Property>
+				</Property>
+				<Property name="param2">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>Test</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+		<!-- The defination for handler -->
+		<Property name="handlerDef1">
+			<Property name="type">
+				<Value>com.cronos.onlinereview.review.statistics.NullPhaseHandler</Value>
+			</Property>
+		</Property>
+	</Config>
+</CMConfig>

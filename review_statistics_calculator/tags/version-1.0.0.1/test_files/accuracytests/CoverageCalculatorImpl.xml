@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.cronos.onlinereview.review.statistics.impl.CoverageCalculatorImpl">
+      <Property name="loggerName">
+        <Value>accuracy</Value>
+      </Property>
+      <Property name="minimumCoefficient">
+        <Value>0.3</Value>
+      </Property>
+      <Property name="pointsForEvaluationType1">
+        <Value>10</Value>
+      </Property>
+      <Property name="pointsForEvaluationType2">
+        <Value>20</Value>
+      </Property>
+      <Property name="pointsForEvaluationType3">
+        <Value>30</Value>
+      </Property>
+      <Property name="pointsForEvaluationType4">
+        <Value>30</Value>
+      </Property>
+  </Config>
+</CMConfig>
