@@ -1573,7 +1573,6 @@ public class SqlUploadPersistence implements UploadPersistence {
             return new Upload[0];
         }
 
-        try {
             List uploads = new ArrayList();
 
             while (resultSet.next()) {
@@ -1581,9 +1580,6 @@ public class SqlUploadPersistence implements UploadPersistence {
             }
 
             return (Upload[]) uploads.toArray(new Upload[uploads.size()]);
-        } catch (InvalidCursorStateException icse) {
-            throw new UploadPersistenceException("Error loading uploads.", icse);
-        }
     }
 
     /**

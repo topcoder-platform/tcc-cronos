@@ -7,6 +7,7 @@ import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.AuditedDeliverableStructure;
 import com.topcoder.management.deliverable.NamedDeliverableStructure;
+import com.topcoder.management.deliverable.logging.LogMessage;
 import com.topcoder.management.deliverable.persistence.PersistenceException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -794,11 +795,11 @@ public final class Helper {
      */
     static int doDMLQuery(Connection connection, String queryString, DataType[] argumentTypes,
         Object[] queryArgs) throws PersistenceException {
-        Helper.assertObjectNotNull(connection, "connection");
-        Helper.assertStringNotNullNorEmpty(queryString, "queryString");
-        Helper.assertArrayNotNullNorHasNull(argumentTypes, "argumentTypes");
-        Helper.assertArrayLengthEqual(queryArgs, "queryArgs", argumentTypes, "argumentTypes");
-        Helper.assertObjectNotNull(queryArgs, "queryArgs");
+        Helper.assertObjectNotNull(connection, "connection", null);
+        Helper.assertStringNotNullNorEmpty(queryString, "queryString", null);
+        Helper.assertArrayNotNullNorHasNull(argumentTypes, "argumentTypes", null);
+        Helper.assertArrayLengthEqual(queryArgs, "queryArgs", argumentTypes, "argumentTypes", null);
+        Helper.assertObjectNotNull(queryArgs, "queryArgs", null);
 
         PreparedStatement preparedStatement = null;
 
@@ -859,7 +860,7 @@ public final class Helper {
         Connection conn = null;
         try {
             // create the connection with auto-commit mode enabled
-            conn = createConnection(connectionFactory, connectionName, true, false);
+            conn = createConnection(connectionFactory, connectionName, true, false, null);
 
             return doDMLQuery(conn, queryString, argumentTypes, queryArgs);
         } finally {
@@ -1028,7 +1029,7 @@ public final class Helper {
      *             if ids is null or empty
      */
     static String makeIdListString(long[] ids) {
-        Helper.assertObjectNotNull(ids, "ids");
+        Helper.assertObjectNotNull(ids, "ids", null);
         if (ids.length == 0) {
             throw new IllegalArgumentException("ids should not be empty.");
         }
@@ -1270,7 +1271,7 @@ public final class Helper {
      *             false.
      */
     static void assertEntityNotNullAndValidToPersist(AuditedDeliverableStructure entity, String name) {
-        Helper.assertObjectNotNull(entity, name);
+        Helper.assertObjectNotNull(entity, name, null);
 
         if (!entity.isValidToPersist()) {
             throw new IllegalArgumentException("The entity [" + name + "] is not valid to persist.");
