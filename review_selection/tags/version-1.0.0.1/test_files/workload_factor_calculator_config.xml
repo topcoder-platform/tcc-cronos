@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="valid_config">
+        <Property name="workloadFactorBase">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.9</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewNumberMultiplier">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.01</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="empty_config">
+    </Config>
+
+    <Config name="large_multiplier_config">
+        <Property name="workloadFactorBase">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.2</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewNumberMultiplier">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.9</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="invalid_config1">
+        <Property name="workloadFactorBase">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.9</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewNumberMultiplier">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.01</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="invalid_config2">
+        <Property name="workloadFactorBase">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>1.5</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewNumberMultiplier">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.01</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+    <Config name="invalid_config3">
+        <Property name="workloadFactorBase">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>-1</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="reviewNumberMultiplier">
+            <Property name="type">
+                <Value>java.lang.Double</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>double</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>0.01</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+</CMConfig>

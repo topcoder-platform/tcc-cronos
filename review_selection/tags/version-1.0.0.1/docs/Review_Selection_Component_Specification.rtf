@@ -1,0 +1,346 @@
+{\rtf1\ansi\ansicpg936\deff0{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fmodern\fcharset134 \'cb\'ce\'cc\'e5;}{\f4\fswiss\fprq2\fcharset204{\*\fname Arial;}Arial CYR;}{\f5\fswiss\fcharset0 ArialMT;}{\f6\froman\fprq2\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue255;}
+{\stylesheet{ Normal;}{\s1 heading 1;}{\s2 heading 2;}{\s3 heading 3;}}
+{\*\generator Msftedit 5.41.21.2509;}\viewkind4\uc1\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx720\lang1033\ul\b\f0\fs28 Review Selection 1.0 Component Specification\par
+\pard\li720\sa120\ulnone\b0\f1\fs20\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b\f0 1.\tab\fs24 Design\b0\par
+\pard\li720\sb120\fs20 TopCoder attempts to improve the competition review process and is in need for updating current systems for integrating with new review process outlined in separate Competition Review Process Conceptualization document. \par
+\pard Currently there are two applications involved in review process. TopCoder Website application is used by the reviewers for signing up for the review positions and listing the statistics for projects and users. Online Review application is actually used for managing the review process providing the users with abilities to upload submissions for contests, fill the screening and review scorecards, submitting and resolving appeals, performing contest results aggregation, submitting final fixes and approving the results of contests.\par
+This component will implement the algorithms and the data structures required to implement the review selection algorithm. The ReviewSelection interface is used to select primary and secondary reviewers, the current implementation for this interface is the RatingBasedSelectionAlgorithm class, which select reviewers based on their past performance statistics and current workload. The ReviewApplicationProcessor interface is used by the RatingBasedSelectionAlgorithm class to restore eligibility review points.\fs24\par
+\pard\li720\sb120\sa60\fs20 This component also provides a ReviewBoardApplicationListener interface, this interface is used for the cases when the review positions are not filled at the completion of the review registration phase. This interface listens for review registration events and tests if the reviewer applications are sufficient in such an event, in which case it closes the review registration phase.\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b 1.1\tab Design Patterns \par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 1.1.1\tab Strategy pattern\par
+\pard\li720\sa60\i0 The RatingBasedSelectionAlgorithm class uses pluggable WorkloadFactorCalculator and ReviewApplicationProcessor implementations to calculate workload factor and process reviewer selection result. The WorkloadFactorCalculator interface is implemented by the DefaultWorkloadFactorCalculator class, and the ReviewApplicationProcessor interface is implemented by the ReviewApplicationProcessor class.\par
+\pard The ReviewSelection, ReviewApplicationProcessor and ReviewBoardApplicationListener interfaces and their implementations provided in this component can be possibly used in some external strategy context.\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i 1.1.2\tab DTO pattern\par
+\pard\li720\sa60\i0 DTO classes like ReviewApplication, ReviewerStatistics and Project are used by this component.\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b 1.2\tab Industry Standards\par
+\pard\li720\b0 None.\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b 1.3\tab Required Algorithms\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 1.3.1\tab Select reviewer based on performance statistics and current workload\par
+\pard\li720\sa120\i0 The RatingBasedSelectionAlgorithm class implements the ReviewSelection interface. It will select primary reviewer and secondary reviewers based on the reviewer\rquote s past performance statistics and current workload. The following steps should be performed:\par
+\pard\fi-360\li1080\sa120\tx1080 1.\tab Get the project type for given project by using ProjectManager.\par
+\pard\li1080\sa120\f2\fs16 // retrieve the project object\par
+\pard Project project = projectManager.getProject(applications[0].getProjectId());\par
+// get project type\f0\fs24\par
+\f2\fs16 long projectTypeId = project.getProjectCategory().getProjectType().getId();\f0\fs24\par
+\pard\fi-360\li1080\sa120\tx1080\fs20 2.\tab For each reviewer application, calculate the reviewer\rquote s coefficient:\par
+\pard\fi-454\li1531\sa120\tx1531 2.1.\tab Retrieve performance statistics for the reviewer and project type using ReviewerStatisticsManager.\par
+\pard\li1620\sa120\f2\fs16 ReviewerStatistics statistics = reviewerStatisticsManager.getReviewerStatisticsByCompetitionType(application.getReviewerId(), projectTypeId);\par
+\pard\fi-454\li1531\sa120\tx1531\f0\fs20 2.2.\tab Retrieve the number of concurrent review for the reviewer using RboardApplicationBean.\par
+\pard\li1620\sa120\f2\fs16 // get the application delay for this reviewer\par
+\pard long delay = rboardApplicationBean.getApplicationDelay(rboardDataSourceName, application.getReviewerId())\par
+// calculate concurrent review count using the application delay\f0\fs24\par
+\f2\fs16 int activeReviewCount = delay / RBoardApplicationBean.APPLICATION_DELAY_PER_ACTIVE_PROJECT;\f0\fs24\par
+\pard\fi-454\li1531\sa120\tx1531\fs20 2.3.\tab Calculate the workload factor from concurrent review number using WorkloadFactorCalculator.\par
+\pard\fi-454\li1531\sa120 2.4.\tab Calculate the coefficient for the reviewer using the following formula, note that the number 0.5 is configurable through the timelineReliabilitySubtractor field.\par
+\pard\li1620\sa120\f2\fs16 Average Coverage * Average Accuracy * (Average Timeline Reliability \endash  0.5) * Workload Factor\par
+\pard\fi-360\li1080\sa120\tx1080\f0\fs20 3.\tab Compute best average statistics among the primary applications to find the primary reviewer.\par
+\pard\fi-360\li1080\sa120 4.\tab Compute the best 2 (or other configurable value) average statistics among the unselected primary reviewers to find secondary reviewers.\par
+\pard 5.\tab Assign reviewer to application using RBoardApplicationBean.\par
+6.\tab Pass the assigned applications to ReviewApplicationProcessor\fs24\par
+\fs20 7.\tab Passed the unassigned applications to ReviewApplicationProcessor\fs24\par
+\fs20 8.\tab Return the reviewer selection result.\fs24\par
+\pard\li720\sa120\fs20 Refer to the javadoc of the RatingBasedSelectionAlgorithm#selectReviewers() method for detail implementation notes.\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i 1.3.2\tab Calculate workload factor from concurrent review number\par
+\pard\li720\sa120\i0 The DefaultWorkloadFactorCalculator class provides default algorithm to calculate workload. The following formula should be used, note that the number 1 and 0.05 is configurable through the workloadFactorBase and reviewNumberMultiplier fields respectively.\par
+\f2\fs16 1 - 0.05 * Concurrent Review Number\par
+\f0\fs20 Refer to the javadoc of the DefaultWorkloadFactorCalculator#caculateWorkloadFactor() method for detail implementation notes.\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i 1.3.3\tab Process reviewer selection result\par
+\pard\li720\sb120\i0 The DefaultReviewApplicationProcessor class will process reviewer selection result by updating the reviewer\rquote s statistics. For reviewer applications which apply for primary reviewer and eventually not selected as primary reviewer, the primary eligibility review points will be restored. The ReviewerStatisticsManager will be used to update reviewer statistics.\par
+\pard Refer to the javadoc of the DefaultReviewApplicationProcessor#updateUnassignedReviewersStatistics() method for detail implementation notes.\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i 1.3.4\tab Handle review registration event\par
+\pard\li720\sb120\i0 The DefaultReviewBoardApplicationListener class implements the ReviewBoardApplicationListener interface. It is used for the cases when the review positions are not filled at the completion of the review registration phase. This listener listens for review registration events and tests if the review board is full in such an event, in which case it closes the review registration phase. Note that in order to get sufficient reviewers, there need to have at least 3 reviewers (the number is configurable using the reviewerNumber field), and at least one of them would like to be primary reviewer. The PhaseManager will be used the end the review registration phase.\par
+\pard Refer to the javadoc of the DefaultReviewBoardApplicationListener#applicationReceived() method for detail implementation notes.\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i 1.3.5\tab Logging\par
+\pard\li720\i0 This component will use logging wrapper component to write log. Method entrance and exit should be logged using DEBUG level, and all errors should be logged using ERROR level. Refer to the method\rquote s javadoc for detail.\par
+\pard\keepn\s2\sb120\sa120\sl240\slmult0\tx0\tx180\b 1.4\tab Component Class Overview\par
+\pard\li720 ReviewSelection [interface]\par
+\pard\li1440\sa120\b0 This interface defines the contract for different review selection algorithms. It provides method to choose one primary reviewer and several secondary reviewers from a list of review applications. This component provides the RatingBasedSelectionAlgorithm class as an implementation of this interface.\par
+\pard Implementation of this interface should be thread-safe.\par
+\pard\li720\b ReviewSelectionResult\par
+\pard\li1440\sa120\b0 This class is used to represent the reviewer selection result returned by ReviewSelection, it contains a primary reviewer and a list of secondary reviewers.\par
+\pard This class is immutable and thread-safe.\par
+\pard\li720\b RatingBasedSelectionAlgorithm\par
+\pard\li1440\sa120\b0 This class implements the ReviewSelection interface. It will select primary reviewer and secondary reviewers based on the reviewer\rquote s past performance statistics and current workload. This class uses the ReviewApplicationProcessor interface to update reviewer statistics and the WorkloadFactorCalculator interface to calculator workload factor.\par
+\pard\li1420 This class is immutable and thread-safe as long as the configure() method will be called just once right after instantiation.\par
+\pard\li720\b ReviewApplicationProcessor [interface]\par
+\pard\li1440\sa120\b0 This interface is used by RatingBasedSelectionAlgorithm class to process the reviewer selection result. This component provides the DefaultReviewApplicationProcessor as an implementation of this interface.\par
+\pard Implementation of this interface should be thread-safe.\par
+\pard\li720\b DefaultReviewApplicationProcessor\par
+\pard\li1440\sa120\b0 This class implements the ReviewApplicationProcessor interface. It will restore eligibility points for unassigned primary reviewer applications.\par
+\pard This class is immutable and thread-safe as long as the configure() method will be called just once right after instantiation.\par
+\pard\li720\b ReviewBoardApplicationListener [interface]\par
+\pard\li1440\sa120\b0 This interface is used for the cases when the review positions are not filled at the completion of the review registration phase. This listener listens for review registration events and tests if the reviewer applications are sufficient in such an event, in which case it closes the review registration phase. This component provides the DefaultReviewBoardApplicationListener as an implementation of this interface.\par
+\pard Implementation of this interface should be thread-safe.\par
+\pard\li720\b DefaultReviewBoardApplicationListener\par
+\pard\li1440\sa120\b0 This class implements the ReviewBoardApplicationListener interface. It will check to see whether the reviewer applications are sufficient, if such case happens, it will use the PhaseManager to close the review registration phase.\par
+\pard This class is immutable and thread-safe as long as the configure() method will be called just once right after instantiation.\par
+\pard\li720\b ReviewerCoefficient\par
+\pard\li1440\sa120\b0 This class implements the Comparable interface, so that it can be sorted based on coefficient value and application date. It has the coefficientValue and reviewApplication fields. The coefficientValue represents the result calculated based on the reviewer\rquote s past performance statistics and current workload. Once the best coefficientValue is found, we can retrieve the corresponding reviewApplication.\par
+\pard This class is immutable and thread-safe.\par
+\pard\li720\b WorkloadFactorCalculator [interface]\par
+\pard\li1440\sa120\b0 This interface is used by DefaultReviewApplicationProcessor to calculate workload factor based on the concurrent number of review. This component provides the DefaultWorkloadFactorCalculator as an implementation of this interface.\par
+\pard Implementation of this interface should be thread-safe.\par
+\pard\li720\b DefaultWorkloadFactorCalculator\par
+\pard\li1440\sa120\b0 This class implements the WorkloadFactorCalculator interface. It uses the formula \ldblquote workloadFactorBase - reviewNumberMultiplier * concurrentReviewNumber\ldblquote  to calculate workload factor.\par
+\pard This class is immutable and thread-safe as long as the configure() method will be called just once right after instantiation.\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b 1.5\tab Component Exception Definitions\par
+\pard\li720 ReviewSelectionException\par
+\pard\li1440\b0 This exception is thrown if any error occurs while selecting reviewer. The ReviewSelection and RatingBasedSelectionAlgorithm will all throw this exception.\par
+\cf1 This class is not thread-safe because the base class is not thread-safe.\par
+\pard\li720\cf0\b ReviewSelectionConfigurationException\par
+\pard\li1440\b0 This exception is thrown if any error occurs while initializing instance of ReviewSelection. The ReviewSelection and RatingBasedSelectionAlgorithm will all throw this exception.\par
+\cf1 This class is not thread-safe because the base class is not thread-safe.\par
+\pard\li720\cf0\b ReviewApplicationProcessorException\par
+\pard\li1440\b0 This exception is thrown if any error occurs while processing reviewer selection result. The ReviewApplicationProcessor and DefaultReviewApplicationProcessor will all throw this exception.\par
+\cf1 This class is not thread-safe because the base class is not thread-safe.\par
+\pard\li720\cf0\b ReviewApplicationProcessorConfigurationException\par
+\pard\li1440\b0 This exception is thrown if any error occurs while initializing instance of ReviewApplicationProcessor. The ReviewApplicationProcessor and DefaultReviewApplicationProcessor will all throw this exception.\par
+\cf1 This class is not thread-safe because the base class is not thread-safe.\par
+\pard\li720\cf0\b ReviewBoardApplicationListenerException\par
+\pard\li1440\b0 This exception is thrown if any error occurs while handling review registration event. The ReviewBoardApplicationListener and DefaultReviewBoardApplicationListener will all throw this exception.\par
+\cf1 This class is not thread-safe because the base class is not thread-safe.\cf0\b  \b0\fs24\par
+\pard\li720\b\fs20 ReviewBoardApplicationListenerConfigurationException\par
+\pard\li1440\b0 This exception is thrown if any error occurs while initializing instance of ReviewBoardApplicationListener. The ReviewBoardApplicationListener and DefaultReviewBoardApplicationListener will all throw this exception.\par
+\cf1 This class is not thread-safe because the base class is not thread-safe.\par
+\pard\li720\cf0\b WorkloadFactorCalculatorConfigurationException\par
+\pard\li1440\b0 This exception is thrown if any error occurs while initializing instance of WorkloadFactorCalculator. The WorkloadFactorCalculator and DefaultWorkloadFactorCalculator will all throw this exception.\par
+\cf1 This class is not thread-safe because the base class is not thread-safe.\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\cf0\b 1.6\tab Thread Safety\par
+\pard\li720\b0 RatingBasedSelectionAlgorithm, DefaultReviewApplicationProcessor, DefaultReviewBoardApplicationListener and DefaultWorkloadFactorCalculator are immutable and thread-safe as long as the configure() method will be called just once right after instantiation.\par
+\pard ReviewSelectionResult and ReviewerCoefficient are immutable and thread-safe.\par
+\pard\li720 ReviewSelectionException, ReviewSelectionConfigurationException,\f1\fs24  \f0\fs20 ReviewApplicationProcessorException, ReviewApplicationProcessorConfigurationException, ReviewBoardApplicationListenerException, ReviewBoardApplicationListenerConfigurationException and WorkloadFactorCalculatorConfigurationException are not thread-safe, and they must be used in a thread-safe manner.\fs24\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b\fs20 2.\tab\fs24 Environment Requirements\b0\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b\fs20 2.1\tab Environment\par
+\pard\li720\b0 Java 1.5\par
+\pard Solaris 7\par
+RedHat Linux 7.1\fs24\par
+\fs20 Windows 2000\fs24\par
+\fs20 Windows 2003\fs24\par
+\cf2\fs20 Informix\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\cf0\b 2.2\tab TopCoder Software Components\par
+\pard\li720\sa120\b0\fs24\ldblquote\fs20 Base Exception 2.0\rdblquote  - provides the BaseCriticalException class which is the base class for all the custom exception classes in this component.\fs24\par
+\pard\ldblquote\fs20 Project Management 1.2\rdblquote  - provides the ReviewApplicationsManager and ReviewApplication classes used to retrieve review application, also provides the ProjectManager, Project, ProjectCategory and ProjectType classes which are used to retrieve project type id.\fs24\par
+\ldblquote\fs20 Resource Management 1.3\rdblquote  - provides the ReviewerStatisticsManager and ReviewerStatistics classes used to retrieve and update reviewer statistics.\fs24\par
+\ldblquote\fs20 Phase Management 1.0\rdblquote  - provides the PhaseManager class used to retrieve phase information and end registration phase.\fs24\par
+\ldblquote\fs20 Project Phases 2.1\rdblquote  - provides the Project, Phase, PhaseType which are all DTO classes used by this component.\fs24\par
+ \ldblquote\fs20 Logging wrapper 1.2\rdblquote  - used to write log.\fs24\par
+\ldblquote\fs20 Configuration API 1.0\rdblquote  - used to provide configuration for this component.\fs24\par
+\fs20 Note: some of the component versions are updated based on the \ldblquote Online Review Module component diagram\rdblquote  in the architecture.\par
+\fs24  \ldblquote\fs20 RBoardApplicationBean\rdblquote  - this is a class from online review application, it provides methods to retrieve concurrent review number and assign reviewer to certain application. The source code for this class is attached (RBoardApplicationBean.java).\fs24\par
+\cf2\b\ldblquote\fs20 Object Factory Configuration API Plugin 1.0\rdblquote  \endash  allows to use Configuration API for creating Object Factory.\par
+W\lang2052\f3 orkdays \lang1033\f0 1.0 \endash  is used by Project Phases for date calculation.\lang1049\f4\fs24\par
+\lang1033\f0\fs20 Configuration Manager 2.1.5 \endash  is used by Logging Wrapper.\par
+Object Factory 2.1.2 \endash  is used for creating pluggable object instances.\par
+Search Builder 1.4.1 \endash  is used when searching for resources, reviews and deliverables using \fs24\par
+\cf0\b0\f2\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b\f0\fs20 2.3\tab Third Party Components\par
+\pard\li720\sa120\b0 None.\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b 3.\tab\fs24 Installation and Configuration\b0\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b\fs20 3.1\tab Package Name\par
+\pard\li720\b0\f5 com.cronos.onlinereview.review.selection\par
+\pard com.cronos.onlinereview.review.selection.impl\par
+com.cronos.onlinereview.review.selection.impl.workloadfactorcalculator\f0\fs24\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b\fs20 3.2\tab Configuration Parameters\par
+\pard\li720\b0 The following table describes the structure passed to the configure() method.\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i 3.2.1\tab RatingBasedSelectionAlgorithm\par
+\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i0 Parameter\cell Description\cell Values\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\i reviewerStatisticsManager\cell\b0\i0 Represents the reviewer statistics manager used to retrieve reviewer statistics.\cell\cf2\b\i Configuration for creating \cf0 ReviewerStatisticsManager\b0\i0\fs24\par
+\fs20 Required.\par
+Cannot be null.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 projectManager\cell\b0\i0 Represents the project manager used to retrieve project object.\cell\cf2\b\i Configuration for creating \cf0 ProjectManager.\b0\i0\fs24\par
+\fs20 Required.\par
+Cannot be null.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 phaseManager\cell\b0\i0 Represents the phase manager used to retrieve project phase.\cell\cf2\b\i Configuration for creating \cf0 PhaseManager\b0\i0\fs24\par
+\fs20 Required.\par
+Cannot be null.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 reviewApplicationProcessor\cell\b0\i0 Represents the review application processor used to process reviewer selection result.\cell\cf2\b\i Configuration for creating \cf0 ReviewApplicationProcessor\b0\i0  Required.\fs24\par
+\fs20 Cannot be null.\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i rboardApplicationBean\cell\b0\i0 Represents the review board application bean used to retrieve concurrent review number and assign reviewer.\cell\cf2\b\i Configuration for creating \cf0 RBoardApplicationBean\b0\i0\fs24\par
+\fs20 Required.\par
+Cannot be null.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 workloadFactorCalculator\cell\b0\i0 Represents the workload factor calculator used to calculate workload factor.\cell\cf2\b\i Configuration for creating \cf0 WorkloadFactorCalculator\b0\i0\fs24\par
+\fs20 Required.\par
+Cannot be null.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\cf2\b\i\fs20 workloadFactorBase\cell\b0\i0 Configuration for \b\i workloadFactorCalculator.\par
+\b0\i0 Represents the workload factor base used to calculate workload factor.\fs24\cell\b\i\fs20 Configuration for creating \par
+Double\par
+\b0\i0 Optional. Default to 1.0.\par
+Should between 0(inclusive), 1(inclusive).\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 reviewNumberMultiplier\cell\b0\i0 Configuration for \b\i workloadFactorCalculator.\par
+\b0\i0 Represents the review number multiplier used to calculate workload factor.\cell\b\i Configuration for creating \par
+Double\par
+\b0\i0 Optional. Default to 0.05.\par
+Should between 0(inclusive), 1(inclusive).\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\cf0\b\i\fs20 loggerName\cell\b0\i0 Represents the name of a logger.\cell\cf2\b\i Configuration for creating \par
+\cf0 String\par
+\b0\i0 Optional.\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i timelineReliabilitySubtractor\cell\b0\i0 Represents the timeline reliability subtractor used to calculate reviewer coefficient.\cell\cf2\b\i Configuration for creating \par
+\cf0 Double\par
+\b0\i0 Optional. Default to 0.5.\par
+Should be positive.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 rboardDataSourceName\cell\b0\i0 Represents the review board data source name used to invoke methods in rboardApplicationBean.\cell\cf2\b\i Configuration for creating \par
+\cf0 String\par
+\b0\i0 Required.\par
+Cannot be null or empty.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 primaryReviewerResponsibilityId\cell\b0\i0 Represents the primary reviewer responsibility id used to invoke the createNewRBoardApplication() method in rboardApplicationBean.\cell\cf2\b\i Configuration for creating \par
+\cf0 Integer\par
+\b0\i0 Optional. Default to 5.\par
+Should be positive.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 reviewerResponsibilityId\cell\b0\i0 Represents the reviewer responsibility id used to invoke the createNewRBoardApplication() method in rboardApplicationBean.\cell\cf2\b\i Configuration for creating \par
+\cf0 Integer\par
+\b0\i0 Optional. Default to 4.\par
+Should be positive.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 reviewPhaseName\cell\b0\i0 Represents the review phase name used to find the review phase object.\cell\cf2\b\i Configuration for creating \par
+\cf0 String.\par
+\b0\i0 Optional. Default to \ldblquote review\rdblquote .\par
+Cannot be null or empty.\fs24\cell\row\trowd\trgaph10\trleft-90\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1862\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5528\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 secondaryReviewersNumber\cell\b0\i0 Represents the secondary reviewers number used to select secondary reviewers.\cell\cf2\b\i Configuration for creating \par
+\cf0 Integer\par
+\b0\i0 Optional. Default to 2.\par
+Should be positive.\fs24\cell\row\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 3.2.2\tab DefaultReviewApplicationProcessor\par
+\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i0 Parameter\cell Description\cell Values\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\i reviewerStatisticsManager\cell\b0\i0 Represents the reviewer statistics manager used to retrieve and update reviewer statistics.\cell\cf2\b\i Configuration for creating \cf0 ReviewerStatisticsManager\b0\i0  Required.\fs24\par
+\fs20 Can not be null.\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i projectManager\cell\b0\i0 Represents the project manager used to retrieve project object.\cell\cf2\b\i Configuration for creating \cf0 ProjectManager\b0\i0\fs24\par
+\fs20 Required.\par
+Can not be null.\fs24\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 loggerName\cell\b0\i0 Represents the name of a logger.\cell\cf2\b\i Configuration for creating \par
+\cf0 String\par
+\b0\i0 Optional.\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i primaryEligibilityPoints\cell\b0\i0 Represents the primary eligibility points used to restore the primary eligibility points in reviewer statistics.\cell\cf2\b\i Configuration for creating \par
+\cf0 Double\par
+\b0\i0 Optional. Default to 2.0\par
+Should be positive.\fs24\cell\row\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 3.2.3\tab DefaultReviewBoardApplicationListener\par
+\trowd\trgaph10\trleft-148\trrh64\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i0 Parameter\cell Description\cell Values\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\i phaseManager\cell\b0\i0 Represents the phase manager used to retrieve project phase.\cell\cf2\b\i Configuration for creating \cf0 PhaseManager\b0\i0\fs24\par
+\fs20 Required.\par
+Can not be null.\fs24\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 reviewApplicationsManager\cell\b0\i0 Represents the review applications manager used to retrieve review applications.\cell\cf2\b\i Configuration for creating \cf0 ReviewApplicationsManager\b0\i0\fs24\par
+\fs20 Required.\par
+Can not be null.\fs24\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 loggerName\cell\b0\i0 Represents the name of a logger.\cell\cf2\b\i Configuration for creating \par
+\cf0 String\par
+\b0\i0 Optional.\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i reviewersNumber\cell\b0\i0 Represents the reviewers number used to determine if the registration phase can be ended.\cell\cf2\b\i Configuration for creating \par
+\cf0 Integer\par
+\b0\i0 Optional. Default to 3.\par
+Should be positive.\fs24\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 registrationPhaseTypeName\cell\b0\i0 Represents the registration phase name used to retrieve registration phase.\cell\cf2\b\i Configuration for creating \par
+\cf0 String\par
+\b0\i0 Optional. Default to \ldblquote review registration\rdblquote .\par
+Cannot be null or empty.\fs24\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 registrationPhaseOperator\cell\b0\i0 Represents the registration phase operator used as a parameter to end registration phase.\cell\cf2\b\i Configuration for creating \par
+\cf0 String\par
+\b0\i0 Required.\par
+Cannot be null or empty.\fs24\cell\row\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\i\fs20 3.2.4\tab DefaultWorkloadFactorCalculator\par
+\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clcbpat1\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i0 Parameter\cell Description\cell Values\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\i workloadFactorBase\cell\b0\i0 Represents the workload factor base used to calculate workload factor.\cell\cf2\b\i Configuration for creating \par
+\cf0 Double\par
+\b0\i0 Optional. Default to 1.0.\par
+Should between 0(inclusive), 1(inclusive).\fs24\cell\row\trowd\trgaph10\trleft-148\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx1861\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5530\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\i\fs20 reviewNumberMultiplier\cell\b0\i0 Represents the review number multiplier used to calculate workload factor.\cell\cf2\b\i Configuration for creating \par
+\cf0 Double\par
+\b0\i0 Optional. Default to 0.05.\par
+Should between 0(inclusive), 1(inclusive).\fs24\cell\row\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b\fs20 3.3\tab Dependencies Configuration\par
+\pard\li720\sa120\b0 Logging wrapper component needs to be properly configured.\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b 4.\tab\fs24 Usage Notes\b0\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b\fs20 4.1\tab Required steps to test the component\b0\par
+\pard\fi-360\li1080\sa120\tx1080\f6\fs24\'b7\f0\tab\fs20 Extract the component distribution.\par
+\f6\fs24\'b7\f0  \cf2\b\tab\fs20 Here are some additional libraries used by test: phase_management_persistence 1.0.2; project_management_persistence 1.1.2; ifxjdbc; mockito 1.8.5;\par
+\pard\cf0\b0\f6\fs24\tab\'b7\f0     \cf2\b\fs20 Create a database supporting transaction using "docs/db_schema.sql"\par
+\f6\tab\cf0\b0\fs24\'b7\f0  \cf2\b\fs20    Update "test_files/db_connection_factory.xml", "test_files/stress/db_connection_factory.xml",  and "test_files/stress/test.properties"\cf0\b0\fs24\par
+\pard\fi-360\li1080\sa120\f6\'b7\f0\tab\fs20 Execute \lquote ant test\rquote  within the directory that the distribution was extracted to.\fs24\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b\fs20 4.2\tab Required steps to use the component\par
+\pard\li720\b0 Please see the demo.\par
+\pard\keepn\s2\sb120\sa60\sl240\slmult0\tx0\tx180\b 4.3\tab Demo\par
+\pard\keepn\s3\sb120\sa60\sl240\slmult0\tx0\b0\i 4.3.1\tab API usage\par
+\pard\li720\sa120\i0\f2\fs16 // create a RatingBasedSelectionAlgorithm class and set the calculator and processor to it\par
+\pard RatingBasedSelectionAlgorithm reviewerSelection = new RatingBasedSelectionAlgorithm();\par
+// configure the instance\f0\fs24\par
+\f2\fs16 reviewerSelection.configure(config);\f0\fs24\par
+\f2\fs16 .. // initialize other properties of reviewerSelection\f0\fs24\par
+\f2\fs16 // create a list of review applications\f0\fs24\par
+\f2\fs16 ReviewApplication[] applications = ...\f0\fs24\par
+\f2\fs16 // assume the application data is as the following table\f0\fs24\par
+\f2\fs16 // Note that this table does not show all the data related to the application, some data is omitted for simplicity\f0\fs24\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2077\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4261\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6445\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\fs20 Reviewer id\cell Eligibility points\cell Accept primary\cell Coefficient Value\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2077\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4261\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6445\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 1\cell\f2\fs16 10\cell True\cell 50\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2077\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4261\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6445\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 2\cell\f2\fs16 10\cell True\cell 40\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2077\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4261\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6445\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 3\cell\f2\fs16 0\cell False\cell 30\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2077\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4261\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx6445\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 4\cell\f2\fs16 0\cell False\cell 20\cell\row\pard\li720\sa120 // select reviewer based on their performance statistics and current workload\par
+\pard ReviewSelelctionResult result = reviewerSelection.selectReviewers(applications);\par
+// assume the above data is used, and default values are used for calculator, processor and reviewerSelection, based on the coefficient values, the id for primary reviewer should be 1, the id for secondary reviewers should be 2 and 3. The reviewer whose id is 4 should not be selected.\f0\fs24\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\fs20 Reviewer id\cell Result\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 1\cell\f2\fs16 Primary Reviewer\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 2\cell\f2\fs16 Secondary Reviewer\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 3\cell\f2\fs16 Secondary Reviewer\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 4\cell\f2\fs16 Not Selected\cell\row\pard\li720\sa120\par
+\pard // the selectReviewers() method will also restore eligibility points for unselected primary reviewer, so the reviewer whose id is 2 should have its eligibility points changed from 10 to 12\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\f0\fs20 Reviewer id\cell Eligibility points\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 2\cell\f2\fs16 12\cell\row\pard\li720\sa120\par
+\pard // create a DefaultReviewApplicationProcessor\par
+DefaultReviewApplicationProcessor processor = new DefaultReviewApplicationProcessor();\f0\fs24\par
+\f2\fs16 // configure the instance\f0\fs24\par
+\f2\fs16 processor.configure(config);\f0\fs24\par
+\f2\fs16 // create a list of unassigned review applications\f0\fs24\par
+\f2\fs16 ReviewApplication[] applications = ...\f0\fs24\par
+\f2\fs16 // assume the application data is as the following table\f0\fs24\par
+\f2\fs16 // Note that this table does not show all the data related to the application, some data is omitted for simplicity\f0\fs24\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2783\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5706\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\fs20 Reviewer id\cell Eligibility points\cell Accept primary\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2783\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5706\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 5\cell\f2\fs16 10\cell True\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2783\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5706\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 6\cell\f2\fs16 8\cell True\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx2783\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx5706\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 7\cell\f2\fs16 0\cell False\cell\row\pard\li720\sa120 // process unassigned reviewers\par
+\pard processor.updateUnassignedReviewersStatistics(applications);\par
+// assume the above data is used, and default values are used for processor, the reviewers whose id are 5 and 6 will have their eligibility points restored to 12 and 10 respectively. As to the reviewer whose id is 7, the eligibility points will remain 0 because he/she didn\rquote t apply for primary reviewer.\f0\fs24\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\fs20 Reviewer id\cell Eligibility points\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 5\cell\f2\fs16 12\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 6\cell\f2\fs16 10\cell\row\pard\li720\sa120\par
+\pard // create a list of assigned review applications\par
+ReviewApplication[] applications = ...\f0\fs24\par
+\f2\fs16 // process unassigned reviewers\f0\fs24\par
+\f2\fs16 processor.updateReviewAssignmentStatistics(applications);\f0\fs24\par
+\f2\fs16 // nothing will happen since the current implementation of this method is blank\f0\fs24\par
+\f2\par
+\fs16 // create a DefaultReviewBoardApplicationListener\par
+DefaultReviewBoardApplicationListener listener = new DefaultReviewBoardApplicationListener();\f0\fs24\par
+\f2\fs16 // configure the instance\f0\fs24\par
+\f2\fs16 listener.configure(config);\f0\fs24\par
+\f2\fs16 // assume review positions are not filled at the completion of the review registration phase and the application data is as the following table\f0\fs24\par
+\f2\fs16 // Note that this table does not show all the data related to the application, some data is omitted for simplicity\f0\fs24\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\fs20 Reviewer id\cell Accept primary\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 8\cell\f2\fs16 False\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\f0\fs20 9\cell\f2\fs16 False\cell\row\pard\li720\sa120 // a new reviewer just register for this project\par
+\pard ReviewApplication application1 = new ReviewApplication();\par
+... // initialized the properties of application1\f0\fs24\par
+\f2\fs16 // assume the new review application has the following data:\f0\fs24\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\fs20 Reviewer id\cell Accept primary\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 10\cell\f2\fs16 False\cell\row\pard\li720\sa120 // the listener will be invoked\par
+\pard listener.applicationReceived(application1);\par
+// although there are 3 applications now, since none of these reviewer would like to be primary reviewer, the registration phase should not be ended\f0\fs24\par
+\f2\fs16 // after that a new reviewer register for this project and he/she would accept the responsibility of primary reviewer\f0\fs24\par
+\f2\fs16 ReviewApplication application2 = new ReviewApplication();\f0\fs24\par
+\f2\fs16 ... // initialized the properties of application2\f0\fs24\par
+\f2\fs16 // assume the new review application has the following data:\f0\fs24\par
+\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b\fs20 Reviewer id\cell Accept primary\cell\row\trowd\trgaph10\trleft-10\trqc\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx4212\clbrdrl\brdrw1\brdrs\brdrcf1\clbrdrt\brdrw1\brdrs\brdrcf1\clbrdrr\brdrw1\brdrs\brdrcf1\clbrdrb\brdrw1\brdrs\brdrcf1 \cellx8630\pard\intbl\b0 11\cell\f2\fs16 True\cell\row\pard\li720\sa120 // the listener will be invoked again\par
+\pard listener.applicationReceived(application2);\par
+// since we have 4 reviewers and there is one primary reviewer, the registration phase should be ended by the listener\f0\fs24\par
+\pard\keepn\s1\sb120\sa60\sl240\slmult0\tx360\b\fs20 5.\tab\fs24 Future Enhancements\b0\par
+\pard\li360\sa120\fs20 New implementation of ReviewSelection interface can be added to select reviewer using other algorithm.\par
+\pard New implementation of WorkloadFactorCalculator interface can be added to use other formula to calculate workload factor.\par
+}
+ 

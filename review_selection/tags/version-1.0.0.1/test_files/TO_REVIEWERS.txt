@@ -1,0 +1,5 @@
+1> Please follow CS 4.1 to test this component
+2> The mocking classes are placed under "test_files/mock" folder. The "test_files/build.xml" is an example of the build script.
+3> Please check "build-dependencies.xml" to see all the dependencies of this component.
+
+Thanks.

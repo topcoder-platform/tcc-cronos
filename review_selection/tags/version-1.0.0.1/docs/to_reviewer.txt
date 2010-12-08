@@ -1,0 +1,4 @@
+1.The Reviewer class is changed to ReviewerApplication class, refer to http://forums.topcoder.com/?module=Thread&threadID=684187&start=0
+2.The ReviewSelection interface is changed, please refer to http://forums.topcoder.com/?module=Thread&threadID=684310&start=0
+3.The RBoardApplicationBean#APPLICATION_DELAY_PER_ACTIVE_PROJECT constant should be changed to public, refer to http://forums.topcoder.com/?module=Thread&threadID=684386&start=0
+4.Logging is added as logical requirement, refer to http://forums.topcoder.com/?module=Thread&threadID=684006&start=0

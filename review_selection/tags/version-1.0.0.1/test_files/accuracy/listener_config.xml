@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<CMConfig>
+  
+
+    <Config name="valid_config1">     
+        <Property name="phaseManager">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.accuracytests.MockPhaseManager</Value>
+            </Property>
+           
+        </Property>
+
+        <Property name="reviewApplicationsManager">
+            <Property name="type">
+                <Value>com.cronos.onlinereview.review.selection.accuracytests.MockApplicationsManager</Value>
+            </Property>
+        </Property>
+
+        <Property name="loggerName">
+            <Value>myLogger</Value>
+        </Property>
+
+        <Property name="registrationPhaseOperator">
+            <Property name="type">
+                <Value>java.lang.String</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="type">
+                        <Value>String</Value>
+                    </Property>
+                    <Property name="value">
+                        <Value>registration phase operator</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+
+</CMConfig>
