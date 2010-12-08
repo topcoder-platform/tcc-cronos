@@ -1131,10 +1131,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *
      * @since 1.0
      */
-    private static final DataType[] QUERY_PROJECTS_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE, Helper.LONG_TYPE,
-        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
-        Helper.LONG_TYPE};
     private static final String QUERY_PROJECTS_BY_CREATE_DATE_SQL = "SELECT "
 
 			+ "  project.project_id, project_status_lu.project_status_id, project_status_lu.name, "
@@ -1660,7 +1656,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @since 1.2
      */
     private static final DataType[] QUERY_PRIZES_COLUMN_TYPES = {Helper.LONG_TYPE, Helper.LONG_TYPE,
-        Helper.Double_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
+        Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to insert prize to the prize table.
@@ -2658,6 +2654,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 closeConnectionOnError(conn);
             }
             throw e;
+        } catch (ParseException e) {
+        	getLogger().log(
+            Level.ERROR,
+            new LogMessage(null, null, "Fails to retrieving projects with the direct project id: "
+                + directProjectId, e));
+        	if (conn != null) {
+        		closeConnectionOnError(conn);
+        	}
+        	throw new PersistenceException("Fails to retrieve projects", e);
         }
     }
 	
@@ -4524,7 +4529,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Project project = (Project) projectMap.get(row[0]);
 
             // set the property to project
-            project.setProperty((String) row[1], row[2]);
+            project.setProperty((String) row[1], (String) row[2]);
         }
         return projects;
     }
@@ -4578,6 +4583,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         return projects;
     }
+    
+    
 
     /**
      * Gets an array of all project types in the persistence. The project types
@@ -7156,62 +7163,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw e;
         }
     }
-
-   /**
-     * <p>
-     * Retrieves an array of project instance from the persistence whose
-	 * create date is within current - days 
-     * </p>
-     * @param days last 'days' 
-     * @param conn the database connection
-     * @return An array of project instances.
-     * @throws PersistenceException if error occurred while accessing the
-     *             database.
-     */
-    private Project[] getProjectsByCreateDate(int days, Connection conn)
-        throws PersistenceException {
-
-        // find projects in the table.
-        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_BY_CREATE_DATE_SQL + days,
-                new Object[] {}, QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES);
-
-        // create the Project array.
-        Project[] projects = new Project[rows.length];
-
-        for (int i = 0; i < rows.length; ++i) {
-            Object[] row = rows[i];
-
-            // create the ProjectStatus object
-            ProjectStatus status = new ProjectStatus(((Long) row[1])
-                    .longValue(), (String) row[2]);
-
-            // create the ProjectType object
-            ProjectType type = new ProjectType(((Long) row[5]).longValue(),
-                    (String) row[6]);
-
-            // create the ProjectCategory object
-            ProjectCategory category = new ProjectCategory(((Long) row[3])
-                    .longValue(), (String) row[4], type);
-            category.setDescription((String) row[11]);
-            // create a new instance of ProjectType class
-            projects[i] = new Project(((Long) row[0]).longValue(), category,
-                    status);
-
-            // assign the audit information
-            projects[i].setCreationUser((String) row[7]);
-            projects[i].setCreationTimestamp((Date) row[8]);
-            projects[i].setModificationUser((String) row[9]);
-            projects[i].setModificationTimestamp((Date) row[10]);
-
-			// here we only get project name and project version
-			projects[i].setProperty("Project Name", (String) row[12]);
-			projects[i].setProperty("Project Version", (String) row[13]);
-        }
-
-       
-        return projects;
-    }
-
 
      /**
      * Get all design components.
