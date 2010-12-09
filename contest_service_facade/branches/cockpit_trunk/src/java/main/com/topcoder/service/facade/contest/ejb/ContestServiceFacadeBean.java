@@ -35,6 +35,7 @@ import javax.ejb.TransactionManagementType;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
@@ -43,15 +44,31 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.cronos.onlinereview.services.uploads.InvalidProjectException;
 import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
 import com.cronos.onlinereview.services.uploads.InvalidUserException;
+import com.topcoder.direct.services.copilot.dao.CopilotDAOException;
+import com.topcoder.direct.services.copilot.dao.CopilotProjectDAO;
+import com.topcoder.direct.services.copilot.dao.LookupDAO;
+import com.topcoder.direct.services.copilot.dao.impl.CopilotProjectDAOImpl;
+import com.topcoder.direct.services.copilot.dao.impl.LookupDAOImpl;
+import com.topcoder.direct.services.copilot.model.CopilotProject;
+import com.topcoder.direct.services.copilot.model.CopilotProjectStatus;
+import com.topcoder.direct.services.copilot.model.CopilotType;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.review.ReviewManagementException;
+import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
+import com.topcoder.management.scorecard.data.Group;
+import com.topcoder.management.scorecard.data.Question;
+import com.topcoder.management.scorecard.data.Scorecard;
+import com.topcoder.management.scorecard.data.Section;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.facade.contest.ContestServiceFacade;
 import com.topcoder.service.permission.ProjectPermission;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.jboss.logging.Logger;
 
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
@@ -186,6 +203,8 @@ import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseHome;
 import com.topcoder.web.ejb.user.UserTermsOfUse;
 import com.topcoder.web.ejb.user.UserTermsOfUseHome;
+import org.springframework.jndi.JndiObjectFactoryBean;
+import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 /**
  * <p>
@@ -1037,6 +1056,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private Logger logger = Logger.getLogger(this.getClass());
 
     /**
+     * <p>The lookup DAO.</p>
+     */
+    private LookupDAO lookupDAO;
+
+    /**
+     * <p>The copilot project DAO.</p>
+     */
+    private CopilotProjectDAO copilotProjectDAO;
+
+    /**
      * <p>
      * Constructs new <code>ContestServiceFacadeBean</code> instance. This
      * implementation instantiates new instance of payment processor. Current
@@ -1126,7 +1155,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             throw new IllegalStateException("Failed to initialize UploadManager through Object Factory.", ex);
         }
 
-
+        Configuration configuration = new AnnotationConfiguration().configure("/META-INF/hibernate.cfg.xml");
+        
+        LookupDAOImpl ldao = new LookupDAOImpl();
+        ldao.setLoggerName("copilotBaseDAO");
+        ldao.setSessionFactory(configuration.buildSessionFactory());
+        lookupDAO = ldao;
+        
+        CopilotProjectDAOImpl c = new CopilotProjectDAOImpl();
+        c.setLoggerName("copilotBaseDAO");
+        c.setSessionFactory(configuration.buildSessionFactory());
+        copilotProjectDAO = c;
     }
 
     /**
@@ -7687,6 +7726,82 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         projectServices.createReview(review);
     }
 
+    /**
+     * <p>Selects copilot for specified TC Direct project.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param tcDirectProjectId a <code>long</code> providing the TC Direct project ID.
+     * @param profileId a <code>long</code> providing the copilot profile ID.
+     * @param submissionId a <code>String</code> providing the copilot submission ID.
+     * @param placement an <code>int</code> providing the placement
+     * @param copilotPostingProjectId a <code>long</code> providing the ID for <code>Copilot Posting</code> contest. 
+     * @throws PermissionServiceException if current user is not allowed to perform the specified action.
+     * @throws ContestServiceException if an unexpected error occurs.
+     */
+    public void selectCopilot(TCSubject currentUser, long tcDirectProjectId, long profileId, long submissionId, 
+                              int placement, long copilotPostingProjectId)
+        throws PermissionServiceException, ContestServiceException {
+        
+        logger.debug("selectCopilot");
+
+        checkSoftwareProjectPermission(currentUser, tcDirectProjectId, false);
+        checkSoftwareContestPermission(currentUser, copilotPostingProjectId, false);
+        try {
+            // Create copilot project for winning copilot only
+            if (placement == 1) {
+                insertCopilotProject(tcDirectProjectId, profileId, currentUser);
+            }
+
+            // Find the Reviewer resource for current user; if there is none then create one
+            com.topcoder.management.resource.Resource reviewer
+                = addReviewer(currentUser, copilotPostingProjectId, currentUser.getUserId());
+
+            // Find a review for specified resource and submission and if not exists then create one
+            Submission[] submissions = getSoftwareProjectSubmissions(copilotPostingProjectId);
+            ScorecardReviewData reviewData = getReview(copilotPostingProjectId, reviewer.getId(), submissionId);
+            if ((reviewData.getReview() == null) || (reviewData.getReview().getSubmission() != submissionId)) {
+                createReview(reviewer, submissionId, placement, reviewData.getScorecard());
+            }
+
+            // Fill scorecards for non-winning submissions if necessary
+            if (placement == 2) {
+                for (int i = 0; i < submissions.length; i++) {
+                    Submission submission = submissions[i];
+                    reviewData = getReview(copilotPostingProjectId, reviewer.getId(), submission.getId());
+                    if ((reviewData.getReview() == null)
+                        || (reviewData.getReview().getSubmission() != submission.getId())) {
+                        createReview(reviewer, submission.getId(), 3, reviewData.getScorecard());
+                    }
+                }
+    
+            }
+        } catch (UserServiceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (CopilotDAOException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (ContestServiceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (SearchBuilderException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (UploadPersistenceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (ReviewManagementException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        }
+    }
+
     private boolean hasSpecReview(SoftwareCompetition SoftwareCompetition)
     {
 
@@ -7701,5 +7816,101 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         return false;
 
+    }
+
+    /**
+     * <p>Insert a copilot project record.</p>
+     *
+     * @return a <code>long</code> providing the ID of a generated copilot project,
+     * @throws UserServiceException if any exception occurs when retrieving user handle.
+     * @throws CopilotDAOException if any exception occurs when performing DB operation.
+     */
+    private long insertCopilotProject(long tcDirectProjectId, long profileId, TCSubject tcSubject) 
+        throws UserServiceException, CopilotDAOException {
+        CopilotProject copilotProject = new CopilotProject();
+
+        // populate actual values
+        copilotProject.setTcDirectProjectId(tcDirectProjectId);
+        copilotProject.setCopilotProfileId(profileId);
+        copilotProject.setCreateUser(String.valueOf(tcSubject.getUserId()));
+        copilotProject.setCreateDate(new Date());
+        copilotProject.setModifyUser(String.valueOf(tcSubject.getUserId()));
+        copilotProject.setModifyDate(new Date());
+
+        // populate copilot type
+        for (CopilotType copilotType : lookupDAO.getAllCopilotTypes()) {
+            if (copilotType.getId() == 1L) {
+                copilotProject.setCopilotType(copilotType);
+            }
+        }
+        for (CopilotProjectStatus copilotProjectStatus : lookupDAO.getAllCopilotProjectStatuses()) {
+            if (copilotProjectStatus.getId() == 1L) {
+                copilotProject.setStatus(copilotProjectStatus);
+            }
+        }
+        copilotProject.setPrivateProject(false);
+
+        // insert into DB
+        return copilotProjectDAO.create(copilotProject);
+    }
+
+    /**
+     * <p>Creates review for specified submission based on specified scorecard.</p>
+     * 
+     * @param reviewer a <code>long</code> providing the reviewer ID.
+     * @param submissionId a <code>long</code> providing the submission ID.
+     * @param placement an <code>int</code> providing the placement.
+     * @param scorecard a <code>Scorecard</code> providing the details for scorecard.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     */
+    private void createReview(com.topcoder.management.resource.Resource reviewer, long submissionId, int placement, 
+                              Scorecard scorecard) 
+        throws ReviewManagementException {
+        Review review = new Review();
+        review.setAuthor(reviewer.getId());
+        review.setCommitted(true);
+        review.setCreationUser(String.valueOf(reviewer.getId()));
+        review.setCreationTimestamp(new Date());
+        review.setModificationUser(String.valueOf(reviewer.getId()));
+        review.setModificationTimestamp(new Date());
+        if (placement == 1) {
+            review.setInitialScore(100F);
+            review.setScore(100F);
+        } else if (placement == 2) {
+            review.setInitialScore(80F);
+            review.setScore(80F);
+        } else {
+            review.setInitialScore(10F);
+            review.setScore(10F);
+        }
+        review.setSubmission(submissionId);
+        review.setScorecard(scorecard.getId());
+
+        List<Item> items = new ArrayList<Item>();
+        Group[] groups = scorecard.getAllGroups();
+        for (int i = 0; i < groups.length; i++) {
+            Group group = groups[i];
+            Section[] allSections = group.getAllSections();
+            for (int j = 0; j < allSections.length; j++) {
+                Section section = allSections[j];
+                Question[] questions = section.getAllQuestions();
+                for (int k = 0; k < questions.length; k++) {
+                    Question question = questions[k];
+                    Item item = new Item();
+                    if (placement == 1) {
+                        item.setAnswer("10");
+                    } else if (placement == 2) {
+                        item.setAnswer("8");
+                    } else {
+                        item.setAnswer("1");
+                    }
+                    item.setQuestion(question.getId());
+                    items.add(item);
+                }
+            }
+        }
+
+        review.setItems(items);
+        createReview(review);
     }
 }

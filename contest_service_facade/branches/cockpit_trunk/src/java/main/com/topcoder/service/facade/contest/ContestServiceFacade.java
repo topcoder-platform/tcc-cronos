@@ -2504,4 +2504,21 @@ public interface ContestServiceFacade {
      * @since 1.6.3 
      */
     void createReview(Review review) throws ReviewManagementException;
+    
+    /**
+     * <p>Selects copilot for specified TC Direct project.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param tcDirectProjectId a <code>long</code> providing the TC Direct project ID.
+     * @param profileId a <code>long</code> providing the copilot profile ID.
+     * @param submissionId a <code>String</code> providing the copilot submission ID.
+     * @param placement an <code>int</code> providing the placement
+     * @param copilotPostingProjectId a <code>long</code> providing the ID for <code>Copilot Posting</code> contest. 
+     * @throws PermissionServiceException if current user is not allowed to perform the specified action.
+     * @throws ContestServiceException if an unexpected error occurs.
+     * @since 1.6.3
+     */
+    public void selectCopilot(TCSubject currentUser, long tcDirectProjectId, long profileId, long submissionId, 
+                              int placement, long copilotPostingProjectId)
+        throws PermissionServiceException, ContestServiceException;
 }
