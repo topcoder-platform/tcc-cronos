@@ -698,8 +698,12 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
         projectParticipationData.setProjectId(resultSet.getLong(columnIndex++));
         // Set user registration date to the participation data
         projectParticipationData.setUserRegistrationDate(resultSet.getDate(columnIndex++));
+
+        // Get submission status ID
+        long submissionStatusId = resultSet.getLong(columnIndex++);
         // Set submission status ID to the participation data
-        projectParticipationData.setSubmissionStatusId(resultSet.getLong(columnIndex++));
+        projectParticipationData.setSubmissionStatusId(resultSet.wasNull() ? null : submissionStatusId);
+
         // Set project start date to the participation data
         projectParticipationData.setProjectStartDate(resultSet.getDate(columnIndex++));
         // Set submission phase status ID to the participation data
@@ -712,8 +716,11 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
         projectParticipationData.setAppealsResponsePhaseEnd(resultSet.getDate(columnIndex++));
         // Set passed review flag to the participation data
         projectParticipationData.setPassedReview(resultSet.getBoolean(columnIndex++));
+
+        // Get final user score
+        double userScore  = resultSet.getDouble(columnIndex);
         // Set final user score to the participation data
-        projectParticipationData.setUserScore(resultSet.getDouble(columnIndex));
+        projectParticipationData.setUserScore(resultSet.wasNull() ? null : userScore);
 
         return projectParticipationData;
     }
