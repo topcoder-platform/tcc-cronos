@@ -1836,6 +1836,32 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         }
     }
 
+
+    /**
+     * This method retrieves scorecard and screening information associated to a project determined by parameter. Note: a
+     * single primary screener / screening is assumed.
+     *
+     * @param projectId  the project id to search for.
+     * @param screenerId the screener ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid number of
+     * reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndScreening(long projectId, long screenerId)
+        throws ProjectServicesException {
+        String method = "ProjectServicesBean#getScorecardAndScreening method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return getProjectServices().getScorecardAndScreening(projectId, screenerId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+
     /**
      * <p>Creates specified review for software project.</p>
      *

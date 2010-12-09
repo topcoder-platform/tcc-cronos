@@ -1023,6 +1023,21 @@ public interface ProjectServices {
      */
     public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId) 
         throws ProjectServicesException;
+
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single primary screener / screen is assumed.
+     *
+     * @param projectId the project id to search for.
+     * @param screenerId the screener ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndScreening(long projectId, long screenerId) 
+        throws ProjectServicesException;
     
     /**
      * <p>Creates specified review for software project.</p>

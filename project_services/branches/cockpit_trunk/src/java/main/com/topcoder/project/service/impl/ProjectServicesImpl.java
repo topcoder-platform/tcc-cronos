@@ -3756,6 +3756,93 @@ public class ProjectServicesImpl implements ProjectServices {
         return scorecardReviewData;
     }
 
+
+///TODO
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single primary screener / screening is assumed.
+     *
+     * @param projectId the project id to search for.
+     * @param screenerId the screener ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndScreening(long projectId, long screenerId) 
+        throws ProjectServicesException {
+        String method = "ProjectServicesImpl#getScorecardAndScreening(" + projectId + ") method.";
+
+        List<ScorecardReviewData> scorecardReviewData = new ArrayList<ScorecardReviewData>();
+
+        log(Level.INFO, "Enters " + method);
+        try {
+            // Build resources filter
+            Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
+
+            // Search for the reviewers
+            Resource[] reviewers = resourceManager.searchResources(filterRoles);
+            if (reviewers.length > 1) {
+                throw new ProjectServicesException("Invalid number of reviewers found: " + reviewers.length);
+            }
+
+            Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
+            Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
+            for (int i = 0; i < reviews.length; i++) {
+                Review review = reviews[i];
+                ScorecardReviewData data = new ScorecardReviewData();
+                data.setReview(review);
+                data.setScorecard(scorecardManager.getScorecard(review.getScorecard()));
+                scorecardReviewData.add(data);
+            }
+            
+            if (scorecardReviewData.isEmpty()) {
+                com.topcoder.project.phases.Project projectPhases = phaseManager.getPhases(projectId);
+                long scorecardId = -1;
+                if (projectPhases != null) {
+                    Set<Phase> phases = projectPhases.getPhases();
+                    Iterator<Phase> iter = phases.iterator();
+                    while (iter.hasNext() && scorecardId < 0) {
+                        Phase phase = iter.next();
+                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                            scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
+                        }
+                    }
+                }
+                
+                if (scorecardId < 0) {
+                    throw new ProjectServicesException("Failed to find scorecard id");
+                }
+                ScorecardReviewData data = new ScorecardReviewData();
+                data.setScorecard(scorecardManager.getScorecard(scorecardId));
+                scorecardReviewData.add(data);
+            }
+
+        } catch (ReviewManagementException ex) {
+            log(Level.ERROR, "ReviewManagementException occurred in " + method);
+            throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
+        } catch (com.topcoder.management.scorecard.PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating Scorecard Manager.", ex);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR, "ResourcePersistenceException occurred in " + method);
+            throw new ProjectServicesException("ResourcePersistenceException occurred when operating Resource Manager.",
+                ex);
+        } catch (PhaseManagementException ex) {
+            log(Level.ERROR, "PhaseManagementException occurred in " + method);
+            throw new ProjectServicesException("PhaseManagementException occurred when operating Phase Manager.", ex);
+        } catch (SearchBuilderException ex) {
+            log(Level.ERROR, "SearchBuilderException occurred in " + method);
+            throw new ProjectServicesException("SearchBuilderException occurred when operating Search Builder.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+        return scorecardReviewData;
+    }
+
     /**
      * <p>Creates specified review for software project.</p>
      *
