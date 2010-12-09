@@ -536,6 +536,29 @@ public class DefaultUploadExternalServices implements UploadExternalServices {
         }
     }
 
+     /**
+     * Adds the given user as a primary screener to the given project id.
+     *
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws InvalidProjectException      if the project id is unknown
+     * @throws InvalidUserException         if the user id is unknown
+     * @throws InvalidProjectPhaseException if the phase of the project is not Registration.
+     * @throws UploadServicesException      if any error occurs from UploadServices
+     * @throws PhaseManagementException if an unexpected error occurs.
+     * @throws IllegalArgumentException     if any id is &lt; 0
+     * @since 1.1.1
+     */
+    public Resource addPrimaryScreener(long projectId, long userId) throws UploadServicesException, PhaseManagementException{
+        Helper.logFormat(LOG, Level.DEBUG, "Entered DefaultUploadExternalServices#addPrimaryScreener(long, long)");
+        try {
+            return uploadServices.addPrimaryScreener(projectId, userId);
+        } finally {
+            Helper.logFormat(LOG, Level.DEBUG, "Exited DefaultUploadExternalServices#addPrimaryScreener(long, long)");
+        }
+    }
+
     /**
      * <p>Closes passed stream ignoring any exception that may occur during this operation.</p>
      *
