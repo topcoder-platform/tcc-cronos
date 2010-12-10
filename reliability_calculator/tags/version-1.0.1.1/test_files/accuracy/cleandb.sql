@@ -1,0 +1,12 @@
+DELETE FROM project_reliability;
+DELETE FROM user_reliability;
+DELETE FROM submission;
+DELETE FROM upload;
+DELETE FROM resource_info;
+DELETE FROM resource;
+DELETE FROM project_result;
+DELETE FROM project_phase;
+DELETE FROM project_info;
+DELETE FROM project;
+DELETE FROM contest_eligibility;
+DELETE FROM component_inquiry;
