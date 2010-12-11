@@ -7677,6 +7677,32 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
+     * Adds the given user as a new reviewer to the given project id.
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user.
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws ContestServiceException if any error occurs from UploadServices
+     * @throws IllegalArgumentException if any id is &lt; 0
+     * @since 1.6.5
+     */
+    public com.topcoder.management.resource.Resource addPrimaryScreener(TCSubject tcSubject, long projectId, long userId)
+        throws ContestServiceException {
+        logger.debug("addPrimaryScreener (tcSubject = " + tcSubject.getUserId() + ", " + projectId + "," + userId + ")");
+
+        try {
+            return uploadExternalServices.addPrimaryScreener(projectId, userId);
+        } catch (UploadServicesException e) {
+            logger.error("Operation failed in the uploadExternalServices.", e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (PhaseManagementException e) {
+            logger.error("Operation failed in the uploadExternalServices.", e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
      * <p>Gets the review for specified submission.</p>
      *
      * @param projectId a <code>long</code> providing the project ID.
@@ -7688,6 +7714,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public ScorecardReviewData getReview(long projectId, long reviewerResourceId, long submissionId) {
         List<ScorecardReviewData> data = projectServices.getScorecardAndReviews(projectId, reviewerResourceId);
+        for (ScorecardReviewData r : data) {
+            Review review = r.getReview();
+            if (review != null) {
+                if (review.getSubmission() == submissionId) {
+                    return r;
+                }
+            }
+        }
+        
+        return data.get(0);
+    }
+
+    /**
+     * <p>Gets the screening for specified submission.</p>
+     *
+     * @param projectId a <code>long</code> providing the project ID.
+     * @param screenerResourceId a <code>long</code> providing the ID for screener resource.
+     * @param submissionId a <code>long</code> providing the ID for submission.   
+     * @return a <code>ScorecardReviewData</code> providing the details for review or <code>null</code> if review and
+     *         scorecard is not found,
+     * @since 1.6.5
+     */
+    public ScorecardReviewData getScreening(long projectId, long screenerResourceId, long submissionId) {
+        List<ScorecardReviewData> data = projectServices.getScorecardAndScreening(projectId, screenerResourceId);
         for (ScorecardReviewData r : data) {
             Review review = r.getReview();
             if (review != null) {
@@ -7747,17 +7797,36 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         checkSoftwareProjectPermission(currentUser, tcDirectProjectId, false);
         checkSoftwareContestPermission(currentUser, copilotPostingProjectId, false);
         try {
+
+            // Find a review for specified resource and submission and if not exists then create one
+            Submission[] submissions = getSoftwareProjectSubmissions(copilotPostingProjectId);
+
+
             // Create copilot project for winning copilot only
             if (placement == 1) {
                 insertCopilotProject(tcDirectProjectId, profileId, currentUser);
+
+                 // Find the screener resource for current user; if there is none then create one
+                com.topcoder.management.resource.Resource screener
+                    = addPrimaryScreener(currentUser, copilotPostingProjectId, currentUser.getUserId());
+
+                // we will pass screening for all
+                for (int i = 0; i < submissions.length; i++) {
+                    Submission submission = submissions[i];
+                    ScorecardReviewData screeningData = getScreening(copilotPostingProjectId, screener.getId(), submission.getId());
+                     if ((screeningData.getReview() == null)
+                        || (screeningData.getReview().getSubmission() != submission.getId())) {
+                        createScreening(screener, submission.getId(), screeningData.getScorecard());
+                    }
+                }
+
             }
 
             // Find the Reviewer resource for current user; if there is none then create one
             com.topcoder.management.resource.Resource reviewer
                 = addReviewer(currentUser, copilotPostingProjectId, currentUser.getUserId());
 
-            // Find a review for specified resource and submission and if not exists then create one
-            Submission[] submissions = getSoftwareProjectSubmissions(copilotPostingProjectId);
+            
             ScorecardReviewData reviewData = getReview(copilotPostingProjectId, reviewer.getId(), submissionId);
             if ((reviewData.getReview() == null) || (reviewData.getReview().getSubmission() != submissionId)) {
                 createReview(reviewer, submissionId, placement, reviewData.getScorecard());
@@ -7904,6 +7973,53 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     } else {
                         item.setAnswer("1");
                     }
+                    item.setQuestion(question.getId());
+                    items.add(item);
+                }
+            }
+        }
+
+        review.setItems(items);
+        createReview(review);
+    }
+
+    /**
+     * <p>Creates screening for specified submission based on specified scorecard.</p>
+     * 
+     * @param screener a <code>long</code> providing the screener ID.
+     * @param submissionId a <code>long</code> providing the submission ID.
+     * @param placement an <code>int</code> providing the placement.
+     * @param scorecard a <code>Scorecard</code> providing the details for scorecard.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     */
+    private void createScreening(com.topcoder.management.resource.Resource screener, long submissionId, Scorecard scorecard) 
+        throws ReviewManagementException {
+        Review review = new Review();
+        review.setAuthor(screener.getId());
+        review.setCommitted(true);
+        review.setCreationUser(String.valueOf(screener.getId()));
+        review.setCreationTimestamp(new Date());
+        review.setModificationUser(String.valueOf(screener.getId()));
+        review.setModificationTimestamp(new Date());
+
+        review.setInitialScore(100F);
+        review.setScore(100F);
+       
+        review.setSubmission(submissionId);
+        review.setScorecard(scorecard.getId());
+
+        List<Item> items = new ArrayList<Item>();
+        Group[] groups = scorecard.getAllGroups();
+        for (int i = 0; i < groups.length; i++) {
+            Group group = groups[i];
+            Section[] allSections = group.getAllSections();
+            for (int j = 0; j < allSections.length; j++) {
+                Section section = allSections[j];
+                Question[] questions = section.getAllQuestions();
+                for (int k = 0; k < questions.length; k++) {
+                    Question question = questions[k];
+                    Item item = new Item();
+                    item.setAnswer("Yes");
                     item.setQuestion(question.getId());
                     items.add(item);
                 }
