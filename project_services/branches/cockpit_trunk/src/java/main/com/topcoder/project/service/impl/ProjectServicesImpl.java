@@ -408,14 +408,6 @@ public class ProjectServicesImpl implements ProjectServices {
     private static final String REVIEW_MANAGER_KEY = "reviewManagerKey";
 
 
-    /**
-     * <p>
-     * Represents the reviewer resource role id
-     * </p>
-     *
-     * @since 1.3
-     */
-    private static final int REVIEWER_RESOURCE_ROLE_ID = 4;
 
     /**
      * <p>
@@ -426,16 +418,7 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String SCORECARD_ID_PHASE_ATTRIBUTE_KEY = "Scorecard ID";
 
-    /**
-     * <p>
-     * Represents the review phase type name
-     * </p>
-     *
-     * @since 1.3
-     */
-    private static final String REVIEW_PHASE_TYPE_NAME = "Review";
-
-    /**
+	 /**
      * <p>
      * Represents the resource reviewer property name
      * </p>
@@ -443,6 +426,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since 1.3
      */
     private static final String RESOURCE_REVIEWER_PROPERTY = "reviewer";
+
 
 
     /**
@@ -2339,19 +2323,19 @@ public class ProjectServicesImpl implements ProjectServices {
                     }
                     
 
-                    if (p.getPhaseType().getName().equals("Registration"))
+                    if (p.getPhaseType().getName().equals(PhaseType.REGISTRATION_PHASE.getName()))
                     {
                         p.setAttribute("Registration Number", "0");
                     }
-                    else if (p.getPhaseType().getName().equals("Submission"))
+                    else if (p.getPhaseType().getName().equals(PhaseType.SUBMISSION_PHASE.getName()))
                     {
                         p.setAttribute("Submission Number", "0");
                     }
-                    else if (p.getPhaseType().getName().equals("Screening"))
+                    else if (p.getPhaseType().getName().equals(PhaseType.SCREENING_PHASE.getName()))
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
                     }
-                    else if (p.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME))
+                    else if (p.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName()))
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
                         if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
@@ -3337,7 +3321,7 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             // Build resources filter
             Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_ID);
             Filter filterRoles = new AndFilter(filterProject, filterRole);
 
             // Search for the reviewers
@@ -3349,7 +3333,7 @@ public class ProjectServicesImpl implements ProjectServices {
             Review review = null;
             if (reviewers.length == 1) {
                 // build reviews filter
-                Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
+                Filter filterReviewer = new EqualToFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_NAME, reviewers[0].getId());
 
                 // Search for the reviews
                 Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
@@ -3377,7 +3361,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
-                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                        if (phase.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName())) {
                             scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
                         }
                     }
@@ -3692,7 +3676,7 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             // Build resources filter
             Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_ID);
             Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
 
             // Search for the reviewers
@@ -3719,7 +3703,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     Iterator<Phase> iter = phases.iterator();
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
-                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                        if (phase.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName())) {
                             scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
                         }
                     }
@@ -3757,7 +3741,6 @@ public class ProjectServicesImpl implements ProjectServices {
     }
 
 
-///TODO
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.
      * Note: a single primary screener / screening is assumed.
@@ -3779,17 +3762,17 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             // Build resources filter
             Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_PRIMARY_SCREENER_ID);
             Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
 
-            // Search for the reviewers
-            Resource[] reviewers = resourceManager.searchResources(filterRoles);
-            if (reviewers.length > 1) {
-                throw new ProjectServicesException("Invalid number of reviewers found: " + reviewers.length);
+            // Search for the screeners
+            Resource[] screeners = resourceManager.searchResources(filterRoles);
+            if (screeners.length > 1) {
+                throw new ProjectServicesException("Invalid number of primary screener found: " + screeners.length);
             }
 
-            Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
-            Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
+            Filter filterScreener = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, screeners[0].getId());
+            Review[] reviews = reviewManager.searchReviews(filterScreener, true);
             for (int i = 0; i < reviews.length; i++) {
                 Review review = reviews[i];
                 ScorecardReviewData data = new ScorecardReviewData();
@@ -3806,7 +3789,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     Iterator<Phase> iter = phases.iterator();
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
-                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                        if (phase.getPhaseType().getName().equals(PhaseType.SCREENING_PHASE.getName())) {
                             scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
                         }
                     }
