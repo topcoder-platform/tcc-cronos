@@ -42,7 +42,7 @@
     <property name="greekgod_libdir" value="../lib/greekgod"/>
     <property name="target_libdir" value="${greekgod_libdir}"/>
     -->
-    <property name="target_libdir" value="${tcs_libdir}"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
