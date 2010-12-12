@@ -86,46 +86,62 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
      * </p>
      */
     private static final String SQL_QUERY_USER_IDS =
-        "SELECT DISTINCT pr.user_id FROM project_result pr, project_phase pp, project p"
-        + " WHERE pr.project_id = pp.project_id AND"
-        + " pp.phase_type_id = 2 AND" // "Submission" phase type
-        + " pp.scheduled_start_time >= ?"
-        + " AND pr.passed_review_ind = 1 AND pr.project_id = p.project_id AND p.project_category_id = ? AND"
-        + " p.project_id NOT IN (SELECT ce.contest_id FROM contest_eligibility ce WHERE ce.is_studio = 0) AND"
-        + " p.project_id IN (SELECT pi.project_id FROM project_info pi WHERE pi.project_info_type_id = 13 AND"
-        + " (pi.value = 'Yes' OR pi.value = 'yes'))";
+            "SELECT DISTINCT pr.user_id FROM project_result pr, project_phase pp, project p, "
+            // The following four tables are joined for the consistency with the SQL_QUERY_PARTICIPATION_DATA query.
+            // Somce legacy projects may contain bad or missing data and we need to make sure we don't return
+            // user IDs for which SQL_QUERY_PARTICIPATION_DATA would return no "reliable" project.
+            + " upload u, resource r, resource_info ri, submission s, component_inquiry ci "
+            + " WHERE pr.project_id = pp.project_id AND"
+            + " pp.phase_type_id = 2 AND" // "Submission" phase type
+            + " pp.scheduled_start_time >= ?"
+            + " AND pr.passed_review_ind = 1 AND pr.project_id = p.project_id AND p.project_category_id = ? AND"
+            + " p.project_id NOT IN (SELECT ce.contest_id FROM contest_eligibility ce WHERE ce.is_studio = 0) AND"
+            + " p.project_id IN (SELECT pi.project_id FROM project_info pi WHERE pi.project_info_type_id = 13 AND"
+            + " (pi.value = 'Yes' OR pi.value = 'yes')) AND "
+            + " r.project_id = p.project_id AND r.resource_role_id = 1 AND "
+            + " r.resource_id = ri.resource_id AND ri.resource_info_type_id = 1 AND ri.value = pr.user_id AND "
+            + " u.resource_id = r.resource_id AND u.upload_type_id = 1 AND u.upload_status_id = 1 AND "
+            + " s.upload_id = u.upload_id AND s.submission_type_id = 1 AND s.submission_status_id != 5 AND "
+            + " ci.project_id = pr.project_id AND ci.user_id = pr.user_id ";
 
     /**
      * <p>
      * Represents the SQL string to query user participation data.
      * </p>
      */
-    private static final String SQL_QUERY_PARTICIPATION_DATA = "SELECT pr.project_id, ci.create_time,"
-        + " s.submission_status_id, pp1.scheduled_start_time, pp1.phase_status_id, pp1.actual_end_time,"
-        + " pp2.actual_end_time, pp3.actual_end_time, pr.passed_review_ind, pr.final_score FROM project_result pr"
-        + " INNER JOIN project p ON pr.project_id = p.project_id"
-        + " INNER JOIN component_inquiry ci ON ci.project_id = pr.project_id"
-        + " INNER JOIN project_phase pp1 ON pr.project_id = pp1.project_id"
-        + " LEFT OUTER JOIN project_phase pp2 ON pr.project_id = pp2.project_id"
-        + " LEFT OUTER JOIN project_phase pp3 ON pr.project_id = pp3.project_id"
-        + " LEFT OUTER JOIN upload u ON pr.project_id = u.project_id"
-        + " LEFT OUTER JOIN submission s ON u.upload_id = s.upload_id"
-        + " LEFT OUTER JOIN resource r ON u.resource_id = r.resource_id"
-        + " LEFT OUTER JOIN resource_info ri ON r.resource_id = ri.resource_id"
-        + " WHERE pr.user_id = ci.user_id AND pr.user_id = ? AND p.project_category_id = ? AND"
-        + " p.project_id NOT IN (SELECT ce.contest_id FROM contest_eligibility ce WHERE ce.is_studio = 0) AND"
-        + " p.project_id IN (SELECT pi.project_id FROM project_info pi WHERE pi.project_info_type_id = 13 AND"
-        + " (pi.value = 'Yes' or pi.value = 'yes')) AND"
-        + " pp1.phase_type_id = 2 AND" // "Submission" phase type
-        + " pp1.scheduled_start_time >= ? AND"
-        + " pp2.phase_type_id = 3 AND" // "Screening" phase type
-        + " (pp3.phase_type_id IS NULL OR pp3.phase_type_id = 6) AND" // "Appeals Response" phase type
-        + " (u.upload_type_id IS NULL OR u.upload_type_id = 1) AND" // User didn't submit or "Submission" upload type
-        // User didn't submit or not "Deleted" submission status
-        + " (s.submission_status_id IS NULL OR s.submission_status_id != 5) AND"
-        + " (ri.value IS NULL OR ri.value = pr.user_id) AND"
-        // "External Reference ID" resource info type
-        + " (ri.resource_info_type_id IS NULL OR ri.resource_info_type_id = 1)";
+    private static final String SQL_QUERY_PARTICIPATION_DATA = "SELECT distinct pr.project_id, ci.create_time, " +
+            " s.submission_status_id, pp1.scheduled_start_time, pp1.phase_status_id, pp1.actual_end_time, " +
+            " pp2.actual_end_time, pp3.actual_end_time, pr.passed_review_ind, pr.final_score " +
+            " FROM project_result pr " +
+            " INNER JOIN project p ON pr.project_id = p.project_id and p.project_category_id = ? " +
+            " INNER JOIN component_inquiry ci ON ci.project_id = pr.project_id and ci.user_id = pr.user_id " +
+            // "Submission" phase type
+            " INNER JOIN project_phase pp1 ON pr.project_id = pp1.project_id and pp1.phase_type_id = 2 " +
+            " AND pp1.scheduled_start_time >= ? " +
+            " INNER JOIN resource r ON r.project_id = p.project_id and r.resource_role_id = 1 " +
+            // "External Reference ID" resource info value should match user ID
+            " INNER JOIN resource_info ri ON r.resource_id = ri.resource_id and ri.resource_info_type_id = 1 " +
+            " AND ri.value = pr.user_id " +
+            // "Screening" phase type
+            " LEFT OUTER JOIN project_phase pp2 ON pr.project_id = pp2.project_id AND pp2.phase_type_id = 3 " +
+            // "Appeals Response" phase type
+            " LEFT OUTER JOIN project_phase pp3 ON pr.project_id = pp3.project_id AND pp3.phase_type_id = 6 " +
+            // User didn't submit or "Submission" upload type and "Active" upload status
+            " LEFT OUTER JOIN upload u ON pr.project_id = u.project_id AND u.resource_id = r.resource_id " +
+            " AND u.upload_type_id = 1 AND u.upload_status_id = 1 " +
+            // User didn't submit or "Contest Submission" submission type and not "Deleted" submission status
+            " LEFT OUTER JOIN submission s ON s.upload_id = u.upload_id and s.submission_type_id = 1 " +
+            " AND s.submission_status_id != 5 " +
+            " WHERE " +
+            " pr.user_id = ? AND " +
+            " p.project_id NOT IN (SELECT ce.contest_id FROM contest_eligibility ce WHERE ce.is_studio = 0) AND " +
+            " p.project_id IN (SELECT pi.project_id FROM project_info pi WHERE pi.project_info_type_id = 13 " +
+            " AND (pi.value = 'Yes' or pi.value = 'yes')) AND " +
+            // Either both the upload and submission should be joined or none of them.
+            // This check is needed to account for the very old projects for which the upload status
+            // was not set to "Deleted" for the re-uploaded submissions.
+            " ((s.submission_id IS NULL AND u.upload_id IS NULL) OR " +
+            "  (s.submission_id IS NOT NULL AND u.upload_id IS NOT NULL))";
 
     /**
      * <p>
@@ -424,12 +440,12 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
 
             try {
                 int columnIndex = 1;
-                // Set user ID to the prepared statement
-                preparedStatement.setLong(columnIndex++, userId);
                 // Set project category ID to the prepared statement
                 preparedStatement.setLong(columnIndex++, projectCategoryId);
                 // Set reliability calculation start date to the prepared statement
-                preparedStatement.setTimestamp(columnIndex, new Timestamp(startDate.getTime()));
+                preparedStatement.setTimestamp(columnIndex++, new Timestamp(startDate.getTime()));
+                // Set user ID to the prepared statement
+                preparedStatement.setLong(columnIndex, userId);
 
                 // Execute the query
                 ResultSet resultSet = preparedStatement.executeQuery();
