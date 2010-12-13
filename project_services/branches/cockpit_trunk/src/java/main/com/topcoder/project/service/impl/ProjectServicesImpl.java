@@ -273,6 +273,10 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *     <li>Added {@link #createReview(Review)} method.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Changes in v1.4.4 (TC Direct Release Assembly 7)
+ *  - add method updateContestSale for updating contest sale.
+ * </p>
  * 
  * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
@@ -1839,6 +1843,38 @@ public class ProjectServicesImpl implements ProjectServices {
         }
     }
 
+    /**
+     * <p>
+     * Updates a contest sale.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to update
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since TC Direct Release Assembly 7
+     */
+    public void updateContestSale(ContestSaleData contestSaleData) throws ProjectServicesException {
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#updateContestSale method.");
+
+        ExceptionUtils.checkNull(contestSaleData, null, null, "The parameter[contestSaleData] should not be null.");
+
+        try {
+            ContestSale contestSale = convertContestSaleData(contestSaleData);
+
+            projectManager.updateContestSale(contestSale);
+        } catch (PersistenceException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PersisteceException occurred in ProjectServicesImpl#updateContestSale method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#updateContestSale method.");
+        }
+    }
+    
     /**
      * <p>
      * Gets contest sale by id, and return the retrieved contest sale. If

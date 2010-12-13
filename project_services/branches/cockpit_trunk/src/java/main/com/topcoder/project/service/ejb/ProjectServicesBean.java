@@ -151,6 +151,10 @@ import com.topcoder.util.log.LogManager;
  *     <li>Added {@link #createReview(Review)} method.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Changes in v1.4.4 (TC Direct Release Assembly 7)
+ *  - add method updateContestSale for updating contest sale.
+ * </p>
  * 
  * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is required to be thread
@@ -650,6 +654,32 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         }
     }
 
+    /**
+     * <p>
+     * Updates a contest sale.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to update
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     * @since TC Direct Release Assembly 7
+     */
+    public void updateContestSale(ContestSaleData contestSaleData)
+            throws ProjectServicesException {
+        String method = "ProjectServicesBean#updateContestSale(ContestSaleData contestSaleData) method.";
+
+        Util.log(logger, Level.INFO, "Enters " + method);
+
+        try {
+            getProjectServices().updateContestSale(contestSaleData);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    
     /**
      * <p>
      * Gets contest sale by id, and return the retrieved contest sale. If the contest sale doesn't exist, null is

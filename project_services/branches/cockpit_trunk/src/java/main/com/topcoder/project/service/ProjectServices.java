@@ -113,6 +113,10 @@ import com.topcoder.security.TCSubject;
  *     <li>Added {@link #createReview(Review)} method.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Changes in v1.4.4 (TC Direct Release Assembly 7)
+ *  - add method updateContestSale for updating contest sale.
+ * </p>
  * 
  * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
@@ -420,6 +424,20 @@ public interface ProjectServices {
      * @since Module Contest Service Software Contest Sales Assembly
      */
     public ContestSaleData createContestSale(ContestSaleData contestSaleData) throws ProjectServicesException;
+
+    /**
+     * <p>
+     * Updates a contest sale.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to update
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since TC Direct Release Assembly 7
+     */
+    public void updateContestSale(ContestSaleData contestSaleData) throws ProjectServicesException;
 
     /**
      * <p>
