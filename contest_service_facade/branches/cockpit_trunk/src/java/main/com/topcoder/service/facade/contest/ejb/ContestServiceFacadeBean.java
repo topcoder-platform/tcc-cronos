@@ -327,8 +327,14 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
  *     <li>Added {@link ContestServiceFacade#getReview(long,long,long)} method.</li>
  *   </ol>
  * </p> *
+ * Version 1.6.6 (TC Direct Release Assembly 7) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #checkStudioSubmissionPermission} method and 
+ *     {@link #processContestSaleInternal} method.</li>
+ *   </ol>
+ * </p>
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
- * @version 1.6.5
+ * @version 1.6.6
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -3009,7 +3015,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
             long contestId = competition.getProjectHeader().getId();
             double pastPayment=0;
-
+            boolean hasContestSaleData = false;
+            long contestSaleId = 0L;
+            
             SoftwareCompetition tobeUpdatedCompetition = null;
 
             if (contestId > 0) { // BUGR-1682
@@ -3020,6 +3028,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (sales != null) {
                     for (ContestSaleData sale : sales) {
                         pastPayment += sale.getPrice();
+                    }
+                    if (sales.size() > 0) {
+                        hasContestSaleData = true;
+                        contestSaleId = sales.get(0).getContestSaleId();
                     }
                 }
             }
@@ -3048,7 +3060,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
-            double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
+            double totalFee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
                 + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
                 + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
                 + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
@@ -3057,7 +3069,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE))
                 + Double.parseDouble((String) contest.getProperty(SPEC_REVIEW_COST_PROJECT_INFO_TYPE));
 
-            fee = fee - pastPayment;
+            double fee = totalFee - pastPayment;
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
@@ -3107,10 +3119,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             contestSaleData.setContestId(contest.getId());
             contestSaleData.setSaleStatusId(CONTEST_SALE_STATUS_PAID);
-            contestSaleData.setPrice(fee);
-
-            this.projectServices.createContestSale(contestSaleData);
-
+            contestSaleData.setPrice(totalFee);
+            
+            if (!hasContestSaleData) {
+                this.projectServices.createContestSale(contestSaleData);
+            } else {
+                contestSaleData.setContestSaleId(contestSaleId);
+                this.projectServices.updateContestSale(contestSaleData);
+            }
             // DONOT create for now
             // create forum for the contest.
             // long forumid =
