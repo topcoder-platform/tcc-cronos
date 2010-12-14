@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.topcoder.configuration.ConfigurationAccessException;
 import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.reliability.impl.BaseUserProjectData;
+import com.topcoder.reliability.impl.UserProjectParticipationData;
 import com.topcoder.util.errorhandling.BaseCriticalException;
 import com.topcoder.util.errorhandling.BaseRuntimeException;
 import com.topcoder.util.log.Level;
@@ -512,7 +514,14 @@ public final class Helper {
                     // Append a comma
                     sb.append(COMMA);
                 }
-                sb.append(paramNames[i]).append(":").append(paramValues[i]);
+                if (paramValues[i] instanceof List<?>) {
+                	sb.append(paramNames[i]).append(":").append(
+                			listToString((List<Object>) paramValues[i]));
+                } else if (paramValues[i] instanceof BaseUserProjectData) {
+                	sb.append(paramNames[i]).append(":").append(((BaseUserProjectData) paramValues[i]).getProjectId());
+                } else {
+                	sb.append(paramNames[i]).append(":").append(paramValues[i]);
+                }
             }
             sb.append("]");
 
@@ -520,6 +529,27 @@ public final class Helper {
         }
     }
 
+    /**
+     * Converts a list of <code>BaseUserProjectData</code> to a list of project ids.
+     * @param data the data list to convert
+     * @return a string representation of the list, containing the project id only
+     */
+    private static String listToString(List<Object> data) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("[");
+    	for (int i = 0; i < data.size(); i++) {
+    		if (data.get(i) instanceof BaseUserProjectData) {
+	    		// no need to log user id, because we will always get the project list
+	    		// for a given user to process together
+	    		sb.append(((BaseUserProjectData) data.get(i)).getProjectId()).append(",");
+    		} else {
+	    		sb.append(data.get(i)).append(",");
+    		}
+    	}
+    	sb.deleteCharAt(sb.length() - 1);
+    	sb.append("]");
+    	return sb.toString();
+    }
     /**
      * <p>
      * Logs for exit from public method and return value at <code>DEBUG</code> level.
@@ -548,8 +578,13 @@ public final class Helper {
             - enterTimestamp.getTime()));
 
         if (value != null) {
-            // Log return value
-            log.log(Level.DEBUG, "Output parameter: " + value[0]);
+            if (value[0] instanceof List<?>) {
+                log.log(Level.DEBUG, "Output parameter: " + listToString((List<Object>) value[0]));
+            } else if (value[0] instanceof BaseUserProjectData) {
+                log.log(Level.DEBUG, "Output parameter: " + ((BaseUserProjectData) value[0]).getProjectId());
+            } else {
+                log.log(Level.DEBUG, "Output parameter: " + value[0]);
+            }
         }
     }
 

@@ -3,7 +3,6 @@
  */
 package com.topcoder.reliability;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +21,10 @@ import com.topcoder.util.commandline.CommandLineUtility;
 import com.topcoder.util.commandline.IllegalSwitchException;
 import com.topcoder.util.commandline.Switch;
 import com.topcoder.util.commandline.UsageException;
+import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
+import com.topcoder.util.log.log4j.Log4jLogFactory;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
 /**
@@ -431,6 +433,8 @@ public class ReliabilityCalculationUtility {
         Date enterTimestamp = new Date();
         String signature = getSignature("main(String[] args)");
 
+        LogManager.setLogFactory(new Log4jLogFactory());
+
         // Create a command line utility:
         CommandLineUtility commandLineUtility = new CommandLineUtility();
 
@@ -580,6 +584,12 @@ public class ReliabilityCalculationUtility {
                     }
                 }
             }
+            // Log start processing
+            Date start = new Date();
+            log.log(Level.INFO, "Reliability calculation started");
+            log.log(Level.INFO, "Project catagories to process : " + calculatorByProjectCategoryId.keySet());
+            log.log(Level.INFO, "Update current reliability flag : " + updateCurrentReliability);
+
 
             for (Entry<Long, ReliabilityCalculator> entry : calculatorByProjectCategoryId.entrySet()) {
                 long projectCategoryId = entry.getKey();
@@ -592,6 +602,10 @@ public class ReliabilityCalculationUtility {
                     e.printStackTrace();
                 }
             }
+
+            Date end = new Date();
+            log.log(Level.INFO, "Reliability calculation ended");
+            log.log(Level.INFO, "Reliability calculation took " +  (end.getTime() - start.getTime()) + "ms");
 
             // Log method exit
             Helper.logExit(log, signature, null, enterTimestamp);

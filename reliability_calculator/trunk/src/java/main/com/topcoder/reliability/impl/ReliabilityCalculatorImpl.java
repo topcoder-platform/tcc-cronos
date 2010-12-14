@@ -19,6 +19,7 @@ import com.topcoder.reliability.Helper;
 import com.topcoder.reliability.ProjectCategoryNotSupportedException;
 import com.topcoder.reliability.ReliabilityCalculator;
 import com.topcoder.reliability.ReliabilityCalculatorConfigurationException;
+import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
@@ -312,6 +313,9 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
             new String[] {"projectCategoryId", "updateCurrentReliability"},
             new Object[] {projectCategoryId, updateCurrentReliability});
 
+        // Log the processing of this category in INFO level
+        log.log(Level.INFO, "Started processing category " + projectCategoryId);
+
         try {
             Helper.checkPositive(projectCategoryId, "projectCategoryId");
 
@@ -320,6 +324,11 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
 
             // Delegate to the helper
             calculateHelper(signature, projectCategoryId, updateCurrentReliability);
+
+            Date endTimestamp = new Date();
+            log.log(Level.INFO, "Finished processing category " + projectCategoryId);
+            log.log(Level.INFO, "Processing category " + projectCategoryId
+            		+ " took " + (endTimestamp.getTime() - enterTimestamp.getTime()) + "ms");
 
             // Log method exit
             Helper.logExit(log, signature, null, enterTimestamp);
@@ -412,15 +421,18 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
                         .calculate(resolvedProjects);
                     // Save user reliability data to persistence:
                     reliabilityDataPersistence.saveUserReliabilityData(reliabilityDataList);
-                    if (updateCurrentReliability && (!reliabilityDataList.isEmpty())) {
+                    if (!reliabilityDataList.isEmpty()) {
                         // Get reliability data for the last resolved project:
                         UserProjectReliabilityData lastProjectReliabilityData = reliabilityDataList
                             .get(reliabilityDataList.size() - 1);
                         // Get reliability after the the last resolved project:
                         double reliability = lastProjectReliabilityData.getReliabilityAfterResolution();
-                        // Update the current user reliability in persistence:
-                        reliabilityDataPersistence.updateCurrentUserReliability(userId, projectCategoryId,
-                            reliability);
+                        if (updateCurrentReliability) {
+	                        // Update the current user reliability in persistence:
+	                        reliabilityDataPersistence.updateCurrentUserReliability(userId, projectCategoryId,
+	                        		reliability);
+                        }
+                    	log.log(Level.INFO, "Current reliability for user " + userId + " is " + reliability);
                     }
                 } catch (UserReliabilityCalculationException e) {
                     // Log exception
@@ -436,6 +448,7 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
                     // Ignore
                 }
             }
+            log.log(Level.INFO, "Total number of users processed in category " + projectCategoryId + " is " + userIds.size());
         } finally {
 
             // Close the reliability data persistence
