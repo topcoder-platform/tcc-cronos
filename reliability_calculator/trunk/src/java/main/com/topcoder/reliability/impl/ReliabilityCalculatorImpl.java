@@ -432,7 +432,8 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
 	                        reliabilityDataPersistence.updateCurrentUserReliability(userId, projectCategoryId,
 	                        		reliability);
                         }
-                    	log.log(Level.INFO, "Current reliability for user " + userId + " is " + reliability);
+                    	log.log(Level.INFO, "Current reliability for user " + userId + " in category " +
+                            projectCategoryId + " is " + reliability);
                     }
                 } catch (UserReliabilityCalculationException e) {
                     // Log exception
