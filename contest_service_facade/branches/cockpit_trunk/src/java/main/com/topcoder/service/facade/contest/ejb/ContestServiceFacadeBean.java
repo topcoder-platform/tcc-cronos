@@ -57,6 +57,8 @@ import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Item;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Group;
 import com.topcoder.management.scorecard.data.Question;
@@ -7990,6 +7992,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         item.setAnswer("1");
                     }
                     item.setQuestion(question.getId());
+                    Comment comment = new Comment();
+                    comment.setAuthor(reviewer.getId());
+                    comment.setComment("Ok");
+                    comment.setCommentType(CommentType.COMMENT_TYPE_COMMENT);
+                    item.addComment(comment);
                     items.add(item);
                 }
             }
@@ -8035,7 +8042,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 for (int k = 0; k < questions.length; k++) {
                     Question question = questions[k];
                     Item item = new Item();
-                    item.setAnswer("Yes");
+                    // Yes
+                    item.setAnswer("1");
                     item.setQuestion(question.getId());
                     items.add(item);
                 }
