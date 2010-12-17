@@ -6,6 +6,7 @@ package com.topcoder.reliability.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -143,6 +144,12 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      */
     private static final String KEY_DETECTOR_KEY = "resolutionDateDetectorKey";
 
+	/**
+	 * <p>
+	 * Represents the formatter to format the reliability value.
+	 * </p>
+	 */
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.000");
     /**
      * <p>
      * The mapping from project category ID to the ProjectCategoryParams entity that holds reliability calculation
@@ -328,7 +335,7 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
             Date endTimestamp = new Date();
             log.log(Level.INFO, "Finished processing category " + projectCategoryId);
             log.log(Level.INFO, "Processing category " + projectCategoryId
-            		+ " took " + (endTimestamp.getTime() - enterTimestamp.getTime()) + "ms");
+            		+ " took " + (endTimestamp.getTime() - enterTimestamp.getTime()) + " ms");
 
             // Log method exit
             Helper.logExit(log, signature, null, enterTimestamp);
@@ -433,7 +440,7 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
 	                        		reliability);
                         }
                     	log.log(Level.INFO, "Current reliability for user " + userId + " in category " +
-                            projectCategoryId + " is " + reliability);
+                            projectCategoryId + " is " + DECIMAL_FORMAT.format(reliability));
                     }
                 } catch (UserReliabilityCalculationException e) {
                     // Log exception

@@ -605,7 +605,7 @@ public class ReliabilityCalculationUtility {
 
             Date end = new Date();
             log.log(Level.INFO, "Reliability calculation ended");
-            log.log(Level.INFO, "Reliability calculation took " +  (end.getTime() - start.getTime()) + "ms");
+            log.log(Level.INFO, "Reliability calculation took " +  (end.getTime() - start.getTime()) + " ms");
 
             // Log method exit
             Helper.logExit(log, signature, null, enterTimestamp);
