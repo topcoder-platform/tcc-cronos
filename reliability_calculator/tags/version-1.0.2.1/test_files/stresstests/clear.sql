@@ -1,0 +1,12 @@
+delete from 'informix'.submission;
+delete from 'informix'.upload;
+delete from 'informix'.resource_info;
+delete from 'informix'.resource;
+delete from 'informix'.user_reliability;
+delete from 'informix'.project_result;
+delete from 'informix'.project_phase;
+delete from 'informix'.project_info;
+delete from 'informix'.project_reliability;
+delete from 'informix'.project;
+delete from 'informix'.contest_eligibility;
+delete from 'informix'.component_inquiry;
