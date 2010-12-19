@@ -30,7 +30,6 @@ public class StressTests extends TestCase {
         suite.addTestSuite(UniformUserReliabilityCalculatorStressTest.class);
         suite.addTestSuite(UserProjectParticipationDataResolutionDateBasedComparatorStressTest.class);
         suite.addTestSuite(WeightedUserReliabilityCalculatorStressTest.class);
-        suite.addTestSuite(ReliabilityCalculationUtilityStressTest.class);
         return suite;
     }
 }
