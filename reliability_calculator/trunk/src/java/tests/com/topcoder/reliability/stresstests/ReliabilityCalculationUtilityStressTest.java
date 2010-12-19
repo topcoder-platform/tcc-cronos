@@ -112,7 +112,7 @@ public class ReliabilityCalculationUtilityStressTest extends BaseStressTest {
          */
         public void checkExit(int status) {
             super.checkExit(status);
-            throw new ExitException(status);
+//            throw new ExitException(status);
         }
 
         /**

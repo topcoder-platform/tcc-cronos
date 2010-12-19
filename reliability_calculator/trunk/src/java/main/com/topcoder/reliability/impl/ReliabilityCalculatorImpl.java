@@ -321,7 +321,9 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
             new Object[] {projectCategoryId, updateCurrentReliability});
 
         // Log the processing of this category in INFO level
-        log.log(Level.INFO, "Started processing category " + projectCategoryId);
+        if (log != null) {
+        	log.log(Level.INFO, "Started processing category " + projectCategoryId);
+        }
 
         try {
             Helper.checkPositive(projectCategoryId, "projectCategoryId");
@@ -333,9 +335,11 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
             calculateHelper(signature, projectCategoryId, updateCurrentReliability);
 
             Date endTimestamp = new Date();
-            log.log(Level.INFO, "Finished processing category " + projectCategoryId);
-            log.log(Level.INFO, "Processing category " + projectCategoryId
-            		+ " took " + (endTimestamp.getTime() - enterTimestamp.getTime()) + " ms");
+            if (log != null) {
+            	log.log(Level.INFO, "Finished processing category " + projectCategoryId);
+            	log.log(Level.INFO, "Processing category " + projectCategoryId
+            			+ " took " + (endTimestamp.getTime() - enterTimestamp.getTime()) + " ms");
+            }
 
             // Log method exit
             Helper.logExit(log, signature, null, enterTimestamp);
@@ -439,8 +443,10 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
 	                        reliabilityDataPersistence.updateCurrentUserReliability(userId, projectCategoryId,
 	                        		reliability);
                         }
+                        if (log != null) {
                     	log.log(Level.INFO, "Current reliability for user " + userId + " in category " +
                             projectCategoryId + " is " + DECIMAL_FORMAT.format(reliability));
+                        }
                     }
                 } catch (UserReliabilityCalculationException e) {
                     // Log exception
@@ -456,7 +462,9 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
                     // Ignore
                 }
             }
-            log.log(Level.INFO, "Total number of users processed in category " + projectCategoryId + " is " + userIds.size());
+            if (log != null) {
+            	log.log(Level.INFO, "Total number of users processed in category " + projectCategoryId + " is " + userIds.size());
+            }
         } finally {
 
             // Close the reliability data persistence

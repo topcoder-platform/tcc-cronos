@@ -150,16 +150,16 @@ public class TestsHelper {
 
             stmt.execute("DELETE FROM 'informix'.project_result");
             stmt.execute("DELETE FROM 'informix'.project_phase");
-            stmt.execute("DELETE FROM 'informix'.project");
             stmt.execute("DELETE FROM 'informix'.project_info");
             stmt.execute("DELETE FROM 'informix'.component_inquiry");
             stmt.execute("DELETE FROM 'informix'.submission");
             stmt.execute("DELETE FROM 'informix'.resource_info");
-            stmt.execute("DELETE FROM 'informix'.resource");
             stmt.execute("DELETE FROM 'informix'.upload");
+            stmt.execute("DELETE FROM 'informix'.resource");
             stmt.execute("DELETE FROM 'informix'.contest_eligibility");
             stmt.execute("DELETE FROM 'informix'.user_reliability");
             stmt.execute("DELETE FROM 'informix'.project_reliability");
+            stmt.execute("DELETE FROM 'informix'.project");
 
         } finally {
             // Close the statement

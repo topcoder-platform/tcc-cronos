@@ -53,14 +53,14 @@ public class DatabaseReliabilityDataPersistenceUnitTests {
      * Represents the user id used in tests.
      * </p>
      */
-    private long userId = 123456;
+    private long userId = 132456;
 
     /**
      * <p>
      * Represents the project category id used in tests.
      * </p>
      */
-    private long projectCategoryId = 1;
+    private long projectCategoryId = 2;
 
     /**
      * <p>
@@ -135,7 +135,7 @@ public class DatabaseReliabilityDataPersistenceUnitTests {
         project.setReliable(true);
         projects.add(project);
         project = new UserProjectReliabilityData();
-        project.setProjectId(1);
+        project.setProjectId(2);
         project.setResolutionDate(new Date());
         projects.add(project);
     }
@@ -456,7 +456,7 @@ public class DatabaseReliabilityDataPersistenceUnitTests {
         List<Long> res = instance.getIdsOfUsersWithReliability(projectCategoryId, startDate);
 
         assertEquals("'getIdsOfUsersWithReliability' should be correct.", 1, res.size());
-        assertEquals("'getIdsOfUsersWithReliability' should be correct.", 123456L, res.get(0).longValue());
+        assertEquals("'getIdsOfUsersWithReliability' should be correct.", 132456L, res.get(0).longValue());
     }
 
     /**
@@ -598,7 +598,7 @@ public class DatabaseReliabilityDataPersistenceUnitTests {
         List<UserProjectParticipationData> res =
             instance.getUserParticipationData(userId, projectCategoryId, startDate);
 
-        assertEquals("'getUserParticipationData' should be correct.", 2, res.size());
+        assertEquals("'getUserParticipationData' should be correct.", 6, res.size());
     }
 
     /**

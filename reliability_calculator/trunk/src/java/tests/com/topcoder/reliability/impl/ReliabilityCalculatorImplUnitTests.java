@@ -55,7 +55,7 @@ public class ReliabilityCalculatorImplUnitTests {
      * Represents the project category id used in tests.
      * </p>
      */
-    private long projectCategoryId = 1;
+    private long projectCategoryId = 2;
 
 
     /**
@@ -310,7 +310,7 @@ public class ReliabilityCalculatorImplUnitTests {
         instance.calculate(projectCategoryId, updateCurrentReliability);
 
         assertEquals("'calculate' should be correct.",
-            2, TestsHelper.getRowsCount(connection, "project_reliability"));
+            4, TestsHelper.getRowsCount(connection, "project_reliability"));
         assertEquals("'updateCurrentUserReliability' should be correct.",
             1, TestsHelper.getRowsCount(connection, "user_reliability"));
     }

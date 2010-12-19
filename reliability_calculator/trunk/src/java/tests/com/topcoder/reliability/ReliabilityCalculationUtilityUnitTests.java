@@ -67,7 +67,6 @@ public class ReliabilityCalculationUtilityUnitTests {
     public void setUp() throws Exception {
         connection = TestsHelper.getConnection();
         TestsHelper.clearDB(connection);
-        TestsHelper.loadDB(connection);
 
         // Save the security manager
         oldSecurityManager = System.getSecurityManager();
@@ -105,10 +104,11 @@ public class ReliabilityCalculationUtilityUnitTests {
      */
     @Test
     public void test_main_1() throws Exception {
+        TestsHelper.loadDB(connection);
         ReliabilityCalculationUtility.main(args);
 
         assertEquals("'main' should be correct.",
-            2, TestsHelper.getRowsCount(connection, "project_reliability"));
+            4, TestsHelper.getRowsCount(connection, "project_reliability"));
         assertEquals("'main' should be correct.",
             0, TestsHelper.getRowsCount(connection, "user_reliability"));
     }
@@ -124,13 +124,14 @@ public class ReliabilityCalculationUtilityUnitTests {
      */
     @Test
     public void test_main_2() throws Exception {
+        TestsHelper.loadDB(connection);
         args = new String[] {"-c", TestsHelper.TEST_FILES + "ReliabilityCalculationUtility.properties",
             "-pc", "1,2", "-u", "yes"};
 
         ReliabilityCalculationUtility.main(args);
 
         assertEquals("'main' should be correct.",
-            2, TestsHelper.getRowsCount(connection, "project_reliability"));
+            4, TestsHelper.getRowsCount(connection, "project_reliability"));
         assertEquals("'main' should be correct.",
             1, TestsHelper.getRowsCount(connection, "user_reliability"));
     }

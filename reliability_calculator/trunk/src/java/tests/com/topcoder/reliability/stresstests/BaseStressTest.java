@@ -35,14 +35,14 @@ public class BaseStressTest extends TestCase {
      * Represents run count for small test.
      * </p>
      */
-    protected static final int SMALL_TEST = 5;
+    protected static final int SMALL_TEST = 2;
 
     /**
      * <p>
      * Represents run count for large test.
      * </p>
      */
-    protected static final int LARGE_TEST = 25;
+    protected static final int LARGE_TEST = 2;
 
     /**
      * <p>

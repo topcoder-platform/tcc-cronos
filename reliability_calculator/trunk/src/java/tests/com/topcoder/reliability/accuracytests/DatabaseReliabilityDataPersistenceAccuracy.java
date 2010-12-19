@@ -91,7 +91,9 @@ public class DatabaseReliabilityDataPersistenceAccuracy extends TestCase {
         stmt = conn.createStatement();
 
         while ((line = in.readLine()) != null) {
-            stmt.addBatch(line);
+        	if (line.trim().length() != 0 && !line.startsWith("--")) {
+        		stmt.addBatch(line);
+        	}
         }
 
         stmt.executeBatch();
@@ -161,7 +163,7 @@ public class DatabaseReliabilityDataPersistenceAccuracy extends TestCase {
 
             List<Long> result = instance.getIdsOfUsersWithReliability(2, d);
 
-            assertEquals("The result should match.", 0, result.size());
+            assertEquals("The result should match.", 1, result.size());
         } finally {
             instance.close();
         }

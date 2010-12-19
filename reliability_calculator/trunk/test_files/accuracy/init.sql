@@ -1,42 +1,123 @@
-INSERT INTO 'informix'.project_info(project_id, project_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1001, 13, 'Yes', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_info(project_id, project_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1002, 13, 'Yes', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_info(project_id, project_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1003, 13, 'Yes', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_info(project_id, project_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1004, 13, 'Yes', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_info(project_id, project_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1005, 13, 'Yes', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.component_inquiry(component_inquiry_id, user_id, agreed_to_terms, rating, create_time, project_id) VALUES(1, 123456, 1, 999, TO_DATE('2010-01-06 09:12', '%Y-%m-%d %H:%M'), 1001);
-INSERT INTO 'informix'.component_inquiry(component_inquiry_id, user_id, agreed_to_terms, rating, create_time, project_id) VALUES(2, 123456, 1, 999, TO_DATE('2010-01-08 09:25', '%Y-%m-%d %H:%M'), 1002);
-INSERT INTO 'informix'.component_inquiry(component_inquiry_id, user_id, agreed_to_terms, rating, create_time, project_id) VALUES(3, 123456, 1, 999, TO_DATE('2010-01-14 10:30', '%Y-%m-%d %H:%M'), 1003);
-INSERT INTO 'informix'.component_inquiry(component_inquiry_id, user_id, agreed_to_terms, rating, create_time, project_id) VALUES(4, 123456, 1, 999, TO_DATE('2010-01-16 09:47', '%Y-%m-%d %H:%M'), 1004);
-INSERT INTO 'informix'.component_inquiry(component_inquiry_id, user_id, agreed_to_terms, rating, create_time, project_id) VALUES(5, 123456, 1, 999, TO_DATE('2010-01-18 11:29', '%Y-%m-%d %H:%M'), 1005);
-INSERT INTO 'informix'.project(project_id, project_status_id, project_category_id, create_user, create_date, modify_user, modify_date) VALUES(1001, 3, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project(project_id, project_status_id, project_category_id, create_user, create_date, modify_user, modify_date) VALUES(1002, 3, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project(project_id, project_status_id, project_category_id, create_user, create_date, modify_user, modify_date) VALUES(1003, 3, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project(project_id, project_status_id, project_category_id, create_user, create_date, modify_user, modify_date) VALUES(1004, 3, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project(project_id, project_status_id, project_category_id, create_user, create_date, modify_user, modify_date) VALUES(1005, 3, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(1, 1001, 2, 3, TO_DATE('2010-01-06 09:12', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-10 09:19', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-10 09:00', '%Y-%m-%d %H:%M'), 4, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(2, 1002, 2, 3, TO_DATE('2010-01-08 09:25', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-12 09:25', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-12 09:25', '%Y-%m-%d %H:%M'), 4, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(3, 1003, 2, 3, TO_DATE('2010-01-14 10:30', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-18 10:30', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-18 10:30', '%Y-%m-%d %H:%M'), 4, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(4, 1004, 2, 3, TO_DATE('2010-01-16 09:47', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-20 09:47', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-20 09:47', '%Y-%m-%d %H:%M'), 4, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(5, 1005, 2, 3, TO_DATE('2010-01-18 11:29', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-22 11:29', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-22 09:00', '%Y-%m-%d %H:%M'), 4, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(6, 1002, 3, 1, TO_DATE('2010-01-12 09:25', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-13 09:25', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-13 09:25', '%Y-%m-%d %H:%M'), 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(7, 1003, 3, 1, TO_DATE('2010-01-18 10:30', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-19 10:30', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-18 12:31', '%Y-%m-%d %H:%M'), 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(8, 1004, 3, 1, TO_DATE('2010-01-20 09:47', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-21 09:47', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-21 09:47', '%Y-%m-%d %H:%M'), 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(9, 1002, 6, 1, TO_DATE('2010-01-13 09:25', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-15 09:25', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-15 16:24', '%Y-%m-%d %H:%M'), 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(10, 1004, 6, 1, TO_DATE('2010-01-21 09:47', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-23 09:47', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-24 21:48', '%Y-%m-%d %H:%M'), 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.project_result(user_id, project_id, passed_review_ind) VALUES(123456, 1001, 0);
-INSERT INTO 'informix'.project_result(user_id, project_id, passed_review_ind) VALUES(123456, 1002, 1);
-INSERT INTO 'informix'.project_result(user_id, project_id, passed_review_ind) VALUES(123456, 1003, 0);
-INSERT INTO 'informix'.project_result(user_id, project_id, passed_review_ind) VALUES(123456, 1004, 1);
-INSERT INTO 'informix'.project_result(user_id, project_id, passed_review_ind) VALUES(123456, 1005, 0);
-INSERT INTO 'informix'.upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) VALUES(1, 1002, 1, 1, 1, '', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) VALUES(2, 1003, 2, 1, 1, '', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) VALUES(3, 1004, 3, 1, 1, '', 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.submission(submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) VALUES(1, 1, 3, 91, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.submission(submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) VALUES(2, 2, 2, 50, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.submission(submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) VALUES(3, 3, 3, 93, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.resource(resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) VALUES(1, 1, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.resource(resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) VALUES(2, 2, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.resource(resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) VALUES(3, 3, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1, 1, 123456, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(2, 1, 123456, 'admin', CURRENT, 'admin', CURRENT);
-INSERT INTO 'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(3, 1, 123456, 'admin', CURRENT, 'admin', CURRENT);
+-- clean up
+delete from project_result;
+delete from project_phase;
+delete from project_info;
+delete from component_inquiry;
+delete from submission;
+delete from resource_info;
+delete from upload;
+delete from resource;
+delete from contest_eligibility;
+delete from user_reliability;
+delete from project_reliability;
+delete from project;
+
+-- create 8 projects
+insert into project values (1, 1, 2, 132456, current, 132456, current, 1);
+insert into project values (2, 1, 2, 132456, current, 132456, current, 2);
+insert into project values (3, 1, 2, 132456, current, 132456, current, 3);
+insert into project values (4, 1, 2, 132456, current, 132456, current, 4);
+insert into project values (5, 1, 2, 132456, current, 132456, current, 5);
+insert into project values (6, 1, 2, 132456, current, 132456, current, 6);
+insert into project values (7, 1, 2, 132456, current, 132456, current, 7);
+insert into project values (8, 1, 2, 132456, current, 132456, current, 8);
+
+insert into contest_eligibility values (9, 9, 0);
+
+-- set the rated flag
+insert into project_info values (1, 13, 'Yes', 132456, current, 132456, current);
+insert into project_info values (2, 13, 'Yes', 132456, current, 132456, current);
+insert into project_info values (3, 13, 'Yes', 132456, current, 132456, current);
+insert into project_info values (4, 13, 'Yes', 132456, current, 132456, current);
+insert into project_info values (5, 13, 'Yes', 132456, current, 132456, current);
+insert into project_info values (6, 13, 'Yes', 132456, current, 132456, current);
+insert into project_info values (7, 13, 'Yes', 132456, current, 132456, current);
+insert into project_info values (8, 13, 'Yes', 132456, current, 132456, current);
+
+-- user 132456 has registered for all 8 projects
+insert into component_inquiry values (1, 1, 132456, 'test 1', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:01', '%Y-%m-%d %H:%M'), 1);
+insert into component_inquiry values (2, 1, 132456, 'test 2', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:02', '%Y-%m-%d %H:%M'), 2);
+insert into component_inquiry values (3, 1, 132456, 'test 3', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:03', '%Y-%m-%d %H:%M'), 3);
+insert into component_inquiry values (4, 1, 132456, 'test 4', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:04', '%Y-%m-%d %H:%M'), 4);
+insert into component_inquiry values (5, 1, 132456, 'test 5', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:05', '%Y-%m-%d %H:%M'), 5);
+insert into component_inquiry values (6, 1, 132456, 'test 6', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:06', '%Y-%m-%d %H:%M'), 6);
+insert into component_inquiry values (7, 1, 132456, 'test 7', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:07', '%Y-%m-%d %H:%M'), 7);
+insert into component_inquiry values (8, 1, 132456, 'test 8', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:08', '%Y-%m-%d %H:%M'), 8);
+
+-- set up the 'resolution dates for the six projects'
+
+-- the project 1 is in aggregation phase, passed review
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(13, 1, 2, 3, TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(14, 1, 3, 3, TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(11, 1, 6, 3, TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(12, 1, 7, 2, TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-01 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+-- the project 2 is in submission phase
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(21, 2, 1, 3, TO_DATE('2010-01-02 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(22, 2, 2, 2, TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+-- the project 3 is in screening phase, 132456 submitted
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(31, 3, 2, 3, TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(32, 3, 3, 2, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+-- the project 4 is in aggregation phase, 132456 not submitted
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(41, 4, 2, 3, TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(42, 4, 3, 3, TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(43, 4, 6, 3, TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-03 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(44, 4, 7, 2, TO_DATE('2010-01-06 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-06 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+-- the project 5 is in review phase, 132456 passed screening
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(53, 5, 2, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(51, 5, 3, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(52, 5, 4, 2, TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-06 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+-- the project 6 is in aggregation phase, 132456 failed screening
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(63, 6, 2, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(61, 6, 3, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(62, 6, 4, 3, TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(64, 6, 6, 3, TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(65, 6, 7, 2, TO_DATE('2010-01-06 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-06 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+-- the project 7 is in aggregation phase, 132456 passed review
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(73, 7, 2, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(74, 7, 3, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(71, 7, 6, 3, TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(72, 7, 7, 2, TO_DATE('2010-01-06 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-06 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+-- the project 8 is in aggregation phase, 132456 failed review
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(83, 8, 2, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(84, 8, 3, 3, TO_DATE('2010-01-04 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-05 09:00', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(81, 8, 6, 3, TO_DATE('2010-01-07 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-07 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-07 09:01', '%Y-%m-%d %H:%M'), 4, 132456, current, 132456, current);
+insert into project_phase (project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) values(82, 8, 7, 2, TO_DATE('2010-01-08 09:00', '%Y-%m-%d %H:%M'), TO_DATE('2010-01-08 09:00', '%Y-%m-%d %H:%M'), null, 4, 132456, current, 132456, current);
+
+-- set up the project_result table
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 1, 1);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 2, NULL);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 3, NULL);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 4, 0);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 5, NULL);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 6, 0);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 7, 1);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 8, 0);
+
+-- creates submissions for the submitted projects
+insert into resource (project_id, resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) values (1, 1, 1, 132456, current, 132456, current);
+insert into resource (project_id, resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) values (3, 3, 1, 132456, current, 132456, current);
+insert into resource (project_id, resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) values (5, 5, 1, 132456, current, 132456, current);
+insert into resource (project_id, resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) values (6, 6, 1, 132456, current, 132456, current);
+insert into resource (project_id, resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) values (7, 7, 1, 132456, current, 132456, current);
+insert into resource (project_id, resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) values (8, 8, 1, 132456, current, 132456, current);
+	
+insert into resource_info (resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) values (1, 1, 132456, 132456, current, 132456, current);
+insert into resource_info (resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) values (3, 1, 132456, 132456, current, 132456, current);
+insert into resource_info (resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) values (5, 1, 132456, 132456, current, 132456, current);
+insert into resource_info (resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) values (6, 1, 132456, 132456, current, 132456, current);
+insert into resource_info (resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) values (7, 1, 132456, 132456, current, 132456, current);
+insert into resource_info (resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) values (8, 1, 132456, 132456, current, 132456, current);
+	
+insert into upload (upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) values (1, 1, 1, 1, 1, '', 132456, current, 132456, current);
+insert into upload (upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) values (3, 3, 3, 1, 1, '', 132456, current, 132456, current);
+insert into upload (upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) values (5, 5, 5, 1, 1, '', 132456, current, 132456, current);
+insert into upload (upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) values (6, 6, 6, 1, 1, '', 132456, current, 132456, current);
+insert into upload (upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) values (7, 7, 7, 1, 1, '', 132456, current, 132456, current);
+insert into upload (upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) values (8, 8, 8, 1, 1, '', 132456, current, 132456, current);
+
+insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (1, 1, 1, NULL, 1, 132456, current, 132456, current);
+insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (3, 3, 1, NULL, 1, 132456, current, 132456, current);
+insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (5, 5, 1, NULL, 1, 132456, current, 132456, current);
+insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (6, 6, 2, NULL, 1, 132456, current, 132456, current);
+insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (7, 7, 1, 100, 1, 132456, current, 132456, current);
+insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (8, 8, 3, 50, 1, 132456, current, 132456, current);
