@@ -8,6 +8,7 @@ import junit.framework.JUnit4TestAdapter;
 
 import org.junit.Test;
 
+import com.topcoder.management.deliverable.late.TestsHelper;
 import com.topcoder.search.builder.filter.EqualToFilter;
 
 /**
@@ -16,7 +17,7 @@ import com.topcoder.search.builder.filter.EqualToFilter;
  * </p>
  *
  * @author sparemax
- * @version 1.0
+ * @version 1.0.1
  */
 public class LateDeliverableFilterBuilderUnitTests {
     /**
@@ -228,5 +229,46 @@ public class LateDeliverableFilterBuilderUnitTests {
 
         assertEquals("'createForgivenFilter' should be correct.", "forgiven", filter.getName());
         assertEquals("'createForgivenFilter' should be correct.", 0, filter.getValue());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>createUserHandleFilter(String userHandle)</code>.<br>
+     * The result should be correct.
+     * </p>
+     */
+    @Test
+    public void test_createUserHandleFilter() {
+        String value = "user";
+        EqualToFilter filter = (EqualToFilter) LateDeliverableFilterBuilder.createUserHandleFilter(value);
+
+        assertEquals("'createUserHandleFilter' should be correct.", "userHandle", filter.getName());
+        assertEquals("'createUserHandleFilter' should be correct.", value, filter.getValue());
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>createUserHandleFilter(String userHandle)</code> with userHandle is null.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_createUserHandleFilter_userHandleNull() {
+        String value = null;
+
+        LateDeliverableFilterBuilder.createUserHandleFilter(value);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>createUserHandleFilter(String userHandle)</code> with userHandle is empty.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_createUserHandleFilter_userHandleEmpty() {
+        String value = TestsHelper.EMPTY_STRING;
+
+        LateDeliverableFilterBuilder.createUserHandleFilter(value);
     }
 }

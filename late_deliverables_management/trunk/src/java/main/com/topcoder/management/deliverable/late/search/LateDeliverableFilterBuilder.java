@@ -19,7 +19,7 @@ import com.topcoder.search.builder.filter.Filter;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0
+ * @version 1.0.1
  */
 public final class LateDeliverableFilterBuilder {
     /**
@@ -119,5 +119,27 @@ public final class LateDeliverableFilterBuilder {
      */
     public static Filter createForgivenFilter(boolean forgiven) {
         return new EqualToFilter("forgiven", forgiven ? 1 : 0);
+    }
+
+    /**
+     * <p>
+     * Creates a filter that selects late deliverables assigned to the user with the specified handle.
+     * </p>
+     *
+     * @param userHandle
+     *            the handle of the user.
+     *
+     * @return the filter that selects late deliverables assigned to the user with the specified handle (not null).
+     *
+     * @throws IllegalArgumentException
+     *             if userHandle is null/empty.
+     */
+    public static Filter createUserHandleFilter(String userHandle) {
+        Helper.checkNull(userHandle, "userHandle");
+        if (userHandle.trim().length() == 0) {
+            throw new IllegalArgumentException("'userHandle' should not be an empty string.");
+        }
+
+        return new EqualToFilter("userHandle", userHandle);
     }
 }

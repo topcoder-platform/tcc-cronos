@@ -5,7 +5,7 @@ component.package=com.topcoder.management.deliverable.late
 component.packagedir=com/topcoder/management/deliverable/late
 component.version.major=1
 component.version.minor=0
-component.version.micro=0
+component.version.micro=1
 component.version.build=1
 
 # Defines the Main-Class property for the mainfest file (e.g. com.topcoder.utility.SomeClass)

@@ -37,7 +37,7 @@ import com.topcoder.search.builder.filter.NotFilter;
  * </p>
  *
  * @author sparemax
- * @version 1.0
+ * @version 1.0.1
  */
 public class LateDeliverableManagerImplUnitTests {
     /**
@@ -998,6 +998,45 @@ public class LateDeliverableManagerImplUnitTests {
 
     /**
      * <p>
+     * Accuracy test for the method <code>searchAllLateDeliverables(Filter filter)</code>. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     */
+    @Test
+    public void test_searchAllLateDeliverables_7() throws Exception {
+        filter = LateDeliverableFilterBuilder.createUserHandleFilter("user1");
+
+        List<LateDeliverable> res = instance.searchAllLateDeliverables(filter);
+
+        assertEquals("'searchAllLateDeliverables' should be correct.", 1, res.size());
+
+        lateDeliverable = res.get(0);
+        assertEquals("'searchAllLateDeliverables' should be correct.", 1, lateDeliverable.getId());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>searchAllLateDeliverables(Filter filter)</code>. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     */
+    @Test
+    public void test_searchAllLateDeliverables_8() throws Exception {
+        filter = LateDeliverableFilterBuilder.createUserHandleFilter("user_no");
+
+        List<LateDeliverable> res = instance.searchAllLateDeliverables(filter);
+
+        assertEquals("'searchAllLateDeliverables' should be correct.", 0, res.size());
+    }
+
+    /**
+     * <p>
      * Failure test for the method <code>searchAllLateDeliverables(Filter filter)</code> with an error occurred.<br>
      * <code>LateDeliverablePersistenceException</code> is expected.
      * </p>
@@ -1093,6 +1132,33 @@ public class LateDeliverableManagerImplUnitTests {
 
         assertEquals("'searchRestrictedLateDeliverables' should be correct.",
             0, instance.searchRestrictedLateDeliverables(filter, userId).size());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>searchRestrictedLateDeliverables(Filter filter, long userId)</code>. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     */
+    @Test
+    public void test_searchRestrictedLateDeliverables_4() throws Exception {
+        filter = LateDeliverableFilterBuilder.createUserHandleFilter("user1");
+        userId = 1;
+
+        List<LateDeliverable> res = instance.searchRestrictedLateDeliverables(filter, userId);
+
+        assertEquals("'searchRestrictedLateDeliverables' should be correct.", 1, res.size());
+
+        lateDeliverable = res.get(0);
+        assertEquals("'searchRestrictedLateDeliverables' should be correct.", 1, lateDeliverable.getId());
+        assertEquals("'searchRestrictedLateDeliverables' should be correct.", 101, lateDeliverable.getProjectPhaseId());
+        assertEquals("'searchRestrictedLateDeliverables' should be correct.", 1001, lateDeliverable.getResourceId());
+        assertEquals("'searchRestrictedLateDeliverables' should be correct.", 4, lateDeliverable.getDeliverableId());
+        assertFalse("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.isForgiven());
+        assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getExplanation());
     }
 
     /**

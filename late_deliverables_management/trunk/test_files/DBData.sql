@@ -16,6 +16,9 @@ INSERT INTO tcs_catalog:'informix'.resource_info(resource_id, resource_info_type
 INSERT INTO tcs_catalog:'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1002, 1, 2, 'admin', CURRENT, 'admin', CURRENT);
 INSERT INTO tcs_catalog:'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1003, 1, 3, 'admin', CURRENT, 'admin', CURRENT);
 
+INSERT INTO tcs_catalog:'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1001, 2, 'user1', 'admin', CURRENT, 'admin', CURRENT);
+INSERT INTO tcs_catalog:'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1002, 2, 'user2', 'admin', CURRENT, 'admin', CURRENT);
+INSERT INTO tcs_catalog:'informix'.resource_info(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date) VALUES(1003, 2, 'user2', 'admin', CURRENT, 'admin', CURRENT);
 # Database 'corporate_oltp';
 INSERT INTO corporate_oltp:'informix'.tc_direct_project(project_id, name, user_id, create_date) VALUES(1, 'Project 1', 3, CURRENT);
 INSERT INTO corporate_oltp:'informix'.tc_direct_project(project_id, name, user_id, create_date) VALUES(2, 'Project 2', 3, CURRENT);
