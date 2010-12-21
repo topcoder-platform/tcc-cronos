@@ -52,8 +52,8 @@ import java.util.StringTokenizer;
  * The base test case for Unit tests.
  * </p>
  *
- * @author myxgyy
- * @version 1.0
+ * @author myxgyy, TCSDEVELOPER
+ * @version 1.1
  */
 public abstract class BaseTestCase extends TestCase {
     /**
@@ -70,11 +70,6 @@ public abstract class BaseTestCase extends TestCase {
      * Constant for database connection factory configuration file.
      */
     private static final String DB_FACTORY_CONFIG_FILE = "config/DB_Factory.xml";
-
-    /**
-     * Constant for logging wrapper configuration file.
-     */
-    private static final String LOGGING_WRAPPER_CONFIG_FILE = "config/Logging_Wrapper.xml";
 
     /**
      * Array of all the config file names for various dependency components.
@@ -150,9 +145,6 @@ public abstract class BaseTestCase extends TestCase {
         // init db factory
         configManager.add(DB_FACTORY_CONFIG_FILE);
 
-        // load logging wrapper configuration
-        configManager.add(LOGGING_WRAPPER_CONFIG_FILE);
-
         // add all dependencies config
         for (String config : COMPONENT_FILE_NAMES) {
             configManager.add(config);
@@ -171,7 +163,10 @@ public abstract class BaseTestCase extends TestCase {
         Iterator<?> iter = configManager.getAllNamespaces();
 
         while (iter.hasNext()) {
-            configManager.removeNamespace((String) iter.next());
+            String ns = (String) iter.next();
+            if (!"com.topcoder.util.log".equals(ns)) {
+                configManager.removeNamespace(ns);
+            }
         }
     }
 
@@ -634,7 +629,7 @@ public abstract class BaseTestCase extends TestCase {
 
             long now = System.currentTimeMillis();
             Timestamp scheduledStart = new Timestamp(now - (DAY * 3));
-            Timestamp scheduledEnd = new Timestamp(late ? (now - (DAY * 2)) : (now + DAY));
+            Timestamp scheduledEnd = new Timestamp(late ? (now - (DAY * 2)) : (now + DAY * 2));
 
             for (int i = 0; i < phaseIds.length; i++) {
                 // insert into db
@@ -774,12 +769,33 @@ public abstract class BaseTestCase extends TestCase {
         System.setIn(in);
 
         try {
-            new Thread() {
+            class MainThread extends Thread {
                 /**
-                 * Runs this thread. It will sleep 2 minutes then write a char to stop
-                 * the job.
+                 * <p>
+                 * The arguments.
+                 * </p>
                  */
+                private String[] args;
+
+                /**
+                 * <p>
+                 * Creates an instance of MainThread.
+                 * </p>
+                 *
+                 * @param args
+                 *            the arguments.
+                 */
+                public MainThread(String[] args) {
+                    this.args = args;
+                }
+
+                /**
+                 * Runs this thread. It will sleep 2 minutes then write a char to stop the job.
+                 */
+                @Override
                 public void run() {
+                    LateDeliverablesTrackingUtility.main(args);
+
                     try {
                         // sleep to make sure the job run
                         Thread.sleep(90 * 1000);
@@ -794,9 +810,12 @@ public abstract class BaseTestCase extends TestCase {
                         // ignore
                     }
                 }
-            }.start();
+            }
 
-            LateDeliverablesTrackingUtility.main(args);
+            Thread t = new MainThread(args);
+            t.start();
+
+            Thread.sleep(1000);
         } finally {
             // set back
             System.setIn(org);

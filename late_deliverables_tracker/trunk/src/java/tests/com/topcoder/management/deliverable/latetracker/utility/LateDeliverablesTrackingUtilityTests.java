@@ -3,31 +3,31 @@
  */
 package com.topcoder.management.deliverable.latetracker.utility;
 
-import com.topcoder.management.deliverable.latetracker.BaseTestCase;
-import com.topcoder.management.deliverable.latetracker.LateDeliverableData;
-
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
-
 import java.util.List;
+
+import com.topcoder.management.deliverable.latetracker.BaseTestCase;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableData;
 
 /**
  * Unit tests for <code>{@link LateDeliverablesTrackingUtility}</code> class.
  *
- * @author myxgyy
- * @version 1.0
+ * @author myxgyy, sparemax
+ * @version 1.1
  */
 public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
-    /**
-     * The configuration file contains invalid config to generate failure tests.
-     */
-    private static final String INVALID_CONFIG = "test_files/invalid_config/LateDeliverablesTrackingUtility.properties";
-
     /**
      * The instance to store the original system <code>SecurityManager</code>.
      */
     private SecurityManager sm;
+
+    /**
+     * The guard file name.
+     */
+    private String guardFileName = "test_files/guard.txt";
 
     /**
      * <p>Sets up the test environment.</p>
@@ -38,6 +38,8 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
         super.setUp();
         sm = System.getSecurityManager();
         System.setSecurityManager(new NotExitSecurityManager());
+
+        new File(guardFileName).delete();
     }
 
     /**
@@ -48,6 +50,8 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         System.setSecurityManager(sm);
+
+        new File(guardFileName).delete();
     }
 
     /**
@@ -59,7 +63,11 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
      */
     public void test_main_1() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
-        runMain(new String[] {"-interval=20"});
+
+        runMain(new String[] {"-interval=20", "-guardFile=" + guardFileName, "-background=true"});
+
+        new File(guardFileName).createNewFile();
+
 
         List<LateDeliverableData> datas = getLateDeliverable();
         assertEquals("should have one record", 0, datas.size());
@@ -76,26 +84,6 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
 
         System.err.println(result);
         checkHelperMessage(result);
-    }
-
-    /**
-     * Checks the output message.
-     *
-     * @param result the output message.
-     */
-    private static void checkHelperMessage(String result) {
-        assertTrue("check the output message", result.contains("<file_name> Optional. Provides the"
-            + " name of the configuration file for this command line application. This file is read with"
-            + " use of Configuration Persistence component. Default is \"com/topcoder/management/"
-            + "deliverable/latetracker/utility/LateDeliverablesTrackingUtility.properties\"."));
-        assertTrue("check the output message", result.contains("<namespace> Optional. The"
-            + " namespace in the specified configuration file that contains configuration for this"
-            + " command line application. Default is \"com.topcoder.management.deliverable.latetracker"
-            + ".utility. LateDeliverablesTrackingUtility\"."));
-        assertTrue("check the output message", result.contains("<interval_in_sec> Optional. The"
-            + " interval in seconds between checks of projects for late deliverables. If not specified,"
-            + " the value from the scheduler configuration is used."));
-        assertTrue("check the output message", result.contains("-? -h -help      print this help message"));
     }
 
     /**
@@ -142,75 +130,18 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     }
 
     /**
-     * <p>Failure test case for main method.</p>
-     * <p>The configuration file does not exist.</p>
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The configuration file does not exist.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_7() throws Exception {
-        String result = callMainOut(new String[] {"-c=notexist.properties"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
-    }
-
-    /**
-     * <p>Failure test case for main method.</p>
-     * <p>The namespace is unknown.</p>
-     */
-    public void test_main_8() throws Exception {
-        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=unknown"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
-    }
-
-    /**
-     * <p>Failure test case for main method.</p>
-     * <p>Fails to parse the configuration file.</p>
-     */
-    public void test_main_9() throws Exception {
-        String result = callMainOut(new String[] {"-c=test_files/invalid_config/ConfigurationParserException.xml"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
-    }
-
-    /**
-     * <p>Failure test case for main method.</p>
-     * <p>The given file has namespace conflict issue.</p>
-     */
-    public void test_main_10() throws Exception {
-        String result = callMainOut(new String[] {"-c=test_files/invalid_config/namespace_conflict.properties"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
-    }
-
-    /**
-     * <p>Failure test case for main method.</p>
-     * <p>Fails to create scheduler.</p>
-     */
-    public void test_main_11() throws Exception {
-        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail1"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
-    }
-
-    /**
-     * <p>Failure test case for main method.</p>
-     * <p>Fails to create scheduler.</p>
-     */
-    public void test_main_12() throws Exception {
-        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail2"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
-    }
-
-    /**
-     * <p>Failure test case for main method.</p>
-     * <p>The configured job can not be created(reference an class can not be found) in
-     * this case.</p>
-     */
-    public void test_main_13() throws Exception {
-        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail3"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
-    }
-
-    /**
-     * <p>Failure test case for main method.</p>
-     * <p>The job name reference an unknown job.</p>
-     */
-    public void test_main_14() throws Exception {
-        String result = callMainOut(new String[] {"-c=" + INVALID_CONFIG, "-ns=fail4"});
+        String result = callMainOut(new String[] {"-c=notexist.properties", "-c=notexist.properties"});
         assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
@@ -220,7 +151,7 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
      *
      * @throws Exception to JUnit.
      */
-    public void test_main_15() throws Exception {
+    public void test_main_8() throws Exception {
         String result = callMainOut(new String[] {"-interval=xxx", "-interval=123"});
         assertTrue("check the output message", result.contains("Fails to validate the value of interval argument."));
     }
@@ -231,7 +162,7 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
      *
      * @throws Exception to JUnit.
      */
-    public void test_main_16() throws Exception {
+    public void test_main_9() throws Exception {
         String result = callMainOut(new String[] {"-interval=xxx"});
         assertTrue("check the output message", result.contains("Fails to validate the value of interval argument."));
     }
@@ -242,9 +173,40 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
      *
      * @throws Exception to JUnit.
      */
-    public void test_main_17() throws Exception {
+    public void test_main_10() throws Exception {
         String result = callMainOut(new String[] {"-interval=-15"});
         assertTrue("check the output message", result.contains("Fails to validate the value of interval argument."));
+    }
+
+    /**
+     * <p>Failure test case for main method.</p>
+     *
+     * @throws Exception to JUnit.
+     */
+    public void test_main_11() throws Exception {
+        new File(guardFileName).createNewFile();
+
+        callMainOut(new String[] {"-interval=20", "-guardFile=" + guardFileName, "-background=true"});
+    }
+
+    /**
+     * Checks the output message.
+     *
+     * @param result the output message.
+     */
+    private static void checkHelperMessage(String result) {
+        assertTrue("check the output message", result.contains("<file_name> Optional. Provides the"
+            + " name of the configuration file for this command line application. This file is read with"
+            + " use of Configuration Persistence component. Default is \"com/topcoder/management/"
+            + "deliverable/latetracker/utility/LateDeliverablesTrackingUtility.properties\"."));
+        assertTrue("check the output message", result.contains("<namespace> Optional. The"
+            + " namespace in the specified configuration file that contains configuration for this"
+            + " command line application. Default is \"com.topcoder.management.deliverable.latetracker"
+            + ".utility. LateDeliverablesTrackingUtility\"."));
+        assertTrue("check the output message", result.contains("<interval_in_sec> Optional. The"
+            + " interval in seconds between checks of projects for late deliverables. If not specified,"
+            + " the value from the scheduler configuration is used."));
+        assertTrue("check the output message", result.contains("-? -h -help      print this help message"));
     }
 
     /**
@@ -268,8 +230,10 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
             // Call main
             LateDeliverablesTrackingUtility.main(args);
 
-            return os.toString();
+        } catch (SecurityException e) {
+            // Ignore
         } finally {
+
             if (os != null) {
                 os.close();
             }
@@ -281,6 +245,7 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
             // Restore
             System.setOut(oldOut);
         }
+        return os.toString();
     }
 
 }

@@ -3,19 +3,29 @@
  */
 package com.topcoder.management.deliverable.latetracker.processors;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import com.cronos.onlinereview.external.ExternalUser;
 import com.cronos.onlinereview.external.RetrievalException;
 import com.cronos.onlinereview.external.UserRetrieval;
-
 import com.topcoder.configuration.ConfigurationAccessException;
 import com.topcoder.configuration.ConfigurationObject;
-
 import com.topcoder.db.connectionfactory.ConfigurationException;
 import com.topcoder.db.connectionfactory.DBConnectionException;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
-
 import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.deliverable.latetracker.Helper;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
@@ -26,40 +36,33 @@ import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
-
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseType;
-
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * <p>
- * This class is an implementation of <code>LateDeliverableProcessor</code> that uses
- * pluggable <code>ResourceManager</code> and <code>UserRetrieval</code> instances to
- * retrieve an additional information about the user who has a late deliverable, and DB
- * Connection Factory component to perform auditing of all late deliverables and last sent
- * notifications in the database. To send warning email messages to the users this class
- * uses <code>EmailSendingUtility</code>. This class performs the logging of errors and
- * debug information using Logging Wrapper component.
+ * This class is an implementation of <code>LateDeliverableProcessor</code> that uses pluggable
+ * <code>ResourceManager</code> and <code>UserRetrieval</code> instances to retrieve an additional information about
+ * the user who has a late deliverable, and DB Connection Factory component to perform auditing of all late
+ * deliverables and last sent notifications in the database. To send warning email messages to the users this class
+ * uses <code>EmailSendingUtility</code>. This class performs the logging of errors and debug information using
+ * Logging Wrapper component.
  * </p>
+ *
+ * <p>
+ * <em>Changes in 1.1:</em>
+ * <ol>
+ * <li>Added support for delay column in late_deliverables table. Now delay column is updated even when notification
+ * is not sent to the user.</li>
+ * <li>Using DB current time instead of JVM one.</li>
+ * <li>COMPENSATED_DEADLINE and COMPENSATED_AND_REAL_DEADLINES_DIFFER parameters are supported in email templates.</li>
+ * </ol>
+ * </p>
+ *
  * <p>
  * Sample config:
  *
@@ -208,17 +211,17 @@ import java.util.Set;
  *  &lt;/Config&gt;
  *  &lt;/CMConfig&gt;
  * </pre>
+ *
  * </p>
  * <p>
- * Thread Safety: This class is not thread safe since it uses <code>ResourceManager</code>
- * instance that is not thread safe. It's assumed that{@link #configure(ConfigurationObject)}
- * method will be called just once right after instantiation, before calling any business
- * methods. <code>LateDeliverableProcessorImpl</code> uses transactions when inserting
- * or updating data in persistence.
+ * Thread Safety: This class is not thread safe since it uses <code>ResourceManager</code> instance that is not thread
+ * safe. It's assumed that{@link #configure(ConfigurationObject)} method will be called just once right after
+ * instantiation, before calling any business methods. <code>LateDeliverableProcessorImpl</code> uses transactions
+ * when inserting or updating data in persistence.
  * </p>
  *
- * @author saarixx, TCSDEVELOPER
- * @version 1.0
+ * @author saarixx, myxgyy, sparemax
+ * @version 1.1
  */
 public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     /**
@@ -256,25 +259,27 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * Represents the sql statement to insert a record with last notified time.
      * </p>
      */
-    private static final String INSERT_WITH_LAST_NOTIFICATION_SQL = "insert into late_deliverable"
-        + " (project_phase_id, resource_id, deliverable_id, deadline, create_date, forgive_ind,"
-        + " last_notified) values (?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_WITH_LAST_NOTIFICATION_SQL = "insert into late_deliverable (project_phase_id,"
+        + " resource_id, deliverable_id, deadline, create_date, forgive_ind, last_notified, delay) values (?, ?, ?,"
+        + " ?, current, ?, current, (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
 
     /**
      * <p>
      * Represents the sql statement to insert a record without last notified time.
      * </p>
      */
-    private static final String INSERT_SQL = "insert into late_deliverable (project_phase_id, resource_id,"
-        + " deliverable_id, deadline, create_date, forgive_ind) values (?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_SQL = "insert into late_deliverable"
+        + " (project_phase_id, resource_id, deliverable_id, deadline, create_date, forgive_ind, delay)"
+        + " values (?, ?, ?, ?, current, ?, (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
 
     /**
      * <p>
-     * Represents the sql statement to update last notified time for the late deliverable.
+     * Represents the sql statement to the late deliverable.
      * </p>
      */
-    private static final String UPDATE_SQL = "update late_deliverable set last_notified = ? where"
-        + " project_phase_id = ? and resource_id = ? and deadline = ?";
+    private static final String UPDATE_SQL = "update late_deliverable"
+        + " set %1$sdelay = (current - deadline)::interval second(9) to second::char(16)::decimal(16,0)"
+        + " where project_phase_id = ? and resource_id = ? and deadline = ?";
 
     /**
      * <p>
@@ -659,7 +664,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             for (String notificationDeliverableIdStr : notificationDeliverableIdsArray) {
                 // Parse and add ID to the set
                 notificationDeliverableIds.add(Helper.parseLong(notificationDeliverableIdStr,
-                    NOTIFICATION_DELIVERABLE_IDS));
+                    NOTIFICATION_DELIVERABLE_IDS, 1));
             }
         }
 
@@ -701,13 +706,9 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         // Get timestamp format to be used in the email
         String timestampFormatStr = Helper.getPropertyValue(config, TIMESTAMP_FORMAT_KEY, false, false);
 
-        // Create SimpleDateFormat using the obtained format string
-        if (timestampFormatStr == null) {
-            timestampFormatStr = DEFAULT_TIME_FORMAT;
-        }
-
         try {
-            timestampFormat = new SimpleDateFormat(timestampFormatStr);
+            timestampFormat = new SimpleDateFormat(
+                (timestampFormatStr == null) ? DEFAULT_TIME_FORMAT : timestampFormatStr);
         } catch (IllegalArgumentException e) {
             throw new LateDeliverablesTrackerConfigurationException("Invaid timestamp format value.", e);
         }
@@ -718,7 +719,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
         if (notificationIntervalStr != null) {
             notificationInterval = Helper.parseLong(notificationIntervalStr,
-                NOTIFICATION_INTERVAL_KEY);
+                NOTIFICATION_INTERVAL_KEY, 1);
         }
     }
 
@@ -742,7 +743,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         if (propertyKey.startsWith(key)) {
             // Parse deliverable ID
             long deliverableId = Helper.parseLong(propertyKey.substring(key.length()),
-                key + propertyKey);
+                key + propertyKey, 1);
 
             // Get email subject/body template text for this deliverable ID
             // will always exist, not matter required or not
@@ -798,6 +799,15 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     /**
      * Processes the given late deliverable. The actual actions to be performed depend on
      * the implementation.
+     *
+     * <p>
+     * <em>Changes in 1.1:</em>
+     * <ol>
+     * <li>UPDATE and INSERT statements were updated to use current DB time instance of current JVM time.</li>
+     * <li>UPDATE and INSERT statements were updated to support "delay" field.</li>
+     * <li>UPDATE statement is now executed when canSendNotification is false too.</li>
+     * </ol>
+     * </p>
      *
      * @param lateDeliverable
      *            the late deliverable to be processed.
@@ -887,34 +897,24 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             canSendNotification = canSendNotification && needToNotify;
 
             if (addTrackingRecord) {
-                if (canSendNotification) {
-                    doDMLQuery(INSERT_WITH_LAST_NOTIFICATION_SQL, connection, new Object[] {phaseId,
-                        resourceId, deliverableId, new Timestamp(currentDeadline.getTime()),
-                        new Timestamp(System.currentTimeMillis()), false,
-                        new Timestamp(System.currentTimeMillis())});
-                } else {
-                    doDMLQuery(INSERT_SQL, connection, new Object[] {phaseId, resourceId, deliverableId,
-                        new Timestamp(currentDeadline.getTime()),
-                        new Timestamp(System.currentTimeMillis()), false});
-                }
+                String sqlStr = canSendNotification ? INSERT_WITH_LAST_NOTIFICATION_SQL : INSERT_SQL;
+                doDMLQuery(sqlStr, connection, new Object[] {phaseId, resourceId, deliverableId,
+                    new Timestamp(currentDeadline.getTime()), false, new Timestamp(currentDeadline.getTime())});
 
                 // log data for record added to late_deliverables table
                 Helper.logInfo(log, "late deliverable data : project id[" + project.getId() + "], phase id["
                     + phaseId + "]," + " resource id[" + resourceId + "], deliverable id[" + deliverableId + "].");
-            } else if (canSendNotification) {
-                doDMLQuery(UPDATE_SQL, connection, new Object[] {
-                    new Timestamp(System.currentTimeMillis()), phaseId, resourceId,
-                    new Timestamp(recordDeadline.getTime())});
+            } else {
+                doDMLQuery(String.format(UPDATE_SQL, canSendNotification ? "last_notified = current, " : ""),
+                    connection, new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime())});
             }
 
-            if (!canSendNotification) {
-                connection.commit();
-                return;
+            if (canSendNotification) {
+                sendEmail(resourceId, deliverableId, lateDeliverable);
             }
-
-            sendEmail(resourceId, deliverableId, project, phase, deliverable);
 
             connection.commit();
+
         } catch (SQLException e) {
             rollback(connection, signature);
             throw Helper.logException(log, signature, new LateDeliverablesProcessingException(
@@ -950,7 +950,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             ExceptionUtils.checkNull(lateDeliverable.getProject(), null, null,
                 "The project of lateDeliverable should not be null.");
             ExceptionUtils.checkNull(lateDeliverable.getDeliverable(), null, null,
-            "The deliverable of lateDeliverable should not be null.");
+                "The deliverable of lateDeliverable should not be null.");
             ExceptionUtils.checkNull(lateDeliverable.getPhase().getScheduledEndDate(), null, null,
                 "The scheduledEndDate of phase of lateDeliverable should not be null.");
         } catch (IllegalArgumentException e) {
@@ -1004,7 +1004,6 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     private static Object[] doQuery(String query, Connection connection, Object[] parameters,
         boolean hasSecondColumn) throws SQLException, LateDeliverablesProcessingException {
         PreparedStatement ps = null;
-        ResultSet rs = null;
 
         try {
             ps = connection.prepareStatement(query);
@@ -1017,7 +1016,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                 }
             }
 
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             if (!rs.next() && hasSecondColumn) {
                 throw new LateDeliverablesProcessingException("Get last notified and"
@@ -1033,11 +1032,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
             return result;
         } finally {
-            try {
-                closeResultSet(rs);
-            } finally {
-                closeStatement(ps);
-            }
+            // Close the prepared statement
+            closeStatement(ps);
         }
     }
 
@@ -1091,38 +1087,21 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     }
 
     /**
-     * Closes given result set.
-     *
-     * @param resultSet
-     *            the result set to close.
-     * @throws SQLException
-     *             if any error occurs.
-     */
-    private static void closeResultSet(ResultSet resultSet) throws SQLException {
-        if (resultSet != null) {
-            resultSet.close();
-        }
-    }
-
-    /**
      * Closes the given database connection.
      *
      * @param connection
-     *            the database connection.
+     *            the database connection (not <code>null</code>).
      * @param signature
      *            the method name.
      * @throws LateDeliverablesProcessingException
      *             if SQL error occurs when closing connection.
      */
-    private void closeConnection(Connection connection, String signature)
-        throws LateDeliverablesProcessingException {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw Helper.logException(log, signature, new LateDeliverablesProcessingException(
-                    "Fails to close connection.", e));
-            }
+    private void closeConnection(Connection connection, String signature) throws LateDeliverablesProcessingException {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw Helper.logException(log, signature, new LateDeliverablesProcessingException(
+                "Fails to close connection.", e));
         }
     }
 
@@ -1146,25 +1125,30 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     /**
      * Gets necessary information of email and send it.
      *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Signature of the method was changed. Now it accepts the only lateDeliverable:LateDeliverable argument
+     * instead of (project:Project,phase:Phase,deliverable:Deliverable).</li>
+     * </ol>
+     * </p>
+     *
      * @param resourceId
      *            the id of resource.
      * @param deliverableId
      *            the id of deliverable.
-     * @param project
-     *            the project.
-     * @param phase
-     *            the phase.
-     * @param deliverable
-     *            the deliverable.
+     * @param lateDeliverable
+     *            the late deliverable for which parameters should be prepared.
+     *
      * @throws EmailSendingException
      *             if some error occurred when sending a notification email message.
      * @throws LateDeliverablesProcessingException
      *             if fails to get the required information of email.
      */
-    private void sendEmail(long resourceId, long deliverableId, Project project, Phase phase,
-        Deliverable deliverable) throws LateDeliverablesProcessingException {
+    private void sendEmail(long resourceId, long deliverableId, LateDeliverable lateDeliverable)
+        throws LateDeliverablesProcessingException {
         String recipient = getEmailAddressForResource(resourceId);
-        Map<String, String> params = prepareParameters(project, phase, deliverable);
+        Map<String, String> params = prepareParameters(lateDeliverable);
 
         String subjectTemplateText;
 
@@ -1272,19 +1256,39 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     /**
      * Prepares the parameters to be used in the email subject/body template.
      *
-     * @param project
-     *            the project for the late deliverable
-     * @param phase
-     *            the phase for the late deliverable
-     * @param deliverable
-     *            the late deliverable
-     * @return the map with prepared parameters (keys are parameter names, map values
-     *         parameter values; not null, doesn't contain null/empty key or null value).
+     * <p>
+     * <em>Changes in 1.1:</em>
+     * <ol>
+     * <li>Signature of the method was changed. Now it accepts the only lateDeliverable:LateDeliverable argument
+     * instead of (project:Project,phase:Phase,deliverable:Deliverable).</li>
+     * <li>Added steps for extracting project, phase and deliverable from lateDeliverable.</li>
+     * <li>Added steps for putting COMPENSATED_DEADLINE and COMPENSATED_AND_REAL_DEADLINES_DIFFER parameters to the
+     * map.</li>
+     * </ol>
+     * </p>
+     *
+     * @param lateDeliverable
+     *            the late deliverable for which parameters should be prepared.
+     *
+     * @return the map with prepared parameters (keys are parameter names, map values parameter values; not null,
+     *         doesn't contain null/empty key or null value).
+     *
      * @throws LateDeliverablesProcessingException
      *             if any error occurred.
      */
-    private Map<String, String> prepareParameters(Project project, Phase phase, Deliverable deliverable)
+    private Map<String, String> prepareParameters(LateDeliverable lateDeliverable)
         throws LateDeliverablesProcessingException {
+        // Get deliverable:
+        Deliverable deliverable = lateDeliverable.getDeliverable();
+        // Get phase:
+        Phase phase = lateDeliverable.getPhase();
+        // Get project:
+        Project project = lateDeliverable.getProject();
+        // Get compensated deadline (is null if not differs with the real one):
+        Date compensatedDeadline = lateDeliverable.getCompensatedDeadline();
+        // Check if compensated deadline differs with the real one:
+        boolean deadlinesDiffer = (compensatedDeadline != null);
+
         Map<String, String> result = new HashMap<String, String>();
 
         // Get project name from the properties:
@@ -1319,6 +1323,14 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         result.put("DEADLINE", phaseEndDateStr);
         // Construct and put delay string to the result map
         result.put("DELAY", getCurrentDelayString(phaseEndDate));
+
+        if (compensatedDeadline == null) {
+            compensatedDeadline = phaseEndDate;
+        }
+        // Put the value that indicates whether compensated deadline differs from the real one:
+        result.put("COMPENSATED_AND_REAL_DEADLINES_DIFFER", Boolean.toString(deadlinesDiffer));
+        // Put compensated deadline string to the map:
+        result.put("COMPENSATED_DEADLINE", timestampFormat.format(compensatedDeadline));
 
         return result;
     }

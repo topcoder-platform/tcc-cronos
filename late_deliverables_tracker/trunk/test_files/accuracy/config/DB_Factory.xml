@@ -13,15 +13,15 @@
                     <Property name="jdbc_driver">
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
-                    <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tc:informixserver=tc</Value>
-                    </Property>
-                    <Property name="user">
-                        <Value>informix</Value>
-                    </Property>
-                    <Property name="password">
-                        <Value>123456</Value>
-                    </Property>
+		                    <Property name="jdbc_url">
+		                        <Value>jdbc:informix-sqli://192.168.1.114:9088/demo:informixserver=ol_topcoder</Value>
+		                    </Property>
+		                    <Property name="user">
+		                        <Value>informix</Value>
+		                    </Property>
+		                    <Property name="password">
+		                        <Value>system</Value>
+		                    </Property>
                 </Property>
             </Property>
         </Property>

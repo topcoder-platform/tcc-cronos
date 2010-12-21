@@ -15,8 +15,8 @@ import com.topcoder.util.log.LogFactory;
 /**
  * Tests the demo of this component.
  *
- * @author saarixx, myxgyy
- * @version 1.0
+ * @author saarixx, myxgyy, sparemax
+ * @version 1.1
  */
 public class Demo extends BaseTestCase {
     /**

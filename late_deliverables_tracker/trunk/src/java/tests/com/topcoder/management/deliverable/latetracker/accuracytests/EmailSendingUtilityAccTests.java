@@ -21,7 +21,7 @@ public class EmailSendingUtilityAccTests extends AccuracyHelper {
      * <p>Sets up the unit tests.</p>
      */
     public void setUp() throws Exception {
-    	super.setUp();
+        super.setUp();
         instance = new EmailSendingUtility("from@topcoder.com", com.topcoder.util.log.LogFactory.getLog());
     }
 
@@ -30,7 +30,7 @@ public class EmailSendingUtilityAccTests extends AccuracyHelper {
      * @throws Exception to junit
      */
     public void tearDown() throws Exception {
-    	super.tearDown();
+        super.tearDown();
         instance = null;
     }
 
@@ -43,36 +43,36 @@ public class EmailSendingUtilityAccTests extends AccuracyHelper {
 
     /**
      * Accuracy test for method sendEmail.
-     * 
+     *
      * Manually check the mails.
-     * 
-     * 
+     *
+     *
      * @throws Exception to junit
      */
-    public void test_sendEmail() throws Exception  {
-    	Map<String, String> map = new HashMap<String, String>();
-    	//empty maps
-		instance.sendEmail("subject", "test_files\\accuracy\\email_template.html", "to@topcoder.com", map);
-		
-		//Manually check the mails, please
+    public void test_sendEmail() throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+        //empty maps
+        instance.sendEmail("subject", "test_files\\accuracy\\email_template.html", "to@topcoder.com", map);
+
+        //Manually check the mails, please
     }
 
     /**
      * Accuracy test for method sendEmail.
-     * 
+     *
      * Manually check the mails.
-     * 
-     * 
+     *
+     *
      * @throws Exception to junit
      */
-    public void test_sendEmail2() throws Exception  {
-    	Map<String, String> map = new HashMap<String, String>();
-    	map.put("PROJECT_NAME", "Type safe enum");
-    	map.put("PROJECT_VERSION", "1.01");
-    	map.put("PROJECT_ID", "32135");
-    	map.put("PHASE_NAME", "Review");
-		instance.sendEmail("subject", "test_files\\accuracy\\email_template2.html", "to@topcoder.com", map);
-		
-		//Manually check the mails, please
+    public void test_sendEmail2() throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("PROJECT_NAME", "Type safe enum");
+        map.put("PROJECT_VERSION", "1.01");
+        map.put("PROJECT_ID", "32135");
+        map.put("PHASE_NAME", "Review");
+        instance.sendEmail("subject", "test_files\\accuracy\\email_template2.html", "to@topcoder.com", map);
+
+        //Manually check the mails, please
     }
 }

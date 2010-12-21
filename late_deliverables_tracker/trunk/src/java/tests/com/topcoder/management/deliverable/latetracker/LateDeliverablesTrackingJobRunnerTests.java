@@ -12,8 +12,8 @@ import com.topcoder.util.scheduler.scheduling.ScheduledJobRunner;
 /**
  * Unit tests for <code>{@link LateDeliverablesTracker}</code> class.
  *
- * @author myxgyy
- * @version 1.0
+ * @author myxgyy, TCSDEVELOPER
+ * @version 1.1
  */
 public class LateDeliverablesTrackingJobRunnerTests extends BaseTestCase {
     /**
@@ -90,6 +90,28 @@ public class LateDeliverablesTrackingJobRunnerTests extends BaseTestCase {
         assertNotNull("lateDeliverablesTracker field should not be null", getField(target,
             "lateDeliverablesTracker"));
         assertNotNull("log field should be null", getField(target, "log"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesTrackingJobRunner#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * Verifies all class fields have been set by configuration correctly.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_Configure_New() throws Exception {
+        config.removeProperty("loggerName");
+        target.configure(config);
+
+        assertNotNull("lateDeliverablesTracker field should not be null", getField(target,
+            "lateDeliverablesTracker"));
+        assertNull("log field should be null", getField(target, "log"));
     }
 
     /**
@@ -423,6 +445,27 @@ public class LateDeliverablesTrackingJobRunnerTests extends BaseTestCase {
      */
     public void test_run_1() throws Exception {
         target.run();
+        assertEquals("status should be successful", ScheduledJobRunner.SUCCESSFUL, target
+            .getRunningStatus());
+        assertTrue("done", target.isDone());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesTrackingJobRunner#run()} method.
+     * </p>
+     * <p>
+     * The status should be updated to successful.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     */
+    public void test_run_New1() throws Exception {
+        LateDeliverablesTrackingJobRunner.setConfig(config);
+        target = new LateDeliverablesTrackingJobRunner();
+        target.run();
+
         assertEquals("status should be successful", ScheduledJobRunner.SUCCESSFUL, target
             .getRunningStatus());
         assertTrue("done", target.isDone());

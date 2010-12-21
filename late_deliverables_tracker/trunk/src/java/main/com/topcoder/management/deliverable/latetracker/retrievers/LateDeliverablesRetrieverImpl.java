@@ -3,9 +3,17 @@
  */
 package com.topcoder.management.deliverable.latetracker.retrievers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.topcoder.configuration.ConfigurationAccessException;
 import com.topcoder.configuration.ConfigurationObject;
-
 import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.deliverable.DeliverableChecker;
 import com.topcoder.management.deliverable.DeliverableManager;
@@ -25,42 +33,42 @@ import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
-
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
+import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
-
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundleManager;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.OrFilter;
-
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.objectfactory.ObjectFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * <p>
- * This class is an implementation of <code>LateDeliverablesRetriever</code> that uses
- * pluggable <code>ProjectManager</code>, <code>PhaseManager</code> and
- * <code>DeliverableManager</code> instances to access data in persistence. It looks for
- * all active projects with &quot;Track Late Deliverables&quot; property set to true, and
- * then retrieves all incomplete deliverables for all late phases. This class performs the
- * logging of errors and debug information using Logging Wrapper component.
+ * This class is an implementation of <code>LateDeliverablesRetriever</code> that uses pluggable
+ * <code>ProjectManager</code>, <code>PhaseManager</code> and <code>DeliverableManager</code> instances to access data
+ * in persistence. It looks for all active projects with &quot;Track Late Deliverables&quot; property set to true, and
+ * then retrieves all incomplete deliverables for all late phases. This class performs the logging of errors and debug
+ * information using Logging Wrapper component.
  * </p>
+ *
+ * <p>
+ * <em>Change in 1.1:</em>
+ * <ol>
+ * <li>In the new version this class calculates a compensated deadline for all phases with length not exceeding the
+ * configured value. For such phases the compensated deadline differs with the real one when direct dependency phase
+ * ended earlier than expected (e.g. Appeals Response phase can be compensated when Appeals phase ended earlier due to
+ * "Complete Appeals" feature). For such phases the deliverable is late only after the compensated deadline is
+ * reached.</li>
+ * </ol>
+ * </p>
+ *
  * <p>
  * Sample config:
  *
@@ -168,14 +176,14 @@ import java.util.Set;
  *
  * </p>
  * <p>
- * Thread Safety: This class is not thread safe since it uses <code>ProjectManager</code>,
- * <code>PhaseManager</code> and <code>DeliverableManager</code> instances that are
- * not thread safe. It's assumed that {@link #configure(ConfigurationObject)} method will
- * be called just once right after instantiation, before calling any business methods.
+ * Thread Safety: This class is not thread safe since it uses <code>ProjectManager</code>, <code>PhaseManager</code>,
+ * <code>DeliverableManager</code> and <code>ResourceManager</code> instances that are not thread safe. It's assumed
+ * that {@link #configure(ConfigurationObject)} method will be called just once right after instantiation, before
+ * calling any business methods.
  * </p>
  *
- * @author saarixx, TCSDEVELOPER
- * @version 1.0
+ * @author saarixx, myxgyy, sparemax
+ * @version 1.1
  */
 public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever {
     /**
@@ -184,6 +192,16 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * </p>
      */
     private static final String CLASS_NAME = LateDeliverablesRetrieverImpl.class.getName();
+
+    /**
+     * <p>
+     * Represents default value for &quot;maxDurationOfPhaseWithCompensatedDeadline&quot; property key in
+     * configuration.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private static final long DEFAULT_MAX_DURATION_WITH_COMPENSATED_DEADLINE = 86400000;
 
     /**
      * <p>
@@ -250,6 +268,15 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
     /**
      * <p>
+     * Represents &quot;maxDurationOfPhaseWithCompensatedDeadline&quot; property key in configuration.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private static final String MAX_DURATION_WITH_COMPENSATED_DEADLINE = "maxDurationOfPhaseWithCompensatedDeadline";
+
+    /**
+     * <p>
      * Represents open phase status.
      * </p>
      */
@@ -275,6 +302,13 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * </p>
      */
     private static final String TRUE = "true";
+
+    /**
+     * <p>
+     * Represents id of final fix.
+     * </p>
+     */
+    private static final long FINAL_FIX_ID = 20;
 
     /**
      * <p>
@@ -378,6 +412,21 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     private ResourceManager resourceManager;
 
     /**
+     * <p>
+     * The maximum duration of the phase in milliseconds (not inclusive) for which compensated deadline should be
+     * calculated.
+     * </p>
+     *
+     * <p>
+     * Is initialized in configure() and never changed after that. Cannot be negative. Is used in
+     * getCompensatedDeadline().
+     * </p>
+     *
+     * @since 1.1
+     */
+    private long maxDurationOfPhaseWithCompensatedDeadline;
+
+    /**
      * Creates an instance of <code>LateDeliverablesRetrieverImpl</code>.
      */
     public LateDeliverablesRetrieverImpl() {
@@ -386,13 +435,19 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     /**
      * Configures this instance with use of the given configuration object.
      *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Added step for reading maxDurationOfPhaseWithCompensatedDeadline.</li>
+     * </ol>
+     * </p>
+     *
      * @param config
      *            the configuration object.
      * @throws IllegalArgumentException
      *             if <code>config</code> is <code>null</code>.
      * @throws LateDeliverablesTrackerConfigurationException
-     *             if some error occurred when initializing an instance using the given
-     *             configuration.
+     *             if some error occurred when initializing an instance using the given configuration.
      */
     public void configure(ConfigurationObject config) {
         ExceptionUtils.checkNull(config, null, null, "The parameter 'config' should not be null.");
@@ -414,7 +469,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
         for (String trackingDeliverableIdStr : trackingDeliverableIdsArray) {
             trackingDeliverableIds.add(Helper.parseLong(trackingDeliverableIdStr,
-                TRACKING_DELIVERABLE_IDS));
+                TRACKING_DELIVERABLE_IDS, 1));
         }
 
         // create object factory
@@ -454,6 +509,13 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
         // Create deliverable manager
         deliverableManager = new PersistenceDeliverableManager(deliverablePersistence,
             deliverableCheckers, searchBundleManager);
+
+        // Read maxDurationOfPhaseWithCompensatedDeadline
+        String maxDurationOfPhaseWithCompensatedDeadlineStr = Helper.getPropertyValue(config,
+            MAX_DURATION_WITH_COMPENSATED_DEADLINE, false, false);
+        maxDurationOfPhaseWithCompensatedDeadline = (maxDurationOfPhaseWithCompensatedDeadlineStr == null)
+            ? DEFAULT_MAX_DURATION_WITH_COMPENSATED_DEADLINE
+            : Helper.parseLong(maxDurationOfPhaseWithCompensatedDeadlineStr, MAX_DURATION_WITH_COMPENSATED_DEADLINE, 0);
     }
 
     /**
@@ -514,15 +576,24 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     }
 
     /**
-     * Retrieves information about all late deliverables. Returns an empty list if no
-     * deliverables are late.
+     * Retrieves information about all late deliverables. Returns an empty list if no deliverables are late.
      *
-     * @return the list with information about all late deliverables (not null, doesn't
-     *         contain null).
+     * <p>
+     * <em>Changes in 1.1:</em>
+     * <ol>
+     * <li>Moved "Filter out Final Fixes for non-winning submitters" step to the beginning of the block (to avoid
+     * useless instantiation and population of LateDeliverable instances).</li>
+     * <li>Steps with "MOVED in 1.1" existed in the previous version, but was moved to another position inside the
+     * block.</li>
+     * <li>Added steps for taking the compensated deadline into account and setting it to the late deliverable.</li>
+     * </ol>
+     * </p>
+     *
+     * @return the list with information about all late deliverables (not null, doesn't contain null).
+     *
      * @throws IllegalStateException
-     *             if this class was not configured properly with use of {@link
-     *             #configure(ConfigurationObject)} method (deliverableManager,
-     *             projectManager, phaseManager or trackingDeliverableIds is null).
+     *             if this class was not configured properly with use of {@link #configure(ConfigurationObject)}
+     *             method (deliverableManager, projectManager, phaseManager or trackingDeliverableIds is null).
      * @throws LateDeliverablesRetrievalException
      *             if some error occurred when retrieving a list of late deliverables.
      */
@@ -540,68 +611,68 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
         // Search for all active projects
         Project[] projects = searchProjects(signature);
 
+        List<LateDeliverable> result;
+
         if (projects.length == 0) {
-            return new ArrayList<LateDeliverable>();
-        }
-        // Create mapping from project ID to Project instance
-        Map<Long, Project> projectById = new HashMap<Long, Project>();
+            result = new ArrayList<LateDeliverable>();
+        } else {
+            // Create mapping from project ID to Project instance
+            Map<Long, Project> projectById = new HashMap<Long, Project>();
 
-        // Create list for matched project IDs
-        long[] projectIds = new long[projects.length];
+            // Create list for matched project IDs
+            long[] projectIds = new long[projects.length];
 
-        for (int i = 0; i < projects.length; i++) {
-            long projectId = projects[i].getId();
-            projectIds[i] = projectId;
-            projectById.put(projectId, projects[i]);
-        }
+            for (int i = 0; i < projects.length; i++) {
+                long projectId = projects[i].getId();
+                projectIds[i] = projectId;
+                projectById.put(projectId, projects[i]);
+            }
 
-        Helper.logInfo(log, "IDs of all active projects : " + Arrays.toString(projectIds));
+            Helper.logInfo(log, "IDs of all active projects : " + Arrays.toString(projectIds));
 
-        // Get phase projects for all matched project IDs
-        com.topcoder.project.phases.Project[] phaseProjects = getPhaseProjects(projectIds, signature);
+            // Get phase projects for all matched project IDs
+            com.topcoder.project.phases.Project[] phaseProjects = getPhaseProjects(projectIds, signature);
 
-        List<Long> latePhaseIds = new ArrayList<Long>();
-        Map<Long, Phase> phaseById = new HashMap<Long, Phase>();
-        // holds the ids of projects that have late deliverables
-        Set<Long> lateProjectIds = new HashSet<Long>();
-        Date currentDate = new Date();
+            List<Long> latePhaseIds = new ArrayList<Long>();
+            Map<Long, Phase> phaseById = new HashMap<Long, Phase>();
+            // holds the ids of projects that have late deliverables
+            Set<Long> lateProjectIds = new HashSet<Long>();
+            Date currentDate = new Date();
 
-        for (com.topcoder.project.phases.Project phaseProject : phaseProjects) {
-            // get all phases for the project
-            Phase[] phases = phaseProject.getAllPhases();
+            for (com.topcoder.project.phases.Project phaseProject : phaseProjects) {
+                // get all phases for the project
+                Phase[] phases = phaseProject.getAllPhases();
 
-            for (Phase phase : phases) {
-                if (!phase.getPhaseStatus().getName().equals(PHASE_STATUS_OPEN)) {
-                    continue;
+                for (Phase phase : phases) {
+                    if (!phase.getPhaseStatus().getName().equals(PHASE_STATUS_OPEN)) {
+                        continue;
+                    }
+
+                    if (currentDate.after(phase.getScheduledEndDate())) {
+                        long phaseId = phase.getId();
+                        latePhaseIds.add(phaseId);
+                        phaseById.put(phaseId, phase);
+                        lateProjectIds.add(phaseProject.getId());
+                    }
                 }
+            }
 
-                if (currentDate.after(phase.getScheduledEndDate())) {
-                    long phaseId = phase.getId();
-                    latePhaseIds.add(phaseId);
-                    phaseById.put(phaseId, phase);
-                    lateProjectIds.add(phaseProject.getId());
-                }
+            if (latePhaseIds.isEmpty()) {
+                result = new ArrayList<LateDeliverable>();
+            } else {
+                // log IDs of projects that have late deliverables
+                Helper.logInfo(log, "IDs of projects that have late deliverables : " + lateProjectIds);
+                Helper.logInfo(log, "IDs of projects that have late latePhaseIds : " + latePhaseIds);
+
+                Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
+
+                result = createResult(deliverables, projectById, phaseById, signature);
             }
         }
 
-        if (latePhaseIds.isEmpty()) {
-            return new ArrayList<LateDeliverable>();
-        }
+        Helper.logExit(log, signature, result, start);
 
-        // log IDs of projects that have late deliverables
-        Helper.logInfo(log, "IDs of projects that have late deliverables : " + lateProjectIds);
-
-        Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
-
-        try {
-            List<LateDeliverable> result = createResult(deliverables, projectById, phaseById);
-
-            Helper.logExit(log, signature, result, start);
-
-            return result;
-        } catch (ResourcePersistenceException e) {
-            throw new LateDeliverablesRetrievalException("Failed to retrieve resource", e);
-        }
+        return result;
     }
 
     /**
@@ -634,44 +705,72 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      *            the map contains projects.
      * @param phaseById
      *            the map contains phases.
+     * @param signature
+     *            the signature.
+     *
      * @return the created list of <code>LateDeliverable</code>.
+     *
+     * @throws LateDeliverablesRetrievalException
+     *             if any error occurs.
      */
-    private List<LateDeliverable> createResult(Deliverable[] deliverables,
-        Map<Long, Project> projectById, Map<Long, Phase> phaseById) throws ResourcePersistenceException {
+    private List<LateDeliverable> createResult(Deliverable[] deliverables, Map<Long, Project> projectById,
+        Map<Long, Phase> phaseById, String signature) throws LateDeliverablesRetrievalException {
         List<LateDeliverable> result = new ArrayList<LateDeliverable>(deliverables.length);
 
         for (Deliverable deliverable : deliverables) {
-            LateDeliverable lateDeliverable = new LateDeliverable();
-            lateDeliverable.setDeliverable(deliverable);
 
+            // MOVED in 1.1
             // Get project ID of the deliverable
             long projectId = deliverable.getProject();
 
+            // MOVED in 1.1
             // Get project by its ID from the map
             Project project = projectById.get(projectId);
-            // Set project to the late deliverable instance
-            lateDeliverable.setProject(project);
 
+            // MOVED in 1.1
+            // Filter out Final Fixes for non-winning submitters
+            if (deliverable.getId() == FINAL_FIX_ID) {
+                long resourceId = deliverable.getResource();
+                try {
+                    Resource resource = this.resourceManager.getResource(resourceId);
+                    if (resource != null) {
+                        Object userId = resource.getProperty("External Reference ID");
+                        Object winnerExtRefId = project.getProperty("Winner External Reference ID");
+                        if (!winnerExtRefId.equals(userId)) {
+                            continue;
+                        }
+                    }
+                } catch (ResourcePersistenceException e) {
+                    throw Helper.logException(log, signature, new LateDeliverablesRetrievalException(
+                        "Failed to retrieve resource", e));
+                }
+            }
+
+            // MOVED in 1.1
             // Get phase ID from deliverable
             long phaseId = deliverable.getPhase();
 
+            // MOVED in 1.1
             // Get phase by its ID from the map
             Phase phase = phaseById.get(phaseId);
+
+            // NEW in 1.1
+            // Get the compensated deadline if it differs from the real one
+            Date compensatedDeadline = getCompensatedDeadline(phase);
+            if ((compensatedDeadline != null) && (System.currentTimeMillis() < compensatedDeadline.getTime())) {
+                continue;
+            }
+
+            LateDeliverable lateDeliverable = new LateDeliverable();
+
+            lateDeliverable.setDeliverable(deliverable);
+            // Set project to the late deliverable instance
+            lateDeliverable.setProject(project);
             // Set phase to the late deliverable instance
             lateDeliverable.setPhase(phase);
-
-            // Filter out Final Fixes for non-winning submitters
-            if (deliverable.getId() == 20) {
-                long resourceId = deliverable.getResource();
-                Resource resource = this.resourceManager.getResource(resourceId);
-                if (resource != null) {
-                    Object userId = resource.getProperty("External Reference ID");
-                    Object winnerExtRefId = project.getProperty("Winner External Reference ID");
-                    if (!winnerExtRefId.equals(userId)) {
-                        continue;
-                    }
-                }
-            }
+            // NEW in 1.1
+            // Set compensated deadline to the late deliverable instance
+            lateDeliverable.setCompensatedDeadline(compensatedDeadline);
 
             // add to result
             result.add(lateDeliverable);
@@ -773,5 +872,78 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
         }
 
         return deliverables;
+    }
+
+    /**
+     * <p>
+     * Retrieves the compensated deadline. This method returns null if the compensated deadline equals to the real
+     * one, i.e. when the phase is long enough not to be compensated or none of the dependency phases ended earlier
+     * than expected.
+     * </p>
+     *
+     * @param phase
+     *            the phase for which compensated deadline must be retrieved.
+     *
+     * @return the retrieved compensated deadline or null if the phase is long enough not to be compensated or the
+     *         compensated deadline equals to the real one.
+     *
+     * @since 1.1
+     */
+    private Date getCompensatedDeadline(Phase phase) {
+        // Get length of the phase in milliseconds:
+        long phaseLength = phase.getLength();
+        if (phaseLength >= maxDurationOfPhaseWithCompensatedDeadline) {
+            return null;
+        }
+        // Create a list for phase dependencies with "start when ends" type
+        List<Dependency> dependencies = new ArrayList<Dependency>();
+        // Get all phase dependencies:
+        Dependency[] phaseDependencies = phase.getAllDependencies();
+        for (Dependency dependency : phaseDependencies) {
+            if (dependency.isDependentStart() && (!dependency.isDependencyStart())) {
+                // Add dependency to the list:
+                dependencies.add(dependency);
+            }
+        }
+        if (dependencies.isEmpty()) {
+            return null;
+        }
+        // Will hold the maximum phase start date computed based on the full dependency phase length
+        Date maxOriginalScheduledStartDate = null;
+        for (Dependency dependency : dependencies) {
+            // Get the next dependency phase:
+            Phase dependencyPhase = dependency.getDependency();
+            // Get actual start date of the dependency phase:
+            Date dependencyStartDate = dependencyPhase.getActualStartDate();
+            if (dependencyStartDate == null) {
+                return null;
+            }
+
+            // Get lag time between phases in milliseconds:
+            long lagTime = dependency.getLagTime();
+            // Get scheduled (not actual) dependency phase length in milliseconds:
+            long dependencyPhaseLength = dependencyPhase.getLength();
+            // Get the expected start date of the processed phase:
+            Date originalPhaseStartDate = new Date(dependencyStartDate.getTime() + dependencyPhaseLength + lagTime);
+            if ((maxOriginalScheduledStartDate == null)
+                || (maxOriginalScheduledStartDate.before(originalPhaseStartDate))) {
+                maxOriginalScheduledStartDate = originalPhaseStartDate;
+            }
+        }
+        // Get fixed start date of the phase:
+        Date fixedStartDate = phase.getFixedStartDate();
+        if ((fixedStartDate != null) && (fixedStartDate.after(maxOriginalScheduledStartDate))) {
+            maxOriginalScheduledStartDate = fixedStartDate;
+        }
+
+        // Get the original scheduled phase end date:
+        Date result = new Date(maxOriginalScheduledStartDate.getTime() + phaseLength);
+
+        // Get current scheduled end date of the phase:
+        Date scheduledEndDate = phase.getScheduledEndDate();
+        if (!result.after(scheduledEndDate)) {
+            return null;
+        }
+        return result;
     }
 }

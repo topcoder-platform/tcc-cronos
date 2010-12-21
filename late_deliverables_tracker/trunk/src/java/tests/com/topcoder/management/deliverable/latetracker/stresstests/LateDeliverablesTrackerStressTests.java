@@ -8,11 +8,9 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-import com.dumbster.smtp.SimpleSmtpServer;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTracker;
 import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl;
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl;
@@ -90,23 +88,16 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
     public void test_execute() throws Exception {
         for (int i = 0; i < testCount; i++) {
             // set server
-            SimpleSmtpServer server = SimpleSmtpServer.start();
             int projectsCount = 2;
-            int subCount = 1000;
+            int subCount = 100;
             try {
                 StressTestUtil.prepareProjectData(projectsCount, subCount, con);
+                con.close();
 
                 instance.execute();
 
                 assertLateDeliverables(projectsCount, subCount);
-
-                assertEmail(server);
-
-                StressTestUtil.clearDataBase(con);
-                StressTestUtil.setUpDataBase(con);
             } finally {
-                server.stop();
-
                 System.out.println("Run test: test_execute for " + testCount + " times takes "
                     + (new Date().getTime() - start) + "ms");
             }
@@ -118,14 +109,15 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
      * Asserts the result of the LateDeliverableData.
      * </p>
      *
-     * @throws SQLException
+     * @throws Exception
      *             to JUnit
      */
-    private void assertLateDeliverables(int projectCount, int subCount) throws SQLException {
+    private void assertLateDeliverables(int projectCount, int subCount) throws Exception {
         Statement stmt = null;
         ResultSet rs = null;
 
         try {
+        	con = StressTestUtil.createConnection(StressTestUtil.loadProperties(StressTestUtil.DB_PROPERTIES_FILE));
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT * FROM late_deliverable");
 

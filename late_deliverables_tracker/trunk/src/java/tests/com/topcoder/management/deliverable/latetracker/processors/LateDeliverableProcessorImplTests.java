@@ -28,8 +28,15 @@ import com.topcoder.project.phases.PhaseType;
 /**
  * Unit tests for <code>{@link LateDeliverableProcessorImpl}</code> class.
  *
- * @author myxgyy
- * @version 1.0
+ * <p>
+ * <em>Change in 1.1:</em>
+ * <ol>
+ * <li>Updated tests for processLateDeliverable.</li>
+ * </ol>
+ * </p>
+ *
+ * @author myxgyy, sparemax
+ * @version 1.1
  */
 public class LateDeliverableProcessorImplTests extends BaseTestCase {
     /**
@@ -109,7 +116,8 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         assertNull("resourceManager field should be null", getField(target, "resourceManager"));
         assertNull("userRetrieval field should be null", getField(target, "userRetrieval"));
         assertNull("timestampFormat field should be null", getField(target, "timestampFormat"));
-        assertEquals("notificationInterval field should be zero", new Long(0), getField(target, "notificationInterval"));
+        assertEquals("notificationInterval field should be zero",
+            new Long(0), getField(target, "notificationInterval"));
     }
 
     /**
@@ -124,6 +132,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
+    @SuppressWarnings("unchecked")
     public void test_Configure_1() throws Exception {
         assertEquals("defaultEmailSubjectTemplateText field should be null",
             "WARNING\\: You are late when providing a deliverable for %PROJECT_NAME%", getField(target,
@@ -133,7 +142,8 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
 
         Map<?, ?> body = (Map) getField(target, "emailBodyTemplatePaths");
         assertEquals("emailBodyTemplatePaths field wrong", 1, body.size());
-        assertEquals("emailBodyTemplatePaths field wrong", "test_files/warn_email_template.html", body.get(new Long(3)));
+        assertEquals("emailBodyTemplatePaths field wrong",
+            "test_files/warn_email_template.html", body.get(new Long(3)));
 
         Map<?, ?> subject = (Map) getField(target, "emailSubjectTemplateTexts");
         assertEquals("emailSubjectTemplateTexts field wrong", 1, subject.size());
@@ -837,6 +847,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
+    @SuppressWarnings("unchecked")
     public void test_Configure_31() throws Exception {
         config.removeProperty("notificationInterval");
         config.removeProperty("timestampFormat");
@@ -971,7 +982,9 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     public void test_processLateDeliverable_1() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
-        target.processLateDeliverable(retriever.retrieve().get(0));
+        LateDeliverable lateDeliverable = retriever.retrieve().get(0);
+        lateDeliverable.setCompensatedDeadline(new Date());
+        target.processLateDeliverable(lateDeliverable);
 
         // check database record
         List<LateDeliverableData> datas = getLateDeliverable();
@@ -1164,7 +1177,8 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.processLateDeliverable(d);
         // extends the deadline
         // delay time : 20 minutes
-        d.getPhase().setScheduledEndDate(new Date(d.getPhase().getScheduledEndDate().getTime() + ((DAY * 2) - 1200000)));
+        d.getPhase().setScheduledEndDate(
+            new Date(d.getPhase().getScheduledEndDate().getTime() + ((DAY * 2) - 1200000)));
         target.processLateDeliverable(d);
 
         checkResult(getLateDeliverable(),

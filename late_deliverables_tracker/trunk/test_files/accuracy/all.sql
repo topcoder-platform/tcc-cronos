@@ -1006,15 +1006,3 @@ create table late_deliverable (
     explanation lvarchar(4096),
     response lvarchar(4096)
 );
-
-create table phase (
-    phase_id DECIMAL(12,0) not null,
-    description VARCHAR(254) not null
-);
-
-create table roles (
-    role_id DECIMAL(12,0) not null,
-    role_name VARCHAR(100) not null,
-    description VARCHAR(254) not null,
-    status_id DECIMAL(12,0) not null
-);

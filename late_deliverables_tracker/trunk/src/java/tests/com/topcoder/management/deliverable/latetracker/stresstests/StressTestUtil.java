@@ -4,6 +4,7 @@
 package com.topcoder.management.deliverable.latetracker.stresstests;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -182,17 +183,17 @@ final class StressTestUtil {
      *             to JUnit
      */
     static void executeSqlFile(Connection con, String sqlPath) throws SQLException, IOException {
+    	con.setAutoCommit(false);
         Statement st = con.createStatement();
 
         String[] sqls = readFile(sqlPath).toString().split(SQL_SEPARATOR);
 
         for (String sql : sqls) {
             if (!(sql.trim().trim().length() == 0)) {
-                st.addBatch(sql);
+                st.execute(sql);
+                con.commit();
             }
         }
-
-        st.executeBatch();
     }
 
     /**
@@ -303,12 +304,12 @@ final class StressTestUtil {
         ConfigManager configManager = ConfigManager.getInstance();
 
         String[] configFiles = new String[]{"test_files/stress/DB_Factory.xml",
-            "test_files/stress/Logging_Wrapper.xml", "test_files/stress/Project_Management.xml",
-            "test_files/stress/Phase_Management.xml", "test_files/stress/Upload_Resource_Search.xml",
-            "test_files/stress/SearchBuilderCommon.xml", "test_files/stress/User_Config.xml"};
+            "test_files/stress/Logging_Wrapper.xml", "test_files/config/Project_Management.xml",
+            "test_files/config/Phase_Management.xml", "test_files/config/Upload_Resource_Search.xml",
+            "test_files/config/SearchBuilderCommon.xml", "test_files/stress/User_Config.xml"};
 
         for (String configFile : configFiles) {
-            configManager.add(configFile);
+            configManager.add(new File(configFile).getAbsolutePath());
         }
     }
 
@@ -411,6 +412,7 @@ final class StressTestUtil {
 
             prepareResource(projectId, subCount, con);
         }
+        con.commit();
     }
 
     /**

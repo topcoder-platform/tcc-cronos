@@ -30,6 +30,7 @@ public class UnitTests extends TestCase {
         final TestSuite suite = new TestSuite();
 
         suite.addTestSuite(Demo.class);
+        suite.addTestSuite(HelperTests.class);
 
         suite.addTestSuite(LateDeliverablesTrackingJobRunnerTests.class);
         suite.addTestSuite(LateDeliverablesTrackerTests.class);
@@ -38,7 +39,6 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(LateDeliverablesRetrievalExceptionTests.class);
         suite.addTestSuite(LateDeliverablesTrackerConfigurationExceptionTests.class);
         suite.addTestSuite(LateDeliverablesTrackingExceptionTests.class);
-        suite.addTestSuite(HelperTests.class);
 
         suite.addTestSuite(LateDeliverablesRetrieverImplTests.class);
 

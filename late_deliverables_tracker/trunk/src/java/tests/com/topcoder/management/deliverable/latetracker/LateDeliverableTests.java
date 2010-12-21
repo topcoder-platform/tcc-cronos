@@ -15,12 +15,18 @@ import com.topcoder.project.phases.Phase;
 
 import junit.framework.TestCase;
 
-
 /**
  * Unit tests for <code>{@link LateDeliverable}</code> class.
  *
- * @author myxgyy
- * @version 1.0
+ * <p>
+ * <em>Change in 1.1:</em>
+ * <ol>
+ * <li>Added tests for the new attribute.</li>
+ * </ol>
+ * </p>
+ *
+ * @author myxgyy, sparemax
+ * @version 1.1
  */
 public class LateDeliverableTests extends TestCase {
     /**
@@ -112,5 +118,29 @@ public class LateDeliverableTests extends TestCase {
             new ProjectStatus(2, "Active"));
         target.setProject(project);
         assertSame("project field should be set correctly", project, target.getProject());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateProject#getCompensatedDeadline()} method.
+     * </p>
+     *
+     * @since 1.1
+     */
+    public void test_getCompensatedDeadline() {
+        assertNull("compensatedDeadline field should be retrieved correctly", target.getCompensatedDeadline());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateProject#setCompensatedDeadline(Date)} method.
+     * </p>
+     *
+     * @since 1.1
+     */
+    public void test_setCompensatedDeadline() {
+        Date compensatedDeadline = new Date();
+        target.setCompensatedDeadline(compensatedDeadline);
+        assertSame("project field should be set correctly", compensatedDeadline, target.getCompensatedDeadline());
     }
 }

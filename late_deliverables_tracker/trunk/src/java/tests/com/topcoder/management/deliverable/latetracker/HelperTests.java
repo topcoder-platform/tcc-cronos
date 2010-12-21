@@ -17,8 +17,15 @@ import junit.framework.TestCase;
 /**
  * Unit tests for <code>{@link Helper}</code> class.
  *
- * @author myxgyy
- * @version 1.0
+ * <p>
+ * <em>Change in 1.1:</em>
+ * <ol>
+ * <li>Updated tests for parseLong.</li>
+ * </ol>
+ * </p>
+ *
+ * @author myxgyy, sparemax
+ * @version 1.1
  */
 public class HelperTests extends TestCase {
     /**
@@ -286,25 +293,81 @@ public class HelperTests extends TestCase {
 
     /**
      * <p>
-     * Tests accuracy of <code>parseLong(String)</code> method.
+     * Tests accuracy of <code>parseLong(String, String, long)</code> method.
+     * </p>
+     *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
      * </p>
      */
     public void test_parseLong_1() {
-        assertEquals("should not be null", 1, Helper.parseLong("1", "name"));
+        assertEquals("should be correct", 1, Helper.parseLong("1", "name", 1));
     }
 
     /**
      * <p>
-     * Tests failure of <code>parseLong(String)</code> method.
+     * Tests accuracy of <code>parseLong(String, String, long)</code> method.
+     * </p>
+     *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
+     * </p>
+     */
+    public void test_parseLong_2() {
+        assertEquals("should be correct", 0, Helper.parseLong("0", "name", 0));
+    }
+
+    /**
+     * <p>
+     * Tests failure of <code>parseLong(String, String, long)</code> method.
      * </p>
      * <p>
      * The value can not be parsed to long,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
+     *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
+     * </p>
      */
-    public void test_parseLong_2() {
+    public void test_parseLong_Invalid1() {
         try {
-            Helper.parseLong("1xxx", "name");
+            Helper.parseLong("1xxx", "name", 1);
+
+            fail("LateDeliverablesTrackerConfigurationException is expected.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // Good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests failure of <code>parseLong(String, String, long)</code> method.
+     * </p>
+     * <p>
+     * The value is less than minValue,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
+     * </p>
+     */
+    public void test_parseLong_Invalid2() {
+        try {
+            Helper.parseLong("0", "name", 1);
 
             fail("LateDeliverablesTrackerConfigurationException is expected.");
         } catch (LateDeliverablesTrackerConfigurationException e) {

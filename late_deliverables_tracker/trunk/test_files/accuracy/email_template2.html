@@ -1,11 +1,10 @@
 <p>
-This is an email template
-
-
-
-%PROJECT_NAME%
-%PROJECT_VERSION%
-%PROJECT_ID%
-%PHASE_NAME%       (e.g. "Screening" or "Review")
-
+Deadline\: %DEADLINE%<br/>
+Your current delay is\: %DELAY%<br/>
+Contest link\: <a href\="http\://software.topcoder.com/review/actions/ViewProjectDetails.do?pid\=%PROJECT_ID%">%PROJECT_NAME%</a><br/>
+%if:COMPENSATED_AND_REAL_DEADLINES_DIFFER = 'true'%
+<b>Note that the deadline was compensated due to the dependency phases having ended
+prematurely.<br/>
+The compensated deadline is %COMPENSATED_DEADLINE%</b>
+%endif%
 </p>

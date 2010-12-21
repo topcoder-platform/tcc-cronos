@@ -21,7 +21,7 @@ import com.topcoder.util.config.ConfigManager;
  * Helper class for the accuracy test.
  * <p>
  * <b>Thread safety:</b> This class is immutable and so thread safe.
- * 
+ *
  * @author mumujava
  * @version 1.0
  */
@@ -32,7 +32,8 @@ public class AccuracyHelper extends TestCase {
      */
     private static final String[] DEPENDENCIES_CONFIGS = new String[] {"accuracy/config/Project_Management.xml",
         "accuracy/config/Phase_Management.xml", "accuracy/config/Upload_Resource_Search.xml",
-        "accuracy/config/SearchBuilderCommon.xml", "accuracy/config/DB_Factory.xml", "accuracy/config/Logging_Wrapper.xml"};
+        "accuracy/config/SearchBuilderCommon.xml", "accuracy/config/DB_Factory.xml",
+        "accuracy/config/Logging_Wrapper.xml"};
 
     /**
      * The db connection.
@@ -42,13 +43,13 @@ public class AccuracyHelper extends TestCase {
     static {
         try {
             buildConfig();
-        	DBConnectionFactoryImpl dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
-			connection = dbFactory.createConnection();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            DBConnectionFactoryImpl dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
+            connection = dbFactory.createConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
+
     /**
      * Gets the configuration object from the given file with the given namespace.
      *
@@ -58,8 +59,7 @@ public class AccuracyHelper extends TestCase {
      *            the namespace.
      * @return the configuration object.
      */
-    public static ConfigurationObject getConfigurationObject(String file, String namespace)
-        throws Exception {
+    public static ConfigurationObject getConfigurationObject(String file, String namespace) throws Exception {
         ConfigurationFileManager manager = new ConfigurationFileManager();
 
         manager.loadFile("root", file);
@@ -68,6 +68,7 @@ public class AccuracyHelper extends TestCase {
 
         return config.getChild(namespace);
     }
+
     /**
      * <p>
      * Sets up the test environment.
@@ -77,8 +78,8 @@ public class AccuracyHelper extends TestCase {
      */
     protected void setUp() throws Exception {
         buildConfig();
-    	executeSqlFile("test_files/accuracy/clear.sql");
-    	executeSqlFile("test_files/accuracy/prepare.sql");
+        executeSqlFile("test_files/accuracy/clear.sql");
+        executeSqlFile("test_files/accuracy/prepare.sql");
     }
 
     /**
@@ -89,8 +90,8 @@ public class AccuracyHelper extends TestCase {
      * @throws Exception to junit
      */
     protected void tearDown() throws Exception {
-    	clearConfig();
-    	executeSqlFile("test_files/accuracy/clear.sql");
+        clearConfig();
+        executeSqlFile("test_files/accuracy/clear.sql");
     }
 
     /**
@@ -125,7 +126,7 @@ public class AccuracyHelper extends TestCase {
             configManager.removeNamespace((String) iter.next());
         }
     }
-    
+
     /**
      * <p>
      * Executes the sql scripts in the given sql file.
@@ -148,7 +149,7 @@ public class AccuracyHelper extends TestCase {
                 }
             }
         } finally {
-        	stmt.close();
+            stmt.close();
         }
     }
 
@@ -161,14 +162,13 @@ public class AccuracyHelper extends TestCase {
      */
     public static String getFileAsString(String filePath) throws Exception {
         StringBuilder buf = new StringBuilder();
-        BufferedReader in =
-            new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
         try {
             String s;
             while ((s = in.readLine()) != null) {
-            	if (!s.trim().startsWith("--")) {
-            		buf.append(s);
-            	}
+                if (!s.trim().startsWith("--")) {
+                    buf.append(s);
+                }
             }
             return buf.toString();
         } finally {

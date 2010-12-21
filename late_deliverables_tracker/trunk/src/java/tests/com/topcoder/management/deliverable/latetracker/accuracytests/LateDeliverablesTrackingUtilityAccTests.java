@@ -21,7 +21,7 @@ public class LateDeliverablesTrackingUtilityAccTests extends AccuracyHelper {
      * <p>Sets up the unit tests.</p>
      */
     public void setUp() throws Exception {
-    	super.setUp();
+        super.setUp();
     }
 
     /**
@@ -29,42 +29,42 @@ public class LateDeliverablesTrackingUtilityAccTests extends AccuracyHelper {
      * @throws Exception to junit
      */
     public void tearDown() throws Exception {
-    	super.tearDown();
+        super.tearDown();
     }
 
     /**
-     * Accuracy test for method main. 
-     * 
-     * 
+     * Accuracy test for method main.
+     *
+     *
      * @throws Exception to junit
      */
-    public void test_main6() throws Exception  {
-    	final PipedOutputStream out = new PipedOutputStream();
-		InputStream in = new PipedInputStream(out);
-		InputStream org = System.in;
-		System.setIn(in);
-		try {
-			new Thread() {
-				public void run() {
-					try {
-						Thread.sleep(10*1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-			    	//write a char
-			    	try {
-						out.write(1);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}.start();
-			
-	    	LateDeliverablesTrackingUtility.main(new String[]{});
-	    	
-	    	//no exception is thrown
-		} finally {
-    		System.setIn(org);
-    	}
+    public void test_main6() throws Exception {
+        final PipedOutputStream out = new PipedOutputStream();
+        InputStream in = new PipedInputStream(out);
+        InputStream org = System.in;
+        System.setIn(in);
+        try {
+            new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(10 * 1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //write a char
+                    try {
+                        out.write(1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+
+            LateDeliverablesTrackingUtility.main(new String[] {});
+
+            //no exception is thrown
+        } finally {
+            System.setIn(org);
+        }
     }
 }

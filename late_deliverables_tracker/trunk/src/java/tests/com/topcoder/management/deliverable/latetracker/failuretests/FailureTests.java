@@ -12,7 +12,7 @@ import junit.framework.TestSuite;
  * <p>This test case aggregates all Failure test cases.</p>
  *
  * @author TopCoder
- * @version 1.0
+ * @version 1.1
  */
 public class FailureTests extends TestCase {
     /**
@@ -25,6 +25,8 @@ public class FailureTests extends TestCase {
         suite.addTestSuite(EmailSendingUtilityFailureTests.class);
         suite.addTestSuite(LateDeliverableProcessorImplFailureTests.class);
         suite.addTestSuite(LateDeliverablesRetrieverImplFailureTests.class);
+        suite.addTestSuite(LateDeliverablesTrackerFailureTest.class);
+        suite.addTestSuite(LateDeliverablesTrackingJobRunnerFailureTest.class);
 
         return suite;
     }

@@ -3,6 +3,8 @@
  */
 package com.topcoder.management.deliverable.latetracker;
 
+import java.util.Date;
+
 import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.project.Project;
 import com.topcoder.project.phases.Phase;
@@ -13,12 +15,20 @@ import com.topcoder.project.phases.Phase;
  * simple JavaBean (POJO) that provides getters and setters for all private attributes and
  * performs no argument validation in the setters.
  * </p>
+ *
+ * <p>
+ * <em>Change in 1.1:</em>
+ * <ol>
+ * <li>Added an attribute that holds a compensated deadline.</li>
+ * </ol>
+ * </p>
+ *
  * <p>
  * Thread Safety: This class is mutable and not thread safe.
  * </p>
  *
- * @author saarixx, myxgyy
- * @version 1.0
+ * @author saarixx, myxgyy, sparemax
+ * @version 1.1
  */
 public class LateDeliverable {
     /**
@@ -59,6 +69,20 @@ public class LateDeliverable {
      * </p>
      */
     private Project project;
+
+    /**
+     * <p>
+     * The compensated deadline for this late deliverable.
+     * </p>
+     *
+     * <p>
+     * Is null if compensated deadline equals to the real one (i.e. when no time should be compensated). Can be any
+     * value. Has getter and setter.
+     * </p>
+     *
+     * @since 1.1
+     */
+    private Date compensatedDeadline;
 
     /**
      * Creates an instance of <code>LateDeliverable</code>.
@@ -121,5 +145,32 @@ public class LateDeliverable {
      */
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    /**
+     * <p>
+     * Gets the compensated deadline for this late deliverable.
+     * </p>
+     *
+     * @return the compensated deadline for this late deliverable.
+     *
+     * @since 1.1
+     */
+    public Date getCompensatedDeadline() {
+        return compensatedDeadline;
+    }
+
+    /**
+     * <p>
+     * Sets the compensated deadline for this late deliverable.
+     * </p>
+     *
+     * @param compensatedDeadline
+     *            the compensated deadline for this late deliverable.
+     *
+     * @since 1.1
+     */
+    public void setCompensatedDeadline(Date compensatedDeadline) {
+        this.compensatedDeadline = compensatedDeadline;
     }
 }

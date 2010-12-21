@@ -71,7 +71,7 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail1() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<String, String>();
             instance.sendEmail(null, "bodyTemplatePath", "user@tc.com", params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -86,7 +86,7 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail2() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<String, String>();
             instance.sendEmail("subjectTemplateText", null, "user@tc.com", params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -101,7 +101,7 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail3() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<String, String>();
             instance.sendEmail("subjectTemplateText", " ", "user@tc.com", params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -116,7 +116,7 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail4() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<String, String>();
             instance.sendEmail("subjectTemplateText", "bodyTemplatePath", null, params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -131,7 +131,7 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail5() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<String, String>();
             instance.sendEmail("subjectTemplateText", "bodyTemplatePath", " ", params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -160,8 +160,8 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail7() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
-        	params.put(null, "failure");
+            Map<String, String> params = new HashMap<String, String>();
+            params.put(null, "failure");
             instance.sendEmail("subjectTemplateText", "bodyTemplatePath", "user@tc.com", params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -176,8 +176,8 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail8() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
-        	params.put(" ", "failure");
+            Map<String, String> params = new HashMap<String, String>();
+            params.put(" ", "failure");
             instance.sendEmail("subjectTemplateText", "bodyTemplatePath", "user@tc.com", params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -192,8 +192,8 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmail9() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
-        	params.put("failure", null);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("failure", null);
             instance.sendEmail("subjectTemplateText", "bodyTemplatePath", "user@tc.com", params);
             fail("IAE should be thrown.");
         } catch (IllegalArgumentException e) {
@@ -208,7 +208,7 @@ public class EmailSendingUtilityFailureTests extends TestCase {
      */
     public void test_sendEmai20() throws Exception {
         try {
-        	Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<String, String>();
             instance.sendEmail("subjectTemplateText", "bodyTemplatePath", "user@tc.com", params);
             fail("EmailSendingException should be thrown.");
         } catch (EmailSendingException e) {

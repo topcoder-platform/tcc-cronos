@@ -28,7 +28,6 @@ import com.topcoder.util.scheduler.scheduling.ConfigurationException;
 import com.topcoder.util.scheduler.scheduling.Job;
 import com.topcoder.util.scheduler.scheduling.Scheduler;
 import com.topcoder.util.scheduler.scheduling.SchedulingException;
-import com.topcoder.util.scheduler.scheduling.Second;
 import com.topcoder.util.scheduler.scheduling.persistence.ConfigurationObjectScheduler;
 
 import java.io.File;
@@ -62,7 +61,7 @@ import java.io.IOException;
  *  // The user can specify the interval between late deliverable checks in the command
  *  // line (in this example deliverables will be checked every 5 minutes)
  *  java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
- *    -inverval 300
+ *    -interval 300
  * </pre>
  *
  * Sample config: please refer CS 4.3.3.
@@ -131,6 +130,20 @@ public class LateDeliverablesTrackingUtility {
 
     /**
      * <p>
+     * Represents switch name &quot;guardFile&quot;.
+     * </p>
+     */
+    private static final String GUARD_FILE = "guardFile";
+
+    /**
+     * <p>
+     * Represents switch name &quot;background&quot;.
+     * </p>
+     */
+    private static final String BACKGROUND = "background";
+
+    /**
+     * <p>
      * Represents the usage of help.
      * </p>
      */
@@ -191,16 +204,16 @@ public class LateDeliverablesTrackingUtility {
      *
      * @since 1.0.1
      */
-    private static final String GUARD_FILE_SWITCH_USAGE = "Specify the path to guard file which should be used to " +
-                                                          "signal to Late Deliverables Tracker that it has to stop";
+    private static final String GUARD_FILE_SWITCH_USAGE = "Specify the path to guard file which should be used to "
+        + "signal to Late Deliverables Tracker that it has to stop";
 
     /**
      * Represents the usage documentation for the background switch.
      *
      * @since 1.0.1
      */
-    private static final String BACKGROUND_SWITCH_USAGE = "Set the flag indicating whether the tracker is going to " +
-                                                          "run in background thread or not";
+    private static final String BACKGROUND_SWITCH_USAGE = "Set the flag indicating whether the tracker is going to "
+        + "run in background thread or not";
 
     /**
      * <p>
@@ -208,6 +221,13 @@ public class LateDeliverablesTrackingUtility {
      * </p>
      */
     private static final int ONE_DAY = 86400000;
+
+    /**
+     * <p>
+     * Represents the milliseconds to sleep.
+     * </p>
+     */
+    private static final int SLEEP_TIME = 2000;
 
     /**
      * <p>
@@ -250,29 +270,6 @@ public class LateDeliverablesTrackingUtility {
     private static CommandLineUtility commandLineUtility;
 
     /**
-     * Static initialization.
-     */
-    static {
-        try {
-            // create switches
-            configSwitch = new Switch(CONFIG, false, 1, 1, null, CONFIG_SWITCH_USAGE);
-            namespaceSwitch = new Switch(NAMESPACE, false, 1, 1, null, NAMESPACE_SWITCH_USAGE);
-            intervalSwitch = new Switch(INTERVAL, false, 1, 1, new IntegerValidator(1, null), INTERVAL_SWITCH_USAGE);
-            guardFileSwitch = new Switch("guardFile", true, 1, 1, null, GUARD_FILE_SWITCH_USAGE);
-            backgroundSwitch = new Switch("background", true, 1, 1, null, BACKGROUND_SWITCH_USAGE);
-            // create command line utility
-            commandLineUtility = new CommandLineUtility();
-            commandLineUtility.addSwitch(configSwitch);
-            commandLineUtility.addSwitch(intervalSwitch);
-            commandLineUtility.addSwitch(namespaceSwitch);
-            commandLineUtility.addSwitch(guardFileSwitch);
-            commandLineUtility.addSwitch(backgroundSwitch);
-        } catch (IllegalSwitchException e) {
-            // never happens
-        }
-    }
-
-    /**
      * <p>
      * Represents &quot;jobConfig&quot; child configuration key in configuration.
      * </p>
@@ -310,25 +307,9 @@ public class LateDeliverablesTrackingUtility {
         final long start = System.currentTimeMillis();
         final String signature = CLASS_NAME + "main(String[] args)";
 
-        // user request help
-        for (String arg : args) {
-            if (arg.equals(HELP_ONE) || arg.equals(HELP_TWO) || arg.equals(HELP_THREE)) {
-                System.out.print(commandLineUtility.getUsageString());
-                System.out.println(HELP_USAGE);
-
-                return;
-            }
-        }
-
-        try {
-            commandLineUtility.parse(args);
-        } catch (ArgumentValidationException e) {
-            System.out.println("Fails to validate the value of interval argument.");
-
-            return;
-        } catch (UsageException e) {
-            System.out.println("Fails to parse the arguments.");
-
+        // create command line utility
+        commandLineUtility = new CommandLineUtility();
+        if (!parseArgs(commandLineUtility, args)) {
             return;
         }
 
@@ -376,6 +357,61 @@ public class LateDeliverablesTrackingUtility {
     }
 
     /**
+     * <p>
+     * Parse the arguments.
+     * </p>
+     *
+     * @param commandLineUtility
+     *            the command line utility.
+     * @param args
+     *            the arguments.
+     *
+     * @return <code>false</code> if any error occurs; <code>true</code> otherwise.
+     */
+    private static boolean parseArgs(CommandLineUtility commandLineUtility, String[] args) {
+        try {
+            // create switches
+            configSwitch = new Switch(CONFIG, false, 0, 1, null, CONFIG_SWITCH_USAGE);
+            namespaceSwitch = new Switch(NAMESPACE, false, 0, 1, null, NAMESPACE_SWITCH_USAGE);
+            intervalSwitch = new Switch(INTERVAL, false, 0, 1, new IntegerValidator(1, null), INTERVAL_SWITCH_USAGE);
+            guardFileSwitch = new Switch(GUARD_FILE, true, 1, 1, null, GUARD_FILE_SWITCH_USAGE);
+            backgroundSwitch = new Switch(BACKGROUND, true, 1, 1, null, BACKGROUND_SWITCH_USAGE);
+            // create command line utility
+            commandLineUtility = new CommandLineUtility();
+            commandLineUtility.addSwitch(configSwitch);
+            commandLineUtility.addSwitch(intervalSwitch);
+            commandLineUtility.addSwitch(namespaceSwitch);
+            commandLineUtility.addSwitch(guardFileSwitch);
+            commandLineUtility.addSwitch(backgroundSwitch);
+        } catch (IllegalSwitchException e) {
+            // never happens
+        }
+
+        // user request help
+        for (String arg : args) {
+            if (arg.equals(HELP_ONE) || arg.equals(HELP_TWO) || arg.equals(HELP_THREE)) {
+                System.out.print(commandLineUtility.getUsageString());
+                System.out.println(HELP_USAGE);
+
+                return false;
+            }
+        }
+        try {
+            commandLineUtility.parse(args);
+
+            return true;
+        } catch (ArgumentValidationException e) {
+            System.out.println("Fails to validate the value of interval argument.");
+
+            return false;
+        } catch (UsageException e) {
+            System.out.println("Fails to parse the arguments.");
+
+            return false;
+        }
+    }
+
+    /**
      * Creates job processor and start the tracking job.
      *
      * @param configFileName the configuration file name.
@@ -384,7 +420,7 @@ public class LateDeliverablesTrackingUtility {
      * @param log the log to use.
      * @param signature the method name.
      * @param guardFile a file to monitor for presence of.
-     * @param background <code>true</code> if tracke is running in background thread; <code>false</code> otherwise.
+     * @param background <code>true</code> if tracker is running in background thread; <code>false</code> otherwise.
      */
     private static void doTrack(String configFileName, String namespace, Integer interval, Log log,
                                 String signature, File guardFile, boolean background) {
@@ -423,13 +459,13 @@ public class LateDeliverablesTrackingUtility {
             if (background) {
                 while (!guardFile.exists()) {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(SLEEP_TIME);
                     } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt(); 
+                        Thread.currentThread().interrupt();
                     }
                 }
                 log.log(Level.INFO,
-                        "Got a signal to stop the entire Late Deliverables Tracke process by presence of file "
+                        "Got a signal to stop the entire Late Deliverables Tracker process by presence of file "
                         + guardFile);
             } else {
                 System.out.println("Press Enter to terminate the late deliverables tracker...");

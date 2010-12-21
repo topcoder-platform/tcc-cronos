@@ -25,7 +25,7 @@
 
                     <Property name = "jdbc_url">
 
-                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tc:informixserver=tc</Value>
+                        <Value>jdbc:informix-sqli://192.168.1.114:9088/demo:informixserver=ol_topcoder</Value>
                     </Property>
 
                     <Property name = "user">
@@ -35,7 +35,7 @@
 
                     <Property name = "password">
 
-                        <Value>123456</Value>
+                        <Value>system</Value>
                     </Property>
                 </Property>
             </Property>

@@ -3,8 +3,14 @@
  */
 package com.topcoder.management.deliverable.latetracker.retrievers;
 
-import com.topcoder.configuration.ConfigurationObject;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.management.deliverable.latetracker.BaseTestCase;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesRetrievalException;
@@ -13,18 +19,24 @@ import com.topcoder.management.deliverable.persistence.DeliverableCheckingExcept
 import com.topcoder.management.deliverable.persistence.DeliverablePersistenceException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.project.PersistenceException;
-
+import com.topcoder.project.phases.Dependency;
+import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.Project;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Unit tests for <code>{@link LateDeliverablesRetrieverImpl}</code> class.
  *
- * @author myxgyy
- * @version 1.0
+ * <p>
+ * <em>Change in 1.1:</em>
+ * <ol>
+ * <li>Updated tests for constructor, configure and retrieve.</li>
+ * </ol>
+ * </p>
+ *
+ * @author myxgyy, sparemax
+ * @version 1.1
  */
 public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
     /**
@@ -68,11 +80,17 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link
-     * LateDeliverablesRetrieverImpl#LateDeliverablesRetrieverImpl()} method.
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#LateDeliverablesRetrieverImpl()} method.
      * </p>
      * <p>
      * Verifies the default value of all class fields.
+     * </p>
+     *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Verifies maxDurationOfPhaseWithCompensatedDeadline.</li>
+     * </ol>
      * </p>
      *
      * @throws Exception
@@ -84,8 +102,9 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         assertNull("phaseManager field should be null", getField(target, "phaseManager"));
         assertNull("deliverableManager field should be null", getField(target, "deliverableManager"));
         assertNull("log field should be null", getField(target, "log"));
-        assertNull("trackingDeliverableIds field should be null", getField(target,
-            "trackingDeliverableIds"));
+        assertNull("trackingDeliverableIds field should be null", getField(target, "trackingDeliverableIds"));
+        assertEquals("maxDurationOfPhaseWithCompensatedDeadline field should be 0",
+            0L, getField(target, "maxDurationOfPhaseWithCompensatedDeadline"));
     }
 
     /**
@@ -97,9 +116,17 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      * Verifies all class fields have been set by configuration correctly.
      * </p>
      *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Verifies maxDurationOfPhaseWithCompensatedDeadline.</li>
+     * </ol>
+     * </p>
+     *
      * @throws Exception
      *             to JUnit.
      */
+    @SuppressWarnings("unchecked")
     public void test_Configure_1() throws Exception {
         assertNotNull("projectManager field should be null", getField(target, "projectManager"));
         assertNotNull("phaseManager field should be null", getField(target, "phaseManager"));
@@ -110,6 +137,45 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         assertEquals("trackingDeliverableIds field wrong", 2, trackingDeliverableIds.size());
         assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(3)));
         assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(4)));
+
+        assertEquals("maxDurationOfPhaseWithCompensatedDeadline field wrong",
+            86400000L, getField(target, "maxDurationOfPhaseWithCompensatedDeadline"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * Verifies all class fields have been set by configuration correctly.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    @SuppressWarnings("unchecked")
+    public void test_Configure_New() throws Exception {
+        config.setPropertyValue("maxDurationOfPhaseWithCompensatedDeadline", "1");
+        config.removeProperty("loggerName");
+
+        target = new LateDeliverablesRetrieverImpl();
+        target.configure(config);
+
+
+        assertNotNull("projectManager field should be null", getField(target, "projectManager"));
+        assertNotNull("phaseManager field should be null", getField(target, "phaseManager"));
+        assertNotNull("deliverableManager field should be null", getField(target, "deliverableManager"));
+        assertNull("log field should be null", getField(target, "log"));
+
+        Set<?> trackingDeliverableIds = (Set) getField(target, "trackingDeliverableIds");
+        assertEquals("trackingDeliverableIds field wrong", 2, trackingDeliverableIds.size());
+        assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(3)));
+        assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(4)));
+
+        assertEquals("maxDurationOfPhaseWithCompensatedDeadline field wrong",
+            1L, getField(target, "maxDurationOfPhaseWithCompensatedDeadline"));
     }
 
     /**
@@ -809,11 +875,93 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The maxDurationOfPhaseWithCompensatedDeadline property value is empty,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_Configure_31() throws Exception {
+        config.setPropertyValue("maxDurationOfPhaseWithCompensatedDeadline", " ");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The maxDurationOfPhaseWithCompensatedDeadline property value is invalid,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_Configure_32() throws Exception {
+        config.setPropertyValue("maxDurationOfPhaseWithCompensatedDeadline", "invalid_num");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The maxDurationOfPhaseWithCompensatedDeadline property value is negative,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_Configure_33() throws Exception {
+        config.setPropertyValue("maxDurationOfPhaseWithCompensatedDeadline", "-1");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
      * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
      * </p>
      * <p>
      * Verifies all late deliverables have been retrieved correctly. In this case, there
      * is only one late phase.
+     * </p>
+     *
+     * <p>
+     * <em>Change in 1.1:</em>
+     * <ol>
+     * <li>Verifies the compensated deadline.</li>
+     * </ol>
      * </p>
      *
      * @throws Exception
@@ -830,6 +978,8 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         assertEquals("the phase in late deliverable wrong", 101, deliverable.getPhase().getId());
         assertEquals("the deliverable name in late deliverable wrong", "Screening Scorecard",
             deliverable.getDeliverable().getName());
+
+        assertNull("the compensated deadline in late deliverable wrong", deliverable.getCompensatedDeadline());
     }
 
     /**
@@ -845,12 +995,38 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_retrieve_2() throws Exception {
+        config.setPropertyValue("maxDurationOfPhaseWithCompensatedDeadline", "86500000");
+        target = new LateDeliverablesRetrieverImpl();
+        target.configure(config);
+
         // setup two phases have late deliverable
-        setupPhases(new long[] {101L, 102L, 103L}, new long[] {2L, 3L, 4L}, new long[] {3L, 2L, 2L},
-            true);
+        setupPhases(new long[] {101L, 102L, 103L}, new long[] {2L, 3L, 4L}, new long[] {3L, 2L, 2L}, true);
 
         List<LateDeliverable> result = target.retrieve();
         assertEquals("should have two late deliverables", 2, result.size());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_retrieve_New() throws Exception {
+        config.setPropertyValue("trackingDeliverableIds", "8,9,10");
+        config.setPropertyValue("maxDurationOfPhaseWithCompensatedDeadline", "86500000");
+        target = new LateDeliverablesRetrieverImpl();
+        target.configure(config);
+
+        // setup two phases have late deliverable
+        setupPhases(new long[] {101L, 102L, 103L}, new long[] {8L, 9L, 10L}, new long[] {3L, 2L, 2L}, true);
+
+        List<LateDeliverable> result = target.retrieve();
+        assertEquals("should have two late deliverables", 0, result.size());
     }
 
     /**
@@ -1126,5 +1302,197 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         } catch (LateDeliverablesRetrievalException e) {
             assertTrue("check inner cause", e.getCause() instanceof DeliverableCheckingException);
         }
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#getCompensatedDeadline()} method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_getCompensatedDeadline_1() throws Exception {
+        Project project = new Project(new Date(), new DefaultWorkdays());
+        Phase phase = new Phase(project, 86400000);
+
+        Date res = callGetCompensatedDeadline(target, phase);
+
+        assertNull("the compensated deadline in late deliverable wrong", res);
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#getCompensatedDeadline()} method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_getCompensatedDeadline_2() throws Exception {
+        Project project = new Project(new Date(), new DefaultWorkdays());
+        Phase phase = new Phase(project, 86400000 - 1);
+
+        Date res = callGetCompensatedDeadline(target, phase);
+
+        assertNull("the compensated deadline in late deliverable wrong", res);
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#getCompensatedDeadline()} method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_getCompensatedDeadline_3() throws Exception {
+        Project project = new Project(new Date(), new DefaultWorkdays());
+        Phase phase1 = new Phase(project, 86400000 - 1);
+        phase1.setActualStartDate(new Date());
+        Phase phase2 = new Phase(project, 86400000 - 1);
+        phase2.setScheduledEndDate(new Date(System.currentTimeMillis() + (2 * 86400000L)));
+
+        Dependency dependency1 = new Dependency(phase1, phase2, false, true, 1);
+        phase2.addDependency(dependency1);
+        Dependency dependency2 = new Dependency(phase1, phase2, true, true, 2);
+        phase2.addDependency(dependency2);
+        Dependency dependency3 = new Dependency(phase1, phase2, false, false, 3);
+        phase2.addDependency(dependency3);
+
+        Date res = callGetCompensatedDeadline(target, phase2);
+
+        assertNull("the compensated deadline in late deliverable wrong", res);
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#getCompensatedDeadline()} method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_getCompensatedDeadline_4() throws Exception {
+        Project project = new Project(new Date(), new DefaultWorkdays());
+        Phase phase1 = new Phase(project, 86400000 - 1);
+        phase1.setActualStartDate(new Date());
+        Phase phase2 = new Phase(project, 86400000 - 1);
+        phase2.setScheduledEndDate(new Date());
+
+        Dependency dependency1 = new Dependency(phase1, phase2, false, true, 1);
+        phase2.addDependency(dependency1);
+        Dependency dependency2 = new Dependency(phase1, phase2, true, true, 2);
+        phase2.addDependency(dependency2);
+        Dependency dependency3 = new Dependency(phase1, phase2, false, false, 3);
+        phase2.addDependency(dependency3);
+
+        Date res = callGetCompensatedDeadline(target, phase2);
+
+        assertNotNull("the compensated deadline in late deliverable wrong", res);
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#getCompensatedDeadline()} method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_getCompensatedDeadline_5() throws Exception {
+        Project project = new Project(new Date(), new DefaultWorkdays());
+        Phase phase1 = new Phase(project, 86400000 - 1);
+        phase1.setActualStartDate(new Date());
+        Phase phase2 = new Phase(project, 86400000 - 1);
+        phase2.setScheduledEndDate(new Date());
+        phase2.setFixedStartDate(new Date(System.currentTimeMillis() - (2 * 86400000L)));
+
+        Dependency dependency1 = new Dependency(phase1, phase2, false, true, 1);
+        phase2.addDependency(dependency1);
+        Dependency dependency2 = new Dependency(phase1, phase2, false, true, 2);
+        phase2.addDependency(dependency2);
+        Dependency dependency3 = new Dependency(phase1, phase2, false, false, 3);
+        phase2.addDependency(dependency3);
+
+        Date res = callGetCompensatedDeadline(target, phase2);
+
+        assertNotNull("the compensated deadline in late deliverable wrong", res);
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#getCompensatedDeadline()} method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.1
+     */
+    public void test_getCompensatedDeadline_6() throws Exception {
+        Project project = new Project(new Date(), new DefaultWorkdays());
+        Phase phase1 = new Phase(project, 86400000 - 1);
+        phase1.setActualStartDate(new Date());
+        Phase phase2 = new Phase(project, 86400000 - 1);
+        phase2.setScheduledEndDate(new Date());
+        phase2.setFixedStartDate(new Date(System.currentTimeMillis() + (2 * 86400000L)));
+
+        Dependency dependency1 = new Dependency(phase1, phase2, false, true, 1);
+        phase2.addDependency(dependency1);
+        Dependency dependency2 = new Dependency(phase1, phase2, true, true, 2);
+        phase2.addDependency(dependency2);
+        Dependency dependency3 = new Dependency(phase1, phase2, false, false, 3);
+        phase2.addDependency(dependency3);
+
+        Date res = callGetCompensatedDeadline(target, phase2);
+
+        assertNotNull("the compensated deadline in late deliverable wrong", res);
+    }
+
+    /**
+     * <p>
+     * Calls the method 'getCompensatedDeadline'.
+     * </p>
+     *
+     * @param obj
+     *            the given object.
+     * @param phase
+     *            the phase.
+     *
+     * @return the result.
+     */
+    private static Date callGetCompensatedDeadline(Object obj, Phase phase) {
+        Object value = null;
+        try {
+            Method declaredMethod = obj.getClass().getDeclaredMethod("getCompensatedDeadline", Phase.class);
+            declaredMethod.setAccessible(true);
+
+            value = declaredMethod.invoke(obj, phase);
+
+            declaredMethod.setAccessible(false);
+        } catch (IllegalArgumentException e) {
+            // Ignore
+        } catch (SecurityException e) {
+            // Ignore
+        } catch (NoSuchMethodException e) {
+            // Ignore
+        } catch (IllegalAccessException e) {
+            // Ignore
+        } catch (InvocationTargetException e) {
+            // Ignore
+        }
+
+        return (Date) value;
     }
 }
