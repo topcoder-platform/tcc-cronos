@@ -16,49 +16,49 @@ import junit.framework.TestCase;
  * <p>
  * Thread safe: This class has no state, and thus it is thread safe.
  * </p>
- * 
+ *
  * @author morehappiness
  * @version 1.0
  */
 public class BaseStressTest extends TestCase {
-	/** The test count. */
-	static final int testCount = 1;
+    /** The test count. */
+    static final int testCount = 1;
 
-	/**
-	 * The connection to use.
-	 */
-	static Connection con;
+    /**
+     * The connection to use.
+     */
+    static Connection con;
 
-	/** time started to test */
-	long start = 0;
+    /** time started to test */
+    long start = 0;
 
-	/**
-	 * Initialize variables.
-	 * 
-	 * @throws Exception
-	 *             to JUnit
-	 */
-	public void setUp() throws Exception {
-		start = new Date().getTime();
+    /**
+     * Initialize variables.
+     *
+     * @throws Exception
+     *             to JUnit
+     */
+    public void setUp() throws Exception {
+        start = new Date().getTime();
 
-		con = StressTestUtil.createConnection(StressTestUtil.loadProperties(StressTestUtil.DB_PROPERTIES_FILE));
+        con = StressTestUtil.createConnection(StressTestUtil.loadProperties(StressTestUtil.DB_PROPERTIES_FILE));
 
-		StressTestUtil.clearDataBase(con);
-		StressTestUtil.setUpDataBase(con);
+        StressTestUtil.clearDataBase(con);
+        StressTestUtil.setUpDataBase(con);
 
-		StressTestUtil.addStressTestConfigurations();
-	}
+        StressTestUtil.addStressTestConfigurations();
+    }
 
-	/**
-	 * Tears down.
-	 * 
-	 * @throws Exception
-	 *             to JUnit
-	 */
-	public void tearDown() throws Exception {
-		StressTestUtil.clearDataBase(con);
-		StressTestUtil.closeConnection(con);
+    /**
+     * Tears down.
+     *
+     * @throws Exception
+     *             to JUnit
+     */
+    public void tearDown() throws Exception {
+        StressTestUtil.clearDataBase(con);
+        StressTestUtil.closeConnection(con);
 
-		StressTestUtil.clearConfigurations();
-	}
+        StressTestUtil.clearConfigurations();
+    }
 }

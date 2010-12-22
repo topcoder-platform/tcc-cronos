@@ -89,7 +89,7 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
         for (int i = 0; i < testCount; i++) {
             // set server
             int projectsCount = 2;
-            int subCount = 100;
+            int subCount = 1000;
             try {
                 StressTestUtil.prepareProjectData(projectsCount, subCount, con);
                 con.close();
@@ -117,7 +117,7 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
         ResultSet rs = null;
 
         try {
-        	con = StressTestUtil.createConnection(StressTestUtil.loadProperties(StressTestUtil.DB_PROPERTIES_FILE));
+            con = StressTestUtil.createConnection(StressTestUtil.loadProperties(StressTestUtil.DB_PROPERTIES_FILE));
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT * FROM late_deliverable");
 

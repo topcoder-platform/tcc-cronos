@@ -183,7 +183,7 @@ final class StressTestUtil {
      *             to JUnit
      */
     static void executeSqlFile(Connection con, String sqlPath) throws SQLException, IOException {
-    	con.setAutoCommit(false);
+        con.setAutoCommit(false);
         Statement st = con.createStatement();
 
         String[] sqls = readFile(sqlPath).toString().split(SQL_SEPARATOR);
@@ -403,7 +403,7 @@ final class StressTestUtil {
     static void prepareProjectData(long projectsCount, int subCount, Connection con) throws Exception {
         for (int k = 0; k < projectsCount; k++) {
             int projectId = k + 1;
-
+            con.setAutoCommit(false);
             prepareProject(projectId, con);
 
             prepareProjectInfo(projectId, con);
@@ -411,8 +411,8 @@ final class StressTestUtil {
             prepareProjectPhase(projectId, con); // the project phase id of the late phase is (projectId * 3 + 2)
 
             prepareResource(projectId, subCount, con);
+            con.commit();
         }
-        con.commit();
     }
 
     /**
