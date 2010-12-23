@@ -628,7 +628,8 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
                 projectById.put(projectId, projects[i]);
             }
 
-            Helper.logInfo(log, "IDs of all active projects : " + Arrays.toString(projectIds));
+            // The line below was commented out to reduce the size of the produced log. Uncomment if needed.
+            //Helper.logInfo(log, "IDs of all active projects : " + Arrays.toString(projectIds));
 
             // Get phase projects for all matched project IDs
             com.topcoder.project.phases.Project[] phaseProjects = getPhaseProjects(projectIds, signature);
@@ -662,7 +663,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
             } else {
                 // log IDs of projects that have late deliverables
                 Helper.logInfo(log, "IDs of projects that have late deliverables : " + lateProjectIds);
-                Helper.logInfo(log, "IDs of projects that have late latePhaseIds : " + latePhaseIds);
+                Helper.logInfo(log, "IDs of phases with late deliverables : " + latePhaseIds);
 
                 Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
 
