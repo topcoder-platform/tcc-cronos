@@ -4,8 +4,8 @@ component.distfilename=late_deliverables_tracker
 component.package=com.topcoder.management.deliverable.latetracker
 component.packagedir=com/topcoder/management/deliverable/latetracker
 component.version.major=1
-component.version.minor=0
-component.version.micro=1
+component.version.minor=1
+component.version.micro=0
 component.version.build=1
 
 # Defines the Main-Class property for the manifest file (e.g. com.topcoder.utility.SomeClass)
