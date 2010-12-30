@@ -160,9 +160,13 @@ import com.topcoder.service.user.Registrant;
  *     <li>Added {@link #getReview(long,long,long)} method.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Changes in v1.6.4 (TC Direct - Permission Updates):
+ * - Updated {@link #updateProjectPermissions(TCSubject, List<ProjectPermission>, long)} method, add a new input.
+ * </p>
  *
  * @author pulky, murphydog, waits, BeBetter, hohosky, isv
- * @version 1.6.3
+ * @version 1.6.4
  */
 public interface ContestServiceFacade {
     /**
@@ -2439,10 +2443,11 @@ public interface ContestServiceFacade {
      * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
      * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
      *        projects.
+     * @param role the role id to add
      * @throws PermissionServiceException if an unexpected error occurs.
      * @since 1.6.2
      */
-    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions)
+    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions, long role)
         throws PermissionServiceException;
 
     /**

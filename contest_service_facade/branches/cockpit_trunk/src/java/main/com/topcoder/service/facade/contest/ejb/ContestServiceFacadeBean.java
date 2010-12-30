@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Locale;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -335,8 +336,14 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
  *     {@link #processContestSaleInternal} method.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Version 1.6.7 (TC Direct - Permission Updates) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #updateProjectPermissions(TCSubject, List<ProjectPermission>, long)} method.</li>
+ *   </ol>
+ * </p>
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
- * @version 1.6.6
+ * @version 1.6.7
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -480,6 +487,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_PAYMENT_STATUS = "Payment Status";
+    
+    /**
+     * Private constant specifying registration date
+     *
+     */
+    private static final String RESOURCE_INFO_REGISTRATION_DATE = "Registration Date";
 
     /**
      * Private constant specifying resource pay
@@ -487,6 +500,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_PAYMENT_STATUS_NA = "N/A";
+
+    
 
     /**
      * Email file template source key that is used by email generator.
@@ -617,6 +632,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6
      */
     private static final Double ZERO_AMOUNT = new Double(0);
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
 
     /**
      * Draft status list.
@@ -4292,6 +4309,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(tcSubject.getUserId()));
         resources[0].setProperty(RESOURCE_INFO_HANDLE, getUserName(tcSubject));
         resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+        resources[0].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
 
         // for private, check if admin role is set, and use that if so
         if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) {
@@ -4307,6 +4325,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(roleId));
                 resources[1].setProperty(RESOURCE_INFO_HANDLE, adminRole);
                 resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                resources[1].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
             }
         }
         // design/dev, add Components
@@ -4319,6 +4338,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(components_user_id));
             resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_COMPONENTS);
             resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+            resources[1].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
         }
         // else add Applications
         else {
@@ -4328,6 +4348,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(applications_user_id));
             resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
             resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+            resources[1].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
         }
 
         return resources;
@@ -7141,6 +7162,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 newRes.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(userId));
                 newRes.setProperty(RESOURCE_INFO_HANDLE, String.valueOf(userService.getUserHandle(userId)));
                 newRes.setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                newRes.setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
 
                 projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
                 projectServices.addNotifications(userId, new long[]{projectId}, String.valueOf(tcSubject.getUserId()));
@@ -7631,13 +7653,122 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
      * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
      *        projects.
+     * @param role the role id to add    
      * @throws PermissionServiceException if an unexpected error occurs.
      * @since 1.6.2
      */
-    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions)
-        throws PermissionServiceException {
-        logger.debug("updateProjectPermissions(" + tcSubject +  ")");
-        this.permissionService.updateProjectPermissions(projectPermissions, tcSubject.getUserId());
+        public void updateProjectPermissions(TCSubject tcSubject,
+            List<ProjectPermission> projectPermissions, long role)
+            throws PermissionServiceException {
+        logger.debug("contest service facade bean #updateProjectPermissions("
+                + tcSubject + ", " + projectPermissions + ", " + role + ")");
+
+        try {
+            if (!isRole(tcSubject, ADMIN_ROLE)
+                    && !isRole(tcSubject, LIQUID_ADMIN_ROLE)) {
+                // retrieve full access project id set
+                Set<Long> fullAccessProjectIds = new HashSet<Long>();
+                List<ProjectPermission> allPermissions = getProjectPermissions(tcSubject);
+                for (ProjectPermission permission : allPermissions) {
+                    if (permission.getUserId() == tcSubject.getUserId()
+                            && "full".equals(permission.getPermission())) {
+                        fullAccessProjectIds.add(permission.getProjectId());
+                    }
+                }
+
+                // check permissions
+                for (ProjectPermission permission : projectPermissions) {
+                    if (!fullAccessProjectIds.contains(permission
+                            .getProjectId())) {
+                        throw new PermissionServiceException("User "
+                                + tcSubject.getUserId()
+                                + " is not granted FULL permission for "
+                                + "project " + permission.getProjectId());
+                    }
+                }
+            }
+
+            // when add/remove permission, we need to add/remove observer
+            for (ProjectPermission permission : projectPermissions) {
+                // add permission
+                if (permission.getUserPermissionId() < 0 
+                        && permission.getPermission() != null 
+                        && permission.getPermission().length() > 0) {
+                    List<Long> projectIds = projectServices
+                            .getProjectIdByTcDirectProject(permission
+                                    .getProjectId());
+
+                    // for each OR project, find all observers
+                    for (Long pid : projectIds) {
+                        this.assginRole(tcSubject, pid.longValue(),
+                                role,
+                                permission.getUserId());
+                    }
+                } else if (permission.getPermission() == null
+                        || "".equals(permission.getPermission())) {
+                    List<Permission> ps = getPermissions(tcSubject, permission
+                            .getUserId(), permission.getProjectId());
+                    Permission toDelete = null;
+                    if (ps != null && ps.size() > 0) {
+                        toDelete = ps.get(0);
+                    }
+
+                    if (toDelete != null) {
+                        List<Long> projectIds = projectServices
+                                .getProjectIdByTcDirectProject(permission
+                                        .getProjectId());
+
+                        for (Long pid : projectIds) {
+                            // if we are removing project permission but user
+                            // still has contest permission,
+                            // we will not remove observer
+                            if ((!projectServices.hasContestPermission(pid,
+                                    toDelete.getUserId()))) {
+                                com.topcoder.management.resource.Resource[] resources = projectServices
+                                        .searchResources(pid, role);
+
+                                com.topcoder.management.resource.Resource delRes = null;
+
+                                // check if user is already a observer
+                                if (resources != null && resources.length > 0) {
+                                    for (com.topcoder.management.resource.Resource resource : resources) {
+                                        if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
+                                                && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
+                                                        .equals(String.valueOf(toDelete.getUserId()))) {
+                                            delRes = resource;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (delRes != null) {
+                                    projectServices.removeResource(delRes,
+                                            String.valueOf(tcSubject.getUserId()));
+                                    projectServices.removeNotifications(toDelete.getUserId(), new long[] { pid
+                                            .longValue() }, String.valueOf(tcSubject.getUserId()));
+                                }
+
+                                // delete forum watch
+                                long forumId = projectServices.getForumId(pid);
+                                if (forumId > 0 && createForum) {
+                                    deleteForumWatchAndRole(forumId, permission
+                                            .getUserId());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // update project permissions
+            this.permissionService.updateProjectPermissions(projectPermissions,
+                    tcSubject.getUserId());
+        } catch (ContestServiceException e) {
+            sessionContext.setRollbackOnly();
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+
+        logger.debug("Exit updateProjectPermissions");
     }
 
     /**
