@@ -9,8 +9,15 @@ import java.io.Serializable;
  * <p>A simple <code>DTO</code> class providing the details for a single permission granted to a single user for
  * accessing a single project.</p>
  *
- * @author TCSDEVELOPER
- * @version 1.0 (Direct Permissions Setting Back-end and Integration Assembly 1.0)
+ * <p>
+ * Version 1.0.1 (TC Direct - Permission Updates) Change notes:
+ *   <ol>
+ *     <li>Added userPermissionId field and corresponding get/set methods.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author TCSDEVELOPER, TCSASSEMBLER
+ * @version 1.0.1
  */
 public class ProjectPermission implements Serializable {
 
@@ -49,6 +56,16 @@ public class ProjectPermission implements Serializable {
      * not.</p>
      */
     private boolean studio;
+    
+    /**
+     * <p>
+     * A <code>long</code> providing the ID of a user permission which this
+     * permission grants access to.
+     * </p>
+     * 
+     * @since 1.0.1
+     */
+    private long userPermissionId;
 
     /**
      * <p>Constructs new <code>ProjectPermission</code> instance. This implementation does nothing.</p>
@@ -167,4 +184,30 @@ public class ProjectPermission implements Serializable {
     public void setStudio(boolean studio) {
         this.studio = studio;
     }
+
+    /**
+     * <p>
+     * Gets the ID of a user permission which this permission grants access to.
+     * </p>
+     * 
+     * @return the userPermissionId
+     * @since 1.0.1
+     */
+    public long getUserPermissionId() {
+        return userPermissionId;
+    }
+
+    /**
+     * <p>
+     * Sets the ID of a user permission which this permission grants access to.
+     * </p>
+     * 
+     * @param userPermissionId
+     *            the userPermissionId to set
+     * @since 1.0.1
+     */
+    public void setUserPermissionId(long userPermissionId) {
+        this.userPermissionId = userPermissionId;
+    }
+
 }

@@ -44,7 +44,6 @@ import com.topcoder.util.log.LogManager;
  *   and DeclareRoles( { "Cockpit User", "Cockpit Administrator" })
  * </p>
  *
- *
  * <p>
  * Version 1.2 (Direct Permissions Setting Back-end and Integration Assembly 1.0) Change notes:
  *   <ol>
@@ -56,11 +55,19 @@ import com.topcoder.util.log.LogManager;
  *     <li>Added {@link #PROJECT_PERMISSION_TYPES} constant.</li>
  *   </ol>
  * </p>
-
- * @author waits, TCSDEVELOPER
- *
+ * 
+ * <p>
+ * Version 1.2.1 (TC Direct - Permission Updates) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #GET_PROJECT_PERMISSIONS_BY_USER} constant.</li>
+ *     <li>Updated {@link #getProjectPermissions(long)} method.</li>
+ *     <li>Updated {@link #updateProjectPermissions(java.util.List, long)} method.</li>
+ *   </ol>
+ * </p>
+ * 
+ * @author waits, TCSDEVELOPER, TCSASSEMBLER
  * @since Cockpit Project Admin Release Assembly v1.0
- * @version 1.2
+ * @version 1.2.1
  */
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -74,7 +81,7 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
      */
     private static String[] PROJECT_PERMISSION_TYPES = {"read", "write", "full"};
 
-    private static final String GET_PROJECT_PERMISSIONS_BY_USER = "select p1.resource_id, t.name, p2.user_id, u2.handle, p2.permission_type_id  "
+    private static final String GET_PROJECT_PERMISSIONS_BY_USER = "select p1.resource_id, t.name, p2.user_id, u2.handle, p2.permission_type_id, p2.user_permission_grant_id  "
                                                                 + " from user_permission_grant p1, tc_direct_project t, user_permission_grant p2, user u1, user u2  "
                                                                 + " where p1.resource_id = t.project_id and p2.resource_id = p1.resource_id "
                                                                 + " and p1.permission_type_id  = 3 and p1.user_id = u1.user_id and p2.user_id = u2.user_id "
@@ -885,6 +892,9 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
                 {
                     projectPermission.setPermission(PROJECT_PERMISSION_TYPES[(int) (Long.parseLong(os[4].toString()) - 1)]);
                 }
+                if (os[5] != null) {
+                    projectPermission.setUserPermissionId((Long.parseLong(os[5].toString())));
+                }
                 projectPermission.setStudio(false);
 
                 permissions.add(projectPermission);
@@ -931,39 +941,42 @@ public class PermissionServiceBean implements PermissionServiceRemote,  Permissi
                 permissionTypesMap.put(permissionType.getName(), permissionType);
             }
 
-            // Build the list of IDs of projects which user is granted full access to in order to authorize user for
-            // updating requested permissions
-            Set<Long> fullAccessProjectIds = new HashSet<Long>();
-            List<Permission> projectsFullPermissions = getProjectLevelFullPermissions(userId, em);
-            for (Permission fullPermission : projectsFullPermissions) {
-                fullAccessProjectIds.add(fullPermission.getResourceId());
-            }
-
-
             // Update requested project permissions
             for (ProjectPermission permission : projectPermissions) {
-                if (fullAccessProjectIds.contains(permission.getProjectId())) {
-                    deletePermission(permission.getUserId(), permission.getProjectId(), em);
-                    String permissionType = permission.getPermission();
-                    if ((permissionType != null) && (permissionType.trim().length() > 0)) {
-                        String permissionTypeKey = "project_" + permissionType;
-                        if (permissionTypesMap.containsKey(permissionTypeKey)) {
-                            PermissionType newPermissionType = permissionTypesMap.get(permissionTypeKey);
-                            Permission newPermission = new Permission();
-                            newPermission.setPermissionType(newPermissionType);
-                            newPermission.setResourceId(permission.getProjectId());
-                            newPermission.setResourceName(permission.getProjectName());
-                            newPermission.setStudio(permission.getStudio());
-                            newPermission.setUserHandle(permission.getHandle());
-                            newPermission.setUserId(permission.getUserId());
+                String permissionType = permission.getPermission();
+                if ((permissionType != null)
+                        && (permissionType.trim().length() > 0)) {
+                    // add or update permission
+                    String permissionTypeKey = "project_" + permissionType;
+                    if (permissionTypesMap.containsKey(permissionTypeKey)) {
+                        PermissionType newPermissionType = permissionTypesMap
+                                .get(permissionTypeKey);
+                        Permission newPermission = new Permission();
+                        newPermission.setPermissionType(newPermissionType);
+                        newPermission.setResourceId(permission.getProjectId());
+                        newPermission.setResourceName(permission
+                                .getProjectName());
+                        newPermission.setStudio(permission.getStudio());
+                        newPermission.setUserHandle(permission.getHandle());
+                        newPermission.setUserId(permission.getUserId());
+                        
+                        if (permission.getUserPermissionId() < 0) {
+                            // add permission
                             addPermission(newPermission, em);
                         } else {
-                            throw new PermissionServiceException("Wrong permission type: " + permissionType);
+                            // update permission
+                            newPermission.setPermissionId(permission.getUserPermissionId());
+                            updatePermission(newPermission, em);
                         }
+                        
+                    } else {
+                        throw new PermissionServiceException(
+                                "Wrong permission type: " + permissionType);
                     }
                 } else {
-                    throw new PermissionServiceException("User " + userId + " is not granted FULL permission for "
-                                                         + "project " + permission.getProjectId());
+                    // remove permission
+                    deletePermission(permission.getUserId(), permission
+                            .getProjectId(), em);    
                 }
             }
         } finally {
