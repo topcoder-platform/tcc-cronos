@@ -1002,15 +1002,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "project_info_type_id =6 " + 
         "and cv.comp_vers_id = (select pi.value from project_info pi " + 
         "where pi.project_info_type_id = 1 and pi.project_id = p.project_id) " + 
-        ") as component_name, " + 
-        "(select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  " + 
-        "from user_permission_grant as upg  where resource_id=p.project_id and is_studio=0 and user_id = ? " + 
-        " ),0)) as cperm, " + 
-        "(select name from permission_type where permission_type_id= NVL( (select max( permission_type_id)  " + 
-        "from user_permission_grant as upg  where resource_id=tcd.project_id and user_id = ? " + 
-        "),0)) as pperm " + 
+        ") as component_name,  pt.name " +
         "from project p, project_category_lu pcl," + 
-        " project_status_lu psl, tc_direct_project tcd , project_info pi " + 
+        " project_status_lu psl, tc_direct_project tcd , project_info pi , user_permission_grant upg, permission_type pt " + 
         " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id " + 
         "and p.tc_direct_project_id = tcd.project_id " + 
         "and p.project_status_id != 3 and p.project_category_id = 1 " +
@@ -1018,7 +1012,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         "and not exists (" + 
         "select 1 from project_info q1 , project q " + 
         " where q1.project_info_type_id = 1 and q1.project_id = q.project_id and q1.project_id <> p.project_id and q1.value = pi.value " +
-        " and (q.project_status_id = 1 or q.project_status_id = 7 or q.project_status_id = 2)  and q.project_category_id == 2) ";
+        " and (q.project_status_id = 1 or q.project_status_id = 7 or q.project_status_id = 2)  and q.project_category_id == 2) "  +
+        " and upg.resource_id = tcd.project_id  " +
+        " and upg.user_id = ? " +
+        " and pt.permission_type_id = upg.permission_type_id " +
+        " and upg.permission_type_id in (1,2,3) ";
         
 
 
@@ -1028,7 +1026,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @since 1.2.1
      */
     private static final DataType[] QUERY_ALL_DESIGN_COMPONENTS_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
-	Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+	Helper.STRING_TYPE, Helper.STRING_TYPE};
     /**
      * Represents the sql statement to query all project statuses.
      */
@@ -5464,7 +5462,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // get the project objects
             Object[][] rows = Helper.doQuery(conn,
-                    QUERY_ALL_DESIGN_COMPONENTS, new Object[] {userId, userId},
+                    QUERY_ALL_DESIGN_COMPONENTS, new Object[] {userId},
                     QUERY_ALL_DESIGN_COMPONENTS_COLUMN_TYPES );
 
             List<DesignComponents> designList = new ArrayList<DesignComponents>();
@@ -5478,15 +5476,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 {
                     designComponents.setProjectId((Long)rows[i][0]);
                     designComponents.setText(rows[i][1].toString());
-                    designComponents.setCperm(rows[i][2] == null ? null : rows[i][2].toString());
-                    designComponents.setPperm(rows[i][3] == null ? null : rows[i][3].toString());
+                    designComponents.setPperm(rows[i][2] == null ? null : rows[i][2].toString());
                 }
 
-                if (designComponents.getCperm() != null || designComponents.getPperm() != null)
-                {
-                    designList.add(designComponents);
-                }
-                
+                designList.add(designComponents);
+    
             }
 
             closeConnection(conn);
