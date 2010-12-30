@@ -101,21 +101,10 @@
         <pathelement location="${activation.jar}" />
         <pathelement location="${log4j.jar}"/>
         <pathelement location="${javamail.jar}" />
-        <!--
-	      <fileset dir="${javamail.dir}">
-	          <include name="**/*.jar"/>
-	      </fileset>-->
-	      
     </path>
 
     <path id="component.test.3rdParty-dependencies">
     	<pathelement location="${junit.jar}"/>
-    	<pathelement location="${ifxjdbc.jar}"/>
-      <pathelement location="${dumbster.jar}"/>
-      <pathelement location="${activation.jar}" />
-      <pathelement location="${log4j.jar}"/>
-      <pathelement location="${javamail.jar}" />
-    	<!--<pathelement location="${javamail.jar}" /> -->
     </path>
 
 </project>
