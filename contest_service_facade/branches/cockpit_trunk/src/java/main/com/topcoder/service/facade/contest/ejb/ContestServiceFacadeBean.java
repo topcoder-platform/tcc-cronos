@@ -8176,6 +8176,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     // Yes
                     item.setAnswer("1");
                     item.setQuestion(question.getId());
+                    Comment comment = new Comment();
+                    comment.setAuthor(screener.getId());
+                    comment.setComment("Ok");
+                    comment.setCommentType(CommentType.COMMENT_TYPE_COMMENT);
+                    item.addComment(comment);
                     items.add(item);
                 }
             }
