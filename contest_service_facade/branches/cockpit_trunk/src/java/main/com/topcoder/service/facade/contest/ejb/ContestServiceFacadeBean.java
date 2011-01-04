@@ -66,6 +66,7 @@ import com.topcoder.management.scorecard.data.Question;
 import com.topcoder.management.scorecard.data.Scorecard;
 import com.topcoder.management.scorecard.data.Section;
 import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.service.facade.contest.ContestServiceFacade;
 import com.topcoder.service.permission.ProjectPermission;
@@ -634,6 +635,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private static final Double ZERO_AMOUNT = new Double(0);
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
+
+    /**
+     * active submission status id
+     *
+     * @since 1.6
+     */
+    private static final long SUBMISSION_ACTIVE_STATUS_ID = 1;
 
     /**
      * Draft status list.
@@ -7910,8 +7918,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public Submission[] getSoftwareProjectSubmissions(long projectId)
         throws SearchBuilderException, UploadPersistenceException {
-        Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId); 
-        return uploadManager.searchSubmissions(filter);
+        Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
+        Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
+        Filter andfilter = SearchBundle.buildAndFilter(filter, filter2);
+        return uploadManager.searchSubmissions(andfilter);
     }
 
     /**
