@@ -244,7 +244,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </p>
      */
     private static final String SELECT_MAX_DEADLINE_SQL = "select max(deadline) from late_deliverable"
-        + " where project_phase_id = ? and resource_id = ?";
+        + " where project_phase_id = ? and resource_id = ? and deliverable_id = ?";
 
     /**
      * <p>
@@ -252,7 +252,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </p>
      */
     private static final String SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL = "select last_notified,"
-        + " forgive_ind from late_deliverable where project_phase_id = ? and resource_id = ? and deadline = ?";
+        + " forgive_ind from late_deliverable where project_phase_id = ? and resource_id = ? and deadline = ?"
+        + " and deliverable_id = ?";
 
     /**
      * <p>
@@ -279,7 +280,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      */
     private static final String UPDATE_SQL = "update late_deliverable"
         + " set %1$sdelay = (current - deadline)::interval second(9) to second::char(16)::decimal(16,0)"
-        + " where project_phase_id = ? and resource_id = ? and deadline = ?";
+        + " where project_phase_id = ? and resource_id = ? and deadline = ? and deliverable_id = ?";
 
     /**
      * <p>
@@ -851,7 +852,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             long resourceId = deliverable.getResource();
 
             Object[] result = doQuery(SELECT_MAX_DEADLINE_SQL, connection, new Object[] {phaseId,
-                resourceId}, false);
+                resourceId, deliverableId}, false);
 
             boolean alreadyTracked = result[0] != null;
             boolean canSendNotification = false;
@@ -870,8 +871,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                     // Prepare statement for retrieving last notification time and
                     // "forgive" flag for this late deliverable
                     result = doQuery(SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL, connection,
-                        new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime())},
-                        true);
+                        new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()),
+                        deliverableId}, true);
 
                     // Get the previous notification timestamp
                     Date previousNotificationTime = (Timestamp) result[0];
@@ -906,7 +907,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                     + phaseId + "]," + " resource id[" + resourceId + "], deliverable id[" + deliverableId + "].");
             } else {
                 doDMLQuery(String.format(UPDATE_SQL, canSendNotification ? "last_notified = current, " : ""),
-                    connection, new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime())});
+                    connection, new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()),
+                    deliverableId});
             }
 
             if (canSendNotification) {
