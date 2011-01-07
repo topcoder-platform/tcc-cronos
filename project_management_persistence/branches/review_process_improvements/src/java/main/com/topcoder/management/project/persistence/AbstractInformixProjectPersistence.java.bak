@@ -228,7 +228,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final DataType[] QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
-        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
