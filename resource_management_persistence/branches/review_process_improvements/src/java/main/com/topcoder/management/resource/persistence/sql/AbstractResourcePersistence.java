@@ -31,33 +31,31 @@ import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
 
-
 /**
  * <p>
- * The <code>AbstractResourcePersistence</code> class implements the <code>ResourcePersistence</code>
- * interface, in order to persist to the database.
+ * The <code>AbstractResourcePersistence</code> class implements the <code>ResourcePersistence</code> interface, in
+ * order to persist to the database.
  * </p>
  * <p>
- * <i>Changes from 1.0.1 : </i> It contains most of the logic that was in the
- * <code>SqlResourcePersistence</code> class in version 1.0.1. This class does not cache a
- * <code>Connection</code> to the database. Instead, it uses the concrete implementation of the
- * <code>{@linkplain #openConnection()}</code> method of whatever subclass is in use to acquire and open the
- * Connection. After the queries are executed and the result sets processed, it uses the
- * <code>{@linkplain #closeConnection(Connection)}</code> to dispose of the connection. If the operation
- * fails, <code>{@linkplain #closeConnectionOnError(Connection)}</code> is called instead. This allows the
- * transaction handling logic to be implemented in subclasses while the Statements, queries, and ResultSets
- * are handled in the abstract class.
+ * <i>Changes from 1.0.1 : </i> It contains most of the logic that was in the <code>SqlResourcePersistence</code>
+ * class in version 1.0.1. This class does not cache a <code>Connection</code> to the database. Instead, it uses the
+ * concrete implementation of the <code>{@linkplain #openConnection()}</code> method of whatever subclass is in use to
+ * acquire and open the Connection. After the queries are executed and the result sets processed, it uses the
+ * <code>{@linkplain #closeConnection(Connection)}</code> to dispose of the connection. If the operation fails,
+ * <code>{@linkplain #closeConnectionOnError(Connection)}</code> is called instead. This allows the transaction
+ * handling logic to be implemented in subclasses while the Statements, queries, and ResultSets are handled in the
+ * abstract class.
  * </p>
  * <p>
- * Most methods in this class will just create and execute a single <code>PreparedStatement</code>.
- * However, some of the Resource related methods need to execute several PreparedStatments in order to
- * accomplish the update/insertion/deletion of the resource.
+ * Most methods in this class will just create and execute a single <code>PreparedStatement</code>. However, some of
+ * the Resource related methods need to execute several PreparedStatments in order to accomplish the
+ * update/insertion/deletion of the resource.
  * </p>
  *
  * <p>
- * <i>Version 1.2 Changes:</i> Please note that all the changes in version 1.2 revolve around the changes to
- * the association multiplicity between Resource and Submission which used to be 1 to 1 and is not 1 to N
- * (i.e. a resource can be associated with multiple submissions)
+ * <i>Version 1.2 Changes:</i> Please note that all the changes in version 1.2 revolve around the changes to the
+ * association multiplicity between Resource and Submission which used to be 1 to 1 and is not 1 to N (i.e. a resource
+ * can be associated with multiple submissions)
  * </p>
  * <p>
  *
@@ -67,11 +65,10 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </p>
  * <p>
  *
- * <b>Thread Safety</b> : This class is immutable and thread-safe in the sense that multiple threads can not
- * corrupt its internal data structures. However, the results if used from multiple threads can be
- * unpredictable as the database is changed from different threads. This can equally well occur when the
- * component is used on multiple machines or multiple instances are used, so this is not a thread-safety
- * concern.
+ * <b>Thread Safety</b> : This class is immutable and thread-safe in the sense that multiple threads can not corrupt
+ * its internal data structures. However, the results if used from multiple threads can be unpredictable as the
+ * database is changed from different threads. This can equally well occur when the component is used on multiple
+ * machines or multiple instances are used, so this is not a thread-safety concern.
  * </p>
  *
  * @author aubergineanode
@@ -93,213 +90,198 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * Represents the sql to get the external properties.
      * </p>
      */
-    private static final String SQL_SELECT_EXT_PROPS =
-        "SELECT resource_info.resource_id, " + "resource_info_type_lu.name, resource_info.value "
-            + "FROM resource_info INNER JOIN resource_info_type_lu ON "
-            + "(resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id) "
-            + "WHERE resource_id IN (";
+    private static final String SQL_SELECT_EXT_PROPS = "SELECT resource_info.resource_id, "
+        + "resource_info_type_lu.name, resource_info.value "
+        + "FROM resource_info INNER JOIN resource_info_type_lu ON "
+        + "(resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id) "
+        + "WHERE resource_id IN (";
 
     /**
      * <p>
      * Represents the sql to get the notification types.
      * </p>
      */
-    private static final String SQL_SELECT_NOTIFICATION_TYPES =
-        "SELECT notification_type_id, name, description,"
-            + " create_user, create_date, modify_user, modify_date"
-            + " FROM notification_type_lu WHERE notification_type_id IN (";
+    private static final String SQL_SELECT_NOTIFICATION_TYPES = "SELECT notification_type_id, name, description,"
+        + " create_user, create_date, modify_user, modify_date"
+        + " FROM notification_type_lu WHERE notification_type_id IN (";
 
     /**
      * <p>
      * Represents the sql to get the resource roles.
      * </p>
      */
-    private static final String SQL_SELECT_RES_ROLES =
-        "SELECT resource_role_id, phase_type_id, name, description,"
-            + " create_user, create_date, modify_user, modify_date"
-            + " FROM resource_role_lu WHERE resource_role_id IN (";
+    private static final String SQL_SELECT_RES_ROLES = "SELECT resource_role_id, phase_type_id, name, description,"
+        + " create_user, create_date, modify_user, modify_date"
+        + " FROM resource_role_lu WHERE resource_role_id IN (";
 
     /**
      * <p>
      * Represents the sql to get the notifications.
      * </p>
      */
-    private static final String SQL_SELECT_NOTIFICATIONS =
-        "SELECT project_id, external_ref_id," + " notification_type_id, create_user, "
-            + " create_date, modify_user, modify_date FROM notification WHERE ";
+    private static final String SQL_SELECT_NOTIFICATIONS = "SELECT project_id, external_ref_id,"
+        + " notification_type_id, create_user, " + " create_date, modify_user, modify_date FROM notification WHERE ";
 
     /**
      * <p>
      * Represents the sql to get all resources.
      * </p>
      */
-    private static final String SQL_SELECT_ALL_RES =
-        "SELECT resource.resource_id, resource_role_id, project_id,"
-            + " project_phase_id, resource.create_user, resource.create_date, resource.modify_user, "
-            + " resource.modify_date" + " FROM resource WHERE resource.resource_id IN (";
+    private static final String SQL_SELECT_ALL_RES = "SELECT resource.resource_id, resource_role_id, project_id,"
+        + " project_phase_id, resource.create_user, resource.create_date, resource.modify_user, "
+        + " resource.modify_date" + " FROM resource WHERE resource.resource_id IN (";
 
     /**
      * <p>
      * Represents the sql for loading resource roles.
      * </p>
      */
-    private static final String SQL_SELECT_RES_ROLE =
-        "SELECT resource_role_id, phase_type_id, name, description,"
-            + " create_user, create_date, modify_user, modify_date FROM resource_role_lu WHERE resource_role_id = ?";
+    private static final String SQL_SELECT_RES_ROLE = "SELECT resource_role_id, phase_type_id, name, description,"
+        + " create_user, create_date, modify_user, modify_date FROM resource_role_lu WHERE resource_role_id = ?";
 
     /**
      * <p>
      * Represents the sql for updating resource role.
      * </p>
      */
-    private static final String SQL_UPDATE_RES_ROLE =
-        "UPDATE resource_role_lu SET phase_type_id = ?, name = ?, "
-            + "description = ?, modify_user = ?, modify_date = ? WHERE resource_role_id = ?";
+    private static final String SQL_UPDATE_RES_ROLE = "UPDATE resource_role_lu SET phase_type_id = ?, name = ?, "
+        + "description = ?, modify_user = ?, modify_date = ? WHERE resource_role_id = ?";
 
     /**
      * <p>
      * Represents the sql for deleting resource role.
      * </p>
      */
-    private static final String SQL_DELETE_RES_ROLE =
-        "DELETE FROM resource_role_lu WHERE resource_role_id = ?";
+    private static final String SQL_DELETE_RES_ROLE = "DELETE FROM resource_role_lu WHERE resource_role_id = ?";
 
     /**
      * <p>
      * Represents the sql for updating notification type.
      * </p>
      */
-    private static final String SQL_UPDATE_NOTIFICATION_TYPE =
-        "UPDATE notification_type_lu SET name = ?,"
-            + " description = ?, modify_user = ?, modify_date = ?  WHERE notification_type_id = ?";
+    private static final String SQL_UPDATE_NOTIFICATION_TYPE = "UPDATE notification_type_lu SET name = ?,"
+        + " description = ?, modify_user = ?, modify_date = ?  WHERE notification_type_id = ?";
 
     /**
      * <p>
      * Represents the sql for deleting notification type.
      * </p>
      */
-    private static final String SQL_DELETE_NOTIFICATION_TYPE =
-        "DELETE FROM notification_type_lu " + "WHERE notification_type_id = ?";
+    private static final String SQL_DELETE_NOTIFICATION_TYPE = "DELETE FROM notification_type_lu "
+        + "WHERE notification_type_id = ?";
 
     /**
      * <p>
      * Represents the sql for inserting notification type.
      * </p>
      */
-    private static final String SQL_INSERT_NOTIFICATION_TYPE =
-        "INSERT INTO notification_type_lu (" + "notification_type_id, name, description, create_user, "
-            + "create_date, modify_user, modify_date) VALUES(?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_NOTIFICATION_TYPE = "INSERT INTO notification_type_lu ("
+        + "notification_type_id, name, description, create_user, "
+        + "create_date, modify_user, modify_date) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * Represents the sql for inserting resource role.
      * </p>
      */
-    private static final String SQL_INSERT_RES_ROLE =
-        "INSERT INTO resource_role_lu(resource_role_id, name, "
-            + "description, phase_type_id, create_user, create_date, modify_user, modify_date)"
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_RES_ROLE = "INSERT INTO resource_role_lu(resource_role_id, name, "
+        + "description, phase_type_id, create_user, create_date, modify_user, modify_date)"
+        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * Represents the sql for loading notification type.
      * </p>
      */
-    private static final String SQL_SELECT_NOTIFICATION_TYPE =
-        "SELECT notification_type_id, name, description,"
-            + " create_user, create_date, modify_user, modify_date"
-            + " FROM notification_type_lu WHERE notification_type_id = ?";
+    private static final String SQL_SELECT_NOTIFICATION_TYPE = "SELECT notification_type_id, name, description,"
+        + " create_user, create_date, modify_user, modify_date"
+        + " FROM notification_type_lu WHERE notification_type_id = ?";
 
     /**
      * <p>
      * Represents the sql for loading notification.
      * </p>
      */
-    private static final String SQL_SELECT_NOTIFICATION =
-        "SELECT project_id, external_ref_id, "
-            + " notification_type_id, create_user, create_date, modify_user, modify_date"
-            + " FROM notification WHERE project_id = ? AND external_ref_id = ? AND notification_type_id = ?";
+    private static final String SQL_SELECT_NOTIFICATION = "SELECT project_id, external_ref_id, "
+        + " notification_type_id, create_user, create_date, modify_user, modify_date"
+        + " FROM notification WHERE project_id = ? AND external_ref_id = ? AND notification_type_id = ?";
 
     /**
      * <p>
      * Represents the sql for deleting notification.
      * </p>
      */
-    private static final String SQL_DELETE_NOTIFICATION =
-        "DELETE FROM notification WHERE project_id = ? "
-            + "AND external_ref_id = ? AND notification_type_id = ?";
+    private static final String SQL_DELETE_NOTIFICATION = "DELETE FROM notification WHERE project_id = ? "
+        + "AND external_ref_id = ? AND notification_type_id = ?";
 
     /**
      * <p>
      * Represents the sql for adding notification.
      * </p>
      */
-    private static final String SQL_INSERT_NOTIFICATION =
-        "INSERT INTO notification " + "(project_id, external_ref_id, notification_type_id, create_user, "
-            + "create_date, modify_user, modify_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_NOTIFICATION = "INSERT INTO notification "
+        + "(project_id, external_ref_id, notification_type_id, create_user, "
+        + "create_date, modify_user, modify_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * Represents the sql to load resources.
      * </p>
      */
-    private static final String SQL_SELECT_LOAD_RES =
-        "SELECT resource.resource_id, resource_role_id, project_id,"
-            + " project_phase_id, resource.create_user, resource.create_date, resource.modify_user,"
-            + " resource.modify_date" + " FROM resource WHERE resource.resource_id = ?";
+    private static final String SQL_SELECT_LOAD_RES = "SELECT resource.resource_id, resource_role_id, project_id,"
+        + " project_phase_id, resource.create_user, resource.create_date, resource.modify_user,"
+        + " resource.modify_date" + " FROM resource WHERE resource.resource_id = ?";
 
     /**
      * <p>
      * Represents the sql to select external properties.
      * </p>
      */
-    private static final String SQL_SELECT_EXT_PROP =
-        "SELECT resource_info_type_lu.name, resource_info.value"
-            + " FROM resource_info, resource_info_type_lu  "
-            + " WHERE resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id "
-            + " AND resource_id = ?";
+    private static final String SQL_SELECT_EXT_PROP = "SELECT resource_info_type_lu.name, resource_info.value"
+        + " FROM resource_info, resource_info_type_lu  "
+        + " WHERE resource_info.resource_info_type_id = resource_info_type_lu.resource_info_type_id "
+        + " AND resource_id = ?";
 
     /**
      * <p>
      * Represents the sql for deleting the resource info.
      * </p>
      */
-    private static final String SQL_DELETE_RES_INFO_TYPE =
-        "DELETE FROM resource_info " + "WHERE resource_id = ? and resource_info_type_id = ?";
+    private static final String SQL_DELETE_RES_INFO_TYPE = "DELETE FROM resource_info "
+        + "WHERE resource_id = ? and resource_info_type_id = ?";
 
     /**
      * <p>
      * Represents the sql for updating the resource info.
      * </p>
      */
-    private static final String SQL_UPDATE_RES_INFO =
-        "UPDATE resource_info SET value = ? " + "WHERE resource_id = ? AND resource_info_type_id = ?";
+    private static final String SQL_UPDATE_RES_INFO = "UPDATE resource_info SET value = ? "
+        + "WHERE resource_id = ? AND resource_info_type_id = ?";
 
     /**
      * <p>
      * Represents the sql for updating the resource submission.
      * </p>
      */
-    private static final String SQL_UPDATE_SUBMISSION =
-        "UPDATE resource_submission"
-            + " SET modify_user = ?, modify_date = ? WHERE resource_id = ? AND submission_id = ?";
+    private static final String SQL_UPDATE_SUBMISSION = "UPDATE resource_submission"
+        + " SET modify_user = ?, modify_date = ? WHERE resource_id = ? AND submission_id = ?";
 
     /**
      * <p>
      * Represents the sql for selecting resource submission.
      * </p>
      */
-    private static final String SQL_SELECT_SUBMISSION =
-        "SELECT submission_id FROM resource_submission " + "WHERE resource_id = ?";
+    private static final String SQL_SELECT_SUBMISSION = "SELECT submission_id FROM resource_submission "
+        + "WHERE resource_id = ?";
 
     /**
      * <p>
      * Represents the sql for updating resource.
      * </p>
      */
-    private static final String SQL_UPDATE_RESOURCE =
-        "UPDATE resource" + " SET resource_role_id = ?, project_id = ?, project_phase_id = ?,"
-            + " modify_user = ?, modify_date = ? WHERE resource_id = ?";
+    private static final String SQL_UPDATE_RESOURCE = "UPDATE resource"
+        + " SET resource_role_id = ?, project_id = ?, project_phase_id = ?,"
+        + " modify_user = ?, modify_date = ? WHERE resource_id = ?";
 
     /**
      * <p>
@@ -313,16 +295,14 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * Represents the sql for deleting resource submission.
      * </p>
      */
-    private static final String SQL_DELETE_SUBMISSION =
-        "DELETE FROM resource_submission WHERE resource_id = ?";
+    private static final String SQL_DELETE_SUBMISSION = "DELETE FROM resource_submission WHERE resource_id = ?";
 
     /**
      * <p>
      * Represents the sql for deleting one line of resource submission.
      * </p>
      */
-    private static final String SQL_DELETE_ONE_SUBMISSION =
-        "DELETE FROM resource_submission WHERE resource_id = ? AND submission_id = ?";
+    private static final String SQL_DELETE_ONE_SUBMISSION = "DELETE FROM resource_submission WHERE resource_id = ? AND submission_id = ?";
 
     /**
      * <p>
@@ -336,38 +316,35 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * Represents the sql for selecting resource info type.
      * </p>
      */
-    private static final String SQL_SELECT_RES_INFO_TYPE =
-        "SELECT resource_info_type_id" + " FROM resource_info_type_lu WHERE name = ?";
+    private static final String SQL_SELECT_RES_INFO_TYPE = "SELECT resource_info_type_id"
+        + " FROM resource_info_type_lu WHERE name = ?";
 
     /**
      * <p>
      * Represents the sql for inserting resource info.
      * </p>
      */
-    private static final String SQL_INSERT_RES_INFO =
-        "INSERT INTO resource_info"
-            + "(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date)"
-            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_RES_INFO = "INSERT INTO resource_info"
+        + "(resource_id, resource_info_type_id, value, create_user, create_date, modify_user, modify_date)"
+        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * Represents the sql for inserting submission.
      * </p>
      */
-    private static final String SQL_INSERT_SUBMISSION =
-        "INSERT INTO resource_submission"
-            + "(resource_id, submission_id, create_user, create_date, modify_user, modify_date)"
-            + "VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_SUBMISSION = "INSERT INTO resource_submission"
+        + "(resource_id, submission_id, create_user, create_date, modify_user, modify_date)"
+        + "VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * Represents the sql for adding resource.
      * </p>
      */
-    private static final String SQL_INSERT_RESOURCE =
-        "INSERT INTO resource "
-            + "(resource_id, resource_role_id, project_id, project_phase_id, create_user, create_date,"
-            + " modify_user, modify_date)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_RESOURCE = "INSERT INTO resource "
+        + "(resource_id, resource_role_id, project_id, project_phase_id, create_user, create_date,"
+        + " modify_user, modify_date)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -380,7 +357,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Represents the project user audit creation type
+     * Represents the project user audit creation type.
      * </p>
      *
      * @since 1.2.2
@@ -389,7 +366,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Represents the project user audit deletion type
+     * Represents the project user audit deletion type.
      * </p>
      *
      * @since 1.2.2
@@ -398,43 +375,41 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Represents the SQL for inserting project user audit records
+     * Represents the SQL for inserting project user audit records.
      * </p>
      *
      * @since 1.2.2
      */
-    private static final String SQL_INSERT_PROJECT_USER_AUDIT =
-        "INSERT INTO project_user_audit (project_user_audit_id, project_id, resource_user_id, " +
-        " resource_role_id, audit_action_type_id, action_date, action_user_id) " +
-        " VALUES (PROJECT_USER_AUDIT_SEQ.nextval, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_PROJECT_USER_AUDIT = "INSERT INTO project_user_audit"
+        + " (project_user_audit_id, project_id, resource_user_id, "
+        + " resource_role_id, audit_action_type_id, action_date, action_user_id) "
+        + " VALUES (PROJECT_USER_AUDIT_SEQ.nextval, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
      * The name of the connection producer to use when a connection to the database is retrieved from the
-     * <code>DBConnectionFactory</code>. This field is immutable and can be <code>null</code>. When
-     * non-null, no restrictions are applied to the field. When this field is <code>null</code>, the
-     * createConnection() method is used to get a connection. When it is non-null, the
-     * createConnection(String) method is used to get a connection. This field is exposed through the
-     * protected getter <code>{@linkplain #getConnectionName()}</code> and is used by subclasses in the
-     * openConnection method.
+     * <code>DBConnectionFactory</code>. This field is immutable and can be <code>null</code>. When non-null, no
+     * restrictions are applied to the field. When this field is <code>null</code>, the createConnection() method is
+     * used to get a connection. When it is non-null, the createConnection(String) method is used to get a connection.
+     * This field is exposed through the protected getter <code>{@linkplain #getConnectionName()}</code> and is used
+     * by subclasses in the openConnection method.
      * </p>
      */
     private final String connectionName;
 
     /**
      * <p>
-     * The connection factory to use when a connection to the database is needed. This field is immutable and
-     * must be non-null. This field is exposed through the protected getter
-     * <code>{@linkplain #getConnectionFactory()}</code> is used by subclasses in the
-     * <code>{@linkplain #openConnection()}</code> method.
+     * The connection factory to use when a connection to the database is needed. This field is immutable and must be
+     * non-null. This field is exposed through the protected getter <code>{@linkplain #getConnectionFactory()}</code>
+     * is used by subclasses in the <code>{@linkplain #openConnection()}</code> method.
      * </p>
      */
     private final DBConnectionFactory connectionFactory;
 
     /**
      * <p>
-     * Creates a new <code>AbstractResourcePersistence</code>. The connectionName field is set to
-     * <code>null</code>, and the connectionFactory field is a set to the argument.
+     * Creates a new <code>AbstractResourcePersistence</code>. The connectionName field is set to <code>null</code>,
+     * and the connectionFactory field is a set to the argument.
      * </p>
      *
      * @param connectionFactory The connection factory to use for getting connections to the database.
@@ -455,8 +430,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      */
     protected AbstractResourcePersistence(DBConnectionFactory connectionFactory, String connectionName) {
         Util.checkNull(connectionFactory, "connectionFactory");
-        LOGGER.log(Level.INFO,
-                "Instantiate AbstractResourcePersistence with connectionFactory and connectionName[" + connectionName + "].");
+        LOGGER.log(Level.INFO, "Instantiate AbstractResourcePersistence with connectionFactory and connectionName["
+            + connectionName + "].");
         this.connectionFactory = connectionFactory;
         this.connectionName = connectionName;
     }
@@ -477,20 +452,19 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      *
      * @param resource The resource to add to the persistence store
      * @throws IllegalArgumentException If resource is <code>null</code> or its id is UNSET_ID or its
-     *         <code>ResourceRole</code> is <code>null</code> or its creation/modification user/date is
-     *         <code>null</code>
-     * @throws ResourcePersistenceException If there is a failure to persist the change or a Resource with the
-     *         id is already in the persistence.
+     *             <code>ResourceRole</code> is <code>null</code> or its creation/modification user/date is
+     *             <code>null</code>
+     * @throws ResourcePersistenceException If there is a failure to persist the change or a Resource with the id is
+     *             already in the persistence.
      */
     public void addResource(Resource resource) throws ResourcePersistenceException {
         Util.checkResource(resource, false);
 
         LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
-                "add new resource to the project [id=" + (resource.getProject() == null ?
-                    "null" : resource.getProject().longValue())
-                + "] with role :" + resource.getResourceRole().getName()
-                + " in the [id=" + (resource.getPhase() == null ? null :
-                    resource.getPhase().longValue()) + "] phase."));
+            "add new resource to the project [id="
+                + (resource.getProject() == null ? "null" : resource.getProject().longValue()) + "] with role :"
+                + resource.getResourceRole().getName() + " in the [id="
+                + (resource.getPhase() == null ? null : resource.getPhase().longValue()) + "] phase."));
         Connection connection = openConnection();
 
         try {
@@ -522,7 +496,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
-                    "Unable to add resource to the project [id=" + resource.getProject().longValue() + "] with role:"
+                "Unable to add resource to the project [id=" + resource.getProject().longValue() + "] with role:"
                     + resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Unable to insert resource.", e);
         } finally {
@@ -575,10 +549,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param submission the submission to insert
      * @throws SQLException if failed to persist submission.
      */
-    private void insertSubmission(Connection connection, Resource resource, Object submission)
-        throws SQLException {
+    private void insertSubmission(Connection connection, Resource resource, Object submission) throws SQLException {
         LOGGER.log(Level.INFO, "insert a record into the resource_submission with resource_id:" + resource.getId()
-                + " and submission_id:" + getIdString(resource.getSubmissions()));
+            + " and submission_id:" + getIdString(resource.getSubmissions()));
         PreparedStatement statement = null;
         int index = 1;
         try {
@@ -606,11 +579,11 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param value the property value to be persisted
      * @throws SQLException if failed to persist resource_info
      */
-    private void insertResourceInfo(Connection connection, Resource resource, int resourceinfotypeid,
-        String value) throws SQLException {
+    private void insertResourceInfo(Connection connection, Resource resource, int resourceinfotypeid, String value)
+        throws SQLException {
 
-        LOGGER.log(Level.INFO, "insert a record into the resource_info table with resource_id = " + resource.getId() +
-                " and resource_info_type_id =" + resourceinfotypeid + " value = " + value);
+        LOGGER.log(Level.INFO, "insert a record into the resource_info table with resource_id = " + resource.getId()
+            + " and resource_info_type_id =" + resourceinfotypeid + " value = " + value);
         PreparedStatement statement = null;
 
         int index = 1;
@@ -657,8 +630,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Deletes the given <code>Resource</code> (by id) in the persistence store. The <code>Resource</code>
-     * must already be present in the persistence store, otherwise nothing is done.
+     * Deletes the given <code>Resource</code> (by id) in the persistence store. The <code>Resource</code> must
+     * already be present in the persistence store, otherwise nothing is done.
      * </p>
      * <p>
      * Any <code>SQLException</code> or <code>DBConnectionException</code> should be wrapped in a
@@ -670,18 +643,18 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * </p>
      *
      * @param resource The resource to remove
-     * @throws IllegalArgumentException If resource is <code>null</code> or its id is UNSET_ID or its
-     *         ResourceRole is <code>null</code>
+     * @throws IllegalArgumentException If resource is <code>null</code> or its id is UNSET_ID or its ResourceRole is
+     *             <code>null</code>
      * @throws ResourcePersistenceException If there is a failure to persist the change.
      */
     public void deleteResource(Resource resource) throws ResourcePersistenceException {
         Util.checkResource(resource, true);
 
-        LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
-                "delete resource in the project [id=" + resource.getProject().longValue()
-                + "] with role :" + resource.getResourceRole().getName()
-                + " in the [id=" + (resource.getPhase() == null ? "null" :
-                    resource.getPhase().longValue()) + "] phase."));
+        LOGGER
+            .log(Level.INFO, new LogMessage(new Long(resource.getId()), null, "delete resource in the project [id="
+                + resource.getProject().longValue() + "] with role :" + resource.getResourceRole().getName()
+                + " in the [id=" + (resource.getPhase() == null ? "null" : resource.getPhase().longValue())
+                + "] phase."));
 
         Connection connection = openConnection();
         try {
@@ -697,7 +670,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
-                    "Unable to delete resource to the project [id=" + resource.getProject() + "] with role:"
+                "Unable to delete resource to the project [id=" + resource.getProject() + "] with role:"
                     + resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Fail to delete resource", e);
         } finally {
@@ -726,20 +699,19 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Updates the given Resource in the database with its currently set information. The Resource must
-     * already be present in the persistence store.
+     * Updates the given Resource in the database with its currently set information. The Resource must already be
+     * present in the persistence store.
      * </p>
      *
      * <p>
-     * The operator information should already have been put in the modification date/modification user
-     * properties of the Resource. Any SQLException or DBConnectionException should be wrapped in a
-     * ResourcePersistenceException.
+     * The operator information should already have been put in the modification date/modification user properties of
+     * the Resource. Any SQLException or DBConnectionException should be wrapped in a ResourcePersistenceException.
      * </p>
      *
      * <p>
-     * Note that in version 1.2 we will be possibly updating multiple submission associations (version 1.1
-     * only deals with a single association) which means that the actual SQL will be either modified slightly
-     * or it will have to be executed multiple times for each relevant submission entry.
+     * Note that in version 1.2 we will be possibly updating multiple submission associations (version 1.1 only deals
+     * with a single association) which means that the actual SQL will be either modified slightly or it will have to
+     * be executed multiple times for each relevant submission entry.
      * </p>
      *
      * <p>
@@ -748,20 +720,17 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      *
      * @param resource The resource to update
      * @throws IllegalArgumentException If resource is <code>null</code> or its id is UNSET_ID or its
-     *         <code>ResourceRole</code> is <code>null</code> or its modification user/date is
-     *         <code>null</code>
-     * @throws ResourcePersistenceException If there is a failure to persist the <code>Resource</code>, or
-     *         the <code>Resource</code> is not already in the persistence.
+     *             <code>ResourceRole</code> is <code>null</code> or its modification user/date is <code>null</code>
+     * @throws ResourcePersistenceException If there is a failure to persist the <code>Resource</code>, or the
+     *             <code>Resource</code> is not already in the persistence.
      */
     public void updateResource(Resource resource) throws ResourcePersistenceException {
         Util.checkResource(resource, false);
 
-        LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
-                "update resource in the project [id=" + (resource.getProject() == null ?
-                    "null" : resource.getProject().longValue())
-                + "] with role :" + resource.getResourceRole().getName()
-                + " in the [id=" + (resource.getPhase() == null ? "null" :
-                    resource.getPhase().longValue()) + "] phase."));
+        LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null, "update resource in the project [id="
+            + (resource.getProject() == null ? "null" : resource.getProject().longValue()) + "] with role :"
+            + resource.getResourceRole().getName() + " in the [id="
+            + (resource.getPhase() == null ? "null" : resource.getPhase().longValue()) + "] phase."));
 
         Connection connection = openConnection();
         try {
@@ -821,8 +790,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             }
 
             // updating the extended properties
-            Map previousProperties =
-                selectExternalProperties(connection, new Resource(resource.getId())).getAllProperties();
+            Map previousProperties = selectExternalProperties(connection, new Resource(resource.getId()))
+                .getAllProperties();
 
             // keep old user id to save audit information in case it changed.
             Long oldResourceUserId = null;
@@ -852,11 +821,11 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
                     // check if external reference id changed (user id) and save it to later generate audit
                     if (key.equals(EXTERNAL_REFERENCE_ID_PROPERTY_KEY)) {
                         try {
-                            oldResourceUserId =
-                                Long.parseLong(previousProperties.get(EXTERNAL_REFERENCE_ID_PROPERTY_KEY).toString());
+                            oldResourceUserId = Long.parseLong(previousProperties.get(
+                                EXTERNAL_REFERENCE_ID_PROPERTY_KEY).toString());
                         } catch (NumberFormatException e1) {
-                            throw new ResourcePersistenceException("Audit information can't be saved " +
-                                "since resource's external reference id is invalid");
+                            throw new ResourcePersistenceException("Audit information can't be saved "
+                                + "since resource's external reference id is invalid");
                         }
                     }
 
@@ -889,7 +858,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
-                    "Unable to update resource to the project [id=" + resource.getProject().longValue() + "] with role:"
+                "Unable to update resource to the project [id=" + resource.getProject().longValue() + "] with role:"
                     + resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Fail to update resource", e);
         } finally {
@@ -1018,10 +987,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param value the value.
      * @throws SQLException if database operation fails for some reasons.
      */
-    private void updateResourceInfo(Connection connection, long resourceId, int resourceTypeInfoId,
-        String value) throws SQLException {
+    private void updateResourceInfo(Connection connection, long resourceId, int resourceTypeInfoId, String value)
+        throws SQLException {
         LOGGER.log(Level.INFO, "update resource_info table with resource_id = " + resourceId
-                + " and resource_info_type_id =" + resourceTypeInfoId + " value = " + value);
+            + " and resource_info_type_id =" + resourceTypeInfoId + " value = " + value);
         PreparedStatement statement = null;
         int index = 1;
         try {
@@ -1047,7 +1016,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     private void removeResourceInfo(Connection connection, long resourceId, int resourceInfoTypeId)
         throws SQLException {
         LOGGER.log(Level.INFO, "delete resource_info with resource_id:" + resourceId + " and resource_info_type_id:"
-                + resourceInfoTypeId);
+            + resourceInfoTypeId);
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(SQL_DELETE_RES_INFO_TYPE);
@@ -1066,8 +1035,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param connection the connection to database
      * @param resource the resource instance
      * @return the resource instance with all external properties set.
-     * @throws ResourcePersistenceException if failed to select all external properties for this resource
-     *         instance.
+     * @throws ResourcePersistenceException if failed to select all external properties for this resource instance.
      */
     private Resource selectExternalProperties(Connection connection, Resource resource)
         throws ResourcePersistenceException {
@@ -1111,7 +1079,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     public Resource loadResource(long resourceId) throws ResourcePersistenceException {
         Util.checkPositiveValue(resourceId, "resourceId");
 
-        LOGGER.log(Level.INFO, new LogMessage(new Long(resourceId), null,"load resource."));
+        LOGGER.log(Level.INFO, new LogMessage(new Long(resourceId), null, "load resource."));
 
         Connection connection = openConnection();
 
@@ -1132,7 +1100,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             return null;
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(new Long(resourceId), null,"Failed to load resource instance.",e));
+            LOGGER.log(Level.ERROR,
+                new LogMessage(new Long(resourceId), null, "Failed to load resource instance.", e));
             throw new ResourcePersistenceException("Failed to load resource instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1149,8 +1118,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @return The Resource instance
      * @throws ResourcePersistenceException if failed to construct the <code>Resource</code> instance.
      */
-    private Resource constructResource(ResultSet rs, Connection connection)
-        throws ResourcePersistenceException {
+    private Resource constructResource(ResultSet rs, Connection connection) throws ResourcePersistenceException {
         try {
             Resource resource = new Resource();
 
@@ -1189,11 +1157,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     /**
      * Construct a Resource instance from given CustomResultSet instance.
      *
-     * @param rs
-     *            the CustomResultSet instance
+     * @param rs the CustomResultSet instance
      * @return The Resource instance
-     * @throws ResourcePersistenceException
-     *             if failed to construct the Resource instance.
+     * @throws ResourcePersistenceException if failed to construct the Resource instance.
      */
     private Resource constructResource(CustomResultSet rs, Connection connection) throws ResourcePersistenceException {
         try {
@@ -1234,8 +1200,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Adds a notification to the persistence store. A notification type with the given ID must already exist
-     * in the persistence store, as must a project.
+     * Adds a notification to the persistence store. A notification type with the given ID must already exist in the
+     * persistence store, as must a project.
      * </p>
      * <p>
      * Any <code>SQLException</code> or <code>DBConnectionException</code> should be wrapped in a
@@ -1258,8 +1224,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Util.checkPositiveValue(notificationType, "notificationType");
         Util.checkNull(operator, "operator");
 
-        LOGGER.log(Level.INFO, new LogMessage(null, operator, "add notification(type="
-                + notificationType+ " in the project:" + project + " with external_ref user:" + user));
+        LOGGER.log(Level.INFO, new LogMessage(null, operator, "add notification(type=" + notificationType
+            + " in the project:" + project + " with external_ref user:" + user));
 
         Connection connection = openConnection();
         PreparedStatement statement = null;
@@ -1282,7 +1248,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(null, operator, "Failsed to add notification(type="
-                    + notificationType+ " in the project:" + project + " with external_ref user:" + user,e));
+                + notificationType + " in the project:" + project + " with external_ref user:" + user, e));
             throw new ResourcePersistenceException("Failed to insert notification for reason.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1292,9 +1258,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Removes a notification from the persistence store. The given notification tuple identifier (user,
-     * project, and notificationType) should already exists in the persistence store, otherwise nothing will
-     * be done. Note that in this implementation the operator is not used.
+     * Removes a notification from the persistence store. The given notification tuple identifier (user, project, and
+     * notificationType) should already exists in the persistence store, otherwise nothing will be done. Note that in
+     * this implementation the operator is not used.
      * </p>
      * <p>
      * Any <code>SQLException</code> or <code>DBConnectionException</code> should be wrapped in a
@@ -1314,8 +1280,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Util.checkPositiveValue(project, "project");
         Util.checkPositiveValue(notificationType, "notificationType");
         Util.checkNull(operator, "operator");
-        LOGGER.log(Level.INFO, new LogMessage(null, operator, "Remove notification(type="
-                + notificationType+ " from the project:" + project + " with external_ref user:" + user));
+        LOGGER.log(Level.INFO, new LogMessage(null, operator, "Remove notification(type=" + notificationType
+            + " from the project:" + project + " with external_ref user:" + user));
         PreparedStatement statement = null;
         Connection connection = openConnection();
         int index = 1;
@@ -1330,7 +1296,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(null, operator, "Failsed to remove notification(type="
-                    + notificationType+ " from the project:" + project + " with external_ref user:" + user,e));
+                + notificationType + " from the project:" + project + " with external_ref user:" + user, e));
             throw new ResourcePersistenceException("Failed to remove notification.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1361,8 +1327,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Util.checkPositiveValue(project, "project");
         Util.checkPositiveValue(notificationType, "notificationType");
 
-        LOGGER.log(Level.INFO, new LogMessage(null, null, "Load notification(type="
-                + notificationType+ " of the project:" + project + " with external_ref user:" + user));
+        LOGGER.log(Level.INFO, new LogMessage(null, null, "Load notification(type=" + notificationType
+            + " of the project:" + project + " with external_ref user:" + user));
 
         Connection connection = openConnection();
 
@@ -1385,8 +1351,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             return null;
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.INFO, new LogMessage(null, null, "Failed to Load notification(type="
-                    + notificationType+ " of the project:" + project + " with external_ref user:" + user));
+            LOGGER.log(Level.INFO, new LogMessage(null, null, "Failed to Load notification(type=" + notificationType
+                + " of the project:" + project + " with external_ref user:" + user));
             throw new ResourcePersistenceException("Failed to load the notification.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1402,8 +1368,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param connection the connection to the db.
      * @param rs the <code>ResultSet</code> instance
      * @return the constructed <code>Notification</code> instance.
-     * @throws ResourcePersistenceException if failed to get the <code>Notification</code> instance from
-     *         database.
+     * @throws ResourcePersistenceException if failed to get the <code>Notification</code> instance from database.
      */
     private Notification constructNotification(Connection connection, ResultSet rs)
         throws ResourcePersistenceException {
@@ -1430,18 +1395,17 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      *
      * Construct the Notification instance from the ResultSet instance.
      *
-     * @param connection
-     *            the connection to the db.
-     * @param rs
-     *            the ResultSet instance
+     * @param connection the connection to the db.
+     * @param rs the ResultSet instance
      * @return the constructed Notification instance.
-     * @throws ResourcePersistenceException
-     *             if failed to get the Notification instance from database.
+     * @throws ResourcePersistenceException if failed to get the Notification instance from database.
      */
-    private Notification consructNotification(Connection connection, CustomResultSet rs) throws ResourcePersistenceException {
+    private Notification consructNotification(Connection connection, CustomResultSet rs)
+        throws ResourcePersistenceException {
         try {
             NotificationType type = loadNotificationType(connection, rs.getLong("notification_type_id"));
-            Notification notification = new Notification(rs.getLong("project_id"), type, rs.getLong("external_ref_id"));
+            Notification notification = new Notification(rs.getLong("project_id"), type, rs
+                .getLong("external_ref_id"));
 
             notification.setCreationUser(rs.getString("create_user"));
             notification.setCreationTimestamp(rs.getTimestamp("create_date"));
@@ -1464,8 +1428,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @return NotificationType instance if exists, <code>null</code> otherwise.
      * @throws SQLException if failed to load the <code>NotificationType</code> instance.
      */
-    private NotificationType loadNotificationType(Connection connection, long notificationTypeId)
-        throws SQLException {
+    private NotificationType loadNotificationType(Connection connection, long notificationTypeId) throws SQLException {
 
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -1498,9 +1461,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Adds a notification type to the persistence store. The id of the notification type must already be
-     * assigned to the <code>NotificationType</code> object passed to this method, and not already exist in
-     * the persistence source.
+     * Adds a notification type to the persistence store. The id of the notification type must already be assigned to
+     * the <code>NotificationType</code> object passed to this method, and not already exist in the persistence
+     * source.
      * </p>
      * <p>
      * Any <code>SQLException</code> or <code>DBConnectionException</code> should be wrapped in a
@@ -1508,8 +1471,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * </p>
      *
      * @param notificationType The notification type to add.
-     * @throws IllegalArgumentException If notificationType is null or its id is NotificationType.UNSET_ID or
-     *         its name/description is null or its creation/modification user/date are null
+     * @throws IllegalArgumentException If notificationType is null or its id is NotificationType.UNSET_ID or its
+     *             name/description is null or its creation/modification user/date are null
      * @throws ResourcePersistenceException If there is an error updating the persistence
      */
     public void addNotificationType(NotificationType notificationType) throws ResourcePersistenceException {
@@ -1536,8 +1499,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed add a notification type with id:" + notificationType.getId(),e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed add a notification type with id:"
+                + notificationType.getId(), e));
             throw new ResourcePersistenceException("Failed to add the notificationType instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1547,15 +1510,14 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Removes a notification type from the persistence (by id) store. If no notification type exists with the
-     * id of the notification type, nothing is done.
+     * Removes a notification type from the persistence (by id) store. If no notification type exists with the id of
+     * the notification type, nothing is done.
      * </p>
      *
      * @param notificationType The notification type to delete.
      *
      * @throws IllegalArgumentException If notificationType is <code>null</code> or its id is UNSET_ID.
-     * @throws ResourcePersistenceException If there is an error deleting the notification type in the
-     *         persistence
+     * @throws ResourcePersistenceException If there is an error deleting the notification type in the persistence
      */
     public void deleteNotificationType(NotificationType notificationType) throws ResourcePersistenceException {
         Util.checkNotificationType(notificationType, true);
@@ -1571,8 +1533,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.executeUpdate();
         } catch (SQLException ex) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed delete a notification type with id:" + notificationType.getId(),ex));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed delete a notification type with id:"
+                + notificationType.getId(), ex));
             throw new ResourcePersistenceException("Failed to delete the NotificationType instance.", ex);
         } finally {
             Util.closeStatement(statement);
@@ -1592,10 +1554,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * </p>
      *
      * @param notificationType The notification type to update
-     * @throws IllegalArgumentException If notificationType is <code>null</code> or its id is UNSET_ID or
-     *         its name/description is <code>null</code> or its modification user/date is <code>null</code>
-     * @throws ResourcePersistenceException if there is an error updating the notification type in the
-     *         persistence
+     * @throws IllegalArgumentException If notificationType is <code>null</code> or its id is UNSET_ID or its
+     *             name/description is <code>null</code> or its modification user/date is <code>null</code>
+     * @throws ResourcePersistenceException if there is an error updating the notification type in the persistence
      */
     public void updateNotificationType(NotificationType notificationType) throws ResourcePersistenceException {
         Util.checkNotificationType(notificationType, false);
@@ -1611,16 +1572,15 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.setString(index++, notificationType.getName());
             statement.setString(index++, notificationType.getDescription());
             statement.setString(index++, notificationType.getModificationUser());
-            statement
-                .setTimestamp(index++, Util.dateToTimestamp(notificationType.getModificationTimestamp()));
+            statement.setTimestamp(index++, Util.dateToTimestamp(notificationType.getModificationTimestamp()));
             statement.setLong(index, notificationType.getId());
 
             statement.executeUpdate();
 
         } catch (SQLException ex) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed update a notification type with id:" + notificationType.getId(),ex));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed update a notification type with id:"
+                + notificationType.getId(), ex));
             throw new ResourcePersistenceException("Failed to update the notificationType instance.", ex);
         } finally {
             closeConnection(connection);
@@ -1629,8 +1589,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Loads the notification type from the persistence with the given id. Returns <code>null</code> if
-     * there is no notification type with the given id.
+     * Loads the notification type from the persistence with the given id. Returns <code>null</code> if there is no
+     * notification type with the given id.
      * </p>
      * <p>
      * Any <code>SQLException</code> or <code>DBConnectionException</code> should be wrapped in a
@@ -1652,8 +1612,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             return loadNotificationType(connection, notificationTypeId);
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed load a notification type with id:" + notificationTypeId, e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed load a notification type with id:"
+                + notificationTypeId, e));
             throw new ResourcePersistenceException("Fail to load notification type.", e);
         } finally {
             closeConnection(connection);
@@ -1663,21 +1623,21 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Adds a resource role to the persistence store. The id of the resource role must already be assigned to
-     * the notificationType object passed to this method, and not already exist in the persistence source.
+     * Adds a resource role to the persistence store. The id of the resource role must already be assigned to the
+     * notificationType object passed to this method, and not already exist in the persistence source.
      * </p>
      *
      * @param resourceRole The resource role to add.
      *
      * @throws IllegalArgumentException If resourceRole is <code>null</code> or its id is UNSET_ID or its
-     *         name/description is <code>null</code> or its creation/modification date/user is
-     *         <code>null</code>
+     *             name/description is <code>null</code> or its creation/modification date/user is <code>null</code>
      * @throws ResourcePersistenceException If there is an error updating the persistence
      */
     public void addResourceRole(ResourceRole resourceRole) throws ResourcePersistenceException {
         Util.checkResourceRole(resourceRole, false);
 
-        LOGGER.log(Level.INFO, "add ResourceRole with id:" + resourceRole.getId() + " name:" + resourceRole.getName());
+        LOGGER
+            .log(Level.INFO, "add ResourceRole with id:" + resourceRole.getId() + " name:" + resourceRole.getName());
 
         Connection connection = openConnection();
         PreparedStatement statement = null;
@@ -1699,8 +1659,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.executeUpdate();
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed add a resource role with id:" + resourceRole.getId(), e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed add a resource role with id:"
+                + resourceRole.getId(), e));
             throw new ResourcePersistenceException("Failed to add the ResourceRole instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1710,8 +1670,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Removes a resource role from the persistence store. If no resource role exists with the given id,
-     * nothing is done.
+     * Removes a resource role from the persistence store. If no resource role exists with the given id, nothing is
+     * done.
      * </p>
      *
      * @param resourceRole The notification type to delete.
@@ -1734,8 +1694,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.executeUpdate();
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed Delete a resource role with id:" + resourceRole.getId(), e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed Delete a resource role with id:"
+                + resourceRole.getId(), e));
             throw new ResourcePersistenceException("Failed to delete the ResourceRole instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1745,14 +1705,14 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Updates the resource role in the persistence store. The resource role (by id) must exist in the
-     * persistence store.
+     * Updates the resource role in the persistence store. The resource role (by id) must exist in the persistence
+     * store.
      * </p>
      *
      * @param resourceRole The resource role to update
      * @throws ResourcePersistenceException
      * @throws IllegalArgumentException If resourceRole is <code>null</code> or its id is UNSET_ID or its
-     *         name/description is <code>null</code> or its modification user/date is <code>null</code>
+     *             name/description is <code>null</code> or its modification user/date is <code>null</code>
      * @throws ResourcePersistenceException if there is an error updating the persistence
      */
     public void updateResourceRole(ResourceRole resourceRole) throws ResourcePersistenceException {
@@ -1778,8 +1738,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.executeUpdate();
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed update a resource role with id:" + resourceRole.getId(), e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed update a resource role with id:"
+                + resourceRole.getId(), e));
             throw new ResourcePersistenceException("Failed to update the ResourceRole instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1789,8 +1749,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Loads the resource role from the persistence with the given id. Returns <code>null</code> if there is
-     * no resource role with the given id.
+     * Loads the resource role from the persistence with the given id. Returns <code>null</code> if there is no
+     * resource role with the given id.
      * </p>
      *
      * @return The loaded resource role
@@ -1820,8 +1780,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed load a resource role with id:" + resourceRoleId, e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed load a resource role with id:"
+                + resourceRoleId, e));
             throw new ResourcePersistenceException("Failed to load ResourceRole instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1837,8 +1797,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      *
      * @param rs the ResultSet instance
      * @return the <code>ResourceRole</code> instance
-     * @throws SQLException if failed to get the <code>ResourceRole</code> instance from the
-     *         <code>ResultSet</code>.
+     * @throws SQLException if failed to get the <code>ResourceRole</code> instance from the <code>ResultSet</code>.
      */
     private ResourceRole constructResourceRole(ResultSet rs) throws SQLException {
         ResourceRole role = new ResourceRole();
@@ -1864,11 +1823,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     /**
      * Construct the ResourceRole instance from the given ResultSet instance.
      *
-     * @param rs
-     *            the ResultSet instance
+     * @param rs the ResultSet instance
      * @return the ResourceRole instance
-     * @throws InvalidCursorStateException
-     *             if failed to get the ResourceRole instance from the ResultSet.
+     * @throws InvalidCursorStateException if failed to get the ResourceRole instance from the ResultSet.
      */
     private ResourceRole constructResourceRole(CustomResultSet rs) throws InvalidCursorStateException {
         ResourceRole role = new ResourceRole();
@@ -1951,7 +1908,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed to load Resources with ids:" + idString,e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed to load Resources with ids:" + idString, e));
             throw new ResourcePersistenceException("Failed to load all the resources.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1961,8 +1918,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-<<<<<<< .mine
-     * Return the id string seperated by comma for the given long id array.
+     * <<<<<<< .mine Return the id string seperated by comma for the given long id array.
      *
      * @param ids the id array
      * @return string seperated by comma
@@ -1972,7 +1928,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             return "";
         }
         StringBuilder idString = new StringBuilder();
-        for(int i = 0; i < ids.length; i++) {
+        for (int i = 0; i < ids.length; i++) {
             idString.append(',').append(ids);
         }
         return idString.substring(1);
@@ -1989,23 +1945,19 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             return "";
         }
         StringBuilder idString = new StringBuilder();
-        for(int i = 0; i < ids.length; i++) {
+        for (int i = 0; i < ids.length; i++) {
             idString.append(',').append(ids.toString());
         }
         return idString.substring(1);
     }
 
     /**
-=======
-     * Loads the resources from the result of the SELECT operation. May return an empty array.
+     * ======= Loads the resources from the result of the SELECT operation. May return an empty array.
      *
      * @return The loaded resources
-     * @param resultSet
-     *            The result of the SELECT operation.
-     * @throws IllegalArgumentException
-     *             If any id is <= 0 or the array is null
-     * @throws ResourcePersistenceException
-     *             If there is an error loading the Resources
+     * @param resultSet The result of the SELECT operation.
+     * @throws IllegalArgumentException If any id is <= 0 or the array is null
+     * @throws ResourcePersistenceException If there is an error loading the Resources
      */
     public Resource[] loadResources(CustomResultSet resultSet) throws ResourcePersistenceException {
         Util.checkNull(resultSet, "resultSet");
@@ -2058,9 +2010,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
->>>>>>> .r72308
-     * Builds a select sql query with an argument contains many long values. The structure of the result
-     * string looks like this: ... in ( id, id, id, id...).
+     * >>>>>>> .r72308 Builds a select sql query with an argument contains many long values. The structure of the
+     * result string looks like this: ... in ( id, id, id, id...).
      *
      * @param baseQuery the sql query
      * @param ids the ids for select sql query
@@ -2082,9 +2033,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-     * Gets all the external properties with one select sql query. Here a <code>HashMap</code> structure is
-     * used. The key is an <code>Integer</code> of resourceId and the value is another map which contains
-     * the key/value of external properties.
+     * Gets all the external properties with one select sql query. Here a <code>HashMap</code> structure is used. The
+     * key is an <code>Integer</code> of resourceId and the value is another map which contains the key/value of
+     * external properties.
      *
      * @param connection the connection to database
      * @param resourceIds the resourceIds for retrieving external properties
@@ -2123,9 +2074,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             return resourcesProperties;
         } catch (SQLException e) {
             LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed for getting all external properties for all resourceIds.",e));
-            throw new ResourcePersistenceException(
-                "Failed for getting all external properties for all resourceIds.", e);
+                "Failed for getting all external properties for all resourceIds.", e));
+            throw new ResourcePersistenceException("Failed for getting all external properties for all resourceIds.",
+                e);
         } finally {
             Util.closeResultSet(rs);
             Util.closeStatement(statement);
@@ -2143,8 +2094,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @throws IllegalArgumentException If any id is <= 0 or the array is <code>null</code>
      * @throws ResourcePersistenceException If there is an error loading from persistence
      */
-    public NotificationType[] loadNotificationTypes(long[] notificationTypeIds)
-        throws ResourcePersistenceException {
+    public NotificationType[] loadNotificationTypes(long[] notificationTypeIds) throws ResourcePersistenceException {
         Util.checkLongArray(notificationTypeIds, "notificationTypeIds");
 
         if (notificationTypeIds.length == 0) {
@@ -2159,9 +2109,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         PreparedStatement statement = null;
 
         try {
-            statement =
-                connection.prepareStatement(buildQueryWithIds(SQL_SELECT_NOTIFICATION_TYPES,
-                    notificationTypeIds));
+            statement = connection.prepareStatement(buildQueryWithIds(SQL_SELECT_NOTIFICATION_TYPES,
+                notificationTypeIds));
 
             rs = statement.executeQuery();
 
@@ -2175,8 +2124,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed for getting all NotificationType with ids:" + idString, e));
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed for getting all NotificationType with ids:"
+                + idString, e));
             throw new ResourcePersistenceException("Failed to load NotificationTypes instances.", e);
         } finally {
             Util.closeStatement(statement);
@@ -2187,12 +2136,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-     * Loads the notification types from the result of the SELECT operation. This method may return a
-     * zero-length array. It is designed to keep the amount of SQL queries to a minimum when
-     * searching notification types.
+     * Loads the notification types from the result of the SELECT operation. This method may return a zero-length
+     * array. It is designed to keep the amount of SQL queries to a minimum when searching notification types.
      *
-     * @param resultSet
-     *            The result of the SELECT operation. This result should have the following columns:
+     * @param resultSet The result of the SELECT operation. This result should have the following columns:
      *            <ul>
      *            <li>notification_type_id</li>
      *            <li>name</li>
@@ -2227,8 +2174,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-     * Constructs the <code>NotificationType</code> instance from the given <code>ResultSet</code>
-     * instance.
+     * Constructs the <code>NotificationType</code> instance from the given <code>ResultSet</code> instance.
      *
      * @param rs the <code>ResultSet</code> instance
      * @return NotifcationType instance.
@@ -2248,8 +2194,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-     * Constructs the <code>NotificationType</code> instance from the given <code>CustomResultSet</code>
-     * instance.
+     * Constructs the <code>NotificationType</code> instance from the given <code>CustomResultSet</code> instance.
      *
      * @param rs the <code>CustomResultSet</code> instance
      * @return NotifcationType instance.
@@ -2308,8 +2253,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed for getting ResourceRoles ids:" + idString, e));
+            LOGGER
+                .log(Level.ERROR, new LogMessage(null, null, "Failed for getting ResourceRoles ids:" + idString, e));
             throw new ResourcePersistenceException("Failed to load nResourceRole instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -2322,12 +2267,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * Loads the resource roles from the result of the SELECT operation. May return an empty array.
      *
      * @return The loaded resource roles
-     * @param resultSet
-     *            The result of the SELECT operation.
-     * @throws IllegalArgumentException
-     *             If any id is <= 0 or the array is null
-     * @throws ResourcePersistenceException
-     *             If there is an error loading from persistence
+     * @param resultSet The result of the SELECT operation.
+     * @throws IllegalArgumentException If any id is <= 0 or the array is null
+     * @throws ResourcePersistenceException If there is an error loading from persistence
      */
     public ResourceRole[] loadResourceRoles(CustomResultSet resultSet) throws ResourcePersistenceException {
         Util.checkNull(resultSet, "resultSet");
@@ -2351,8 +2293,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Loads the Notifications for the given "id" triples from the persistence store. May return a 0-length
-     * array.
+     * Loads the Notifications for the given "id" triples from the persistence store. May return a 0-length array.
      * </p>
      *
      * @param userIds The ids of the users
@@ -2360,8 +2301,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param notificationTypes The ids of the notification types
      * @return The loaded notifications
      *
-     * @throws IllegalArgumentException If the three arrays don't all have the same number of elements (or any
-     *         array is <code>null</code>) or all three arrays do not have the same length, any id is <= 0
+     * @throws IllegalArgumentException If the three arrays don't all have the same number of elements (or any array
+     *             is <code>null</code>) or all three arrays do not have the same length, any id is <= 0
      * @throws ResourcePersistenceException If there is an error loading from the persistence
      */
     public Notification[] loadNotifications(long[] userIds, long[] projectIds, long[] notificationTypes)
@@ -2417,7 +2358,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.INFO, new LogMessage(null, null,
-                    "Failed to load Notifications with array of userIds/projectIds/notificationTypes.", e));
+                "Failed to load Notifications with array of userIds/projectIds/notificationTypes.", e));
             throw new ResourcePersistenceException("Failed to load Notification instances.", e);
         } finally {
             Util.closeStatement(statement);
@@ -2430,13 +2371,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * Load Notifications from the result of the SELECT operation. May return an empty array.
      *
      * @return The loaded notifications
-     * @param resultSet
-     *            The result of the SELECT operation.
-     * @throws IllegalArgumentException
-     *             If the three arrays don't all have the same number of elements (or any array is null) or all three
-     *             arrays do not have the same length, any id is <= 0
-     * @throws ResourcePersistenceException
-     *             If there is an error loading from the persistence
+     * @param resultSet The result of the SELECT operation.
+     * @throws IllegalArgumentException If the three arrays don't all have the same number of elements (or any array
+     *             is null) or all three arrays do not have the same length, any id is <= 0
+     * @throws ResourcePersistenceException If there is an error loading from the persistence
      */
     public Notification[] loadNotifications(CustomResultSet resultSet) throws ResourcePersistenceException {
         Util.checkNull(resultSet, "resultSet");
@@ -2487,33 +2425,31 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Abstract method used to get an open connection to from which to get Statements. Used from all public
-     * methods.
+     * Abstract method used to get an open connection to from which to get Statements. Used from all public methods.
      * </p>
      * <p>
-     * Subclasses will get a connection and properly prepare it for use, depending on the transaction
-     * management strategy used in the subclass.
+     * Subclasses will get a connection and properly prepare it for use, depending on the transaction management
+     * strategy used in the subclass.
      * </p>
      *
      * @return an open Connection, ready for use
-     * @throws ResourcePersistenceException if an exception is thrown while trying to get or open the
-     *         connection
+     * @throws ResourcePersistenceException if an exception is thrown while trying to get or open the connection
      */
     protected abstract Connection openConnection() throws ResourcePersistenceException;
 
     /**
      * <p>
-     * Abstract method used to commit any transaction (if necessary in the subclass) and to close the given
-     * connection after an operation completes successfully. Used from all public methods.
+     * Abstract method used to commit any transaction (if necessary in the subclass) and to close the given connection
+     * after an operation completes successfully. Used from all public methods.
      * </p>
      * <p>
-     * Subclasses will close the given connection. Depending on the transaction management strategy used in
-     * the subclass, a transaction on the connection may be committed..
+     * Subclasses will close the given connection. Depending on the transaction management strategy used in the
+     * subclass, a transaction on the connection may be committed..
      * </p>
      *
      * @param connection Connection to close
-     * @throws ResourcePersistenceException if any exception is thrown while committing any transaction or
-     *         closing the connection
+     * @throws ResourcePersistenceException if any exception is thrown while committing any transaction or closing the
+     *             connection
      * @throws IllegalArgumentException if the argument is <code>null</code>
      */
     protected abstract void closeConnection(Connection connection) throws ResourcePersistenceException;
@@ -2524,17 +2460,18 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * connection when an error occurs. Used from all public methods just before any exception is thrown.
      * </p>
      * <p>
-     * Subclasses will close the given connection. Depending on the transaction management strategy used in
-     * the subclass, a transaction on the connection may be rolled back.
+     * Subclasses will close the given connection. Depending on the transaction management strategy used in the
+     * subclass, a transaction on the connection may be rolled back.
      * </p>
      *
      *
      * @param connection Connection to close
-     * @throws ResourcePersistenceException if any exception is thrown while committing any transaction or
-     *         closing the connection
+     * @throws ResourcePersistenceException if any exception is thrown while committing any transaction or closing the
+     *             connection
      * @throws IllegalArgumentException if the argument is <code>null</code>
      */
     protected abstract void closeConnectionOnError(Connection connection) throws ResourcePersistenceException;
+
     /**
      * This method retrieves the resource role id for a given resource.
      *
@@ -2586,12 +2523,12 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         // decide which user id to use
         if (userId == null && !resource.hasProperty(EXTERNAL_REFERENCE_ID_PROPERTY_KEY)) {
-            throw new ResourcePersistenceException("Audit information was not successfully saved " +
-                "since resource doesn't have external reference id");
+            throw new ResourcePersistenceException("Audit information was not successfully saved "
+                + "since resource doesn't have external reference id");
         }
         if (resource.getProject() == null) {
-            throw new ResourcePersistenceException("Audit information was not successfully saved " +
-                "since resource doesn't have project id.");
+            throw new ResourcePersistenceException("Audit information was not successfully saved "
+                + "since resource doesn't have project id.");
         }
 
         long resourceUserId;
@@ -2601,8 +2538,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             try {
                 resourceUserId = Long.parseLong(resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY_KEY).toString());
             } catch (NumberFormatException e1) {
-                throw new ResourcePersistenceException("Audit information was not successfully saved " +
-                    "since resource's external reference id is invalid");
+                throw new ResourcePersistenceException("Audit information was not successfully saved "
+                    + "since resource's external reference id is invalid");
             }
         }
 
@@ -2614,7 +2551,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             int index = 1;
             statement.setLong(index++, resource.getProject());
             statement.setLong(index++, resourceUserId);
-            statement.setLong(index++, (resourceRoleId != null) ? resourceRoleId : resource.getResourceRole().getId());
+            statement
+                .setLong(index++, (resourceRoleId != null) ? resourceRoleId : resource.getResourceRole().getId());
             statement.setInt(index++, auditType);
             statement.setTimestamp(index++, Util.dateToTimestamp(resource.getModificationTimestamp()));
             statement.setLong(index++, Long.parseLong(resource.getModificationUser()));
