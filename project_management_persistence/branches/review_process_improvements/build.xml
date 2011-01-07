@@ -102,13 +102,13 @@
 	    <property name="configuration_manager.path" value="configuration_manager/${configuration_manager.version}"/>
 	    <property name="configuration_manager.jar" value="${tcs_libdir}/${configuration_manager.path}/${configuration_manager.jar.name}"/>
 
-	<property name="configuration_api.version" value="1.0"/>
+	<property name="configuration_api.version" value="1.0.0"/>
 	    <property name="configuration_api.jar.name" value="configuration_api.jar"/>
 	    <property name="configuration_api.path" value="configuration_api/${configuration_api.version}"/>
 	    <property name="configuration_api.jar" value="${tcs_libdir}/${configuration_api.path}/${configuration_api.jar.name}"/>
 
 		
-	<property name="db_connection_factory.version" value="1.1"/>
+	<property name="db_connection_factory.version" value="1.1.0"/>
 		<property name="db_connection_factory.jar.name" value="db_connection_factory.jar"/>
 		<property name="db_connection_factory.path" value="db_connection_factory/${db_connection_factory.version}"/>
 		<property name="db_connection_factory.jar" value="${tcs_libdir}/${db_connection_factory.path}/${db_connection_factory.jar.name}"/>
@@ -128,7 +128,7 @@
 		<property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
 		<property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
 
-	<property name="project_management.version" value="1.0.1"/>
+	<property name="project_management.version" value="1.1.0"/>
 		<property name="project_management.jar.name" value="project_management.jar"/>
 		<property name="project_management.path" value="project_management/${project_management.version}"/>
 		<property name="project_management.jar" value="${tcs_libdir}/${project_management.path}/${project_management.jar.name}"/>
@@ -142,6 +142,13 @@
 	    <property name="typesafe_enum.jar.name" value="typesafe_enum.jar" />
 	    <property name="typesafe_enum.path" value="typesafe_enum/${typesafe_enum.version}" />
 	    <property name="typesafe_enum.jar" value="${tcs_libdir}/${typesafe_enum.path}/${typesafe_enum.jar.name}" />
+
+    
+    <property name="simple_cache.version" value="2.0" />
+	    <property name="simple_cache.jar.name" value="simple_cache.jar" />
+	    <property name="simple_cache.path" value="simple_cache/${simple_cache.version}" />
+	    <property name="simple_cache.jar" value="${tcs_libdir}/${simple_cache.path}/${simple_cache.jar.name}" />
+
     <!-- 3rd Party Dependencies  -->
     <property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar"/>
     <property name="j2ee.jar" value="${ext_libdir}/j2ee/j2ee.jar"/>
@@ -154,7 +161,7 @@
         <pathelement location="${junit.jar}" />
         <pathelement location="${configuration_manager.jar}" />
 		<pathelement location="${configuration_api.jar}" />
-
+        <pathelement location="${simple_cache.jar}" />
     	<pathelement location="${base_exception.jar}" />
     	<pathelement location="${db_connection_factory.jar}" />
     	<pathelement location="${id_generator.jar}" />
