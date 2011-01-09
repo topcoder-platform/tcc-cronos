@@ -1,0 +1,1 @@
+Since new field review_system_version is added into project_info_type_lu table, so there is a script to update the old project type data with new column, the SQL script could be:update project_info_type_lu set review_system_version=1Note this script can be only run before new project data is added into this table.

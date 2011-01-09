@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="com.topcoder.management.project.ApplicationsManagerImpl">
+        <Property name="PersistenceClassName">
+            <Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+        </Property>
+	    <Property name="PersistenceNamespace">
+	        <Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+	    </Property>
+    </Config>
+    <Config name="com.topcoder.management.project.persistence.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+	    <Property name="ConnectionName">
+	        <Value>informix_connection</Value>
+	    </Property>
+	    <Property name="CacheNamespace">
+	        <Value>SimpleCache</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+	        <Value>review_application_id_seq</Value>
+	    </Property>
+    </Config>
+    <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+        <Property name="connections">
+            <Property name="default">
+                <Value>informix_connection</Value>
+            </Property>
+            <Property name="informix_connection">
+                <Property name="producer">
+                    <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                </Property>
+                <Property name="parameters">
+                    <Property name="jdbc_driver">
+                        <Value>com.informix.jdbc.IfxDriver</Value>
+                    </Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://127.0.0.1:9088/topcoder:informixserver=demo</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>topcoder</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+	  <Config name="SimpleCache">
+	
+	    <!-- Which strategy class shoudl be used. This is a fully qualified java
+	      class name. Optional. Defaults to com.topcoder.util.cache.FIFOCacheEvoctionStrategy -->
+	    <Property name="CacheEvictionStrategy">
+	      <Value>com.topcoder.util.cache.BOFCacheEvictionStrategy</Value>
+	    </Property>
+	
+	    <!-- maximum number of cache entries allowed This is a posisitive integer
+	      value Optional. Defaults to int infinity -->
+	    <Property name="MaxCacheSize">
+	      <Value>1000</Value>
+	    </Property>
+	
+	    <!-- maximum number of memory bytes that all the entries are allowed This
+	      is a posisitive long value Optional. Defaults to long infinity -->
+	    <Property name="MaxCacheByteCapacity">
+	      <Value>10000000</Value>
+	    </Property>
+	
+	    <!-- Cache refresh interval after which the cache entries will be refreshed
+	      Optional. Defaults to no timeout -->
+	    <Property name="TimeoutMS">
+	      <Value>3600000</Value>
+	    </Property>
+	
+	    <!-- Memory utilization handler used to determine object sizes in memory
+	      This is used to calculate the cache capacity. Optional. Defaults to com.topcoder.util.cache.SimpleMemoryUtilizationHandler -->
+	    <Property name="MemoryUtilizationHandler">
+	      <Value>com.topcoder.util.cache.SimpleMemoryUtilizationHandler</Value>
+	    </Property>
+	
+	    <!-- Flag signalling if compression is applied to the entries Optional.
+	      Defaults to false -->
+	    <Property name="CompressionFlag">
+	      <Value>true</Value>
+	    </Property>
+	
+	    <!-- A listing of compression handlers that should be applied to cache
+	      entries If multiple handlers are present then they are chained based on the
+	      order given here. Basically the first handler in the list will be tried first
+	      and if it can not compress the entry then the next one will be tried. Each
+	      handler can be configured with additional peramaters as specified below.
+	      Optional. For defaults please refer to the example give below -->
+	    <Property name="CompressionHandlers">
+	      <!-- Put your handler configuration here -->
+	      <Property name="SomeHandler">
+	        <!-- Class name of the handler to be used Required within the context
+	          of the compression handler. -->
+	        <Property name="class">
+	          <Value>com.topcoder.util.cache.DefaultCompressionHandler</Value>
+	        </Property>
+	
+	        <!-- A list of accepted types that this handler 'knows' how to compress
+	          Optional. Defaults to "java.lang.Object" which will simply match everything.
+	          There is an exception: if this is not supplied but the regular expression
+	          is supplied then this will default to null. When matching the ObjectType
+	          matching will always take precededence over regexp matching. -->
+	        <Property name="AcceptedObjectTypes">
+	          <Value>java.util.Vector</Value>
+	          <Value>java.util.HashMap</Value>
+	        </Property>
+	
+	        <!-- A regular expression string which can be used to specify the accepted
+	          types of objects based on matching class type of the object. Optional. Defaults
+	          to null. -->
+	        <Property name="AcceptedObjectTypesRegex">
+	          <Value>java.util.*</Value>
+	        </Property>
+	
+	        <!-- A fully qualified java class name for the codec to be used with
+	          the compression handler. Optional. Defaults to com.topcoder.util.compression.DeflateCodec -->
+	        <Property name="CompressionCodecClass">
+	          <Value>com.topcoder.util.compression.LZ77Codec</Value>
+	        </Property>
+	
+	        <!-- A fully qualified java class name for the byte to object and object
+	          to byte conversion handler. Compression Handlers work on byte arrays and
+	          thus need some help converting objects into byte array representations and
+	          back. Optional. Defaults to com.topcoder.util.cache.SerializableObjectByteConverter -->
+	        <Property name="ObjectByteConverterClass">
+	          <Value>com.topcoder.util.cache.SerializableObjectByteConverter
+	          </Value>
+	        </Property>
+	      </Property>
+	    </Property>
+	  </Config><Config name="com.topcoder.util.memoryusage.MemoryUsage">
+        <Property name="analyzers_namespace">
+            <Value>com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory</Value>
+        </Property>
+        <Property name="analyzers">
+            <Value>Sun12Analyzer</Value>
+            <Value>Sun13Analyzer</Value>
+            <Value>Sun14Analyzer</Value>
+            <Value>Sun15Analyzer</Value>
+            <Value>IBM14Analyzer</Value>
+            <Value>IBM15Analyzer</Value>
+        </Property>
+        <Property name="fallback_analyzer">
+            <Value>Sun15Analyzer</Value>
+        </Property>
+        <Property name="default_fallback_analyzer_flag">
+            <Value>false</Value>
+        </Property>
+    </Config>
+    
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory">
+        <Property name="Sun12Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun12Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun13Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun13Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun15Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM15Analyzer</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

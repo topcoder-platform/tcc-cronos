@@ -1,0 +1,52 @@
+<project name="Dependency Import" basedir=".">
+	<!-- property file defining the component's dependencies -->
+
+	<!-- Properties used in compile_targets ANT target for JDK version x -->
+	<property name="component.target" value="1.x" />
+	<property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
+
+	<!-- TCS dependencies -->
+
+	<!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/4.8.1/junit4-4.8.1.jar" />
+	<property name="ejb-api.jar" value="${ext_libdir}/spring-framework-2.5/lib/j2ee/ejb-api.jar" />
+	<property name="informix.jar" value="${ext_libdir}/informix/ifxjdbc.jar" />
+	<property name="easymock.jar" value="${ext_libdir}/easymock-2.5.2/easymock-2.5.2.jar" />
+
+	<path id="component.tcs-dependencies">
+		<pathelement location="${libdir}/tcs/base_exception/2.0/base_exception.jar" />
+		<pathelement location="${libdir}/tcs/configuration_api/1.0.0/configuration_api.jar" />
+		<pathelement location="${libdir}/tcs/object_factory/2.1.2/object_factory.jar" />
+		<pathelement location="${libdir}/tcs/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar" />
+		<pathelement location="${libdir}/tcs/db_connection_factory/1.1/db_connection_factory.jar" />
+		<pathelement location="${libdir}/tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+		<pathelement location="${libdir}/tcs/id_generator/3.0.2/id_generator.jar" />
+		<pathelement location="${libdir}/tcs/search_builder/1.4.1/search_builder.jar" />
+		<pathelement location="${libdir}/tcs/logging_wrapper/1.2/logging_wrapper.jar" />
+		<pathelement location="${libdir}/tcs/database_abstraction/1.1.1/database_abstraction.jar" />
+		<pathelement location="${libdir}/tcs/workdays/1.0.1/workdays.jar" />
+		<pathelement location="${libdir}/tcs/deliverable_management/1.1.1/deliverable_management.jar" />
+		<pathelement location="${libdir}/tcs/phase_management/1.0.4/phase_management.jar" />
+		<pathelement location="${libdir}/tcs/simple_cache/2.0.2/simple_cache.jar" />
+		<pathelement location="${libdir}/tcs/configuration_persistence/1.0.2/configuration_persistence.jar" />
+		<pathelement location="${libdir}/tcs/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar" />
+		<pathelement location="${libdir}/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" />
+		<pathelement location="${libdir}/tcs/class_associations/1.0/class_associations.jar" />
+		<pathelement location="${libdir}/tcs/data_validation/1.0/data_validation.jar" />
+		<pathelement location="${libdir}/tcs/memory_usage/2.0/memory_usage.jar" />
+		<pathelement location="${libdir}/tcs/compression_utility/2.0.1/compression_utility.jar" />
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+		<pathelement location="${management.jar}" />
+		<pathelement location="${informix.jar}" />
+	</path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit.jar}" />
+		<pathelement location="${easymock.jar}" />
+		<pathelement location="${informix.jar}" />
+		<pathelement location="${ejb-api.jar}" />
+	</path>
+
+</project>

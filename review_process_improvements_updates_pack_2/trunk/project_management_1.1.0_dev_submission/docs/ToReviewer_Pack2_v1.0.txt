@@ -1,0 +1,11 @@
+To prepare database run script: project_management.sql
+
+If needed to drop tables use script: drop_tables.sql (use carefully!!)
+
+Update config.xml to run database (host, port, database, server, username and password).
+
+Script to update already existent database is: update_database.sql
+
+New tests were added to com.topcoder.management.project.UnitTests (included persistence - com.topcoder.management.project.persistence.UnitTests)
+
+Build xml provided in docs/ directory: docs/build.xml

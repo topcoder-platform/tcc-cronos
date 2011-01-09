@@ -1,0 +1,4 @@
+INSERT INTO project_status_lu(project_status_id, name, description, create_user, create_date, modify_user, modify_date) VALUES(1, 'Active', 'Active', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project_type_lu (project_type_id, name, description, create_user, create_date, modify_user, modify_date, is_generic,review_system_version) VALUES(1, 'Component', 'Component', 'System', CURRENT, 'System', CURRENT,1,1);
+INSERT INTO project_category_lu(project_category_id, project_type_id, name, description, create_user, create_date, modify_user, modify_date)VALUES(1, 1, 'Design', 'Design', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO project (project_id, project_status_id, project_category_id, create_user, create_date, modify_user, modify_date) VALUES (1, 1, 1, 'A', CURRENT, 'System', CURRENT);

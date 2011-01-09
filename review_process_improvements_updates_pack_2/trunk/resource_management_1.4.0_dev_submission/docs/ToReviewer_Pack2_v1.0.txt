@@ -1,0 +1,11 @@
+To prepare database run script: resource_management.sql
+
+If needed to drop tables use script: drop_tables.sql (use carefully!!)
+
+Update config.xml to run database (host, port, database, server, username and password).
+
+Script to update already existent database is: update_database.sql
+
+New tests were added to com.topcoder.management.resource.UnitTests (included persistence - com.topcoder.management.resource.persistence.sql.UnitTests)
+
+Build xml file provided in docs/ directory : docs/build.xml

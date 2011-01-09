@@ -1,0 +1,916 @@
+<CMConfig>
+	<!-- Namespace for ProjectManagerImpl class -->
+	<Config name="com.topcoder.management.project">
+		<Property name="SearchBuilderNamespace">
+			<Value>com.topcoder.searchbuilder.ProjectManagement</Value>
+		</Property>
+		<Property name="PersistenceClass">
+			<Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>com.topcoder.management.project.persistence.InformixProjectPersistence</Value>
+		</Property>
+		<Property name="ValidatorClass">
+			<Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+		</Property>
+		<Property name="ValidatorNamespace">
+			<Value>com.topcoder.management.project.validation.DefaultProjectValidator</Value>
+		</Property>
+	</Config>
+	<!-- Namespace for ApplicationsManagerImpl class -->
+	<Config name="com.topcoder.management.project.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+	</Config>
+	<Config name="custom.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+	</Config>
+	<Config name="invalid1.ApplicationsManagerImpl">
+		<Property name="PersistenceNamespace">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+	</Config>
+	<Config name="invalid2.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value></Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+	</Config>
+	<Config name="invalid3.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value>java.lang.String</Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+	</Config>
+	<Config name="invalid4.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value>test</Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+	</Config>
+	<Config name="invalid5.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>unkown_namespace</Value>
+		</Property>
+	</Config>
+	<Config name="invalid6.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>bad_Class</Value>
+		</Property>
+	</Config>	
+	<Config name="badPersistence.ApplicationsManagerImpl">
+		<Property name="PersistenceClassName">
+			<Value>com.topcoder.management.project.persistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+		<Property name="PersistenceNamespace">
+			<Value>badPersistence.InformixReviewApplicationPersistence</Value>
+		</Property>
+	</Config>
+	<Config	name="bad_Class">
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>   
+	</Config>
+	<Config
+		name="badPersistence.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>badPersistence.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config
+		name="badPersistence.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>badPersistence.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="badPersistence.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>dbconnection</Value>
+			</Property>
+
+			<Property name="dbconnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="SelectMethod">
+						<Value>cursor</Value>
+					</Property>
+					<Property name="jdbc_url">
+						<Value>jdbc:informix-sqli://127.0.0.1:9088/topcoder:informixserver=demo</Value>
+					</Property>
+					<Property name="user">
+						<Value>informix</Value>
+					</Property>
+					<Property name="password">
+						<Value>12345</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+
+	<Config name="invalidCache">		
+		<!-- 	Which strategy class should be used.
+ 	    	 	This is a fully qualified java class name.
+				Optional. Defaults to com.topcoder.util.cache.FIFOCacheEvoctionStrategy 
+		-->
+    	<Property name="CacheEvictionStrategy">
+    	  	<Value>com.topcoder.util.cache.BOFCacheEvictionStrategy</Value>
+    	</Property>
+
+		<!-- 	maximum number of cache entries allowed
+ 	    	 	This is a positive integer value
+				Optional. Defaults to int infinity  
+		-->
+    	<Property name="MaxCacheSize">
+      		<Value>-1</Value>
+    	</Property>
+    </Config>
+    
+	<Config name="exceptionCache">
+		<!-- 	Flag signaling if compression is applied to the entries
+				Optional. Defaults to false 
+		-->
+    	<Property name="CompressionFlag">
+      		<Value>true</Value>
+    	</Property>
+    	
+    	<Property name="CompressionHandlers">
+			<!-- Put your handler configuration here -->
+			<Property name="SomeHandler">
+				<!-- 	Class name of the handler to be used
+					Required within the context of the compression handler.			         
+				--> 
+		  		<Property name="class">
+		    			<Value>com.topcoder.util.cache.DefaultCompressionHandler</Value>
+		  		</Property>
+				
+				<!-- 	A regular expression string which can be used to specify the accepted
+					types of objects based on matching class type of the object.
+					Optional. Defaults to null.
+				-->
+		  		<Property name="AcceptedObjectTypesRegex">
+		    			<Value>.*</Value>
+		  		</Property>
+				
+				<!-- 	A fully qualified java class name for the codec to be used with the
+					compression handler.
+					Optional. Defaults to com.topcoder.util.compression.DeflateCodec
+				-->
+		  		<Property name="CompressionCodecClass">
+		    			<Value>crap</Value>
+		  		</Property>
+			</Property>
+    	</Property>
+	</Config>
+    
+	<Config name="simpleCache">		
+		<!-- 	Which strategy class should be used.
+ 	    	 	This is a fully qualified java class name.
+				Optional. Defaults to com.topcoder.util.cache.FIFOCacheEvoctionStrategy 
+		-->
+    	<Property name="CacheEvictionStrategy">
+    	  	<Value>com.topcoder.util.cache.BOFCacheEvictionStrategy</Value>
+    	</Property>
+
+		<!-- 	maximum number of cache entries allowed
+ 	    	 	This is a positive integer value
+				Optional. Defaults to int infinity  
+		-->
+    	<Property name="MaxCacheSize">
+      		<Value>1000</Value>
+    	</Property>
+
+		<!-- 	maximum number of memory bytes that all the entries are allowed
+ 	    	 	This is a positive long value
+				Optional. Defaults to long infinity 
+		-->
+    	<Property name="MaxCacheByteCapacity">
+      		<Value>10000000</Value>
+    	</Property>
+
+		<!-- 	Cache refresh interval after which the cache entries will be refreshed
+				Optional. Defaults to no timeout 
+		-->
+    	<Property name="TimeoutMS">
+      		<Value>3600000</Value>
+    	</Property>
+
+		<!-- 	Memory utilization handler used to determine object sizes in memory
+ 	    	 	This is used to calculate the cache capacity.
+				Optional. Defaults to com.topcoder.util.cache.SimpleMemoryUtilizationHandler 
+		-->
+    	<Property name="MemoryUtilizationHandler">
+      		<Value>com.topcoder.util.cache.SimpleMemoryUtilizationHandler</Value>
+    	</Property>
+
+		<!-- 	Flag signaling if compression is applied to the entries
+				Optional. Defaults to false 
+		-->
+    	<Property name="CompressionFlag">
+      		<Value>true</Value>
+    	</Property>
+
+		<!-- 	A listing of compression handlers that should be applied to cache entries
+				If multiple handlers are present then they are chained based on the order
+				given here. Basically the first handler in the list will be tried first
+				and if it can not compress the entry then the next one will be tried.
+				Each handler can be configured with additional paramaters as specified 
+				below.
+				Optional. For defaults please refer to the example give below         
+		-->
+    	<Property name="CompressionHandlers">
+			<!-- Put your handler configuration here -->
+			<Property name="SomeHandler">
+				<!-- 	Class name of the handler to be used
+					Required within the context of the compression handler.			         
+				--> 
+		  		<Property name="class">
+		    			<Value>com.topcoder.util.cache.DefaultCompressionHandler</Value>
+		  		</Property>
+				
+				<!-- 	A list of accepted types that this handler 'knows' how to compress
+					Optional. Defaults to "java.lang.Object" which will simply match 
+					everything. There is an exception: if this is not supplied but the
+					regular expression is supplied then this will default to null.
+					When matching the ObjectType matching will always take precedence
+					over regexp matching.
+				-->			
+		  		<Property name="AcceptedObjectTypes">
+		    			<Value>java.util.Vector</Value>
+		    			<Value>java.util.HashMap</Value>
+		  		</Property>
+				
+				<!-- 	A regular expression string which can be used to specify the accepted
+					types of objects based on matching class type of the object.
+					Optional. Defaults to null.
+				-->
+		  		<Property name="AcceptedObjectTypesRegex">
+		    			<Value>java.util.*</Value>
+		  		</Property>
+				
+				<!-- 	A fully qualified java class name for the codec to be used with the
+					compression handler.
+					Optional. Defaults to com.topcoder.util.compression.DeflateCodec
+				-->
+		  		<Property name="CompressionCodecClass">
+		    			<Value>com.topcoder.util.compression.LZ77Codec</Value>
+		  		</Property>
+	
+				<!-- 	A fully qualified java class name for the byte to object and object to 
+					byte conversion handler. Compression Handlers work on byte arrays and 
+					thus need some help converting objects into byte array representations and 
+					back.
+					Optional. Defaults to com.topcoder.util.cache.SerializableObjectByteConverter
+				-->
+		  		<Property name="ObjectByteConverterClass">
+		    			<Value>com.topcoder.util.cache.SerializableObjectByteConverter</Value>
+		  		</Property>
+			</Property>
+    	</Property>
+	</Config>
+	
+	<!-- Namespace for InformixProjectPersistence class -->
+	<Config
+		name="com.topcoder.management.project.persistence.InformixProjectPersistence">
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ProjectIdSequenceName">
+    	    <Value>project_id_seq</Value>
+    	</Property>
+    	<Property name="ProjectAuditIdSequenceName">
+	        <Value>project_audit_id_seq</Value>
+	    </Property>
+	</Config>
+	<!-- Namespace for InformixReviewApplicationPersistence class -->
+	<Config
+		name="com.topcoder.management.project.persistence.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid1.InformixReviewApplicationPersistence">
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid2.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>invalid_namespace</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid3.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>invalid_ìd_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid4.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>unknown_cache_namespace</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid5.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>invalidCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid6.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	</Config>
+	<Config name="cache.InformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>exceptionCache</Value>
+    	</Property>
+	</Config>
+	
+	
+	<!-- Namespace for UnmanagedTransactionInformixReviewApplicationPersistence class -->
+	<Config
+		name="com.topcoder.management.project.persistence.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid1.UnmanagedTransactionInformixReviewApplicationPersistence">
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid2.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>invalid_namespace</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid3.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>invalid_ìd_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>simpleCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid4.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>unknown_cache_namespace</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid5.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>invalidCache</Value>
+    	</Property>
+	</Config>
+	<Config name="invalid6.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	</Config>
+	<Config name="cache.UnmanagedTransactionInformixReviewApplicationPersistence">
+        <Property name="DBConnFactoryNamespace">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>        
+    	<!-- the connection name to retrieve connection in DB Connection Factory, required -->
+    	<Property name="ConnectionName">
+	        <Value>dbconnection</Value>
+	    </Property>
+	    <Property name="ReviewApplicationIDSequenceName">
+    	    <Value>review_application_id_seq</Value>
+    	</Property>
+	    <Property name="CacheNamespace">
+    	    <Value>exceptionCache</Value>
+    	</Property>
+	</Config>
+	
+	<!-- Namespace for DBConnectionFactory component -->
+	<Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+		<Property name="connections">
+			<Property name="default">
+				<Value>dbconnection</Value>
+			</Property>
+
+			<Property name="dbconnection">
+				<Property name="producer">
+					<Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+				</Property>
+
+				<Property name="parameters">
+					<Property name="jdbc_driver">
+						<Value>com.informix.jdbc.IfxDriver</Value>
+					</Property>
+					<Property name="SelectMethod">
+						<Value>cursor</Value>
+					</Property>
+                    <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://127.0.0.1:9088/topcoder:informixserver=demo</Value>
+                    </Property>
+                    <Property name="user">
+                        <Value>informix</Value>
+                    </Property>
+                    <Property name="password">
+                        <Value>topcoder</Value>
+                    </Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+
+	<!--
+		Namespace for SearchBuilder component The setting in this section
+		decides the logic of project searching.
+	-->
+	<Config name="com.topcoder.searchbuilder.ProjectManagement">
+		<Property name="searchStrategyFactoryNamespace">
+			<Value>com.topcoder.search.builder.strategy.factory</Value>
+		</Property>
+		<Property name="fieldValidatorFactoryNamespace">
+			<Value>com.topcoder.search.builder.validator.factory</Value>
+		</Property>
+		<Property name="searchBundles">
+			<Property name="ProjectSearchBundle">
+				<Property name="searchStrategy">
+					<Property name="class">
+						<Value>dbStrategy</Value>
+					</Property>
+				</Property>
+				<Property name="context">
+					<Value>SELECT DISTINCT 
+					    project.project_id, project_status_lu.project_status_id,
+					    project_status_lu.name, project_category_lu.project_category_id, 
+					    project_category_lu.name, project_type_lu.project_type_id, project_type_lu.name,
+					    project_type_lu.review_system_version, project.create_user, project.create_date,
+					    project.modify_user, project.modify_date
+					    FROM project
+						JOIN project_category_lu ON
+						project.project_category_id = project_category_lu.project_category_id
+						JOIN project_status_lu ON
+						project.project_status_id = project_status_lu.project_status_id
+						JOIN project_type_lu ON
+						project_category_lu.project_type_id = project_type_lu.project_type_id
+						LEFT JOIN project_info ON
+						project.project_id = project_info.project_id
+						LEFT JOIN project_info_type_lu ON
+						project_info.project_info_type_id = project_info_type_lu.project_info_type_id
+						LEFT JOIN resource ON
+						project.project_id=resource.project_id
+						LEFT JOIN resource_info ON
+						resource.resource_id = resource_info.resource_id
+						LEFT JOIN resource_info_type_lu ON
+						resource_info.resource_info_type_id =
+						resource_info_type_lu.resource_info_type_id WHERE</Value>
+				</Property>
+				<Property name="searchableFields">
+					<Property name="dummy">
+						<Property name="validator">
+							<Property name="class">
+								<Value>validator</Value>
+							</Property>
+							<Property name="identifier">
+								<Value>null</Value>
+							</Property>
+						</Property>
+					</Property>
+				</Property>
+				<Property name="alias">
+					<Property name="ProjectTypeID">
+						<Value>project_type_lu.project_type_id</Value>
+					</Property>
+					<Property name="ProjectTypeName">
+						<Value>project_type_lu.name</Value>
+					</Property>
+					<Property name="ProjectCategoryID">
+						<Value>project_category_lu.project_category_id</Value>
+					</Property>
+					<Property name="ProjectCategoryName">
+						<Value>project_category_lu.name</Value>
+					</Property>
+					<Property name="ProjectStatusID">
+						<Value>project_status_lu.project_status_id</Value>
+					</Property>
+					<Property name="ProjectStatusName">
+						<Value>project_status_lu.name</Value>
+					</Property>
+					<Property name="ProjectPropertyName">
+						<Value>project_info_type_lu.name</Value>
+					</Property>
+					<Property name="ProjectPropertyValue">
+						<Value>project_info.value</Value>
+					</Property>
+					<Property name="ProjectResourcePropertyName">
+						<Value>resource_info_type_lu.name</Value>
+					</Property>
+					<Property name="ProjectResourcePropertyValue">
+						<Value>resource_info.value</Value>
+					</Property>
+					<Property name="ProjectTypeReviewSystemVersion">
+						<Value>project_type_lu.review_system_version</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.validator.factory">
+		<Property name="validator:null">
+			<Property name="type">
+				<Value>com.topcoder.util.datavalidator.NullValidator</Value>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.strategy.factory">
+		<Property name="dbStrategy">
+			<Property name="type">
+				<Value>com.topcoder.search.builder.database.DatabaseSearchStrategy</Value>
+			</Property>
+			<Property name="params">
+				<Property name="param1">
+					<Property name="type">
+						<Value>String</Value>
+					</Property>
+					<Property name="value">
+						<Value>DBSearchStrategy</Value>
+					</Property>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="DBSearchStrategy">
+		<!--
+			Property defining a specification for constructing the
+			dbConnectionFactory to use.
+		-->
+		<Property name="connectionFactory">
+
+			<!-- The namespace of the ConnectionFactory -->
+			<Property name="name">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+			<Property name="class">
+				<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+			</Property>
+		</Property>
+
+
+		<!--
+			The name to request from the connection factory when acquiring a
+			connection. If not present, then the default connection is used.
+		-->
+		<Property name="connectionName">
+			<Value>dbconnection</Value>
+		</Property>
+
+
+		<Property name="searchFragmentFactoryNamespace">
+			<Value>com.topcoder.search.builder.database.factory</Value>
+		</Property>
+
+		<Property name="searchFragmentBuilders">
+			<Property name="first">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.AndFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.AndFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="second">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.OrFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.OrFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="third">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LikeFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.LikeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="fourth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NotFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NotFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="fifth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.EqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.EqualsFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="sixth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.InFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.InFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="eighth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.NullFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.NullFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="ninth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="tenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="eleventh">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.BetweenFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="twelvth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanOrEqualToFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+
+			<Property name="thirteenth">
+				<Property name="targetFilter">
+					<Value>com.topcoder.search.builder.filter.LessThanFilter</Value>
+				</Property>
+				<Property name="className">
+					<Value>com.topcoder.search.builder.database.RangeFragmentBuilder</Value>
+				</Property>
+			</Property>
+		</Property>
+	</Config>
+	<Config name="com.topcoder.search.builder.database.factory">
+	</Config>
+
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage">
+        <Property name="analyzers_namespace">
+            <Value>com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory</Value>
+        </Property>
+        <Property name="analyzers">
+            <Value>Sun12Analyzer</Value>
+            <Value>Sun13Analyzer</Value>
+            <Value>Sun14Analyzer</Value>
+            <Value>Sun15Analyzer</Value>
+            <Value>IBM14Analyzer</Value>
+            <Value>IBM15Analyzer</Value>
+        </Property>
+        <Property name="fallback_analyzer">
+            <Value>Sun15Analyzer</Value>
+        </Property>
+        <Property name="default_fallback_analyzer_flag">
+            <Value>false</Value>
+        </Property>
+    </Config>
+    
+    <Config name="com.topcoder.util.memoryusage.MemoryUsage.ObjectFactory">
+        <Property name="Sun12Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun12Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun13Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun13Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="Sun15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.Sun15Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM14Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM14Analyzer</Value>
+            </Property>
+        </Property>
+        <Property name="IBM15Analyzer">
+            <Property name="type">
+                <Value>com.topcoder.util.memoryusage.analyzers.IBM15Analyzer</Value>
+            </Property>
+        </Property>
+    </Config>
+</CMConfig>

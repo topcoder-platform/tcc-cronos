@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Resource Management
+component.distfilename=resource_management
+component.package=com.topcoder.management.resource
+component.packagedir=com/topcoder/management/resource
+component.version.major=1
+component.version.minor=4
+component.version.micro=0
+component.version.build=0
