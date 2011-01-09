@@ -1,0 +1,25 @@
+Starting audit...
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ChainFilter.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ChainFilter.java:37: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ConfigurationException.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ConfigurationException.java:13: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\DefaultReviewManager.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\DefaultReviewManager.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\DefaultReviewManager.java:81: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\DuplicateReviewEntityException.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\DuplicateReviewEntityException.java:12: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\Helper.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\Helper.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewEntityNotFoundException.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewEntityNotFoundException.java:12: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewManagementException.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewManagementException.java:14: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewManager.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewManager.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewManager.java:25: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewPersistence.java:0: Got an exception - java.lang.NoClassDefFoundError: com/topcoder/util/errorhandling/BaseException
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewPersistence.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewPersistence.java:25: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewPersistenceException.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rm14\src\java\main\com\topcoder\management\review\ReviewPersistenceException.java:12: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+Audit done.

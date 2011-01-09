@@ -1,0 +1,15 @@
+Starting audit...
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\CommentTypeUnitTests.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\CommentTypeUnitTests.java:15: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\CommentUnitTests.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\CommentUnitTests.java:15: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\DemoTests.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\DemoTests.java:31: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\DemoTests.java:40:5: Executable statement count is 48 (max allowed is 30).
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\ItemUnitTests.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\ItemUnitTests.java:17: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\ReviewEditorUnitTests.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\ReviewEditorUnitTests.java:16: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\ReviewUnitTests.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\tests\com\topcoder\management\review\data\ReviewUnitTests.java:17: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+Audit done.

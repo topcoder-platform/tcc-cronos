@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="1" failures="0" hostname="James-PC" name="com.topcoder.management.review.data.AllTests" tests="1" time="0.0" timestamp="2010-09-07T10:08:57">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="package" value="com.topcoder.management.review.data" />
+    <property name="docpackage.jar" value="review_data_structure_1.1_docs.jar" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="manifest_file_path" value="build/dist/review_data_structure_1.1-1.1.0/META-INF/" />
+    <property name="verbose" value="no" />
+    <property name="os.name" value="Windows 7" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_21\jre\classes" />
+    <property name="docsdir" value="docs" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="design_submission.jar" value="review_data_structure_1.1_1.1.0_design_submission.jar" />
+    <property name="sun.desktop" value="windows" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/review_data_structure_1.1_tests.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="C:\Users\Public\TCSDevelop\tools\ant\bin\.." />
+    <property name="java.runtime.version" value="1.6.0_21-b06" />
+    <property name="component_path" value="review_data_structure_1.1/1.1.0" />
+    <property name="cobertura.dir" value="C:\Users\Public\TCSDevelop\tools/cobertura/1.9.3" />
+    <property name="component.version.micro" value="0" />
+    <property name="user.name" value="informix" />
+    <property name="manifest_file" value="build/dist/review_data_structure_1.1-1.1.0/META-INF//MANIFEST.MF" />
+    <property name="debug" value="off" />
+    <property name="reports" value="log/reports" />
+    <property name="testfiles" value="test_files" />
+    <property name="component.version.major" value="1" />
+    <property name="component_version" value="1.1.0" />
+    <property name="dist_coverage" value="build/dist/review_data_structure_1.1-1.1.0/docs/coverage" />
+    <property name="component.packagedir" value="com	opcodermanagementeviewdata" />
+    <property name="user.language" value="zh" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="javadoc.locale" value="en_US" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\bin" />
+    <property name="tcs_libdir" value="C:\Users\Public\TCSDevelop\tools\tcs" />
+    <property name="ant.project.default-target" value="dist" />
+    <property name="srcdir" value="src" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.bootclasspath" value="C:\Program Files\Java\j2re1.4.2_09\lib\rt.jar" />
+    <property name="component.version.minor" value="1" />
+    <property name="java.version" value="1.6.0_21" />
+    <property name="user.timezone" value="" />
+    <property name="dev_dist.jar" value="review_data_structure_1.1_1.1.0_dev_dist.jar" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="packagedir" value="com	opcodermanagementeviewdata" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="java_1_4_bootclasspath" value="C:\Program Files\Java\j2re1.4.2_09\lib\rt.jar" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="dev_submission.jar" value="review_data_structure_1.1_1.1.0_dev_submission.jar" />
+    <property name="java.class.version" value="50.0" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="user.country" value="CN" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.6.0_21\jre" />
+    <property name="component.distfilename" value="review_data_structure_1.1" />
+    <property name="component.version.build" value="1" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="java_1_6_bootclasspath" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\rt.jar" />
+    <property name="ant.file" value="C:\Users\James\workspaceofJave\rm14\build.xml" />
+    <property name="os.version" value="6.1" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="build_tcsdistdir" value="build/dist/review_data_structure_1.1-1.1.0" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="17.0-b16" />
+    <property name="testlogdir" value="log" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="C:\Users\Public\TCSDevelop\tools\ant\lib" />
+    <property name="component.name" value="Review data structure" />
+    <property name="ant.file.type.TopCoder Java Generic Build" value="file" />
+    <property name="javamain" value="src/java/main" />
+    <property name="dist_javadocs" value="build/dist/review_data_structure_1.1-1.1.0/docs/javadocs" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="component" value="Review data structure" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="user.home" value="C:\Users\informix.James-PC" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\PROGRA~1\IBM\IBMINF~1\11.50\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Users\Public\TCSDevelop\tools\ant\bin;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;C:\Program Files\IBM\Informix\Client-SDK\bin;C:\Program Files\ibm\gsk7\bin;C:\Program Files\ibm\gsk7\lib;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="configdir" value="conf" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.file.TopCoder Java Generic Build" value="C:\Users\James\workspaceofJave\rm14\build.xml" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="ant.version" value="Apache Ant version 1.8.0RC1 compiled on January 5 2010" />
+    <property name="java.class.path" value="C:\Users\James\workspaceofJave\rm14\build\testClasses;C:\Users\James\workspaceofJave\rm14\build\classes;C:\Users\James\workspaceofJave\rm14\test_files;C:\PROGRA~1\IBM\IBMINF~1\11.50\extend\krakatoa\krakatoa.jar;C:\PROGRA~1\IBM\IBMINF~1\11.50\extend\krakatoa\jdbc.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\junit.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\ant-launcher.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\ant.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\ant-junit.jar" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="builddir" value="build" />
+    <property name="ext_libdir" value="C:\Users\Public\TCSDevelop\tools" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="component.dist.jar" value="build/dist/review_data_structure_1.1-1.1.0.jar" />
+    <property name="junit.jar" value="C:\\User\\informix\\junit-3.8.jar" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="component.mainclass" value="" />
+    <property name="java.io.tmpdir" value="C:\Users\INFORM~1.JAM\AppData\Local\Temp\" />
+    <property name="component.target" value="1.4" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="javatests" value="src/java/tests" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="os.arch" value="x86" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\ext;C:\Windows\Sun\Java\lib\ext" />
+    <property name="java_1_5_bootclasspath" value="C:\Program Files\Java\jre1.5.0_07\lib\rt.jar" />
+    <property name="user.dir" value="C:\Users\James\workspaceofJave\rm14" />
+    <property name="design_dist.jar" value="review_data_structure_1.1_1.1.0_design_dist.jar" />
+    <property name="javasrc" value="src/java" />
+    <property name="libdir" value="../tcs/lib" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="distfilename" value="review_data_structure_1.1" />
+    <property name="basedir" value="C:\Users\James\workspaceofJave\rm14" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="C:\Users\Public\TCSDevelop\tools\ant\lib\ant.jar" />
+    <property name="file.encoding" value="GBK" />
+    <property name="dist_docs" value="build/dist/review_data_structure_1.1-1.1.0/docs" />
+    <property name="component.jar" value="build/dist/lib/tcs/review_data_structure_1.1/1.1.0/review_data_structure_1.1.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="target_libdir" value="C:\Users\Public\TCSDevelop\tools\tcs" />
+    <property name="ant.file.type.Dependency Import" value="file" />
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="component.package" value="com.topcoder.management.review.data" />
+    <property name="ant.file.Dependency Import" value="C:\Users\James\workspaceofJave\rm14\build-dependencies.xml" />
+  </properties>
+  <error message="com.topcoder.management.review.data.AllTests" type="java.lang.ClassNotFoundException"></error>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,12 @@
+Starting audit...
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\Comment.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\Comment.java:39: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\CommentType.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\CommentType.java:39: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\Item.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\Item.java:41: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\Review.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\Review.java:43: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\ReviewEditor.java:2: Line does not match expected header line of ' \* Copyright \(C\) \d\d\d\d TopCoder Inc\., All Rights Reserved\.[\s]*$'.
+C:\Users\James\workspaceofJave\rds14\src\java\main\com\topcoder\management\review\data\ReviewEditor.java:28: Type Javadoc tag @author must match pattern '^[a-zA-Z0-9]+, TCSDEVELOPER$'.
+Audit done.

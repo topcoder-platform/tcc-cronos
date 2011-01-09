@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="James-PC" name="com.topcoder.management.review.data.AllTests" tests="295" time="7.446" timestamp="2010-09-17T20:34:27">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="package" value="com.topcoder.management.review.data" />
+    <property name="docpackage.jar" value="review_data_structure_docs.jar" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="manifest_file_path" value="build/dist/review_data_structure-1.1.0/META-INF/" />
+    <property name="verbose" value="no" />
+    <property name="os.name" value="Windows 7" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_21\jre\classes" />
+    <property name="docsdir" value="docs" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="design_submission.jar" value="review_data_structure_1.1.0_design_submission.jar" />
+    <property name="sun.desktop" value="windows" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/review_data_structure_tests.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="C:\Users\Public\TCSDevelop\tools\ant\bin\.." />
+    <property name="java.runtime.version" value="1.6.0_21-b06" />
+    <property name="component_path" value="review_data_structure/1.1.0" />
+    <property name="cobertura.dir" value="C:\Users\Public\TCSDevelop\tools/cobertura/1.9.3" />
+    <property name="component.version.micro" value="0" />
+    <property name="user.name" value="James" />
+    <property name="manifest_file" value="build/dist/review_data_structure-1.1.0/META-INF//MANIFEST.MF" />
+    <property name="debug" value="off" />
+    <property name="reports" value="log/reports" />
+    <property name="testfiles" value="test_files" />
+    <property name="component.version.major" value="1" />
+    <property name="component_version" value="1.1.0" />
+    <property name="dist_coverage" value="build/dist/review_data_structure-1.1.0/docs/coverage" />
+    <property name="component.packagedir" value="com/topcoder/management/review/data" />
+    <property name="user.language" value="zh" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="javadoc.locale" value="en_US" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\bin" />
+    <property name="tcs_libdir" value="C:\Users\Public\TCSDevelop\tools\tcs" />
+    <property name="ant.project.default-target" value="dist" />
+    <property name="srcdir" value="src" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.bootclasspath" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\rt.jar" />
+    <property name="component.version.minor" value="1" />
+    <property name="java.version" value="1.6.0_21" />
+    <property name="user.timezone" value="" />
+    <property name="dev_dist.jar" value="review_data_structure_1.1.0_dev_dist.jar" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="packagedir" value="com/topcoder/management/review/data" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="java_1_4_bootclasspath" value="C:\Program Files\Java\j2re1.4.2_09\lib\rt.jar" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="dev_submission.jar" value="review_data_structure_1.1.0_dev_submission.jar" />
+    <property name="java.class.version" value="50.0" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="user.country" value="CN" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.6.0_21\jre" />
+    <property name="component.distfilename" value="review_data_structure" />
+    <property name="component.version.build" value="1" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="java_1_6_bootclasspath" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\rt.jar" />
+    <property name="ant.file" value="C:\Users\James\workspaceofJave\rds14\build.xml" />
+    <property name="os.version" value="6.1" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="build_tcsdistdir" value="build/dist/review_data_structure-1.1.0" />
+    <property name="path.separator" value=";" />
+    <property name="java.vm.version" value="17.0-b16" />
+    <property name="testlogdir" value="log" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="C:\Users\Public\TCSDevelop\tools\ant\lib" />
+    <property name="component.name" value="Review data structure" />
+    <property name="ant.file.type.TopCoder Java Generic Build" value="file" />
+    <property name="javamain" value="src/java/main" />
+    <property name="dist_javadocs" value="build/dist/review_data_structure-1.1.0/docs/javadocs" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="component" value="Review data structure" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="user.home" value="C:\Users\James" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\PROGRA~1\IBM\IBMINF~1\11.50\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Users\Public\TCSDevelop\tools\ant\bin;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;C:\Program Files\IBM\Informix\Client-SDK\bin;C:\Program Files\ibm\gsk7\bin;C:\Program Files\ibm\gsk7\lib;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="configdir" value="conf" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.file.TopCoder Java Generic Build" value="C:\Users\James\workspaceofJave\rds14\build.xml" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="ant.version" value="Apache Ant version 1.8.0RC1 compiled on January 5 2010" />
+    <property name="java.class.path" value="C:\Users\James\workspaceofJave\rds14\build\testClasses;C:\Users\Public\TCSDevelop\tools\junit\junit-3.8.jar;C:\Users\James\workspaceofJave\rds14\build\classes;C:\PROGRA~1\IBM\IBMINF~1\11.50\extend\krakatoa\krakatoa.jar;C:\PROGRA~1\IBM\IBMINF~1\11.50\extend\krakatoa\jdbc.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\junit.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\ant-launcher.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\ant.jar;C:\Users\Public\TCSDevelop\tools\ant\lib\ant-junit.jar" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="builddir" value="build" />
+    <property name="ext_libdir" value="C:\Users\Public\TCSDevelop\tools" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="component.dist.jar" value="build/dist/review_data_structure-1.1.0.jar" />
+    <property name="junit.jar" value="C:\Users\Public\TCSDevelop\tools/junit/junit-3.8.jar" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="component.mainclass" value="" />
+    <property name="java.io.tmpdir" value="C:\Users\James\AppData\Local\Temp\" />
+    <property name="component.target" value="1.6" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="javatests" value="src/java/tests" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="os.arch" value="x86" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\ext;C:\Windows\Sun\Java\lib\ext" />
+    <property name="java_1_5_bootclasspath" value="C:\Program Files\Java\jre1.5.0_07\lib\rt.jar" />
+    <property name="user.dir" value="C:\Users\James\workspaceofJave\rds14" />
+    <property name="design_dist.jar" value="review_data_structure_1.1.0_design_dist.jar" />
+    <property name="javasrc" value="src/java" />
+    <property name="libdir" value="../tcs/lib" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="distfilename" value="review_data_structure" />
+    <property name="basedir" value="C:\Users\James\workspaceofJave\rds14" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="ant.core.lib" value="C:\Users\Public\TCSDevelop\tools\ant\lib\ant.jar" />
+    <property name="file.encoding" value="GBK" />
+    <property name="dist_docs" value="build/dist/review_data_structure-1.1.0/docs" />
+    <property name="component.jar" value="build/dist/lib/tcs/review_data_structure/1.1.0/review_data_structure.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="target_libdir" value="C:\Users\Public\TCSDevelop\tools\tcs" />
+    <property name="ant.file.type.Dependency Import" value="file" />
+    <property name="ant.project.invoked-targets" value="dev_submission" />
+    <property name="component.package" value="com.topcoder.management.review.data" />
+    <property name="ant.file.Dependency Import" value="C:\Users\James\workspaceofJave\rds14\build-dependencies.xml" />
+  </properties>
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testImplements" time="0.0030" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithNoArgu" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithNegativeId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithZeroId" time="0.032" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithPositiveId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithNegativeIdAndNonNullName" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithZeroIdAndNonNullName" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithPositiveIdAndNullName" time="0.092" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testConstructorWithPositiveIdAndNonNullName" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testSetIdWithNegativeId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testSetIdWithZeroId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testSetIdWithPositiveId" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testGetId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testResetId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testSetName" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testGetName" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentTypeUnitTests" name="testResetName" time="0.087" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testImplements" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNoArgu" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroId" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithPositiveId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetIdWithNegativeId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetIdWithZeroId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetIdWithPositiveId" time="0.088" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testGetId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testResetId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeIdAndPositiveAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroIdAndPositiveAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeAuthorAndPositiveId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroAuthorAndPositiveId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithPositiveIdAndAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeIdAndNonNullComment" time="0.091" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroIdAndNonNullComment" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeAuthorAndNonNullComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroAuthorAndNonNullComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithPositiveIdAuthorAndNullComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithPositiveIdAuthorAndNonNullComment" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeIdAndNonNullCommentType" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroIdAndNonNullCommentType" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeAuthorAndNonNullCommentType" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroAuthorAndNonNullCommentType" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithPositiveIdAuthorAndNullCommentType" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithPositiveIdAuthorAndNonNullCommentType" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeIdAndOtherValidArgus" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroIdAndOtherValidArgus" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNegativeAuthorAndOtherValidArgus" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithZeroAuthorAndOtherValidArgus" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNullCommentAndOtherValidArgus" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithNullCommentTypeAndOtherValidArgus" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testConstructorWithValidArgus" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetAuthorWithNegativeAuthor" time="0.093" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetAuthorWithZeroAuthor" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetAuthorWithPositiveAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testGetAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testResetAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetCommentType" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testGetCommentType" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testResetCommentType" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testGetComment" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testResetComment" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testSetExtraInfo" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testGetExtraInfo" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.CommentUnitTests" name="testResetExtraInfo" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testImplements" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithNoArgu" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithNegativeId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithZeroId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithPositiveId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetIdWithNegativeId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetIdWithZeroId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetIdWithPositiveId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetId" time="0.09" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testResetId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithNegativeIdAndPositiveQuestion" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithZeroIdAndPositiveQuestion" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithNegativeQuestionAndPositiveId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithZeroQuestionAndPositiveId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithPositiveQuestionAndId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithNegativeIdAndNonNullAnswer" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithZeroIdAndNonNullAnswer" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithNegativeQuestionAndNonNullAnswer" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithZeroQuestionAndNonNullAnswer" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithNullAnswer" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testConstructorWithPositiveQuestionIdAndNonNullAnswer" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetQuestionWithNegativeQuestion" time="0.09" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetQuestionWithZeroQuestion" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetQuestionWithPositiveQuestion" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetQuestion" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testResetQuestion" time="0.091" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetAnswer" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetAnswer" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testResetAnswer" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetDocumentWithNegativeDocument" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetDocumentWithZeroDocument" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testSetDocumentWithValidArgu" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetDocument" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testResetDocument" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testAddCommentWithNullComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testAddCommentWithExistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testAddCommentWithInexistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testAddCommentsWithNullComments" time="0.085" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testAddCommentsWithInvalidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testAddCommentsWithValidComments" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentWithNullComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentWithInexistentComment" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentWithExistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentsWithNullComments" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentsWithInvalidComments" time="0.09" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentsWithValidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentWithZeroId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentWithNegativeId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentWithExistentId" time="0.083" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testRemoveCommentWithInexistentId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testClearComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetCommentWithNegativeIndex" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetCommentWithTooBigIndex" time="0.087" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetCommentWithValidIndex" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetAllComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ItemUnitTests" name="testGetNumberOfComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testImplements" time="0.046" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNoArgu" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithPositiveId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetIdWithNegativeId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetIdWithZeroId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetIdWithPositiveId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testResetId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetAuthorWithNegativeAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetAuthorWithZeroAuthor" time="0.086" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetAuthorWithPositiveAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testResetAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddCommentWithNullComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddCommentWithExistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddCommentWithInexistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddCommentsWithNullComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddCommentsWithInvalidComments" time="0.087" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddCommentsWithValidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentWithNullComment" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentWithInexistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentWithExistentComment" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentsWithNullComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentsWithInvalidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentsWithValidComments" time="0.092" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentWithZeroId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentWithNegativeId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentWithExistentId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveCommentWithInexistentId" time="0.088" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testClearComments" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetCommentWithNegativeIndex" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetCommentWithTooBigIndex" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetCommentWithValidIndex" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetAllComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetNumberOfComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeId1" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroId1" time="0.091" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeIdAndNonNullUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroIdAndNonNullUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithPositiveIdAndNullUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithPositiveIdAndNonNullUser" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeId2" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroId2" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeAuthor1" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroAuthor1" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeSubmission1" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroSubmission1" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeScorecard1" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroScorecard1" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithPositiveLongs" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeId3" time="0.091" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroId3" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeAuthor2" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroAuthor2" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeSubmission2" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroSubmission2" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNegativeScorecard2" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithZeroScorecard2" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithNullUser" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testConstructorWithPositiveLongsAndNonNullUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetSubmissionWithNegativeSubmission" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetSubmissionWithZeroSubmission" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetSubmissionWithPositiveSubmission" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetSubmission" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testResetSubmission" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetScorecardWithNegativeScorecard" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetScorecardWithZeroScorecard" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetScorecardWithPositiveScorecard" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetScorecard" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testResetScorecard" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetCommitted" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testIsCommitted" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testResetCommitted" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetScoreWithNegativeScore" time="0.085" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetScoreWithInfinityScore" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetScoreWithNaNScore" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetScoreWithValidScore" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetScore" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testResetScore" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetInitialScoreWithNegativeScore" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetInitialScoreWithInfinityScore" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetInitialScoreWithNaNScore" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetInitialScoreWithValidScore" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetInitialScore" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testResetInitialScore" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddItemWithNullItem" time="0.091" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddItemWithExistentItem" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddItemWithInexistentItem" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddItemsWithNullItems" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddItemsWithInvalidItems" time="0.085" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testAddItemsWithValidItems" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemWithNullItem" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemWithInexistentItem" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemWithExistentItem" time="0.079" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemsWithNullItems" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemsWithInvalidItems" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemsWithValidItems" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemWithZeroId" time="0.093" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemWithNegativeId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemWithExistentId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testRemoveItemWithInexistentId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testClearItems" time="0.091" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetItemWithNegativeIndex" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetItemWithTooBigIndex" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetItemWithValidIndex" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetAllItems" time="0.087" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetNumberOfItems" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetCreationUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetCreationUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetCreationTimestamp" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetCreationTimestamp" time="0.084" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetModificationUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetModificationUser" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testSetModificationTimestamp" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewUnitTests" name="testGetModificationTimestamp" time="0.084" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testImplements" time="0.04" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetIdWithNegativeId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetIdWithZeroId" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetIdWithPositiveId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testResetId" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetAuthorWithNegativeAuthor" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetAuthorWithZeroAuthor" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetAuthorWithPositiveAuthor" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testResetAuthor" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddCommentWithNullComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddCommentWithExistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddCommentWithInexistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddCommentsWithNullComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddCommentsWithInvalidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddCommentsWithValidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveCommentWithNullComment" time="0.01" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveCommentWithInexistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveCommentWithExistentComment" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveCommentsWithNullComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveCommentsWithInvalidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveCommentsWithValidComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testClearComments" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testConstructorWithNullUser" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetSubmissionWithNegativeSubmission" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetSubmissionWithZeroSubmission" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetSubmissionWithPositiveSubmission" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testResetSubmission" time="0.091" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetScorecardWithNegativeScorecard" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetScorecardWithZeroScorecard" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetScorecardWithPositiveScorecard" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testResetScorecard" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetCommitted" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testResetCommitted" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetScoreWithNegativeScore" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetScoreWithInfinityScore" time="0.087" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetScoreWithNaNScore" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testSetScoreWithValidScore" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testResetScore" time="0.0020" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddItemWithNullItem" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddItemWithExistentItem" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddItemWithInexistentItem" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddItemsWithNullItems" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddItemsWithInvalidItems" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testAddItemsWithValidItems" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveItemWithNullItem" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveItemWithInexistentItem" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveItemWithExistentItem" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveItemsWithNullItems" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveItemsWithInvalidItems" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testRemoveItemsWithValidItems" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testClearItems" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testConstructorWithNonNullUser" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testConstructorWithNullUserAndNonNullReview" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testConstructorWithNullReviewAndNonNullUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testConstructorWithValidUserAndReview" time="0.089" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testGetReview" time="0.0010" />
+  <testcase classname="com.topcoder.management.review.data.ReviewEditorUnitTests" name="testGetUser" time="0.0" />
+  <testcase classname="com.topcoder.management.review.data.DemoTests" name="testCreatingAndUsingReviewHierarchy" time="0.055" />
+  <testcase classname="com.topcoder.management.review.data.DemoTests" name="testUsingReviewEditor" time="0.0010" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,11 @@
+Starting audit...
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\ChainFilterTest.java:30: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\ConfigurationExceptionTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\DefaultReviewManagerTest.java:35: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\DemoTest.java:32: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\DuplicateReviewEntityExceptionTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\MockReviewPersistence.java:0: Got an exception - java.lang.RuntimeException: Unable to get class information for @throws tag 'ReviewPersistenceException'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\ReviewEntityNotFoundExceptionTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\ReviewManagementExceptionTest.java:22: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+C:\Users\James\workspaceofJave\rm14\src\java\tests\com\topcoder\management\review\ReviewPersistenceExceptionTest.java:20: Type Javadoc tag @author must match pattern '^TCSDEVELOPER$'.
+Audit done.
