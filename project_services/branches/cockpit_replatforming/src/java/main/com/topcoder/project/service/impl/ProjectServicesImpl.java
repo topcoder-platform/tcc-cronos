@@ -26,6 +26,7 @@ import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.BillingProjectConfigType;
 import com.topcoder.management.project.BillingProjectConfiguration;
 import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectPropertyType;
@@ -275,13 +276,24 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  * 
  * <p>
+ * Version 1.4.4 (TC Direct Replatforming Release 1) Change notes:
+ * <ul>
+ * <li>Add {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], Date, String)} method.</li>
+ * <li>Add {@link #createProjectWithTemplate(Project, com.topcoder.project.phases.Project, Resource[], Date, String)} method.</li>
+ * <li>Update {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], String)} method.</li>
+ * <li>Update {@link #createProjectWithTemplate(Project, com.topcoder.project.phases.Project, Resource[], String)} method.</li>
+ * <li>Add {@link #getAllFileTypes()} method.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv
- * @version 1.4.3
+ * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv, TCSASSEMBER
+ * @version 1.4.4
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -1620,6 +1632,73 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
             com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, String operator) {
+        return updateProject(projectHeader, projectHeaderReason, projectPhases, projectResources, null, operator);
+    }
+
+    /**
+     * <p>
+     * Update the project and all related data. First it updates the projectHeader a
+     * com.topcoder.management.project.Project instance. All related items will be updated. If items
+     * are removed from the project, they will be deleted from the persistence. Likewise, if new
+     * items are added, they will be created in the persistence. For the project, its properties and
+     * associating scorecards, the operator parameter is used as the modification user and the
+     * modification date will be the current date time when the project is updated. See the source
+     * code of Project Management component, ProjectManager: there is a 'reason' parameter in
+     * updateProject method.
+     * </p>
+     * <p>
+     * Then it updates the phases a com.topcoder.project.phases.Project instance. The id of
+     * projectHeader previous saved must be equal to projectPhases' id. The
+     * projectPhases.phases.project's id must be equal to projectHeader's id. The phases of the
+     * specified project are compared to the phases already in the database. If any new phases are
+     * encountered, they are added to the persistent store. If any phases are missing from the
+     * input, they are deleted. All other phases are updated.
+     * </p>
+     * <p>
+     * At last it updates the resources, they can be empty. Any resources in the array with UNSET_ID
+     * are assigned an id and updated in the persistence. Any resources with an id already assigned
+     * are updated in the persistence. Any resources associated with the project in the persistence
+     * store, but not appearing in the array are removed. The resource.project must be equal to
+     * projectHeader's id. The resources which have a phase id assigned ( a resource could not have
+     * the phase id assigned), must have the phase id contained in the projectPhases.phases' ids.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectHeaderReason
+     *            the reason of projectHeader updating.
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null or projectHeader.id is nonpositive;</li>
+     *             <li>if projectHeaderReason is null or empty;</li>
+     *             <li>if projectPhases is null, or if the phases of projectPhases are empty, or if
+     *             the projectPhases.id is not equal to projectHeader.id, or for each phase: if the
+     *             phase.object is not equal to projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>for each resource: if resource.getResourceRole() is null, or if the resource
+     *             role is associated with a phase type but the resource is not associated with a
+     *             phase, or if the resource.phase (id of phase) is set but it's not in
+     *             projectPhases.phases' ids, or if the resource.project (project's id) is not equal
+     *             to projectHeader's id;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectDoesNotExistException
+     *             if the project doesn't exist in persistent store.
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the update operation
+     * @since 1.4.4
+     */
+    public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
+            com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, Date multiRoundEndDate, String operator) {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#updateProject method.");
 
         // check projectHeader
@@ -1682,6 +1761,10 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
+            if (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+                // Studio contest has no approval phase
+                requireApproval = false;
+            }
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
                     .valueOf(requireApproval));
 
@@ -1739,6 +1822,24 @@ public class ProjectServicesImpl implements ProjectServices {
                         p.setFixedStartDate(null);
             }
             phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+            
+            if (multiRoundEndDate != null) {
+                // multiround phase duration
+                Util.log(logger, Level.INFO, "set duration for multi round phase");
+                Phase multiRoundPhase = null;
+                for (Phase phase : phases) {
+                    if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
+                        multiRoundPhase = phase;
+                        break;
+                    }
+                }
+                if (multiRoundPhase != null) {
+                    Date scheduler = multiRoundPhase.calcEndDate();
+                    diff = multiRoundEndDate.getTime() - scheduler.getTime();
+                    Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
+                    multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+                }
+            }
 
             for (Phase p : phases) {
                         p.setScheduledStartDate(p.calcStartDate());
@@ -2197,6 +2298,64 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public FullProjectData createProjectWithTemplate( Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, String operator) {
+        return createProjectWithTemplate(projectHeader, projectPhases, projectResources, null, operator);
+    }
+    
+    /**
+     * <p>
+     * Persist the project and all related data. All ids (of project header, project phases and
+     * resources) will be assigned as new, for this reason there is no exception like 'project
+     * already exists'.
+     * </p>
+     * <p>
+     * First it persist the projectHeader a com.topcoder.management.project.Project instance. Its
+     * properties and associating scorecards, the operator parameter is used as the
+     * creation/modification user and the creation date and modification date will be the current
+     * date time when the project is created. The id in Project will be ignored: a new id will be
+     * created using ID Generator (see Project Management CS). This id will be set to Project
+     * instance.
+     * </p>
+     * <p>
+     * Then it persist the phases a com.topcoder.project.phases.Project instance. The id of project
+     * header previous saved will be set to project Phases. The phases' ids will be set to 0 (id not
+     * set) and then new ids will be created for each phase after persist operation.
+     * </p>
+     * <p>
+     * At last it persist the resources, they can be empty.The id of project header previous saved
+     * will be set to resources. The ids of resources' phases ids must be null. See &quot;id problem
+     * with resources&quot; thread in design forum. The resources could be empty or null, null is
+     * treated like empty: no resources are saved. The resources' ids will be set to UNSET_ID of
+     * Resource class and therefore will be persisted as new resources's.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null;</li>
+     *             <li>if projectPhases is null;</li>
+     *             <li>if the project of phases (for each phase: phase.project) is not equal to
+     *             projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>if for each resources: a required field of the resource is not set : if
+     *             resource.getResourceRole() is null;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the create operation
+     * @since 1.4.4
+     */
+    public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+            Resource[] projectResources, Date multiRoundEndDate, String operator) {
 
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createProjectWithTemplate method.");
 
@@ -2248,6 +2407,10 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
+            if (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+                // Studio contest has no approval phase
+                requireApproval = false;
+            }
 
 
             boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
@@ -2263,6 +2426,13 @@ public class ProjectServicesImpl implements ProjectServices {
             {
                 leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
                 leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
+            }
+            
+            if (multiRoundEndDate == null) {
+                // no multiround phases
+                leftoutphases.add(PhaseType.MILESTONE_SUBMISSION_PHASE.getId());
+                leftoutphases.add(PhaseType.MILESTONE_SCREENING_PHASE.getId());
+                leftoutphases.add(PhaseType.MILESTONE_REVIEW_PHASE.getId());
             }
 
             long[] leftOutPhaseIds = new long[leftoutphases.size()];
@@ -2289,6 +2459,24 @@ public class ProjectServicesImpl implements ProjectServices {
             long approvalTemplateId = 0L;
             long specReviewTemplateId = 0L;
             long projectTypeId = projectHeader.getProjectCategory().getId();
+
+            if (multiRoundEndDate != null) {
+                // multiround phase duration
+                Util.log(logger, Level.INFO, "set duration for multi round phase");
+                Phase multiRoundPhase = null;
+                for (Phase phase : newProjectPhases.getAllPhases()) {
+                    if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
+                        multiRoundPhase = phase;
+                        break;
+                    }
+                }
+                if (multiRoundPhase != null) {
+                    Date scheduler = multiRoundPhase.calcEndDate();
+                    long diff = multiRoundEndDate.getTime() - scheduler.getTime();
+                    Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
+                    multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+                }
+            }
 
             try
             {
@@ -2343,15 +2531,15 @@ public class ProjectServicesImpl implements ProjectServices {
                     {
                         p.setAttribute("Registration Number", "0");
                     }
-                    else if (p.getPhaseType().getName().equals("Submission"))
+                    else if (p.getPhaseType().getName().equals("Submission") || p.getPhaseType().getName().equals("Milestone Submission"))
                     {
                         p.setAttribute("Submission Number", "0");
                     }
-                    else if (p.getPhaseType().getName().equals("Screening"))
+                    else if (p.getPhaseType().getName().equals("Screening") || p.getPhaseType().getName().equals("Milestone Screening"))
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
                     }
-                    else if (p.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME))
+                    else if (p.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME) || p.getPhaseType().getName().equals("Milestone Review"))
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
                         if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
@@ -3848,22 +4036,22 @@ public class ProjectServicesImpl implements ProjectServices {
     {
 
         log(Level.INFO,
-				"Enters ProjectServicesImpl#getProject method.");
+                "Enters ProjectServicesImpl#getProject method.");
 
-		Project project = null;
-		try {
-			project = projectManager.getProject(projectId);
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getProject method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating getProject.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getProject method.");
-		return project;
+        Project project = null;
+        try {
+            project = projectManager.getProject(projectId);
+        } catch (PersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getProject method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating getProject.",
+                    ex);
+        } 
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getProject method.");
+        return project;
     }
 
 
@@ -3878,22 +4066,22 @@ public class ProjectServicesImpl implements ProjectServices {
     public ResourceRole[] getAllResourceRoles() throws ProjectServicesException
     {
         log(Level.INFO,
-				"Enters ProjectServicesImpl#getAllResourceRoles method.");
+                "Enters ProjectServicesImpl#getAllResourceRoles method.");
 
-		ResourceRole[] allroles = null;
-		try {
-			allroles = resourceManager.getAllResourceRoles();
-		} catch (ResourcePersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ResourcePersistenceException occurred in ProjectServicesImpl#getAllResourceRoles method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating getAllResourceRoles.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getAllResourceRoles method.");
-		return allroles;
+        ResourceRole[] allroles = null;
+        try {
+            allroles = resourceManager.getAllResourceRoles();
+        } catch (ResourcePersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ResourcePersistenceException occurred in ProjectServicesImpl#getAllResourceRoles method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating getAllResourceRoles.",
+                    ex);
+        } 
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getAllResourceRoles method.");
+        return allroles;
 
     }
 
@@ -4074,4 +4262,26 @@ public class ProjectServicesImpl implements ProjectServices {
         }
     }
 
+    /**
+     * Gets all FileType entities.
+     *
+     * @return the found FileType entities, return empty if cannot find any.
+     * @throws ProjectServicesException
+     *             if there are any exceptions.
+     * @since 1.4.4
+     */
+    public FileType[] getAllFileTypes() throws ProjectServicesException {
+        log(Level.INFO, "Enters ProjectServicesImpl#getAllFileTypes method.");
+
+
+        try {
+            return projectManager.getAllFileTypes();
+        } catch (PersistenceException ex) {
+            log(Level.ERROR,
+                    "PersistenceException occurred in ProjectServicesImpl#getAllFileTypes method." + ex);
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when getAllFileTypes",
+                    ex);
+        }
+    }
 }
