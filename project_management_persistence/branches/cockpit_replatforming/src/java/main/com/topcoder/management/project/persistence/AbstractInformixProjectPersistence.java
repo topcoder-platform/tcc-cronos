@@ -167,6 +167,11 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *  Version 1.3.2 - Launch Copilot Selection Contest assembly 1.0
  *  - add private description support in project spec operation
  *  </p>
+ *  <p>
+ *  Version 1.3.3 - TC Direct Replatforming Release 1
+ *  - Add support for ProjectStudioSpecification.contestIntroduction and ProjectStudioSpecification.contestDescription fields.
+ *  - Update {@link #createOrUpdateProjectFileTypes(long, List, Connection, String, boolean)} to let fileTypes can be null.
+ *  - Update {@link #createOrUpdateProjectPrizes(long, List, Connection, String, boolean) to update the logic for updating prizes.
  *
  *
  * <p>
@@ -174,7 +179,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </p>
  *
  * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter, isv
- * @version 1.3.1
+ * @version 1.3.3
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -1131,6 +1136,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *
      * @since 1.0
      */
+    private static final DataType[] QUERY_PROJECTS_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE, Helper.LONG_TYPE,
+        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE};
     private static final String QUERY_PROJECTS_BY_CREATE_DATE_SQL = "SELECT "
 
 			+ "  project.project_id, project_status_lu.project_status_id, project_status_lu.name, "
@@ -1150,20 +1159,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "               AND pi2.project_id = project.project_id AND pi2.project_info_type_id = 7 " 				 
             + "               AND (project.project_status_id != 3)"
 			+ "			      AND date(project.create_date) > date(current) - ";
-
-    
-   
-
-
-    /**
-     * Represents the column types for the result set which is returned by
-     * executing the sql statement to query projects.
-     */
-    private static final DataType[] QUERY_PROJECTS_COLUMN_TYPES = new DataType[] {
-        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
-        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
-        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE};
     
     /**
      * Represents the column types for the result set which is returned by
@@ -1646,7 +1641,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final String QUERY_PRIZES_SQL = "SELECT "
         + "prize.prize_id, prize.place, prize.prize_amount, prize.number_of_submissions, "
-        + "prize_type.prize_type_id, prize_type.description " + "FROM prize AS prize "
+        + "prize_type.prize_type_id, prize_type.prize_type_desc " + "FROM prize AS prize "
         + "JOIN prize_type_lu AS prize_type ON prize.prize_type_id=prize_type.prize_type_id "
         + "JOIN project_prize_xref AS xref ON prize.prize_id=xref.prize_id " + "WHERE xref.project_id=";
 
@@ -1784,8 +1779,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         = "INSERT INTO project_studio_specification (project_studio_spec_id, "
             + "goals, target_audience, branding_guidelines, disliked_design_websites, other_instructions, "
             + "winning_criteria, submitters_locked_between_rounds, round_one_introduction, round_two_introduction, "
-            + "colors, fonts, layout_and_size, create_user, create_date, modify_user, modify_date)"
-            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "colors, fonts, layout_and_size, contest_introduction, contest_description, create_user, create_date, modify_user, modify_date)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * Represents the sql statement to update studio specification data.
@@ -1796,7 +1791,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         + "SET goals=?, target_audience=?, branding_guidelines=?, disliked_design_websites=?, "
         + "other_instructions=?, winning_criteria=?, submitters_locked_between_rounds=?, "
         + "round_one_introduction=?, round_two_introduction=?, colors=?, fonts=?, "
-        + "layout_and_size=?, modify_user=?, modify_date=? " + "WHERE project_studio_spec_id=";
+        + "layout_and_size=?, contest_introduction=?, contest_description=?, modify_user=?, modify_date=? " + "WHERE project_studio_spec_id=";
 
     /**
      * Represents the sql statement to delete studio specification data with the specified project studio specification
@@ -1825,7 +1820,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         + "spec.branding_guidelines, spec.disliked_design_websites, spec.other_instructions, "
         + "spec.winning_criteria, spec.submitters_locked_between_rounds, "
         + "spec.round_one_introduction, spec.round_two_introduction, spec.colors, "
-        + "spec.fonts, spec.layout_and_size " + "FROM project_studio_specification AS spec JOIN project AS project "
+        + "spec.fonts, spec.layout_and_size, spec.contest_introduction, spec.contest_description " + "FROM project_studio_specification AS spec JOIN project AS project "
         + "ON project.project_studio_spec_id=spec.project_studio_spec_id " + "WHERE project.project_id=";
     /**
      * Represents the data types for the result set by querying studio specification data with the specified project id.
@@ -1835,7 +1830,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final DataType[] QUERY_STUDIO_SPEC_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.STRING_TYPE, Helper.BOOLEAN_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-        Helper.STRING_TYPE, Helper.STRING_TYPE};
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to set studio specification id for project table with the specified project id.
@@ -2464,7 +2459,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * create date is within current - days 
      * </p>
      * @param days last 'days' 
-     * @param conn the database connection
      * @return An array of project instances.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
@@ -2655,14 +2649,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
             throw e;
         } catch (ParseException e) {
-        	getLogger().log(
-            Level.ERROR,
-            new LogMessage(null, null, "Fails to retrieving projects with the direct project id: "
-                + directProjectId, e));
-        	if (conn != null) {
-        		closeConnectionOnError(conn);
-        	}
-        	throw new PersistenceException("Fails to retrieve projects", e);
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving projects with the direct project id: "
+                    + directProjectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            
+            throw new PersistenceException("Fails to retrieve projects", e);
         }
     }
 	
@@ -2893,7 +2887,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private void createOrUpdateProjectFileTypes(long projectId, List<FileType> fileTypes, Connection conn,
         String operator, boolean update) throws PersistenceException {
-        Helper.assertObjectNotNull(fileTypes, "fileTypes");
+        if (fileTypes == null) {
+            return;
+        }
         Object[] queryArgs = null;
 
         if (update) {
@@ -3058,10 +3054,23 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private void createOrUpdateProjectPrizes(long projectId, List<Prize> prizes, Connection conn, String operator,
         boolean update) throws PersistenceException {
+        if (prizes == null) {
+            return;
+        }
         Object[] queryArgs = null;
         if (update) {
             getLogger().log(Level.INFO,
                 "delete the project prize reference from database with the specified project id: " + projectId);
+            Prize[] oldPrizes = getProjectPrizes(projectId);
+            Set<Long> ids = new HashSet<Long>();
+            for (Prize prize : prizes) {
+                ids.add(prize.getId());
+            }
+            for (Prize oldPrize : oldPrizes) {
+                if (!ids.contains(oldPrize.getId())) {
+                    removePrize(oldPrize, operator);
+                }
+            }
             // delete the project prize reference from database with the specified project id
             queryArgs = new Object[]{projectId};
             Helper.doDMLQuery(conn, DELETE_PROJECT_PRIZE_XREF__WITH_PROJECT_ID_SQL, queryArgs);
@@ -3615,7 +3624,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Object[] queryArgs = new Object[]{newId, spec.getGoals(), spec.getTargetAudience(),
                 spec.getBrandingGuidelines(), spec.getDislikedDesignWebSites(), spec.getOtherInstructions(),
                 spec.getWinningCriteria(), spec.isSubmittersLockedBetweenRounds(), spec.getRoundOneIntroduction(),
-                spec.getRoundTwoIntroduction(), spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), operator,
+                spec.getRoundTwoIntroduction(), spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), operator,
                 createDate, operator, createDate};
             Helper.doDMLQuery(conn, CREATE_STUDIO_SPEC_SQL, queryArgs);
 
@@ -3680,7 +3689,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Object[] queryArgs = new Object[]{spec.getGoals(), spec.getTargetAudience(), spec.getBrandingGuidelines(),
                 spec.getDislikedDesignWebSites(), spec.getOtherInstructions(), spec.getWinningCriteria(),
                 spec.isSubmittersLockedBetweenRounds(), spec.getRoundOneIntroduction(), spec.getRoundTwoIntroduction(),
-                spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), operator, modifyDate};
+                spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), operator, modifyDate};
             Helper.doDMLQuery(conn, UPDATE_STUDIO_SPEC_SQL + spec.getId(), queryArgs);
 
             closeConnection(conn);
@@ -3811,6 +3820,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 QUERY_STUDIO_SPEC_COLUMN_TYPES);
 
             if (rows.length == 0) { // no project studio specification is found, return null
+                closeConnection(conn);
                 return null;
             }
 
@@ -3830,6 +3840,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             studioSpec.setColors((String) rows[0][10]);
             studioSpec.setFonts((String) rows[0][11]);
             studioSpec.setLayoutAndSize((String) rows[0][12]);
+            studioSpec.setContestIntroduction((String) rows[0][13]);
+            studioSpec.setContestDescription((String) rows[0][14]);
 
             closeConnection(conn);
             return studioSpec;
@@ -3924,6 +3936,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private void createOrUpdateProjectStudioSpecification(long projectId, ProjectStudioSpecification spec,
         Connection conn, String operator) throws PersistenceException {
+        if (spec == null) {
+            return;
+        }
         // the studio specification with the specified id exists, just update it
         if (spec.getId() > 0
             && Helper.checkEntityExists("project_studio_specification", "project_studio_spec_id", spec.getId(), conn)) {
@@ -4385,7 +4400,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     /**
      * Build {@link Project} directly from the {@link CustomResultSet}
      * 
-     * @param resultSet a {@link CustomResultSet} containing the data for build the {@link Project} instances. 
+     * @param result a {@link CustomResultSet} containing the data for build the {@link Project} instances. 
      * @return an array of {@link Project}
      * @throws PersistenceException if error occurred while accessing the database.
      */
@@ -4512,6 +4527,14 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // set the studio specification
             projects[i].setProjectStudioSpecification(getProjectStudioSpecification(projectId));
+            
+            //
+            // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+            //
+            ProjectSpec[] specs = getProjectSpecs(projects[i].getId(), conn);
+            if (specs != null && specs.length > 0) {
+                projects[i].setProjectSpec(specs[0]);
+            }
         }
 
         // get the Id-Project map
@@ -4583,8 +4606,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         return projects;
     }
-    
-    
 
     /**
      * Gets an array of all project types in the persistence. The project types
@@ -7381,7 +7402,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     /**
      * check contest permission, check if a user has permission (read or write) on a project
      *
-     * @param projectId the tc direct project id
+     * @param tcprojectId the tc direct project id
      * @param readonly check read or write permission
      * @param userId user id
      *
@@ -7442,7 +7463,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * get project ids by tc direct id
      * </p>
      *
-     * @tcDirectId tc direct project id
+     * @param tcprojectId tc direct project id
      *
      * @return list of project ids
      *
@@ -7487,7 +7508,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * get tc direct project id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return tc direct project id
      *
@@ -7533,7 +7554,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * get forum id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return forum id
      *
@@ -7635,7 +7656,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * check if it is dev only 
      * </p>
      *
-     * @projectId  project id
+     * @param projectId  project id
      *
      * @return boolean
      *
