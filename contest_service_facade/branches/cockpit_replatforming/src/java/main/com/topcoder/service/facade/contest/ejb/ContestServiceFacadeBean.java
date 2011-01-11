@@ -40,25 +40,12 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.cronos.onlinereview.services.uploads.InvalidProjectException;
-import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
-import com.cronos.onlinereview.services.uploads.InvalidUserException;
-import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
-import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
-import com.topcoder.management.phase.PhaseManagementException;
-import com.topcoder.management.review.ReviewManagementException;
-import com.topcoder.management.review.data.Review;
-import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.service.facade.contest.ContestServiceFacade;
-import com.topcoder.service.permission.ProjectPermission;
 import org.jboss.logging.Logger;
 
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
 import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices;
-import com.tangosol.coherence.component.Data;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
@@ -79,22 +66,31 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.UploadManager;
+import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
+import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.project.FileType;
+import com.topcoder.management.project.Prize;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.Review;
 import com.topcoder.message.email.EmailEngine;
 import com.topcoder.message.email.TCSEmailMessage;
-import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.service.ContestSaleData;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ProjectServices;
 import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.project.service.ScorecardReviewData;
+import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.RolePrincipal;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.contest.eligibility.ContestEligibility;
@@ -107,6 +103,7 @@ import com.topcoder.service.facade.contest.CommonProjectContestData;
 import com.topcoder.service.facade.contest.CommonProjectPermissionData;
 import com.topcoder.service.facade.contest.ContestPaymentResult;
 import com.topcoder.service.facade.contest.ContestServiceException;
+import com.topcoder.service.facade.contest.ContestServiceFacade;
 import com.topcoder.service.facade.contest.ContestServiceFilter;
 import com.topcoder.service.facade.contest.ProjectStatusData;
 import com.topcoder.service.facade.contest.ProjectSummaryData;
@@ -125,6 +122,7 @@ import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionService;
 import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.permission.PermissionType;
+import com.topcoder.service.permission.ProjectPermission;
 import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
@@ -307,9 +305,29 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  *     <li>Added {@link #addReviewer(TCSubject, long, long)} method.</li>
  *     <li>Added {@link ContestServiceFacade#getReview(long,long,long)} method.</li>
  *   </ol>
- * </p> *
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
- * @version 1.6.5
+ * </p>
+ * <p>
+ * Version 1.6.6 (TC Direct Replatforming Release 1) Change notes:
+ * <ul>
+ * <li>Add {@link #studioForumBeanProviderUrl} field.</li>
+ * <li>Add {@link #processContestCreditCardSale(TCSubject, SoftwareCompetition, CreditCardPaymentData, Date)} method.</li>
+ * <li>Update {@link #processContestCreditCardSale(TCSubject, SoftwareCompetition, CreditCardPaymentData)} method.</li>
+ * <li>Add {@link #processContestPurchaseOrderSale(TCSubject, SoftwareCompetition, TCPurhcaseOrderPaymentData, Date)} method.</li>
+ * <li>Update {@link #processContestPurchaseOrderSale(TCSubject, SoftwareCompetition, TCPurhcaseOrderPaymentData)} method.</li>
+ * <li>Update {@link #processContestSaleInternal(TCSubject, SoftwareCompetition, PaymentData, Date)} method.</li>
+ * <li>Add {@link #createSoftwareContest(TCSubject, SoftwareCompetition, long, Date)} method.</li>
+ * <li>Update {@link #createSoftwareContest(TCSubject, SoftwareCompetition, long)} method.</li>
+ * <li>Add {@link #updateSoftwareContest(TCSubject, SoftwareCompetition, long, Date)} method.</li>
+ * <li>Update {@link #updateSoftwareContest(TCSubject, SoftwareCompetition, long)} method.</li>
+ * <li>Add {@link #getAllFileTypes()} method.</li>
+ * <ii>Update {@link #createUpdateAssetDTO(TCSubject, SoftwareCompetition)} method to create forums for studio contest.</li>
+ * <li>Add {@link #createStudioForum(String, long)} method and update {@link #createForum(TCSubject, AssetDTO, long, long)} method.</li>
+ * <li>Add {@link #getForumsEJBFromJNDI(String)} method.</li>
+ * <li>Add @link #isStudio(SoftwareCompetition)} method.</li>
+ * </ul>
+ * </p>
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSASSEMBER
+ * @version 1.6.6
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -780,6 +798,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private String forumBeanProviderUrl;
 
     /**
+     * studioForumBeanProviderUrl is used in the jndi context to get the forum bean in
+     * the createStudioForum method. It's injected, non-null and non-empty after set.
+     * 
+     * @since 1.6.6
+     */
+    @Resource(name = "studioForumBeanProviderUrl")
+    private String studioForumBeanProviderUrl;
+
+    /**
      * <p>
      * A <code>PaymentProcessor</code> instance of payment processor
      * implementing class. All payment requests are processed through this
@@ -1182,7 +1209,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             ContestData contestData = convertToContestData(contest);
             //checks the permission
-	        //TODO liquid creaet project, and assign permission, check fails here
+            //TODO liquid creaet project, and assign permission, check fails here
             //checkStudioProjectPermission(tcSubject, tcDirectProjectId);
             checkStudioBillingProjectPermission(tcSubject, contestData);
 
@@ -2909,7 +2936,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             SoftwareCompetition competition, CreditCardPaymentData paymentData) throws ContestServiceException, PermissionServiceException {
         logger.debug("processContestCreditCardSale");
 
-        return processContestSaleInternal(tcSubject, competition, paymentData);
+        return processContestSaleInternal(tcSubject, competition, paymentData, null);
+    }
+    
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since Module Contest Service Software Contest Sales Assembly
+     * @since 1.6.6
+     */
+    public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
+            SoftwareCompetition competition, CreditCardPaymentData paymentData, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
+        logger.debug("processContestCreditCardSale");
+
+        return processContestSaleInternal(tcSubject, competition, paymentData, multiRoundEndDate);
     }
 
     /**
@@ -2931,7 +2981,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException, PermissionServiceException {
         logger.debug("processPurchaseOrderSale");
 
-        return processContestSaleInternal(tcSubject, competition, paymentData);
+        return processContestSaleInternal(tcSubject, competition, paymentData, null);
+    }
+    
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param competition data that recognizes a contest.
+     * @param paymentData payment information (credit card/po details) that need to be processed.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since Module Contest Service Software Contest Sales Assembly
+     * @since 1.6.6
+     */
+    public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
+            SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
+        logger.debug("processPurchaseOrderSale");
+
+        return processContestSaleInternal(tcSubject, competition, paymentData, multiRoundEndDate);
     }
 
     /**
@@ -2952,16 +3025,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
      * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since Module Contest Service Software Contest Sales Assembly
      * @since BUGR-1682 changed return value
      */
     private SoftwareContestPaymentResult processContestSaleInternal(TCSubject tcSubject,
-            SoftwareCompetition competition, PaymentData paymentData) throws ContestServiceException, PermissionServiceException {
+            SoftwareCompetition competition, PaymentData paymentData, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
         logger.info("SoftwareCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
         logger.info("tcSubject: " + tcSubject.getUserId());
+        logger.info("multiRoundEndDate: " + multiRoundEndDate);
 
         SoftwareContestPaymentResult softwareContestPaymentResult = null;
 
@@ -2989,11 +3064,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition =
-                    createSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId());
+                    createSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId(), multiRoundEndDate);
             } else {
                 competition.setProjectHeaderReason("User Update");
                 tobeUpdatedCompetition =
-                    updateSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId());
+                    updateSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId(), multiRoundEndDate);
             }
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
@@ -3009,14 +3084,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
-            double fee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(SPEC_REVIEW_COST_PROJECT_INFO_TYPE));
+            double fee = 0;
+            if (competition.getProjectHeader().getProjectStudioSpecification() == null) {
+                // software competition
+                fee = Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(SPEC_REVIEW_COST_PROJECT_INFO_TYPE));
+            } else {
+                // studio competition
+                fee = Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE));
+                for (Prize prize : competition.getProjectHeader().getPrizes()) {
+                    fee = fee + prize.getPrizeAmount() * prize.getNumberOfSubmissions();
+                }
+            }
 
             fee = fee - pastPayment;
 
@@ -3865,6 +3950,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
+     * Checks if the contest is studio contest.
+     *
+     * @param contest the conetst to check
+     * @return true if the contest is studio contest, false otherwise
+     * @since 1.6.6
+     */
+    private boolean isStudio(SoftwareCompetition contest) {
+        return contest.getProjectHeader().getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId();
+    }
+
+    /**
      * <p>
      * Creates a new <code>SoftwareCompetition</code> in the persistence.
      * </p>
@@ -3886,15 +3982,41 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
             long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
+        return createSoftwareContest(tcSubject, contest, tcDirectProjectId, null);
+    }
+    
+    /**
+     * <p>
+     * Creates a new <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     * Updated for Version 1.0.1 - BUGR-2185: For development contests, if asset (or component) exists from design
+     * contests then that is used to create a new contest. Otherwise a new asset is also created. Updated for Version1.5
+     * the code is refactored by the logic: 1. check the permission 2. update or create the asset 3. set default
+     * resources 4. create project 5. prepare the return value 6. persist the eligility
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest the <code>SoftwareCompetition</code> to create as a contest
+     * @param tcDirectProjectId the TC direct project id. a <code>long</code> providing the ID of a client the new
+     *            competition belongs to.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @return the created <code>SoftwareCompetition</code> as a contest
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since 1.6.6
+     */
+    public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
         logger.debug("createSoftwareContest with information : [tcSubject = " + tcSubject.getUserId() + ", tcDirectProjectId ="
-                + tcDirectProjectId + "]");
+                + tcDirectProjectId + ", multiRoundEndDate = " + multiRoundEndDate + "]");
 
         try {
             ExceptionUtils.checkNull(contest, null, null, "The contest to create is null.");
             ExceptionUtils.checkNull(contest.getProjectHeader(), null, null, "The contest#ProjectHeader to create is null.");
 
             // check the permission
-	     //TODO liquid creaet project, and assign permission, check fails here
+         //TODO liquid creaet project, and assign permission, check fails here
             //checkSoftwareProjectPermission(tcSubject, tcDirectProjectId, true);
             //check the billing project permission
             long billingProjectId = getBillingProjectId(contest);
@@ -3922,7 +4044,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             //create project now
             FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-                        contest.getProjectPhases(), contest.getProjectResources(),
+                        contest.getProjectPhases(), contest.getProjectResources(), multiRoundEndDate,
                         String.valueOf(tcSubject.getUserId()));
 
             if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
@@ -4062,7 +4184,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (useExistingAsset && assetDTO.getForum() != null) {
                     forumId = assetDTO.getForum().getJiveCategoryId();
                 } else {
-                    forumId = createForum(tcSubject, assetDTO, tcSubject.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
+                    if (!isStudio(contest)) {
+                        // software contest
+                        forumId = createForum(tcSubject, assetDTO, tcSubject.getUserId(), contest.getProjectHeader().getProjectCategory().getId());
+                    } else {
+                        // studio contest
+                        forumId = createStudioForum(assetDTO.getName(), tcSubject.getUserId());
+                    }
                 }
             }
 
@@ -4117,6 +4245,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (isCopilotContest(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
+                contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
+            }
+            if (isStudio(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
             }
             
@@ -4295,6 +4426,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
             long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
+        return updateSoftwareContest(tcSubject, contest, tcDirectProjectId, null);
+    }
+    
+    /**
+     * <p>
+     * Updates a <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     * <p>
+     * Update in version 1.5, reduce the code redundancy in permission checking.
+     * <p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest the <code>SoftwareCompetition</code> to update as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since 1.6.6
+     */
+    public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
         logger.debug("updateSoftwareContest");
 
         try {
@@ -4374,6 +4528,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         contest.getProjectHeaderReason(),
                         contest.getProjectPhases(),
                         contest.getProjectResources(),
+                        multiRoundEndDate,
                         String.valueOf(tcSubject.getUserId()));
 
                 // TCCC-1438 - it's better to refetch from backend.
@@ -4657,6 +4812,58 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
+     * Get the EJB handler for Forum EJB service.
+     * 
+     * @param url the EJB bean url
+     * @return the forum EJB service handler.
+     * @throws NamingException if a naming exception is encountered.
+     * @throws RemoteException if remote error occurs.
+     * @throws CreateException if error occurs when creating EJB handler
+     * 
+     * @since 1.6.6
+     */
+    private Forums getForumsEJBFromJNDI(String url) throws NamingException, CreateException, RemoteException {
+        Properties p = new Properties();
+        p.put(Context.INITIAL_CONTEXT_FACTORY,
+            "org.jnp.interfaces.NamingContextFactory");
+        p.put(Context.URL_PKG_PREFIXES,
+            "org.jboss.naming:org.jnp.interfaces");
+        p.put(Context.PROVIDER_URL, url);
+        
+        Context c = new InitialContext(p);
+        ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+        
+        return forumsHome.create();
+    }
+
+    /**
+     * Create studio forum with given parameters. It will lookup the ForumsHome interface, and create the studio forum
+     * by the ejb home interface.
+     * 
+     * @param name the forum name
+     * @param userId the user id to user
+     * @return the long id of the create fourm
+     * @since 1.6.6
+     */
+    private long createStudioForum(String name, long userId) {
+        logger.debug("createStudioForm (name = " + name + ", userId = " + userId + ")");
+        
+        try {
+            Forums forums = getForumsEJBFromJNDI(studioForumBeanProviderUrl);
+            long forumId = forums.createStudioForum(name);
+            if (forumId < 0) {
+                throw new Exception("createStudioForum returned negative forum ID: " + forumId);
+            }
+            forums.createForumWatch(userId, forumId);
+            return forumId;
+        } catch (Exception e) {
+            logger.error("*** Could not create a studio forum for " + name);
+            logger.error(e);
+        }
+        return -1;
+    }
+    
+    /**
      * create forum with given parameters. It will lookup the ForumsHome interface, and ceate the forum by the ejb home
      * interface. In the old version, this method misses the document, it's added in the version 1.1
      *
@@ -4670,17 +4877,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.debug("createForum (tcSubject = " + tcSubject.getUserId() + ", " + userId + ")");
 
         try {
-            Properties p = new Properties();
-            p.put(Context.INITIAL_CONTEXT_FACTORY,
-                "org.jnp.interfaces.NamingContextFactory");
-            p.put(Context.URL_PKG_PREFIXES,
-                "org.jboss.naming:org.jnp.interfaces");
-            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
-
-            Context c = new InitialContext(p);
-            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
-
-            Forums forums = forumsHome.create();
+            Forums forums = getForumsEJBFromJNDI(forumBeanProviderUrl);
 
             long phaseId = 0;
 
@@ -7147,11 +7344,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6.1 BUGR-3706
      */
     public List<ProjectNotification> getNotificationsForUser(TCSubject subject, long userId)
-	    throws ContestServiceException {
-		    logger.info("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
-				    + "]");
-		    ArrayList<ProjectNotification> result = new ArrayList<ProjectNotification>();
-		    List<com.topcoder.management.project.SimpleProjectContestData> contests;
+        throws ContestServiceException {
+            logger.info("getNotificationsForUser with arguments [TCSubject " + subject.getUserId() + ", userId =" + userId
+                    + "]");
+            ArrayList<ProjectNotification> result = new ArrayList<ProjectNotification>();
+            List<com.topcoder.management.project.SimpleProjectContestData> contests;
 
         try {
 
@@ -7233,25 +7430,25 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             }
 
-			    result = new ArrayList<ProjectNotification>(map.values());
+                result = new ArrayList<ProjectNotification>(map.values());
 
-			    // sort the ProjectNotification by alphabetical order
-			    Collections.sort(result, new Comparator<ProjectNotification>(){
-					    public int compare(ProjectNotification o1, ProjectNotification o2) {
-					    return o1.getName().compareToIgnoreCase(o2.getName());
-					    }
-					    });
+                // sort the ProjectNotification by alphabetical order
+                Collections.sort(result, new Comparator<ProjectNotification>(){
+                        public int compare(ProjectNotification o1, ProjectNotification o2) {
+                        return o1.getName().compareToIgnoreCase(o2.getName());
+                        }
+                        });
 
-			    // for each ProjectNotification, sort ContestNotifications by alphabetical order
-			    for (ProjectNotification pn : result){
-				    Collections.sort(pn.getContestNotifications(), new Comparator<ContestNotification>(){
-						    public int compare(ContestNotification o1, ContestNotification o2) {
-						    return o1.getName().compareToIgnoreCase(o2.getName());
-						    }
-						    }) ;
-			    }
+                // for each ProjectNotification, sort ContestNotifications by alphabetical order
+                for (ProjectNotification pn : result){
+                    Collections.sort(pn.getContestNotifications(), new Comparator<ContestNotification>(){
+                            public int compare(ContestNotification o1, ContestNotification o2) {
+                            return o1.getName().compareToIgnoreCase(o2.getName());
+                            }
+                            }) ;
+                }
 
-			    return result;
+                return result;
 
         } catch (ProjectServicesException pse) {
             logger.error("ProjectServices operation failed in the contest service facade.", pse);
@@ -7701,5 +7898,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         return false;
 
+    }
+    
+    /**
+     * Gets all FileType entities.
+     *
+     * @return the found FileType entities, return empty if cannot find any.
+     * @throws ContestServiceException
+     *             if there are any exceptions.
+     * @since 1.6.6
+     */
+    public FileType[] getAllFileTypes() throws ContestServiceException {
+        logger.debug("getAllFileTypes");
+
+        try {
+            return projectServices.getAllFileTypes();
+        } catch (ProjectServicesException e) {
+            logger.error("Operation failed in the getAllFileTypes.", e);
+            throw new ContestServiceException("Operation failed in the getAllFileTypes.", e);
+        }
     }
 }

@@ -3,6 +3,7 @@
  */
 package com.topcoder.service.facade.contest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.activation.DataHandler;
@@ -18,11 +19,13 @@ import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.project.FileType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.service.FullProjectData;
+import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.security.TCSubject;
@@ -161,8 +164,19 @@ import com.topcoder.service.user.Registrant;
  *   </ol>
  * </p>
  *
- * @author pulky, murphydog, waits, BeBetter, hohosky, isv
- * @version 1.6.3
+ * <p>
+ * Version 1.6.4 (TC Direct Replatforming Release 1) Change notes:
+ * <ul>
+ * <li>Add {@link #processContestCreditCardSale(TCSubject, SoftwareCompetition, CreditCardPaymentData, Date)} method.</li>
+ * <li>Add {@link #processContestPurchaseOrderSale(TCSubject, SoftwareCompetition, TCPurhcaseOrderPaymentData, Date)} method.</li>
+ * <li>Add {@link #createSoftwareContest(TCSubject, SoftwareCompetition, long, Date)} method.</li>
+ * <li>Add {@link #updateSoftwareContest(TCSubject, SoftwareCompetition, long, Date)} method.</li>
+ * <li>Add {@link #getAllFileTypes()} method.</li>
+ * </ul>
+ * </p>
+ * 
+ * @author pulky, murphydog, waits, BeBetter, hohosky, isv, TCSASSEMBER
+ * @version 1.6.4
  */
 public interface ContestServiceFacade {
     /**
@@ -1300,7 +1314,6 @@ public interface ContestServiceFacade {
      * @param paymentData
      *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
-     *
      * @return a <code>PaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException
@@ -1327,7 +1340,33 @@ public interface ContestServiceFacade {
      * @param paymentData
      *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @return a <code>PaymentResult</code> result of the payment processing.
      *
+     * @throws ContestServiceException
+     *             if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     * @since 1.6.4
+     */
+    public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
+        SoftwareCompetition competition, CreditCardPaymentData paymentData, Date multiRoundEndDate)
+        throws ContestServiceException, PermissionServiceException;
+
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     *
+     * @param competition
+     *            data that recognizes a contest.
+     * @param paymentData
+     *            payment information (TCSubject tcSubject,credit card/po details) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException
@@ -1338,6 +1377,33 @@ public interface ContestServiceFacade {
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
         SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData)
+        throws ContestServiceException, PermissionServiceException;
+
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     *
+     * @param competition
+     *            data that recognizes a contest.
+     * @param paymentData
+     *            payment information (TCSubject tcSubject,credit card/po details) that need to be
+     *            processed.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @return a <code>PaymentResult</code> result of the payment processing.
+     *
+     * @throws ContestServiceException
+     *             if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     * @since 1.6.4
+     */
+    public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
+        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, Date multiRoundEndDate)
         throws ContestServiceException, PermissionServiceException;
 
     /**
@@ -1532,6 +1598,30 @@ public interface ContestServiceFacade {
 
     /**
      * <p>
+     * Creates a new <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     * Updated for Version 1.0.1 - BUGR-2185: For development contests, if asset (or component) exists from design
+     * contests then that is used to create a new contest. Otherwise a new asset is also created. Updated for Version1.5
+     * the code is refactored by the logic: 1. check the permission 2. update or create the asset 3. set default
+     * resources 4. create project 5. prepare the return value 6. persist the eligility
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest the <code>SoftwareCompetition</code> to create as a contest
+     * @param tcDirectProjectId the TC direct project id. a <code>long</code> providing the ID of a client the new
+     *            competition belongs to.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @return the created <code>SoftwareCompetition</code> as a contest
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since 1.6.4
+     */
+    public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException;
+    
+    /**
+     * <p>
      * BURG-1716: We need to add a method to get software contest by project id,
      * the method wil get all OR project related data, then from project
      * property to get comp version id then to call getAssetByVersionId to get
@@ -1579,6 +1669,27 @@ public interface ContestServiceFacade {
         SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException, PermissionServiceException;
 
+    /**
+     * <p>
+     * Updates a <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     * <p>
+     * Update in version 1.5, reduce the code redundancy in permission checking.
+     * <p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest the <code>SoftwareCompetition</code> to update as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since 1.6.4
+     */
+    public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException;
+    
     /**
      * <p>
      * Assigns a specified user to a specified <code>assetDTO</code>.
@@ -2504,4 +2615,14 @@ public interface ContestServiceFacade {
      * @since 1.6.3 
      */
     void createReview(Review review) throws ReviewManagementException;
+    
+    /**
+     * Gets all FileType entities.
+     *
+     * @return the found FileType entities, return empty if cannot find any.
+     * @throws ContestServiceException
+     *             if there are any exceptions.
+     * @since 1.6.4
+     */
+    public FileType[] getAllFileTypes() throws ContestServiceException;
 }
