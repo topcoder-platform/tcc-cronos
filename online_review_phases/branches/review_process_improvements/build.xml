@@ -6,12 +6,25 @@
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="../tcs/lib"/>
-    <property name="tcs_libdir" value="${libdir}/tcs"/>
-    <property name="ext_libdir" value="${libdir}/third_party"/>
+
+    <!-- Override these in ../topcoder_global.properties -->
+    <property name="javadoc.locale" value="en_US"/>
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<if>
+		<not>
+			<available file="../topcoder_global.properties"/>
+		</not>
+		<then>
+				  <property name="libdir" value="../tcs/lib"/>
+                    <property name="tcs_libdir" value="${libdir}/tcs"/>
+                    <property name="ext_libdir" value="${libdir}/third_party"/>
+		</then>
+	</if>
+  
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9.3"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
     <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
