@@ -586,6 +586,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
 
             // Set the creation date
             project.setCreateDate(new Date());
+            project.setModifyDate(new Date());
 
             // Persist and flush
             this.manageEntity(project, Action.CREATE);
