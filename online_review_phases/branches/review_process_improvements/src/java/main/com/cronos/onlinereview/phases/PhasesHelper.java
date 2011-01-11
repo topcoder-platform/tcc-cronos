@@ -3,17 +3,28 @@
  */
 package com.cronos.onlinereview.phases;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.cronos.onlinereview.autoscreening.management.ScreeningTask;
 import com.cronos.onlinereview.autoscreening.management.ScreeningTaskDoesNotExistException;
 import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
-
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
-
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.UploadManager;
@@ -39,44 +50,26 @@ import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.Scorecard;
-
 import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
-
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.InFilter;
-
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 
-import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * <p>
- * A class having helper methods to perform argument validation and other phase related
- * methods used by the PhaseHandler implementations.
+ * A class having helper methods to perform argument validation and other phase related methods used by the
+ * PhaseHandler implementations.
  * </p>
  * <p>
  * Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
@@ -88,62 +81,61 @@ import java.util.Set;
  * <p>
  * Version 1.2 (Contest Dependency Automation Release Assembly 1.0) Change notes:
  * <ol>
- * <li>Added a method for checking if all projects which requested project depends on are
- * completed to the project could start.</li>
+ * <li>Added a method for checking if all projects which requested project depends on are completed to the
+ * project could start.</li>
  * </ol>
  * </p>
  * <p>
  * Version 1.3 (Online Review End Of Project Analysis Release Assembly 1.0) Change notes:
  * <ol>
- * <li>Updated {@link #insertPostMortemPhase(Project, Phase, ManagerHelper, String)}
- * method to fix the bugs with creation of <code>Post-Mortem</code> phase.</li>
+ * <li>Updated {@link #insertPostMortemPhase(Project, Phase, ManagerHelper, String)} method to fix the bugs
+ * with creation of <code>Post-Mortem</code> phase.</li>
  * <li>Added {@link #insertApprovalPhase(Project, Phase, ManagerHelper, String)} method.</li>
- * <li>Added {@link #searchProjectResourcesForRoleNames(ManagerHelper, Connection,
- * String[], long)} method.</li>
+ * <li>Added {@link #searchProjectResourcesForRoleNames(ManagerHelper, Connection, String[], long)} method.</li>
  * <li>Added {@link #getApprovalPhaseReviews(Review[], Phase)} method.</li>
- * <li>Added {@link #searchProjectReviewsForResourceRoles(Connection, ManagerHelper,
- * long, String[], Long)} method to handle Post-Mortem phase correctly.</li>
+ * <li>Added {@link #searchProjectReviewsForResourceRoles(Connection, ManagerHelper, long, String[], Long)}
+ * method to handle Post-Mortem phase correctly.</li>
  * </ol>
  * </p>
  * <p>
  * Version 1.4 (Member Post-Mortem Review Assembly 1.0) Change notes:
  * <ol>
- * <li>Updated {@link #insertPostMortemPhase(Project, Phase, ManagerHelper, String)}
- * method to create Post-Mortem phase only if there is respective flag set in project
- * properties.</li>
+ * <li>Updated {@link #insertPostMortemPhase(Project, Phase, ManagerHelper, String)} method to create
+ * Post-Mortem phase only if there is respective flag set in project properties.</li>
  * </ol>
  * </p>
  * <p>
  * Version 1.4 Change notes:
  * <ol>
- * <li>Updated {@link #getScreeningTasks(ManagerHelper, Connection, Phase)} method to add
- * function to get submission with "Contest Submission" submission type.</li>
- * <li>Updated {@link #searchActiveSubmissions(UploadManager, Connection, long, String)}
- * method to add function to search all active submissions with specific submission type.</li>
+ * <li>Updated {@link #getScreeningTasks(ManagerHelper, Connection, Phase)} method to add function to get
+ * submission with "Contest Submission" submission type.</li>
+ * <li>Updated {@link #searchActiveSubmissions(UploadManager, Connection, long, String)} method to add
+ * function to search all active submissions with specific submission type.</li>
  * <li>Added {@link #isFirstPhase(Phase)} method.</li>
  * <li>Added {@link #insertSpecSubmissionSpecReview(Phase, PhaseManager, String)} method.</li>
- * <li>Added {@link #hasOneSpecificationSubmission(long, ManagerHelper, Connection, Log)}
- * method.</li>
+ * <li>Added {@link #hasOneSpecificationSubmission(long, ManagerHelper, Connection, Log)} method.</li>
  * <li>Added some constants.</li>
  * </ol>
  * </p>
  * <p>
- * Version 1.4.3 Change notes:
+ * Version 1.5 Change notes:
  * <ol>
- * <li>Phase attributes are copied for newly created Specification Review phase.</li>
+ * <li>Added {@link #logPhaseHandlingException(Log, PhaseHandlingException, String, Long)} method to add function
+ * to log PhaseHandlingException instance.</li>
  * </ol>
  * </p>
  *
  * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy
- * @version 1.4.3
+ * @version 1.4
  * @since 1.0
  */
 final class PhasesHelper {
+
     /**
      * Constant for reviewer role names to be used when searching for reviewer resources
      * and review scorecards.
      */
-    static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer", "Accuracy Reviewer",
+    static final String[] REVIEWER_ROLE_NAMES = new String[]{"Reviewer", "Accuracy Reviewer",
         "Failure Reviewer", "Stress Reviewer"};
 
     /**
@@ -164,19 +156,11 @@ final class PhasesHelper {
     static final String PAYMENT_PROPERTY_KEY = "Payment";
 
     /**
-     * This constant stores Payment Status property key.
-     *
-     * @since 1.4
-     */
-    static final String PAYMENT_STATUS_PROPERTY_KEY = "Payment Status";
-
-    /**
      * This constant stores Submitter role name.
      *
      * @since 1.1
      */
     static final String SUBMITTER_ROLE_NAME = "Submitter";
-
 
     /**
      * constant for &quot;Scheduled&quot; phase status.
@@ -320,8 +304,7 @@ final class PhasesHelper {
     /**
      * an array of comment types which denote that a comment is a reviewer comment.
      */
-    private static final String[] REVIEWER_COMMENT_TYPES = new String[] {"Comment", "Required",
-        "Recommended"};
+    private static final String[] REVIEWER_COMMENT_TYPES = new String[]{"Comment", "Required", "Recommended"};
 
     /**
      * private to prevent instantiation.
@@ -439,8 +422,7 @@ final class PhasesHelper {
      * @throws ConfigurationException
      *             if namespace is unknown.
      */
-    static boolean doesPropertyExist(String namespace, String propertyName)
-        throws ConfigurationException {
+    static boolean doesPropertyExist(String namespace, String propertyName) throws ConfigurationException {
         try {
             ConfigManager configManager = ConfigManager.getInstance();
             Enumeration<?> propNames = configManager.getPropertyNames(namespace);
@@ -545,8 +527,7 @@ final class PhasesHelper {
         } else if (isPhaseToEnd(phaseStatus)) {
             return false;
         } else {
-            throw new PhaseHandlingException("Phase status '" + phaseStatus.getName()
-                + "' is not valid.");
+            throw new PhaseHandlingException("Phase status '" + phaseStatus.getName() + "' is not valid.");
         }
     }
 
@@ -598,10 +579,10 @@ final class PhasesHelper {
      * Returns true if all the dependencies of the given phase have started/stopped based
      * on the type of dependency, or if the phase has no dependencies.
      * <p>
-     * Change in version 1.4:<br/ > If phase B is configured to start when phase A
-     * starts, if the phase A is already closed, phase B should start.<br/ > If phase B
-     * is configured to end when phase A starts. It should end if the phase A is already
-     * closed.
+     * Change in version 1.4:<br/ >
+     * If phase B is configured to start when phase A starts, if the phase A is already closed, phase B should
+     * start.<br/ >
+     * If phase B is configured to end when phase A starts. It should end if the phase A is already closed.
      * </p>
      *
      * @param phase
@@ -694,7 +675,8 @@ final class PhasesHelper {
 
     /**
      * This method is used to check if a phase can start. It checks for following:<br/ >
-     * 1. if phase dependencies have been met.<br/ > 2. if start time has been reached.<br/ >
+     * 1. if phase dependencies have been met.<br/ >
+     * 2. if start time has been reached.<br/ >
      * The method will return true only if both the conditions are true, false otherwise.
      *
      * @param phase
@@ -796,10 +778,9 @@ final class PhasesHelper {
      * @throws PhaseHandlingException
      *             if there was an error during retrieval.
      */
-    static Review[] searchReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper,
-        long phaseId, String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException {
-        Resource[] reviewers = searchResourcesForRoleNames(managerHelper, conn, resourceRoleNames,
-            phaseId);
+    static Review[] searchReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper, long phaseId,
+        String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException {
+        Resource[] reviewers = searchResourcesForRoleNames(managerHelper, conn, resourceRoleNames, phaseId);
         if (reviewers.length == 0) {
             return new Review[0];
         }
@@ -889,7 +870,7 @@ final class PhasesHelper {
         long scorecardId = review.getScorecard();
 
         try {
-            Scorecard[] scoreCards = scorecardManager.getScorecards(new long[] {scorecardId}, false);
+            Scorecard[] scoreCards = scorecardManager.getScorecards(new long[]{scorecardId}, false);
 
             if (scoreCards.length == 0) {
                 throw new PhaseHandlingException("No scorecards found for scorecard id: " + scorecardId);
@@ -924,8 +905,7 @@ final class PhasesHelper {
         Filter submissionFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
 
         // changes in version 1.5, add a submission type filter
-        Filter submissionTypeFilter = SubmissionFilterBuilder
-            .createSubmissionTypeIdFilter(submissionTypeId);
+        Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
         Filter fullFilter = new AndFilter(submissionFilter, submissionTypeFilter);
 
         try {
@@ -958,12 +938,11 @@ final class PhasesHelper {
 
         try {
             for (int i = 0; i < resourceRoleNames.length; i++) {
-                resourceRoleIds.add(new Long(ResourceRoleLookupUtility.lookUpId(conn,
-                    resourceRoleNames[i])));
+                resourceRoleIds.add(new Long(ResourceRoleLookupUtility.lookUpId(conn, resourceRoleNames[i])));
             }
 
-            Filter resourceRoleFilter = new InFilter(
-                ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME, resourceRoleIds);
+            Filter resourceRoleFilter = new InFilter(ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME,
+                resourceRoleIds);
             Filter phaseIdFilter = ResourceFilterBuilder.createPhaseIdFilter(phaseId);
             Filter fullFilter = new AndFilter(resourceRoleFilter, phaseIdFilter);
 
@@ -1002,8 +981,8 @@ final class PhasesHelper {
         try {
             return Integer.parseInt(sValue);
         } catch (NumberFormatException e) {
-            throw new PhaseHandlingException("Phase attribute '" + attrName + "' was non-integer:"
-                + sValue, e);
+            throw new PhaseHandlingException("Phase attribute '" + attrName + "' was non-integer:" + sValue,
+                e);
         }
     }
 
@@ -1030,11 +1009,11 @@ final class PhasesHelper {
         try {
             return Long.parseLong((String) sValue);
         } catch (ClassCastException e) {
-            throw new PhaseHandlingException("Resource property '" + propName + "' was in string:"
-                + sValue, e);
+            throw new PhaseHandlingException("Resource property '" + propName + "' was in string:" + sValue,
+                e);
         } catch (NumberFormatException e) {
-            throw new PhaseHandlingException("Resource property '" + propName + "' was non-integer:"
-                + sValue, e);
+            throw new PhaseHandlingException(
+                "Resource property '" + propName + "' was non-integer:" + sValue, e);
         }
     }
 
@@ -1055,8 +1034,8 @@ final class PhasesHelper {
     /**
      * Helper method to get all the screening tasks for the project.
      * <p>
-     * Change in version 1.4: it will now search the screening task for the submissions
-     * with Contest Submission type.
+     * Change in version 1.4: it will now search the screening task for the submissions with Contest
+     * Submission type.
      * </p>
      *
      * @param managerHelper
@@ -1071,17 +1050,16 @@ final class PhasesHelper {
      * @throws SQLException
      *             if an error occurred when looking up "Contest Submission" id.
      */
-    static ScreeningTask[] getScreeningTasks(ManagerHelper managerHelper, Connection connection,
-        Phase phase) throws PhaseHandlingException, SQLException {
+    static ScreeningTask[] getScreeningTasks(ManagerHelper managerHelper, Connection connection, Phase phase)
+        throws PhaseHandlingException, SQLException {
         try {
             // change in version 1.4
             // Lookup submission type ID with "Contest Submission" name
-            long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(connection,
-                "Contest Submission");
+            long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(connection, "Contest Submission");
 
             // get the submissions for the project
-            Submission[] submissions = searchSubmissionsForProject(managerHelper.getUploadManager(),
-                phase.getProject().getId(), submissionTypeId);
+            Submission[] submissions = searchSubmissionsForProject(managerHelper.getUploadManager(), phase
+                .getProject().getId(), submissionTypeId);
 
             // get upload ids for all submissions
             long[] uploadIds = new long[submissions.length];
@@ -1092,7 +1070,7 @@ final class PhasesHelper {
 
             // get screening tasks for the upload ids
             if (uploadIds.length == 0) {
-                return new ScreeningTask[] {};
+                return new ScreeningTask[]{};
             } else {
                 return managerHelper.getScreeningManager().getScreeningTasks(uploadIds);
             }
@@ -1121,8 +1099,7 @@ final class PhasesHelper {
         try {
             statuses = uploadManager.getAllSubmissionStatuses();
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Error finding submission status with name: " + statusName,
-                e);
+            throw new PhaseHandlingException("Error finding submission status with name: " + statusName, e);
         }
 
         for (int i = 0; i < statuses.length; i++) {
@@ -1154,8 +1131,8 @@ final class PhasesHelper {
      * @throws SQLException
      *             if an error occurred when looking up id.
      */
-    static Submission[] searchActiveSubmissions(UploadManager uploadManager, Connection conn,
-        long projectId, String submissionTypeName) throws PhaseHandlingException, SQLException {
+    static Submission[] searchActiveSubmissions(UploadManager uploadManager, Connection conn, long projectId,
+        String submissionTypeName) throws PhaseHandlingException, SQLException {
         // first get submission status id for "Active" status
         long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
 
@@ -1169,10 +1146,9 @@ final class PhasesHelper {
 
         // change in version 1.4
         // use a submission type filter
-        Filter submissionTypeFilter = SubmissionFilterBuilder
-            .createSubmissionTypeIdFilter(submissionTypeId);
+        Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
 
-        Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {projectIdFilter,
+        Filter fullFilter = new AndFilter(Arrays.asList(new Filter[]{projectIdFilter,
             submissionActiveStatusFilter, submissionTypeFilter}));
 
         try {
@@ -1200,10 +1176,10 @@ final class PhasesHelper {
      *             scorecards.
      */
     static Review getAggregationWorksheet(Connection conn, ManagerHelper managerHelper, long aggPhaseId)
-        throws PhaseHandlingException  {
+        throws PhaseHandlingException {
         // Search the aggregated review scorecard
         Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, aggPhaseId,
-            new String[] {"Aggregator"}, null);
+            new String[]{"Aggregator"}, null);
 
         if (reviews.length == 0) {
             return null;
@@ -1232,7 +1208,7 @@ final class PhasesHelper {
     static Review getFinalReviewWorksheet(Connection conn, ManagerHelper managerHelper,
         long finalReviewPhaseId) throws PhaseHandlingException, SQLException {
         Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, finalReviewPhaseId,
-            new String[] {"Final Reviewer"}, null);
+            new String[]{"Final Reviewer"}, null);
 
         if (reviews.length == 0) {
             return null;
@@ -1254,8 +1230,7 @@ final class PhasesHelper {
      * @throws PhaseHandlingException
      *             if phase status could not be found.
      */
-    static PhaseType getPhaseType(PhaseManager phaseManager, String typeName)
-        throws PhaseHandlingException {
+    static PhaseType getPhaseType(PhaseManager phaseManager, String typeName) throws PhaseHandlingException {
         PhaseType[] types = null;
 
         try {
@@ -1388,7 +1363,7 @@ final class PhasesHelper {
                 long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, "Submitter");
                 ResourceFilterBuilder.createExtensionPropertyNameFilter(EXTERNAL_REFERENCE_ID);
 
-                AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
+                AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[]{
                     ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
                     ResourceFilterBuilder.createProjectIdFilter(projectId),
                     ResourceFilterBuilder.createExtensionPropertyNameFilter(EXTERNAL_REFERENCE_ID),
@@ -1434,8 +1409,8 @@ final class PhasesHelper {
      *             if any error occurs.
      * @since 1.1
      */
-    static void insertPostMortemPhase(Project currentPrj, Phase currentPhase,
-        ManagerHelper managerHelper, String operator) throws PhaseHandlingException {
+    static void insertPostMortemPhase(Project currentPrj, Phase currentPhase, ManagerHelper managerHelper,
+        String operator) throws PhaseHandlingException {
         // Check if Post-Mortem phase already exists for the project. If so then do
         // nothing
         if (null != getPostMortemPhase(currentPrj)) {
@@ -1447,16 +1422,15 @@ final class PhasesHelper {
         ProjectManager projectManager = managerHelper.getProjectManager();
 
         try {
-            com.topcoder.management.project.Project project = projectManager.getProject(currentPrj
-                .getId());
+            com.topcoder.management.project.Project project = projectManager.getProject(currentPrj.getId());
             String postMortemRequired = (String) project.getProperty("Post-Mortem Required");
 
             if ((postMortemRequired == null) || !(postMortemRequired.equalsIgnoreCase("true"))) {
                 return;
             }
         } catch (com.topcoder.management.project.PersistenceException e) {
-            throw new PhaseHandlingException("Failed to retrieve details for project "
-                + currentPrj.getId(), e);
+            throw new PhaseHandlingException("Failed to retrieve details for project " + currentPrj.getId(),
+                e);
         }
 
         PhaseManager phaseManager = managerHelper.getPhaseManager();
@@ -1470,14 +1444,14 @@ final class PhasesHelper {
             String postMortemPhaseDuration = getPropertyValue(PostMortemPhaseHandler.class.getName(),
                 "PostMortemPhaseDuration", true);
 
-            createNewPhases(currentPrj, currentPhase, new PhaseType[] {postMortemPhaseType},
-                phaseStatus, new long[] {Long.parseLong(postMortemPhaseDuration) * HOUR}, false);
+            createNewPhases(currentPrj, currentPhase, new PhaseType[]{postMortemPhaseType}, phaseStatus,
+                new long[]{Long.parseLong(postMortemPhaseDuration) * HOUR}, false);
 
             // Set the number of required reviewers for Post-Mortem phase to default value
-            String postMortemPhaseDefaultReviewerNumber = getPropertyValue(PostMortemPhaseHandler.class
-                .getName(), "PostMortemPhaseDefaultReviewersNumber", true);
-            String postMortemPhaseDefaultScorecardID = getPropertyValue(PostMortemPhaseHandler.class
-                .getName(), "PostMortemPhaseDefaultScorecardID", true);
+            String postMortemPhaseDefaultReviewerNumber = getPropertyValue(
+                PostMortemPhaseHandler.class.getName(), "PostMortemPhaseDefaultReviewersNumber", true);
+            String postMortemPhaseDefaultScorecardID = getPropertyValue(
+                PostMortemPhaseHandler.class.getName(), "PostMortemPhaseDefaultScorecardID", true);
             Phase postMortemPhase = getPostMortemPhase(currentPrj);
             postMortemPhase.setAttribute("Reviewer Number", postMortemPhaseDefaultReviewerNumber);
             postMortemPhase.setAttribute("Scorecard ID", postMortemPhaseDefaultScorecardID);
@@ -1523,8 +1497,8 @@ final class PhasesHelper {
             // Find lst Approval phase (if any)
             Phase lastApprovalPhase = locatePhase(currentPhase, "Approval", false, false);
 
-            createNewPhases(currentPrj, currentPhase, new PhaseType[] {approvalPhaseType}, phaseStatus,
-                new long[] {Long.parseLong(approvalPhaseDuration) * HOUR}, false);
+            createNewPhases(currentPrj, currentPhase, new PhaseType[]{approvalPhaseType}, phaseStatus,
+                new long[]{Long.parseLong(approvalPhaseDuration) * HOUR}, false);
 
             // Set the number of required reviewers for Approval phase to default value or
             // to value taken
@@ -1533,16 +1507,15 @@ final class PhasesHelper {
             String approvalPhaseDefaultScorecardID;
 
             if (lastApprovalPhase == null) {
-                approvalPhaseDefaultReviewerNumber = getPropertyValue(ApprovalPhaseHandler.class
-                    .getName(), "ApprovalPhaseDefaultReviewersNumber", true);
+                approvalPhaseDefaultReviewerNumber = getPropertyValue(ApprovalPhaseHandler.class.getName(),
+                    "ApprovalPhaseDefaultReviewersNumber", true);
 
                 approvalPhaseDefaultScorecardID = getPropertyValue(ApprovalPhaseHandler.class.getName(),
                     "ApprovalPhaseDefaultScorecardID", true);
             } else {
                 approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase
                     .getAttribute("Reviewer Number");
-                approvalPhaseDefaultScorecardID = (String) lastApprovalPhase
-                    .getAttribute("Scorecard ID");
+                approvalPhaseDefaultScorecardID = (String) lastApprovalPhase.getAttribute("Scorecard ID");
             }
 
             Phase approvalPhase = getApprovalPhase(currentPrj);
@@ -1571,8 +1544,8 @@ final class PhasesHelper {
      *             if any error occurs.
      * @since 1.1
      */
-    static int insertFinalFixAndFinalReview(Phase currentPhase, PhaseManager phaseManager,
-        String operator) throws PhaseHandlingException {
+    static int insertFinalFixAndFinalReview(Phase currentPhase, PhaseManager phaseManager, String operator)
+        throws PhaseHandlingException {
         PhaseType finalFixPhaseType = PhasesHelper.getPhaseType(phaseManager, "Final Fix");
         PhaseType finalReviewPhaseType = PhasesHelper.getPhaseType(phaseManager, "Final Review");
         PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(phaseManager, "Scheduled");
@@ -1582,8 +1555,8 @@ final class PhasesHelper {
         Project currentPrj = currentPhase.getProject();
 
         // use helper method to create the new phases
-        int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[] {
-            finalFixPhaseType, finalReviewPhaseType}, phaseStatus, phaseManager, operator, false);
+        int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[]{
+            finalFixPhaseType, finalReviewPhaseType}, phaseStatus, phaseManager, operator);
 
         // save the phases
         try {
@@ -1640,8 +1613,8 @@ final class PhasesHelper {
      *             if any error occurs.
      * @since 1.4
      */
-    static int insertSpecSubmissionSpecReview(Phase currentPhase, PhaseManager phaseManager,
-        String operator) throws PhaseHandlingException {
+    static int insertSpecSubmissionSpecReview(Phase currentPhase, PhaseManager phaseManager, String operator)
+        throws PhaseHandlingException {
         PhaseType specSubmissionPhaseType = PhasesHelper.getPhaseType(phaseManager,
             "Specification Submission");
         PhaseType specReviewPhaseType = PhasesHelper.getPhaseType(phaseManager, "Specification Review");
@@ -1652,8 +1625,8 @@ final class PhasesHelper {
         Project currentPrj = currentPhase.getProject();
 
         // use helper method to create the new phases
-        int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[] {
-            specSubmissionPhaseType, specReviewPhaseType}, phaseStatus, phaseManager, operator, true);
+        int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[]{
+            specSubmissionPhaseType, specReviewPhaseType}, phaseStatus, phaseManager, operator);
 
         // save the phases
         try {
@@ -1667,8 +1640,7 @@ final class PhasesHelper {
 
     /**
      * <p>
-     * Helper method to add new phases of given type to the given project. This method
-     * does the following:
+     * Helper method to add new phases of given type to the given project. This method does the following:
      * <ol>
      * <li>finds the index of given phase in the current phases array of the project.</li>
      * <li>finds the lengths of current phases of the given types.</li>
@@ -1676,8 +1648,6 @@ final class PhasesHelper {
      * <li>creates a new Phases array with additional elements for new phase instances.</li>
      * <li>removes all phases of the project.</li>
      * <li>adds each Phase from the new Phases array to the project.</li>
-     * <li>if necessary the attributes of current phase are copied to newly created phase of same type if such a phase
-     * is created</li>
      * </ol>
      * </p>
      *
@@ -1693,13 +1663,10 @@ final class PhasesHelper {
      *            the manager
      * @param operator
      *            the operator
-     * @param copyCurrentPhaseAttributes <code>true</code> if attributes of current phase must be copied to created new
-     *        phase of same type; <code>false</code> otherwise.
      * @return returns the index of the current phase in the phases array.
      */
     static int createNewPhases(Project currentPrj, Phase currentPhase, PhaseType[] newPhaseTypes,
-                               PhaseStatus newPhaseStatus, PhaseManager phaseManager, String operator,
-                               boolean copyCurrentPhaseAttributes) {
+        PhaseStatus newPhaseStatus, PhaseManager phaseManager, String operator) {
         // find current phase index and also the lengths of aggregation and
         // aggregation review phases.
         Phase[] phases = currentPrj.getAllPhases();
@@ -1737,19 +1704,8 @@ final class PhasesHelper {
             newPhase.setPhaseType(newPhaseTypes[p]);
 
             // the new phase is dependent on the earlier phase
-            newPhase.addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false,
-                true, 0));
-
-            // Copy current phase attributes if necessary
-            if (copyCurrentPhaseAttributes) {
-                if (newPhase.getPhaseType().getId() == currentPhase.getPhaseType().getId()) {
-                    Set<Serializable> currentPhaseAttributeKeys
-                        = (Set<Serializable>) currentPhase.getAttributes().keySet();
-                    for (Serializable attributeName : currentPhaseAttributeKeys) {
-                        newPhase.setAttribute(attributeName, currentPhase.getAttribute(attributeName));
-                    }
-                }
-            }
+            newPhase
+                .addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false, true, 0));
 
             newPhases[currentPhaseIndex + (p + 1)] = newPhase;
         }
@@ -1767,8 +1723,8 @@ final class PhasesHelper {
                 Dependency dependency = dependencies[d];
                 dependency.getDependent().removeDependency(dependency);
                 dependency.getDependent().addDependency(
-                    new Dependency(lastNewPhase, dependency.getDependent(), dependency
-                        .isDependencyStart(), dependency.isDependentStart(), dependency.getLagTime()));
+                    new Dependency(lastNewPhase, dependency.getDependent(), dependency.isDependencyStart(),
+                        dependency.isDependentStart(), dependency.getLagTime()));
             }
         }
 
@@ -1797,6 +1753,7 @@ final class PhasesHelper {
      * <p>
      * Change in version 1.4: it now can create specification reviewer resource.
      * </p>
+     *
      * @param oldPhase
      *            the aggregation or final review phase instance.
      * @param managerHelper
@@ -1810,15 +1767,15 @@ final class PhasesHelper {
      * @param operator
      *            operator name.
      * @return the id of the newly created resource.
-     * @throws PhaseHandlingException if any error occurred.
+     * @throws PhaseHandlingException
+     *             if any error occurred.
      */
-    static long createAggregatorOrFinalReviewer(Phase oldPhase, ManagerHelper managerHelper,
-        Connection conn, String roleName, long newPhaseId, String operator)
-        throws PhaseHandlingException {
+    static long createAggregatorOrFinalReviewer(Phase oldPhase, ManagerHelper managerHelper, Connection conn,
+        String roleName, long newPhaseId, String operator) throws PhaseHandlingException {
         // search for the old "Aggregator", "Final Reviewer" or "Specification Reviewer"
         // resource
         Resource[] resources = PhasesHelper.searchResourcesForRoleNames(managerHelper, conn,
-            new String[] {roleName}, oldPhase.getId());
+            new String[]{roleName}, oldPhase.getId());
 
         if (resources.length == 0) {
             throw new PhaseHandlingException("unable for find resource for role - " + roleName);
@@ -1841,14 +1798,12 @@ final class PhasesHelper {
             for (Iterator<?> itr = entries.iterator(); itr.hasNext();) {
                 Map.Entry<?, ?> entry = (Map.Entry<?, ?>) itr.next();
 
-                if ( !PAYMENT_PROPERTY_KEY.equals((String)entry.getKey()) ) {
-                    newResource.setProperty((String) entry.getKey(), entry.getValue());
-                }
+                newResource.setProperty((String) entry.getKey(), (String)entry.getValue());
             }
         }
 
         // don't duplicate payments
-        newResource.setProperty(PAYMENT_STATUS_PROPERTY_KEY, "N/A");
+        newResource.setProperty(PAYMENT_PROPERTY_KEY, "0");
 
         // set phase id
         newResource.setPhase(new Long(newPhaseId));
@@ -2034,9 +1989,9 @@ final class PhasesHelper {
      * Gets the submitter information and submission result for different phases.
      * </p>
      * <p>
-     * Change in version 1.4, it will now search active submission with contest submission
-     * type.
+     * Change in version 1.4, it will now search active submission with contest submission type.
      * </p>
+     *
      * @param conn
      *            the database connection, will be closed in this method after query
      * @param helper
@@ -2056,8 +2011,8 @@ final class PhasesHelper {
 
         try {
             // changes in version 1.4
-            submissions = PhasesHelper.searchActiveSubmissions(helper.getUploadManager(), conn,
-                projectId, CONTEST_SUBMISSION_TYPE);
+            submissions = PhasesHelper.searchActiveSubmissions(helper.getUploadManager(), conn, projectId,
+                CONTEST_SUBMISSION_TYPE);
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up submissions.", e);
         } finally {
@@ -2070,10 +2025,11 @@ final class PhasesHelper {
 
             for (Submission submission : submissions) {
                 Map<String, Object> values = new HashMap<String, Object>();
-                values.put("SUBMITTER_HANDLE", notNullValue(helper.getResourceManager().getResource(
-                    submission.getUpload().getOwner()).getProperty("Handle")));
-                values.put(appealPhase ? "SUBMITTER_SCORE" : "SUBMITTER_PRE_APPEALS_SCORE", submission
-                    .getInitialScore());
+                values.put("SUBMITTER_HANDLE",
+                    notNullValue(helper.getResourceManager().getResource(submission.getUpload().getOwner())
+                        .getProperty("Handle")));
+                values.put(appealPhase ? "SUBMITTER_SCORE" : "SUBMITTER_PRE_APPEALS_SCORE",
+                    submission.getInitialScore());
                 result.add(values);
             }
 
@@ -2112,8 +2068,7 @@ final class PhasesHelper {
                 values.put("SUBMITTER_HANDLE", notNullValue(submitter.getProperty("Handle")));
 
                 if (!screeningEnd) {
-                    values.put("SUBMITTER_RELIABILITY", notNullValue(submitter
-                        .getProperty("Reliability")));
+                    values.put("SUBMITTER_RELIABILITY", notNullValue(submitter.getProperty("Reliability")));
                     values.put("SUBMITTER_RATING", notNullValue(submitter.getProperty("Rating")));
                 } else {
                     values.put("SUBMITTER_SCORE", notNullValue(submission.getScreeningScore()));
@@ -2134,8 +2089,7 @@ final class PhasesHelper {
 
     /**
      * <p>
-     * Gets not null/empty property value for the given value. If it is null/empty, return
-     * 'N/A'.
+     * Gets not null/empty property value for the given value. If it is null/empty, return 'N/A'.
      * </p>
      *
      * @param value
@@ -2200,8 +2154,7 @@ final class PhasesHelper {
      *            extra info to check the comment against.
      * @return true if it is to be copied, false otherwise.
      */
-    private static boolean isCommentToBeCopied(Comment comment, String[] typesToCopy,
-        String extraInfoToCheck) {
+    private static boolean isCommentToBeCopied(Comment comment, String[] typesToCopy, String extraInfoToCheck) {
         String commentType = comment.getCommentType().getName();
 
         for (int i = 0; i < typesToCopy.length; i++) {
@@ -2242,12 +2195,13 @@ final class PhasesHelper {
         try {
             long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, SUBMITTER_ROLE_NAME);
 
-            AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
-                ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
-                ResourceFilterBuilder.createProjectIdFilter(projectId),
-                ResourceFilterBuilder
-                    .createExtensionPropertyNameFilter(APPEALS_COMPLETED_EARLY_PROPERTY_KEY),
-                ResourceFilterBuilder.createExtensionPropertyValueFilter(YES_VALUE)}));
+            AndFilter fullFilter = new AndFilter(
+                Arrays.asList(new Filter[]{
+                    ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
+                    ResourceFilterBuilder.createProjectIdFilter(projectId),
+                    ResourceFilterBuilder
+                        .createExtensionPropertyNameFilter(APPEALS_COMPLETED_EARLY_PROPERTY_KEY),
+                    ResourceFilterBuilder.createExtensionPropertyValueFilter(YES_VALUE)}));
 
             Resource[] earlyAppealCompletionsSubmitters = resourceManager.searchResources(fullFilter);
 
@@ -2284,9 +2238,9 @@ final class PhasesHelper {
 
     /**
      * <p>
-     * Checks if all direct parent projects for specified project are completed or not.
-     * The check is performed only for those parent projects which are linked with links
-     * which have <code>allow_overlap</code> flag set to <code>false</code>.
+     * Checks if all direct parent projects for specified project are completed or not. The check is performed
+     * only for those parent projects which are linked with links which have <code>allow_overlap</code> flag
+     * set to <code>false</code>.
      * </p>
      *
      * @param projectId
@@ -2298,8 +2252,7 @@ final class PhasesHelper {
      * @param conn
      *            a <code>Connection</code> providing connection to target database.
      * @return <code>true</code> if all parent projects for specified project are
-     *         completed or there are no parent projects at all; <code>false</code>
-     *         otherwise.
+     *         completed or there are no parent projects at all; <code>false</code> otherwise.
      * @throws com.topcoder.management.project.PersistenceException
      *             if an unexpected error occurs while accessing the persistent data
      *             store.
@@ -2309,8 +2262,8 @@ final class PhasesHelper {
      *             if an SQL error occurs.
      * @since 1.3
      */
-    static boolean areParentProjectsCompleted(long projectId, ManagerHelper managerHelper,
-        Connection conn) throws com.topcoder.management.project.PersistenceException,
+    static boolean areParentProjectsCompleted(long projectId, ManagerHelper managerHelper, Connection conn)
+        throws com.topcoder.management.project.PersistenceException,
         com.topcoder.management.phase.PhaseManagementException, SQLException {
         ProjectLink[] links = managerHelper.getProjectLinkManager().getDestProjectLinks(projectId);
 
@@ -2319,16 +2272,15 @@ final class PhasesHelper {
                 com.topcoder.management.project.Project parentProject = link.getDestProject();
 
                 if (parentProject.getProjectStatus().getId() != SEVEN) { // project status
-                                                                        // is not
-                                                                        // Completed
+                                                                         // is not
+                                                                         // Completed
 
                     // if not active
                     if (parentProject.getProjectStatus().getId() != 1) {
                         return false;
                     }
 
-                    Project phasesProject = managerHelper.getPhaseManager().getPhases(
-                        parentProject.getId());
+                    Project phasesProject = managerHelper.getPhaseManager().getPhases(parentProject.getId());
 
                     // Check if all phases are closed.
                     Phase[] phases = phasesProject.getAllPhases();
@@ -2347,8 +2299,8 @@ final class PhasesHelper {
 
     /**
      * <p>
-     * Returns all the reviews for a project based on resource role names. This method is
-     * useful for finding reviews for resources which are not tied to specified phase.
+     * Returns all the reviews for a project based on resource role names. This method is useful for finding
+     * reviews for resources which are not tied to specified phase.
      * </p>
      *
      * @param conn
@@ -2371,8 +2323,8 @@ final class PhasesHelper {
     static Review[] searchProjectReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper,
         long projectId, String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException,
         SQLException {
-        Resource[] reviewers = searchProjectResourcesForRoleNames(managerHelper, conn,
-            resourceRoleNames, projectId);
+        Resource[] reviewers = searchProjectResourcesForRoleNames(managerHelper, conn, resourceRoleNames,
+            projectId);
 
         if (reviewers.length == 0) {
             return new Review[0];
@@ -2403,8 +2355,7 @@ final class PhasesHelper {
 
     /**
      * <p>
-     * Searches for resources associated with specified project and the specified resource
-     * roles assigned.
+     * Searches for resources associated with specified project and the specified resource roles assigned.
      * </p>
      *
      * @param managerHelper
@@ -2426,12 +2377,11 @@ final class PhasesHelper {
 
         try {
             for (int i = 0; i < resourceRoleNames.length; i++) {
-                resourceRoleIds.add(new Long(ResourceRoleLookupUtility.lookUpId(conn,
-                    resourceRoleNames[i])));
+                resourceRoleIds.add(new Long(ResourceRoleLookupUtility.lookUpId(conn, resourceRoleNames[i])));
             }
 
-            Filter resourceRoleFilter = new InFilter(
-                ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME, resourceRoleIds);
+            Filter resourceRoleFilter = new InFilter(ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME,
+                resourceRoleIds);
             Filter projectIdFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
             Filter fullFilter = new AndFilter(resourceRoleFilter, projectIdFilter);
 
@@ -2453,13 +2403,12 @@ final class PhasesHelper {
      * </p>
      *
      * @param reviews
-     *            a <code>Review</code> array providing the <code>Approval</code>
-     *            reviews for project.
+     *            a <code>Review</code> array providing the <code>Approval</code> reviews for project.
      * @param thisPhase
      *            a <code>Phase</code> providing the <code>Approval</code> phases to
      *            get reviews for.
-     * @return a <code>Review</code> array listing the reviews (if any) for specified
-     *         <code>Approval</code> phase.
+     * @return a <code>Review</code> array listing the reviews (if any) for specified <code>Approval</code>
+     *         phase.
      * @since 1.3
      */
     static Review[] getApprovalPhaseReviews(Review[] reviews, Phase thisPhase) {
@@ -2500,8 +2449,8 @@ final class PhasesHelper {
      *
      * @param project
      *            a <code>Project</code> to get the post-mortem phase for.
-     * @return a <code>Phase</code> providing details for <code>Post-Mortem</code>
-     *         phase for specified project or <code>null</code> if such phase does not
+     * @return a <code>Phase</code> providing details for <code>Post-Mortem</code> phase for specified project
+     *         or <code>null</code> if such phase does not
      *         exist.
      * @since 1.3
      */
@@ -2553,8 +2502,7 @@ final class PhasesHelper {
 
     /**
      * <p>
-     * Helper method to add new phases of given type to the given project. This method
-     * does the following:
+     * Helper method to add new phases of given type to the given project. This method does the following:
      * <ol>
      * <li>finds the index of given phase in the current phases array of the project.</li>
      * <li>finds the lengths of current phases of the given types.</li>
@@ -2581,9 +2529,8 @@ final class PhasesHelper {
      * @return returns the index of the current phase in the phases array.
      * @since 1.3
      */
-    private static int createNewPhases(Project currentPrj, Phase currentPhase,
-        PhaseType[] newPhaseTypes, PhaseStatus newPhaseStatus, long[] newPhaseLengths,
-        boolean adjustSubsequentPhaseDependencies) {
+    private static int createNewPhases(Project currentPrj, Phase currentPhase, PhaseType[] newPhaseTypes,
+        PhaseStatus newPhaseStatus, long[] newPhaseLengths, boolean adjustSubsequentPhaseDependencies) {
         // find current phase index and also the lengths of aggregation and aggregation
         // review phases.
         Phase[] phases = currentPrj.getAllPhases();
@@ -2612,8 +2559,8 @@ final class PhasesHelper {
             Phase newPhase = new Phase(currentPrj, newPhaseLengths[p]);
             newPhase.setPhaseStatus(newPhaseStatus);
             newPhase.setPhaseType(newPhaseTypes[p]);
-            newPhase.addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false,
-                true, 0));
+            newPhase
+                .addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false, true, 0));
             newPhases[currentPhaseIndex + (p + 1)] = newPhase;
         }
 
@@ -2628,11 +2575,9 @@ final class PhasesHelper {
                 for (int d = 0; d < dependencies.length; d++) {
                     Dependency dependency = dependencies[d];
                     dependency.getDependent().removeDependency(dependency);
-                    dependency.getDependent()
-                        .addDependency(
-                            new Dependency(lastNewPhase, dependency.getDependent(), dependency
-                                .isDependencyStart(), dependency.isDependentStart(), dependency
-                                .getLagTime()));
+                    dependency.getDependent().addDependency(
+                        new Dependency(lastNewPhase, dependency.getDependent(), dependency
+                            .isDependencyStart(), dependency.isDependentStart(), dependency.getLagTime()));
                 }
             }
         }
@@ -2674,8 +2619,8 @@ final class PhasesHelper {
         Connection conn, Log log) throws PhaseHandlingException {
         try {
             // Check if one specification submission exists
-            Submission[] submissions = PhasesHelper.searchActiveSubmissions(managerHelper
-                .getUploadManager(), conn, phase.getProject().getId(), "Specification Submission");
+            Submission[] submissions = PhasesHelper.searchActiveSubmissions(managerHelper.getUploadManager(),
+                conn, phase.getProject().getId(), "Specification Submission");
 
             if (submissions.length > 1) {
                 log.log(Level.ERROR, "Multiple specification submissions exist.");
@@ -2686,8 +2631,7 @@ final class PhasesHelper {
         } catch (SQLException e) {
             log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
                 "Fail to searching active specification submission.", e));
-            throw new PhaseHandlingException(
-                "SQL error when searching active specification submission.", e);
+            throw new PhaseHandlingException("SQL error when searching active specification submission.", e);
         }
     }
 
@@ -2696,24 +2640,26 @@ final class PhasesHelper {
      *
      * @param phase
      *            the phase.
-     * @param conn database connection.
-     * @param managerHelper manager helper.
-     * @param log the log.
+     * @param conn
+     *            database connection.
+     * @param managerHelper
+     *            manager helper.
+     * @param log
+     *            the log.
      * @return true if the all parent projects are completed, false otherwise.
      * @throws PhaseHandlingException
      *             if any error occurred when checking parent projects completed.
-     *  @since 1.4
+     * @since 1.4
      */
-    static boolean areParentProjectsCompleted(Phase phase, Connection conn,
-        ManagerHelper managerHelper, Log log) throws PhaseHandlingException {
+    static boolean areParentProjectsCompleted(Phase phase, Connection conn, ManagerHelper managerHelper,
+        Log log) throws PhaseHandlingException {
         try {
-            return PhasesHelper.areParentProjectsCompleted(phase.getProject().getId(),
-                managerHelper, conn);
+            return PhasesHelper.areParentProjectsCompleted(phase.getProject().getId(), managerHelper, conn);
         } catch (com.topcoder.management.project.PersistenceException e) {
             log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
                 "PersistenceException when checking parent projects completed.", e));
-            throw new PhaseHandlingException(
-                "PersistenceException when checking parent projects completed.", e);
+            throw new PhaseHandlingException("PersistenceException when checking parent projects completed.",
+                e);
         } catch (PhaseManagementException e) {
             log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
                 "Fail to check parent projects completed.", e));
@@ -2727,4 +2673,30 @@ final class PhasesHelper {
             PhasesHelper.closeConnection(conn);
         }
     }
+
+    /**
+     * Log PhaseHandlingException exception.
+     *
+     * @param log
+     *            the log instance
+     * @param ex
+     *            the exception instance
+     * @param detail
+     *            the detail message
+     * @param operator
+     *            the operator name
+     * @param projectId
+     *            the project id string
+     * @return the phase handling exception instance
+     * @since 1.5
+     */
+    static PhaseHandlingException logPhaseHandlingException(Log log, PhaseHandlingException ex,
+        String operator, Long projectId) {
+        checkNull(ex, "The exception instance for logging");
+        if (log != null) {
+            log.log(Level.ERROR, new LogMessage(projectId, operator, ex.getMessage(), ex));
+        }
+        return ex;
+    }
+
 }

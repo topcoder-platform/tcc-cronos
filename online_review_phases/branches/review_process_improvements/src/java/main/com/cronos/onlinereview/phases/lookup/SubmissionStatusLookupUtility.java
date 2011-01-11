@@ -13,14 +13,15 @@ import java.util.Map;
  * <p>
  * This class provides the function to get lookup id from a lookup name of
  * &quot;submission_status_lu&quot; table. Since lookup id/value pairs do not
- * change in the database per installation, this class caches the id/value
- * pairs to minimize queries to the database. This class is used in various
- * methods of PhaseHandler implementations.
+ * change in the database per installation, this class caches the id/value pairs
+ * to minimize queries to the database. This class is used in various methods of
+ * PhaseHandler implementations.
  * </p>
  * <p>
  * Change in 1.4: <br/>
- * Made {@link #CACHED_PAIRS} type generic, added &quot;final&quot; modified to the variable and changed
- * name to upper case to meet Java and TopCoder standards.
+ * Made {@link #CACHED_PAIRS} type generic, added &quot;final&quot; modified to
+ * the variable and changed name to upper case to meet Java and TopCoder
+ * standards.
  * </p>
  * <p>
  * Thread safety: This class is thread safe because its static method is
@@ -32,6 +33,7 @@ import java.util.Map;
  * @since 1.0
  */
 public class SubmissionStatusLookupUtility {
+
     /**
      * <p>
      * Represents the map to store cached value/id pairs from the database. Key
@@ -42,11 +44,11 @@ public class SubmissionStatusLookupUtility {
      * </p>
      * <p>
      * Change in 1.4: <br/>
-     * Made map type generic, added &quot;final&quot; modified to the variable and changed
-     * name to upper case to meet Java and TopCoder standards.
+     * Made map type generic, added &quot;final&quot; modified to the variable
+     * and changed name to upper case to meet Java and TopCoder standards.
      * </p>
      */
-    private static final Map<String,Long> CACHED_PAIRS = new HashMap<String,Long>();
+    private static final Map<String, Long> CACHED_PAIRS = new HashMap<String, Long>();
 
     /**
      * constant representing the sql query string to get the id for a given
@@ -56,7 +58,6 @@ public class SubmissionStatusLookupUtility {
 
     /**
      * Private constructor to prevent class initialization.
-     *
      */
     private SubmissionStatusLookupUtility() {
         // do nothing.
@@ -69,14 +70,16 @@ public class SubmissionStatusLookupUtility {
      * database. Hence if the lookup id is present in the cache, it is returned
      * without hitting the database. It is synchronized to ensure thread safety.
      *
-     * @param connection The connection used to access the persistence.
-     * @param value The value for &quot;name&quot; column.
-     *
+     * @param connection
+     *            The connection used to access the persistence.
+     * @param value
+     *            The value for &quot;name&quot; column.
      * @return The corresponding &quot;submission_status_id&quot;.
-     *
-     * @throws IllegalArgumentException if any input is null or value is empty.
-     * @throws SQLException if there is any problem accessing the database, or if
-     *         value is not mapped to any record.
+     * @throws IllegalArgumentException
+     *             if any input is null or value is empty.
+     * @throws SQLException
+     *             if there is any problem accessing the database, or if
+     *             value is not mapped to any record.
      */
     public static synchronized long lookUpId(Connection connection, String value) throws SQLException {
         return LookupHelper.lookUpId(CACHED_PAIRS, value, connection, SQL_QUERY);

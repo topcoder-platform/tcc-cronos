@@ -402,7 +402,8 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 // use helper method to create and save the new phases
                 int currentPhaseIndex = PhasesHelper.createNewPhases(
                                 currentPrj, phase, new PhaseType[] {aggPhaseType, aggReviewPhaseType},
-                                phaseStatus, getManagerHelper().getPhaseManager(), operator, false);
+                                phaseStatus, getManagerHelper()
+                                                .getPhaseManager(), operator);
 
                 // save the phases
                 getManagerHelper().getPhaseManager().updatePhases(currentPrj,
