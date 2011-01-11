@@ -349,7 +349,7 @@
         </copy>
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
 
-        <mkdir dir="${dist_coverage}"/>
+    <!--    <mkdir dir="${dist_coverage}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
@@ -358,7 +358,7 @@
         <mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
             <fileset dir="${javadocsdir}"/>
-        </copy>
+        </copy>-->
 
         <antcall target="package_docs"/>
 
