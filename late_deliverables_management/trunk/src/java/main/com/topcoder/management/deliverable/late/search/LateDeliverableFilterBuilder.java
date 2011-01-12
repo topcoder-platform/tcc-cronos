@@ -1,11 +1,17 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.search;
+
+import java.util.Date;
 
 import com.topcoder.management.deliverable.late.Helper;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.GreaterThanOrEqualToFilter;
+import com.topcoder.search.builder.filter.LessThanOrEqualToFilter;
+import com.topcoder.search.builder.filter.NotFilter;
+import com.topcoder.search.builder.filter.NullFilter;
 
 /**
  * <p>
@@ -19,7 +25,7 @@ import com.topcoder.search.builder.filter.Filter;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.1
+ * @version 1.0.2
  */
 public final class LateDeliverableFilterBuilder {
     /**
@@ -141,5 +147,103 @@ public final class LateDeliverableFilterBuilder {
         }
 
         return new EqualToFilter("userHandle", userHandle);
+    }
+
+    /**
+     * <p>
+     * Creates a filter that selects late deliverables for the TC Direct project with the given ID.
+     * </p>
+     *
+     * @param tcDirectProjectId
+     *            the ID of the cockpit project (null if filter should match deliverables associated with no TC Direct
+     *            project)
+     *
+     * @return the filter that selects late deliverables for the TC Direct project with the given ID.
+     *
+     * @throws IllegalArgumentException
+     *             if tcDirectProjectId != null and tcDirectProjectId &lt;= 0.
+     */
+    public static Filter createCockpitProjectIdFilter(Long tcDirectProjectId) {
+        if (tcDirectProjectId != null) {
+            Helper.checkPositive(tcDirectProjectId, "tcDirectProjectId");
+
+            return new EqualToFilter("tcDirectProjectId", tcDirectProjectId);
+        }
+
+        return new NullFilter("tcDirectProjectId");
+    }
+
+    /**
+     * <p>
+     * Creates a filter that selects late deliverables that have or have not explanation specified.
+     * </p>
+     *
+     * @param explanationPresent
+     *            true if filter should match late deliverables with explanation specified; false if filter should
+     *            match late deliverables without explanation specified.
+     *
+     * @return the filter that selects late deliverables that have or have not explanation specified.
+     */
+    public static Filter createHasExplanationFilter(boolean explanationPresent) {
+        if (explanationPresent) {
+            return new NotFilter(new NullFilter("explanation"));
+        }
+        return new NullFilter("explanation");
+    }
+
+    /**
+     * <p>
+     * Creates a filter that selects late deliverables that have or have not response specified.
+     * </p>
+     *
+     * @param responsePresent
+     *            true if filter should match late deliverables with response specified, false if filter should match
+     *            late deliverables without response specified.
+     *
+     * @return the filter that selects late deliverables that have or have not response specified.
+     */
+    public static Filter createHasResponseFilter(boolean responsePresent) {
+        if (responsePresent) {
+            return new NotFilter(new NullFilter("response"));
+        }
+        return new NullFilter("response");
+    }
+
+    /**
+     * <p>
+     * Creates a filter that selects late deliverables with deadline equal to or greater than the specified value.
+     * </p>
+     *
+     * @param minDeadline
+     *            the minimum deadline of late deliverables to be selected.
+     *
+     * @return the filter that selects late deliverables with deadline equal to or greater than the specified value.
+     *
+     * @throws IllegalArgumentException
+     *             if minDeadline is null.
+     */
+    public static Filter createMinimumDeadlineFilter(Date minDeadline) {
+        Helper.checkNull(minDeadline, "minDeadline");
+
+        return new GreaterThanOrEqualToFilter("deadline", minDeadline);
+    }
+
+    /**
+     * <p>
+     * Creates a filter that selects late deliverables with deadline equal to or less than the specified value.
+     * </p>
+     *
+     * @param maxDeadline
+     *            the maximum deadline of late deliverables to be selected.
+     *
+     * @return the filter that selects late deliverables with deadline equal to or less than the specified value.
+     *
+     * @throws IllegalArgumentException
+     *             if maxDeadline is null.
+     */
+    public static Filter createMaximumDeadlineFilter(Date maxDeadline) {
+        Helper.checkNull(maxDeadline, "maxDeadline");
+
+        return new LessThanOrEqualToFilter("deadline", maxDeadline);
     }
 }

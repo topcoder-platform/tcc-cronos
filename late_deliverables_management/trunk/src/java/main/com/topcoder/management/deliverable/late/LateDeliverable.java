@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late;
 
@@ -16,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0
+ * @version 1.0.2
  */
 public class LateDeliverable {
     /**
@@ -29,6 +29,17 @@ public class LateDeliverable {
      * </p>
      */
     private long id;
+
+    /**
+     * <p>
+     * The ID of the project.
+     * </p>
+     *
+     * <p>
+     * Can be any value. Has getter and setter.
+     * </p>
+     */
+    private long projectId;
 
     /**
      * <p>
@@ -170,6 +181,29 @@ public class LateDeliverable {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * <p>
+     * Gets the ID of the project.
+     * </p>
+     *
+     * @return the ID of the project.
+     */
+    public long getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * <p>
+     * Sets the ID of the project.
+     * </p>
+     *
+     * @param projectId
+     *            the ID of the project.
+     */
+    public void setProjectId(long projectId) {
+        this.projectId = projectId;
     }
 
     /**

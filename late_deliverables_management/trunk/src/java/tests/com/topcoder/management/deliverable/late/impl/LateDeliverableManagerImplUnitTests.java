@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 201 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl;
 
@@ -37,7 +37,7 @@ import com.topcoder.search.builder.filter.NotFilter;
  * </p>
  *
  * @author sparemax
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class LateDeliverableManagerImplUnitTests {
     /**
@@ -889,6 +889,7 @@ public class LateDeliverableManagerImplUnitTests {
 
         lateDeliverable = res.get(0);
         assertEquals("'searchAllLateDeliverables' should be correct.", 1, lateDeliverable.getId());
+        assertEquals("'searchAllLateDeliverables' should be correct.", 100000, lateDeliverable.getProjectId());
         assertEquals("'searchAllLateDeliverables' should be correct.", 101, lateDeliverable.getProjectPhaseId());
         assertEquals("'searchAllLateDeliverables' should be correct.", 1001, lateDeliverable.getResourceId());
         assertEquals("'searchAllLateDeliverables' should be correct.", 4, lateDeliverable.getDeliverableId());
@@ -1092,6 +1093,7 @@ public class LateDeliverableManagerImplUnitTests {
 
         lateDeliverable = res.get(0);
         assertEquals("'searchRestrictedLateDeliverables' should be correct.", 2, lateDeliverable.getId());
+        assertEquals("'searchAllLateDeliverables' should be correct.", 100001, lateDeliverable.getProjectId());
         assertEquals("'searchRestrictedLateDeliverables' should be correct.", 102, lateDeliverable.getProjectPhaseId());
         assertEquals("'searchRestrictedLateDeliverables' should be correct.", 1002, lateDeliverable.getResourceId());
         assertEquals("'searchRestrictedLateDeliverables' should be correct.", 3, lateDeliverable.getDeliverableId());

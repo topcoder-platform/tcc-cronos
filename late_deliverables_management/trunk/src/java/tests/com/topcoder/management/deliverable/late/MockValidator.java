@@ -1,17 +1,19 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late;
 
 import com.topcoder.util.datavalidator.AbstractObjectValidator;
 
 /**
- * Mock implementation of ObjectValidator.
+ * <p>
+ * A mock implementation of ObjectValidator. Used for testing.
  * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author sparemax
+ * @version 1.0.2
  */
+@SuppressWarnings("serial")
 public class MockValidator extends AbstractObjectValidator {
     /**
      * <p>

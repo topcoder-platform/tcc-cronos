@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late;
 
@@ -22,7 +22,7 @@ import org.junit.Test;
  * </p>
  *
  * @author sparemax
- * @version 1.0
+ * @version 1.0.2
  */
 public class LateDeliverableUnitTests {
     /**
@@ -64,6 +64,7 @@ public class LateDeliverableUnitTests {
         instance = new LateDeliverable();
 
         assertEquals("'id' should be correct.", 0L, TestsHelper.getField(instance, "id"));
+        assertEquals("'projectId' should be correct.", 0L, TestsHelper.getField(instance, "projectId"));
         assertEquals("'projectPhaseId' should be correct.", 0L, TestsHelper.getField(instance, "projectPhaseId"));
         assertEquals("'resourceId' should be correct.", 0L, TestsHelper.getField(instance, "resourceId"));
         assertEquals("'deliverableId' should be correct.", 0L, TestsHelper.getField(instance, "deliverableId"));
@@ -103,6 +104,35 @@ public class LateDeliverableUnitTests {
 
         assertEquals("'setId' should be correct.",
             value, TestsHelper.getField(instance, "id"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getProjectId()</code>.<br>
+     * The value should be properly retrieved.
+     * </p>
+     */
+    @Test
+    public void test_getProjectId() {
+        long value = 1;
+        instance.setProjectId(value);
+
+        assertEquals("'getProjectId' should be correct.", value, instance.getProjectId());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>setProjectId(long projectId)</code>.<br>
+     * The value should be properly set.
+     * </p>
+     */
+    @Test
+    public void test_setProjectId() {
+        long value = 1;
+        instance.setProjectId(value);
+
+        assertEquals("'setProjectId' should be correct.",
+            value, TestsHelper.getField(instance, "projectId"));
     }
 
     /**

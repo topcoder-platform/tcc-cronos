@@ -49,6 +49,7 @@
         <Property name="context">
           <Value>
             SELECT lt.late_deliverable_id,
+            pp.project_id,
             lt.project_phase_id,
             lt.resource_id,
             lt.deliverable_id,
@@ -206,6 +207,16 @@
               </Property>
             </Property>
           </Property>
+          <Property name="tcDirectProjectId">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
         </Property>
         <Property name="alias">
           <Property name="id">
@@ -250,6 +261,9 @@
           <Property name="projectCategoryId">
             <Value>p.project_category_id</Value>
           </Property>
+          <Property name="tcDirectProjectId">
+            <Value>p.tc_direct_project_id</Value>
+          </Property>
         </Property>
       </Property>
 
@@ -262,6 +276,7 @@
         <Property name="context">
           <Value>
             SELECT DISTINCT lt.late_deliverable_id,
+            pp.project_id,
             lt.project_phase_id,
             lt.resource_id,
             lt.deliverable_id,
@@ -457,6 +472,16 @@
               </Property>
             </Property>
           </Property>
+          <Property name="tcDirectProjectId">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
         </Property>
         <Property name="alias">
           <Property name="id">
@@ -509,6 +534,9 @@
           </Property>
           <Property name="tcDirectUserId">
             <Value>g.user_id</Value>
+          </Property>
+          <Property name="tcDirectProjectId">
+            <Value>p.tc_direct_project_id</Value>
           </Property>
         </Property>
       </Property>
