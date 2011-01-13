@@ -2559,7 +2559,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
                     }
-                    else if (p.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME) || p.getPhaseType().getName().equals("Milestone Review"))
+                    else if (p.getPhaseType().getName().equals("Review") || p.getPhaseType().getName().equals("Milestone Review"))
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
                         if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
