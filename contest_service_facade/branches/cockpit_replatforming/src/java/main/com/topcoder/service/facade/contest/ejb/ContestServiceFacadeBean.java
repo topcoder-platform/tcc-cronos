@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Locale;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -35,11 +36,43 @@ import javax.ejb.TransactionManagementType;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.cronos.onlinereview.services.uploads.InvalidProjectException;
+import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
+import com.cronos.onlinereview.services.uploads.InvalidUserException;
+import com.topcoder.direct.services.copilot.dao.CopilotDAOException;
+import com.topcoder.direct.services.copilot.dao.CopilotProjectDAO;
+import com.topcoder.direct.services.copilot.dao.LookupDAO;
+import com.topcoder.direct.services.copilot.dao.impl.CopilotProjectDAOImpl;
+import com.topcoder.direct.services.copilot.dao.impl.LookupDAOImpl;
+import com.topcoder.direct.services.copilot.model.CopilotProject;
+import com.topcoder.direct.services.copilot.model.CopilotProjectStatus;
+import com.topcoder.direct.services.copilot.model.CopilotType;
+import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
+import com.topcoder.management.phase.PhaseManagementException;
+import com.topcoder.management.review.ReviewManagementException;
+import com.topcoder.management.review.data.Item;
+import com.topcoder.management.review.data.Comment;
+import com.topcoder.management.review.data.CommentType;
+import com.topcoder.management.review.data.Review;
+import com.topcoder.management.scorecard.data.Group;
+import com.topcoder.management.scorecard.data.Question;
+import com.topcoder.management.scorecard.data.Scorecard;
+import com.topcoder.management.scorecard.data.Section;
+import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.service.facade.contest.ContestServiceFacade;
+import com.topcoder.service.permission.ProjectPermission;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.jboss.logging.Logger;
 
 import com.cronos.onlinereview.services.uploads.ConfigurationException;
@@ -184,6 +217,8 @@ import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseHome;
 import com.topcoder.web.ejb.user.UserTermsOfUse;
 import com.topcoder.web.ejb.user.UserTermsOfUseHome;
+import org.springframework.jndi.JndiObjectFactoryBean;
+import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 /**
  * <p>
@@ -328,6 +363,21 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  * </p>
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSASSEMBER
  * @version 1.6.6
+ * </p> *
+ * Version 1.6.6 (TC Direct Release Assembly 7) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #checkStudioSubmissionPermission} method and 
+ *     {@link #processContestSaleInternal} method.</li>
+ *   </ol>
+ * </p>
+ * <p>
+ * Version 1.6.7 (TC Direct - Permission Updates) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #updateProjectPermissions(TCSubject, List<ProjectPermission>, long)} method.</li>
+ *   </ol>
+ * </p>
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
+ * @version 1.6.7
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -471,6 +521,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_PAYMENT_STATUS = "Payment Status";
+    
+    /**
+     * Private constant specifying registration date
+     *
+     */
+    private static final String RESOURCE_INFO_REGISTRATION_DATE = "Registration Date";
 
     /**
      * Private constant specifying resource pay
@@ -478,6 +534,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Flex Cockpit Launch Contest - Integrate Software Contests v1.0
      */
     private static final String RESOURCE_INFO_PAYMENT_STATUS_NA = "N/A";
+
+    
 
     /**
      * Email file template source key that is used by email generator.
@@ -608,6 +666,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6
      */
     private static final Double ZERO_AMOUNT = new Double(0);
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
+
+    /**
+     * active submission status id
+     *
+     * @since 1.6
+     */
+    private static final long SUBMISSION_ACTIVE_STATUS_ID = 1;
 
     /**
      * Draft status list.
@@ -1064,6 +1131,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private Logger logger = Logger.getLogger(this.getClass());
 
     /**
+     * <p>The lookup DAO.</p>
+     */
+    private LookupDAO lookupDAO;
+
+    /**
+     * <p>The copilot project DAO.</p>
+     */
+    private CopilotProjectDAO copilotProjectDAO;
+
+    /**
      * <p>
      * Constructs new <code>ContestServiceFacadeBean</code> instance. This
      * implementation instantiates new instance of payment processor. Current
@@ -1153,7 +1230,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             throw new IllegalStateException("Failed to initialize UploadManager through Object Factory.", ex);
         }
 
-
+        Configuration configuration = new AnnotationConfiguration().configure("/META-INF/hibernate.cfg.xml");
+        
+        LookupDAOImpl ldao = new LookupDAOImpl();
+        ldao.setLoggerName("copilotBaseDAO");
+        ldao.setSessionFactory(configuration.buildSessionFactory());
+        lookupDAO = ldao;
+        
+        CopilotProjectDAOImpl c = new CopilotProjectDAOImpl();
+        c.setLoggerName("copilotBaseDAO");
+        c.setSessionFactory(configuration.buildSessionFactory());
+        copilotProjectDAO = c;
     }
 
     /**
@@ -3045,7 +3132,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
             long contestId = competition.getProjectHeader().getId();
             double pastPayment=0;
-
+            boolean hasContestSaleData = false;
+            long contestSaleId = 0L;
+            
             SoftwareCompetition tobeUpdatedCompetition = null;
 
             if (contestId > 0) { // BUGR-1682
@@ -3056,6 +3145,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (sales != null) {
                     for (ContestSaleData sale : sales) {
                         pastPayment += sale.getPrice();
+                    }
+                    if (sales.size() > 0) {
+                        hasContestSaleData = true;
+                        contestSaleId = sales.get(0).getContestSaleId();
                     }
                 }
             }
@@ -3103,7 +3196,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
             }
 
-            fee = fee - pastPayment;
+            double fee = totalFee - pastPayment;
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
@@ -3153,10 +3246,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             contestSaleData.setContestId(contest.getId());
             contestSaleData.setSaleStatusId(CONTEST_SALE_STATUS_PAID);
-            contestSaleData.setPrice(fee);
-
-            this.projectServices.createContestSale(contestSaleData);
-
+            contestSaleData.setPrice(totalFee);
+            
+            if (!hasContestSaleData) {
+                this.projectServices.createContestSale(contestSaleData);
+            } else {
+                contestSaleData.setContestSaleId(contestSaleId);
+                this.projectServices.updateContestSale(contestSaleData);
+            }
             // DONOT create for now
             // create forum for the contest.
             // long forumid =
@@ -4366,6 +4463,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(tcSubject.getUserId()));
         resources[0].setProperty(RESOURCE_INFO_HANDLE, getUserName(tcSubject));
         resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+        resources[0].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
 
         // for private, check if admin role is set, and use that if so
         if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) {
@@ -4381,6 +4479,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(roleId));
                 resources[1].setProperty(RESOURCE_INFO_HANDLE, adminRole);
                 resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                resources[1].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
             }
         }
         // design/dev, add Components
@@ -4393,6 +4492,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(components_user_id));
             resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_COMPONENTS);
             resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+            resources[1].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
         }
         // else add Applications
         else {
@@ -4402,6 +4502,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             resources[1].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, Long.toString(applications_user_id));
             resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
             resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+            resources[1].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
         }
 
         return resources;
@@ -7281,6 +7382,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 newRes.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(userId));
                 newRes.setProperty(RESOURCE_INFO_HANDLE, String.valueOf(userService.getUserHandle(userId)));
                 newRes.setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                newRes.setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
 
                 projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
                 projectServices.addNotifications(userId, new long[]{projectId}, String.valueOf(tcSubject.getUserId()));
@@ -7771,13 +7873,122 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
      * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
      *        projects.
+     * @param role the role id to add    
      * @throws PermissionServiceException if an unexpected error occurs.
      * @since 1.6.2
      */
-    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions)
-        throws PermissionServiceException {
-        logger.debug("updateProjectPermissions(" + tcSubject +  ")");
-        this.permissionService.updateProjectPermissions(projectPermissions, tcSubject.getUserId());
+        public void updateProjectPermissions(TCSubject tcSubject,
+            List<ProjectPermission> projectPermissions, long role)
+            throws PermissionServiceException {
+        logger.debug("contest service facade bean #updateProjectPermissions("
+                + tcSubject + ", " + projectPermissions + ", " + role + ")");
+
+        try {
+            if (!isRole(tcSubject, ADMIN_ROLE)
+                    && !isRole(tcSubject, LIQUID_ADMIN_ROLE)) {
+                // retrieve full access project id set
+                Set<Long> fullAccessProjectIds = new HashSet<Long>();
+                List<ProjectPermission> allPermissions = getProjectPermissions(tcSubject);
+                for (ProjectPermission permission : allPermissions) {
+                    if (permission.getUserId() == tcSubject.getUserId()
+                            && "full".equals(permission.getPermission())) {
+                        fullAccessProjectIds.add(permission.getProjectId());
+                    }
+                }
+
+                // check permissions
+                for (ProjectPermission permission : projectPermissions) {
+                    if (!fullAccessProjectIds.contains(permission
+                            .getProjectId())) {
+                        throw new PermissionServiceException("User "
+                                + tcSubject.getUserId()
+                                + " is not granted FULL permission for "
+                                + "project " + permission.getProjectId());
+                    }
+                }
+            }
+
+            // when add/remove permission, we need to add/remove observer
+            for (ProjectPermission permission : projectPermissions) {
+                // add permission
+                if (permission.getUserPermissionId() < 0 
+                        && permission.getPermission() != null 
+                        && permission.getPermission().length() > 0) {
+                    List<Long> projectIds = projectServices
+                            .getProjectIdByTcDirectProject(permission
+                                    .getProjectId());
+
+                    // for each OR project, find all observers
+                    for (Long pid : projectIds) {
+                        this.assginRole(tcSubject, pid.longValue(),
+                                role,
+                                permission.getUserId());
+                    }
+                } else if (permission.getPermission() == null
+                        || "".equals(permission.getPermission())) {
+                    List<Permission> ps = getPermissions(tcSubject, permission
+                            .getUserId(), permission.getProjectId());
+                    Permission toDelete = null;
+                    if (ps != null && ps.size() > 0) {
+                        toDelete = ps.get(0);
+                    }
+
+                    if (toDelete != null) {
+                        List<Long> projectIds = projectServices
+                                .getProjectIdByTcDirectProject(permission
+                                        .getProjectId());
+
+                        for (Long pid : projectIds) {
+                            // if we are removing project permission but user
+                            // still has contest permission,
+                            // we will not remove observer
+                            if ((!projectServices.hasContestPermission(pid,
+                                    toDelete.getUserId()))) {
+                                com.topcoder.management.resource.Resource[] resources = projectServices
+                                        .searchResources(pid, role);
+
+                                com.topcoder.management.resource.Resource delRes = null;
+
+                                // check if user is already a observer
+                                if (resources != null && resources.length > 0) {
+                                    for (com.topcoder.management.resource.Resource resource : resources) {
+                                        if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
+                                                && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
+                                                        .equals(String.valueOf(toDelete.getUserId()))) {
+                                            delRes = resource;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (delRes != null) {
+                                    projectServices.removeResource(delRes,
+                                            String.valueOf(tcSubject.getUserId()));
+                                    projectServices.removeNotifications(toDelete.getUserId(), new long[] { pid
+                                            .longValue() }, String.valueOf(tcSubject.getUserId()));
+                                }
+
+                                // delete forum watch
+                                long forumId = projectServices.getForumId(pid);
+                                if (forumId > 0 && createForum) {
+                                    deleteForumWatchAndRole(forumId, permission
+                                            .getUserId());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // update project permissions
+            this.permissionService.updateProjectPermissions(projectPermissions,
+                    tcSubject.getUserId());
+        } catch (ContestServiceException e) {
+            sessionContext.setRollbackOnly();
+            throw new PermissionServiceException(e.getMessage(), e);
+        }
+
+        logger.debug("Exit updateProjectPermissions");
     }
 
     /**
@@ -7835,6 +8046,32 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
+     * Adds the given user as a new reviewer to the given project id.
+     *
+     * @param tcSubject TCSubject instance contains the login security info for the current user.
+     * @param projectId the project to which the user needs to be added
+     * @param userId    the user to be added
+     * @return the added resource id
+     * @throws ContestServiceException if any error occurs from UploadServices
+     * @throws IllegalArgumentException if any id is &lt; 0
+     * @since 1.6.5
+     */
+    public com.topcoder.management.resource.Resource addPrimaryScreener(TCSubject tcSubject, long projectId, long userId)
+        throws ContestServiceException {
+        logger.debug("addPrimaryScreener (tcSubject = " + tcSubject.getUserId() + ", " + projectId + "," + userId + ")");
+
+        try {
+            return uploadExternalServices.addPrimaryScreener(projectId, userId);
+        } catch (UploadServicesException e) {
+            logger.error("Operation failed in the uploadExternalServices.", e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        } catch (PhaseManagementException e) {
+            logger.error("Operation failed in the uploadExternalServices.", e);
+            throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
      * <p>Gets the review for specified submission.</p>
      *
      * @param projectId a <code>long</code> providing the project ID.
@@ -7859,6 +8096,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
+     * <p>Gets the screening for specified submission.</p>
+     *
+     * @param projectId a <code>long</code> providing the project ID.
+     * @param screenerResourceId a <code>long</code> providing the ID for screener resource.
+     * @param submissionId a <code>long</code> providing the ID for submission.   
+     * @return a <code>ScorecardReviewData</code> providing the details for review or <code>null</code> if review and
+     *         scorecard is not found,
+     * @since 1.6.5
+     */
+    public ScorecardReviewData getScreening(long projectId, long screenerResourceId, long submissionId) {
+        List<ScorecardReviewData> data = projectServices.getScorecardAndScreening(projectId, screenerResourceId);
+        for (ScorecardReviewData r : data) {
+            Review review = r.getReview();
+            if (review != null) {
+                if (review.getSubmission() == submissionId) {
+                    return r;
+                }
+            }
+        }
+        
+        return data.get(0);
+    }
+
+    /**
      * <p>Gets the submissions for specified software project.</p>
      *
      * @param projectId a <code>long</code> providing the ID of a project.
@@ -7869,8 +8130,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public Submission[] getSoftwareProjectSubmissions(long projectId)
         throws SearchBuilderException, UploadPersistenceException {
-        Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId); 
-        return uploadManager.searchSubmissions(filter);
+        Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
+        Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
+        Filter andfilter = SearchBundle.buildAndFilter(filter, filter2);
+        return uploadManager.searchSubmissions(andfilter);
     }
 
     /**
@@ -7882,6 +8145,101 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public void createReview(Review review) throws ReviewManagementException {
         projectServices.createReview(review);
+    }
+
+    /**
+     * <p>Selects copilot for specified TC Direct project.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param tcDirectProjectId a <code>long</code> providing the TC Direct project ID.
+     * @param profileId a <code>long</code> providing the copilot profile ID.
+     * @param submissionId a <code>String</code> providing the copilot submission ID.
+     * @param placement an <code>int</code> providing the placement
+     * @param copilotPostingProjectId a <code>long</code> providing the ID for <code>Copilot Posting</code> contest. 
+     * @throws PermissionServiceException if current user is not allowed to perform the specified action.
+     * @throws ContestServiceException if an unexpected error occurs.
+     */
+    public void selectCopilot(TCSubject currentUser, long tcDirectProjectId, long profileId, long submissionId, 
+                              int placement, long copilotPostingProjectId)
+        throws PermissionServiceException, ContestServiceException {
+        
+        logger.debug("selectCopilot");
+
+        checkSoftwareProjectPermission(currentUser, tcDirectProjectId, false);
+        checkSoftwareContestPermission(currentUser, copilotPostingProjectId, false);
+        try {
+
+            // Find a review for specified resource and submission and if not exists then create one
+            Submission[] submissions = getSoftwareProjectSubmissions(copilotPostingProjectId);
+
+
+            // Create copilot project for winning copilot only
+            if (placement == 1) {
+                insertCopilotProject(tcDirectProjectId, profileId, currentUser);
+
+                 // Find the screener resource for current user; if there is none then create one
+                com.topcoder.management.resource.Resource screener
+                    = addPrimaryScreener(currentUser, copilotPostingProjectId, currentUser.getUserId());
+
+                // we will pass screening for all
+                for (int i = 0; i < submissions.length; i++) {
+                    Submission submission = submissions[i];
+                    ScorecardReviewData screeningData = getScreening(copilotPostingProjectId, screener.getId(), submission.getId());
+                     if ((screeningData.getReview() == null)
+                        || (screeningData.getReview().getSubmission() != submission.getId())) {
+                        createScreening(screener, submission.getId(), screeningData.getScorecard());
+                    }
+                }
+
+            }
+
+            // Find the Reviewer resource for current user; if there is none then create one
+            com.topcoder.management.resource.Resource reviewer
+                = addReviewer(currentUser, copilotPostingProjectId, currentUser.getUserId());
+
+            
+            ScorecardReviewData reviewData = getReview(copilotPostingProjectId, reviewer.getId(), submissionId);
+            if ((reviewData.getReview() == null) || (reviewData.getReview().getSubmission() != submissionId)) {
+                createReview(reviewer, submissionId, placement, reviewData.getScorecard());
+            }
+
+            // Fill scorecards for non-winning submissions if necessary
+            if (placement == 2) {
+                for (int i = 0; i < submissions.length; i++) {
+                    Submission submission = submissions[i];
+                    reviewData = getReview(copilotPostingProjectId, reviewer.getId(), submission.getId());
+                    if ((reviewData.getReview() == null)
+                        || (reviewData.getReview().getSubmission() != submission.getId())) {
+                        createReview(reviewer, submission.getId(), 3, reviewData.getScorecard());
+                    }
+                }
+    
+            }
+        } catch (UserServiceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (CopilotDAOException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (ContestServiceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (SearchBuilderException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (UploadPersistenceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (ReviewManagementException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        }
     }
 
     private boolean hasSpecReview(SoftwareCompetition SoftwareCompetition)
@@ -7917,5 +8275,159 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             logger.error("Operation failed in the getAllFileTypes.", e);
             throw new ContestServiceException("Operation failed in the getAllFileTypes.", e);
         }
+    }
+
+    /**
+     * <p>Insert a copilot project record.</p>
+     *
+     * @return a <code>long</code> providing the ID of a generated copilot project,
+     * @throws UserServiceException if any exception occurs when retrieving user handle.
+     * @throws CopilotDAOException if any exception occurs when performing DB operation.
+     */
+    private long insertCopilotProject(long tcDirectProjectId, long profileId, TCSubject tcSubject) 
+        throws UserServiceException, CopilotDAOException {
+        CopilotProject copilotProject = new CopilotProject();
+
+        // populate actual values
+        copilotProject.setTcDirectProjectId(tcDirectProjectId);
+        copilotProject.setCopilotProfileId(profileId);
+        copilotProject.setCreateUser(String.valueOf(tcSubject.getUserId()));
+        copilotProject.setCreateDate(new Date());
+        copilotProject.setModifyUser(String.valueOf(tcSubject.getUserId()));
+        copilotProject.setModifyDate(new Date());
+
+        // populate copilot type
+        for (CopilotType copilotType : lookupDAO.getAllCopilotTypes()) {
+            if (copilotType.getId() == 1L) {
+                copilotProject.setCopilotType(copilotType);
+            }
+        }
+        for (CopilotProjectStatus copilotProjectStatus : lookupDAO.getAllCopilotProjectStatuses()) {
+            if (copilotProjectStatus.getId() == 1L) {
+                copilotProject.setStatus(copilotProjectStatus);
+            }
+        }
+        copilotProject.setPrivateProject(false);
+
+        // insert into DB
+        return copilotProjectDAO.create(copilotProject);
+    }
+
+    /**
+     * <p>Creates review for specified submission based on specified scorecard.</p>
+     * 
+     * @param reviewer a <code>long</code> providing the reviewer ID.
+     * @param submissionId a <code>long</code> providing the submission ID.
+     * @param placement an <code>int</code> providing the placement.
+     * @param scorecard a <code>Scorecard</code> providing the details for scorecard.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     */
+    private void createReview(com.topcoder.management.resource.Resource reviewer, long submissionId, int placement, 
+                              Scorecard scorecard) 
+        throws ReviewManagementException {
+        Review review = new Review();
+        review.setAuthor(reviewer.getId());
+        review.setCommitted(true);
+        review.setCreationUser(String.valueOf(reviewer.getId()));
+        review.setCreationTimestamp(new Date());
+        review.setModificationUser(String.valueOf(reviewer.getId()));
+        review.setModificationTimestamp(new Date());
+        if (placement == 1) {
+            review.setInitialScore(100F);
+            review.setScore(100F);
+        } else if (placement == 2) {
+            review.setInitialScore(80F);
+            review.setScore(80F);
+        } else {
+            review.setInitialScore(10F);
+            review.setScore(10F);
+        }
+        review.setSubmission(submissionId);
+        review.setScorecard(scorecard.getId());
+
+        List<Item> items = new ArrayList<Item>();
+        Group[] groups = scorecard.getAllGroups();
+        for (int i = 0; i < groups.length; i++) {
+            Group group = groups[i];
+            Section[] allSections = group.getAllSections();
+            for (int j = 0; j < allSections.length; j++) {
+                Section section = allSections[j];
+                Question[] questions = section.getAllQuestions();
+                for (int k = 0; k < questions.length; k++) {
+                    Question question = questions[k];
+                    Item item = new Item();
+                    if (placement == 1) {
+                        item.setAnswer("10");
+                    } else if (placement == 2) {
+                        item.setAnswer("8");
+                    } else {
+                        item.setAnswer("1");
+                    }
+                    item.setQuestion(question.getId());
+                    Comment comment = new Comment();
+                    comment.setAuthor(reviewer.getId());
+                    comment.setComment("Ok");
+                    comment.setCommentType(CommentType.COMMENT_TYPE_COMMENT);
+                    item.addComment(comment);
+                    items.add(item);
+                }
+            }
+        }
+
+        review.setItems(items);
+        createReview(review);
+    }
+
+    /**
+     * <p>Creates screening for specified submission based on specified scorecard.</p>
+     * 
+     * @param screener a <code>long</code> providing the screener ID.
+     * @param submissionId a <code>long</code> providing the submission ID.
+     * @param placement an <code>int</code> providing the placement.
+     * @param scorecard a <code>Scorecard</code> providing the details for scorecard.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     */
+    private void createScreening(com.topcoder.management.resource.Resource screener, long submissionId, Scorecard scorecard) 
+        throws ReviewManagementException {
+        Review review = new Review();
+        review.setAuthor(screener.getId());
+        review.setCommitted(true);
+        review.setCreationUser(String.valueOf(screener.getId()));
+        review.setCreationTimestamp(new Date());
+        review.setModificationUser(String.valueOf(screener.getId()));
+        review.setModificationTimestamp(new Date());
+
+        review.setInitialScore(100F);
+        review.setScore(100F);
+       
+        review.setSubmission(submissionId);
+        review.setScorecard(scorecard.getId());
+
+        List<Item> items = new ArrayList<Item>();
+        Group[] groups = scorecard.getAllGroups();
+        for (int i = 0; i < groups.length; i++) {
+            Group group = groups[i];
+            Section[] allSections = group.getAllSections();
+            for (int j = 0; j < allSections.length; j++) {
+                Section section = allSections[j];
+                Question[] questions = section.getAllQuestions();
+                for (int k = 0; k < questions.length; k++) {
+                    Question question = questions[k];
+                    Item item = new Item();
+                    // Yes
+                    item.setAnswer("1");
+                    item.setQuestion(question.getId());
+                    Comment comment = new Comment();
+                    comment.setAuthor(screener.getId());
+                    comment.setComment("Ok");
+                    comment.setCommentType(CommentType.COMMENT_TYPE_COMMENT);
+                    item.addComment(comment);
+                    items.add(item);
+                }
+            }
+        }
+
+        review.setItems(items);
+        createReview(review);
     }
 }
