@@ -3196,7 +3196,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
             }
 
-            double fee = totalFee - pastPayment;
+            fee = fee - pastPayment;
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
