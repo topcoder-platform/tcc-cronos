@@ -274,6 +274,10 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  *     <li>Added {@link #createReview(Review)} method.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Changes in v1.4.4 (TC Direct Release Assembly 7)
+ *  - add method updateContestSale for updating contest sale.
+ * </p>
  * 
  * <p>
  * Version 1.4.4 (TC Direct Replatforming Release 1) Change notes:
@@ -420,14 +424,6 @@ public class ProjectServicesImpl implements ProjectServices {
     private static final String REVIEW_MANAGER_KEY = "reviewManagerKey";
 
 
-    /**
-     * <p>
-     * Represents the reviewer resource role id
-     * </p>
-     *
-     * @since 1.3
-     */
-    private static final int REVIEWER_RESOURCE_ROLE_ID = 4;
 
     /**
      * <p>
@@ -438,16 +434,7 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String SCORECARD_ID_PHASE_ATTRIBUTE_KEY = "Scorecard ID";
 
-    /**
-     * <p>
-     * Represents the review phase type name
-     * </p>
-     *
-     * @since 1.3
-     */
-    private static final String REVIEW_PHASE_TYPE_NAME = "Review";
-
-    /**
+	 /**
      * <p>
      * Represents the resource reviewer property name
      * </p>
@@ -455,6 +442,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since 1.3
      */
     private static final String RESOURCE_REVIEWER_PROPERTY = "reviewer";
+
 
 
     /**
@@ -1958,6 +1946,38 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * <p>
+     * Updates a contest sale.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to update
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since TC Direct Release Assembly 7
+     */
+    public void updateContestSale(ContestSaleData contestSaleData) throws ProjectServicesException {
+        Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#updateContestSale method.");
+
+        ExceptionUtils.checkNull(contestSaleData, null, null, "The parameter[contestSaleData] should not be null.");
+
+        try {
+            ContestSale contestSale = convertContestSaleData(contestSaleData);
+
+            projectManager.updateContestSale(contestSale);
+        } catch (PersistenceException e) {
+            ProjectServicesException pse = new ProjectServicesException(
+                    "PersisteceException occurred in ProjectServicesImpl#updateContestSale method : " + e.getMessage(),
+                    e);
+            logError(e, pse.getMessage());
+            throw pse;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#updateContestSale method.");
+        }
+    }
+    
+    /**
+     * <p>
      * Gets contest sale by id, and return the retrieved contest sale. If
      * the contest sale doesn't exist, null is returned.
      * </p>
@@ -2527,7 +2547,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     }
                     
 
-                    if (p.getPhaseType().getName().equals("Registration"))
+                    if (p.getPhaseType().getName().equals(PhaseType.REGISTRATION_PHASE.getName()))
                     {
                         p.setAttribute("Registration Number", "0");
                     }
@@ -3525,7 +3545,7 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             // Build resources filter
             Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_ID);
             Filter filterRoles = new AndFilter(filterProject, filterRole);
 
             // Search for the reviewers
@@ -3537,7 +3557,7 @@ public class ProjectServicesImpl implements ProjectServices {
             Review review = null;
             if (reviewers.length == 1) {
                 // build reviews filter
-                Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
+                Filter filterReviewer = new EqualToFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_NAME, reviewers[0].getId());
 
                 // Search for the reviews
                 Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
@@ -3565,7 +3585,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
-                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                        if (phase.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName())) {
                             scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
                         }
                     }
@@ -3880,7 +3900,7 @@ public class ProjectServicesImpl implements ProjectServices {
         try {
             // Build resources filter
             Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(REVIEWER_RESOURCE_ROLE_ID);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_ID);
             Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
 
             // Search for the reviewers
@@ -3907,7 +3927,93 @@ public class ProjectServicesImpl implements ProjectServices {
                     Iterator<Phase> iter = phases.iterator();
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
-                        if (phase.getPhaseType().getName().equals(REVIEW_PHASE_TYPE_NAME)) {
+                        if (phase.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName())) {
+                            scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
+                        }
+                    }
+                }
+                
+                if (scorecardId < 0) {
+                    throw new ProjectServicesException("Failed to find scorecard id");
+                }
+                ScorecardReviewData data = new ScorecardReviewData();
+                data.setScorecard(scorecardManager.getScorecard(scorecardId));
+                scorecardReviewData.add(data);
+            }
+
+        } catch (ReviewManagementException ex) {
+            log(Level.ERROR, "ReviewManagementException occurred in " + method);
+            throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
+        } catch (com.topcoder.management.scorecard.PersistenceException ex) {
+            log(Level.ERROR, "PersistenceException occurred in " + method);
+            throw new ProjectServicesException("PersistenceException occurred when operating Scorecard Manager.", ex);
+        } catch (ResourcePersistenceException ex) {
+            log(Level.ERROR, "ResourcePersistenceException occurred in " + method);
+            throw new ProjectServicesException("ResourcePersistenceException occurred when operating Resource Manager.",
+                ex);
+        } catch (PhaseManagementException ex) {
+            log(Level.ERROR, "PhaseManagementException occurred in " + method);
+            throw new ProjectServicesException("PhaseManagementException occurred when operating Phase Manager.", ex);
+        } catch (SearchBuilderException ex) {
+            log(Level.ERROR, "SearchBuilderException occurred in " + method);
+            throw new ProjectServicesException("SearchBuilderException occurred when operating Search Builder.", ex);
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+
+        return scorecardReviewData;
+    }
+
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single primary screener / screening is assumed.
+     *
+     * @param projectId the project id to search for.
+     * @param screenerId the screener ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndScreening(long projectId, long screenerId) 
+        throws ProjectServicesException {
+        String method = "ProjectServicesImpl#getScorecardAndScreening(" + projectId + ") method.";
+
+        List<ScorecardReviewData> scorecardReviewData = new ArrayList<ScorecardReviewData>();
+
+        log(Level.INFO, "Enters " + method);
+        try {
+            // Build resources filter
+            Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
+            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_PRIMARY_SCREENER_ID);
+            Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
+
+            // Search for the screeners
+            Resource[] screeners = resourceManager.searchResources(filterRoles);
+            if (screeners.length > 1) {
+                throw new ProjectServicesException("Invalid number of primary screener found: " + screeners.length);
+            }
+
+            Filter filterScreener = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, screeners[0].getId());
+            Review[] reviews = reviewManager.searchReviews(filterScreener, true);
+            for (int i = 0; i < reviews.length; i++) {
+                Review review = reviews[i];
+                ScorecardReviewData data = new ScorecardReviewData();
+                data.setReview(review);
+                data.setScorecard(scorecardManager.getScorecard(review.getScorecard()));
+                scorecardReviewData.add(data);
+            }
+            
+            if (scorecardReviewData.isEmpty()) {
+                com.topcoder.project.phases.Project projectPhases = phaseManager.getPhases(projectId);
+                long scorecardId = -1;
+                if (projectPhases != null) {
+                    Set<Phase> phases = projectPhases.getPhases();
+                    Iterator<Phase> iter = phases.iterator();
+                    while (iter.hasNext() && scorecardId < 0) {
+                        Phase phase = iter.next();
+                        if (phase.getPhaseType().getName().equals(PhaseType.SCREENING_PHASE.getName())) {
                             scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
                         }
                     }

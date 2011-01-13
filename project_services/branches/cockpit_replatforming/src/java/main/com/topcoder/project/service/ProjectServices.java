@@ -114,6 +114,10 @@ import com.topcoder.security.TCSubject;
  *     <li>Added {@link #createReview(Review)} method.</li>
  *   </ol>
  * </p>
+ * <p>
+ * Changes in v1.4.4 (TC Direct Release Assembly 7)
+ *  - add method updateContestSale for updating contest sale.
+ * </p>
  * 
  * <p>
  * Version 1.4.4 (TC Direct Replatforming Release 1) Change notes:
@@ -550,6 +554,20 @@ public interface ProjectServices {
      * @since Module Contest Service Software Contest Sales Assembly
      */
     public ContestSaleData createContestSale(ContestSaleData contestSaleData) throws ProjectServicesException;
+
+    /**
+     * <p>
+     * Updates a contest sale.
+     * </p>
+     *
+     * @param contestSaleData the contest sale to update
+     *
+     * @throws IllegalArgumentException if the arg is null.
+     * @throws ProjectServicesException if any other error occurs.
+     *
+     * @since TC Direct Release Assembly 7
+     */
+    public void updateContestSale(ContestSaleData contestSaleData) throws ProjectServicesException;
 
     /**
      * <p>
@@ -1152,6 +1170,21 @@ public interface ProjectServices {
      * @since 1.4.3
      */
     public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId) 
+        throws ProjectServicesException;
+
+
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single primary screener / screen is assumed.
+     *
+     * @param projectId the project id to search for.
+     * @param screenerId the screener ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndScreening(long projectId, long screenerId) 
         throws ProjectServicesException;
     
     /**
