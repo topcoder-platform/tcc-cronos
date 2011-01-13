@@ -3246,7 +3246,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             contestSaleData.setContestId(contest.getId());
             contestSaleData.setSaleStatusId(CONTEST_SALE_STATUS_PAID);
-            contestSaleData.setPrice(totalFee);
+            contestSaleData.setPrice(fee);
             
             if (!hasContestSaleData) {
                 this.projectServices.createContestSale(contestSaleData);
