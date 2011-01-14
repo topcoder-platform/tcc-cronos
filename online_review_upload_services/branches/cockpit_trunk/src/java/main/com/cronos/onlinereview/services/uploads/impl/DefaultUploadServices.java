@@ -1495,7 +1495,6 @@ public class DefaultUploadServices implements UploadServices {
         PreparedStatement existStmt = null;
         PreparedStatement existCIStmt = null;
         PreparedStatement ratingStmt = null;
-        PreparedStatement reliabilityStmt = null;
         PreparedStatement componentInquiryStmt = null;
         long categoryId = project.getProjectCategory().getId();
         // Only design/development/assembly will modify the project result table.
@@ -1516,10 +1515,9 @@ public class DefaultUploadServices implements UploadServices {
             LOG.log(Level.DEBUG, "calculated phaseId for Project: " + projectId + " phaseId: " + phaseId);
             long version = getProjectLongValue(project, "Version ID");
 
-            // add reliability_ind and old_reliability
             ps = conn.prepareStatement("INSERT INTO project_result "
-                    + "(project_id, user_id, rating_ind, valid_submission_ind, old_rating, old_reliability) "
-                    + "values (?, ?, ?, ?, ?, ?)");
+                    + "(project_id, user_id, rating_ind, valid_submission_ind, old_rating) "
+                    + "values (?, ?, ?, ?, ?)");
 
             componentInquiryStmt = conn
                     .prepareStatement("INSERT INTO component_inquiry "
@@ -1535,9 +1533,6 @@ public class DefaultUploadServices implements UploadServices {
             ratingStmt = conn.prepareStatement("SELECT rating from user_rating where user_id = ? and phase_id = "
                     + "(select 111+project_category_id from project where project_id = ?)");
 
-            reliabilityStmt = conn
-                    .prepareStatement("SELECT rating from user_reliability where user_id = ? and phase_id = "
-                            + "(select 111+project_category_id from project where project_id = ?)");
 
             for (Iterator iter = newSubmitters.iterator(); iter.hasNext();) {
                 String userId = iter.next().toString();
@@ -1569,18 +1564,7 @@ public class DefaultUploadServices implements UploadServices {
                     close(rs);
                 }
 
-                double oldReliability = 0;
                 if (!existPR) {
-                    // Retrieve Reliability
-                    reliabilityStmt.clearParameters();
-                    reliabilityStmt.setString(1, userId);
-                    reliabilityStmt.setLong(2, projectId);
-                    rs = reliabilityStmt.executeQuery();
-
-                    if (rs.next()) {
-                        oldReliability = rs.getDouble(1);
-                    }
-                    close(rs);
 
                     // add project_result
                     ps.setLong(1, projectId);
@@ -1594,11 +1578,6 @@ public class DefaultUploadServices implements UploadServices {
                         ps.setDouble(5, oldRating);
                     }
 
-                    if (oldReliability == 0) {
-                        ps.setNull(6, Types.DOUBLE);
-                    } else {
-                        ps.setDouble(6, oldReliability);
-                    }
                     ps.addBatch();
                 }
 
@@ -1643,7 +1622,6 @@ public class DefaultUploadServices implements UploadServices {
             close(existStmt);
             close(existCIStmt);
             close(ratingStmt);
-            close(reliabilityStmt);
             close(conn);
         }
     }
