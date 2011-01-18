@@ -47,9 +47,12 @@ import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
 import com.cronos.onlinereview.services.uploads.InvalidUserException;
 import com.topcoder.direct.services.copilot.dao.CopilotDAOException;
 import com.topcoder.direct.services.copilot.dao.CopilotProjectDAO;
+import com.topcoder.direct.services.copilot.dao.CopilotProfileDAO;
 import com.topcoder.direct.services.copilot.dao.LookupDAO;
 import com.topcoder.direct.services.copilot.dao.impl.CopilotProjectDAOImpl;
+import com.topcoder.direct.services.copilot.dao.impl.CopilotProfileDAOImpl;
 import com.topcoder.direct.services.copilot.dao.impl.LookupDAOImpl;
+import com.topcoder.direct.services.copilot.model.CopilotProfile;
 import com.topcoder.direct.services.copilot.model.CopilotProject;
 import com.topcoder.direct.services.copilot.model.CopilotProjectStatus;
 import com.topcoder.direct.services.copilot.model.CopilotType;
@@ -155,6 +158,8 @@ import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.UserNotFoundFault;
+import com.topcoder.service.project.ProjectNotFoundFault;
+import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.specreview.SpecReviewService;
 import com.topcoder.service.specreview.SpecReviewServiceException;
@@ -675,6 +680,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         "Insufficient Submissions - ReRun Possible", "Insufficient Submissions", "Abandoned","Inactive - Removed", "Cancelled - Failed Review",
         "Cancelled - Failed Screening", "Cancelled - Zero Submissions", "Cancelled - Winner Unresponsive", "Cancelled - Zero Registrations" );
 
+    
+    private final static String COPILOT_PERMISSION = "full";
+    
     /**
      * <p>
      * A <code>StudioService</code> providing access to available
@@ -1097,6 +1105,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>The copilot project DAO.</p>
      */
     private CopilotProjectDAO copilotProjectDAO;
+    
+    private CopilotProfileDAO copilotProfileDAO;
 
     /**
      * <p>
@@ -1199,6 +1209,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         c.setLoggerName("copilotBaseDAO");
         c.setSessionFactory(configuration.buildSessionFactory());
         copilotProjectDAO = c;
+        
+        CopilotProfileDAOImpl cp = new CopilotProfileDAOImpl();
+        cp.setLoggerName("copilotBaseDAO");
+        cp.setSessionFactory(configuration.buildSessionFactory());
+        copilotProfileDAO = cp;
     }
 
     /**
@@ -7960,12 +7975,46 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // Find a review for specified resource and submission and if not exists then create one
             Submission[] submissions = getSoftwareProjectSubmissions(copilotPostingProjectId);
 
-
             // Create copilot project for winning copilot only
             if (placement == 1) {
                 insertCopilotProject(tcDirectProjectId, profileId, currentUser);
 
-                 // Find the screener resource for current user; if there is none then create one
+                // retrieve user id
+                CopilotProfile copilotProfile = copilotProfileDAO.retrieve(profileId);   
+                long userId = copilotProfile.getUserId();
+                
+                // create project permission
+                ProjectPermission permission = new ProjectPermission();
+                permission.setPermission(COPILOT_PERMISSION);
+                permission.setProjectId(tcDirectProjectId);
+                permission.setUserId(userId);
+                permission.setStudio(false);
+                permission.setHandle(userService.getUserHandle(userId));
+                
+                // set project name
+                permission.setProjectName(projectService.getProject(
+                        currentUser, tcDirectProjectId).getName());
+
+                // retrieve user permissions
+                Map<Long, Map<Long, Long>> userPermissionMaps = getUserPermissionMaps(currentUser);
+
+                if (userPermissionMaps.containsKey(tcDirectProjectId)
+                        && userPermissionMaps.get(tcDirectProjectId)
+                        .containsKey(userId)) {
+                    // update permission
+                    permission.setUserPermissionId(userPermissionMaps.get(tcDirectProjectId).get(userId));
+                } else {
+                    // add permission
+                    permission.setUserPermissionId(-1L);
+                }
+                
+                // update project permissions
+                List<ProjectPermission> permissionsToAdd = new ArrayList<ProjectPermission>();
+                permissionsToAdd.add(permission);
+                updateProjectPermissions(currentUser,
+                        permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
+                
+                // Find the screener resource for current user; if there is none then create one
                 com.topcoder.management.resource.Resource screener
                     = addPrimaryScreener(currentUser, copilotPostingProjectId, currentUser.getUserId());
 
@@ -8027,6 +8076,144 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             sessionContext.setRollbackOnly();
             logger.error(e.getMessage());
             throw new ContestServiceException("Failed to select copilot", e);
+        } catch (PersistenceFault e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (ProjectNotFoundFault e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        } catch (AuthorizationFailedFault e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to select copilot", e);
+        }   
+    }
+
+    /**
+     * Update copilot projects and related permissions.
+     * 
+     * @param currentUser
+     *            current user
+     * @param copilotProjects
+     *            the copilot projects to update
+     * @param removeFlags
+     *            whether to remove or add
+     * @return updated copilot projects
+     * @throws PermissionServiceException
+     *             if current user has no permission to perform this operation
+     * @throws ContestServiceException
+     *             if any exception occurs
+     */
+    public List<CopilotProject> updateCopilotProjects(TCSubject currentUser,
+            List<CopilotProject> copilotProjects, List<Boolean> removeFlags)
+            throws PermissionServiceException, ContestServiceException {
+        // check permissions
+        for (CopilotProject copilotProject : copilotProjects) {
+            checkSoftwareProjectPermission(currentUser,
+                    copilotProject.getTcDirectProjectId(), false);
+        }
+        
+        try {
+            // retrieve user permissions
+            Map<Long, Map<Long, Long>> userPermissionMaps = getUserPermissionMaps(currentUser);
+
+            // generate project permissions
+            Map<Long, String> projectNames = new HashMap<Long, String>();
+            List<ProjectPermission> permissionsToAdd = new ArrayList<ProjectPermission>();
+            
+            // update copilot project
+            for (int i = 0; i < copilotProjects.size(); i++) {
+                CopilotProject copilotProject = copilotProjects.get(i);
+                Boolean removeFlag = removeFlags.get(i);
+                
+                CopilotProfile copilotProfile = copilotProfileDAO.retrieve(copilotProject.getCopilotProfileId());   
+                long userId = copilotProfile.getUserId();
+                
+                if (removeFlag) {
+                    // remove copilot project
+                    copilotProjectDAO.delete(copilotProject.getId());
+                    
+                    // set project permission
+                    if (userPermissionMaps.containsKey(copilotProject.getTcDirectProjectId())
+                            && userPermissionMaps.get(copilotProject.getTcDirectProjectId())
+                                    .containsKey(userId)) {
+                        ProjectPermission permission = new ProjectPermission();
+                        permission.setPermission("");
+                        permission.setProjectId(copilotProject.getTcDirectProjectId());
+                        permission.setUserId(userId);
+                        permission.setUserPermissionId(userPermissionMaps.get(copilotProject.getTcDirectProjectId()).get(userId));
+                        permission.setStudio(false);
+                        
+                        permissionsToAdd.add(permission);
+                    } else {
+                        // ignore, the copilot has no permission on this project
+                    }
+                } else {
+                    // insert copilot project
+                    CopilotProject cProject = insertCopilotProject(copilotProject.getTcDirectProjectId(),
+                            copilotProject.getCopilotProfileId(), currentUser);
+                    copilotProject.setId(cProject.getId());
+                    copilotProject.setCopilotType(cProject.getCopilotType());
+                    
+                    // set project permission
+                    ProjectPermission permission = new ProjectPermission();
+                    permission.setPermission(COPILOT_PERMISSION);
+                    permission.setProjectId(copilotProject.getTcDirectProjectId());
+                    permission.setUserId(userId);
+                    permission.setStudio(false);
+                    permission.setHandle(userService.getUserHandle(userId));
+                    
+                    // set project name
+                    if (!projectNames.containsKey(copilotProject.getTcDirectProjectId())) {
+                        projectNames.put(copilotProject.getTcDirectProjectId(),
+                                projectService.getProject(currentUser,
+                                        copilotProject.getTcDirectProjectId()).getName());
+                        
+                    }
+                    permission.setProjectName(projectNames.get(copilotProject.getTcDirectProjectId()));
+
+                    if (userPermissionMaps.containsKey(copilotProject.getTcDirectProjectId())
+                            && userPermissionMaps.get(copilotProject.getTcDirectProjectId())
+                            .containsKey(userId)) {
+                        // update permission
+                        permission.setUserPermissionId(userPermissionMaps.get(
+                                copilotProject.getTcDirectProjectId()).get(userId));
+                    } else {
+                        // add permission
+                        permission.setUserPermissionId(-1L);
+                    }
+                    
+                    permissionsToAdd.add(permission);                
+                }
+            }
+
+            // update project permissions
+            updateProjectPermissions(currentUser,
+                    permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
+            
+            return copilotProjects;
+        } catch (CopilotDAOException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to update copilot projects", e);
+        } catch (UserServiceException e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to update copilot projects", e);
+        } catch (PersistenceFault e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to update copilot projects", e);
+        } catch (ProjectNotFoundFault e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to update copilot projects", e);
+        } catch (AuthorizationFailedFault e) {
+            sessionContext.setRollbackOnly();
+            logger.error(e.getMessage());
+            throw new ContestServiceException("Failed to update copilot projects", e);
         }
     }
 
@@ -8053,7 +8240,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws UserServiceException if any exception occurs when retrieving user handle.
      * @throws CopilotDAOException if any exception occurs when performing DB operation.
      */
-    private long insertCopilotProject(long tcDirectProjectId, long profileId, TCSubject tcSubject) 
+    private CopilotProject insertCopilotProject(long tcDirectProjectId, long profileId, TCSubject tcSubject) 
         throws UserServiceException, CopilotDAOException {
         CopilotProject copilotProject = new CopilotProject();
 
@@ -8079,7 +8266,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         copilotProject.setPrivateProject(false);
 
         // insert into DB
-        return copilotProjectDAO.create(copilotProject);
+        copilotProjectDAO.create(copilotProject);
+        
+        return copilotProject;
     }
 
     /**
@@ -8198,5 +8387,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         review.setItems(items);
         createReview(review);
+    }
+    
+    /**
+     * Get user permission maps.
+     * 
+     * @param currentUser
+     *            current user
+     * @return retrieved user permission map
+     * @throws PermissionServiceException
+     *             if current user has no permission on it
+     */
+    private Map<Long, Map<Long, Long>> getUserPermissionMaps(
+            TCSubject currentUser) throws PermissionServiceException {
+        List<ProjectPermission> permissions = getProjectPermissions(currentUser);
+        Map<Long, Map<Long, Long>> userPermissionMaps = new HashMap<Long, Map<Long, Long>>();
+        for (ProjectPermission permission : permissions) {
+            if (!userPermissionMaps.containsKey(permission.getProjectId())) {
+                userPermissionMaps.put(permission.getProjectId(),
+                        new HashMap<Long, Long>());
+            }
+            userPermissionMaps.get(permission.getProjectId()).put(
+                    permission.getUserId(), permission.getUserPermissionId());
+        }
+
+        return userPermissionMaps;
     }
 }
