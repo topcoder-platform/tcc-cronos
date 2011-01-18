@@ -1467,7 +1467,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *  get all project ids by tc direct project
      *
      */
-    private static final String QUERY_PROJECT_ID_BY_TC_DIRECT = "select project_id from project where tc_direct_project_id = ? and project_status_id = 1 ";
+    private static final String QUERY_PROJECT_ID_BY_TC_DIRECT = "select project_id from project where tc_direct_project_id = ? and (project_status_id = 1 or  project_status_id = 2) ";
 
 
     /**
