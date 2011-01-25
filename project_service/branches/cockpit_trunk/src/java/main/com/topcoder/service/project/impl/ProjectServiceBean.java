@@ -1265,15 +1265,6 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             // Obtain the user id of caller
             long callerUserId = tcSubject.getUserId();
 
-            // The user can only retrieve his own projects
-            // The administrator can retrieve any projects
-            if (callerUserId != project.getUserId() && !isAdminRole(tcSubject)) {
-                throw logException(new AuthorizationFailedFault(
-                    MessageFormat.format(
-                        "User [userId = {0}] is not administrator and does not own the project [projectId = {1}]",
-                            callerUserId, project.getProjectId())));
-            }
-
             return project;
         } catch (PersistenceException e) {
             logException(e);
