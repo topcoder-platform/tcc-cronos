@@ -4215,6 +4215,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             if (isCopilotContest(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
                 contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
+                contest.getProjectHeader().setProperty(ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, "standard_cca");
             }
             
             if (forumId > 0) {
