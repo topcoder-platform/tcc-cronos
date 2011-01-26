@@ -348,8 +348,15 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
  *     <li>Updated {@link #updateProjectPermissions(TCSubject, List<ProjectPermission>, long)} method.</li>
  *   </ol>
  * </p>
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
- * @version 1.6.7
+ * <p>
+ * Version 1.6.8 (TC Direct - Software Contest Creation Update) Change notes:
+ *   <ol>
+ *     <li>Update method <code>createContestResources</code> to create copilot resource and set form permission/watch if exists.</li>
+ *     <li>Update method <code>updateContestResources</code> to update copilots and update forum permission/watch</li>
+ *   </ol>
+ * </p>
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSDEVELOPER
+ * @version 1.6.8
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -4027,6 +4034,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
 
+            // set copilot forum permission
+            long forumId = 0;
+
+            if (createForum) {
+                forumId = contest.getAssetDTO().getForum().getJiveCategoryId();
+            }
+
+            if(forumId > 0 && createForum) {
+                for(com.topcoder.management.resource.Resource r : contest.getProjectResources()) {
+                    // add forum watch/permission for each copilot to create
+                    if (r.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_COPILOT_ID) {
+                        createForumWatchAndRole(forumId, Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)));
+                    }
+                }
+            }
+
             // set timeline notification
             projectServices.addNotifications(tcSubject.getUserId(), new long[]{projectData.getProjectHeader().getId()}, String.valueOf(tcSubject.getUserId()));
 
@@ -4293,15 +4316,40 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>
      * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
      * </p>
+     * <p>
+     * Update in v1.6.8: gets the copilot resource from getResources() of SoftwareCompetition.
+     * </p>
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contest the contest to create
      * @param billingProjectId the billing project id
      * @return resource array
-     * @throws ContestServiceException fail to retrive user-handle
+     * @throws ContestServiceException fail to retrieve user-handle
      */
     private com.topcoder.management.resource.Resource[] createContestResources(TCSubject tcSubject,
             SoftwareCompetition contest, long billingProjectId) throws ContestServiceException, UserServiceException {
-        com.topcoder.management.resource.Resource[] resources = new com.topcoder.management.resource.Resource[2];
+
+         // check if contest contains copilot resource
+        com.topcoder.management.resource.Resource[] contestResources = contest.getResources();
+        com.topcoder.management.resource.Resource copilot = null;
+
+        // flag indicates whether current user is set as the copilot
+        boolean isCopilotCurrentUser = false;
+
+        if (contestResources.length > 1) {
+            // contains copilot resource
+            copilot = contestResources[1];
+
+            if(copilot.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(String.valueOf(tcSubject.getUserId()))) {
+                isCopilotCurrentUser = true;
+            }
+
+        }
+
+        // create an array to store the resources, if copilot exists and copilot is not current user, we create
+        // an array of length 3, otherwise of length 2
+        com.topcoder.management.resource.Resource[] resources =
+                new com.topcoder.management.resource.Resource[(isCopilotCurrentUser || (copilot == null)) ? 2 : 3];
+
         resources[0] = new com.topcoder.management.resource.Resource();
         resources[0].setId(com.topcoder.management.resource.Resource.UNSET_ID);
 
@@ -4320,19 +4368,34 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         clientManagerRole.setName(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_NAME);
         clientManagerRole.setDescription(ResourceRole.RESOURCE_ROLE_CLIENT_MANAGER_DESC);
 
+        ResourceRole copilotRole = new ResourceRole();
+        copilotRole.setId(ResourceRole.RESOURCE_ROLE_COPILOT_ID);
+
         boolean tcstaff = isRole(tcSubject, TC_STAFF_ROLE);
+        boolean isObserverCopilot = false;
+
         // tc staff add as manager, other as observer
         if (tcstaff) {
             resources[0].setResourceRole(managerRole);
         } else if (getEligibilityName(tcSubject, billingProjectId).trim().length() > 0) {
             resources[0].setResourceRole(clientManagerRole);
         } else {
-            resources[0].setResourceRole(observerRole);
+            if (isCopilotCurrentUser) {
+              // if copilot is current user, then set as copilot
+              resources[0] = copilot;
+              isObserverCopilot = true;
+            } else {
+              resources[0].setResourceRole(observerRole);
+            }
         }
 
-        resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(tcSubject.getUserId()));
-        resources[0].setProperty(RESOURCE_INFO_HANDLE, getUserName(tcSubject));
-        resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+        if (!isObserverCopilot) {
+            // we don't override the copilot properties if the observer is the copilot
+            resources[0].setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(tcSubject.getUserId()));
+            resources[0].setProperty(RESOURCE_INFO_HANDLE, getUserName(tcSubject));
+            resources[0].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+        }
+
         resources[0].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
 
         // for private, check if admin role is set, and use that if so
@@ -4373,6 +4436,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             resources[1].setProperty(RESOURCE_INFO_HANDLE, RESOURCE_INFO_HANDLE_APPLICATIONS);
             resources[1].setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
             resources[1].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
+        }
+
+        if (copilot != null && !isCopilotCurrentUser) {
+            // when copilot exists and copilot is not current user, we store resource in another array element
+            resources[2] = copilot;
+
+            // and set the registration date with current date
+            resources[2].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
         }
 
         return resources;
@@ -4472,6 +4543,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     }
                 }
 
+                //get old copilots before update
+                com.topcoder.management.resource.Resource[] oldCopilots = projectServices.searchResources(contest.getProjectHeader().getId(), ResourceRole.RESOURCE_ROLE_COPILOT_ID);
+
                 FullProjectData projectData = projectServices.updateProject(contest.getProjectHeader(),
                         contest.getProjectHeaderReason(),
                         contest.getProjectPhases(),
@@ -4491,6 +4565,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (forumId > 0 && createForum)
                 {
                     updateForumName(forumId, contest.getAssetDTO().getName());
+
+                    // update forum permission for copilots
+                    List<String> currentCopilots = new ArrayList<String>();
+
+                    for(com.topcoder.management.resource.Resource r : contest.getProjectResources()) {
+                        // get updated copilots from project resources
+                        if (r.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_COPILOT_ID) {
+                            currentCopilots.add(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID));
+                        }
+                    }
+
+                    // remove copilot forum watch/permission for all old copilots
+                    for(com.topcoder.management.resource.Resource r : oldCopilots) {
+                            deleteForumWatchAndRole(forumId, Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)));
+                    }
+
+                    // insert copilot forum watch/permission for all new copilots
+                    for(String copilotId : currentCopilots) {
+                            createForumWatchAndRole(forumId, Long.parseLong(copilotId));
+                    }
+
+
                 }
 
                 com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
