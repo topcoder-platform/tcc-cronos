@@ -2406,12 +2406,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // get the standard cca value from project property. 
         boolean standardCCA = (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC));
 
-        // copilot contests are always CCA
-        if (project.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId())
-        {
-            standardCCA = true;
-        }
-
         // get the billing project id
         long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));
 
