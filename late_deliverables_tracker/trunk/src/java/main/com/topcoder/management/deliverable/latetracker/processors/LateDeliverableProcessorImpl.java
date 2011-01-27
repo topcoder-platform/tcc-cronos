@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.processors;
 
@@ -246,6 +246,17 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     private static final String SELECT_MAX_DEADLINE_SQL = "select max(deadline) from late_deliverable"
         + " where project_phase_id = ? and resource_id = ? and deliverable_id = ?";
 
+    /**
+     * <p>
+     * Represents the sql statement to get ID of late deliverable with maximum deadline.
+     * </p>
+     */
+    private static final String SELECT_LATE_DELIVERABLE_ID_WITH_MAX_DEADLINE_SQL = "select late_deliverable_id "
+        + " from late_deliverable ld where ld.project_phase_id = ? and ld.resource_id = ? and ld.deliverable_id = ?"
+        + " and ld.deadline = (select max(deadline) from late_deliverable ld2"
+        + " where ld2.project_phase_id = ld.project_phase_id and ld2.resource_id = ld.resource_id"
+        + " and ld2.deliverable_id = ld.deliverable_id)";
+    
     /**
      * <p>
      * Represents the sql statement to retrieve last notified time and forgive flag.
@@ -852,7 +863,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             long resourceId = deliverable.getResource();
 
             Object[] result = doQuery(SELECT_MAX_DEADLINE_SQL, connection, new Object[] {phaseId,
-                resourceId, deliverableId}, false);
+                resourceId, deliverableId}, true, Timestamp.class);
 
             boolean alreadyTracked = result[0] != null;
             boolean canSendNotification = false;
@@ -872,7 +883,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                     // "forgive" flag for this late deliverable
                     result = doQuery(SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL, connection,
                         new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()),
-                        deliverableId}, true);
+                        deliverableId}, false, Timestamp.class, Boolean.class);
 
                     // Get the previous notification timestamp
                     Date previousNotificationTime = (Timestamp) result[0];
@@ -912,7 +923,12 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             }
 
             if (canSendNotification) {
-                sendEmail(resourceId, deliverableId, lateDeliverable);
+                // retrieve late deliverable ID
+                result = doQuery(SELECT_LATE_DELIVERABLE_ID_WITH_MAX_DEADLINE_SQL, connection, new Object[] {phaseId,
+                        resourceId, deliverableId}, false, Long.class);
+                long lateDeliverableId = (Long) result[0];
+
+                sendEmail(lateDeliverableId, lateDeliverable);
             }
 
             connection.commit();
@@ -994,8 +1010,10 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      *            the database connection.
      * @param parameters
      *            the parameters to set.
-     * @param hasSecondColumn
-     *            whether the result set has second column value.
+     * @param emptyResultSet
+     *            whether the query can return an empty result set.
+     * @param resultColumnTypes 
+     *            the expected types of columns in the result set.
      * @return the result from the query.
      * @throws SQLException
      *             if any error occurs.
@@ -1004,7 +1022,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      *             is <code>true</code>.
      */
     private static Object[] doQuery(String query, Connection connection, Object[] parameters,
-        boolean hasSecondColumn) throws SQLException, LateDeliverablesProcessingException {
+        boolean emptyResultSet, Class... resultColumnTypes) throws SQLException, LateDeliverablesProcessingException {
         PreparedStatement ps = null;
 
         try {
@@ -1020,16 +1038,29 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
             ResultSet rs = ps.executeQuery();
 
-            if (!rs.next() && hasSecondColumn) {
-                throw new LateDeliverablesProcessingException("Get last notified and"
-                    + " forgive query should contain one result.");
+            if (!rs.next() && !emptyResultSet) {
+                throw new LateDeliverablesProcessingException("The query should not "
+                    + " return an empty result set.");
             }
 
-            Object[] result = new Object[2];
-            result[0] = rs.getTimestamp(1);
+            Object[] result = new Object[resultColumnTypes.length];
 
-            if (hasSecondColumn) {
-                result[1] = rs.getBoolean(2);
+            for (int i = 0; i < resultColumnTypes.length; i++) {
+                if (resultColumnTypes[i] == Timestamp.class) {
+                    result[i] = rs.getTimestamp(i + 1);
+                } else if (resultColumnTypes[i] == Boolean.class) {
+                    result[i] = rs.getBoolean(i + 1);
+                } else if (resultColumnTypes[i] == Long.class) {
+                    result[i] = rs.getLong(i + 1);
+                } else {
+                    result[i] = rs.getObject(i + 1);
+                    if (result[i] != null && !resultColumnTypes[i].isInstance(result[i])) {
+                        throw new LateDeliverablesProcessingException("The result set "
+                            + " contains a value of not expected type ("
+                            + result[i].getClass().getName() + " obtained, but "
+                            + resultColumnTypes[i].getName() + " expected)");
+                    }
+                }
             }
 
             return result;
@@ -1135,10 +1166,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
-     * @param resourceId
-     *            the id of resource.
-     * @param deliverableId
-     *            the id of deliverable.
+     * @param lateDeliverableId
+     *            the id of the late delivarable.
      * @param lateDeliverable
      *            the late deliverable for which parameters should be prepared.
      *
@@ -1147,10 +1176,13 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * @throws LateDeliverablesProcessingException
      *             if fails to get the required information of email.
      */
-    private void sendEmail(long resourceId, long deliverableId, LateDeliverable lateDeliverable)
+    private void sendEmail(long lateDeliverableId, LateDeliverable lateDeliverable)
         throws LateDeliverablesProcessingException {
+        long resourceId = lateDeliverable.getDeliverable().getResource();
+        long deliverableId = lateDeliverable.getDeliverable().getId();
+
         String recipient = getEmailAddressForResource(resourceId);
-        Map<String, String> params = prepareParameters(lateDeliverable);
+        Map<String, String> params = prepareParameters(lateDeliverableId, lateDeliverable);
 
         String subjectTemplateText;
 
@@ -1269,6 +1301,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
+     * @param lateDeliverableId
+     *            the id of the late deliverable
      * @param lateDeliverable
      *            the late deliverable for which parameters should be prepared.
      *
@@ -1278,7 +1312,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * @throws LateDeliverablesProcessingException
      *             if any error occurred.
      */
-    private Map<String, String> prepareParameters(LateDeliverable lateDeliverable)
+    private Map<String, String> prepareParameters(long lateDeliverableId, LateDeliverable lateDeliverable)
         throws LateDeliverablesProcessingException {
         // Get deliverable:
         Deliverable deliverable = lateDeliverable.getDeliverable();
@@ -1333,6 +1367,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         result.put("COMPENSATED_AND_REAL_DEADLINES_DIFFER", Boolean.toString(deadlinesDiffer));
         // Put compensated deadline string to the map:
         result.put("COMPENSATED_DEADLINE", timestampFormat.format(compensatedDeadline));
+        // Put late deliverable ID to the map:
+        result.put("LATE_DELIVERABLE_ID", String.valueOf(lateDeliverableId));
 
         return result;
     }
