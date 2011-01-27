@@ -6,9 +6,19 @@
     <!-- Override these in ../topcoder_global.properties -->
     <property name="javadoc.locale" value="en_US"/>
     <property name="javac.encoding" value="UTF-8"/>
-    <property name="libdir" value="../tcs/lib"/>
-    <property name="tcs_libdir" value="${libdir}/tcs"/>
-    <property name="ext_libdir" value="${libdir}/third_party"/>
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    <if>
+        <not>
+            <available file="../topcoder_global.properties"/>
+        </not>
+        <then>
+                  <property name="libdir" value="../tcs/lib"/>
+                <property name="tcs_libdir" value="${libdir}/tcs"/>
+                <property name="ext_libdir" value="${libdir}/third_party"/>
+        </then>
+    </if>
+ 
 
     <property name="cronos_libdir" value="${libdir}/cronos"/>
     <property name="target_libdir" value="${cronos_libdir}"/>
@@ -318,18 +328,18 @@
         </copy>
         <copy file="build_dist.xml" tofile="${build_tcsdistdir}/build.xml"/>
 
-        <mkdir dir="${dist_coverage}"/>
+    <!--      <mkdir dir="${dist_coverage}"/>
         <copy file="${testlogdir}/cobertura.ser" todir="${dist_docs}"/>
         <copy todir="${dist_coverage}">
             <fileset dir="${testlogdir}/coverage"/>
         </copy>
 
-        <mkdir dir="${dist_javadocs}"/>
+      <mkdir dir="${dist_javadocs}"/>
         <copy todir="${dist_javadocs}">
             <fileset dir="${javadocsdir}"/>
         </copy>
 
-        <antcall target="package_docs"/>
+        <antcall target="package_docs"/>-->
 
         <jar jarfile="${component.dist.jar}" basedir="${build_distdir}" manifest="${manifest_file}" excludes="*.jar"/>
 
