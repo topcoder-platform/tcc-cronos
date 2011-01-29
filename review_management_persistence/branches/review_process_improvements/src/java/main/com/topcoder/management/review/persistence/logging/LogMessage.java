@@ -1,38 +1,47 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence.logging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-
 /**
+ * <p>
  * Encapsulates the entry log data and generates consistent log messages.
+ * </p>
+ * <p>
+ * <strong> Thread Safety: </strong> This class is mutable and not thread safe.
+ * </p>
+ * @version 1.1
+ * @author saarixx, TCDEVELOPER
  */
 public class LogMessage {
-    /** project id for the log message */
+    /** project id for the log message. */
     private Long reviewId;
 
-    /** Operator doing the action */
+    /** Operator doing the action. */
     private String operator;
 
-    /** free text message to log */
+    /** free text message to log. */
     private String message;
 
-    /** exception to append to the log message */
+    /** exception to append to the log message. */
     private Throwable error;
 
-    /** generated log message */
+    /** generated log message. */
     private String logMessage = null;
 
     /**
      * Creates a log message. Any parameter can be null.
-     *
-     * @param reviewId the project id to log.
-     * @param operator the operator to log.
-     * @param message a free text message.
-     * @param error an exception to append to the log message.
+     * @param reviewId
+     *            the project id to log.
+     * @param operator
+     *            the operator to log.
+     * @param message
+     *            a free text message.
+     * @param error
+     *            an exception to append to the log message.
      */
     public LogMessage(Long reviewId, String operator, String message, Throwable error) {
         this.reviewId = reviewId;
@@ -45,11 +54,13 @@ public class LogMessage {
     }
 
     /**
-     * Creates a log message. Any parameter can be null
-     *
-     * @param reviewId the project id to log.
-     * @param operator the operator to log.
-     * @param message a free text message.
+     * Creates a log message. Any parameter can be null.
+     * @param reviewId
+     *            the project id to log.
+     * @param operator
+     *            the operator to log.
+     * @param message
+     *            a free text message.
      */
     public LogMessage(Long reviewId, String operator, String message) {
         this(reviewId, operator, message, null);
@@ -57,7 +68,6 @@ public class LogMessage {
 
     /**
      * Return the error cause.Can be null.
-     *
      * @return the error cause.
      */
     public Throwable getError() {
@@ -66,7 +76,6 @@ public class LogMessage {
 
     /**
      * Returns the message.
-     *
      * @return message
      */
     public String getMessage() {
@@ -75,7 +84,6 @@ public class LogMessage {
 
     /**
      * Returns the operator. Can be null.
-     *
      * @return the operator
      */
     public String getOperator() {
@@ -84,7 +92,6 @@ public class LogMessage {
 
     /**
      * Returns the review id, can be null.
-     *
      * @return project id
      */
     public Long getReviewId() {
@@ -93,19 +100,20 @@ public class LogMessage {
 
     /**
      * Generate the message need to be logged for this class.
-     *
      * @return The log message
      */
     public String getLogMessage() {
         if (logMessage == null) {
             StringBuffer buffer = new StringBuffer();
 
-            buffer.append("operator: ").append((operator == null) ? "Unknown" : operator).append("reviewId: ")
-                  .append((reviewId == null) ? "Unknown" : reviewId.toString()).append(" - ").append(message);
+            buffer.append("operator: ").append((operator == null) ? "Unknown" : operator).append(
+                    "reviewId: ").append((reviewId == null) ? "Unknown" : reviewId.toString())
+                    .append(" - ").append(message);
 
-            //This should be done while the Logging Wrapper 1.2 is used.
+            // This should be done while the Logging Wrapper 1.2 is used.
 
-            //When the LW 1.3 would be ready, it will be possible pass the exception directly to LW.   
+            // When the LW 1.3 would be ready, it will be possible pass the exception directly to
+            // LW.
             if (error != null) {
                 buffer.append('\n').append(getExceptionStackTrace(error));
             }
@@ -118,10 +126,9 @@ public class LogMessage {
 
     /**
      * Return the exception stack trace string.
-     *
-     * @param cause the exception to be recorded
-     *
-     * @return stack strace
+     * @param cause
+     *            the exception to be recorded
+     * @return stack trace
      */
     public static String getExceptionStackTrace(Throwable cause) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -133,7 +140,6 @@ public class LogMessage {
 
     /**
      * Override the toString method returns the log message.
-     *
      * @return logged message
      */
     public String toString() {
