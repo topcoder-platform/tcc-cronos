@@ -420,31 +420,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
     @Resource(name = "connectionName")
     private String connectionName;
 
-    /**
-     * <p>
-     * The mock specification submission file path (without file name).
-     * </p>
-     * <p>
-     * Can be modified with EJB container injection. Cannot be null or empty. Is used in
-     * {@link #scheduleSpecificationReview(TCSubject, long, Date)}.
-     * </p>
-     */
-    @Resource(name = "mockSubmissionFilePath")
-    private String mockSubmissionFilePath;
-
-    /**
-     * <p>
-     * The mock specification submission file name (without file path).
-     * </p>
-     * <p>
-     * Can be modified with EJB container injection. Cannot be null or empty. Is used in
-     * {@link #scheduleSpecificationReview(TCSubject, long, Date)}.
-     * </p>
-     */
-    @Resource(name = "mockSubmissionFileName")
-    private String mockSubmissionFileName;
-
-    /**
+	 /**
      * <p>
      * The text content of the mock specification submission.
      * </p>
@@ -579,9 +555,6 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
     @PostConstruct
     protected void initialize() {
         checkNull(projectServices, "projectServices");
-        checkNullOrEmpty(mockSubmissionFileName, "mockSubmissionFileName");
-        checkNullOrEmpty(mockSubmissionFilePath, "mockSubmissionFilePath");
-        checkNullOrEmpty(mockSubmissionContent, "mockSubmissionContent");
         checkNullOrEmpty(searchBundleManageNamespace, "searchBundleManageNamespace");
         checkNullOrEmpty(reviewManagerClassName, "reviewManagerClassName");
         checkNullOrEmpty(scorecardManagerClassName, "scorecardManagerClassName");
@@ -1192,6 +1165,15 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         SpecificationReview result = new SpecificationReview();
         result.setReview(reviews[0]);
         result.setScorecard(scorecard);
+        try {
+            if (!"".equals(reviews[0].getCreationUser())) {
+                result.setCreationUserHandle(userService.getUserHandle(Long.parseLong(reviews[0].getCreationUser())));
+            } else {
+                result.setCreationUserHandle("");
+            }
+        } catch (com.topcoder.service.user.UserServiceException e) {
+            result.setCreationUserHandle("");
+        }
         return result;
     }
 

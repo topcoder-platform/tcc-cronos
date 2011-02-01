@@ -53,7 +53,20 @@ public class SpecificationReview implements Serializable {
      * </p>
      */
     private Scorecard scorecard;
-
+    
+    /**
+     * <p>
+     * The creation user handle.
+     * </p>
+     * <p>
+     * Can be any value.
+     * </p>
+     * <p>
+     * Has getter and setter.
+     * </p>
+     */
+    private String creationUserHandle;
+    
     /**
      * Creates an instance of <code>SpecificationReview</code>.
      */
@@ -96,5 +109,23 @@ public class SpecificationReview implements Serializable {
      */
     public void setScorecard(Scorecard scorecard) {
         this.scorecard = scorecard;
+    }
+    
+    /**
+     * Get the creation user handle.
+     *
+     * @return the creation user handle.
+     */    
+    public String getCreationUserHandle() {
+        return this.creationUserHandle;
+    }
+    
+    /**
+     * Set the creation user handle.
+     *
+     * @param cuh the creation user handle.
+     */
+    public void setCreationUserHandle(String cuh) {
+        this.creationUserHandle = cuh;
     }
 }
