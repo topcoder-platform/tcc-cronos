@@ -4043,8 +4043,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if(forumId > 0 && createForum) {
                 for(com.topcoder.management.resource.Resource r : contest.getProjectResources()) {
+                    long roleId = r.getResourceRole().getId();
                     // add forum watch/permission for each copilot to create
-                    if (r.getResourceRole().getId() == ResourceRole.RESOURCE_ROLE_COPILOT_ID) {
+                    if (roleId == ResourceRole.RESOURCE_ROLE_COPILOT_ID || roleId == ResourceRole.RESOURCE_ROLE_OBSERVER_ID) {
                         createForumWatchAndRole(forumId, Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)));
                     }
                 }
@@ -4326,7 +4327,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws ContestServiceException fail to retrieve user-handle
      */
     private com.topcoder.management.resource.Resource[] createContestResources(TCSubject tcSubject,
-            SoftwareCompetition contest, long billingProjectId) throws ContestServiceException, UserServiceException {
+            SoftwareCompetition contest, long billingProjectId) throws ContestServiceException, UserServiceException, PermissionServiceException {
 
          // check if contest contains copilot resource
         com.topcoder.management.resource.Resource[] contestResources = contest.getResources();
@@ -4446,7 +4447,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             resources[2].setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
         }
 
-        return resources;
+        // add users has permission on cockpit project as observers
+        List<Permission> permissions = this.getPermissionsByProject(tcSubject, contest.getProjectHeader().getTcDirectProjectId());
+
+        List<com.topcoder.management.resource.Resource> allResources = new ArrayList<com.topcoder.management.resource.Resource>();
+        Set<Long> existingResourceIds = new HashSet<Long>();
+
+        for(com.topcoder.management.resource.Resource r : resources) {
+            allResources.add(r);
+            existingResourceIds.add(Long.valueOf(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)));
+        }
+
+        for (Permission p : permissions) {
+            if (!existingResourceIds.contains(p.getUserId())) {
+                com.topcoder.management.resource.Resource r = new com.topcoder.management.resource.Resource();
+                r.setResourceRole(observerRole);
+                r.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(p.getUserId()));
+                r.setProperty(RESOURCE_INFO_HANDLE, p.getUserHandle());
+                r.setProperty(RESOURCE_INFO_PAYMENT_STATUS, RESOURCE_INFO_PAYMENT_STATUS_NA);
+                r.setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
+                allResources.add(r);
+            }
+        }
+
+        return allResources.toArray(new com.topcoder.management.resource.Resource[allResources.size()]);
     }
 
     /**
