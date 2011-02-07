@@ -5960,9 +5960,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         if (paymentData instanceof TCPurhcaseOrderPaymentData) {
             TCPurhcaseOrderPaymentData po = (TCPurhcaseOrderPaymentData) paymentData;
 
-            sb.append("Client Name:").append(po.getClientName());
+            sb.append("Client Name:").append(po.getClientName().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
             sb.append("\n    ");
-            sb.append("Project Name:").append(po.getProjectName());
+            sb.append("Project Name:").append(po.getProjectName().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
             sb.append("\n    ");
             sb.append("PO #:").append(po.getPoNumber());
         } else if (paymentData instanceof CreditCardPaymentData) {
