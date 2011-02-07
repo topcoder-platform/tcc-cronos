@@ -11,8 +11,12 @@ import com.topcoder.service.permission.PermissionServiceException;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
+import com.topcoder.web.ejb.forums.ForumsUserComment;
+import com.topcoder.web.ejb.forums.ForumsSpecReviewComment;
+import com.topcoder.web.ejb.forums.ForumsException;
 
 import java.rmi.RemoteException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -148,7 +152,8 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 
 				Forums forums = lookupForumsEJB();
 
-				return forums.addSpecReviewComment(jiveCategoryId, tcSubject.getUserId(), questionId, comment);
+				return forums.addSpecReviewComment(jiveCategoryId, tcSubject.getUserId(), questionId,
+						convertToForumsUserComment(comment));
 			} catch (ContestServiceException cse) {
 
 				logger.error("An error occured while calling ContestServiceFacade: " + cse);
@@ -161,8 +166,11 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 			} catch (RemoteException re) {
 
 				logger.error("A remote error occured while calling forums EJB: " + re);
-				throw new SpecReviewCommentServiceException(
-						"A remote error occured while calling forums EJB: " + re);
+				throw new SpecReviewCommentServiceException("A remote error occured while calling forums EJB: " + re);
+			} catch (ForumsException fe) {
+
+				logger.error("An error occured in forums EJB: " + fe);
+				throw new SpecReviewCommentServiceException("An error occured in forums EJB: " + fe);
 			}
 		} else { // it's a Studio contest
 
@@ -213,7 +221,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 
 				Forums forums = lookupForumsEJB();
 
-				return forums.getSpecReviewComments(jiveCategoryId);
+				return convertFromForumsSpecReviewComments(forums.getSpecReviewComments(jiveCategoryId));
 			} catch (ContestServiceException cse) {
 
 				logger.error("An error occured while calling ContestServiceFacade: " + cse);
@@ -226,8 +234,11 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 			} catch (RemoteException re) {
 
 				logger.error("A remote error occured while calling forums EJB: " + re);
-				throw new SpecReviewCommentServiceException(
-						"A remote error occured while calling forums EJB: " + re);
+				throw new SpecReviewCommentServiceException("A remote error occured while calling forums EJB: " + re);
+			} catch (ForumsException fe) {
+
+				logger.error("An error occured in forums EJB: " + fe);
+				throw new SpecReviewCommentServiceException("An error occured in forums EJB: " + fe);
 			}
 		} else { // it's a Studio contest
 
@@ -290,7 +301,8 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 
 				Forums forums = lookupForumsEJB();
 
-				forums.updateSpecReviewComment(jiveCategoryId, tcSubject.getUserId(), questionId, comment);
+				forums.updateSpecReviewComment(jiveCategoryId, tcSubject.getUserId(), questionId,
+						convertToForumsUserComment(comment));
 			} catch (ContestServiceException cse) {
 
 				logger.error("An error occured while calling ContestServiceFacade: " + cse);
@@ -303,8 +315,11 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 			} catch (RemoteException re) {
 
 				logger.error("A remote error occured while calling forums EJB: " + re);
-				throw new SpecReviewCommentServiceException(
-						"A remote error occured while calling forums EJB: " + re);
+				throw new SpecReviewCommentServiceException("A remote error occured while calling forums EJB: " + re);
+			} catch (ForumsException fe) {
+
+				logger.error("An error occured in forums EJB: " + fe);
+				throw new SpecReviewCommentServiceException("An error occured in forums EJB: " + fe);
 			}
 		} else { // it's a Studio contest
 
@@ -377,6 +392,114 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 		}
 
 		return forums;
+	}
+
+	/**
+	 * <p>
+	 * Converts the given <code>comment</code> to an object of type
+	 * <code>ForumsUserComment</code>.
+	 * </p>
+	 * 
+	 * @param comment
+	 *            The <code>UserComment</code> to convert.
+	 * @return The <code>ForumsUserComment</code>.
+	 */
+	private ForumsUserComment convertToForumsUserComment(UserComment comment) {
+
+		ForumsUserComment forumsUserComment = new ForumsUserComment();
+
+		forumsUserComment.setCommentId(comment.getCommentId());
+		forumsUserComment.setCommentBy(comment.getCommentBy());
+		forumsUserComment.setCommentDate(comment.getCommentDate());
+		forumsUserComment.setComment(comment.getComment());
+		forumsUserComment.setCommentQuestionName(comment.getCommentQuestionName());
+
+		return forumsUserComment;
+	}
+
+	/**
+	 * <p>
+	 * Converts the given <code>forumsComment</code> to an object of type
+	 * <code>UserComment</code>.
+	 * </p>
+	 * 
+	 * @param forumsComment
+	 *            The <code>ForumsUserComment</code> to convert.
+	 * @return The <code>UserComment</code>.
+	 */
+	private UserComment convertFromForumsUserComment(ForumsUserComment forumsComment) {
+
+		UserComment comment = new UserComment();
+
+		comment.setCommentId(forumsComment.getCommentId());
+		comment.setCommentBy(forumsComment.getCommentBy());
+		comment.setCommentDate(forumsComment.getCommentDate());
+		comment.setComment(forumsComment.getComment());
+		comment.setCommentQuestionName(forumsComment.getCommentQuestionName());
+
+		return comment;
+	}
+
+	/**
+	 * <p>
+	 * Converts the given <code>forumsComments</code> list to a list of
+	 * <code>UserComment</code> objects.
+	 * </p>
+	 * 
+	 * @param forumsComments
+	 *            The List of <code>ForumsUserComment</code> objects.
+	 * @return The List of <code>UserComment</code> objects.
+	 */
+	private List<UserComment> convertFromForumsUserComments(List<ForumsUserComment> forumsComments) {
+
+		List<UserComment> comments = new LinkedList<UserComment>();
+
+		for (ForumsUserComment forumsComment : forumsComments) {
+
+			comments.add(convertFromForumsUserComment(forumsComment));
+		}
+
+		return comments;
+	}
+
+	/**
+	 * <p>
+	 * Converts the given <code>forumsComments</code> to a list of
+	 * <code>SpecReviewComment</code> objects.
+	 * </p>
+	 * 
+	 * @param forumsComments
+	 *            The list of <code>ForumsSpecReviewComment</code> objects.
+	 * @return The converted list of <code>SpecReviewComment</code> objects.
+	 */
+	private List<SpecReviewComment> convertFromForumsSpecReviewComments(List<ForumsSpecReviewComment> forumsComments) {
+
+		List<SpecReviewComment> comments = new LinkedList<SpecReviewComment>();
+		for (ForumsSpecReviewComment forumsComment : forumsComments) {
+
+			comments.add(convertFromForumsSpecReviewComment(forumsComment));
+		}
+
+		return comments;
+	}
+
+	/**
+	 * <p>
+	 * Converts the given <code>forumsComment</code> to a
+	 * <code>SpecReviewComment</code> object.
+	 * </p>
+	 * 
+	 * @param forumsComment
+	 *            The <code>ForumsSpecReviewComment</code> object to convert.
+	 * @return The converted <code>SpecReviewComment</code> object.
+	 */
+	private SpecReviewComment convertFromForumsSpecReviewComment(ForumsSpecReviewComment forumsComment) {
+
+		SpecReviewComment comment = new SpecReviewComment();
+		comment.setQuestionId(forumsComment.getQuestionId());
+		comment.setComments(convertFromForumsUserComments(forumsComment.getComments()));
+		
+		return comment;
 	}
 
 	/**
