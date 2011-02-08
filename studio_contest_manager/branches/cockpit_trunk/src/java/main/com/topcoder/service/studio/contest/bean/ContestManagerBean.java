@@ -5335,8 +5335,7 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
 
             StringBuilder sb = new StringBuilder();
 
-            sb.append("select NVL(pipe.id, -1) as id,  ");
-            sb.append("     c.contest_id, ");
+            sb.append("select  c.contest_id, ");
             sb.append("     c.name as cname, ");
             sb.append("     '1.0' as cversion, ");
             sb.append("     p.project_id as project_id, ");
@@ -5365,68 +5364,41 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("     on cpx.client_id = cl.client_id ");
             sb.append("     where cf.contest_id = c.contest_id and cf.property_id = 28), 'One Off') as client_name, ");
             sb.append("  ");
-            sb.append("     NVL(pipe.review_payment,0) as review_payment, ");
-            sb.append("     NVL(pipe.specification_review_payment,0) as specification_review_payment, ");
-            sb.append("  ");
-            sb.append("     (select sum(amount) ");
-            sb.append("         from contest_prize_xref as cp ");
-            sb.append("         join prize as p ");
-            sb.append("         on cp.prize_id = p.prize_id ");
-            sb.append("         and cp.contest_id = c.contest_id ");
-            sb.append("         and p.prize_type_id = 1 ");
-            sb.append("         and p.place >= 1 and p.place <= 5) as tot_prize, ");
-            sb.append("  ");
-            sb.append("     (select cast(cc.property_value as DECIMAL(10,2)) ");
-            sb.append("         from contest_config as cc ");
-            sb.append("         where cc.property_id = 24 ");
-            sb.append("         and cc.contest_id = c.contest_id) as dr, ");
+            sb.append("     case when c.contest_detailed_status_id = 8 then ");
+            sb.append("        (select m.amount * (select count(submission_id) from submission where contest_id = c.contest_id and award_milestone_prize ='t') ");
+            sb.append("             from contest cc   ");
+            sb.append("             left outer join contest_milestone_prize m on m.contest_milestone_prize_id = cc.contest_milestone_prize_id ");
+            sb.append("             where  cc.contest_id = c.contest_id)  + ");
+            sb.append("         (select (cast(nvl(property_value, '0') as DECIMAL(10,2))) ");
+            sb.append("             from contest_config cfg, contest cc   ");
+            sb.append("             where cfg.contest_id = cc.contest_id and property_id = 25 ");
+            sb.append("             and cfg.contest_id = c.contest_id) + ");
+            sb.append("         (select nvl(sum(amount), 0) from submission_prize_xref x, prize pz, submission s ");
+            sb.append("             where x.submission_id = s.submission_id and s.contest_id = c.contest_id and x.prize_id  = pz.prize_id) ");
+            sb.append("     else ");
+            sb.append("         (select nvl(sum(nvl(pr.amount, 0)), 0) ");
+            sb.append("             from contest_prize_xref x, prize pr, contest cc   ");
+            sb.append("             where x.prize_id = pr.prize_id and x.contest_id = cc.contest_id ");
+            sb.append("             and cc.contest_id = c.contest_id) + ");
+            sb.append("         (select (cast(nvl(property_value, '0') as DECIMAL(10,2))) ");
+            sb.append("             from contest_config cfg, contest cc   ");
+            sb.append("             where cfg.contest_id = cc.contest_id and property_id = 25 ");
+            sb.append("             and cfg.contest_id = c.contest_id) + ");
+            sb.append("         (select nvl( sum(cast(m.amount*number_of_submissions as DECIMAL(10,2))), 0) ");
+            sb.append("             from contest cc   ");
+            sb.append("             left outer join contest_milestone_prize m on m.contest_milestone_prize_id = cc.contest_milestone_prize_id ");
+            sb.append("             where  cc.contest_id = c.contest_id)  ");
+            sb.append("      end as tot_prize, ");
             sb.append("  ");
             sb.append("     (select cast(cc.property_value as DECIMAL(10,2)) ");
             sb.append("         from contest_config as cc ");
             sb.append("         where cc.property_id = 25 ");
             sb.append("         and cc.contest_id = c.contest_id) as contest_fee, ");
             sb.append("  ");
-  // not used now, and cause performance issue
- /*           sb.append("     (select cc.property_value ");
-            sb.append("         from contest_config as cc ");
-            sb.append("         where cc.property_id = 1 ");
-            sb.append("         and cc.contest_id = c.contest_id) as short_desc, ");
-            sb.append("     (select cc.property_value ");
-            sb.append("         from contest_config as cc ");
-            sb.append("         where cc.property_id = 13 ");
-            sb.append("         and cc.contest_id = c.contest_id) as long_desc, ");
-            sb.append("     (select cc.property_value ");
-            sb.append("         from contest_config as cc ");
-            sb.append("         where cc.property_id = 21 ");
-            sb.append("         and cc.contest_id = c.contest_id) as eligibility, ");
-            sb.append("  "); */
-            // use contest creator as manager for now
-    /*        sb.append("     NVL((select res.resource_name ");
-            sb.append("         from studio_competition_pipeline_resources as pipe_res ");
-            sb.append("         join resource as res ");
-            sb.append("         on pipe_res.resource_id = res.resource_id ");
-            sb.append("         and pipe_res.studio_competition_pipeline_info_id = pipe.id ");
-            sb.append("         join resource_role_lu as res_role ");
-            sb.append("         on res.resource_role_id = res_role.resource_role_id ");
-            sb.append("         and res_role.name = 'Manager'),'') as manager, ");   */
             sb.append("         (select u.handle from contest cc, user u ");
             sb.append("         where cc.create_user_id = u.user_id ");
             sb.append("         and cc.contest_id = c.contest_id) as manager, ");
             sb.append("  ");
-            sb.append("     ('Reviewer') as reviewer, ");
-            sb.append("  ");
-            sb.append("     ('Architect') as architect, ");
-            sb.append("  ");
-            sb.append("     ('Salesperson') as sales_person, ");
-            sb.append("      ");
-            sb.append("  ");
-            sb.append("     NVL(pipe.client_approval,0) as client_approval, ");
-            sb.append("     NVL(pipe.pricing_approval, 0) as pricing_approval, ");
-            sb.append("     NVL(pipe.has_wiki_specification, 0) as has_wiki_specification, ");
-            sb.append("     NVL(pipe.passed_spec_review, 0) as passed_spec_review, ");
-            sb.append("     NVL(pipe.has_dependent_competitions, 0) as has_dependent_competitions, ");
-            sb.append("     NVL(pipe.was_reposted, 0) as was_reposted, ");
-            sb.append("     NVL(pipe.notes, '') as notes, ");
             sb.append("     (select name  ");
             sb.append("         from permission_type  ");
             sb.append("         where permission_type_id= NVL( (select max( permission_type_id)  ");
@@ -5494,9 +5466,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("                 WHERE ttm.user_account_id = u.user_account_id and u.user_name = (select handle from user where user_id = :userId)  ");
             sb.append("        ) )  ");
             sb.append(" ) ");
-   /*          // exclude contests that has eligibility
-            sb.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce  ");
-            sb.append("           WHERE ce.is_studio = 1 AND ce.contest_id = c.contest_id) "); */
 
             // not show inactive or cancelled or terminated
             sb.append(" AND ");
