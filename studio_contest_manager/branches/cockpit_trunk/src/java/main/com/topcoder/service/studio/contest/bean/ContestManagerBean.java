@@ -5369,10 +5369,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("             from contest cc   ");
             sb.append("             left outer join contest_milestone_prize m on m.contest_milestone_prize_id = cc.contest_milestone_prize_id ");
             sb.append("             where  cc.contest_id = c.contest_id)  + ");
-            sb.append("         (select (cast(nvl(property_value, '0') as DECIMAL(10,2))) ");
-            sb.append("             from contest_config cfg, contest cc   ");
-            sb.append("             where cfg.contest_id = cc.contest_id and property_id = 25 ");
-            sb.append("             and cfg.contest_id = c.contest_id) + ");
             sb.append("         (select nvl(sum(amount), 0) from submission_prize_xref x, prize pz, submission s ");
             sb.append("             where x.submission_id = s.submission_id and s.contest_id = c.contest_id and x.prize_id  = pz.prize_id) ");
             sb.append("     else ");
@@ -5380,10 +5376,6 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("             from contest_prize_xref x, prize pr, contest cc   ");
             sb.append("             where x.prize_id = pr.prize_id and x.contest_id = cc.contest_id ");
             sb.append("             and cc.contest_id = c.contest_id) + ");
-            sb.append("         (select (cast(nvl(property_value, '0') as DECIMAL(10,2))) ");
-            sb.append("             from contest_config cfg, contest cc   ");
-            sb.append("             where cfg.contest_id = cc.contest_id and property_id = 25 ");
-            sb.append("             and cfg.contest_id = c.contest_id) + ");
             sb.append("         (select nvl( sum(cast(m.amount*number_of_submissions as DECIMAL(10,2))), 0) ");
             sb.append("             from contest cc   ");
             sb.append("             left outer join contest_milestone_prize m on m.contest_milestone_prize_id = cc.contest_milestone_prize_id ");
