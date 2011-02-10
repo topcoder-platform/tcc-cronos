@@ -5365,12 +5365,10 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("     where cf.contest_id = c.contest_id and cf.property_id = 28), 'One Off') as client_name, ");
             sb.append("  ");
             sb.append("     case when c.contest_detailed_status_id = 8 then ");
-            sb.append("        (select m.amount * (select count(submission_id) from submission where contest_id = c.contest_id and award_milestone_prize ='t') ");
-            sb.append("             from contest cc   ");
-            sb.append("             left outer join contest_milestone_prize m on m.contest_milestone_prize_id = cc.contest_milestone_prize_id ");
-            sb.append("             where  cc.contest_id = c.contest_id)  + ");
-            sb.append("         (select nvl(sum(amount), 0) from submission_prize_xref x, prize pz, submission s ");
-            sb.append("             where x.submission_id = s.submission_id and s.contest_id = c.contest_id and x.prize_id  = pz.prize_id) ");
+            sb.append("        (SELECT SUM(total_amount) ");
+            sb.append("         FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id ");
+            sb.append("         WHERE pmd.studio_contest_id = c.contest_id and installment_number = 1  ");
+            sb.append("           AND NOT pmd.payment_status_id IN (65, 69)) ");
             sb.append("     else ");
             sb.append("         (select nvl(sum(nvl(pr.amount, 0)), 0) ");
             sb.append("             from contest_prize_xref x, prize pr, contest cc   ");
