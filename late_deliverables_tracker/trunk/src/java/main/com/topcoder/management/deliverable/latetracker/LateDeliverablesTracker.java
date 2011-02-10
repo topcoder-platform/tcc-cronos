@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
 
@@ -487,7 +487,7 @@ public class LateDeliverablesTracker {
         long start = System.currentTimeMillis();
         final String method = CLASS_NAME + ".execute()";
         Helper.logEntrance(log, method, null, null);
-        Helper.logInfo(log, "Start to tracking at : " + new Date());
+        Helper.logInfo(log, "Start tracking at : " + new Date());
 
         try {
             List<LateDeliverable> lateDeliverables = lateDeliverablesRetriever.retrieve();

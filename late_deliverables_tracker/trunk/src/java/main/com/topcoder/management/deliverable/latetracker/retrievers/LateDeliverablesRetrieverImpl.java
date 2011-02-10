@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.retrievers;
 
@@ -661,9 +661,9 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
             if (latePhaseIds.isEmpty()) {
                 result = new ArrayList<LateDeliverable>();
             } else {
-                // log IDs of projects that have late deliverables
-                Helper.logInfo(log, "IDs of projects that have late deliverables : " + lateProjectIds);
-                Helper.logInfo(log, "IDs of phases with late deliverables : " + latePhaseIds);
+                // log IDs of projects that have late phases
+                Helper.logInfo(log, "IDs of projects that have late phases : " + lateProjectIds);
+                Helper.logInfo(log, "IDs of late phases : " + latePhaseIds);
 
                 Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
 
@@ -727,25 +727,6 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
             // MOVED in 1.1
             // Get project by its ID from the map
             Project project = projectById.get(projectId);
-
-            // MOVED in 1.1
-            // Filter out Final Fixes for non-winning submitters
-            if (deliverable.getId() == FINAL_FIX_ID) {
-                long resourceId = deliverable.getResource();
-                try {
-                    Resource resource = this.resourceManager.getResource(resourceId);
-                    if (resource != null) {
-                        Object userId = resource.getProperty("External Reference ID");
-                        Object winnerExtRefId = project.getProperty("Winner External Reference ID");
-                        if (!winnerExtRefId.equals(userId)) {
-                            continue;
-                        }
-                    }
-                } catch (ResourcePersistenceException e) {
-                    throw Helper.logException(log, signature, new LateDeliverablesRetrievalException(
-                        "Failed to retrieve resource", e));
-                }
-            }
 
             // MOVED in 1.1
             // Get phase ID from deliverable
