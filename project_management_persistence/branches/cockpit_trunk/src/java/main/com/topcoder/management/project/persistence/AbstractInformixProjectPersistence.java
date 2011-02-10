@@ -4966,7 +4966,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("             and project_id = c.project_id)/2) ");
             sb.append("     else  (SELECT SUM(total_amount)  ");
             sb.append("             FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  ");
-            sb.append("             WHERE pmd.component_project_id = c.project_id  ");
+            sb.append("             WHERE pmd.component_project_id = c.project_id and installment_number = 1 ");
             sb.append("                   AND NOT pmd.payment_status_id IN (65, 69))    ");
             sb.append("     end as tot_prize, ");
             sb.append("  ");
