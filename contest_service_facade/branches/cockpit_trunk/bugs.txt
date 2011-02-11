@@ -1,4 +1,4 @@
-The unit testing reveals following bugs with server side components:
+The  unit testing reveals following bugs with server side components:
 
 Submission Manager component
 
