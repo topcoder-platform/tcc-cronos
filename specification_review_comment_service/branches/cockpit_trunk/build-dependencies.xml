@@ -41,10 +41,10 @@
               value="${tcs_libdir}/${configuration_api.path}/${configuration_api.jar.name}"/>
 
     <property name="contest_service_facade_api.version" value="1.1.0"/>
-    <property name="contest_service_facade_api.jar.name" value="topcoder_contest_service_facade.jar"/>
-    <property name="contest_service_facade_api.path" value="topcoder_contest_service_facade"/>
+    <property name="contest_service_facade_api.jar.name" value="contest_service_facade.jar"/>
+    <property name="contest_service_facade_api.path" value="contest_service_facade"/>
     <property name="contest_service_facade_api.jar"
-              value="${tcs_libdir}/${contest_service_facade_api.path}/${contest_service_facade_api.version}/topcoder_contest_service_facade.jar"/>
+              value="${tcs_libdir}/${contest_service_facade_api.path}/${contest_service_facade_api.version}/contest_service_facade.jar"/>
 
     <property name="configuration_persistence.version" value="1.0"/>
     <property name="configuration_persistence.jar.name" value="configuration_persistence.jar"/>
