@@ -17,6 +17,7 @@
     <property name="PactsClientServices.jar" value="${cronos_libdir}/pacts/x.x.x/PactsClientServices.jar"/>
 
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.5/configuration_manager.jar"/>
     <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.1.0/jboss_login_module.jar"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
     <property name="user_group_manager.jar" value="${tcs_libdir}/user_group_manager/1.0.0/user_group_manager.jar"/>
@@ -44,6 +45,7 @@
         <pathelement location="${studio_contest_manager.jar}"/>
         <pathelement location="${contest_and_submission_entities.jar}"/>
         <pathelement location="${submission_manager.jar}"/>
+        <pathelement location="${configuration_manager.jar}"/>        
         <pathelement location="${PactsClientServices.jar}"/>
         <pathelement location="${forums.jar}"/>
         <pathelement location="${auditor.jar}"/>

@@ -101,12 +101,6 @@
             </env-entry>
 
             <env-entry>
-                <env-entry-name>documentBasePath</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.studio_service.documentBasePath@</env-entry-value>
-            </env-entry>
-
-            <env-entry>
                 <env-entry-name>additionalSubmissionPurchasePriceRatio</env-entry-name>
                 <env-entry-type>java.lang.Float</env-entry-type>
                 <env-entry-value>0.5</env-entry-value>
@@ -247,46 +241,13 @@ Trouble formatting your submission or want to learn more? &lt;a href="http://stu
                 <env-entry-name>contestPropertyViewableSubmissionsId</env-entry-name>
                 <env-entry-type>java.lang.Long</env-entry-type>
                 <env-entry-value>3</env-entry-value>
-            </env-entry>
-            <env-entry>
-                <env-entry-name>forumBeanProviderUrl</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.studio_service.forumBeanProviderUrl@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>autoPaymentsEnabled</env-entry-name>
-                <env-entry-type>java.lang.Boolean</env-entry-type>
-                <env-entry-value>@build-rep.studio_service.autoPaymentsEnabled@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>pactsServiceLocation</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.studio_service.pactsServiceLocation@</env-entry-value>
-            </env-entry> 
+            </env-entry>            
             <env-entry>
                 <env-entry-name>defaultMimeType</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>application/octet</env-entry-value>
-            </env-entry>
-            <!-- 
-		Added build.properties based submission site base url parameter.
-			@since Complex Submission Viewer Assembly - Part 2             	
-		-->
-		<env-entry>
-		    <env-entry-name>submissionSiteBaseUrl</env-entry-name>
-		    <env-entry-type>java.lang.String</env-entry-type>
-		    <env-entry-value>@build-rep.studio_service.submissionSiteBaseUrl@</env-entry-value>
-		</env-entry>
+            </env-entry>           
 
-		<!-- 
-		Added site file path.
-		@since Complex Submission Viewer Assembly - Part 2             	
-		-->
-		<env-entry>
-		    <env-entry-name>submissionSiteFilePath</env-entry-name>
-		    <env-entry-type>java.lang.String</env-entry-type>
-		    <env-entry-value>@build-rep.studio_service.submissionSiteFilePath@</env-entry-value>
-            </env-entry>
          <ejb-ref>
                 <ejb-ref-name>ejb/UserService</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
