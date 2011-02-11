@@ -828,14 +828,28 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
            // contest fee/ price sum
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id in (30, 31, 33, 35, 16, 38, 39)  "
-           + "        and project_id = p.project_id)  "
-           + "  +   "
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id = 16  "
-           + "        and project_id = p.project_id)/2 as contest_fee "
-
+           + "  case when p.project_status_id in (1, 2) then "
+           + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (30, 31, 33, 35, 16, 38, 39) "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "     nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 16 "
+           + "         and project_id = p.project_id)/2), 0) "
+           + " when p.project_status_id = 7 then "
+           + "   nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "         AND NOT pmd.payment_status_id IN (65, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (30, 31) "
+           + "         and project_id = p.project_id), 0) "
+           + "  else  nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "          AND NOT pmd.payment_status_id IN (65, 69)), 0) "
+           + " end  as contest_fee "
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -939,13 +953,28 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
 
            // contest fee/ price sum
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id in (30, 31, 33, 35, 16, 38, 39)  "
-           + "        and project_id = p.project_id)  "
-           + "  +   "
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id = 16  "
-           + "        and project_id = p.project_id)/2 as contest_fee "
+          + "  case when p.project_status_id in (1, 2) then "
+           + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (30, 31, 33, 35, 16, 38, 39) "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "     nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 16 "
+           + "         and project_id = p.project_id)/2), 0) "
+           + " when p.project_status_id = 7 then "
+           + "   nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "         AND NOT pmd.payment_status_id IN (65, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (30, 31) "
+           + "         and project_id = p.project_id), 0) "
+           + "  else  nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "          AND NOT pmd.payment_status_id IN (65, 69)), 0) "
+           + " end  as contest_fee "
 
     + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
     + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -4329,13 +4358,28 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
 
            // contest fee/ price sum
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id in (30, 31, 33, 35, 16, 38, 39)  "
-           + "        and project_id = p.project_id)  "
-           + "  +   "
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id = 16  "
-           + "        and project_id = p.project_id)/2 as contest_fee "
+           + "  case when p.project_status_id in (1, 2) then "
+           + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (30, 31, 33, 35, 16, 38, 39) "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "     nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 16 "
+           + "         and project_id = p.project_id)/2), 0) "
+           + " when p.project_status_id = 7 then "
+           + "   nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "         AND NOT pmd.payment_status_id IN (65, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (30, 31) "
+           + "         and project_id = p.project_id), 0) "
+           + "  else  nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "          AND NOT pmd.payment_status_id IN (65, 69)), 0) "
+           + " end  as contest_fee "
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -4964,13 +5008,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("       nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
             sb.append("             where project_info_type_id = 16 ");
             sb.append("             and project_id = c.project_id)/2), 0) ");
-            sb.append("     else  nvl((SELECT SUM(total_amount)  ");
+            sb.append("     when   c.project_status_id = 7 then ");
+            sb.append("       nvl((SELECT SUM(total_amount)  ");
             sb.append("             FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  ");
             sb.append("             WHERE pmd.component_project_id = c.project_id and installment_number = 1 ");
             sb.append("                   AND NOT pmd.payment_status_id IN (65, 69)),0 ) + ");
             sb.append("            nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
             sb.append("                     where project_info_type_id = 30 ");
             sb.append("                     and project_id = c.project_id), 0) ");
+            sb.append("     else  nvl((SELECT SUM(total_amount)  ");
+            sb.append("             FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  ");
+            sb.append("             WHERE pmd.component_project_id = c.project_id and installment_number = 1 ");
+            sb.append("                   AND NOT pmd.payment_status_id IN (65, 69)),0 ) ");
             sb.append("     end as tot_prize, ");
             sb.append("  ");
             sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 31 and project_id = c.project_id) as contest_fee, ");
