@@ -19,33 +19,6 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>contest_service_facade_log</env-entry-value>
             </env-entry>
-            <env-entry>
-                <env-entry-name>payPalApiUserName</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payPalApiUserName@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>payPalApiPassword</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payPalApiPassword@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>payPalApiSignature</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payPalApiSignature@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>payPalApiEnvironment</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payPalApiEnvironment@</env-entry-value>
-            </env-entry> 
-            
-            <!--  BUGR-1239 -->
-            <env-entry>
-                <env-entry-name>payFlowHostAddress</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payFlowHostAddress@</env-entry-value>
-            </env-entry>
             
             <!--  BUGR-3738 -->
             <env-entry>
@@ -59,37 +32,6 @@
                 <env-entry-name>uploadManagerOFKey</env-entry-name>
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>uploadManagerKey</env-entry-value>
-            </env-entry> 
-            
-            <env-entry>
-                <env-entry-name>payFlowUser</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payFlowUser@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>payFlowPartner</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payFlowPartner@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>payFlowVendor</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payFlowVendor@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>payFlowPassword</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.payFlowPassword@</env-entry-value>
-            </env-entry>
-			<env-entry>
-                <env-entry-name>forumBeanProviderUrl</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.forumBeanProviderUrl@</env-entry-value>
-            </env-entry> 
-            <env-entry>
-                <env-entry-name>createForum</env-entry-name>
-                <env-entry-type>java.lang.Boolean</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.createForum@</env-entry-value>
             </env-entry> 
 			
 			<!-- Cockpit Release Assembly for Receipts -->
@@ -194,23 +136,6 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>mock.zip</env-entry-value>
             </env-entry>
-            <env-entry>
-                <env-entry-name>mockSubmissionFilePath</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.mockSubmissionFilePath@</env-entry-value>
-            </env-entry>
-
-            <env-entry>
-                <env-entry-name>userBeanProviderUrl</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.userBeanProviderUrl@</env-entry-value>
-            </env-entry> 
-
-             <env-entry>
-                <env-entry-name>projectBeanProviderUrl</env-entry-name>
-                <env-entry-type>java.lang.String</env-entry-type>
-                <env-entry-value>@build-rep.contest_service_facade.projectBeanProviderUrl@</env-entry-value>
-            </env-entry> 
 
             <ejb-ref>
                 <ejb-ref-name>ejb/StudioService</ejb-ref-name>
