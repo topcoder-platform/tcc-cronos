@@ -32,6 +32,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import com.topcoder.security.TCSubject;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
 
 import org.jboss.logging.Logger;
 
@@ -41,7 +43,7 @@ import org.jboss.logging.Logger;
  * comments. To add, get and update the specification review comments this bean
  * calls the corresponding methods at forum EJB.
  * </p>
- * 
+ *
  * @author Shorty
  * @version 1.0
  */
@@ -49,6 +51,12 @@ import org.jboss.logging.Logger;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLocal, SpecReviewCommentServiceRemote {
+
+    /**
+     * Represents the default namespace for this stateless bean.
+     */
+    public static final String DEFAULT_NAMESPACE =
+        "com.topcoder.service.review.comment.specification.ejb.SpecReviewCommentServiceBean";
 
 	/**
 	 * <p>
@@ -62,22 +70,20 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	/**
 	 * <p>
 	 * A flag indicating whether or not to create the Specification Review
-	 * Comments. It's injected, used in the <code>add</code>, <code>get</code>
+	 * Comments. It's configured in config file, used in the <code>add</code>, <code>get</code>
 	 * and <code>update</code> methods.
 	 * </p>
 	 */
-	@Resource(name = "createComment")
 	private boolean createComment = false;
 
 	/**
 	 * <p>
 	 * This <code>forumBeanProviderUrl</code> is used in the JNDI context to get
 	 * the forum bean in the <code>add</code>, <code>get</code> and
-	 * <code>update</code> methods. It's injected, non-null and non-empty after
+	 * <code>update</code> methods. It's configured in config file, non-null and non-empty after
 	 * set.
 	 * </p>
 	 */
-	@Resource(name = "forumBeanProviderUrl")
 	private String forumBeanProviderUrl;
 
 	/**
@@ -92,6 +98,8 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * <p>
 	 * This initializes the logger
 	 * </p>
+	 *
+	 * @throws IllegalStateException If any problem to read configuration.
 	 */
 	@PostConstruct
 	public void init() {
@@ -99,6 +107,17 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 		if (logger == null) {
 			logger = Logger.getLogger(this.getClass());
 		}
+
+
+		ConfigManager configManager = ConfigManager.getInstance();
+
+        try {
+            createComment = Boolean.parseBoolean(configManager.getString(DEFAULT_NAMESPACE, "createComment"));
+
+            forumBeanProviderUrl = configManager.getString(DEFAULT_NAMESPACE, "forumBeanProviderUrl");
+        } catch (ConfigManagerException e) {
+            throw new IllegalStateException("Unable to read configuration from file.", e);
+        }
 
 		logger.debug("Initialized SpecRevieCommentServiceBean!");
 	}
@@ -108,7 +127,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Adds specification review comment for the given <code>questionId</code>
 	 * and <code>projectId</code>.
 	 * </p>
-	 * 
+	 *
 	 * @param tcSubject
 	 *            The <code>TCSubject</code> object.
 	 * @param projectId
@@ -122,7 +141,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * @param comment
 	 *            The <code>UserComment</code> object which should be added to
 	 *            the specification review forum.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             If the <code>tcSubject</code> or <code>comment</code> is
 	 *             null.
@@ -183,7 +202,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * <p>
 	 * Get specification review comments for the given <code>projectId</code>.
 	 * </p>
-	 * 
+	 *
 	 * @param tcSubject
 	 *            The <code>TCSubject</code> object.
 	 * @param projectId
@@ -194,7 +213,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * @return A list of specification review comments for the given
 	 *         <code>projectId</code>. An empty list is returned in case no
 	 *         message was found.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             If the <code>tcSubject</code> is null.
 	 * @throws SpecReviewCommentServiceException
@@ -252,13 +271,13 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Updates the specification review comment for the given
 	 * <code>questionId</code> and <code>projectId</code>.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * <strong>Note: </strong> The ID of the new comment must match the ID of
 	 * the old specification review comment which should be updated! Also the
 	 * question name of the comment should be the same!
 	 * </p>
-	 * 
+	 *
 	 * @param tcSubject
 	 *            The <code>TCSubject</code> object.
 	 * @param projectId
@@ -272,7 +291,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * @param comment
 	 *            The <code>UserComment</code> object which should be updated at
 	 *            the specification review forum.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             If the <code>tcSubject</code> or <code>comment</code> is
 	 *             null.
@@ -333,7 +352,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Jive category ID represents the ID of the forum category which is stored
 	 * in <em>jive</em> database for the given <code>projectId</code>.
 	 * </p>
-	 * 
+	 *
 	 * @param tcSubject
 	 *            The <code>TCSubject</code> object.
 	 * @param projectId
@@ -341,7 +360,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 *            retrieved.
 	 * @return The corresponding Jive category ID for the given
 	 *         <code>projectId</code>.
-	 * 
+	 *
 	 * @throws ContestServiceException
 	 *             If an error occurs when interacting with the service layer.
 	 * @throws PermissionServiceException
@@ -365,9 +384,9 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Looks up the forum EJB from the given environment entry
 	 * <code>forumBeanProviderUrl</code>.
 	 * </p>
-	 * 
+	 *
 	 * @return The forum EJB.
-	 * 
+	 *
 	 * @throws SpecReviewCommentServiceException
 	 *             If an error occurs while looking up the forum EJB.
 	 */
@@ -399,7 +418,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Converts the given <code>comment</code> to an object of type
 	 * <code>ForumsUserComment</code>.
 	 * </p>
-	 * 
+	 *
 	 * @param comment
 	 *            The <code>UserComment</code> to convert.
 	 * @return The <code>ForumsUserComment</code>.
@@ -422,7 +441,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Converts the given <code>forumsComment</code> to an object of type
 	 * <code>UserComment</code>.
 	 * </p>
-	 * 
+	 *
 	 * @param forumsComment
 	 *            The <code>ForumsUserComment</code> to convert.
 	 * @return The <code>UserComment</code>.
@@ -445,7 +464,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Converts the given <code>forumsComments</code> list to a list of
 	 * <code>UserComment</code> objects.
 	 * </p>
-	 * 
+	 *
 	 * @param forumsComments
 	 *            The List of <code>ForumsUserComment</code> objects.
 	 * @return The List of <code>UserComment</code> objects.
@@ -467,7 +486,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Converts the given <code>forumsComments</code> to a list of
 	 * <code>SpecReviewComment</code> objects.
 	 * </p>
-	 * 
+	 *
 	 * @param forumsComments
 	 *            The list of <code>ForumsSpecReviewComment</code> objects.
 	 * @return The converted list of <code>SpecReviewComment</code> objects.
@@ -488,7 +507,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * Converts the given <code>forumsComment</code> to a
 	 * <code>SpecReviewComment</code> object.
 	 * </p>
-	 * 
+	 *
 	 * @param forumsComment
 	 *            The <code>ForumsSpecReviewComment</code> object to convert.
 	 * @return The converted <code>SpecReviewComment</code> object.
@@ -498,7 +517,7 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 		SpecReviewComment comment = new SpecReviewComment();
 		comment.setQuestionId(forumsComment.getQuestionId());
 		comment.setComments(convertFromForumsUserComments(forumsComment.getComments()));
-		
+
 		return comment;
 	}
 
@@ -506,12 +525,12 @@ public class SpecReviewCommentServiceBean implements SpecReviewCommentServiceLoc
 	 * <p>
 	 * Checks if the given <code>obj</code> is null.
 	 * </p>
-	 * 
+	 *
 	 * @param obj
 	 *            The <code>Object</code> which to check for being null.
 	 * @param objName
 	 *            The name of the given <code>obj</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             If the given <code>obj</code> is null.
 	 */
