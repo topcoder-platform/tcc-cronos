@@ -747,9 +747,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
         Helper.assertObjectNotNull(comment.getCommentType(), "type of comment");
         assertCommentTypeValid(comment.getCommentType());
 
-        Helper.assertObjectNotNull(comment.getEvaluationType(), "type of evaluation");
-        assertEvaluationTypeValid(comment.getEvaluationType());
-
         Helper.assertObjectNotNull(comment.getComment(), "content of comment");
 
         if (comment.getExtraInfo() != null && !(comment.getExtraInfo() instanceof String)) {
@@ -1029,8 +1026,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
                 // insert the review comment into database
                 Object[] queryArgs =
                         new Object[] {newId, new Long(comment.getAuthor()), reviewId,
-                                new Long(comment.getCommentType().getId()),
-                                new Long(comment.getEvaluationType().getId()),
+                                new Long(comment.getCommentType().getId()), comment.getEvaluationType() != null ?
+                                new Long(comment.getEvaluationType().getId()) : null,
                                 comment.getComment(), comment.getExtraInfo(), indices[i], operator,
                                 operator};
                 LOGGER.log(Level.INFO, "insert record into " + REVIEW_COMMENT_TABLE
@@ -1131,8 +1128,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
                 // insert the review item comment into database
                 Object[] queryArgs =
                         new Object[] {newId, new Long(comment.getAuthor()), itemId,
-                                new Long(comment.getCommentType().getId()),
-                                new Long(comment.getEvaluationType().getId()),
+                                new Long(comment.getCommentType().getId()), comment.getEvaluationType() != null ? 
+                                new Long(comment.getEvaluationType().getId()) : null,
                                 comment.getComment(), comment.getExtraInfo(), indices[i], operator,
                                 operator};
 
@@ -1357,8 +1354,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
         // update the review comment in database
         Object[] queryArgs =
                 new Object[] {new Long(comment.getAuthor()),
-                        new Long(comment.getCommentType().getId()),
-                        new Long(comment.getEvaluationType().getId()), comment.getComment(),
+                        new Long(comment.getCommentType().getId()), comment.getEvaluationType() != null ?
+                        new Long(comment.getEvaluationType().getId()) : null, comment.getComment(),
                         comment.getExtraInfo(), index, operator, new Long(comment.getId())};
 
         LOGGER.log(Level.INFO, "update record in the " + REVIEW_COMMENT_TABLE + " table with id:"
@@ -1533,8 +1530,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
         // update the review item comment in database
         Object[] queryArgs =
                 new Object[] {new Long(comment.getAuthor()),
-                        new Long(comment.getCommentType().getId()),
-                        new Long(comment.getEvaluationType().getId()), comment.getComment(),
+                        new Long(comment.getCommentType().getId()), comment.getEvaluationType() != null ?
+                        new Long(comment.getEvaluationType().getId()) : null, comment.getComment(),
                         comment.getExtraInfo(), index, operator, new Long(comment.getId())};
         Helper.doDMLQuery(conn, UPDATE_REVIEW_ITEM_COMMENT_SQL, queryArgs);
     }
