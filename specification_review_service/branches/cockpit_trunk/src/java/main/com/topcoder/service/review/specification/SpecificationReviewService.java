@@ -130,4 +130,22 @@ public interface SpecificationReviewService {
      */
     public List<Long> getOpenSpecificationReviewPositions(TCSubject tcSubject)
         throws SpecificationReviewServiceException;
+    
+
+    /**
+     * Gets all specification reviews, including the scorecard structure as well as the
+     * review content. Returns a empty list if not found.
+     *
+     * @param tcSubject
+     *            the user making the request.
+     * @param projectId
+     *            the ID of the project.
+     * @return the list of the entity with scorecard and review (empty if not found).
+     * @throws IllegalArgumentException
+     *             if tcSubject is null or projectId is not positive.
+     * @throws SpecificationReviewServiceException
+     *             if there are any errors during this operation.
+     */
+    public List<SpecificationReview> getAllSpecificationReviews(TCSubject tcSubject, long projectId)
+        throws SpecificationReviewServiceException;
 }

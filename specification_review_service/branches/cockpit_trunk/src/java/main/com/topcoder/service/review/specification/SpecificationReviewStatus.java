@@ -19,8 +19,29 @@ public enum SpecificationReviewStatus {
      * Represents the &quot;waiting for fixes&quot; specification review status.
      */
     WAITING_FOR_FIXES,
+    
     /**
      * Represents the &quot;pending review&quot; specification review status.
      */
-    PENDING_REVIEW;
+    PENDING_REVIEW,
+    
+    /**
+     * Represents the &quot;no spec review&quot; specification review status.
+     */
+    NO_SPEC_REVIEW,
+    
+    /**
+     * Represents the &quot;waiting for submit&quot; specification review status.
+     */
+    WAITING_FOR_SUBMIT,
+    
+    /**
+     * Represents the &quot;finished&quot; specification review status.
+     */
+    FINISHED,
+    
+    /**
+     * Represents the &quot;unkown&quot; specification review status.
+     */
+    UNKOWN;    
 }

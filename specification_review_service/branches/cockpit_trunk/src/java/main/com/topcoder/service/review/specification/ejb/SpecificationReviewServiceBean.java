@@ -70,6 +70,7 @@ import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundleManager;
 import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.OrFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.TCSubject;
@@ -626,6 +627,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             throw new SpecificationReviewServiceConfigurationException("The " + name
                 + " should not be null.");
         }
+        
     }
 
     /**
@@ -1218,6 +1220,9 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
 
         FullProjectData fullProjectData = getFullProjectData(projectId);
 
+        int specSubmissionNum = 0, finishedSpecSubmissionNum = 0, scheduledSpecSubmissionNum = 0;
+        int specReviewNum = 0, finishedSpecReviewNum = 0, scheduledSpecReviewNum = 0;
+        
         // get current phase
         Phase[] allPhases = fullProjectData.getAllPhases();
         Phase currentPhase = null;
@@ -1225,24 +1230,49 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             String phaseStatusName = phase.getPhaseStatus().getName();
             if (PhaseStatus.OPEN.getName().equals(phaseStatusName)) {
                 currentPhase = phase;
-                break;
+            }
+            
+            String phaseTypeName = phase.getPhaseType().getName();
+            if (SPECIFICATION_SUBMISSION.equals(phaseTypeName)) {
+                specSubmissionNum++;
+                if (PhaseStatus.CLOSED.getName().equals(phaseStatusName)) {
+                    finishedSpecSubmissionNum++;
+                }
+                if (PhaseStatus.SCHEDULED.getName().equals(phaseStatusName)) {
+                    scheduledSpecSubmissionNum++;
+                }
+            }
+            if (SPECIFICATION_REVIEW.equals(phaseTypeName)) {
+                specReviewNum++;
+                if (PhaseStatus.CLOSED.getName().equals(phaseStatusName)) {
+                    finishedSpecReviewNum++;
+                }
+                if (PhaseStatus.SCHEDULED.getName().equals(phaseStatusName)) {
+                    scheduledSpecReviewNum++;
+                }
             }
         }
-
-        if (currentPhase == null) {
-            return null;
+        
+        String phaseTypeName = "";
+        if (currentPhase != null) {
+            phaseTypeName = currentPhase.getPhaseType().getName();
         }
-
-        // return depending on the phase type
-        String phaseTypeName = currentPhase.getPhaseType().getName();
-        if (SPECIFICATION_SUBMISSION.equals(phaseTypeName)) {
+        
+        if (specSubmissionNum == 0 && specReviewNum == 0) {
+            return SpecificationReviewStatus.NO_SPEC_REVIEW;
+        } else if (specSubmissionNum == scheduledSpecSubmissionNum) {
+            return SpecificationReviewStatus.NO_SPEC_REVIEW;
+        } else if (SPECIFICATION_SUBMISSION.equals(phaseTypeName) && finishedSpecSubmissionNum == 0) {
+            return SpecificationReviewStatus.WAITING_FOR_SUBMIT;
+        } else if (SPECIFICATION_SUBMISSION.equals(phaseTypeName) && finishedSpecSubmissionNum > 0) {
             return SpecificationReviewStatus.WAITING_FOR_FIXES;
-        }
-        if (SPECIFICATION_REVIEW.equals(phaseTypeName)) {
+        } else if (SPECIFICATION_REVIEW.equals(phaseTypeName)) {
             return SpecificationReviewStatus.PENDING_REVIEW;
+        } else if (specSubmissionNum == finishedSpecSubmissionNum && specReviewNum == finishedSpecReviewNum){
+            return SpecificationReviewStatus.FINISHED;
+        } else {
+            return SpecificationReviewStatus.UNKOWN;
         }
-
-        return null;
     }
 
     /**
@@ -1413,5 +1443,135 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         } catch (Exception e) {
             throw logException(new SpecificationReviewServiceException("Fails to add specification submitter role to user", e));
         }
+    }
+
+    /**
+     * Gets all specification reviews, including the scorecard structure as well
+     * as the
+     * review content. Returns a empty list if not found.
+     * 
+     * @param tcSubject
+     *            the user making the request.
+     * @param projectId
+     *            the ID of the project.
+     * @return the list of the entity with scorecard and review (empty if not
+     *         found).
+     * @throws IllegalArgumentException
+     *             if tcSubject is null or projectId is not positive.
+     * @throws SpecificationReviewServiceException
+     *             if there are any errors during this operation.
+     */
+    public List<SpecificationReview> getAllSpecificationReviews(
+            TCSubject tcSubject, long projectId)
+            throws SpecificationReviewServiceException {
+        assertNotNull(tcSubject, "tcSubject");
+        assertPositive(projectId, "projectId");
+
+        Connection connection = null;
+
+        List<SpecificationReview> results = new ArrayList<SpecificationReview>();
+        
+        long activeSubmissionStatusId;
+        long failedSubmissionStatusId;
+        long specificationSubmissionTypeId;
+
+        try {
+            connection = createConnection();
+            // Lookup ID of submission status with "Active" name
+            activeSubmissionStatusId = SubmissionStatusLookupUtility.lookUpId(connection, "Active");
+            
+            // Lookup ID of submission status with "Failed Review" name
+            failedSubmissionStatusId = SubmissionStatusLookupUtility.lookUpId(connection, "Failed Review");
+            
+            // Lookup ID of submission type with "Specification Submission" name
+            specificationSubmissionTypeId = SubmissionTypeLookupUtility.lookUpId(connection,
+                SPECIFICATION_SUBMISSION);
+        } catch (SQLException e) {
+            throw logException(new SpecificationReviewServiceException("Fails to look up id.", e));
+        } finally {
+            closeConnection(connection);
+        }
+
+        // create filter to search specification submission
+        Filter projectIdFilter = SubmissionFilterBuilder
+                .createProjectIdFilter(projectId);
+        
+        Filter activeSubmissionStatusFilter = SubmissionFilterBuilder
+                .createSubmissionStatusIdFilter(activeSubmissionStatusId);
+        Filter failedSubmissionStatusFilter = SubmissionFilterBuilder
+                .createSubmissionStatusIdFilter(failedSubmissionStatusId);
+        Filter submissionStatusFilter = new OrFilter(
+                Arrays.asList(new Filter[] { activeSubmissionStatusFilter,
+                        failedSubmissionStatusFilter }));
+
+        Filter specificationSubmissionTypeFilter = SubmissionFilterBuilder
+                .createSubmissionTypeIdFilter(specificationSubmissionTypeId);
+        
+        Filter fullSpecificationSubmissionFilter = new AndFilter(
+                Arrays.asList(new Filter[] { projectIdFilter,
+                        submissionStatusFilter,
+                        specificationSubmissionTypeFilter }));
+
+        Submission[] specSubmissions;
+        try {
+            synchronized (this) {
+                specSubmissions = uploadManager.searchSubmissions(fullSpecificationSubmissionFilter);
+            }
+        } catch (UploadPersistenceException e) {
+            throw logException(new SpecificationReviewServiceException(
+                "Fails to search specification submission.", e));
+        } catch (SearchBuilderException e) {
+            throw logException(new SpecificationReviewServiceException(
+                "Fails to search specification submission.", e));
+        }
+
+        // search review for the submission
+        List<Filter> reviewFilters = new ArrayList<Filter>();
+        
+        for (Submission specSubmission : specSubmissions) {
+            reviewFilters.add(new EqualToFilter("submission", specSubmission.getId()));
+        }
+        Filter reviewFilter = new OrFilter(reviewFilters);
+        
+        Review[] reviews;
+        try {
+            synchronized (this) {
+                reviews = reviewManager.searchReviews(reviewFilter, true);
+            }
+        } catch (ReviewManagementException e) {
+            throw logException(new SpecificationReviewServiceException(
+                    "Fails to search reviews.", e));
+        }
+        
+        for (Review review : reviews) {
+            // get scorecard
+            long scorecardId = review.getScorecard();
+            Scorecard scorecard;
+            try {
+                synchronized (this) {
+                    scorecard = scorecardManager.getScorecard(scorecardId);
+                }
+            } catch (PersistenceException e) {
+                throw logException(new SpecificationReviewServiceException("Fails to get scorecard with id:"
+                    + scorecardId, e));
+            }
+
+            SpecificationReview result = new SpecificationReview();
+            result.setReview(review);
+            result.setScorecard(scorecard);
+            try {
+                if (!"".equals(review.getCreationUser())) {
+                    result.setCreationUserHandle(userService.getUserHandle(Long.parseLong(review.getCreationUser())));
+                } else {
+                    result.setCreationUserHandle("");
+                }
+            } catch (com.topcoder.service.user.UserServiceException e) {
+                result.setCreationUserHandle("");
+            }     
+            
+            results.add(result);
+        }
+
+        return results;
     }
 }
