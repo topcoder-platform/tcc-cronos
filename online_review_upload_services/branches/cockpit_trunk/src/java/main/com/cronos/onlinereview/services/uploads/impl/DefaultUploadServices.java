@@ -660,75 +660,74 @@ public class DefaultUploadServices implements UploadServices {
             Phase[] phases = projectPhases.getAllPhases();
 
             // iterate over the phases to find if the "Specification Submission" phase
+            
+            Phase specPhase = null;
+            
             for (Phase phase : phases) {
                 if (phase.getPhaseType() != null
-                        && ("Specification Submission".equals(phase.getPhaseType().getName()))) {
-
-                    Helper.logFormat(LOG, Level.INFO, "Current status for the phase {0} is {1} of the project.",
-                            new Object[]{phase.getPhaseType().getName(), phase.getPhaseStatus().getName()});
-
-                    // check if specification submission phase is open
-                    if (PhaseStatus.OPEN.getName().equals(phase.getPhaseStatus().getName())) {
-                        // create a new Submission
-                        Submission submission = new Submission();
-
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Current status for the phase {0} is {1} of the project.", new Object[]{
-                                        phase.getPhaseType().getName(), phase.getPhaseStatus().getName()});
-
-                        // gets the SubmissionStatus with name "Active" and sets it to submission
-                        submission.setSubmissionStatus(getSubmissionStatusByName("Active"));
-
-                        // gets the SubmissionType with name "Specification Submission" and sets it to
-                        // submission
-                        submission.setSubmissionType(getSubmissionTypeByName("Specification Submission"));
-
-                        Upload upload = createUpload(projectId, resource.getId(), filename, "Submission");
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Upload created for the  projectId {0}, userId {1} with filename {2}.",
-                                new Object[]{projectId, userId, filename});
-
-                        String operator = String.valueOf(userId);
-                        // persist the upload
-                        managersProvider.getUploadManager().createUpload(upload, operator);
-
-                        Helper.logFormat(LOG, Level.INFO,
-                                "Created specification Upload for project {0}, user {1} with file name {2}.",
-                                new Object[]{projectId, userId, filename});
-
-                        // set the upload.
-                        submission.setUpload(upload);
-
-                        // persist the submission with uploadManager.createSubmission with the useId as
-                        // operator
-                        managersProvider.getUploadManager().createSubmission(submission, operator);
-
-                        Helper.logFormat(LOG, Level.INFO, "Created specification for project {0}, user {1}.",
-                                new Object[]{projectId, userId});
-
-                        // associate the submission with the submitter resource
-                        resource.addSubmission(submission.getId());
-
-                        Helper.logFormat(LOG, Level.INFO, "Added specification {0} to resource.",
-                                new Object[]{submission.getId()});
-
-                        // persist the resource using ResourceManager#updateResource
-                        managersProvider.getResourceManager().updateResource(resource, operator);
-
-                        Helper.logFormat(LOG, Level.INFO, "Updated resource using the operator {0}.",
-                                new Object[]{operator});
-
-                        return submission.getId();
-                    }
-                    // throw exception if phase 'Specification Submission' is not opened
-                    Helper.logFormat(LOG, Level.ERROR,
-                            "The 'Specification Submission' phase is not OPEN for phaseId {0}, userId {1}",
-                            new Object[]{phase.getId(), userId});
-                    throw new InvalidProjectPhaseException("The 'Specification Submission' phase is not OPEN",
-                            phase.getId());
+                        && ("Specification Submission".equals(phase.getPhaseType().getName()))
+                        && PhaseStatus.OPEN.getName().equals(phase.getPhaseStatus().getName())) {
+                    specPhase = phase;
+                    break;
                 }
-                // end of Specification Submission
-            } // end of for loop
+            }
+            
+            if (specPhase != null) {
+                Helper.logFormat(LOG, Level.INFO, "Current status for the phase {0} is {1} of the project.",
+                        new Object[]{specPhase.getPhaseType().getName(), specPhase.getPhaseStatus().getName()});
+
+                // create a new Submission
+                Submission submission = new Submission();
+
+                Helper.logFormat(LOG, Level.INFO,
+                        "Current status for the phase {0} is {1} of the project.", new Object[]{
+                                specPhase.getPhaseType().getName(), specPhase.getPhaseStatus().getName()});
+
+                // gets the SubmissionStatus with name "Active" and sets it to submission
+                submission.setSubmissionStatus(getSubmissionStatusByName("Active"));
+
+                // gets the SubmissionType with name "Specification Submission" and sets it to
+                // submission
+                submission.setSubmissionType(getSubmissionTypeByName("Specification Submission"));
+
+                Upload upload = createUpload(projectId, resource.getId(), filename, "Submission");
+                Helper.logFormat(LOG, Level.INFO,
+                        "Upload created for the  projectId {0}, userId {1} with filename {2}.",
+                        new Object[]{projectId, userId, filename});
+
+                String operator = String.valueOf(userId);
+                // persist the upload
+                managersProvider.getUploadManager().createUpload(upload, operator);
+
+                Helper.logFormat(LOG, Level.INFO,
+                        "Created specification Upload for project {0}, user {1} with file name {2}.",
+                        new Object[]{projectId, userId, filename});
+
+                // set the upload.
+                submission.setUpload(upload);
+
+                // persist the submission with uploadManager.createSubmission with the useId as
+                // operator
+                managersProvider.getUploadManager().createSubmission(submission, operator);
+
+                Helper.logFormat(LOG, Level.INFO, "Created specification for project {0}, user {1}.",
+                        new Object[]{projectId, userId});
+
+                // associate the submission with the submitter resource
+                resource.addSubmission(submission.getId());
+
+                Helper.logFormat(LOG, Level.INFO, "Added specification {0} to resource.",
+                        new Object[]{submission.getId()});
+
+                // persist the resource using ResourceManager#updateResource
+                managersProvider.getResourceManager().updateResource(resource, operator);
+
+                Helper.logFormat(LOG, Level.INFO, "Updated resource using the operator {0}.",
+                        new Object[]{operator});
+
+                return submission.getId();
+            }
+            
             Helper.logFormat(LOG, Level.ERROR, "Failed to upload specification for the projectId {0}, userId {1}",
                     new Object[]{project.getId(), userId});
             throw new InvalidProjectException("Failed to upload specification for the project", project.getId());
