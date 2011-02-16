@@ -523,60 +523,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private static final String TC_STAFF_ROLE = "TC Staff";
 
     /**
-     * Private constant specifying cost for first place.
-     *
-     * @since 1.0.3
-     */
-    private static final String FIRST_PLACE_COST_PROJECT_INFO_TYPE = "First Place Cost";
-
-    /**
-     * Private constant specifying cost for second place.
-     *
-     * @since 1.0.3
-     */
-    private static final String SECOND_PLACE_COST_PROJECT_INFO_TYPE = "Second Place Cost";
-
-    /**
-     * Private constant specifying cost for reliability bonus.
-     *
-     * @since 1.0.3
-     */
-    private static final String RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE = "Reliability Bonus Cost";
-
-    /**
-     * Private constant specifying cost for milestone bonus
-     *
-     * @since 1.0.3
-     */
-    private static final String MILESTONE_BONUS_COST_PROJECT_INFO_TYPE = "Milestone Bonus Cost";
-
-    /**
-     * Private constant specifying cost for admin fee.
-     */
-    private static final String ADMIN_FEE_PROJECT_INFO_TYPE = "Admin Fee";
-
-    /**
-     * Private constant specifying cost for review cost.
-     *
-     * @since 1.0.3
-     */
-    private static final String REVIEW_COST_PROJECT_INFO_TYPE = "Review Cost";
-
-    /**
-     * Private constant specifying cost for dr point cost.
-     *
-     * @since 1.0.3
-     */
-    private static final String DR_POINT_COST_PROJECT_INFO_TYPE = "DR points";
-
-     /**
-     * Private constant specifying cost for Spec Review Cost.
-     *
-     * @since 1.0.3
-     */
-    private static final String SPEC_REVIEW_COST_PROJECT_INFO_TYPE = "Spec Review Cost";
-
-    /**
      * The const string for configuration files.
      * @since 1.2.2
      */
@@ -3064,14 +3010,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
-            double totalFee =  Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(SECOND_PLACE_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(RELIABILITY_BONUS_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(MILESTONE_BONUS_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE))
-                + Double.parseDouble((String) contest.getProperty(SPEC_REVIEW_COST_PROJECT_INFO_TYPE));
+            double totalFee =  Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
+                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY))
+                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY))
+                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY))
+                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY))
+                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY))
+                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY))
+                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
+
+            // add copilot payment if exists
+            String copilotPayment = contest.getProperty(ProjectPropertyType.COPILOT_COST_PROJECT_PROPERTY_KEY);
+
+            if (copilotPayment != null && copilotPayment.trim().length() != 0) {
+
+                totalFee += Double.parseDouble(copilotPayment);
+            }
 
             double fee = totalFee - pastPayment;
 
