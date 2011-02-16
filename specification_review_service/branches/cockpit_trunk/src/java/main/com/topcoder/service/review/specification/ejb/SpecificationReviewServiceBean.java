@@ -1524,6 +1524,11 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             throw logException(new SpecificationReviewServiceException(
                 "Fails to search specification submission.", e));
         }
+        
+        if (specSubmissions.length == 0)
+        {
+            return results; 
+        }
 
         // search review for the submission
         List<Filter> reviewFilters = new ArrayList<Filter>();
@@ -1574,4 +1579,25 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
 
         return results;
     }
+    
+    /**
+     * resubmitSpecification a mock specification, for the given project by the given
+     * user. This method can be used for an initial submission or an updated submission.
+     *
+     * @param tcSubject
+     *            the user making the request.
+     * @param projectId
+     *            the ID of the project.
+     * @return the submission ID.
+     * @throws IllegalArgumentException
+     *             if tcSubject is null, or projectId is not positive, or content is null
+     *             or empty.
+     * @throws SpecificationReviewServiceException
+     *             if there are any errors during this operation.
+     */
+    public long resubmitSpecification(TCSubject tcSubject, long projectId)
+        throws SpecificationReviewServiceException {
+        // upload a mock submission
+        return submitSpecificationAsString(tcSubject, projectId, mockSubmissionContent.replace("[pj]", new Long(projectId).toString()));
+    }        
 }
