@@ -52,6 +52,7 @@ import com.topcoder.service.studio.ContestSpecificationsData;
 import com.topcoder.service.studio.ContestStatusData;
 import com.topcoder.service.studio.ContestTypeData;
 import com.topcoder.service.studio.DocumentNotFoundException;
+import com.topcoder.service.studio.FontsData;
 import com.topcoder.service.studio.IllegalArgumentWSException;
 import com.topcoder.service.studio.MediumData;
 import com.topcoder.service.studio.MilestonePrizeData;
@@ -60,6 +61,7 @@ import com.topcoder.service.studio.PersistenceException;
 import com.topcoder.service.studio.PrizeData;
 import com.topcoder.service.studio.StatusNotAllowedException;
 import com.topcoder.service.studio.StatusNotFoundException;
+import com.topcoder.service.studio.StockArtData;
 import com.topcoder.service.studio.StudioService;
 import com.topcoder.service.studio.SubmissionData;
 import com.topcoder.service.studio.SubmissionFeedback;
@@ -93,6 +95,8 @@ import com.topcoder.service.studio.contest.StudioCapacityData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.studio.submission.ContestResult;
+import com.topcoder.service.studio.submission.ExternalContent;
+import com.topcoder.service.studio.submission.ExternalContentProperty;
 import com.topcoder.service.studio.submission.MilestonePrize;
 import com.topcoder.service.studio.submission.PaymentStatus;
 import com.topcoder.service.studio.submission.Prize;
@@ -103,8 +107,6 @@ import com.topcoder.service.studio.submission.SubmissionManagerLocal;
 import com.topcoder.service.studio.submission.SubmissionPayment;
 import com.topcoder.service.studio.submission.SubmissionReview;
 import com.topcoder.service.user.UserService;
-import com.topcoder.util.config.ConfigManager;
-import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -244,12 +246,6 @@ import com.topcoder.web.ejb.pacts.BasePayment;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
 public class StudioServiceBean implements StudioService {
-
-    /**
-     * Represents the default namespace for this stateless bean.
-     */
-    private static final String DEFAULT_NAMESPACE = "com.topcoder.service.studio.ejb.StudioServiceBean";
-
     /**
      * Random generator.
      */
@@ -285,8 +281,6 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "logName")
     private String logName;
-
-
 
     /**
      * <p>
@@ -606,6 +600,7 @@ public class StudioServiceBean implements StudioService {
     /**
      * Represents the base path for the documents. Should be configured like /studiofiles/documents. [BUG TCCC-134]
      */
+    @Resource(name = "documentBasePath")
     private String documentBasePath = DEFAULT_DOCUMENT_BASE_PATH;
 
     /**
@@ -659,6 +654,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @since BUGR-456
      */
+    @Resource(name = "autoPaymentsEnabled")
     private boolean autoPaymentsEnabled = false;
 
     /**
@@ -666,6 +662,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @since BUGR-456
      */
+    @Resource(name = "pactsServiceLocation")
     private String pactsServiceLocation = "jnp://localhost:1099";
 
     /**
@@ -673,6 +670,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @since TCCC-287
      */
+    @Resource(name = "forumBeanProviderUrl")
     private String forumBeanProviderUrl;
 
     /**
@@ -680,6 +678,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @since Complex Submission Viewer Assembly - Part 2
      */
+    @Resource(name = "submissionSiteBaseUrl")
     private String submissionSiteBaseUrl;
 
     /**
@@ -687,6 +686,7 @@ public class StudioServiceBean implements StudioService {
      *
      * @since Complex Submission Viewer Assembly - Part 2
      */
+    @Resource(name = "submissionSiteFilePath")
     private String submissionSiteFilePath;
 
     /**
@@ -728,33 +728,14 @@ public class StudioServiceBean implements StudioService {
      * This is method is performed after the construction of the bean, at this point all the bean's resources will be
      * ready.
      * </p>
-     * @throws IllegalStateException If any configuration is invalid.
      */
     @PostConstruct
-    protected void init() {
+    private void init() {
         if (logName != null) {
             if (logName.trim().length() == 0) {
                 throw new IllegalStateException("logName parameter not supposed to be empty.");
             }
             log = LogManager.getLog(logName);
-        }
-
-        ConfigManager configManager = ConfigManager.getInstance();
-
-        try {
-            documentBasePath = configManager.getString(DEFAULT_NAMESPACE, "documentBasePath");
-
-            forumBeanProviderUrl = configManager.getString(DEFAULT_NAMESPACE, "forumBeanProviderUrl");
-
-            pactsServiceLocation = configManager.getString(DEFAULT_NAMESPACE, "pactsServiceLocation");
-
-            autoPaymentsEnabled = Boolean.parseBoolean(configManager.getString(DEFAULT_NAMESPACE, "autoPaymentsEnabled"));
-
-            submissionSiteBaseUrl = configManager.getString(DEFAULT_NAMESPACE, "submissionSiteBaseUrl");
-
-            submissionSiteFilePath = configManager.getString(DEFAULT_NAMESPACE, "submissionSiteFilePath");
-        } catch (ConfigManagerException e) {
-            throw new IllegalStateException("Unable to read configuration from file.", e);
         }
         // first record in logger
         logExit("init");
@@ -1066,7 +1047,7 @@ public class StudioServiceBean implements StudioService {
                             .getContestStatusId() != scheduledStatusId)) {
                 handleAuthorizationError("contest must be in draft status or unactive status.");
             }
-
+       
 
         // finally, upload document and return
         uploadedDocument = uploadDocument(uploadedDocument, c);
@@ -1447,9 +1428,6 @@ public class StudioServiceBean implements StudioService {
 
         addContestConfig(result, contestPropertyBillingProjectId, String.valueOf(data.getBillingProject()));
 
-        // default viewable submissions to true
-        addContestConfig(result, contestPropertyViewableSubmissionsId, "true");
-
         result.setContestId(data.getContestId());
         result.setName(data.getName());
         result.setProjectId(data.getProjectId());
@@ -1459,6 +1437,13 @@ public class StudioServiceBean implements StudioService {
         ContestStatus contestStatus = contestManager.getContestStatus(data.getDetailedStatusId());
         logInfo(MessageFormat.format("Retrieved contest status: desc:[{0}] name:[{1}] id:[{2}]", contestStatus
                 .getDescription(), contestStatus.getName(), contestStatus.getContestStatusId()));
+
+        result.setAllowStockArt(data.getAllowStockArt());
+        if (data.getAllowStockArt()) {
+            addContestConfig(result, contestPropertyViewableSubmissionsId, "false");
+        } else {
+            addContestConfig(result, contestPropertyViewableSubmissionsId, "true");
+        }
 
         result.setStatus(contestStatus);
         result.setStatusId(data.getStatusId());
@@ -1758,6 +1743,9 @@ public class StudioServiceBean implements StudioService {
             finalFileFormat = finalFileFormat.substring(0, finalFileFormat.length() - 1);
         }
         contestData.setFinalFileFormat(finalFileFormat);
+
+        // Since BUGR-4564
+        contestData.setAllowStockArt(contest.getAllowStockArt());
 
         // Since 1.0.3, Bug Fix 27074484-14
         for (ContestConfig cc : contest.getConfig()) {
@@ -2414,6 +2402,38 @@ public class StudioServiceBean implements StudioService {
                 sd.setSubmissionUrl(submissionSiteBaseUrl + "/" + sd.getSubmissionId() + "/" + submissionSiteFilePath);
             }
 
+            // set the submitter declaration data
+            // @since TCCC-2833
+            if (s.getDeclaration() != null) {
+                sd.setComment(s.getDeclaration().getComment());
+                if (s.getDeclaration().getHasExternalContent() && s.getDeclaration().getExternalContents() != null) {
+                    List<FontsData> fonts = new ArrayList<FontsData>();
+                    List<StockArtData> stockArts = new ArrayList<StockArtData>();
+                    for (ExternalContent externalContent : s.getDeclaration().getExternalContents()) {
+                        String contentType = externalContent.getContentType().getName();
+                        Map<String, String> values = new HashMap<String, String>();
+                        if (externalContent.getProperties() != null) {
+                            for (ExternalContentProperty property : externalContent.getProperties()) {
+                                values.put(property.getName(), property.getValue());
+                            }
+                        }
+                        if (contentType.equals("Fonts")) {
+                            FontsData font = new FontsData();
+                            font.setName(values.get("Name"));
+                            font.setUrl(values.get("Url"));
+                            fonts.add(font);
+                        } else if(contentType.equals("Stock Art")) {
+                            StockArtData stockArt = new StockArtData();
+                            stockArt.setName(values.get("Name"));
+                            stockArt.setUrl(values.get("Url"));
+                            stockArt.setFileNumber(values.get("FileNumber"));
+                            stockArts.add(stockArt);
+                        }
+                    }
+                    sd.setFonts(fonts);
+                    sd.setStockArts(stockArts);
+                }
+            }
             result.add(sd);
         }
 
@@ -2686,7 +2706,7 @@ public class StudioServiceBean implements StudioService {
             } else  {
                 logInfo("User is user.");
                 contests = contestManager.getContestsForUser(tcSubject.getUserId());
-            }
+            } 
 
             List<Long> forumIds = new ArrayList<Long>();
             for (Contest contest : contests) {

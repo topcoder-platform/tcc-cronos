@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -39,7 +40,7 @@ import java.io.Serializable;
 @XmlType(name = "submissionData", propOrder = { "submissionId", "submitterId", "contestId", "submittedDate",
         "submissionContent", "passedScreening", "placement", "paidFor", "price", "markedForPurchase", "rank",
         "removed", "feedbackText", "feedbackThumb", "submissionUrl", "artifactCount", "userRank",
-        "submissionType", "awardMilestonePrize"})
+        "submissionType", "awardMilestonePrize", "comment", "fonts", "stockArts"})
 public class SubmissionData implements Serializable {
 
     /**
@@ -190,6 +191,27 @@ public class SubmissionData implements Serializable {
      * @since 1.4
      */
     private Boolean awardMilestonePrize = Boolean.FALSE;
+
+     /**
+      * Represents the submitter comment.
+      *
+      * @since TCCC-2833
+     */
+    private String comment;
+
+     /**
+      * Represents the fonts.
+      *
+      * @since TCCC-2833
+     */
+    private List<FontsData> fonts;
+
+     /**
+      * Represents the stock arts. 
+      *
+      * @since TCCC-2833
+     */
+    private List<StockArtData> stockArts;
 
     /**
      * <p>
@@ -639,4 +661,60 @@ public class SubmissionData implements Serializable {
     public void setAwardMilestonePrize(Boolean awardMilestonePrize) {
         this.awardMilestonePrize = awardMilestonePrize;
     }
+
+    /**
+     * Gets the comment.
+     *
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * Sets the comment.
+     *
+     * @param omment the comemnt
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+   
+    /**
+     * Gets the fonts.
+     *
+     * @return the font list
+     */
+    public List<FontsData> getFonts() {
+        return fonts;
+    }
+
+    /**
+     * Sets the fonts.
+     *
+     * @param fonts the font list.
+     */
+    public void setFonts(List<FontsData> fonts) {
+        this.fonts = fonts;
+    }
+
+    /**
+     * Gets the stock arts.
+     *
+     * @return the stock art list
+     */
+
+    public List<StockArtData> getStockArts() {
+        return stockArts;
+    }
+
+    /**
+     * Sets the stock arts.
+     *
+     * @param fonts the stock art list.
+     */
+    public void setStockArts(List<StockArtData> stockArts) {
+        this.stockArts = stockArts;
+    }
 }
+

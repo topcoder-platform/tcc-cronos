@@ -57,7 +57,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
         "forumPostCount", "forumId", "media", "drPoints", "contestAdministrationFee", "launchImmediately",
         "requiresPreviewImage", "requiresPreviewFile", "maximumSubmissions", "numberOfRegistrants",
         "payments", "tcDirectProjectName", "billingProject", "multiRound", "milestonePrizeData", "multiRoundData",
-        "generalInfo", "specifications", "nonWinningSubmissionsPurchased", "contestRegistrations"})
+        "generalInfo", "specifications", "nonWinningSubmissionsPurchased", "contestRegistrations", "allowStockArt"})
 public class ContestData implements Serializable {
     /**
      * Default serial version id.
@@ -396,6 +396,12 @@ public class ContestData implements Serializable {
 	 * @since TCCC-1879
      */
     private Set<ContestRegistrationData> contestRegistrations = new HashSet<ContestRegistrationData>();	
+
+    /**
+     * Represents whether the contest allow stock art.
+     * @since BUGR-4564
+     */
+    private boolean allowStockArt;
 
     /**
      * <p>
@@ -1369,4 +1375,24 @@ public class ContestData implements Serializable {
     public Set<ContestRegistrationData> getContestRegistrations() {
         return contestRegistrations;
     }	
+
+    /**
+     * Returns allowStockArt.
+     *
+     * @return the flag indicates whether the contes allow stock art.
+     * @since BUGR-4564
+     */
+    public boolean getAllowStockArt() {
+        return allowStockArt;
+    }
+
+    /**
+     * Sets allowStockArt.
+     *
+     * @param allowStockArt the flag indicates whether the contest allow stock art.
+     * @since BUGR-4564.
+     */
+    public void setAllowStockArt(boolean allowStockArt) {
+        this.allowStockArt = allowStockArt;
+    }
 }
