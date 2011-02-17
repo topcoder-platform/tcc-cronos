@@ -133,5 +133,7 @@
       <many-to-many column="resource_id"
         class="com.topcoder.service.studio.contest.ContestResource" />
     </set>
+
+    <property name="allowStockArt" column="allow_stock_art"/>
   </class>
 </hibernate-mapping>

@@ -186,6 +186,11 @@ public class Submission implements Serializable {
     private Set<MilestonePrize> milestonePrizes = new TreeSet<MilestonePrize>();
 
     /**
+     * Declaration.
+     */
+    private SubmissionDeclaration declaration;
+
+    /**
      * Default constructor.
      */
     public Submission() {
@@ -744,5 +749,23 @@ public class Submission implements Serializable {
      */
     public void setMilestonePrizes(Set<MilestonePrize> milestonePrizes) {
         this.milestonePrizes = milestonePrizes;
+    }
+    
+    /**
+     * Getter for submission declaration.
+     *
+     * @return submission declaration
+     */
+    public SubmissionDeclaration getDeclaration() {
+        return declaration;
+    }
+
+    /**
+     * Setter for submission declaration.
+     *
+     * @param declaration submission declaration to set
+     */
+    public void setDeclaration(SubmissionDeclaration declaration) {
+        this.declaration = declaration;
     }
 }

@@ -207,6 +207,12 @@ public class Contest implements Serializable {
     private Set<ContestResource> resources = new HashSet<ContestResource>();
 
     /**
+     * Represents whether the contest allow stock art.
+     * @since BUGR-4564
+     */
+    private boolean allowStockArt;
+
+    /**
      * Default constructor.
      */
     public Contest() {
@@ -848,6 +854,26 @@ public class Contest implements Serializable {
      */
     public void setResources(Set<ContestResource> resources) {
         this.resources = resources;
+    }
+
+    /**
+     * Returns allowStockArt.
+     *
+     * @return the flag indicates whether the contes allow stock art.
+     * @since BUGR-4564
+     */
+    public boolean getAllowStockArt() {
+        return allowStockArt;
+    }
+
+    /**
+     * Sets allowStockArt.
+     *
+     * @param allowStockArt the flag indicates whether the contest allow stock art.
+     * @since BUGR-4564.
+     */
+    public void setAllowStockArt(boolean allowStockArt) {
+        this.allowStockArt = allowStockArt;
     }
 
     /**

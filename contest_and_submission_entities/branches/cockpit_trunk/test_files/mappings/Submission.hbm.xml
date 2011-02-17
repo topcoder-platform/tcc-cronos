@@ -114,5 +114,6 @@
         class="com.topcoder.service.studio.submission.MilestonePrize" />
     </set>
 
+    <one-to-one name="declaration" class="SubmissionDeclaration" cascade="all" property-ref="submission"/>
   </class>
 </hibernate-mapping>
