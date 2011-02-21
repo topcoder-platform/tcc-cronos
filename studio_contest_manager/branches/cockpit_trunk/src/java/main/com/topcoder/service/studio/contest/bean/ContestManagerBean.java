@@ -3306,7 +3306,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " nvl((SELECT SUM(total_amount)  "
                     + "        FROM informixoltp_payment pm INNER JOIN informixoltp_payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
                     + "         WHERE pmd.studio_contest_id = c.contest_id and installment_number = 1 "
-                    + "         AND NOT pmd.payment_status_id IN (65, 69)), 0)  + "
+                    + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0)  + "
+                    + " NVL((SELECT sum(pmd2.total_amount)  "
+                    + "        FROM  informixoltp_payment_detail pmd,   "
+                    + "              informixoltp_payment pm LEFT OUTER JOIN informixoltp_payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+                    + "              informixoltp_payment pm2  "
+                    + "         WHERE pmd.studio_contest_id = c.contest_id and pmd2.installment_number = 1  "
+                    + "         and pm.most_recent_detail_id = pmd.payment_detail_id   "
+                    + "         and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+                    + "         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0)  + "
                     + " nvl((select (cast(nvl(property_value, '0') as DECIMAL(10,2))) "
                     + "         from contest_config cfg, contest cc   "
                     + "         where cfg.contest_id = cc.contest_id and property_id = 24 "
@@ -3468,7 +3476,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " nvl((SELECT SUM(total_amount)  "
                     + "        FROM informixoltp_payment pm INNER JOIN informixoltp_payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
                     + "         WHERE pmd.studio_contest_id = c.contest_id and installment_number = 1 "
-                    + "         AND NOT pmd.payment_status_id IN (65, 69)), 0)  + "
+                    + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0)  + "
+                    + " NVL((SELECT sum(pmd2.total_amount)  "
+                    + "        FROM  informixoltp_payment_detail pmd,   "
+                    + "              informixoltp_payment pm LEFT OUTER JOIN informixoltp_payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+                    + "              informixoltp_payment pm2  "
+                    + "         WHERE pmd.studio_contest_id = c.contest_id and pmd2.installment_number = 1  "
+                    + "         and pm.most_recent_detail_id = pmd.payment_detail_id   "
+                    + "         and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+                    + "         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0)  + "
                     + " nvl((select (cast(nvl(property_value, '0') as DECIMAL(10,2))) "
                     + "         from contest_config cfg, contest cc   "
                     + "         where cfg.contest_id = cc.contest_id and property_id = 24 "
@@ -3632,7 +3648,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
                     + " nvl((SELECT SUM(total_amount)  "
                     + "        FROM informixoltp_payment pm INNER JOIN informixoltp_payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
                     + "         WHERE pmd.studio_contest_id = c.contest_id and installment_number = 1 "
-                    + "         AND NOT pmd.payment_status_id IN (65, 69)), 0)  + "
+                    + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0)  + "
+                    + " NVL((SELECT sum(pmd2.total_amount)  "
+                    + "        FROM  informixoltp_payment_detail pmd,   "
+                    + "              informixoltp_payment pm LEFT OUTER JOIN informixoltp_payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+                    + "              informixoltp_payment pm2  "
+                    + "         WHERE pmd.studio_contest_id = c.contest_id and pmd2.installment_number = 1  "
+                    + "         and pm.most_recent_detail_id = pmd.payment_detail_id   "
+                    + "         and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+                    + "         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0)  + "
                     + " nvl((select (cast(nvl(property_value, '0') as DECIMAL(10,2))) "
                     + "         from contest_config cfg, contest cc   "
                     + "         where cfg.contest_id = cc.contest_id and property_id = 24 "
@@ -5427,7 +5451,15 @@ public class ContestManagerBean implements ContestManagerRemote, ContestManagerL
             sb.append("        nvl((SELECT SUM(total_amount) ");
             sb.append("             FROM informixoltp_payment pm INNER JOIN informixoltp_payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id ");
             sb.append("             WHERE pmd.studio_contest_id = c.contest_id and installment_number = 1  ");
-            sb.append("             AND NOT pmd.payment_status_id IN (65, 69)), 0) + ");
+            sb.append("             AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) + ");
+            sb.append("         NVL((SELECT sum(pmd2.total_amount)  ");
+            sb.append("                FROM  informixoltp_payment_detail pmd,   ");
+            sb.append("                      informixoltp_payment pm LEFT OUTER JOIN informixoltp_payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  ");
+            sb.append("                      informixoltp_payment pm2  ");
+            sb.append("                 WHERE pmd.studio_contest_id = c.contest_id and pmd2.installment_number = 1  ");
+            sb.append("                 and pm.most_recent_detail_id = pmd.payment_detail_id   ");
+            sb.append("                 and pm2.most_recent_detail_id = pmd2.payment_detail_id  ");
+            sb.append("                 AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0)  + ");
             sb.append("        nvl((select (cast(nvl(property_value, '0') as DECIMAL(10,2))) ");
             sb.append("             from contest_config cfg, contest cc   ");
             sb.append("             where cfg.contest_id = cc.contest_id and property_id = 24 ");
