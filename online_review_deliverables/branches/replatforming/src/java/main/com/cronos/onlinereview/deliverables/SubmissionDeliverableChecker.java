@@ -20,20 +20,34 @@ import com.topcoder.management.deliverable.Deliverable;
  * This class is immutable.
  * </p>
  *
+ * <p>
+ * Version 1.0.1 (Milestone Support Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated the checker to distinguish submission types.</li>
+ *   </ol>
+ * </p>
+ *
  * @author aubergineanode
- * @author kr00tki
- * @version 1.0
+ * @author kr00tki, TCSDEVELOPER
+ * @version 1.0.1
  */
 public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableChecker {
+
+    /**
+     * <p>A <code>long</code> providing the submission type ID.</p>
+     */
+    private long submissionTypeId;
 
     /**
      * Creates a new SubmissionDeliverableChecker.
      *
      * @param connectionFactory The connection factory to use for getting connections to the database.
+     * @param submissionTypeId a <code>long</code> providing the submission type ID.
      * @throws IllegalArgumentException If connectionFactory is null.
      */
-    public SubmissionDeliverableChecker(DBConnectionFactory connectionFactory) {
+    public SubmissionDeliverableChecker(DBConnectionFactory connectionFactory, long submissionTypeId) {
         super(connectionFactory);
+        this.submissionTypeId = submissionTypeId;
     }
 
     /**
@@ -41,11 +55,14 @@ public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableCheck
      *
      * @param connectionFactory The connection factory to use for getting connections to the database.
      * @param connectionName The name of the connection to use. Can be null.
+     * @param submissionTypeId a <code>long</code> providing the submission type ID.
      * @throws IllegalArgumentException If the connectionFactory is <code>null</code> or the connectionName
      * is the empty string.
      */
-    public SubmissionDeliverableChecker(DBConnectionFactory connectionFactory, String connectionName) {
+    public SubmissionDeliverableChecker(DBConnectionFactory connectionFactory, String connectionName, 
+                                        long submissionTypeId) {
         super(connectionFactory, connectionName);
+        this.submissionTypeId = submissionTypeId;
     }
 
     /**
@@ -61,6 +78,7 @@ public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableCheck
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement) throws SQLException {
         statement.setLong(1, deliverable.getResource());
+        statement.setLong(2, this.submissionTypeId);
     }
 
     /**
@@ -75,7 +93,9 @@ public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableCheck
         return "SELECT MAX(upload.modify_date) FROM upload "
                 + "INNER JOIN upload_type_lu ON upload.upload_type_id = upload_type_lu.upload_type_id "
                 + "INNER JOIN upload_status_lu ON upload.upload_status_id = upload_status_lu.upload_status_id "
+                + "LEFT JOIN upload_submission ON upload_submission.upload_id = upload.upload_id "
+                + "LEFT JOIN submission ON upload_submission.submission_id = submission.submission_id "
                 + "WHERE upload_type_lu.name = 'Submission' AND upload_status_lu.name = 'Active' "
-                + "AND upload.resource_id = ?";
+                + "AND upload.resource_id = ? AND submission.submission_type_id = ?";
     }
 }
