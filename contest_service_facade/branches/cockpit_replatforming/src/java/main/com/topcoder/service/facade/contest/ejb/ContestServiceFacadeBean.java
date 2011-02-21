@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest.ejb;
 
@@ -105,6 +105,7 @@ import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.Prize;
+import com.topcoder.management.project.PrizeType;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPropertyType;
@@ -376,8 +377,18 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
  *     <li>Updated {@link #updateProjectPermissions(TCSubject, List<ProjectPermission>, long)} method.</li>
  *   </ol>
  * </p>
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
- * @version 1.6.7
+ *
+ * <p>
+ * Version 1.6.8 (TC Direct Replatforming Release 2) Change notes:
+ * <ul>
+ * <li>Added {@link #MILESTONE_PRIZE_TYPE_ID} field.</li>
+ * <li>Updated {@link #processContestSaleInternal(TCSubject, SoftwareCompetition, PaymentData, Date)} method to
+ * process milestone prizes for software contest and specification review cost for studio contest.</li>
+ * </ul>
+ * </p>
+ *
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSASSEMBER
+ * @version 1.6.8
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -707,6 +718,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private final static List<String> FINISHED_STATUS = Arrays.asList("Completed", "No Winner Chosen",
         "Insufficient Submissions - ReRun Possible", "Insufficient Submissions", "Abandoned","Inactive - Removed", "Cancelled - Failed Review",
         "Cancelled - Failed Screening", "Cancelled - Zero Submissions", "Cancelled - Winner Unresponsive", "Cancelled - Zero Registrations" );
+
+    /**
+     * Represents the milestone prize type id.
+     *
+     * @since 1.6.8
+     */
+    private final static long MILESTONE_PRIZE_TYPE_ID = 14L;
 
     /**
      * <p>
@@ -3178,7 +3196,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
 
             double fee = 0;
-            if (competition.getProjectHeader().getProjectStudioSpecification() == null) {
+            if (competition.getProjectHeader().getProjectCategory().getProjectType().getId() != ProjectType.STUDIO.getId()) {
                 // software competition
                 fee = Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
                     + Double.parseDouble((String) contest.getProperty(FIRST_PLACE_COST_PROJECT_INFO_TYPE))
@@ -3188,14 +3206,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     + Double.parseDouble((String) contest.getProperty(REVIEW_COST_PROJECT_INFO_TYPE))
                     + Double.parseDouble((String) contest.getProperty(DR_POINT_COST_PROJECT_INFO_TYPE))
                     + Double.parseDouble((String) contest.getProperty(SPEC_REVIEW_COST_PROJECT_INFO_TYPE));
+                // milestone prizes
+                for (Prize prize : competition.getProjectHeader().getPrizes()) {
+                    if (prize.getPrizeType().getId() == MILESTONE_PRIZE_TYPE_ID) {
+                        fee += prize.getPrizeAmount() * prize.getNumberOfSubmissions();
+                    }
+                }
             } else {
                 // studio competition
-                fee = Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE));
+                fee = Double.parseDouble((String) contest.getProperty(ADMIN_FEE_PROJECT_INFO_TYPE))
+                    + Double.parseDouble((String) contest.getProperty(SPEC_REVIEW_COST_PROJECT_INFO_TYPE));
                 for (Prize prize : competition.getProjectHeader().getPrizes()) {
                     fee = fee + prize.getPrizeAmount() * prize.getNumberOfSubmissions();
                 }
             }
 
+            double totalCost = fee;
             fee = fee - pastPayment;
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
@@ -3246,7 +3272,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             contestSaleData.setContestId(contest.getId());
             contestSaleData.setSaleStatusId(CONTEST_SALE_STATUS_PAID);
-            contestSaleData.setPrice(fee);
+            contestSaleData.setPrice(totalCost);
             
             if (!hasContestSaleData) {
                 this.projectServices.createContestSale(contestSaleData);
