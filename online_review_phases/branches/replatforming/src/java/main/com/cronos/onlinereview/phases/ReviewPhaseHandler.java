@@ -84,12 +84,20 @@ import com.topcoder.util.log.LogFactory;
  * we will populate the winner information and set prizes for submissions.</li>
  * </ul>
  * </p>
+ *
+ * <p>
+ * Version 1.6.1 (Milestone Support Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #updateSubmissionScores(Phase, String, Map)} method to properly map prizes to submissions.</li>
+ *   </ol>
+ * </p>
+ * 
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, FireIce, TCSDEVELOPER
- * @version 1.6
+ * @version 1.6.1
  */
 public class ReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -434,6 +442,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                             submission.setSubmissionStatus(noWinStatus);
                         }
                     }
+                    getManagerHelper().getUploadManager().updateSubmission(submission, operator);
                 } else {
                     Submission submission = subs[iSub];
                     float aggScore = aggregations[iSub].getAggregatedScore();
@@ -448,7 +457,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             // populate places and update project with placement details for studio competitions.
             // studio project type id is 3.
             if (isStudioProject) {
-                List<Prize> prizes = project.getPrizes();
+                List<Prize> prizes = new ArrayList(project.getPrizes());
 
                 if (prizes != null && prizes.size() != 0) {
                     for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
@@ -493,29 +502,10 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                             }
                         });
 
-                        for (int i = 0; i < prizes.size() && i < subs.length; i++) {
-                            List<Prize> submissionPrizes = subs[i].getPrizes();
-
-                            if (submissionPrizes == null) {
-                                submissionPrizes = new ArrayList<Prize>();
-
-                                submissionPrizes.add(prizes.get(i));
-                            } else {
-                                // check whether the prize already exist
-                                for (Iterator<Prize> iter = submissionPrizes.iterator(); iter.hasNext();) {
-                                    Prize prize = iter.next();
-
-                                    if (prize.getId() == prizes.get(i).getId()) {
-                                        iter.remove();
-                                    }
-                                }
-
-                                submissionPrizes.add(prizes.get(i));
-                            }
-
-                            // update the prize
-                            subs[i].setPrizes(submissionPrizes);
-
+                        int maxIndex = Math.min(prizes.size(), subs.length);
+                        for (int i = 0; i < maxIndex; i++) {
+                            Prize prizeToAward = prizes.get(i);
+                            subs[i].setPrize(prizeToAward);
                             getManagerHelper().getUploadManager().updateSubmission(subs[i], operator);
                         }
                     }

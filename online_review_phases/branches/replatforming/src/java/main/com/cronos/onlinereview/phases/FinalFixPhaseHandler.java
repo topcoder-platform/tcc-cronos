@@ -3,6 +3,8 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
+import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
 import com.cronos.onlinereview.phases.lookup.UploadStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtility;
 
@@ -49,8 +51,16 @@ import java.util.Arrays;
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author tuenm, bose_java
- * @version 1.0
+ * <p>
+ * Version 1.0.1 (Milestone Support Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #checkFinalReviewWorksheet(Phase, String)} method to filter submissions for submission type.
+ *     </li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, isv
+ * @version 1.0.1
  */
 public class FinalFixPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -309,9 +319,17 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     }
 
                     // find the winning submission
-                    Filter filter = SubmissionFilterBuilder
-                                    .createResourceIdFilter(winningSubmitter
-                                                    .getId());
+                    Filter winnerFilter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
+                    long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(conn,
+                                                                                 PhasesHelper.CONTEST_SUBMISSION_TYPE);
+                    long submissionStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
+                    Filter submissionTypeFilter
+                        = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
+                    Filter submissionStatusFilter
+                        = SubmissionFilterBuilder.createSubmissionStatusIdFilter(submissionStatusId);
+                    Filter filter = new AndFilter(Arrays.asList(winnerFilter, submissionTypeFilter, 
+                                                                submissionStatusFilter));
+                    
                     // change in version 1.4
                     Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
                     if (submissions == null || submissions.length != 1) {

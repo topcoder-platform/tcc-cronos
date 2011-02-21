@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
@@ -22,6 +23,10 @@ import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Review;
+import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
+import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
+import com.topcoder.management.review.scoreaggregator.RankedSubmission;
+import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -51,12 +56,22 @@ import com.topcoder.util.log.LogFactory;
  * The additional logic for executing this phase is: When Review phase is starting, all submissions failed automated
  * screening must be set to the status &quot;Failed Milestone Screening&quot;.
  * </p>
+ *
+ * <p>
+ * Version 1.6.1 (Milestone Support Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #updateSubmissionScores(Connection, Phase, String, Map)} method to properly map prizes to 
+ *     submissions.</li>
+ *     <li>Updated {@link #updateSubmissionScores(Connection, Phase, String, Map)} method to rank submissions based on
+ *     scores and update the status in case submission fails to pass review.</li>
+ *   </ol>
+ * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
  * @author FireIce, TCSDEVELOPER
- * @version 1.6
+ * @version 1.6.1
  * @since 1.6
  */
 public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
@@ -299,6 +314,8 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
             Review[] reviews = PhasesHelper.searchReviewsForResources(conn, getManagerHelper(), reviewers, null);
 
             // for each submission, populate scores array to use with review score aggregator.
+            com.topcoder.management.review.scoreaggregator.Submission[] submissionScores
+                = new com.topcoder.management.review.scoreaggregator.Submission[subs.length];
             for (int iSub = 0; iSub < subs.length; iSub++) {
                 Submission submission = subs[iSub];
                 long subId = submission.getId();
@@ -318,6 +335,37 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
                 }
 
                 submission.setInitialScore(score.doubleValue());
+                submission.setFinalScore(score.doubleValue());
+                submissionScores[iSub] 
+                    = new com.topcoder.management.review.scoreaggregator.Submission(subId, 
+                                                                                    new float[] {score.floatValue()});
+            }
+            
+            // Calculate placements for submissions based on review score
+            ReviewScoreAggregator scoreAggregator = getManagerHelper().getScorecardAggregator();
+            AggregatedSubmission[] aggregations = scoreAggregator.aggregateScores(submissionScores);
+            RankedSubmission[] placements = scoreAggregator.calcPlacements(aggregations);
+            
+            // Get minimum passing score for review
+            float minScore = PhasesHelper
+                    .getScorecardMinimumScore(getManagerHelper().getScorecardManager(), reviews[0]);
+            SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
+                                                                             "Failed Milestone Review");
+
+            // Assign placements to submissions based on scores
+            for (int iSub = 0; iSub < subs.length; iSub++) {
+                Submission submission = subs[iSub];
+                for (int i = 0; i < placements.length; i++) {
+                    RankedSubmission rankedSubmission = placements[i];
+                    if (rankedSubmission.getId() == submission.getId()) {
+                        submission.setPlacement(rankedSubmission.getRank() * 1L);
+                        float aggScore = rankedSubmission.getAggregatedScore();
+                        if (aggScore < minScore) {
+                            submission.setSubmissionStatus(failedStatus);
+                        }
+                        break;
+                    }
+                }
             }
 
             // set the milestone prize.
@@ -325,7 +373,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
 
             List<Prize> prizes = project.getPrizes();
 
-            if (prizes != null && prizes.size() != 0) {
+            if (prizes != null && !prizes.isEmpty()) {
                 for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
                     Prize prize = iter.next();
 
@@ -334,43 +382,47 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
                     }
                 }
 
-                if (prizes.size() != 0) {
+                if (!prizes.isEmpty()) {
                     // sort the milestone prizes
                     Collections.sort(prizes, new Comparator<Prize>() {
                         public int compare(Prize o1, Prize o2) {
-                            return Double.compare(o1.getPrizeAmount(), o2.getPrizeAmount());
+                            return o1.getPlace() - o2.getPlace();
                         }
                     });
 
                     // sort the submissions.
                     Arrays.sort(subs, new Comparator<Submission>() {
                         public int compare(Submission o1, Submission o2) {
-                            return o1.getInitialScore().compareTo(o2.getInitialScore());
+                            int placementResult = o1.getPlacement().compareTo(o2.getPlacement());
+                            if (placementResult == 0) {
+                                return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
+                            } else {
+                                return placementResult;
+                            }
                         }
                     });
 
-                    for (int i = 0; i < prizes.size() && i < subs.length; i++) {
-                        List<Prize> submissionPrizes = subs[i].getPrizes();
-
-                        if (submissionPrizes == null) {
-                            submissionPrizes = new ArrayList<Prize>();
-
-                            submissionPrizes.add(prizes.get(i));
-                        } else {
-                            // check whether the prize already exist
-                            for (Iterator<Prize> iter = submissionPrizes.iterator(); iter.hasNext();) {
-                                Prize prize = iter.next();
-
-                                if (prize.getId() == prizes.get(i).getId()) {
-                                    iter.remove();
-                                }
+                    Prize currentPrize = prizes.get(0);
+                    int currentPrizeIndex = 0;
+                    int currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
+                    for (int i = 0; i < subs.length; i++) {
+                        Submission submission = subs[i];
+                        if (submission.getPlacement() == currentPrize.getPlace()) {
+                            if (currentPrizeNumLeft > 0) {
+                                currentPrizeNumLeft--;
+                            } else {
+                                continue; // no more prizes left for awarding for current place
                             }
-
-                            submissionPrizes.add(prizes.get(i));
+                        } else {
+                            currentPrizeIndex++;
+                            if (currentPrizeIndex >= prizes.size()) {
+                                break; // No more prizes left for awarding
+                            } else {
+                                currentPrize = prizes.get(currentPrizeIndex);
+                                currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
+                            }
                         }
-
-                        // update the prize
-                        subs[i].setPrizes(submissionPrizes);
+                        submission.setPrize(currentPrize);
                     }
                 }
             }
@@ -396,6 +448,8 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
         } catch (PersistenceException e) {
             throw new PhaseHandlingException("Problem to get the project.", e);
         } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Problem when updating submission", e);
+        } catch (InconsistentDataException e) {
             throw new PhaseHandlingException("Problem when updating submission", e);
         }
     }
@@ -453,8 +507,9 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
         }
 
         if (subs.length != reviews.length) {
-            LOG.log(Level.ERROR, "The number of reviews don't match the number of submissions.");
-            throw new PhaseHandlingException("The number of reviews don't match the number of submissions.");
+            LOG.log(Level.ERROR, "The number of reviews don't match the number of submissions." 
+                                 + subs.length + " vs "+ reviews.length);
+            return false;
         }
 
         // make sure that all reviews are committed.
@@ -481,8 +536,8 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
             }
 
             if (!reviewFound) {
-                LOG.log(Level.ERROR, "There is no review for the given submission.");
-                throw new PhaseHandlingException("There is no review for the given submission.");
+                LOG.log(Level.ERROR, "There is no review for the given submission " + subId);
+                return false;
             }
         }
 
