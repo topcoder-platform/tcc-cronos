@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007 - 2011 TopCoder Inc., All Rights Reserved.
  */
 
 package com.topcoder.management.phase.db;
@@ -94,8 +94,21 @@ import com.topcoder.util.idgenerator.IDGenerator;
  * implementation is thread-safe. Any descendants should try to ensure
  * thread-safety.
  * </p>
+ * 
+ * <p>
+ * Version 1.1.3 (TC Direct Replatforming Release 2) Change notes:
+ * <ul>
+ * <li>Added {@link #DELETE_PHASE_AUDIT_FOR_PHASES} field to delete records in project_phase_audit of
+ * a specific phase.</li>
+ * <li>Update {@link #deletePhases(Phase[])} to delete the phase audit when deleting a phase.
+ * If we don't delete the phase audit, we can't delete the phase because the foreign key.</li>
+ * <li>Update {@link #deletePhases(Phase[])} to don't insert a record to project_phase_audit because
+ * the foreign key.</li>
+ * </ul>
+ * </p>
+ * 
  * @author AleaActaEst, kr00tki, TCSDEVELOPER
- * @version 1.1.2
+ * @version 1.1.3
  */
 public abstract class AbstractInformixPhasePersistence extends
         AbstractDbPhasePersistence {
@@ -121,6 +134,14 @@ public abstract class AbstractInformixPhasePersistence extends
      * Delete the phase criteria for the given phases.
      */
     private static final String DELETE_PHASE_CRITERIA_FOR_PHASES = "DELETE FROM phase_criteria "
+            + "WHERE project_phase_id IN ";
+
+    /**
+     * Delete the phase audit for the given phases.
+     *
+     * @since 1.1.3
+     */
+    private static final String DELETE_PHASE_AUDIT_FOR_PHASES = "DELETE FROM project_phase_audit "
             + "WHERE project_phase_id IN ";
 
     /**
@@ -803,6 +824,7 @@ public abstract class AbstractInformixPhasePersistence extends
         PreparedStatement pstmt = null;
         PreparedStatement pstmt2 = null;
         PreparedStatement pstmt3 = null;
+        PreparedStatement pstmt4 = null;
 
         // create the context.
         Map context = createContextMap(conn);
@@ -810,13 +832,14 @@ public abstract class AbstractInformixPhasePersistence extends
         try {
             // start the transaction.
             startTransaction(context);
-            // create the statements for all 3 tables (phase, dependencies and
-            // criteria)
+            // create the statements for all 4 tables (phase, dependencies and
+            // criteria and audit)
             pstmt = conn.prepareStatement(DELETE_FROM_PHASE_DEPENDENCY + inSet
                     + DELETE_FROM_PHASE_DEPENDENCY_OR + inSet);
             pstmt2 = conn.prepareStatement(DELETE_PROJECT_PHASE + inSet);
             pstmt3 = conn.prepareStatement(DELETE_PHASE_CRITERIA_FOR_PHASES
                     + inSet);
+            pstmt4 = conn.prepareStatement(DELETE_PHASE_AUDIT_FOR_PHASES + inSet);
 
             // set the id values
             for (int i = 0; i < phases.length; i++) {
@@ -824,19 +847,24 @@ public abstract class AbstractInformixPhasePersistence extends
                 pstmt.setLong(i + 1 + phases.length, phases[i].getId());
                 pstmt2.setLong(i + 1, phases[i].getId());
                 pstmt3.setLong(i + 1, phases[i].getId());
+                pstmt4.setLong(i + 1, phases[i].getId());
             }
 
             // delete dependencies
             pstmt.executeUpdate();
             // delete criteria
             pstmt3.executeUpdate();
+            // delete audit
+            pstmt4.executeUpdate();
             // delete phases
             pstmt2.executeUpdate();
 
+            /*
              for (int i = 0; i < phases.length; i++) {
             	auditProjectPhase(conn, phases[i], AUDIT_DELETE_TYPE, null, null, 0L,
             			new Timestamp(System.currentTimeMillis()));
             }
+            */
 
             // everything is OK, commit the transaction.
             commitTransaction(context);
@@ -848,6 +876,7 @@ public abstract class AbstractInformixPhasePersistence extends
             close(pstmt);
             close(pstmt2);
             close(pstmt3);
+            close(pstmt4);
             disposeConnection(conn);
         }
     }
