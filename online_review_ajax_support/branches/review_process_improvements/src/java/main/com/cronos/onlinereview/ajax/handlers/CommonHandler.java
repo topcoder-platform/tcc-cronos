@@ -121,11 +121,11 @@ public abstract class CommonHandler implements AjaxRequestHandler {
             throw new IllegalArgumentException("The resource can't be null.");
         }
         // check if "External Reference ID" property exists or not
-        Object value = resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
+        String value = resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
         if (value == null) {
             return false;
         }
-        return value.toString().equals(Long.toString(userId));
+        return value.equals(Long.toString(userId));
     }
 
     /**
