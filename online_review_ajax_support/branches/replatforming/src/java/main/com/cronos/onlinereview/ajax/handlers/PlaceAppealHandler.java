@@ -37,10 +37,17 @@ import com.topcoder.util.log.LogFactory;
  * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
+ * <p>
+ * Version 1.0.2 (Milestone Support Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Made the class compatible with latest version of <code>Online Review Deliverables</code> component.</li>
+ *   </ol>
+ * </p>
+ *
  * @author topgear
  * @author assistant
- * @author George1
- * @version 1.0.1
+ * @author George1, TCSDEVELOPER
+ * @version 1.0.2
  */
 public class PlaceAppealHandler extends ReviewCommonHandler {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
@@ -331,7 +338,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         }
 
         // Get the upload
-        Upload upload = submission.getUpload();
+        Upload upload = submission.getUploads().get(0);
 
         // get the submission resource
         Resource submitterResource = null;

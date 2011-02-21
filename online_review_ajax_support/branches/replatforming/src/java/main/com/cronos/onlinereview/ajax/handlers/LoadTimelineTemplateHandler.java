@@ -9,10 +9,13 @@ import com.cronos.onlinereview.ajax.AjaxSupportHelper;
 import com.cronos.onlinereview.ajax.ConfigurationException;
 import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.PhaseDateComparator;
+import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
 import com.topcoder.project.phases.template.PhaseTemplate;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -30,9 +33,16 @@ import java.util.Date;
  * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
+ * <p>
+ * Version 1.0.2 (Milestone Support Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated the handler to sort the project phases before applying the template.</li>
+ *   </ol>
+ * </p>
+ *
  * @author topgear
- * @author assistant
- * @version 1.0.1
+ * @author assistant, TCSDEVELOPER
+ * @version 1.0.2
  */
 public class LoadTimelineTemplateHandler extends CommonHandler {
 
@@ -195,6 +205,8 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
 
         // loop over all the phases to generate the xml
         Phase[] phases = project.getAllPhases();
+        Arrays.sort(phases, new ProjectPhaseComparator());
+        
         for (int i = 0; i < phases.length; i++) {
             phaseToXml(phases[i], sb);
         }
@@ -288,5 +300,115 @@ public class LoadTimelineTemplateHandler extends CommonHandler {
         sb.append("</lag-time>");
 
         sb.append("</dependency>");
+    }
+
+    /**
+     * This class extends <code>PhaseDateComparator</code> class and is used to sort project
+     * phases in array. It uses <code>compare</code> method from the
+     * <code>PhaseDateComparator</code> class to sort phases. If it is impossible to determine the
+     * order by simply using that method, it orders phases by their type using built-in (hardcoded)
+     * type-order.
+     */
+    static public class ProjectPhaseComparator extends PhaseDateComparator {
+
+        /**
+         * This static member variable is an array that is used to determine the order of the phases
+         * by their types.
+         */
+        final private static String[] phaseOrder = new String[] {
+            "Specification Submission", "Specification Review",
+            "Registration", "Milestone Submission", 
+            "Milestone Screening", "Milestone Review", 
+            "Submission", "Screening",
+            "Review", "Appeals", "Appeals Response",
+            "Aggregation", "Aggregation Review", "Final Fix",
+            "Final Review", "Approval"
+        };
+
+        /**
+         * This method compares its two arguments for order. This method expects that type of
+         * objects passed as arguments is <code>Phase</code>. It then detemines which of the
+         * objects is smaller using <code>compare</code> method from the superclas first, and then
+         * comparing phases' imaginary rankings if the first comparison does not let determine the
+         * order.
+         * <p>
+         * This method extends the <code>compare</code> method from the
+         * <code>PhaseDateComparator</code> class.
+         * </p>
+         *
+         * @return a negative integer, zero, or a positive integer as the first argument is less
+         *         than, equal to, or greater than the second respectively.
+         * @param o1
+         *            the first object to be compared.
+         * @param o2
+         *            the second object to be compared.
+         */
+        public int compare(Object o1, Object o2) {
+            // Try to compare objects using the method from the superclass
+            Phase phase1 = (Phase) o1;
+            Phase phase2 = (Phase) o2;
+
+            boolean isPhase1PostMortem = phase1.getPhaseType().getName().equalsIgnoreCase("Post-Mortem");
+            boolean isPhase2PostMortem = phase2.getPhaseType().getName().equalsIgnoreCase("Post-Mortem");
+
+            if (isPhase1PostMortem || isPhase2PostMortem) {
+                PhaseStatus phaseStatus1 = phase1.getPhaseStatus();
+                PhaseStatus phaseStatus2 = phase2.getPhaseStatus();
+                if (isPhase1PostMortem) {
+                    if (phaseStatus2.getId() == PhaseStatus.SCHEDULED.getId()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                } else {
+                    if (phaseStatus1.getId() == PhaseStatus.SCHEDULED.getId()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            }
+            
+            boolean isPhase1Milestone = phase1.getPhaseType().getName().startsWith("Milestone");
+            boolean isPhase2Milestone = phase2.getPhaseType().getName().startsWith("Milestone");
+            if ((isPhase1Milestone || isPhase2Milestone) && !(isPhase1Milestone && isPhase2Milestone)) {
+                final int ranking1 = getPhaseRanking((Phase) o1);
+                final int ranking2 = getPhaseRanking((Phase) o2);
+                return ranking1 - ranking2;
+            }
+
+            int comparison = super.compare(o1, o2);
+            if (comparison != 0) {
+                return comparison;
+            }
+            // Determine phases' imaginary ranking
+            final int ranking1 = getPhaseRanking((Phase) o1);
+            final int ranking2 = getPhaseRanking((Phase) o2);
+            // Compare phases using the imaginary ranking
+            return ranking1 - ranking2;
+        }
+
+        /**
+         * This static method determines imaginary ranking of the phase passed as the parameter.
+         * Phase's ranking is determined by the hard-coded array of phases' names (i.e. phase's
+         * ranking depends on phase's type).
+         *
+         * @return an integer number equal or greater than zero that represents phase's imaginary
+         *         ranking.
+         * @param phase
+         *            a phase to determine the imaginary ranking of.
+         */
+        private static int getPhaseRanking(Phase phase) {
+            // Get phase's name
+            final String phaseName = phase.getPhaseType().getName();
+            // Search for this phase in the ranking array
+            for (int i = 0; i < phaseOrder.length; i++) {
+                if (phaseOrder[i].equalsIgnoreCase(phaseName)) {
+                    return i;
+                }
+            }
+            // If phase's type wasn't found in the array, return the highest ranking possible
+            return phaseOrder.length;
+        }
     }
 }
