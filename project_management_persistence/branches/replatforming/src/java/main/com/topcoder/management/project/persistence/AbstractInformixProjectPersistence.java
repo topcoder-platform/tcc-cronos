@@ -174,8 +174,18 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
  *
+ * <p>
+ * Version 1.2.1 (Milestone Support Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Replaced references to <code>prize_type_lu.description</code> column with reference to
+ *     <code>prize_type_lu.prize_type_desc</code> column to match actual DB schema.</li>
+ *     <li>Updated the logic to support optional file types, prizes and spec for project.</li>
+ *     <li>Fixed the issue with connection leaking in {@link #getProjectStudioSpecification(long)} method.</li>
+ *   </ol>
+ * </p>
+ *
  * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER
- * @version 1.2
+ * @version 1.2.1
  * @since 1.0
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
@@ -503,7 +513,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @since 1.1.2
      */
     private static final String PROJECT_INFO_AUDIT_INSERT_SQL = "INSERT INTO project_info_audit "
-        + "(project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user) "
+        + "(project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user_id) "
         + "VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
@@ -532,7 +542,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final String QUERY_PRIZES_SQL = "SELECT "
         + "prize.prize_id, prize.place, prize.prize_amount, prize.number_of_submissions, "
-        + "prize_type.prize_type_id, prize_type.description " + "FROM prize AS prize "
+        + "prize_type.prize_type_id, prize_type.prize_type_desc " + "FROM prize AS prize "
         + "JOIN prize_type_lu AS prize_type ON prize.prize_type_id=prize_type.prize_type_id "
         + "JOIN project_prize_xref AS xref ON prize.prize_id=xref.prize_id " + "WHERE xref.project_id=";
 
@@ -579,7 +589,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *
      * @since 1.2
      */
-    private static final String QUERY_ALL_PRIZE_TYPES_SQL = "SELECT " + "prize_type_id, description FROM prize_type_lu";
+    private static final String QUERY_ALL_PRIZE_TYPES_SQL = "SELECT prize_type_id, prize_type_desc FROM prize_type_lu";
     /**
      * Represents the column types for the result set which is returned by querying prize types from the prize_type_lu
      * table.
@@ -1612,7 +1622,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private void createOrUpdateProjectFileTypes(long projectId, List<FileType> fileTypes, Connection conn,
         String operator, boolean update) throws PersistenceException {
-        Helper.assertObjectNotNull(fileTypes, "fileTypes");
+        if (fileTypes == null) {
+            return;
+        }
         Object[] queryArgs = null;
 
         if (update) {
@@ -1777,6 +1789,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private void createOrUpdateProjectPrizes(long projectId, List<Prize> prizes, Connection conn, String operator,
         boolean update) throws PersistenceException {
+        if (prizes == null) {
+            return;
+        }
+        
         Object[] queryArgs = null;
         if (update) {
             getLogger().log(Level.INFO,
@@ -2530,6 +2546,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 QUERY_STUDIO_SPEC_COLUMN_TYPES);
 
             if (rows.length == 0) { // no project studio specification is found, return null
+                closeConnection(conn);
                 return null;
             }
 
@@ -2634,6 +2651,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private void createOrUpdateProjectStudioSpecification(long projectId, ProjectStudioSpecification spec,
         Connection conn, String operator) throws PersistenceException {
+        if (spec == null) {
+            return;
+        }
+        
         // the studio specification with the specified id exists, just update it
         if (spec.getId() > 0
             && Helper.checkEntityExists("project_studio_specification", "project_studio_spec_id", spec.getId(), conn)) {
