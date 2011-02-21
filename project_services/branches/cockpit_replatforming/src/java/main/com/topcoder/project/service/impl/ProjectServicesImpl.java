@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.impl;
 
@@ -291,13 +291,27 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  * 
  * <p>
+ * Version 1.4.5 (TC Direct Replatforming Release 2) Change notes:
+ * <ul>
+ * <li>Added {@link #getPhaseTemplateName(Project)} method.</li>
+ * <li>Added {@link #getLeftOutPhaseIds(Project, boolean, boolean, boolean)} method.</li>
+ * <li>Added {@link #adjustPhaseForMilestoneEndDate(com.topcoder.project.phases.Project, Date)} method.</li>
+ * <li>Added {@link #setNewPhasesProperties(Project, com.topcoder.project.phases.Project)} method.</li>
+ * <li>Updated {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], Date, String)} method to allow
+ * change the number of project rounds. When the number of rounds changes, the project phases need to reset.</li>
+ * <li>Updated {@link #createProjectWithTemplate(Project, com.topcoder.project.phases.Project, Resource[], Date, String) method to remove
+ * the duplicated code with {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], Date, String)} method.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv, TCSASSEMBER
- * @version 1.4.4
+ * @version 1.4.5
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -1712,6 +1726,13 @@ public class ProjectServicesImpl implements ProjectServices {
         ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
 
         try {
+            boolean hasMultiRoundBefore = false;
+            for (Phase phase : projectPhases.getAllPhases()) {
+                if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
+                    hasMultiRoundBefore = true;
+                    break;
+                }
+            }
             // get the project calling projectManager.getProject(projectHeader.getId())
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#createProject method.");
             Project project = projectManager.getProject(projectHeader.getId());
@@ -1756,88 +1777,113 @@ public class ProjectServicesImpl implements ProjectServices {
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
                     .valueOf(requireApproval));
 
-
+            boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
+            
+            boolean needResetPhases = hasMultiRoundBefore != (multiRoundEndDate != null); 
+            if (needResetPhases) {
+                // need to reset the project phases
+                long[] leftOutPhaseIds = getLeftOutPhaseIds(projectHeader, requireApproval, requireSpecReview, multiRoundEndDate != null);
+                String templateName = getPhaseTemplateName(projectHeader);
+                if (templateName == null) {
+                    throw new PhaseTemplateException("No template found for type " + projectHeader.getProjectCategory().getProjectType().getName()
+                            + " or category " + projectHeader.getProjectCategory().getName());
+                }
+                com.topcoder.project.phases.Project newProjectPhases = template.applyTemplate(templateName, leftOutPhaseIds,
+                        PhaseType.REGISTRATION_PHASE.getId(), PhaseType.REGISTRATION_PHASE.getId(), projectPhases.getStartDate(), projectPhases.getStartDate());
+                if (multiRoundEndDate != null) {
+                    adjustPhaseForMilestoneEndDate(newProjectPhases, multiRoundEndDate);
+                }
+                setNewPhasesProperties(projectHeader, newProjectPhases);
+                newProjectPhases.setId(projectPhases.getId());
+                for (Phase phase : newProjectPhases.getAllPhases()) {
+                    phase.setProject(newProjectPhases);
+                    phase.setId(0);
+                }
+                projectPhases = newProjectPhases;
+            }
+            
             // call projectManager.updateProject(projectHeader,projectHeaderReason,operator)
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#updateProject method.");
             projectManager.updateProject(projectHeader, projectHeaderReason, operator);
             Util.log(logger, Level.DEBUG, "Finished calling ProjectManager#updateProject method.");
 
-
-            // recalcuate phase dates in case project start date changes
-            Phase[] phases = projectPhases.getAllPhases();
-            Map phasesMap = new HashMap();
-            
-             for (Phase p : phases) {
-                        phasesMap.put(new Long(p.getId()), p);
-                        p.setScheduledStartDate(null);
-                        p.setScheduledEndDate(null);
-                        p.setFixedStartDate(null);
-             }
-             phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
-            
-
-            for (Phase p : phases) {
-                        p.setScheduledStartDate(p.calcStartDate());
-                        p.setScheduledEndDate(p.calcEndDate());
-                        // only set Reg with fixed dates
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
-                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
-                        {
-                            p.setFixedStartDate(p.calcStartDate());
+            if (!needResetPhases) {
+                // recalcuate phase dates in case project start date changes
+                Phase[] phases = projectPhases.getAllPhases();
+                Map phasesMap = new HashMap();
+                
+                 for (Phase p : phases) {
+                            phasesMap.put(new Long(p.getId()), p);
+                            p.setScheduledStartDate(null);
+                            p.setScheduledEndDate(null);
+                            p.setFixedStartDate(null);
+                 }
+                 phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+                
+    
+                for (Phase p : phases) {
+                            p.setScheduledStartDate(p.calcStartDate());
+                            p.setScheduledEndDate(p.calcEndDate());
+                            // only set Reg with fixed dates
+                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                                  || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+                            {
+                                p.setFixedStartDate(p.calcStartDate());
+                            }
+                }
+    
+               
+    
+                long diff = 0;
+                for (Phase p : phases) {
+                            phasesMap.put(new Long(p.getId()), p);
+                            // check the diff between project start date and reg phase start date
+                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
+                                    diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
+                            }
+                 }
+    
+    
+                
+                // adjust project start date so reg start date is the passed project start date
+                projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
+    
+                for (Phase p : phases) {
+                            phasesMap.put(new Long(p.getId()), p);
+                            p.setScheduledStartDate(null);
+                            p.setScheduledEndDate(null);
+                            p.setFixedStartDate(null);
+                }
+                phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+                
+                if (multiRoundEndDate != null) {
+                    // multiround phase duration
+                    Util.log(logger, Level.INFO, "set duration for multi round phase");
+                    Phase multiRoundPhase = null;
+                    for (Phase phase : phases) {
+                        if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
+                            multiRoundPhase = phase;
+                            break;
                         }
-            }
-
-           
-
-            long diff = 0;
-            for (Phase p : phases) {
-                        phasesMap.put(new Long(p.getId()), p);
-                        // check the diff between project start date and reg phase start date
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
-                                diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
-                        }
-             }
-
-
-            
-            // adjust project start date so reg start date is the passed project start date
-            projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
-
-            for (Phase p : phases) {
-                        phasesMap.put(new Long(p.getId()), p);
-                        p.setScheduledStartDate(null);
-                        p.setScheduledEndDate(null);
-                        p.setFixedStartDate(null);
-            }
-            phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
-            
-            if (multiRoundEndDate != null) {
-                // multiround phase duration
-                Util.log(logger, Level.INFO, "set duration for multi round phase");
-                Phase multiRoundPhase = null;
-                for (Phase phase : phases) {
-                    if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
-                        multiRoundPhase = phase;
-                        break;
+                    }
+                    if (multiRoundPhase != null) {
+                        Date scheduler = multiRoundPhase.calcEndDate();
+                        diff = multiRoundEndDate.getTime() - scheduler.getTime();
+                        Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
+                        multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
                     }
                 }
-                if (multiRoundPhase != null) {
-                    Date scheduler = multiRoundPhase.calcEndDate();
-                    diff = multiRoundEndDate.getTime() - scheduler.getTime();
-                    Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
-                    multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+    
+                for (Phase p : phases) {
+                            p.setScheduledStartDate(p.calcStartDate());
+                            p.setScheduledEndDate(p.calcEndDate());
+                            // only set Reg with fixed dates
+                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                                  || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+                            {
+                                p.setFixedStartDate(p.calcStartDate());
+                            }
                 }
-            }
-
-            for (Phase p : phases) {
-                        p.setScheduledStartDate(p.calcStartDate());
-                        p.setScheduledEndDate(p.calcEndDate());
-                        // only set Reg with fixed dates
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
-                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
-                        {
-                            p.setFixedStartDate(p.calcStartDate());
-                        }
             }
 
           
@@ -2384,36 +2430,7 @@ public class ProjectServicesImpl implements ProjectServices {
         // check projectPhases
         ExceptionUtils.checkNull(projectPhases, null, null, "The parameter[projectPhases] should not be null.");
         try {
-            String category = projectHeader.getProjectCategory().getName();
-            String type = projectHeader.getProjectCategory().getProjectType().getName();
-
-            String[] templates = template.getAllTemplateNames();
-
-            String templateName = null;
-            boolean categoryMatch = false;
-            for (String t : templates )
-            {
-                if (category.equalsIgnoreCase(t))
-                {
-                    templateName = t;
-                    categoryMatch = true;
-                    break;
-                }
-            }
-
-            if (!categoryMatch)
-            {
-                for (String t : templates )
-                {
-                    if (type.equalsIgnoreCase(t))
-                    {
-                        templateName = t;
-                        break;
-                    }
-                }
-
-            }
-
+            String templateName = getPhaseTemplateName(projectHeader);
 
              // Start BUGR-3616
             // get billing project id from the project information
@@ -2435,156 +2452,23 @@ public class ProjectServicesImpl implements ProjectServices {
 
             boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
 
-            List<Long> leftoutphases = new ArrayList<Long>();
-
-            if (!requireApproval)
-            {
-                leftoutphases.add(new Long(PhaseType.APPROVAL_PHASE.getId()));
-            }
-
-            if (!requireSpecReview || (projectHeader.getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID && !projectHeader.isDevOnly()))
-            {
-                leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
-                leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
-            }
-            
-            if (multiRoundEndDate == null) {
-                // no multiround phases
-                leftoutphases.add(PhaseType.MILESTONE_SUBMISSION_PHASE.getId());
-                leftoutphases.add(PhaseType.MILESTONE_SCREENING_PHASE.getId());
-                leftoutphases.add(PhaseType.MILESTONE_REVIEW_PHASE.getId());
-            }
-
-            long[] leftOutPhaseIds = new long[leftoutphases.size()];
-
-            if (leftoutphases.size() > 0)
-            {
-                int i = 0;
-                for (Long phaseId : leftoutphases )
-                {
-                    leftOutPhaseIds[i++] = phaseId.longValue();
-                }
-            }
+            long[] leftOutPhaseIds = getLeftOutPhaseIds(projectHeader, requireApproval, requireSpecReview, multiRoundEndDate != null);
 
             if (templateName == null)
             {
-                throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
+                throw new PhaseTemplateException("No template found for type " + projectHeader.getProjectCategory().getProjectType().getName()
+                        + " or category " + projectHeader.getProjectCategory().getName());
             }
             // apply a template with name category with a given start date
             com.topcoder.project.phases.Project newProjectPhases = template
                     .applyTemplate(templateName, leftOutPhaseIds, PhaseType.REGISTRATION_PHASE.getId(), PhaseType.REGISTRATION_PHASE.getId(), projectPhases.getStartDate(), projectPhases.getStartDate());
 
-            long screenTemplateId = 0L;
-            long reviewTemplateId = 0L;
-            long approvalTemplateId = 0L;
-            long specReviewTemplateId = 0L;
-            long projectTypeId = projectHeader.getProjectCategory().getId();
-
             if (multiRoundEndDate != null) {
                 // multiround phase duration
-                Util.log(logger, Level.INFO, "set duration for multi round phase");
-                Phase multiRoundPhase = null;
-                for (Phase phase : newProjectPhases.getAllPhases()) {
-                    if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
-                        multiRoundPhase = phase;
-                        break;
-                    }
-                }
-                if (multiRoundPhase != null) {
-                    Date scheduler = multiRoundPhase.calcEndDate();
-                    long diff = multiRoundEndDate.getTime() - scheduler.getTime();
-                    Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
-                    multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
-                }
+                adjustPhaseForMilestoneEndDate(newProjectPhases, multiRoundEndDate);
             }
 
-            try
-            {
-                screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
-                reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
-                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
-                specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
-            }
-            catch (Exception e)
-            {
-                //TODO default to user spec (6) for now
-                Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
-                screenTemplateId = projectManager.getScorecardId(6, 1);
-                reviewTemplateId = projectManager.getScorecardId(6, 2);
-                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
-                specReviewTemplateId = projectManager.getScorecardId(6, 5);
-            }
-
-           
-            // set the project info of type "Approval Required"
-            projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
-                    .valueOf(requireApproval));
-            // End BUGR-3616
-            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
-
-            projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.RELIABILITY_BONUS_ELIGIBLE)));
-
-            projectHeader.setProperty(ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.MEMBER_PAYMENT_ELIGIBLE)));
-
-            projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
-
-            projectHeader.setProperty(ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.TRACK_LATE_DELIVERABLES)));
-
-
-            for (Phase p : newProjectPhases.getAllPhases()) {
-                    p.setPhaseStatus(PhaseStatus.SCHEDULED);
-                    p.setScheduledStartDate(p.calcStartDate());
-                    p.setScheduledEndDate(p.calcEndDate());
-                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId() 
-                        || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
-                    {
-                        p.setFixedStartDate(p.calcStartDate());
-                    }
-                    
-
-                    if (p.getPhaseType().getName().equals(PhaseType.REGISTRATION_PHASE.getName()))
-                    {
-                        p.setAttribute("Registration Number", "0");
-                    }
-                    else if (p.getPhaseType().getName().equals("Submission") || p.getPhaseType().getName().equals("Milestone Submission"))
-                    {
-                        p.setAttribute("Submission Number", "0");
-                    }
-                    else if (p.getPhaseType().getName().equals("Screening") || p.getPhaseType().getName().equals("Milestone Screening"))
-                    {
-                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
-                    }
-                    else if (p.getPhaseType().getName().equals("Review") || p.getPhaseType().getName().equals("Milestone Review"))
-                    {
-                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
-                        if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
-                            // copilot posting only requires one reviewer.
-                            p.setAttribute("Reviewer Number", "1");
-                        } else {
-                            p.setAttribute("Reviewer Number", "3");
-                        }
-                    }
-                    else if (p.getPhaseType().getName().equals("Appeals"))
-                    {
-                        p.setAttribute("View Response During Appeals", "No");
-                    }
-                    else if (p.getPhaseType().getName().equals("Approval"))
-                    {
-                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
-                       p.setAttribute("Reviewer Number", "1");
-                    }
-                    else if (p.getPhaseType().getName().equals("Specification Review"))
-                    {
-                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(specReviewTemplateId));
-                       p.setAttribute("Reviewer Number", "1");
-                    }
-            }
-
+            setNewPhasesProperties(projectHeader, newProjectPhases);
 
             return this.createProject(projectHeader, newProjectPhases, projectResources, operator);
 
@@ -4388,6 +4272,175 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new ProjectServicesException(
                     "PersistenceException occurred when getAllFileTypes",
                     ex);
+        }
+    }
+
+    /**
+     * Gets the phase template name which should be applied to the given project.
+     *
+     * @param projectHeader the given project.
+     * @return the phase template name which should be applied to the project.
+     * @since 1.4.5
+     */
+    private String getPhaseTemplateName(Project projectHeader) {
+        String category = projectHeader.getProjectCategory().getName();
+        String type = projectHeader.getProjectCategory().getProjectType().getName();
+        
+        String[] templates = template.getAllTemplateNames();
+        for (String t : templates) {
+            if (category.equalsIgnoreCase(t)) {
+                return t;
+            }
+        }
+        for (String t : templates) {
+            if (type.equalsIgnoreCase(t)) {
+                return t;
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * Gets the phase ids which should be removed from the given project.
+     * 
+     * @param projectHeader the given project.
+     * @param requireApproval is approval phase required.
+     * @param requireSpecReview is specification review phase required.
+     * @param requireMultiRound is milestone phases required.
+     * @return the phase ids which should be removed from the given project.
+     * @since 1.4.5
+     */
+    private static long[] getLeftOutPhaseIds(Project projectHeader, boolean requireApproval, boolean requireSpecReview, boolean requireMultiRound) {
+        List<Long> leftoutphases = new ArrayList<Long>();
+
+        if (!requireApproval) {
+            leftoutphases.add(new Long(PhaseType.APPROVAL_PHASE.getId()));
+        }
+
+        if (!requireSpecReview || (projectHeader.getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID && !projectHeader.isDevOnly())) {
+            leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
+            leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
+        }
+        
+        if (!requireMultiRound) {
+            // no multiround phases
+            leftoutphases.add(PhaseType.MILESTONE_SUBMISSION_PHASE.getId());
+            leftoutphases.add(PhaseType.MILESTONE_SCREENING_PHASE.getId());
+            leftoutphases.add(PhaseType.MILESTONE_REVIEW_PHASE.getId());
+        }
+
+        long[] leftOutPhaseIds = new long[leftoutphases.size()];
+
+        if (leftoutphases.size() > 0) {
+            int i = 0;
+            for (Long phaseId : leftoutphases ) {
+                leftOutPhaseIds[i++] = phaseId.longValue();
+            }
+        }
+        return leftOutPhaseIds;
+    }
+
+    /**
+     * Adjust the duration of the milestone submission phase to meet the milestone submission end date.
+     *
+     * @param project the project phases
+     * @param multiRoundEndDate the milestone submission end date. 
+     * @since 1.4.5
+     */
+    private static void adjustPhaseForMilestoneEndDate(com.topcoder.project.phases.Project project, Date multiRoundEndDate) {
+        Phase multiRoundPhase = null;
+        for (Phase phase : project.getAllPhases()) {
+            if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
+                multiRoundPhase = phase;
+                break;
+            }
+        }
+        if (multiRoundPhase != null) {
+            Date scheduler = multiRoundPhase.calcEndDate();
+            long diff = multiRoundEndDate.getTime() - scheduler.getTime();
+            multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+        }
+    }
+
+    /**
+     * Set the default properties for the given phases.
+     *
+     * @param projectHeader the given project which the phases belong to.
+     * @param projectPhases the given phases.
+     * @throws PersistenceException if any error occurs.
+     * @since 1.4.5
+     */
+    private void setNewPhasesProperties(Project projectHeader, com.topcoder.project.phases.Project projectPhases) throws PersistenceException {
+        long screenTemplateId = 0L;
+        long reviewTemplateId = 0L;
+        long approvalTemplateId = 0L;
+        long specReviewTemplateId = 0L;
+
+        try
+        {
+            screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
+            reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
+            approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+            specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
+        }
+        catch (Exception e)
+        {
+            //TODO default to user spec (6) for now
+            Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
+            screenTemplateId = projectManager.getScorecardId(6, 1);
+            reviewTemplateId = projectManager.getScorecardId(6, 2);
+            approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+            specReviewTemplateId = projectManager.getScorecardId(6, 5);
+        }
+
+        for (Phase p : projectPhases.getAllPhases()) {
+            p.setPhaseStatus(PhaseStatus.SCHEDULED);
+            p.setScheduledStartDate(p.calcStartDate());
+            p.setScheduledEndDate(p.calcEndDate());
+            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId() 
+                || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+            {
+                p.setFixedStartDate(p.calcStartDate());
+            }
+            
+
+            if (p.getPhaseType().getName().equals(PhaseType.REGISTRATION_PHASE.getName()))
+            {
+                p.setAttribute("Registration Number", "0");
+            }
+            else if (p.getPhaseType().getName().equals("Submission") || p.getPhaseType().getName().equals("Milestone Submission"))
+            {
+                p.setAttribute("Submission Number", "0");
+            }
+            else if (p.getPhaseType().getName().equals("Screening") || p.getPhaseType().getName().equals("Milestone Screening"))
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
+            }
+            else if (p.getPhaseType().getName().equals("Review") || p.getPhaseType().getName().equals("Milestone Review"))
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
+                if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
+                    // copilot posting only requires one reviewer.
+                    p.setAttribute("Reviewer Number", "1");
+                } else {
+                    p.setAttribute("Reviewer Number", "3");
+                }
+            }
+            else if (p.getPhaseType().getName().equals("Appeals"))
+            {
+                p.setAttribute("View Response During Appeals", "No");
+            }
+            else if (p.getPhaseType().getName().equals("Approval"))
+            {
+               p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
+               p.setAttribute("Reviewer Number", "1");
+            }
+            else if (p.getPhaseType().getName().equals("Specification Review"))
+            {
+               p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(specReviewTemplateId));
+               p.setAttribute("Reviewer Number", "1");
+            }
         }
     }
 }
