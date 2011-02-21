@@ -846,6 +846,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
            + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
            + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
            + "         where project_info_type_id  = 31 "
@@ -859,6 +868,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
            + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
            + "          AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
            + "         where project_info_type_id  = 31 "
@@ -985,6 +1003,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
            + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
            + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
            + "         where project_info_type_id = 31 "
@@ -998,6 +1025,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
            + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
            + "          AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
            + "         where project_info_type_id = 31 "
@@ -4404,6 +4440,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
            + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
            + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
            + "         where project_info_type_id  = 31 "
@@ -4417,6 +4462,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
            + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
            + "          AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
            + "         where project_info_type_id  = 31 "
@@ -5060,6 +5114,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("             FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  ");
             sb.append("             WHERE pmd.component_project_id = c.project_id and installment_number = 1 ");
             sb.append("                   AND NOT pmd.payment_status_id IN (65, 68, 69)),0 ) + ");
+
+            sb.append("       NVL((SELECT sum(pmd2.total_amount)  ");
+            sb.append("          FROM  informixoltp:payment_detail pmd,   ");
+            sb.append("                informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  ");
+            sb.append("                informixoltp:payment pm2  ");
+            sb.append("           WHERE pmd.component_project_id = c.project_id and pmd2.installment_number = 1  ");
+            sb.append("           and pm.most_recent_detail_id = pmd.payment_detail_id   ");
+            sb.append("          and pm2.most_recent_detail_id = pmd2.payment_detail_id  ");
+            sb.append("         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) ");
+            sb.append("        +    ");
             sb.append("       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 ");
             sb.append("       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id   ");
             sb.append("       and pi26.value = 'On'  ");
@@ -5068,6 +5132,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("             FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  ");
             sb.append("             WHERE pmd.component_project_id = c.project_id and installment_number = 1 ");
             sb.append("                   AND NOT pmd.payment_status_id IN (65, 68, 69)),0 ) ");
+            sb.append("        +    ");
+             sb.append("       NVL((SELECT sum(pmd2.total_amount)  ");
+            sb.append("          FROM  informixoltp:payment_detail pmd,   ");
+            sb.append("                informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  ");
+            sb.append("                informixoltp:payment pm2  ");
+            sb.append("           WHERE pmd.component_project_id = c.project_id and pmd2.installment_number = 1  ");
+            sb.append("           and pm.most_recent_detail_id = pmd.payment_detail_id   ");
+            sb.append("          and pm2.most_recent_detail_id = pmd2.payment_detail_id  ");
+            sb.append("         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) ");
             sb.append("     end as tot_prize, ");
             sb.append("  ");
             sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 31 and project_id = c.project_id) as contest_fee, ");
