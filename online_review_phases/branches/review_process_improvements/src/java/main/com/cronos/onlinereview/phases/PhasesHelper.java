@@ -124,9 +124,15 @@ import com.topcoder.util.log.Log;
  * to log PhaseHandlingException instance.</li>
  * </ol>
  * </p>
+ * <p>
+ * Version 1.6(Online Review Update Review Management Process assembly 1 version 1.0)  Change notes:
+ * <ol>
+ * <li>Added SECONDARY_REVIEWER_ROLE_NAME, PRIMARY_REVIEW_EVALUATOR_ROLE_NAME</li>
+ * </ol>
+ * </p>
  *
  * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy
- * @version 1.4
+ * @version 1.6
  * @since 1.0
  */
 final class PhasesHelper {
@@ -211,6 +217,24 @@ final class PhasesHelper {
      * @since 1.4
      */
     static final String STRESS_REVIEWER_ROLE_NAME = "Stress Reviewer";
+    
+    /**
+     * <p>
+     * A <code>String</code> providing the secondary reviewer role.
+     * </p>
+     *
+     * @since 1.6
+     */
+    static final String SECONDARY_REVIEWER_ROLE_NAME = "Secondary Reviewer";
+    
+    /**
+     * <p>
+     * A <code>String</code> providing the Primary Review Evaluator role.
+     * </p>
+     *
+     * @since 1.6
+     */
+    static final String PRIMARY_REVIEW_EVALUATOR_ROLE_NAME = "Primary Review Evaluator";
 
     /**
      * <p>
