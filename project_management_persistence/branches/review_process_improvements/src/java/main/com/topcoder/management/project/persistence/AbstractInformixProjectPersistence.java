@@ -84,6 +84,13 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * this change.</li>
  * </ul>
  * </p>
+ * <p>
+ * Version 1.3 ( Online Review Update Review Management Process assembly 1 version 1.0 )
+ * <ul>
+ * <li>Removed review_system_version column from tables project_type_lu and project_info_type_lu. Update queries to reflect
+ * this change.</li>
+ * </ul>
+ * </p>
  *
  * @author tuenm, urtks, bendlund, fuyun, moonli, pvmagacho
  * @version 1.2
@@ -129,23 +136,24 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the sql statement to query all project types.
      *
      * @version 1.2 Added review_system_version column.
+     * @version 1.3 removed review_system_version column.
      */
     private static final String QUERY_ALL_PROJECT_TYPES_SQL = "SELECT "
-        + "project_type_id, name, description, is_generic, review_system_version FROM project_type_lu";
+        + "project_type_id, name, description, is_generic FROM project_type_lu";
 
     /**
      * Represents the column types for the result set which is returned by executing the sql statement to query all
      * project types.
      */
     private static final DataType[] QUERY_ALL_PROJECT_TYPES_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
-        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.BOOLEAN_TYPE, Helper.LONG_TYPE};
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.BOOLEAN_TYPE};
 
     /**
      * Represents the sql statement to query all project categories.
      */
     private static final String QUERY_ALL_PROJECT_CATEGORIES_SQL = "SELECT "
         + "category.project_category_id, category.name, category.description, "
-        + "type.project_type_id, type.name, type.description, type.is_generic, type.review_system_version "
+        + "type.project_type_id, type.name, type.description, type.is_generic "
         + "FROM project_category_lu AS category " + "JOIN project_type_lu AS type "
         + "ON category.project_type_id = type.project_type_id";
 
@@ -155,7 +163,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-        Helper.BOOLEAN_TYPE, Helper.LONG_TYPE};
+        Helper.BOOLEAN_TYPE};
 
     /**
      * Represents the sql statement to query all project statuses.
@@ -188,7 +196,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final String QUERY_PROJECTS_SQL = "SELECT "
         + "project.project_id, status.project_status_id, status.name, "
-        + "category.project_category_id, category.name, type.project_type_id, type.name, type.review_system_version, "
+        + "category.project_category_id, category.name, type.project_type_id, type.name, "
         + "project.create_user, project.create_date, project.modify_user, project.modify_date, category.description "
         + "FROM project JOIN project_status_lu AS status ON project.project_status_id=status.project_status_id "
         + "JOIN project_category_lu AS category ON project.project_category_id=category.project_category_id "
@@ -201,7 +209,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final String QUERY_PROJECTS_BY_CREATE_DATE_SQL = "SELECT "
         + "  project.project_id, project_status_lu.project_status_id, project_status_lu.name, "
         + "  project_category_lu.project_category_id, project_category_lu.name, "
-        + "  project_type_lu.project_type_id, project_type_lu.name, project_type_lu.review_system_version, "
+        + "  project_type_lu.project_type_id, project_type_lu.name, "
         + "  project.create_user, project.create_date, project.modify_user, project.modify_date, "
         + "  project_category_lu.description, pi1.value as project_name, pi2.value as project_version "
         + "  FROM project, project_category_lu, project_status_lu, project_type_lu, project_info pi1, "
@@ -218,8 +226,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * projects.
      */
     private static final DataType[] QUERY_PROJECTS_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE,
-        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
+        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, 
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE};
 
     /**
@@ -228,7 +236,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final DataType[] QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
-        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
@@ -1070,7 +1078,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 ProjectStatus status = new ProjectStatus(result.getLong(2), result.getString(3));
 
                 // create the ProjectType object
-                ProjectType type = new ProjectType(result.getLong(6), result.getString(7), result.getInt(8));
+                ProjectType type = new ProjectType(result.getLong(6), result.getString(7));
 
                 // create the ProjectCategory object
                 ProjectCategory category = new ProjectCategory(result.getLong(4), result.getString(5), type);
@@ -1079,10 +1087,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 projects[i] = new Project(result.getLong(1), category, status);
 
                 // assign the audit information
-                projects[i].setCreationUser(result.getString(9));
-                projects[i].setCreationTimestamp(result.getDate(10));
-                projects[i].setModificationUser(result.getString(11));
-                projects[i].setModificationTimestamp(result.getDate(12));
+                projects[i].setCreationUser(result.getString(8));
+                projects[i].setCreationTimestamp(result.getDate(9));
+                projects[i].setModificationUser(result.getString(10));
+                projects[i].setModificationTimestamp(result.getDate(11));
 
                 ps.setLong(1, projects[i].getId());
                 ResultSet rs = ps.executeQuery();
@@ -1142,19 +1150,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             ProjectStatus status = new ProjectStatus((Long) row[1], (String) row[2]);
 
             // create the ProjectType object
-            ProjectType type = new ProjectType((Long) row[5], (String) row[6], (Long) row[7]);
+            ProjectType type = new ProjectType((Long) row[5], (String) row[6]);
 
             // create the ProjectCategory object
             ProjectCategory category = new ProjectCategory((Long) row[3], (String) row[4], type);
-            category.setDescription((String) row[12]);
+            category.setDescription((String) row[11]);
             // create a new instance of ProjectType class
             projects[i] = new Project((Long) row[0], category, status);
 
             // assign the audit information
-            projects[i].setCreationUser((String) row[8]);
-            projects[i].setCreationTimestamp((Date) row[9]);
-            projects[i].setModificationUser((String) row[10]);
-            projects[i].setModificationTimestamp((Date) row[11]);
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
         }
 
         // get the Id-Project map
@@ -1205,23 +1213,23 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             ProjectStatus status = new ProjectStatus((Long) row[1], (String) row[2]);
 
             // create the ProjectType object
-            ProjectType type = new ProjectType((Long) row[5], (String) row[6], (Long) row[7]);
+            ProjectType type = new ProjectType((Long) row[5], (String) row[6]);
 
             // create the ProjectCategory object
             ProjectCategory category = new ProjectCategory((Long) row[3], (String) row[4], type);
-            category.setDescription((String) row[12]);
+            category.setDescription((String) row[11]);
             // create a new instance of ProjectType class
             projects[i] = new Project((Long) row[0], category, status);
 
             // assign the audit information
-            projects[i].setCreationUser((String) row[8]);
-            projects[i].setCreationTimestamp((Date) row[9]);
-            projects[i].setModificationUser((String) row[10]);
-            projects[i].setModificationTimestamp((Date) row[11]);
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
 
             // here we only get project name and project version
-            projects[i].setProperty("Project Name", (String) row[13]);
-            projects[i].setProperty("Project Version", (String) row[14]);
+            projects[i].setProperty("Project Name", (String) row[12]);
+            projects[i].setProperty("Project Version", (String) row[13]);
         }
 
         return projects;
@@ -1248,8 +1256,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Object[] row = rows[i];
 
             // create a new instance of ProjectType class
-            projectTypes[i] = new ProjectType((Long) row[0], (String) row[1], (String) row[2], (Boolean) row[3],
-                (Long) row[4]);
+            projectTypes[i] = new ProjectType((Long) row[0], (String) row[1], (String) row[2], (Boolean) row[3]);
         }
 
         return projectTypes;
@@ -1550,8 +1557,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Object[] row = rows[i];
 
             // create the ProjectType object
-            ProjectType type = new ProjectType((Long) row[3], (String) row[4], (String) row[5], (Boolean) row[6],
-                (Long) row[7]);
+            ProjectType type = new ProjectType((Long) row[3], (String) row[4], (String) row[5], (Boolean) row[6]);
 
             // create a new instance of ProjectCategory class
             projectCategories[i] = new ProjectCategory((Long) row[0], (String) row[1], (String) row[2], type);
