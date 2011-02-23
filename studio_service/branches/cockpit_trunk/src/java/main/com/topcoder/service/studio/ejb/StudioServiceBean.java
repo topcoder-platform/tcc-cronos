@@ -107,6 +107,8 @@ import com.topcoder.service.studio.submission.SubmissionManagerLocal;
 import com.topcoder.service.studio.submission.SubmissionPayment;
 import com.topcoder.service.studio.submission.SubmissionReview;
 import com.topcoder.service.user.UserService;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.errorhandling.ExceptionUtils;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -246,6 +248,12 @@ import com.topcoder.web.ejb.pacts.BasePayment;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 @Stateless
 public class StudioServiceBean implements StudioService {
+
+    /**
+     * Represents the default namespace for this stateless bean.
+     */
+    private static final String DEFAULT_NAMESPACE = "com.topcoder.service.studio.ejb.StudioServiceBean";
+
     /**
      * Random generator.
      */
@@ -281,6 +289,8 @@ public class StudioServiceBean implements StudioService {
      */
     @Resource(name = "logName")
     private String logName;
+
+
 
     /**
      * <p>
@@ -600,7 +610,6 @@ public class StudioServiceBean implements StudioService {
     /**
      * Represents the base path for the documents. Should be configured like /studiofiles/documents. [BUG TCCC-134]
      */
-    @Resource(name = "documentBasePath")
     private String documentBasePath = DEFAULT_DOCUMENT_BASE_PATH;
 
     /**
@@ -654,7 +663,6 @@ public class StudioServiceBean implements StudioService {
      *
      * @since BUGR-456
      */
-    @Resource(name = "autoPaymentsEnabled")
     private boolean autoPaymentsEnabled = false;
 
     /**
@@ -662,7 +670,6 @@ public class StudioServiceBean implements StudioService {
      *
      * @since BUGR-456
      */
-    @Resource(name = "pactsServiceLocation")
     private String pactsServiceLocation = "jnp://localhost:1099";
 
     /**
@@ -670,7 +677,6 @@ public class StudioServiceBean implements StudioService {
      *
      * @since TCCC-287
      */
-    @Resource(name = "forumBeanProviderUrl")
     private String forumBeanProviderUrl;
 
     /**
@@ -678,7 +684,6 @@ public class StudioServiceBean implements StudioService {
      *
      * @since Complex Submission Viewer Assembly - Part 2
      */
-    @Resource(name = "submissionSiteBaseUrl")
     private String submissionSiteBaseUrl;
 
     /**
@@ -686,7 +691,6 @@ public class StudioServiceBean implements StudioService {
      *
      * @since Complex Submission Viewer Assembly - Part 2
      */
-    @Resource(name = "submissionSiteFilePath")
     private String submissionSiteFilePath;
 
     /**
@@ -728,14 +732,33 @@ public class StudioServiceBean implements StudioService {
      * This is method is performed after the construction of the bean, at this point all the bean's resources will be
      * ready.
      * </p>
+     * @throws IllegalStateException If any configuration is invalid.
      */
     @PostConstruct
-    private void init() {
+    protected void init() {
         if (logName != null) {
             if (logName.trim().length() == 0) {
                 throw new IllegalStateException("logName parameter not supposed to be empty.");
             }
             log = LogManager.getLog(logName);
+        }
+
+        ConfigManager configManager = ConfigManager.getInstance();
+
+        try {
+            documentBasePath = configManager.getString(DEFAULT_NAMESPACE, "documentBasePath");
+
+            forumBeanProviderUrl = configManager.getString(DEFAULT_NAMESPACE, "forumBeanProviderUrl");
+
+            pactsServiceLocation = configManager.getString(DEFAULT_NAMESPACE, "pactsServiceLocation");
+
+            autoPaymentsEnabled = Boolean.parseBoolean(configManager.getString(DEFAULT_NAMESPACE, "autoPaymentsEnabled"));
+
+            submissionSiteBaseUrl = configManager.getString(DEFAULT_NAMESPACE, "submissionSiteBaseUrl");
+
+            submissionSiteFilePath = configManager.getString(DEFAULT_NAMESPACE, "submissionSiteFilePath");
+        } catch (ConfigManagerException e) {
+            throw new IllegalStateException("Unable to read configuration from file.", e);
         }
         // first record in logger
         logExit("init");
