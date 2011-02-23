@@ -345,6 +345,14 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  *     <li>Update method <code>updateContestResources</code> to update copilots and update forum permission/watch</li>
  *   </ol>
  * </p>
+ *
+ * <p>
+ * Version 1.6.9 (BUGR-4582) Change notes:
+ *   <ol>
+ *     <li>Update {@link #getProjectData(TCSubject)}</li>
+ *   </ol>
+ * </p>
+ *
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSDEVELOPER
  * @version 1.6.8
  */
@@ -628,7 +636,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         "Insufficient Submissions - ReRun Possible", "Insufficient Submissions", "Abandoned","Inactive - Removed", "Cancelled - Failed Review",
         "Cancelled - Failed Screening", "Cancelled - Zero Submissions", "Cancelled - Winner Unresponsive", "Cancelled - Zero Registrations" );
 
-    
+    /**
+     * Cancelled status list.
+     *
+     * @since 1.6.9
+     */
+    public final static List<String> CANCELLED_STATUS = Arrays.asList("Cancelled - Client Request",
+        "Cancelled - Requirement Infeasible");
+
     private final static String COPILOT_PERMISSION = "full";
     
     /**
@@ -5128,6 +5143,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     addToStatusData(data.getActive(), contest.getContestFee());
                 } else if (FINISHED_STATUS.contains(contest.getSname())) {
                     addToStatusData(data.getFinished(), contest.getContestFee());
+                } else if (CANCELLED_STATUS.contains(contest.getSname())) {
+                    addToStatusData(data.getCancelled(), contest.getContestFee());
                 } else {
                     String infoMsg = "status " + contest.getSname()
                         + " is not recognized as one of Scheduled/Draft/Active/Finished or skipped intentionally";

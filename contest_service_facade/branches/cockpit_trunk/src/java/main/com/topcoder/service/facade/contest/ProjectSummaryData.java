@@ -61,6 +61,13 @@ public class ProjectSummaryData implements Serializable {
 
     /**
      * <p>
+     * The cancelled field.
+     * </p>
+     */
+    private ProjectStatusData cancelled = new ProjectStatusData();
+
+    /**
+     * <p>
      * Sets the <code>projectId</code> field value.
      * </p>
      *
@@ -189,5 +196,27 @@ public class ProjectSummaryData implements Serializable {
      */
     public ProjectStatusData getFinished() {
         return this.finished;
+    }
+
+    /**
+     * <p>
+     * Sets the <code>cancelled</code> field value.
+     * </p>
+     *
+     * @param cancelled the value to set
+     */
+    public void setCancelled(ProjectStatusData cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    /**
+     * <p>
+     * Gets the <code>cancelled</code> field value.
+     * </p>
+     *
+     * @return the <code>cancelled</code> field value
+     */
+    public ProjectStatusData getCancelled() {
+        return this.cancelled;
     }
 }
