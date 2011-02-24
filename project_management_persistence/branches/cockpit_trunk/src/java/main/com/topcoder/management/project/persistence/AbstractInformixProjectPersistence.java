@@ -879,7 +879,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id  = 31 "
+           + "         where project_info_type_id  = 31 and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3)) "
            + "         and project_id = p.project_id), 0) "
            + " end  as contest_fee "
 
@@ -1036,7 +1036,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id = 31 "
+           + "         where project_info_type_id = 31 and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3)) "
            + "         and project_id = p.project_id), 0) "
            + " end  as contest_fee "
 
@@ -4473,7 +4473,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
            + "     + "
            + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id  = 31 "
+           + "         where project_info_type_id  = 31 and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3)) "
            + "         and project_id = p.project_id), 0) "
            + " end  as contest_fee "
 
@@ -5143,7 +5143,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) ");
             sb.append("     end as tot_prize, ");
             sb.append("  ");
-            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 31 and project_id = c.project_id) as contest_fee, ");
+            sb.append("     (case when (p.project_status_id in (9, 10)  ");
+            sb.append("         and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3))) ");
+            sb.append("         OR p.project_status_id not in (9, 10) then ");
+            sb.append("         (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
+            sb.append("                 where project_info_type_id = 31 ");
+            sb.append("                 and project_id = c.project_id) ");
+            sb.append("     else 0 end) as contest_fee, ");
             sb.append("  ");
 
             // for now use creator as manager
