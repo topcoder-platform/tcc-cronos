@@ -235,6 +235,15 @@ final class PhasesHelper {
      * @since 1.6
      */
     static final String PRIMARY_REVIEW_EVALUATOR_ROLE_NAME = "Primary Review Evaluator";
+    
+    /**
+     * <p>
+     * A <code>String</code> providing the Secondary Reviewer Review.
+     * </p>
+     *
+     * @since 1.6
+     */
+    static final String SECONDARY_REVIEWER_REVIEW = "Secondary Reviewer Review";
 
     /**
      * <p>

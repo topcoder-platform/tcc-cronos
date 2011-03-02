@@ -178,27 +178,36 @@ public class PrimaryReviewEvaluationPhaseHandler extends AbstractPhaseHandler {
                 // Search all "Active" submissions with contest submission type for current project
                 Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
                     conn, phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+                // 	Locate the nearest Review  phase
+                Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.SECONDARY_REVIEWER_REVIEW, false,
+                                false);
+                // Search the reviewIds
+                Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,new String[]{PhasesHelper.SECONDARY_REVIEWER_ROLE_NAME}, reviewPhase.getId());
+
+                // Search all review scorecard for the current phase
+                Review[] reviews = PhasesHelper.searchReviewsForResources(conn, getManagerHelper(),
+                    reviewers, null);
                 boolean allReviewsCommitted = true;
                 // Search the reviewers
-    			Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn, new String[]{primaryReviewerRoleName},phase.getId());
-    			if (reviewers.length == 0) {
+    			Resource[] reviewEvaluators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn, new String[]{primaryReviewerRoleName},phase.getId());
+    			if (reviewEvaluators.length == 0) {
     				LOG.log(Level.INFO, "no reviewers for project: "
     						+ phase.getProject().getId());
     				return false;
     			}
-                Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),phase.getId(), new String[]{primaryReviewerRoleName}, null);
+                Review[] reviewEvaluations = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),phase.getId(), new String[]{primaryReviewerRoleName}, null);
                 
-                if (reviews != null && reviews.length > 0) {
-                	for ( Review review : reviews ){
+                if (reviewEvaluations != null && reviewEvaluations.length > 0) {
+                	for ( Review review : reviewEvaluations ){
                 		allReviewsCommitted = allReviewsCommitted & review.isCommitted();
                 	}
                 } else {
                 	LOG.log(Level.ERROR, "Can't end phase. No Evaluation reviews found" );
                     return false;        
                 }
-                // There will be one review evaluation per submission 
-                if (subs.length != reviews.length){
-                	LOG.log(Level.ERROR, "Can't end phase. Not all reviews has been evaluated" );
+                // There will be one review evaluation per review 
+                if (reviews.length != reviewEvaluations.length){
+                	LOG.log(Level.ERROR, "Can't end phase. Not all reviews has been evaluated. There are "+reviews.length+" reviews and only "+reviewEvaluations.length+" evaluation completed" );
                     return false;
                 }
                 // return true if all dependencies are met and review evaluation is submitted:
