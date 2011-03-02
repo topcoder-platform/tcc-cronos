@@ -58,6 +58,12 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * <p>
  * Thread Safety: This class is not thread safe.
  * </p>
+ * <p>
+ * Version 1.1 (Online Review Update Review Management Process assembly 1 version 1.0) Change notes:
+ *   <ol>
+ *   	<li>Added logic to process the new column review_evaluation_id added to the review table</li>
+ *   </ol>
+ * </p>
  * @author woodjhon
  * @author urtks
  * @author George1
@@ -199,7 +205,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
      */
     private static final String UPDATE_REVIEW_SQL = "UPDATE " + REVIEW_TABLE
             + " SET resource_id=?, submission_id=?, scorecard_id=?, committed=?,"
-            + " score=?, initial_score=?," + " modify_user=?, modify_date=CURRENT"
+            + " score=?, initial_score=?,review_evaluation_id=?," + " modify_user=?, modify_date=CURRENT"
             + " WHERE review_id=?";
 
     /**
@@ -232,7 +238,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
     private static final String QUERY_REVIEWS_SQL = "SELECT "
             + "review_id, resource_id, submission_id, scorecard_id, committed,"
             + " score, initial_score, "
-            + "create_user, create_date, modify_user, modify_date FROM " + REVIEW_TABLE
+            + "create_user, create_date, modify_user, modify_date, review_evaluation_id FROM " + REVIEW_TABLE
             + " WHERE review_id IN (" + ID_ARRAY_PARAMETER_PLACEHOLDER + ")";
 
     /**
@@ -1255,13 +1261,13 @@ public class InformixReviewPersistence implements ReviewPersistence {
                     new Object[] {new Long(review.getAuthor()), new Long(review.getSubmission()),
                             new Long(review.getScorecard()),
                             new Long(review.isCommitted() ? 1 : 0), review.getScore(),
-                            review.getInitialScore(), operator, reviewId};
+                            review.getInitialScore(),review.getReviewEvaluation() > 0 ? review.getReviewEvaluation() : null, operator, reviewId};
         } else {
             queryArgs =
                     new Object[] {new Long(review.getAuthor()), null,
                             new Long(review.getScorecard()),
                             new Long(review.isCommitted() ? 1 : 0), review.getScore(),
-                            review.getInitialScore(), operator, reviewId};
+                            review.getInitialScore(),review.getReviewEvaluation() > 0 ? review.getReviewEvaluation() : null, operator, reviewId};
         }
 
         LOGGER.log(Level.INFO, "update record in the  " + REVIEW_TABLE + " table with id:"
@@ -1876,7 +1882,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
         DataType[] columnTypes =
                 new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
                         Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.FLOAT_TYPE, Helper.FLOAT_TYPE,
-                        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE};
+                        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,Helper.LONG_TYPE};
         Object[][] rows =
                 Helper.doQuery(conn, QUERY_REVIEWS_SQL.replaceFirst(ID_ARRAY_PARAMETER_REGULAR_EXP,
                         idList), new Object[] {}, columnTypes);
@@ -1902,6 +1908,9 @@ public class InformixReviewPersistence implements ReviewPersistence {
             review.setCreationTimestamp((Date) row[8]);
             review.setModificationUser((String) row[9]);
             review.setModificationTimestamp((Date) row[10]);
+            if (row[11] != null){
+            	review.setReviewEvaluation(((Long) row[11]).longValue());
+            }
 
             // assign the current review to the array.
             reviews[i] = review;
@@ -1982,6 +1991,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
         review.setCreationTimestamp(resultSet.getDate("create_date"));
         review.setModificationUser(resultSet.getString("modify_user"));
         review.setModificationTimestamp(resultSet.getDate("modify_date"));
+        try {
+            review.setReviewEvaluation(resultSet.getLong("review_evaluation_id"));
+        } catch (NullPointerException e) {
+            // Review Evaluation ID may be NULL
+        }
 
         return review;
     }
