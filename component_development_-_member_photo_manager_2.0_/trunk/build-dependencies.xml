@@ -15,7 +15,14 @@
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
     
-    <property name="hibernate.dir" value="${ext_libdir}/hibernate-distribution-3.6.0.Final"/>
+    <property name="hibernate.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/hibernate3.jar"/>
+    <property name="antlr.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/antlr-2.7.6.jar"/>
+    <property name="commons-collections.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/commons-collections-3.1.jar"/>
+    <property name="dom4j.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/dom4j-1.6.1.jar"/>
+    <property name="javassist.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/javassist-3.12.0.GA.jar"/>
+    <property name="jta.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/jta-1.1.jar"/>
+    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/slf4j-api-1.6.1.jar"/>
+    <property name="hibernate-jpa.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
     
     <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
 
@@ -29,10 +36,14 @@
     </path>
 
     <path id="component.3rdParty-dependencies">
-
-        <fileset dir="${hibernate.dir}">
-            <include name="**/*.jar"/>
-        </fileset>
+        <pathelement location="${hibernate.jar}"/>
+        <pathelement location="${antlr.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${dom4j.jar}"/>
+        <pathelement location="${javassist.jar}"/>
+        <pathelement location="${jta.jar}"/>
+        <pathelement location="${slf4j-api.jar}"/>
+        <pathelement location="${hibernate-jpa.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">
