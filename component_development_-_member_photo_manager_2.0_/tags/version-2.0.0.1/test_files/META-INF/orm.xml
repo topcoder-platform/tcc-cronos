@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+
+    <description>OR Mapping file for the TopCoder Java Generic Member Photo Manager 2.0</description>
+
+    <entity class="com.topcoder.web.memberphoto.entities.Image">
+        <table name="image" />
+        <attributes>
+            <id name="id">
+                <column name="image_id" nullable="false" />
+                <generated-value />
+            </id>
+            <basic name="fileName">
+                <column name="file_name" nullable="false" />
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="com.topcoder.web.memberphoto.entities.MemberImage">
+        <table name="member_image" />
+        <attributes>
+            <id name="id">
+                <column name="member_image_id" nullable="false" />
+                <generated-value />
+            </id>
+            <basic name="memberId">
+                <column name="member_id" nullable="false" />
+            </basic>
+            <basic name="removed">
+                <column name="removed" nullable="false" />
+            </basic>
+            <basic name="createdBy">
+                <column name="created_by" nullable="false" />
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date" nullable="false" />
+            </basic>
+            <basic name="updatedBy">
+                <column name="updated_by" nullable="false" />
+            </basic>
+            <basic name="updatedDate">
+                <column name="updated_date" nullable="false" />
+            </basic>
+            <one-to-one name="image" target-entity="com.topcoder.web.memberphoto.entities.Image">
+                <join-column name="image_id" referenced-column-name="image_id" nullable="false" />
+                <cascade>
+                    <cascade-merge/>
+                </cascade>
+            </one-to-one>
+        </attributes>
+    </entity>
+
+</entity-mappings>

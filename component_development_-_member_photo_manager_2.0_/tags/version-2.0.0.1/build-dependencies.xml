@@ -1,0 +1,54 @@
+<project name="Dependency Import" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.5"/>
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
+    
+    <property name="hibernate.jar" value="${ext_libdir}/hibernate/3.6.0/hibernate3.jar"/>
+    <property name="antlr.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/antlr-2.7.6.jar"/>
+    <property name="commons-collections.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/commons-collections-3.1.jar"/>
+    <property name="dom4j.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/dom4j-1.6.1.jar"/>
+    <property name="javassist.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/javassist-3.12.0.GA.jar"/>
+    <property name="jta.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/jta-1.1.jar"/>
+    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/slf4j-api-1.6.1.jar"/>
+    <property name="hibernate-jpa.jar" value="${ext_libdir}/hibernate/3.6.0/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+    
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        
+        <pathelement location="${configuration_manager.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${hibernate.jar}"/>
+        <pathelement location="${antlr.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${dom4j.jar}"/>
+        <pathelement location="${javassist.jar}"/>
+        <pathelement location="${jta.jar}"/>
+        <pathelement location="${slf4j-api.jar}"/>
+        <pathelement location="${hibernate-jpa.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${ifxjdbc.jar}"/>
+    </path>
+
+</project>

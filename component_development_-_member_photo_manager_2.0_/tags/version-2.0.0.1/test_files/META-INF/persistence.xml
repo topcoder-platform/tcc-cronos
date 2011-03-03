@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+    <persistence-unit name="memberPhotoManager" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <class>com.topcoder.web.memberphoto.entities.Image</class>
+        <class>com.topcoder.web.memberphoto.entities.MemberImage</class>
+
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.informix.jdbc.IfxDriver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+            <property name="hibernate.connection.url"
+                value="jdbc:informix-sqli://localhost:9088/test:informixserver=ol_svr_custom" />
+            <property name="hibernate.connection.username" value="informix" />
+            <property name="hibernate.connection.password" value="123456" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+        </properties>
+
+    </persistence-unit>
+    <persistence-unit name="badMemberPhotoManager" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <class>com.topcoder.web.memberphoto.entities.Image</class>
+        <class>com.topcoder.web.memberphoto.entities.MemberImage</class>
+
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.informix.jdbc.IfxDriver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+            <property name="hibernate.connection.url"
+                value="jdbc:informix-sqli://localhost:9088/test:informixserver=ol_svr_custom" />
+            <property name="hibernate.connection.username" value="informix" />
+            <property name="hibernate.connection.password" value="_invalid_" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+        </properties>
+
+    </persistence-unit>
+    <persistence-unit name="memberPhotoManagerStress" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.topcoder.web.memberphoto.entities.Image</class>
+        <class>com.topcoder.web.memberphoto.entities.MemberImage</class>
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.informix.jdbc.IfxDriver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+            <property name="hibernate.connection.url" value="jdbc:informix-sqli://localhost:9088/test:informixserver=ol_svr_custom" />
+            <property name="hibernate.connection.username" value="informix" />
+            <property name="hibernate.connection.password" value="123456" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+        </properties>
+    </persistence-unit>
+</persistence>
