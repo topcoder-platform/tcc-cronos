@@ -15,16 +15,16 @@
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
     
-    <property name="hibernate.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/hibernate3.jar"/>
-    <property name="antlr.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/antlr-2.7.6.jar"/>
-    <property name="commons-collections.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/commons-collections-3.1.jar"/>
-    <property name="dom4j.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/dom4j-1.6.1.jar"/>
-    <property name="javassist.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/javassist-3.12.0.GA.jar"/>
-    <property name="jta.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/jta-1.1.jar"/>
-    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/required/slf4j-api-1.6.1.jar"/>
-    <property name="hibernate-jpa.jar" value="${ext_libdir}/hibernate-distribution-3.6.0.Final/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+    <property name="hibernate.jar" value="${ext_libdir}/hibernate/3.6.0/hibernate3.jar"/>
+    <property name="antlr.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/antlr-2.7.6.jar"/>
+    <property name="commons-collections.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/commons-collections-3.1.jar"/>
+    <property name="dom4j.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/dom4j-1.6.1.jar"/>
+    <property name="javassist.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/javassist-3.12.0.GA.jar"/>
+    <property name="jta.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/jta-1.1.jar"/>
+    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate/3.6.0/lib/required/slf4j-api-1.6.1.jar"/>
+    <property name="hibernate-jpa.jar" value="${ext_libdir}/hibernate/3.6.0/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
     
-    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
 
     <path id="component.tcs-dependencies">
         <pathelement location="${base_exception.jar}"/>
