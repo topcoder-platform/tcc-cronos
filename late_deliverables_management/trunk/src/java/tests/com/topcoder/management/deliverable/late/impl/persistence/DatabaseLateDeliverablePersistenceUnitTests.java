@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl.persistence;
 
@@ -33,7 +33,7 @@ import com.topcoder.management.deliverable.late.impl.LateDeliverablePersistenceE
  * </p>
  *
  * @author sparemax
- * @version 1.0
+ * @version 1.0.3
  */
 public class DatabaseLateDeliverablePersistenceUnitTests {
     /**
@@ -337,7 +337,10 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
         lateDeliverable.setDelay(10L);
         lateDeliverable.setForgiven(true);
         lateDeliverable.setExplanation("OR didn't work");
+        lateDeliverable.setExplanationDate(new Date());
         lateDeliverable.setResponse("OK");
+        lateDeliverable.setResponseUser("1234");
+        lateDeliverable.setResponseDate(new Date());
         lateDeliverable.setLastNotified(null);
 
         instance.update(lateDeliverable);
@@ -347,10 +350,14 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
         assertTrue("'update' should be correct.", updatedLateDeliverable.isForgiven());
         assertEquals("'update' should be correct.",
             "OR didn't work", lateDeliverable.getExplanation().trim());
+        assertNotNull("'lateDeliverable' should be correct.", lateDeliverable.getExplanationDate());
         assertEquals("'update' should be correct.",
             10L, lateDeliverable.getDelay().longValue());
         assertEquals("'update' should be correct.",
             "OK", lateDeliverable.getResponse().trim());
+        assertEquals("'update' should be correct.",
+            "1234", lateDeliverable.getResponseUser().trim());
+        assertNotNull("'lateDeliverable' should be correct.", lateDeliverable.getResponseDate());
         assertNull("'lateDeliverable' should be correct.", lateDeliverable.getLastNotified());
     }
 

@@ -22,7 +22,7 @@ import org.junit.Test;
  * </p>
  *
  * @author sparemax
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class LateDeliverableUnitTests {
     /**
@@ -397,6 +397,35 @@ public class LateDeliverableUnitTests {
 
     /**
      * <p>
+     * Accuracy test for the method <code>getExplanationDate()</code>.<br>
+     * The value should be properly retrieved.
+     * </p>
+     */
+    @Test
+    public void test_getExplanationDate() {
+        Date value = new Date();
+        instance.setExplanationDate(value);
+
+        assertSame("'getExplanationDate' should be correct.", value, instance.getExplanationDate());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>setExplanationDate(Date explanationDate)</code>.<br>
+     * The value should be properly set.
+     * </p>
+     */
+    @Test
+    public void test_setExplanationDate() {
+        Date value = new Date();
+        instance.setExplanationDate(value);
+
+        assertSame("'setExplanationDate' should be correct.",
+            value, TestsHelper.getField(instance, "explanationDate"));
+    }
+
+    /**
+     * <p>
      * Accuracy test for the method <code>getResponse()</code>.<br>
      * The value should be properly retrieved.
      * </p>
@@ -426,6 +455,64 @@ public class LateDeliverableUnitTests {
 
     /**
      * <p>
+     * Accuracy test for the method <code>getResponseUser()</code>.<br>
+     * The value should be properly retrieved.
+     * </p>
+     */
+    @Test
+    public void test_getResponseUser() {
+        String value = "12345";
+        instance.setResponseUser(value);
+
+        assertEquals("'getResponseUser' should be correct.", value, instance.getResponseUser());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>setResponseUser(String responseUser)</code>.<br>
+     * The value should be properly set.
+     * </p>
+     */
+    @Test
+    public void test_setResponseUser() {
+        String value = "12345";
+        instance.setResponseUser(value);
+
+        assertEquals("'setResponseUser' should be correct.",
+            value, TestsHelper.getField(instance, "responseUser"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getCreateDate()</code>.<br>
+     * The value should be properly retrieved.
+     * </p>
+     */
+    @Test
+    public void test_getResponseDate() {
+        Date value = new Date();
+        instance.setResponseDate(value);
+
+        assertSame("'getCreateResponseDateld be correct.", value, instance.getResponseDate());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>setResponseDate(Date responseDate)</code>.<br>
+     * The value should be properly set.
+     * </p>
+     */
+    @Test
+    public void test_setResponseDate() {
+        Date value = new Date();
+        instance.setResponseDate(value);
+
+        assertSame("'setResponseDate' should be correct.",
+            value, TestsHelper.getField(instance, "responseDate"));
+    }
+
+    /**
+     * <p>
      * Accuracy test for the method <code>toString()</code>.<br>
      * The result should be correct.
      * </p>
@@ -433,6 +520,7 @@ public class LateDeliverableUnitTests {
     @Test
     public void test_toString_1() {
         instance.setId(1);
+        instance.setProjectId(6L);
         instance.setProjectPhaseId(2);
         instance.setResourceId(3);
         instance.setDeliverableId(4);
@@ -442,11 +530,15 @@ public class LateDeliverableUnitTests {
         instance.setLastNotified(new Date());
         instance.setDelay(5L);
         instance.setExplanation("The explanation");
+        instance.setExplanationDate(new Date());
         instance.setResponse("The response");
+        instance.setResponseUser("12345");
+        instance.setResponseDate(new Date());
 
         String res = instance.toString();
 
         assertTrue("'toString' should be correct.", res.contains("id:1"));
+        assertTrue("'toString' should be correct.", res.contains("projectId:6"));
         assertTrue("'toString' should be correct.", res.contains("projectPhaseId:2"));
         assertTrue("'toString' should be correct.", res.contains("resourceId:3"));
         assertTrue("'toString' should be correct.", res.contains("deliverableId:4"));
@@ -457,6 +549,8 @@ public class LateDeliverableUnitTests {
         assertTrue("'toString' should be correct.", res.contains("delay:5"));
         assertTrue("'toString' should be correct.", res.contains("explanation:The explanation"));
         assertTrue("'toString' should be correct.", res.contains("response:The response"));
+        assertTrue("'toString' should be correct.", res.contains("responseUser:12345"));
+        assertTrue("'toString' should be correct.", res.contains("responseDate:"));
     }
 
     /**
@@ -469,8 +563,9 @@ public class LateDeliverableUnitTests {
     public void test_toString_2() {
         instance = new LateDeliverable();
         String expected = LateDeliverable.class.getName()
-            + "{id:0, projectPhaseId:0, resourceId:0, deliverableId:0, deadline:null, createDate:null,"
-            + " forgiven:false, lastNotified:null, delay:null, explanation:null, response:null}";
+            + "{id:0, projectId:0, projectPhaseId:0, resourceId:0, deliverableId:0, deadline:null, createDate:null,"
+            + " forgiven:false, lastNotified:null, delay:null, explanation:null, explanationDate:null, response:null,"
+            + " responseUser:null, responseDate:null}";
         String res = instance.toString();
 
         assertEquals("'toString' should be correct.", expected, res);

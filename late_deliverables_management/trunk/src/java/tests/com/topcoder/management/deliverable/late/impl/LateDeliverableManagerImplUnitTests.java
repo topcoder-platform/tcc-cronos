@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 201 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl;
 
@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.JUnit4TestAdapter;
@@ -37,7 +38,7 @@ import com.topcoder.search.builder.filter.NotFilter;
  * </p>
  *
  * @author sparemax
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class LateDeliverableManagerImplUnitTests {
     /**
@@ -881,6 +882,9 @@ public class LateDeliverableManagerImplUnitTests {
     public void test_searchAllLateDeliverables_1() throws Exception {
         lateDeliverable.setForgiven(true);
         lateDeliverable.setExplanation("OR didn't work");
+        lateDeliverable.setExplanationDate(new Date());
+        lateDeliverable.setResponse("Accepted");
+        lateDeliverable.setResponseDate(new Date());
         instance.update(lateDeliverable);
 
         List<LateDeliverable> res = instance.searchAllLateDeliverables(filter);
@@ -896,6 +900,12 @@ public class LateDeliverableManagerImplUnitTests {
         assertTrue("'searchAllLateDeliverables' should be correct.", lateDeliverable.isForgiven());
         assertEquals("'searchAllLateDeliverables' should be correct.",
             "OR didn't work", lateDeliverable.getExplanation().trim());
+        assertNotNull("'searchAllLateDeliverables' should be correct.",
+            lateDeliverable.getExplanationDate());
+        assertEquals("'searchAllLateDeliverables' should be correct.",
+            "Accepted", lateDeliverable.getResponse().trim());
+        assertNotNull("'searchAllLateDeliverables' should be correct.",
+            lateDeliverable.getResponseDate());
     }
 
     /**
@@ -1099,6 +1109,10 @@ public class LateDeliverableManagerImplUnitTests {
         assertEquals("'searchRestrictedLateDeliverables' should be correct.", 3, lateDeliverable.getDeliverableId());
         assertFalse("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.isForgiven());
         assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getExplanation());
+        assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getExplanationDate());
+        assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponse());
+        assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponseUser());
+        assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponseDate());
     }
 
     /**

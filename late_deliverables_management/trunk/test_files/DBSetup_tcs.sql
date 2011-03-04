@@ -12,7 +12,10 @@ CREATE TABLE "informix".late_deliverable (
     last_notified DATETIME YEAR TO FRACTION,
     delay DECIMAL(16,0),
     explanation lvarchar(4096),
-    response lvarchar(4096)
+    explanation_date DATETIME YEAR TO FRACTION,
+    response lvarchar(4096),
+    response_user VARCHAR(64),
+    response_date DATETIME YEAR TO FRACTION
 );
 
 create table 'informix'.project_phase (

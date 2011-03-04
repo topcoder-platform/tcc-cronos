@@ -186,7 +186,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class LateDeliverableManagerImpl implements LateDeliverableManager {
     /**
@@ -664,8 +664,14 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
                 lateDeliverable.setDelay((Long) resultSet.getObject(index++, Long.class));
                 // Copy explanation from the result set to the late deliverable instance:
                 lateDeliverable.setExplanation(resultSet.getString(index++));
+                // Copy explanation date from the result set to the late deliverable instance:
+                lateDeliverable.setExplanationDate(resultSet.getTimestamp(index++));
                 // Copy response from the result set to the late deliverable instance:
-                lateDeliverable.setResponse(resultSet.getString(index));
+                lateDeliverable.setResponse(resultSet.getString(index++));
+                // Copy response user from the result set to the late deliverable instance:
+                lateDeliverable.setResponseUser(resultSet.getString(index++));
+                // Copy response date from the result set to the late deliverable instance:
+                lateDeliverable.setResponseDate(resultSet.getTimestamp(index++));
 
                 // Add late deliverable to the list:
                 result.add(lateDeliverable);

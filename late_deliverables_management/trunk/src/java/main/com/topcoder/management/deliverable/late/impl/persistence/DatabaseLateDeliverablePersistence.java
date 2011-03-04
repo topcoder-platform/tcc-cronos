@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl.persistence;
 
@@ -38,7 +38,7 @@ import com.topcoder.util.log.Log;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0
+ * @version 1.0.3
  */
 public class DatabaseLateDeliverablePersistence implements LateDeliverablePersistence {
     /**
@@ -69,7 +69,8 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
      */
     private static final String SQL_UPDATE_LATE_DELIVERABLE = "UPDATE late_deliverable SET project_phase_id = ?,"
         + " resource_id = ?, deliverable_id = ?, deadline = ?, create_date = ?, forgive_ind = ?, last_notified = ?,"
-        + " delay = ?, explanation = ?, response = ? WHERE late_deliverable_id = ?";
+        + " delay = ?, explanation = ?, explanation_date = ?, response = ?, response_user = ?, response_date = ?"
+        + " WHERE late_deliverable_id = ?";
 
     /**
      * <p>
@@ -291,8 +292,20 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
 
             // Set explanation to the prepared statement:
             preparedStatement.setString(index++, lateDeliverable.getExplanation());
+            // Get explanation date from the late deliverable:
+            Date explanationDate = lateDeliverable.getExplanationDate();
+            // Set explanation date to the prepared statement:
+            preparedStatement.setTimestamp(index++,
+                (explanationDate != null) ? new Timestamp(explanationDate.getTime()) : null);
             // Set response to the prepared statement:
             preparedStatement.setString(index++, lateDeliverable.getResponse());
+            // Set response user to the prepared statement:
+            preparedStatement.setString(index++, lateDeliverable.getResponseUser());
+            // Get response date from the late deliverable:
+            Date responseDate = lateDeliverable.getResponseDate();
+            // Set response date to the prepared statement:
+            preparedStatement.setTimestamp(index++,
+                (responseDate != null) ? new Timestamp(responseDate.getTime()) : null);
 
             // Get ID from the late deliverable:
             long lateDeliverableId = lateDeliverable.getId();

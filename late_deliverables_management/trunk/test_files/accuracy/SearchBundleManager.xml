@@ -59,7 +59,10 @@
             lt.last_notified,
             lt.delay,
             lt.explanation,
-            lt.response
+            lt.explanation_date,
+            lt.response,
+            lt.response_user,
+            lt.response_date
             FROM late_deliverable lt
             INNER JOIN project_phase pp ON pp.project_phase_id = lt.project_phase_id
             INNER JOIN project p ON p.project_id = pp.project_id
@@ -167,7 +170,37 @@
               </Property>
             </Property>
           </Property>
+          <Property name="explanationDate">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
           <Property name="response">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="responseUser">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="responseDate">
             <Property name="validator">
               <Property name="class">
                 <Value>validator</Value>
@@ -249,8 +282,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
@@ -286,7 +328,10 @@
             lt.last_notified,
             lt.delay,
             lt.explanation,
-            lt.response
+            lt.explanation_date,
+            lt.response,
+            lt.response_user,
+            lt.response_date
             FROM late_deliverable lt
             INNER JOIN project_phase pp
             ON pp.project_phase_id = lt.project_phase_id
@@ -402,7 +447,37 @@
               </Property>
             </Property>
           </Property>
+          <Property name="explanationDate">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
           <Property name="response">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="responseUser">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="responseDate">
             <Property name="validator">
               <Property name="class">
                 <Value>validator</Value>
@@ -514,8 +589,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
@@ -569,7 +653,10 @@
             lt.last_notified,
             lt.delay,
             lt.explanation,
-            lt.response
+            lt.explanation_date,
+            lt.response,
+            lt.response_user,
+            lt.response_date
             FROM late_deliverable lt
             INNER JOIN project_phase pp ON pp.project_phase_id = lt.project_phase_id
             INNER JOIN project p ON p.project_id = pp.project_id
@@ -619,8 +706,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
@@ -710,8 +806,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
@@ -832,8 +937,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
@@ -953,8 +1067,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
@@ -1005,7 +1128,10 @@
             lt.last_notified,
             lt.delay,
             lt.explanation,
-            lt.response
+            lt.explanation_date,
+            lt.response,
+            lt.response_user,
+            lt.response_date
             FROM late_deliverable lt
             INNER JOIN project_phase pp ON pp.project_phase_id = lt.project_phase_id
             INNER JOIN project p ON p.project_id = pp.project_id
@@ -1085,8 +1211,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
@@ -1216,8 +1351,17 @@
           <Property name="explanation">
             <Value>lt.explanation</Value>
           </Property>
+          <Property name="explanationDate">
+            <Value>lt.explanation_date</Value>
+          </Property>
           <Property name="response">
             <Value>lt.response</Value>
+          </Property>
+          <Property name="responseUser">
+            <Value>lt.response_user</Value>
+          </Property>
+          <Property name="responseDate">
+            <Value>lt.response_date</Value>
           </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>

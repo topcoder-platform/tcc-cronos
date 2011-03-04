@@ -16,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class LateDeliverable {
     /**
@@ -142,6 +142,16 @@ public class LateDeliverable {
 
     /**
      * <p>
+     * The date/time when explanation was submitted.
+     * </p>
+     *
+     * <p> Can be any value. Has getter and setter.
+     * </p>
+     */
+    private Date explanationDate;
+
+    /**
+     * <p>
      * The response text.
      * </p>
      *
@@ -150,6 +160,26 @@ public class LateDeliverable {
      * </p>
      */
     private String response;
+
+    /**
+     * <p>
+     * The ID of the user who submitted the response.
+     * </p>
+     *
+     * <p>Can be any value. Has getter and setter.
+     * </p>
+     */
+    private String responseUser;
+
+    /**
+     * <p>
+     * The date/time when response was submitted.
+     * </p>
+     *
+     * <p> Can be any value. Has getter and setter.
+     * </p>
+     */
+    private Date responseDate;
 
     /**
      * <p>
@@ -415,6 +445,29 @@ public class LateDeliverable {
 
     /**
      * <p>
+     * Gets the date/time when explanation was submitted.
+     * </p>
+     *
+     * @return the date/time when explanation was submitted.
+     */
+    public Date getExplanationDate() {
+        return explanationDate;
+    }
+
+    /**
+     * <p>
+     * Sets the date/time when explanation was submitted.
+     * </p>
+     *
+     * @param explanationDate
+     *            the date/time when explanation was submitted.
+     */
+    public void setExplanationDate(Date explanationDate) {
+        this.explanationDate = explanationDate;
+    }
+
+    /**
+     * <p>
      * Gets the response text.
      * </p>
      *
@@ -438,6 +491,52 @@ public class LateDeliverable {
 
     /**
      * <p>
+     * Gets the user who submitted a response.
+     * </p>
+     *
+     * @return the user who submitted a response.
+     */
+    public String getResponseUser() {
+        return responseUser;
+    }
+
+    /**
+     * <p>
+     * Sets the user who submitted a response.
+     * </p>
+     *
+     * @param responseUser
+     *            the user who submitted a response.
+     */
+    public void setResponseUser(String responseUser) {
+        this.responseUser = responseUser;
+    }
+
+    /**
+     * <p>
+     * Gets the date/time when response was submitted.
+     * </p>
+     *
+     * @return the date/time when response was submitted.
+     */
+    public Date getResponseDate() {
+        return responseDate;
+    }
+
+    /**
+     * <p>
+     * Sets the date/time when response was submitted.
+     * </p>
+     *
+     * @param responseDate
+     *            the date/time when response was submitted.
+     */
+    public void setResponseDate(Date responseDate) {
+        this.responseDate = responseDate;
+    }
+
+    /**
+     * <p>
      * Returns a <code>String</code> representing this object.
      * </p>
      *
@@ -447,6 +546,7 @@ public class LateDeliverable {
     public String toString() {
         return Helper.concat(this.getClass().getName(), "{",
             "id:", id,
+            ", projectId:", projectId,
             ", projectPhaseId:", projectPhaseId,
             ", resourceId:", resourceId,
             ", deliverableId:", deliverableId,
@@ -456,7 +556,10 @@ public class LateDeliverable {
             ", lastNotified:", lastNotified,
             ", delay:", delay,
             ", explanation:", explanation,
+            ", explanationDate:", explanationDate,
             ", response:", response,
+            ", responseUser:", responseUser,
+            ", responseDate:", responseDate,
             "}");
     }
 }
