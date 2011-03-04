@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -48,6 +48,7 @@ import com.topcoder.util.file.fieldconfig.Loop;
 import com.topcoder.util.file.fieldconfig.Node;
 import com.topcoder.util.file.fieldconfig.NodeList;
 import com.topcoder.util.file.fieldconfig.TemplateFields;
+import com.topcoder.util.file.templatesource.FileTemplateSource;
 import com.topcoder.util.file.templatesource.TemplateSourceException;
 
 import java.sql.Connection;
@@ -223,7 +224,7 @@ import java.util.Map;
  * </p>
  *
  * @author tuenm, bose_java, pulky, argolite, waits
- * @version 1.2
+ * @version 1.4.6
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** constant for "Project Name" project info. */
@@ -644,9 +645,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         }
 
         try {
-            // instantiate document generator instance
-            DocumentGenerator docGenerator = DocumentGenerator.getInstance();
-
             // prepare email content and send email to each user...
             for (int i = 0; i < resourcesToSendEmail.size(); i++) {
                 Resource resource = resourcesToSendEmail.get(i);
@@ -661,6 +659,10 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 if (options == null || !options.isSend()) {
                     continue;
                 }
+
+                // instantiate document generator instance
+                DocumentGenerator docGenerator = new DocumentGenerator();
+                docGenerator.setTemplateSource(options.getTemplateSource(), new FileTemplateSource());
 
                 Template template = docGenerator.getTemplate(options.getTemplateSource(), options.getTemplateName());
                 long externalId = Long.parseLong((String) resource.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID));
@@ -681,8 +683,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         } catch (PhaseHandlingException e) {
             throw e;
         } catch (ConfigManagerException e) {
-            throw new PhaseHandlingException("There was a configuration error", e);
-        } catch (InvalidConfigException e) {
             throw new PhaseHandlingException("There was a configuration error", e);
         } catch (TemplateSourceException e) {
             throw new PhaseHandlingException("Problem with template source", e);
