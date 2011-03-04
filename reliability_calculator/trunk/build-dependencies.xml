@@ -23,7 +23,7 @@
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
     
-    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar"/>
     <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15.jar"/>
 
     <path id="component.tcs-dependencies">

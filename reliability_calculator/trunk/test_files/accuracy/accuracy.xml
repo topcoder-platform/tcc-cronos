@@ -22,16 +22,16 @@
                           <Value>com.informix.jdbc.IfxDriver</Value>
                         </Property>
                       <Property name="jdbc_url">
-                          <Value>jdbc:informix-sqli://174.129.171.200:2021/tcs_catalog:informixserver=informixoltp_tcp</Value>
+                  <Value>jdbc:informix-sqli://192.168.1.114:9088/tcs_catalog2:informixserver=ol_ids_1110_1</Value>
                       </Property>
                       <Property name="SelectMethod">
                           <Value>cursor</Value>
                       </Property>
                       <Property name="user">
-                          <Value>coder</Value>
+                          <Value>informix</Value>
                       </Property>
                       <Property name="password">
-                          <Value>c0d3r4T</Value>
+                          <Value>system</Value>
                       </Property>
                       </Property>
                     </Property>
