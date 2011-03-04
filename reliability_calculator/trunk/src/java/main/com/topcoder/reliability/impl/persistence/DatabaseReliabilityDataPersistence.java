@@ -113,7 +113,7 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
             " s.submission_status_id, pp1.scheduled_start_time, pp1.phase_status_id, pp1.actual_end_time, " +
             " pp2.actual_end_time, pp3.actual_end_time, pr.passed_review_ind, pr.final_score " +
             " FROM project_result pr " +
-            " INNER JOIN project p ON pr.project_id = p.project_id and p.project_category_id = ? " +
+            " INNER JOIN project p ON pr.project_id = p.project_id and p.project_category_id = ? and p.project_status_id != 9 " +
             " INNER JOIN component_inquiry ci ON ci.project_id = pr.project_id and ci.user_id = pr.user_id " +
             // "Submission" phase type
             " INNER JOIN project_phase pp1 ON pr.project_id = pp1.project_id and pp1.phase_type_id = 2 " +
