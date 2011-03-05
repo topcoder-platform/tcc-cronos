@@ -26,9 +26,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -43,9 +40,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -62,9 +56,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -82,9 +73,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -125,9 +113,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -142,9 +127,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -161,9 +143,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -181,9 +160,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -232,9 +208,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -249,9 +222,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -268,9 +238,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -288,9 +255,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-	            <Property name="EmailTemplateSource">
-	                <Value>file</Value>
-	            </Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>

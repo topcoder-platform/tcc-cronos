@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.stresstests;
 
@@ -97,9 +97,6 @@ public class StressBaseTest extends TestCase {
 
     /** constant for logging wrapper configuration file. */
     public static final String LOGGING_WRAPPER_CONFIG_FILE = "config/Logging_Wrapper.xml";
-
-    /** constant for document generator configuration file. */
-    public static final String DOC_GENERATOR_CONFIG_FILE = "config/Document_Manager.xml";
 
     /** constant for manager helper configuration file. */
     public static final String PHASE_HANDLER_CONFIG_FILE = "config/Phase_Handler.xml";
@@ -214,7 +211,6 @@ public class StressBaseTest extends TestCase {
      * @throws ConfigManagerException in case of config error.
      */
     protected void doConfig() throws ConfigManagerException {
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
     }
 
     /**

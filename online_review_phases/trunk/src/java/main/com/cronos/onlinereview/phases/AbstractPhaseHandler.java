@@ -97,9 +97,6 @@ import java.util.Map;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
  *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
- *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&phasesEmailTemplate;&lt;/Value&gt;
  *                &lt;/Property&gt;
@@ -116,9 +113,6 @@ import java.util.Map;
  *            &lt;Property name="EndPhaseEmail"&gt;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
- *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
  *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&phasesEmailTemplate;&lt;/Value&gt;
@@ -139,9 +133,6 @@ import java.util.Map;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
  *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
- *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&managerNotificationEmailTemplatesBase;/registration/start.txt&lt;/Value&gt;
  *                &lt;/Property&gt;
@@ -158,9 +149,6 @@ import java.util.Map;
  *            &lt;Property name="EndPhaseEmail"&gt;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
- *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
  *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&managerNotificationEmailTemplatesBase;/registration/end.txt&lt;/Value&gt;
@@ -247,9 +235,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /** Format for property name constant for "XXPhaseEmail", XX could be 'Start' or 'End'. */
     private static final String PROP_PHASE_EMAIL = "{0}PhaseEmail";
-
-    /** Format for property name constant for "XXPhaseEmail.EmailTemplateSource", XX could be 'Start' or 'End'. */
-    private static final String PROP_EMAIL_TEMPLATE_SOURCE = "{0}PhaseEmail.EmailTemplateSource";
 
     /** Format for property name constant for "XXPhaseEmail.EmailTemplateName", XX could be 'Start' or 'End'. */
     private static final String PROP_EMAIL_TEMPLATE_NAME = "{0}PhaseEmail.EmailTemplateName";
@@ -662,9 +647,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
                 // instantiate document generator instance
                 DocumentGenerator docGenerator = new DocumentGenerator();
-                docGenerator.setTemplateSource(options.getTemplateSource(), new FileTemplateSource());
+                docGenerator.setDefaultTemplateSource(new FileTemplateSource());
 
-                Template template = docGenerator.getTemplate(options.getTemplateSource(), options.getTemplateName());
+                Template template = docGenerator.getTemplate(options.getTemplateName());
                 long externalId = Long.parseLong((String) resource.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID));
                 ExternalUser user = managerHelper.getUserRetrieval().retrieveUser(externalId);
 
@@ -855,7 +840,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         } else if ("PHASE_TYPE".equals(field.getName())) {
             field.setValue(phase.getPhaseType().getName());
         } else if ("OR_LINK".equals(field.getName())) {
-            field.setValue("<![CDATA[" + projectDetailsBaseURL + project.getId() + "]]>");
+            field.setValue(projectDetailsBaseURL + project.getId());
         } else if (values.containsKey(field.getName())) {
             if (values.get(field.getName()) != null) {
                 field.setValue(values.get(field.getName()).toString());
@@ -893,8 +878,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         EmailOptions options = new EmailOptions();
         options.setFromAddress(PhasesHelper.getPropertyValue(namespace,
                 format(PROP_EMAIL_FROM_ADDRESS, propertyPrefix), true));
-        options.setTemplateSource(PhasesHelper.getPropertyValue(namespace,
-                format(PROP_EMAIL_TEMPLATE_SOURCE, propertyPrefix), true));
         options.setTemplateName(PhasesHelper.getPropertyValue(namespace,
                 format(PROP_EMAIL_TEMPLATE_NAME, propertyPrefix), true));
         options.setSubject(PhasesHelper.getPropertyValue(namespace, format(PROP_EMAIL_SUBJECT, propertyPrefix), true));

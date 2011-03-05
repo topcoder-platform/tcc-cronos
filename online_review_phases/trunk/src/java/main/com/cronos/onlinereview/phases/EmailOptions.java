@@ -1,12 +1,12 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
 /**
  * <p>
  * This class represents email options. It is a container for the set of options related to email to be send, such as
- * subject, from address, template source, template name and whether the email is to be sent or not. There is no
+ * subject, from address, template filename and whether the email is to be sent or not. There is no
  * validation performed in this class.
  * </p>
  *
@@ -38,15 +38,7 @@ public class EmailOptions {
 
     /**
      * <p>
-     * Represents the template source to load email template for. Template sources can be file or database, etc.  This
-     * field is initialized to the default value of the data type.  It can be any value. It has getter/setter.
-     * </p>
-     */
-    private String templateSource;
-
-    /**
-     * <p>
-     * Represents the template name to load email template. Template name can be a file name for example. This field is
+     * Represents the template filename to load email template from. This field is
      * initialized to the default value of the data type.  It can be any value. It has getter/setter.
      * </p>
      */
@@ -109,24 +101,6 @@ public class EmailOptions {
      */
     public void setFromAddress(String fromAddress) {
         this.fromAddress = fromAddress;
-    }
-
-    /**
-     * Returns the value of templateSource.
-     *
-     * @return the templateSource
-     */
-    public String getTemplateSource() {
-        return templateSource;
-    }
-
-    /**
-     * Set the value to  templateSource field.
-     *
-     * @param templateSource the templateSource to set
-     */
-    public void setTemplateSource(String templateSource) {
-        this.templateSource = templateSource;
     }
 
     /**
