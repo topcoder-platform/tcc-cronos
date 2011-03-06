@@ -65,7 +65,7 @@ import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.user.Registrant;
-
+import com.topcoder.direct.services.copilot.model.CopilotProject;
 
 /**
  * <p>
@@ -2647,4 +2647,23 @@ public interface ContestServiceFacade {
     public void selectCopilot(TCSubject currentUser, long tcDirectProjectId, long profileId, long submissionId, 
                               int placement, long copilotPostingProjectId)
         throws PermissionServiceException, ContestServiceException;
+
+    /**
+     * Update copilot projects and related permissions.
+     * 
+     * @param currentUser
+     *            current user
+     * @param copilotProjects
+     *            the copilot projects to update
+     * @param removeFlags
+     *            whether to remove or add
+     * @return updated copilot projects
+     * @throws PermissionServiceException
+     *             if current user has no permission to perform this operation
+     * @throws ContestServiceException
+     *             if any exception occurs
+     */
+    public List<CopilotProject> updateCopilotProjects(TCSubject currentUser,
+            List<CopilotProject> copilotProjects, List<Boolean> removeFlags)
+            throws PermissionServiceException, ContestServiceException;
 }
