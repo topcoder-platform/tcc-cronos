@@ -887,14 +887,60 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and linkp.link_type_id = 3 and re.resource_role_id = 9 "
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
            // contest fee/ price sum
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id in (30, 31, 33, 35, 16, 38, 39)  "
-           + "        and project_id = p.project_id)  "
-           + "  +   "
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id = 16  "
-           + "        and project_id = p.project_id)/2 as contest_fee "
-
+           + "  case when p.project_status_id in (1, 2) then "
+           + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
+           + "       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id  "
+           + "       and pi26.value = 'On' "
+           + "       and pi26.project_id =  p.project_id ), 0) "
+           + "     + "
+           + "     nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 16 "
+           + "         and project_id = p.project_id)/2), 0) "
+           + " when p.project_status_id = 7 then "
+           + "   nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id  = 31 "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
+           + "       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id  "
+           + "       and pi26.value = 'On' "
+           + "       and pi26.project_id =  p.project_id ), 0) "
+           + "  else  nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "          AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id  = 31 and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3)) "
+           + "         and project_id = p.project_id), 0) "
+           + " end  as contest_fee "
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -998,13 +1044,60 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
 
            // contest fee/ price sum
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id in (30, 31, 33, 35, 16, 38, 39)  "
-           + "        and project_id = p.project_id)  "
-           + "  +   "
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id = 16  "
-           + "        and project_id = p.project_id)/2 as contest_fee "
+         + "  case when p.project_status_id in (1, 2) then "
+           + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
+           + "       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id  "
+           + "       and pi26.value = 'On' "
+           + "       and pi26.project_id =  p.project_id ), 0) "
+           + "     + "
+           + "     nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 16 "
+           + "         and project_id = p.project_id)/2), 0) "
+           + " when p.project_status_id = 7 then "
+           + "   nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 31 "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
+           + "       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id  "
+           + "       and pi26.value = 'On' "
+           + "       and pi26.project_id =  p.project_id ), 0) "
+           + "  else  nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "          AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 31 and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3)) "
+           + "         and project_id = p.project_id), 0) "
+           + " end  as contest_fee "
 
     + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
     + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -1466,16 +1559,13 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the column types mapping for retrieving simple pipeline data.
      * @since 1.1.1
      */
-    private static final DataType[] QUERY_SIMPLE_PIPELINE_DATA_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+    private static final DataType[] QUERY_SIMPLE_PIPELINE_DATA_COLUMN_TYPES = new DataType[] {
             Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
             Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE,
             Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
-            Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE,
-            Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-            Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-            Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
+            Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, 
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, 
+            Helper.LONG_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to find the corresponding develop contest for the design contest.
@@ -1522,7 +1612,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      *  get all project ids by tc direct project
      *
      */
-    private static final String QUERY_PROJECT_ID_BY_TC_DIRECT = "select project_id from project where tc_direct_project_id = ? and project_status_id = 1 ";
+    private static final String QUERY_PROJECT_ID_BY_TC_DIRECT = "select project_id from project where tc_direct_project_id = ? and project_status_id != 3 ";
 
 
     /**
@@ -4093,12 +4183,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // get the standard cca value from project property. 
         boolean standardCCA = (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC));
 
-        // copilot contests are always CCA
-        if (project.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId())
-        {
-            standardCCA = true;
-        }
-
         // get the billing project id
         long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));
 
@@ -6136,13 +6220,60 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            + "                   and re.project_id = linkp.source_project_id)) as hassrfr, "
 
            // contest fee/ price sum
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id in (30, 31, 33, 35, 16, 38, 39)  "
-           + "        and project_id = p.project_id)  "
-           + "  +   "
-           + " (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info  "
-           + "        where project_info_type_id = 16  "
-           + "        and project_id = p.project_id)/2 as contest_fee "
+           + "  case when p.project_status_id in (1, 2) then "
+           + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
+           + "       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id  "
+           + "       and pi26.value = 'On' "
+           + "       and pi26.project_id =  p.project_id ), 0) "
+           + "     + "
+           + "     nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id = 16 "
+           + "         and project_id = p.project_id)/2), 0) "
+           + " when p.project_status_id = 7 then "
+           + "   nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "         WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "         AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id  = 31 "
+           + "         and project_id = p.project_id), 0) "
+           + "     + "
+           + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
+           + "       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id  "
+           + "       and pi26.value = 'On' "
+           + "       and pi26.project_id =  p.project_id ), 0) "
+           + "  else  nvl((SELECT SUM(nvl(total_amount, 0))  "
+           + "        FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  "
+           + "          WHERE pmd.component_project_id = p.project_id and installment_number = 1 "
+           + "          AND NOT pmd.payment_status_id IN (65, 68, 69)), 0) "
+           + "   +  "
+           + "   NVL((SELECT sum(pmd2.total_amount)  "
+           + "   FROM  informixoltp:payment_detail pmd,   "
+           + "         informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  "
+           + "         informixoltp:payment pm2  "
+           + "    WHERE pmd.component_project_id = p.project_id and pmd2.installment_number = 1  "
+           + "    and pm.most_recent_detail_id = pmd.payment_detail_id   "
+           + "   and pm2.most_recent_detail_id = pmd2.payment_detail_id  "
+           + "   AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) "
+           + "     + "
+           + "     nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
+           + "         where project_info_type_id  = 31 and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3)) "
+           + "         and project_id = p.project_id), 0) "
+           + " end  as contest_fee "
 
             + " from project p, project_category_lu pcl, project_status_lu psl, tc_direct_project tcd "
             + " where p.project_category_id = pcl.project_category_id and p.project_status_id = psl.project_status_id and p.tc_direct_project_id = tcd.project_id "
@@ -6738,8 +6869,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             
             StringBuffer sb = new StringBuffer();
             
-            sb.append(" select NVL(pipe.id,-1) as id,  ");
-            sb.append("     c.project_id as contest_id, ");
+            sb.append(" select   c.project_id as contest_id, ");
             sb.append("     (select value from project_info where project_info_type_id = 6 and project_id = c.project_id) as cname, ");
             sb.append("     (select value from project_info where project_info_type_id = 7 and project_id = c.project_id) as cversion, ");
             sb.append("     p.project_id as project_id, ");
@@ -6764,52 +6894,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("     on cpx.client_id = cl.client_id ");
             sb.append("     where pi.project_id = c.project_id and pi.project_info_type_id = 32), 'One Off') as client_name, ");
             sb.append("  ");
-            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 33 and project_id = c.project_id) as review_payment, ");
+            sb.append("     case when c.project_status_id in (1, 2) then   ");
+            sb.append("        nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
+            sb.append("             where project_info_type_id in (33, 35, 16, 38, 39) ");
+            sb.append("             and project_id = c.project_id), 0)  ");
+            sb.append("        +  ");
+            sb.append("       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 ");
+            sb.append("       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id   ");
+            sb.append("       and pi26.value = 'On'  ");
+            sb.append("       and pi26.project_id =  p.project_id ), 0)   ");
+            sb.append("        +  ");
+            sb.append("       nvl(((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
+            sb.append("             where project_info_type_id = 16 ");
+            sb.append("             and project_id = c.project_id)/2), 0) ");
+            sb.append("     when   c.project_status_id = 7 then ");
+            sb.append("       nvl((SELECT SUM(total_amount)  ");
+            sb.append("             FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  ");
+            sb.append("             WHERE pmd.component_project_id = c.project_id and installment_number = 1 ");
+            sb.append("                   AND NOT pmd.payment_status_id IN (65, 68, 69)),0 ) + ");
+
+            sb.append("       NVL((SELECT sum(pmd2.total_amount)  ");
+            sb.append("          FROM  informixoltp:payment_detail pmd,   ");
+            sb.append("                informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  ");
+            sb.append("                informixoltp:payment pm2  ");
+            sb.append("           WHERE pmd.component_project_id = c.project_id and pmd2.installment_number = 1  ");
+            sb.append("           and pm.most_recent_detail_id = pmd.payment_detail_id   ");
+            sb.append("          and pm2.most_recent_detail_id = pmd2.payment_detail_id  ");
+            sb.append("         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) ");
+            sb.append("        +    ");
+            sb.append("       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 ");
+            sb.append("       where pi30.project_info_type_id = 30 and pi26.project_info_type_id = 26 and pi26.project_id = pi30.project_id   ");
+            sb.append("       and pi26.value = 'On'  ");
+            sb.append("       and pi26.project_id =  p.project_id ), 0)   ");
+            sb.append("     else  nvl((SELECT SUM(total_amount)  ");
+            sb.append("             FROM informixoltp:payment pm INNER JOIN informixoltp:payment_detail pmd ON pm.most_recent_detail_id = pmd.payment_detail_id  ");
+            sb.append("             WHERE pmd.component_project_id = c.project_id and installment_number = 1 ");
+            sb.append("                   AND NOT pmd.payment_status_id IN (65, 68, 69)),0 ) ");
+            sb.append("        +    ");
+             sb.append("       NVL((SELECT sum(pmd2.total_amount)  ");
+            sb.append("          FROM  informixoltp:payment_detail pmd,   ");
+            sb.append("                informixoltp:payment pm LEFT OUTER JOIN informixoltp:payment_detail pmd2 on pm.payment_id = pmd2.parent_payment_id,  ");
+            sb.append("                informixoltp:payment pm2  ");
+            sb.append("           WHERE pmd.component_project_id = c.project_id and pmd2.installment_number = 1  ");
+            sb.append("           and pm.most_recent_detail_id = pmd.payment_detail_id   ");
+            sb.append("          and pm2.most_recent_detail_id = pmd2.payment_detail_id  ");
+            sb.append("         AND NOT pmd2.payment_status_id IN (65, 68, 69)), 0) ");
+            sb.append("     end as tot_prize, ");
             sb.append("  ");
-            sb.append("     NVL(pipe.specification_review_payment,0) as specification_review_payment, ");
+            sb.append("     (case when (p.project_status_id in (9, 10)  ");
+            sb.append("         and exists (select * from project_phase where project_id = p.project_id and phase_type_id = 1 and phase_status_id in (2,3))) ");
+            sb.append("         OR p.project_status_id not in (9, 10) then ");
+            sb.append("         (select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
+            sb.append("                 where project_info_type_id = 31 ");
+            sb.append("                 and project_id = c.project_id) ");
+            sb.append("     else 0 end) as contest_fee, ");
             sb.append("  ");
-            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 16 and project_id = c.project_id) as tot_prize, ");
-            sb.append("  ");
-            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 30 and project_id = c.project_id) as dr, ");
-            sb.append("  ");
-            sb.append("     (select value::DECIMAL(10,2) from project_info where project_info_type_id = 31 and project_id = c.project_id) as contest_fee, ");
-            sb.append("  ");
- // not used and cause performance issue
-/*            sb.append("     ccat.short_desc as short_desc, ");
-            sb.append("  ");
-            sb.append("     ccat.description as long_desc, ");
-            sb.append("  ");
-            sb.append("     (select value from project_info where project_info_type_id = 14 and project_id = c.project_id) as eligibility, ");
-            sb.append("  "); */
-         /*   sb.append("     (select max(ri.value) ");
-            sb.append("     from resource as res ");
-            sb.append("     join resource_role_lu as res_role ");
-            sb.append("         on res.resource_role_id = res_role.resource_role_id ");
-            sb.append("         and res.project_id = c.project_id ");
-            sb.append("         and res_role.name = 'Manager' ");
-            sb.append("     join resource_info ri ");
-            sb.append("          on (res.resource_id = ri.resource_id and ri.resource_info_type_id = 2) ");   // get handle
-            sb.append("      where res.project_id = c.project_id and ri.value != 'Applications' and ri.value != 'Components') ");
-            sb.append("                 as manager, ");
-            sb.append("  "); */
+
             // for now use creator as manager
             sb.append("         (select u.handle from project pp, user u ");
             sb.append("         where pp.create_user = u.user_id ");
             sb.append("         and pp.project_id = c.project_id) as manager, ");
             sb.append("  "); 
-            sb.append("      ('Reviewer') as reviewer, ");
-            sb.append("  ");
-            sb.append("         ('Architect') as architect, ");
-            sb.append("  ");
-            sb.append("         ('Salesperson') as sales_person, ");
-            sb.append("      ");
-            sb.append("     NVL(pipe.client_approval,0) as client_approval, ");
-            sb.append("     NVL(pipe.pricing_approval,0) as pricing_approval, ");
-            sb.append("     NVL(pipe.has_wiki_specification,0) as has_wiki_specification, ");
-            sb.append("     NVL(pipe.passed_spec_review,0) as passed_spec_review, ");
-            sb.append("     NVL(pipe.has_dependent_competitions,0) as has_dependent_competitions, ");
-            sb.append("     NVL(pipe.was_reposted,0) as was_reposted, ");
-            sb.append("     NVL(pipe.notes,'') as notes, ");
             sb.append("     (select name  ");
             sb.append("         from permission_type  ");
             sb.append("         where permission_type_id= NVL( (select max( permission_type_id)  ");
@@ -6909,9 +7054,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("                                           u.user_name = (select handle from user where user_id = ").append(userId).append(") ");
             sb.append("        ) )  ");
             sb.append(" ) ");
- /*           // exclude contests that has eligibility
-            sb.append(" AND NOT EXISTS (SELECT 'has_eligibility_constraints' FROM contest_eligibility ce  ");
-            sb.append("           WHERE ce.is_studio = 0 AND ce.contest_id = c.project_id) "); */
             sb.append(" AND ");
             // not show inactive or deleted
             sb.append(" (c.project_status_id != 3)  ");
@@ -6943,110 +7085,74 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 Object[] os = rows[i];
 
                 if (os[0] != null)
-                    c.setPipelineInfoId((Long) os[0]);
+                    c.setContestId((Long) os[0]);
                 if (os[1] != null)
-                    c.setContestId((Long) os[1]);
+                    c.setCname(os[1].toString());
                 if (os[2] != null)
-                    c.setCname(os[2].toString());
+                    c.setCversion(os[2].toString());
                 if (os[3] != null)
-                    c.setCversion(os[3].toString());
+                    c.setProjectId((Long) os[3]);
                 if (os[4] != null)
-                    c.setProjectId((Long) os[4]);
+                    c.setPname(os[4].toString());
                 if (os[5] != null)
-                    c.setPname(os[5].toString());
+                    c.setContestType(os[5].toString());
                 if (os[6] != null)
-                    c.setContestType(os[6].toString());
-                if (os[7] != null)
-                    c.setContestCategory(os[7].toString());
+                    c.setContestCategory(os[6].toString());
 
-                
-
-          /*      if (os[8] != null)
-                    c.setSname(os[8].toString());  */
+                if (os[8] != null)
+                    c.setStartDate(myFmt.parse(os[8].toString()));
                 if (os[9] != null)
-                    c.setStartDate(myFmt.parse(os[9].toString()));
+                    c.setEndDate(myFmt.parse(os[9].toString()));
                 if (os[10] != null)
-                    c.setEndDate(myFmt.parse(os[10].toString()));
+                    c.setDurationStartTime(myFmt.parse(os[10].toString()));
                 if (os[11] != null)
-                    c.setDurationStartTime(myFmt.parse(os[11].toString()));
+                    c.setDurationEndTime(myFmt.parse(os[11].toString()));
                 if (os[12] != null)
-                    c.setDurationEndTime(myFmt.parse(os[12].toString()));
+                    c.setCreateTime(myFmt.parse(os[12].toString()));
                 if (os[13] != null)
-                    c.setCreateTime(myFmt.parse(os[13].toString()));
+                    c.setModifyTime(myFmt.parse(os[13].toString()));
                 if (os[14] != null)
-                    c.setModifyTime(myFmt.parse(os[14].toString()));
+                    c.setClientName(os[14].toString());
                 if (os[15] != null)
-                    c.setClientName(os[15].toString());
+                    c.setTotalPrize((Double)os[15]);
                 if (os[16] != null)
-                    c.setReviewPayment((Double)os[16]);
+                    c.setContestFee((Double)os[16]);
+
                 if (os[17] != null)
-                    c.setSpecReviewPayment((Double)os[17]);
+                    c.setManager(os[17].toString());
+
                 if (os[18] != null)
-                    c.setTotalPrize((Double)os[18]);
+                    c.setPperm(os[18].toString());
                 if (os[19] != null)
-                    c.setDr((Double)os[19]);
-                if (os[20] != null)
-                    c.setContestFee((Double)os[20]);
-    /*            if (os[21] != null)
-                    c.setShortDesc(os[21].toString());
-                if (os[22] != null)
-                    c.setLongDesc(os[22].toString());
-                if (os[23] != null)
-                    c.setEligibility(os[23].toString()); */
-                if (os[21] != null)
-                    c.setManager(os[21].toString());
-                if (os[22] != null)
-                    c.setReviewer(os[22].toString());
-                if (os[23] != null)
-                    c.setArchitect(os[23].toString());
-                if (os[24] != null)
-                    c.setSalesPerson(os[24].toString());
-                if (os[25] != null)
-                    c.setClientApproval((Long)os[25] == 1 ? true : false);
-                if (os[26] != null)
-                    c.setPricingApproval((Long)os[26] == 1 ? true : false);
-                if (os[27] != null)
-                    c.setHasWikiSpecification((Long)os[27] == 1 ? true : false);
-                if (os[28] != null)
-                    c.setPassedSpecReview((Long)os[28] == 1 ? true : false);
-                if (os[29] != null)
-                    c.setHasDependentCompetitions((Long)os[29] == 1 ? true : false);
-                if (os[30] != null)
-                    c.setWasReposted((Long)os[30] == 1 ? true : false);
-                if (os[31] != null)
-                    c.setNotes(os[31].toString());
-                if (os[32] != null)
-                    c.setPperm(os[32].toString());
-                if (os[33] != null)
-                    c.setCperm(os[33].toString());
+                    c.setCperm(os[19].toString());
                 
                 
-				if (rows[i][34] != null) {
+				if (rows[i][20] != null) {
 				 // any contest that has an open phase in Online Review
 					c.setSname("Active");
-				} else if (rows[i][35] != null && ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
+				} else if (rows[i][21] != null && ((String)rows[i][7]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
                     // all phases are done, then it is completed
-                    if (rows[i][40] != null && ((String)rows[i][40]).trim().equalsIgnoreCase("Completed"))
+                    if (rows[i][26] != null && ((String)rows[i][26]).trim().equalsIgnoreCase("Completed"))
                     {
                         c.setSname("Completed");
                     }
-                    else if (rows[i][40] != null && ((String)rows[i][40]).trim().equalsIgnoreCase("Active"))
+                    else if (rows[i][26] != null && ((String)rows[i][26]).trim().equalsIgnoreCase("Active"))
                     {
                         c.setSname("Active");
                     }
                     else 
                     {
                         //scheduled or draft
-                        c.setSname(((String)rows[i][35]).trim());
+                        c.setSname(((String)rows[i][21]).trim());
                     }
-				} else if(!((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
+				} else if(!((String)rows[i][7]).equalsIgnoreCase(ProjectStatus.ACTIVE.getName())) {
 
-                    if (((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_CLIENT_REQUEST.getName()) 
-                          || ((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE.getName()))
+                    if (((String)rows[i][7]).equalsIgnoreCase(ProjectStatus.CANCELLED_CLIENT_REQUEST.getName()) 
+                          || ((String)rows[i][7]).equalsIgnoreCase(ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE.getName()))
                     {
                         c.setSname("Cancelled");
                     }
-                    else if (((String)rows[i][8]).equalsIgnoreCase(ProjectStatus.DRAFT.getName()))
+                    else if (((String)rows[i][7]).equalsIgnoreCase(ProjectStatus.DRAFT.getName()))
                     {
                         c.setSname("Draft");
                     }
@@ -7056,19 +7162,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     }
 				}
 
-                if (os[36] != null)
-                    c.setCpname(os[36].toString());
+                if (os[22] != null)
+                    c.setCpname(os[22].toString());
 
-                if (os[37] != null)
+                if (os[23] != null)
                     c.setWasReposted(Boolean.TRUE);
 
-                if (os[38] != null) {
-                    c.setCopilots(new String[] {os[38].toString()});
+                if (os[24] != null) {
+                    c.setCopilots(new String[] {os[24].toString()});
                 }
 
-                if (os[39] != null)
+                if (os[25] != null)
                 {
-                    c.setContestTypeId((Long)os[39]);
+                    c.setContestTypeId((Long)os[25]);
                 }
 
                 result.add(c);
