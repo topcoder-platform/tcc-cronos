@@ -75,8 +75,8 @@
     <property name="pipeline_service_facade.jar" value="${tcs_libdir}/${pipeline_service_facade.path}/${pipeline_service_facade.jar.name}"/>
 
     <property name="contest_service_facade.version" value="1.1.0"/>
-    <property name="contest_service_facade.jar.name" value="topcoder_contest_service_facade.jar"/>
-    <property name="contest_service_facade.path" value="topcoder_contest_service_facade/${contest_service_facade.version}"/>
+    <property name="contest_service_facade.jar.name" value="contest_service_facade.jar"/>
+    <property name="contest_service_facade.path" value="contest_service_facade/${contest_service_facade.version}"/>
     <property name="contest_service_facade.jar" value="${tcs_libdir}/${contest_service_facade.path}/${contest_service_facade.jar.name}"/>
 
     <property name="project_management.jar" value="${tcs_libdir}/project_management/1.0.1/project_management.jar"/>
