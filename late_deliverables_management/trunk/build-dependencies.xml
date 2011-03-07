@@ -13,7 +13,7 @@
     <property name="database_abstraction.jar" value="${tcs_libdir}/database_abstraction/1.1.1/database_abstraction.jar"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1.0/db_connection_factory.jar"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/1.2.0/logging_wrapper.jar"/>
-    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.0.1/object_factory.jar"/>
     <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"/>
     <property name="object_factory_config_manager_plugin.jar" value="${tcs_libdir}/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>

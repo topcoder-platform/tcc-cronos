@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late;
 
@@ -22,7 +22,7 @@ import org.junit.Test;
  * </p>
  *
  * @author sparemax
- * @version 1.0.3
+ * @version 1.0.4
  */
 public class LateDeliverableUnitTests {
     /**
@@ -249,6 +249,35 @@ public class LateDeliverableUnitTests {
 
         assertSame("'setDeadline' should be correct.",
             value, TestsHelper.getField(instance, "deadline"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getCompensatedDeadline()</code>.<br>
+     * The value should be properly retrieved.
+     * </p>
+     */
+    @Test
+    public void test_getCompensatedDeadline() {
+        Date value = new Date();
+        instance.setCompensatedDeadline(value);
+
+        assertSame("'getCompensatedDeadline' should be correct.", value, instance.getCompensatedDeadline());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>setCompensatedDeadline(Date compensatedDeadline)</code>.<br>
+     * The value should be properly set.
+     * </p>
+     */
+    @Test
+    public void test_setCompensatedDeadline() {
+        Date value = new Date();
+        instance.setCompensatedDeadline(value);
+
+        assertSame("'setCompensatedDeadline' should be correct.",
+            value, TestsHelper.getField(instance, "compensatedDeadline"));
     }
 
     /**
@@ -543,6 +572,7 @@ public class LateDeliverableUnitTests {
         assertTrue("'toString' should be correct.", res.contains("resourceId:3"));
         assertTrue("'toString' should be correct.", res.contains("deliverableId:4"));
         assertTrue("'toString' should be correct.", res.contains("deadline:"));
+        assertTrue("'toString' should be correct.", res.contains("compensatedDeadline:"));
         assertTrue("'toString' should be correct.", res.contains("createDate:"));
         assertTrue("'toString' should be correct.", res.contains("forgiven:true"));
         assertTrue("'toString' should be correct.", res.contains("lastNotified:"));
@@ -563,9 +593,9 @@ public class LateDeliverableUnitTests {
     public void test_toString_2() {
         instance = new LateDeliverable();
         String expected = LateDeliverable.class.getName()
-            + "{id:0, projectId:0, projectPhaseId:0, resourceId:0, deliverableId:0, deadline:null, createDate:null,"
-            + " forgiven:false, lastNotified:null, delay:null, explanation:null, explanationDate:null, response:null,"
-            + " responseUser:null, responseDate:null}";
+            + "{id:0, projectId:0, projectPhaseId:0, resourceId:0, deliverableId:0, deadline:null,"
+            + " compensatedDeadline:null, createDate:null, forgiven:false, lastNotified:null, delay:null,"
+            + " explanation:null, explanationDate:null, response:null, responseUser:null, responseDate:null}";
         String res = instance.toString();
 
         assertEquals("'toString' should be correct.", expected, res);

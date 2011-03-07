@@ -54,6 +54,7 @@
             lt.resource_id,
             lt.deliverable_id,
             lt.deadline,
+            lt.compensated_deadline,
             lt.create_date,
             lt.forgive_ind,
             lt.last_notified,
@@ -111,6 +112,16 @@
             </Property>
           </Property>
           <Property name="deadline">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="compensatedDeadline">
             <Property name="validator">
               <Property name="class">
                 <Value>validator</Value>
@@ -267,6 +278,9 @@
           <Property name="deadline">
             <Value>lt.deadline</Value>
           </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
+          </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>
           </Property>
@@ -323,6 +337,7 @@
             lt.resource_id,
             lt.deliverable_id,
             lt.deadline,
+            lt.compensated_deadline,
             lt.create_date,
             lt.forgive_ind,
             lt.last_notified,
@@ -388,6 +403,16 @@
             </Property>
           </Property>
           <Property name="deadline">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="compensatedDeadline">
             <Property name="validator">
               <Property name="class">
                 <Value>validator</Value>
@@ -573,6 +598,9 @@
           </Property>
           <Property name="deadline">
             <Value>lt.deadline</Value>
+          </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
           </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>
@@ -649,6 +677,7 @@
             lt.resource_id,
             lt.deliverable_id,
             lt.deadline,
+            lt.compensated_deadline,
             lt.create_date,
             lt.forgive_ind,
             lt.last_notified,
@@ -691,6 +720,9 @@
           </Property>
           <Property name="deadline">
             <Value>lt.deadline</Value>
+          </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
           </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>
@@ -736,6 +768,7 @@
             lt.resource_id,
             lt.deliverable_id,
             lt.deadline,
+            lt.compensated_deadline,
             lt.create_date,
             lt.forgive_ind,
             lt.last_notified,
@@ -786,6 +819,9 @@
           </Property>
           <Property name="deadline">
             <Value>lt.deadline</Value>
+          </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
           </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>
@@ -918,6 +954,9 @@
           <Property name="deadline">
             <Value>lt.deadline</Value>
           </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
+          </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>
           </Property>
@@ -1048,6 +1087,9 @@
           <Property name="deadline">
             <Value>lt.deadline</Value>
           </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
+          </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>
           </Property>
@@ -1111,6 +1153,7 @@
             lt.resource_id,
             lt.deliverable_id,
             lt.deadline,
+            lt.compensated_deadline,
             lt.create_date,
             lt.forgive_ind,
             lt.last_notified,
@@ -1184,6 +1227,9 @@
           <Property name="deadline">
             <Value>lt.deadline</Value>
           </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
+          </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>
           </Property>
@@ -1237,6 +1283,7 @@
             lt.resource_id,
             lt.deliverable_id,
             lt.deadline,
+            lt.compensated_deadline,
             lt.create_date,
             lt.forgive_ind,
             lt.last_notified,
@@ -1324,6 +1371,9 @@
           </Property>
           <Property name="deadline">
             <Value>lt.deadline</Value>
+          </Property>
+          <Property name="compensatedDeadline">
+            <Value>lt.compensated_deadline</Value>
           </Property>
           <Property name="createDate">
             <Value>lt.create_date</Value>

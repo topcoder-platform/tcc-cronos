@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl;
 
@@ -186,7 +186,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.3
+ * @version 1.0.4
  */
 public class LateDeliverableManagerImpl implements LateDeliverableManager {
     /**
@@ -651,6 +651,8 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
                 lateDeliverable.setDeliverableId(resultSet.getLong(index++));
                 // Copy deadline from the result set to the late deliverable instance:
                 lateDeliverable.setDeadline(resultSet.getTimestamp(index++));
+                // Copy compensated deadline from the result set to the late deliverable instance:
+                lateDeliverable.setCompensatedDeadline(resultSet.getTimestamp(index++));
                 // Copy creation date from the result set to the late deliverable instance:
                 lateDeliverable.setCreateDate(resultSet.getTimestamp(index++));
 

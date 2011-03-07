@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl.persistence;
 
@@ -33,7 +33,7 @@ import com.topcoder.management.deliverable.late.impl.LateDeliverablePersistenceE
  * </p>
  *
  * @author sparemax
- * @version 1.0.3
+ * @version 1.0.4
  */
 public class DatabaseLateDeliverablePersistenceUnitTests {
     /**
@@ -342,6 +342,7 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
         lateDeliverable.setResponseUser("1234");
         lateDeliverable.setResponseDate(new Date());
         lateDeliverable.setLastNotified(null);
+        lateDeliverable.setCompensatedDeadline(new Date());
 
         instance.update(lateDeliverable);
 
@@ -359,6 +360,7 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
             "1234", lateDeliverable.getResponseUser().trim());
         assertNotNull("'lateDeliverable' should be correct.", lateDeliverable.getResponseDate());
         assertNull("'lateDeliverable' should be correct.", lateDeliverable.getLastNotified());
+        assertNotNull("'lateDeliverable' should be correct.", lateDeliverable.getCompensatedDeadline());
     }
 
     /**

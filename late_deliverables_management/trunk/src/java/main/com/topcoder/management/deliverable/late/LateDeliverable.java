@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late;
 
@@ -16,7 +16,7 @@ import java.util.Date;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.3
+ * @version 1.0.4
  */
 public class LateDeliverable {
     /**
@@ -84,6 +84,17 @@ public class LateDeliverable {
      * </p>
      */
     private Date deadline;
+
+    /**
+     * <p>
+     * The compensated deadline for this late deliverable.
+     * </p>
+     *
+     * <p>
+     * Can be any value. Has getter and setter.
+     * </p>
+     */
+    private Date compensatedDeadline;
 
     /**
      * <p>
@@ -330,6 +341,29 @@ public class LateDeliverable {
 
     /**
      * <p>
+     * Gets the compensated deadline for this late deliverable.
+     * </p>
+     *
+     * @return the compensated deadline for this late deliverable.
+     */
+    public Date getCompensatedDeadline() {
+        return compensatedDeadline;
+    }
+
+    /**
+     * <p>
+     * Sets the compensated deadline for this late deliverable.
+     * </p>
+     *
+     * @param compensatedDeadline
+     *            the compensated deadline for this late deliverable.
+     */
+    public void setCompensatedDeadline(Date compensatedDeadline) {
+        this.compensatedDeadline = compensatedDeadline;
+    }
+
+    /**
+     * <p>
      * Gets the creation date/time for this late deliverable.
      * </p>
      *
@@ -551,6 +585,7 @@ public class LateDeliverable {
             ", resourceId:", resourceId,
             ", deliverableId:", deliverableId,
             ", deadline:", deadline,
+            ", compensatedDeadline:", compensatedDeadline,
             ", createDate:", createDate,
             ", forgiven:", forgiven,
             ", lastNotified:", lastNotified,

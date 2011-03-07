@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl.persistence;
 
@@ -38,7 +38,7 @@ import com.topcoder.util.log.Log;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.3
+ * @version 1.0.4
  */
 public class DatabaseLateDeliverablePersistence implements LateDeliverablePersistence {
     /**
@@ -68,9 +68,9 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
      * </p>
      */
     private static final String SQL_UPDATE_LATE_DELIVERABLE = "UPDATE late_deliverable SET project_phase_id = ?,"
-        + " resource_id = ?, deliverable_id = ?, deadline = ?, create_date = ?, forgive_ind = ?, last_notified = ?,"
-        + " delay = ?, explanation = ?, explanation_date = ?, response = ?, response_user = ?, response_date = ?"
-        + " WHERE late_deliverable_id = ?";
+        + " resource_id = ?, deliverable_id = ?, deadline = ?, compensated_deadline = ?, create_date = ?,"
+        + " forgive_ind = ?, last_notified = ?, delay = ?, explanation = ?, explanation_date = ?, response = ?,"
+        + " response_user = ?, response_date = ? WHERE late_deliverable_id = ?";
 
     /**
      * <p>
@@ -269,16 +269,15 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
             preparedStatement.setLong(index++, lateDeliverable.getDeliverableId());
             // Set deadline to the prepared statement:
             preparedStatement.setTimestamp(index++, new Timestamp(lateDeliverable.getDeadline().getTime()));
+            // Set compensated deadline to the prepared statement:
+            preparedStatement.setTimestamp(index++, getTimestamp(lateDeliverable.getCompensatedDeadline()));
             // Set create date to the prepared statement:
             preparedStatement.setTimestamp(index++, new Timestamp(lateDeliverable.getCreateDate().getTime()));
             // Set forgiven flag to the prepared statement:
             preparedStatement.setInt(index++, lateDeliverable.isForgiven() ? 1 : 0);
 
-            // Get last notified from the late deliverable:
-            Date lastNotified = lateDeliverable.getLastNotified();
-            // Set it to the prepared statement:
-            preparedStatement.setTimestamp(index++,
-                (lastNotified != null) ? new Timestamp(lastNotified.getTime()) : null);
+            // Set last notified to the prepared statement:
+            preparedStatement.setTimestamp(index++, getTimestamp(lateDeliverable.getLastNotified()));
 
             // Get delay from the late deliverable:
             Long delay = lateDeliverable.getDelay();
@@ -292,20 +291,14 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
 
             // Set explanation to the prepared statement:
             preparedStatement.setString(index++, lateDeliverable.getExplanation());
-            // Get explanation date from the late deliverable:
-            Date explanationDate = lateDeliverable.getExplanationDate();
             // Set explanation date to the prepared statement:
-            preparedStatement.setTimestamp(index++,
-                (explanationDate != null) ? new Timestamp(explanationDate.getTime()) : null);
+            preparedStatement.setTimestamp(index++, getTimestamp(lateDeliverable.getExplanationDate()));
             // Set response to the prepared statement:
             preparedStatement.setString(index++, lateDeliverable.getResponse());
             // Set response user to the prepared statement:
             preparedStatement.setString(index++, lateDeliverable.getResponseUser());
-            // Get response date from the late deliverable:
-            Date responseDate = lateDeliverable.getResponseDate();
             // Set response date to the prepared statement:
-            preparedStatement.setTimestamp(index++,
-                (responseDate != null) ? new Timestamp(responseDate.getTime()) : null);
+            preparedStatement.setTimestamp(index++, getTimestamp(lateDeliverable.getResponseDate()));
 
             // Get ID from the late deliverable:
             long lateDeliverableId = lateDeliverable.getId();
@@ -337,6 +330,20 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
                 // Ignore
             }
         }
+    }
+
+    /**
+     * <p>
+     * Creates Timestamp with the date.
+     * </p>
+     *
+     * @param date
+     *            the date.
+     *
+     * @return the Timestamp or null.
+     */
+    private static Timestamp getTimestamp(Date date) {
+        return (date != null) ? new Timestamp(date.getTime()) : null;
     }
 
     /**

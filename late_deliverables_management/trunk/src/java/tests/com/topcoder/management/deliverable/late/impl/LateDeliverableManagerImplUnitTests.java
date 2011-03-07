@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.impl;
 
@@ -38,7 +38,7 @@ import com.topcoder.search.builder.filter.NotFilter;
  * </p>
  *
  * @author sparemax
- * @version 1.0.3
+ * @version 1.0.4
  */
 public class LateDeliverableManagerImplUnitTests {
     /**
@@ -885,6 +885,7 @@ public class LateDeliverableManagerImplUnitTests {
         lateDeliverable.setExplanationDate(new Date());
         lateDeliverable.setResponse("Accepted");
         lateDeliverable.setResponseDate(new Date());
+        lateDeliverable.setCompensatedDeadline(new Date());
         instance.update(lateDeliverable);
 
         List<LateDeliverable> res = instance.searchAllLateDeliverables(filter);
@@ -906,6 +907,8 @@ public class LateDeliverableManagerImplUnitTests {
             "Accepted", lateDeliverable.getResponse().trim());
         assertNotNull("'searchAllLateDeliverables' should be correct.",
             lateDeliverable.getResponseDate());
+        assertNotNull("'searchAllLateDeliverables' should be correct.",
+            lateDeliverable.getCompensatedDeadline());
     }
 
     /**
@@ -1113,6 +1116,7 @@ public class LateDeliverableManagerImplUnitTests {
         assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponse());
         assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponseUser());
         assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponseDate());
+        assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getCompensatedDeadline());
     }
 
     /**
