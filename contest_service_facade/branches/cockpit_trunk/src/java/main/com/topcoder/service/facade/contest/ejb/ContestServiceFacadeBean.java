@@ -4865,6 +4865,38 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
+     * Close the forum
+     *
+     * @param forumid The long id of the forum
+     */
+    public void closeForum(long forumid) {
+        long forumId = -1;
+        logger.debug("closeForum (forumid = " + forumid + ")");
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            forums.closeCategory(forumid);
+
+            logger.debug("Exit closeForum (" + forumid + ")");
+
+        } catch (Exception e) {
+            logger.error("*** Could not close forum for " + forumId);
+            logger.error(e);
+        }
+    }
+
+    /**
      * <p>
      * Ranks the submissions, given submission identifiers and the rank. If the isRankingMilestone flag is true, the
      * rank will target milestone submissions.
@@ -6991,6 +7023,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             dto.setPhase("Completed");
             com.topcoder.project.phases.Phase[] phases = contest.getAllPhases();
             dto.setProductionDate(getXMLGregorianCalendar(phases[phases.length-1].getActualEndDate()));
+            // close current forum
+            if (createForum && dto.getForum() != null)
+            {
+                closeForum(dto.getForum().getJiveCategoryId());
+            }
             dto.setForum(null);
             catalogService.updateAsset(dto);
 
