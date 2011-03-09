@@ -98,6 +98,7 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
             + " p.project_id NOT IN (SELECT ce.contest_id FROM contest_eligibility ce WHERE ce.is_studio = 0) AND"
             + " p.project_id IN (SELECT pi.project_id FROM project_info pi WHERE pi.project_info_type_id = 13 AND"
             + " (pi.value = 'Yes' OR pi.value = 'yes')) AND "
+            + " p.project_status_id != 9 AND "
             + " r.project_id = p.project_id AND r.resource_role_id = 1 AND "
             + " r.resource_id = ri.resource_id AND ri.resource_info_type_id = 1 AND ri.value = pr.user_id AND "
             + " u.resource_id = r.resource_id AND u.upload_type_id = 1 AND u.upload_status_id = 1 AND "
