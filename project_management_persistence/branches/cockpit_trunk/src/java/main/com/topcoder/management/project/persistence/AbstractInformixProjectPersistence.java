@@ -830,7 +830,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            // contest fee/ price sum
            + "  case when p.project_status_id in (1, 2) then "
            + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39, 49) "
            + "         and project_id = p.project_id), 0) "
            + "     + "
            + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
@@ -987,7 +987,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            // contest fee/ price sum
          + "  case when p.project_status_id in (1, 2) then "
            + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39, 49) "
            + "         and project_id = p.project_id), 0) "
            + "     + "
            + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
@@ -4424,7 +4424,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            // contest fee/ price sum
            + "  case when p.project_status_id in (1, 2) then "
            + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39, 49) "
            + "         and project_id = p.project_id), 0) "
            + "     + "
            + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
@@ -5165,7 +5165,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("  ");
             sb.append("     case when c.project_status_id in (1, 2) then   ");
             sb.append("        nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
-            sb.append("             where project_info_type_id in (33, 35, 16, 38, 39) ");
+            sb.append("             where project_info_type_id in (33, 35, 16, 38, 39, 49) ");
             sb.append("             and project_id = c.project_id), 0)  ");
             sb.append("        +  ");
             sb.append("       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 ");
