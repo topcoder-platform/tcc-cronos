@@ -243,6 +243,12 @@
     <property name="xerces.jar" value="${ext_libdir}/xerces/2.6.2/xerces.jar"/>
     <property name="spring.jar" value="${ext_libdir}/spring/spring.jar"/>
     <property name="commons-discovery.jar" value="${ext_libdir}/commons-discovery/0.2/commons-discovery.jar"/>
+    
+    <property name="shared.jar.name" value="shared.jar" />
+    <property name="shared.jar" value="${tcs_libdir}/${shared.jar.name}" />
+    
+    <property name="tcwebcommon.jar.name" value="tcwebcommon.jar" />
+    <property name="tcwebcommon.jar" value="${tcs_libdir}/${tcwebcommon.jar.name}" />
 
     <path id="component.tcs-dependencies">
         <pathelement location="${jboss_login_module.jar}"/>
@@ -307,6 +313,9 @@
         <pathelement location="${Project.jar}"/>
         <pathelement location="${user_service.jar}" />
 		<pathelement location="${cockpit_facade_util.jar}" />		
+        
+        <pathelement location="${shared.jar}"/>
+        <pathelement location="${tcwebcommon.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">
