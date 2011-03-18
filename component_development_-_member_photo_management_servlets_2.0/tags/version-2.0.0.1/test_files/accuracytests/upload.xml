@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	
+	<context:annotation-config />
+	<bean id="uploadServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoUploadServlet">		
+		<property name="memberIdParameterName">
+			<value>memberId</value>
+		</property>
+		<property name="memberIdSessionKey">
+			<value>sessionMemberId</value>
+		</property>
+		<property name="fileUploaderNamespace">
+			<value>MemoryFileUpload</value>
+		</property>
+		<property name="photoImageFormFileName">
+			<value>accuracytests/topcoder.jpeg</value>
+		</property>
+		<property name="photoImageErrorName">
+			<value>photoImageErrorName</value>
+		</property>
+		<property name="memberIdErrorName">
+			<value>memberIdErrorName</value>
+		</property>
+		<property name="validationErrorForwardUrl">
+			<value>validationErrorUrl</value>
+		</property>
+		
+		<property name="photoImageSubmittedDirectory">
+			<value>test_files/accuracytests/submitted</value>
+		</property>
+		<property name="photoImagePreviewDirectory">
+			<value>test_files/accuracytests/preview</value>
+		</property>
+		<property name="previewPhotoImagePathName">
+			<value>previewPhotoImagePathName</value>
+		</property>
+		<property name="previewForwardUrl">
+			<value>/preview</value>
+		</property>
+		<property name="submittedRedirectUrl">
+			<value>/submitted?${memberId}</value>
+		</property>		
+		<property name="memberPhotoManager" ref="memberPhotoManager"/>
+		
+		<property name="targetImageWidth">
+			<value>640</value>
+		</property>
+		<property name="targetImageHeight">
+			<value>480</value>
+		</property>
+		<property name="targetImageLeftCornerXParameterName">
+		<value>targetImageLeftCornerXParameterName</value>
+		</property>
+		<property name="targetImageLeftCornerYParameterName">
+		<value>targetImageLeftCornerYParameterName</value>
+		</property>
+		<property name="targetImageRightCornerXParameterName">
+		<value>targetImageRightCornerXParameterName</value>
+		</property>
+		<property name="targetImageRightCornerYParameterName">
+		<value>targetImageRightCornerYParameterName</value>
+		</property>
+		<property name="photoImageCropDirectory">
+		<value>test_files/accuracytests/crop</value>
+		</property>
+		<property name="maxFileExceededErrorName">
+		<value>maxFileExceededErrorName</value>
+		</property>
+		<property name="maxFileSize">
+		<value>1048576</value>
+		</property>
+		<property name="submittedActionParameterName">
+		<value>submittedActionParameterName</value>
+		</property>
+		<property name="memberInformationRetriever" ref="memberInformationRetriever" />
+	</bean>
+	
+	<bean id="memberPhotoManager" class="com.topcoder.web.memberphoto.servlet.accuracytests.MockMemberPhotoManager" />
+	<bean id="memberInformationRetriever" class="com.topcoder.web.memberphoto.servlet.accuracytests.MockMemberInformationRetriever" />
+	
+</beans>

@@ -1,0 +1,5 @@
+Hello %memberName%,
+You photo is removed because %photoRemovalReason%.
+Your id is %memberId%.
+Your handle is %memberHandle%.
+Regards.

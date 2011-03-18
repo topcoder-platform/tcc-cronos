@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="removalServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoRemovalServlet">
+		<property name="memberIdParameterName">
+			<value>member_id</value>
+		</property>
+		<property name="removalReasonParameterName">
+			<value>removal_reason</value>
+		</property>
+		<property name="isAdministratorSessionKey">
+			<value>is_admin_session_key</value>
+		</property>
+		<property name="notAdministratorErrorName">
+			<value>not_admin_error_name</value>
+		</property>
+		<property name="validationErrorForwardUrl">
+			<value>validation_error_forward_url</value>
+		</property>
+		<!--<property name="memberHasNoPhotoErrorName">
+			<value>member_has_no_photo_error_name</value>
+		</property>-->		
+		
+		<property name="documentGenerator" ref="documentGenerator"/>
+		<property name="memberPhotoManager" ref="memberPhotoManager"/>
+	</bean>
+	<bean id="documentGenerator"
+		class="com.topcoder.util.file.DocumentGenerator">
+		<constructor-arg value="test_namespace"/>
+	</bean>
+		<bean id="memberPhotoManager"
+		class="com.topcoder.web.memberphoto.servlet.MockMemberPhotoManagerImpl">
+	</bean>
+	
+</beans>

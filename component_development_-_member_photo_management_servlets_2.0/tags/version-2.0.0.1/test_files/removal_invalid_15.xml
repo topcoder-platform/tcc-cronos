@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="removalServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoRemovalServlet">
+		<property name="memberIdParameterName">
+			<value>member_id</value>
+		</property>
+		<property name="removalReasonParameterName">
+			<value>removal_reason</value>
+		</property>
+		<property name="isAdministratorSessionKey">
+			<value>is_admin_session_key</value>
+		</property>
+		<property name="notAdministratorErrorName">
+			<value>not_admin_error_name</value>
+		</property>
+		<property name="validationErrorForwardUrl">
+			<value>validation_error_forward_url</value>
+		</property>
+		<property name="memberHasNoPhotoErrorName">
+			<value>member_has_no_photo_error_name</value>
+		</property>
+	    <property name="emailBodyTemplateFileName">
+			<value>test_files/template.txt</value>
+		</property>
+		<property name="fromEmailAddress">
+			<value>test@topcoder.com</value>
+		</property>
+		<property name="emailSubject">
+			<value>MySubject</value>
+		</property>
+		<property name="successResultForwardUrl">
+			<value>success_result_forward_url</value>
+		</property>
+		
+		<property name="emailSendFlag">
+			<value>true</value>
+		</property>
+                <property name="photoImageRemovedDirectory">
+			<value>removed</value>
+		</property>
+		<property name="documentGenerator" ref="documentGenerator"/>
+		<property name="memberPhotoManager" ref="memberPhotoManager"/>
+		<property name="memberInformationRetriever" ref="memberInformationRetriever"/>
+	</bean>
+	<bean id="documentGenerator"
+		class="com.topcoder.util.file.DocumentGenerator">
+		<constructor-arg value="test_namespace"/>
+	</bean>
+		<bean id="memberPhotoManager"
+		class="com.topcoder.web.memberphoto.servlet.MockMemberPhotoManagerImpl">
+	</bean>
+	<bean id="memberInformationRetriever"
+		class="com.topcoder.web.memberphoto.servlet.MockMemberInformationRetrieverImpl">
+	</bean>
+	
+</beans>

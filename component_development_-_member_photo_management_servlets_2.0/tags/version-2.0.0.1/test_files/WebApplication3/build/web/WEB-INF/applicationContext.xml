@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+    
+    <!--bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+    
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${jdbc.driverClassName}"
+          p:url="${jdbc.url}"
+          p:username="${jdbc.username}"
+          p:password="${jdbc.password}" /-->
+    
+    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+    <bean id="removalServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoRemovalServlet">
+        <property name="memberIdParameterName">
+            <value>member_id</value>
+        </property>
+        <property name="removalReasonParameterName">
+            <value>removal_reason</value>
+        </property>
+        <property name="isAdministratorSessionKey">
+            <value>is_admin_session_key</value>
+        </property>
+        <property name="notAdministratorErrorName">
+            <value>not_admin_error_name</value>
+        </property>
+        <property name="validationErrorForwardUrl">
+            <value>validation_error_forward_url</value>
+        </property>
+        <property name="memberHasNoPhotoErrorName">
+            <value>member_has_no_photo_error_name</value>
+        </property>
+        <property name="emailBodyTemplateFileName">
+            <value>test_files/template.txt</value>
+        </property>
+        <property name="fromEmailAddress">
+            <value>test@topcoder.com</value>
+        </property>
+        <property name="emailSubject">
+            <value>MySubject</value>
+        </property>
+        <property name="successResultForwardUrl">
+            <value>success_result_forward_url</value>
+        </property>
+        <property name="emailSendFlag">
+            <value>true</value>
+        </property>
+        <property name="photoImageRemovedDirectory">
+            <value>removed</value>
+        </property>
+        <property name="documentGenerator" ref="documentGenerator"/>
+        <property name="memberPhotoManager" ref="memberPhotoManager"/>
+        <property name="memberInformationRetriever" ref="memberInformationRetriever"/>
+    </bean>
+    <bean id="uploadServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoUploadServlet">
+        <property name="memberIdParameterName">
+            <value>member_id</value>
+        </property>
+        <property name="memberIdSessionKey">
+            <value>member_id_session_key</value>
+        </property>
+        <property name="fileUploaderNamespace">
+            <value>MemoryFileUpload</value>
+        </property>
+        <property name="photoImageFormFileName">
+            <value>test.gif</value>
+        </property>
+        <property name="photoImageErrorName">
+            <value>photo_image_error_name</value>
+        </property>
+        <property name="memberIdErrorName">
+            <value>member_id_error_name</value>
+        </property>
+        <property name="validationErrorForwardUrl">
+            <value>validation_error_forward_url</value>
+        </property>
+        <property name="targetImageWidth">
+            <value>100</value>
+        </property>
+        <property name="targetImageHeight">
+            <value>80</value>
+        </property>
+        <property name="photoImageSubmittedDirectory">
+            <value>test_files/submitted</value>
+        </property>
+        <property name="photoImagePreviewDirectory">
+            <value>test_files/preview</value>
+        </property>
+        <property name="previewPhotoImagePathName">
+            <value>/preview</value>
+        </property>
+        <property name="previewForwardUrl">
+            <value>/success.jsp</value>
+        </property>
+        <property name="submittedRedirectUrl">
+            <value>/success.jsp</value>
+        </property>
+        <property name="targetImageLeftCornerXParameterName">
+            <value>10</value>
+        </property>
+        <property name="targetImageLeftCornerYParameterName">
+            <value>10</value>
+        </property>
+        <property name="targetImageRightCornerXParameterName">
+            <value>10</value>
+        </property>
+        <property name="targetImageRightCornerYParameterName">
+            <value>10</value>
+        </property>
+        <property name="maxFileSize">
+            <value>100000000000</value>
+        </property>
+        <property name="maxFileExceededErrorName">
+            <value>max_File_Exceeded_Error_Name</value>
+        </property>
+        <property name="submittedActionParameterName">
+            <value>submit_action</value>
+        </property>
+        <property name="photoImageCropDirectory">
+            <value>test_files/crop</value>
+        </property>
+        <property name="memberPhotoManager" ref="memberPhotoManager"/>
+        <property name="memberInformationRetriever" ref="memberInformationRetriever"/>
+    </bean>
+    <bean id="listServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoListServlet">
+        <property name="memberIdParameterName">
+            <value>member_id</value>
+        </property>
+        <property name="isAdministratorSessionKey">
+            <value>is_admin_session_key</value>
+        </property>
+        <property name="notAdministratorErrorName">
+            <value>not_admin_error_name</value>
+        </property>
+        <property name="validationErrorForwardUrl">
+            <value>validation_error_forward_url</value>
+        </property>
+        <property name="successResultForwardUrl">
+            <value>success_result_forward_url</value>
+        </property>
+        <property name="pageNumberParameterName">
+            <value>page_number_parameter_name</value>
+        </property>
+        <property name="pageSizeParameterName">
+            <value>page_size_parameter_name</value>
+        </property>
+        <property name="photoListName">
+            <value>photo_list_name</value>
+        </property>
+        <property name="memberPhotoManager" ref="memberPhotoManager"/>
+    </bean>
+    <bean id="documentGenerator"
+		class="com.topcoder.util.file.DocumentGenerator">
+        <constructor-arg value="test_namespace"/>
+    </bean>
+    <bean id="memberPhotoManager"
+		class="com.topcoder.web.memberphoto.servlet.MockMemberPhotoManagerImpl">
+    </bean>
+    <bean id="memberInformationRetriever"
+		class="com.topcoder.web.memberphoto.servlet.MockMemberInformationRetrieverImpl">
+    </bean>
+</beans>
