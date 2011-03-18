@@ -176,19 +176,19 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
 
     /**
      * <p>
-     * Represents the SQL string to update user reliability.
-     * </p>
-     */
-    private static final String SQL_UPDATE_USER_RELIABILITY = "UPDATE user_reliability SET rating = ?"
-            + " WHERE user_id = ? AND phase_id = ?";
-
-    /**
-     * <p>
      * Represents the SQL string to insert user reliability.
      * </p>
      */
     private static final String SQL_INSERT_USER_RELIABILITY =
             "INSERT INTO user_reliability (rating, user_id, phase_id)" + " VALUES (?, ?, ?)";
+
+    /**
+     * <p>
+     * Represents the SQL string to clear user_reliability table.
+     * <p>
+     */
+    private static final String SQL_DELETE_USER_RELIABILITY_DATA
+            = "DELETE FROM user_reliability WHERE phase_id = ?";
 
     /**
      * <p>
@@ -589,13 +589,8 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
             Helper.checkState(connection == null, "The connection is not opened.");
             Object[] parameters = new Object[] {reliability, userId, projectCategoryId + PROJECT_ID_ADJUST};
             try {
-                // Execute the UPDATE statement
-                int updatedNum = executeUpdate(signature, SQL_UPDATE_USER_RELIABILITY, parameters);
-                if (updatedNum == 0) {
-                    // Execute the INSERT statement
-                    executeUpdate(signature, SQL_INSERT_USER_RELIABILITY, parameters);
-                }
-                // Commit the changes
+                // Execute the INSERT statement
+                executeUpdate(signature, SQL_INSERT_USER_RELIABILITY, parameters);
                 connection.commit();
             } catch (SQLException e) {
                 // Roll back
@@ -878,6 +873,51 @@ public class DatabaseReliabilityDataPersistence implements ReliabilityDataPersis
             try {
                 // Execute the UPDATE statement
                 executeUpdate(signature, SQL_DELETE_RELIABILITY_DATA, parameters);
+                // Commit the changes
+                connection.commit();
+            } catch (SQLException e) {
+                // Roll back
+                rollback(signature);
+                throw new ReliabilityDataPersistenceException("A database access error occurred.", e);
+            }
+            // Log method exit
+            Helper.logExit(log, signature, null, enterTimestamp);
+        } catch (IllegalArgumentException e) {
+            // Log exception
+            throw Helper.logException(log, signature, e, "IllegalArgumentException is thrown.");
+        } catch (IllegalStateException e) {
+            // Log exception
+            throw Helper.logException(log, signature, e, "IllegalStateException is thrown.");
+        } catch (ReliabilityDataPersistenceException e) {
+            // Log exception
+            throw Helper.logException(log, signature, e,
+                    "ReliabilityDataPersistenceException is thrown when updating the current user reliability.");
+        }
+    }
+
+    /**
+     * <p>
+     * Deletes all user reliability data.
+     * </p>
+     * @param projectCategoryId the track for which all reliability data should be removed
+     * @throws IllegalArgumentException if projectCategoryId is not positive
+     *
+     * @throws IllegalStateException if persistence connection is not opened; if this persistence was not properly
+     *             configured (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred during accessing the persistence
+     */
+    public void clearUserReliability(long projectCategoryId) throws ReliabilityDataPersistenceException {
+        Date enterTimestamp = new Date();
+        String signature = getSignature("clearUserReliaiblity");
+        // Log method entry
+        Helper.logEntrance(log, signature, new String[0], new Object[0]);
+        try {
+            Helper.checkState(dbConnectionFactory == null, "This persistence was not properly configured.");
+            Helper.checkState(connection == null, "The connection is not opened.");
+            Object[] parameters = new Object[] {projectCategoryId + PROJECT_ID_ADJUST};
+            try {
+                // Execute the UPDATE statement
+                executeUpdate(signature, SQL_DELETE_USER_RELIABILITY_DATA, parameters);
                 // Commit the changes
                 connection.commit();
             } catch (SQLException e) {

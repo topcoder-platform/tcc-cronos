@@ -133,4 +133,17 @@ public interface ReliabilityDataPersistence extends Configurable {
      * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
     public void deleteReliabilityData(long projectCategoryId) throws ReliabilityDataPersistenceException;
+
+    /**
+     * <p>
+     * Deletes all user reliability data.
+     * </p>
+     * @param projectCategoryId the track for which all reliability data should be removed
+     * @throws IllegalArgumentException if projectCategoryId is not positive
+     *
+     * @throws IllegalStateException if persistence connection is not opened; if this persistence was not properly
+     *             configured (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred during accessing the persistence
+     */
+    public void clearUserReliability(long projectCategoryId) throws ReliabilityDataPersistenceException;
 }

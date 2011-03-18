@@ -376,6 +376,11 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
         reliabilityDataPersistence.open();
         // delete all old reliability data for this track (projectCategoryId)
         reliabilityDataPersistence.deleteReliabilityData(projectCategoryId);
+
+        if (updateCurrentReliability) {
+            reliabilityDataPersistence.clearUserReliability(projectCategoryId);
+        }
+
         // Get reliability calculation start date
         Date startDate = projectCategoryParams.getReliabilityStartDate();
         // Get user reliability calculator to be used
