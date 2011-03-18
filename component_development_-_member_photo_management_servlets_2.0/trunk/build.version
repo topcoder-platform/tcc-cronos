@@ -1,9 +1,9 @@
 # Property file defining the component's information.
-component.name=Component Development - Member Photo Management Servlets 2.0
-component.distfilename=member_photo_management_servlets_2.0
+component.name=Component Development - Member Photo Management Servlets
+component.distfilename=member_photo_management_servlets
 component.package=com.topcoder.web.memberphoto.servlet
 component.packagedir=com/topcoder/web/memberphoto/servlet
-component.version.major=1
+component.version.major=2
 component.version.minor=0
 component.version.micro=0
 component.version.build=1
