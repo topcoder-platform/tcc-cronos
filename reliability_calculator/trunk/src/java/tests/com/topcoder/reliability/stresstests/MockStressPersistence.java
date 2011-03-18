@@ -174,7 +174,6 @@ public class MockStressPersistence implements ReliabilityDataPersistence {
      * Do nothing.
      * @throws ReliabilityDataPersistenceException never
      */
-    @Override
     public void clearUserReliability(long projectCategoryId) throws ReliabilityDataPersistenceException {
     }
 }
