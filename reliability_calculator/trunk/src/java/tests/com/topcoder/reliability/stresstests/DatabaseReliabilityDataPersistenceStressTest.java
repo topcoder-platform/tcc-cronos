@@ -535,6 +535,13 @@ public class DatabaseReliabilityDataPersistenceStressTest extends BaseStressTest
                                                                                  "reliabilityDataPersistenceConfig",
                                                                                  "dbConnectionFactoryConfig"}));
         clearTables();
+        persistence.setIncludedProjectStatuses(new ArrayList < Long >() {
+
+            {
+                add(1L);
+                add(2L);
+            }
+        });
     }
 
     /**

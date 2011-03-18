@@ -16,25 +16,21 @@ import com.topcoder.reliability.Configurable;
  * reliability of specific user. This interface extends Configurable interface to support configuration via
  * Configuration API component.
  * </p>
- *
  * <p>
  * <strong>Thread Safety: </strong> Implementations of this interface are not required to be thread safe.
  * </p>
- *
  * @author saarixx, sparemax
  * @version 1.0
  */
 public interface ReliabilityDataPersistence extends Configurable {
+
     /**
      * <p>
      * Opens a connection to persistence.
      * </p>
-     *
-     * @throws IllegalStateException
-     *             if connection is already opened; if this persistence was not properly configured (is not thrown by
-     *             implementation that don't require any configuration parameters).
-     * @throws ReliabilityDataPersistenceException
-     *             if some error occurred when accessing the persistence.
+     * @throws IllegalStateException if connection is already opened; if this persistence was not properly configured
+     *             (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
     public void open() throws ReliabilityDataPersistenceException;
 
@@ -42,24 +38,16 @@ public interface ReliabilityDataPersistence extends Configurable {
      * <p>
      * Retrieves the IDs of users who have reliability rating in the specified project category.
      * </p>
-     *
-     * @param startDate
-     *            the start date when the reliability started counting in the specified project category (corresponds
-     *            to submission phase start date).
-     * @param projectCategoryId
-     *            the ID of the project category.
-     *
+     * @param startDate the start date when the reliability started counting in the specified project category
+     *            (corresponds to submission phase start date).
+     * @param projectCategoryId the ID of the project category.
      * @return the retrieved IDs of users with reliability (not <code>null</code>, doesn't contain <code>null</code>).
-     *
-     * @throws IllegalArgumentException
-     *             if projectCategoryId is not positive or startDate is <code>null</code>.
-     * @throws IllegalStateException
-     *             if persistence connection is not opened; if this persistence was not properly configured (is not
-     *             thrown by implementation that don't require any configuration parameters).
-     * @throws ReliabilityDataPersistenceException
-     *             if some error occurred when accessing the persistence.
+     * @throws IllegalArgumentException if projectCategoryId is not positive or startDate is <code>null</code>.
+     * @throws IllegalStateException if persistence connection is not opened; if this persistence was not properly
+     *             configured (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
-    public List<Long> getIdsOfUsersWithReliability(long projectCategoryId, Date startDate)
+    public List < Long > getIdsOfUsersWithReliability(long projectCategoryId, Date startDate)
         throws ReliabilityDataPersistenceException;
 
     /**
@@ -67,69 +55,48 @@ public interface ReliabilityDataPersistence extends Configurable {
      * Retrieves information about all projects that can count toward reliability for some specific user. Elements in
      * the result list must be sorted by the resolution date chronologically.
      * </p>
-     *
-     * @param projectCategoryId
-     *            the ID of the project category.
-     * @param userId
-     *            the ID of the user.
-     * @param startDate
-     *            the start date when the reliability started counting in the specified project category (corresponds
-     *            to submission phase start date).
-     *
+     * @param projectCategoryId the ID of the project category.
+     * @param userId the ID of the user.
+     * @param startDate the start date when the reliability started counting in the specified project category
+     *            (corresponds to submission phase start date).
      * @return the retrieved user participation data (not <code>null</code>, doesn't contain <code>null</code>).
-     *
-     * @throws IllegalArgumentException
-     *             if userId or projectCategoryId is not positive, or startDate is <code>null</code>.
-     * @throws IllegalStateException
-     *             if persistence connection is not opened; if this persistence was not properly configured (is not
-     *             thrown by implementation that don't require any configuration parameters).
-     * @throws ReliabilityDataPersistenceException
-     *             if some error occurred when accessing the persistence.
+     * @throws IllegalArgumentException if userId or projectCategoryId is not positive, or startDate is
+     *             <code>null</code>.
+     * @throws IllegalStateException if persistence connection is not opened; if this persistence was not properly
+     *             configured (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
-    public List<UserProjectParticipationData> getUserParticipationData(long userId, long projectCategoryId,
-        Date startDate) throws ReliabilityDataPersistenceException;
+    public List < UserProjectParticipationData > getUserParticipationData(long userId, long projectCategoryId,
+            Date startDate) throws ReliabilityDataPersistenceException;
 
     /**
      * <p>
      * Saves the provided user reliability data in persistence. The provided list must contain information about all
      * projects that affected user's reliability.
      * </p>
-     *
-     * @param projects
-     *            the list with reliability details for each project that affected user's reliability.
-     *
-     *@throws IllegalArgumentException
-     *             if projects is <code>null</code>/empty or contains <code>null</code>, or for any element of
-     *             projects: (resolutionDate is <code>null</code>) or any 2 elements in the list have different userId
-     *             properties.
-     * @throws IllegalStateException
-     *             if persistence connection is not opened; if this persistence was not properly configured (is not
-     *             thrown by implementation that don't require any configuration parameters).
-     * @throws ReliabilityDataPersistenceException
-     *             if some error occurred when accessing the persistence.
+     * @param projects the list with reliability details for each project that affected user's reliability.
+     * @throws IllegalArgumentException if projects is <code>null</code>/empty or contains <code>null</code>, or for
+     *             any element of projects: (resolutionDate is <code>null</code>) or any 2 elements in the list have
+     *             different userId properties.
+     * @throws IllegalStateException if persistence connection is not opened; if this persistence was not properly
+     *             configured (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
-    public void saveUserReliabilityData(List<UserProjectReliabilityData> projects)
+    public void saveUserReliabilityData(List < UserProjectReliabilityData > projects)
         throws ReliabilityDataPersistenceException;
 
     /**
      * <p>
      * Updates the current user reliability for the specified project category.
      * </p>
-     *
-     * @param projectCategoryId
-     *            the ID of the project category.
-     * @param userId
-     *            the ID of the user.
-     * @param reliability
-     *            the new reliability.
-     *
-     * @throws IllegalArgumentException
-     *             if userId or projectCategoryId is not positive, or reliability is not in the range [0, 1].
-     * @throws IllegalStateException
-     *             if persistence connection is not opened; if this persistence was not properly configured (is not
-     *             thrown by implementation that don't require any configuration parameters).
-     * @throws ReliabilityDataPersistenceException
-     *             if some error occurred when accessing the persistence.
+     * @param projectCategoryId the ID of the project category.
+     * @param userId the ID of the user.
+     * @param reliability the new reliability.
+     * @throws IllegalArgumentException if userId or projectCategoryId is not positive, or reliability is not in the
+     *             range [0, 1].
+     * @throws IllegalStateException if persistence connection is not opened; if this persistence was not properly
+     *             configured (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
     public void updateCurrentUserReliability(long userId, long projectCategoryId, double reliability)
         throws ReliabilityDataPersistenceException;
@@ -138,10 +105,32 @@ public interface ReliabilityDataPersistence extends Configurable {
      * <p>
      * Closes the connection to persistence.
      * </p>
-     *
-     * @throws IllegalStateException
-     *             if connection is already closed; if this persistence was not properly configured (is not thrown by
-     *             implementation that don't require any configuration parameters).
+     * @throws IllegalStateException if connection is already closed; if this persistence was not properly configured
+     *             (is not thrown by implementation that don't require any configuration parameters).
      */
     public void close();
+
+    /**
+     * <p>
+     * Sets project statuses that should be included in {@link #getIdsOfUsersWithReliability(long, Date)} and
+     * {@link #getUserParticipationData(long, long, Date)} queries.
+     * </p>
+     * @param includedProjectStatuses the list of project statuses to be included in
+     *            {@link #getIdsOfUsersWithReliability(long, Date)} and
+     *            {@link #getUserParticipationData(long, long, Date)} queries.
+     * @throws IllegalArgumentException if given list is null
+     */
+    public void setIncludedProjectStatuses(List < Long > includedProjectStatuses);
+
+    /**
+     * <p>
+     * Deletes all reliability data from persistence in given track.
+     * </p>
+     * @param projectCategoryId the track for which all reliability data should be removed
+     * @throws IllegalArgumentException if projectCategoryId is not positive
+     * @throws IllegalStateException if persistence connection is not opened; if this persistence was not properly
+     *             configured (is not thrown by implementation that don't require any configuration parameters).
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
+     */
+    public void deleteReliabilityData(long projectCategoryId) throws ReliabilityDataPersistenceException;
 }

@@ -3,18 +3,16 @@
  */
 package com.topcoder.reliability.accuracytests;
 
-import com.topcoder.configuration.ConfigurationObject;
-import com.topcoder.configuration.defaults.DefaultConfigurationObject;
-
-import com.topcoder.reliability.impl.ResolutionDateDetector;
-import com.topcoder.reliability.impl.UserProjectParticipationData;
-import com.topcoder.reliability.impl.detectors.PhaseEndTimeBasedResolutionDateDetector;
+import java.lang.reflect.Field;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
-import java.lang.reflect.Field;
-
-import java.util.Date;
+import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.configuration.defaults.DefaultConfigurationObject;
+import com.topcoder.reliability.impl.ResolutionDateDetector;
+import com.topcoder.reliability.impl.UserProjectParticipationData;
+import com.topcoder.reliability.impl.detectors.PhaseEndTimeBasedResolutionDateDetector;
 
 
 /**

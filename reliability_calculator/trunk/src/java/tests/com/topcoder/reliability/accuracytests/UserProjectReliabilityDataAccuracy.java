@@ -3,12 +3,12 @@
  */
 package com.topcoder.reliability.accuracytests;
 
-import com.topcoder.reliability.impl.BaseUserProjectData;
-import com.topcoder.reliability.impl.UserProjectReliabilityData;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
-import java.util.Date;
+import com.topcoder.reliability.impl.BaseUserProjectData;
+import com.topcoder.reliability.impl.UserProjectReliabilityData;
 
 
 /**

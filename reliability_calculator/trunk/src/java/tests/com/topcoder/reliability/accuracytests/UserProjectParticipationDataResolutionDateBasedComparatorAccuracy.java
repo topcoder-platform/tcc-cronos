@@ -3,13 +3,13 @@
  */
 package com.topcoder.reliability.accuracytests;
 
-import com.topcoder.reliability.impl.UserProjectParticipationData;
-import com.topcoder.reliability.impl.UserProjectParticipationDataComparator;
-import com.topcoder.reliability.impl.comparators.UserProjectParticipationDataResolutionDateBasedComparator;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
-import java.util.Date;
+import com.topcoder.reliability.impl.UserProjectParticipationData;
+import com.topcoder.reliability.impl.UserProjectParticipationDataComparator;
+import com.topcoder.reliability.impl.comparators.UserProjectParticipationDataResolutionDateBasedComparator;
 
 
 /**

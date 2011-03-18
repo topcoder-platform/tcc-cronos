@@ -3,26 +3,23 @@
  */
 package com.topcoder.reliability.accuracytests;
 
-import com.topcoder.configuration.ConfigurationObject;
-import com.topcoder.configuration.persistence.XMLFilePersistence;
-
-import com.topcoder.reliability.impl.ReliabilityCalculatorImpl;
-import com.topcoder.reliability.impl.persistence.DatabaseReliabilityDataPersistence;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import junit.framework.TestCase;
 
 import org.junit.Assert;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-
-import java.lang.reflect.Field;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.configuration.persistence.XMLFilePersistence;
+import com.topcoder.reliability.impl.ReliabilityCalculatorImpl;
+import com.topcoder.reliability.impl.persistence.DatabaseReliabilityDataPersistence;
 
 
 /**

@@ -3,12 +3,11 @@
  */
 package com.topcoder.reliability.accuracytests;
 
+import junit.framework.TestCase;
+
 import com.topcoder.reliability.ReliabilityCalculationException;
 import com.topcoder.reliability.impl.ReliabilityDataPersistenceException;
-
 import com.topcoder.util.errorhandling.ExceptionData;
-
-import junit.framework.TestCase;
 
 
 /**

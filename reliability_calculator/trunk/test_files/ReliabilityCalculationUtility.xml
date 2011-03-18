@@ -12,6 +12,7 @@
           </Property>
     </Property>
     <Property name="reliabilityCalculator1">
+	
       <Property name="projectCategoryIds">
         <Value>1</Value>
         <Value>2</Value>
@@ -28,6 +29,10 @@
         <Value>ReliabilityCalculatorImpl</Value>
       </Property>
       <Property name="config">
+		<Property name="includedProjectStatuses">
+			<Value>1</Value>
+			<Value>2</Value>
+		  </Property>
         <Property name="loggerName">
           <Value>myLogger</Value>
         </Property>
@@ -62,6 +67,7 @@
           <Value>DatabaseReliabilityDataPersistence</Value>
         </Property>
         <Property name="reliabilityDataPersistenceConfig">
+		  
           <Property name="loggerName">
             <Value>myLogger</Value>
           </Property>
@@ -80,7 +86,7 @@
                           <Value>com.informix.jdbc.IfxDriver</Value>
                       </Property>
                       <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.1.114:9088/tcs_catalog2:informixserver=ol_ids_1110_1</Value>
+                        <Value>jdbc:informix-sqli://localhost:9088/tcs_catalog:informixserver=tc</Value>
                       </Property>
                       <Property name="SelectMethod">
                           <Value>cursor</Value>
@@ -89,7 +95,7 @@
                           <Value>informix</Value>
                       </Property>
                       <Property name="password">
-                          <Value>system</Value>
+                          <Value>123456</Value>
                       </Property>
                     </Property>
                 </Property>
@@ -107,6 +113,7 @@
           <Property name="projectCategoryIds">
             <Value>1</Value>
             <Value>2</Value>
+			<Value>3</Value>
           </Property>
           <Property name="reliabilityStartDate">
             <Value>2005-10-05 09:00</Value>

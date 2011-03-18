@@ -3,17 +3,17 @@
  */
 package com.topcoder.reliability.failuretests;
 
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import com.topcoder.reliability.failuretests.impl.ReliabilityCalculatorImplFailureTests;
 import com.topcoder.reliability.failuretests.impl.calculators.BaseUserReliabilityCalculatorFailureTests;
 import com.topcoder.reliability.failuretests.impl.calculators.UniformUserReliabilityCalculatorFailureTests;
 import com.topcoder.reliability.failuretests.impl.calculators.WeightedUserReliabilityCalculatorFailureTests;
 import com.topcoder.reliability.failuretests.impl.detectors.PhaseEndTimeBasedResolutionDateDetectorFailureTests;
 import com.topcoder.reliability.failuretests.impl.persistence.DatabaseReliabilityDataPersistenceFailureTests;
-
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This test case aggregates all failure test cases.

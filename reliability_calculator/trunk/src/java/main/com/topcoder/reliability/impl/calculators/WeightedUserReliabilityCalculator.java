@@ -4,6 +4,7 @@
 package com.topcoder.reliability.impl.calculators;
 
 import java.util.List;
+
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.reliability.Helper;
 import com.topcoder.reliability.ReliabilityCalculatorConfigurationException;

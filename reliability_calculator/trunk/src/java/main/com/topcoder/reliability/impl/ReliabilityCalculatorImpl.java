@@ -4,9 +4,9 @@
 package com.topcoder.reliability.impl;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -32,34 +32,31 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * dates and calculate actual reliability ratings for each user respectively. In the context of this implementation
  * "resolution dates" are the moments when the information required to calculate the reliability comes in.
  * </p>
- *
  * <p>
  * <em>Usage:</em>
+ * 
  * <pre>
  * // Create an instance of ReliabilityCalculatorImpl
  * ReliabilityCalculator reliabilityCalculator = new ReliabilityCalculatorImpl();
- *
  * // Configure reliability calculator
  * ConfigurationObject config = calculatorConfig;
  * reliabilityCalculator.configure(config);
- *
  * // Calculate reliability for &quot;Design&quot; project category (with ID=1) and
  * // update current reliability ratings for all users
  * reliabilityCalculator.calculate(1, true);
  * </pre>
+ * 
  * </p>
- *
  * <p>
  * <strong>Thread Safety: </strong> This class is mutable and not thread safe. It uses ReliabilityDataPersistence,
- * UserReliabilityCalculator and ResolutionDateDetector instances that are not required to be thread safe. It's
- * assumed that configure() method will be called just once right after instantiation, before calling any business
- * methods.
+ * UserReliabilityCalculator and ResolutionDateDetector instances that are not required to be thread safe. It's assumed
+ * that configure() method will be called just once right after instantiation, before calling any business methods.
  * </p>
- *
  * @author saarixx, sparemax
  * @version 1.0
  */
 public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
+
     /**
      * <p>
      * Represents the class name.
@@ -118,6 +115,13 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
 
     /**
      * <p>
+     * Represents the property key 'includedProjectStatuses'.
+     * </p>
+     */
+    private static final String INCLUDED_PROJECT_STATUSES = "includedProjectStatuses";
+
+    /**
+     * <p>
      * Represents the property key 'projectCategoryIds'.
      * </p>
      */
@@ -144,30 +148,29 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      */
     private static final String KEY_DETECTOR_KEY = "resolutionDateDetectorKey";
 
-	/**
-	 * <p>
-	 * Represents the formatter to format the reliability value.
-	 * </p>
-	 */
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.000");
+    /**
+     * <p>
+     * Represents the formatter to format the reliability value.
+     * </p>
+     */
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.000");
+
     /**
      * <p>
      * The mapping from project category ID to the ProjectCategoryParams entity that holds reliability calculation
      * specific parameters for this project category.
      * </p>
-     *
      * <p>
      * Is initialized in configure() method and never changed after that. Cannot be null, cannot contain null/not
      * positive key or null value after initialization. Is used in calculate().
      * </p>
      */
-    private Map<Long, ProjectCategoryParams> projectCategoryParamsById;
+    private Map < Long, ProjectCategoryParams > projectCategoryParamsById;
 
     /**
      * <p>
      * The reliability data persistence to be used by this class.
      * </p>
-     *
      * <p>
      * Is initialized in configure() method and never changed after that. Cannot be null after initialization. Is used
      * in calculate().
@@ -179,7 +182,6 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      * <p>
      * The participation data comparator to be used by this class for sorting UserProjectParticipationData instances.
      * </p>
-     *
      * <p>
      * Is initialized in configure() method and never changed after that. Cannot be null after initialization. Is used
      * in calculate().
@@ -191,7 +193,6 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      * <p>
      * The logger used by this class for logging errors and debug information.
      * </p>
-     *
      * <p>
      * Is initialized in the configure() method and never changed after that. If is null, logging is not performed. Is
      * used in calculate().
@@ -212,135 +213,123 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      * <p>
      * Configures this instance with use of the given configuration object.
      * </p>
-     *
-     * @param config
-     *            the configuration object.
-     *
-     * @throws IllegalArgumentException
-     *             if config is <code>null</code>.
-     * @throws ReliabilityCalculatorConfigurationException
-     *             if some error occurred when initializing an instance using the given configuration.
+     * @param config the configuration object.
+     * @throws IllegalArgumentException if config is <code>null</code>.
+     * @throws ReliabilityCalculatorConfigurationException if some error occurred when initializing an instance using
+     *             the given configuration.
      */
     public void configure(ConfigurationObject config) {
         Helper.checkNull(config, "config");
-
         // Get logger
         log = Helper.getLog(config);
-
         try {
-
             // Create object factory
             ObjectFactory objectFactory = Helper.getObjectFactory(config);
-
             // Create reliability data persistence
-            reliabilityDataPersistence = Helper.createObject(ReliabilityDataPersistence.class, objectFactory, config,
-                KEY_PERSISTENCE_KEY, KEY_PERSISTENCE_CONFIG);
+            reliabilityDataPersistence =
+                    Helper.createObject(ReliabilityDataPersistence.class, objectFactory, config, KEY_PERSISTENCE_KEY,
+                            KEY_PERSISTENCE_CONFIG);
+            // set included project
+            long[] includedProjectStatuses = Helper.getPropertyPositiveValues(config, INCLUDED_PROJECT_STATUSES);
+            reliabilityDataPersistence.setIncludedProjectStatuses(convertArrayToList(includedProjectStatuses));
             // Create participation data comparator
-            participationDataComparator = Helper.createObject(UserProjectParticipationDataComparator.class,
-                objectFactory, config, KEY_COMPARATOR_KEY);
-
-            projectCategoryParamsById = new HashMap<Long, ProjectCategoryParams>();
+            participationDataComparator =
+                    Helper.createObject(UserProjectParticipationDataComparator.class, objectFactory, config,
+                            KEY_COMPARATOR_KEY);
+            projectCategoryParamsById = new HashMap < Long, ProjectCategoryParams >();
             DateFormat timestampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
-
             for (String childName : config.getAllChildrenNames()) {
                 if (childName.startsWith(KEY_PC_CONFIG_PREFIX)) {
                     // Get configuration for specific project categories
                     ConfigurationObject projectCategoryConfig = Helper.getChildConfig(config, childName);
-
                     // Get IDs of project categories
                     long[] projectCategoryIds = Helper.getPropertyPositiveValues(projectCategoryConfig, KEY_PC_IDS);
-
                     // Create project category parameters instance
                     ProjectCategoryParams projectCategoryParams = new ProjectCategoryParams();
-
                     // Get start date of reliability calculation for these project categories
-                    String reliabilityStartDateStr =
-                        Helper.getProperty(projectCategoryConfig, KEY_START_DATE, true);
+                    String reliabilityStartDateStr = Helper.getProperty(projectCategoryConfig, KEY_START_DATE, true);
                     try {
                         // Set reliability start date to the parameters instance
                         projectCategoryParams.setReliabilityStartDate(timestampFormat.parse(reliabilityStartDateStr));
                     } catch (ParseException e) {
                         throw new ReliabilityCalculatorConfigurationException("The value '" + reliabilityStartDateStr
-                            + "' is not in format 'yyyy-MM-dd HH:mm'.", e);
+                                + "' is not in format 'yyyy-MM-dd HH:mm'.", e);
                     }
                     // Set user reliability calculator to the parameters instance
                     projectCategoryParams.setUserReliabilityCalculator((UserReliabilityCalculator) Helper
-                        .createObject(UserReliabilityCalculator.class, objectFactory, projectCategoryConfig,
-                            KEY_CALCULATOR_KEY, KEY_CALCULATOR_CONFIG));
+                            .createObject(UserReliabilityCalculator.class, objectFactory, projectCategoryConfig,
+                                    KEY_CALCULATOR_KEY, KEY_CALCULATOR_CONFIG));
                     // Set resolution date detector to the parameters instance
                     projectCategoryParams.setResolutionDateDetector((ResolutionDateDetector) Helper.createObject(
-                        ResolutionDateDetector.class, objectFactory, projectCategoryConfig, KEY_DETECTOR_KEY,
-                        KEY_DETECTOR_CONFIG));
-
+                            ResolutionDateDetector.class, objectFactory, projectCategoryConfig, KEY_DETECTOR_KEY,
+                            KEY_DETECTOR_CONFIG));
                     for (long projectCategoryId : projectCategoryIds) {
                         // Put project category ID and the corresponding parameters to the map:
                         projectCategoryParamsById.put(projectCategoryId, projectCategoryParams);
                     }
                 }
             }
-
             if (projectCategoryParamsById.isEmpty()) {
-                throw new ReliabilityCalculatorConfigurationException(
-                    "There should be at least one project category.");
+                throw new ReliabilityCalculatorConfigurationException("There should be at least one project category.");
             }
         } catch (ConfigurationAccessException e) {
             throw new ReliabilityCalculatorConfigurationException(
-                "An error occurred while accessing the configuration.", e);
+                    "An error occurred while accessing the configuration.", e);
         }
+    }
+
+    /**
+     * <p>
+     * Converts given array to List.
+     * </p>
+     * @param array the array to be converted
+     * @return List of with values from given array
+     */
+    private List < Long > convertArrayToList(long[] array) {
+        List < Long > result = new ArrayList < Long >(array.length);
+        for (Long value : array) {
+            result.add(value);
+        }
+        return result;
     }
 
     /**
      * <p>
      * Calculates the reliability ratings for project category with the specified ID. Optionally updates the current
      * reliability ratings for all users.
-     *</p>
-     *
-     * @param updateCurrentReliability
-     *            <code>true</code> if current reliability must be updated for all users; <code>false</code>
-     *            otherwise.
-     * @param projectCategoryId
-     *            the ID of the project category.
-     *
-     * @throws IllegalArgumentException
-     *             if projectCategoryId &lt;= 0.
-     * @throws IllegalStateException
-     *             if this reliability calculator was not properly configured.
-     * @throws ProjectCategoryNotSupportedException
-     *             if project category with the given ID is not supported by this reliability calculator.
-     * @throws ReliabilityDataPersistenceException
-     *             if some error occurred when accessing the persistence.
+     * </p>
+     * @param updateCurrentReliability <code>true</code> if current reliability must be updated for all users;
+     *            <code>false</code> otherwise.
+     * @param projectCategoryId the ID of the project category.
+     * @throws IllegalArgumentException if projectCategoryId &lt;= 0.
+     * @throws IllegalStateException if this reliability calculator was not properly configured.
+     * @throws ProjectCategoryNotSupportedException if project category with the given ID is not supported by this
+     *             reliability calculator.
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
     public void calculate(long projectCategoryId, boolean updateCurrentReliability)
         throws ProjectCategoryNotSupportedException, ReliabilityDataPersistenceException {
         Date enterTimestamp = new Date();
         String signature = getSignature("calculate(long projectCategoryId, boolean updateCurrentReliability)");
-
         // Log method entry
-        Helper.logEntrance(log, signature,
-            new String[] {"projectCategoryId", "updateCurrentReliability"},
-            new Object[] {projectCategoryId, updateCurrentReliability});
-
+        Helper.logEntrance(log, signature, new String[] {"projectCategoryId", "updateCurrentReliability"},
+                new Object[] {projectCategoryId, updateCurrentReliability});
         // Log the processing of this category in INFO level
         if (log != null) {
-        	log.log(Level.INFO, "Started processing category " + projectCategoryId);
+            log.log(Level.INFO, "Started processing category " + projectCategoryId);
         }
-
         try {
             Helper.checkPositive(projectCategoryId, "projectCategoryId");
-
             Helper.checkState(projectCategoryParamsById == null,
-                "This reliability calculator was not properly configured.");
-
+                    "This reliability calculator was not properly configured.");
             // Delegate to the helper
             calculateHelper(signature, projectCategoryId, updateCurrentReliability);
-
             Date endTimestamp = new Date();
             if (log != null) {
-            	log.log(Level.INFO, "Finished processing category " + projectCategoryId);
-            	log.log(Level.INFO, "Processing category " + projectCategoryId
-            			+ " took " + (endTimestamp.getTime() - enterTimestamp.getTime()) + " ms");
+                log.log(Level.INFO, "Finished processing category " + projectCategoryId);
+                log.log(Level.INFO, "Processing category " + projectCategoryId + " took "
+                        + (endTimestamp.getTime() - enterTimestamp.getTime()) + " ms");
             }
-
             // Log method exit
             Helper.logExit(log, signature, null, enterTimestamp);
         } catch (IllegalArgumentException e) {
@@ -352,11 +341,11 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
         } catch (ProjectCategoryNotSupportedException e) {
             // Log exception
             throw Helper.logException(log, signature, e,
-                "ProjectCategoryNotSupportedException is thrown when calculating the reliability ratings.");
+                    "ProjectCategoryNotSupportedException is thrown when calculating the reliability ratings.");
         } catch (ReliabilityDataPersistenceException e) {
             // Log exception
             throw Helper.logException(log, signature, e,
-                "ReliabilityDataPersistenceException is thrown when calculating the reliability ratings.");
+                    "ReliabilityDataPersistenceException is thrown when calculating the reliability ratings.");
         }
     }
 
@@ -365,23 +354,15 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      * Calculates the reliability ratings for project category with the specified ID. Optionally updates the current
      * reliability ratings for all users.
      * </p>
-     *
-     * @param signature
-     *            the method.
-     * @param updateCurrentReliability
-     *            <code>true</code> if current reliability must be updated for all users; <code>false</code>
-     *            otherwise.
-     * @param projectCategoryId
-     *            the ID of the project category.
-     *
-     * @throws IllegalArgumentException
-     *             if projectCategoryId &lt;= 0.
-     * @throws IllegalStateException
-     *             if this reliability calculator was not properly configured.
-     * @throws ProjectCategoryNotSupportedException
-     *             if project category with the given ID is not supported by this reliability calculator.
-     * @throws ReliabilityDataPersistenceException
-     *             if some error occurred when accessing the persistence.
+     * @param signature the method.
+     * @param updateCurrentReliability <code>true</code> if current reliability must be updated for all users;
+     *            <code>false</code> otherwise.
+     * @param projectCategoryId the ID of the project category.
+     * @throws IllegalArgumentException if projectCategoryId &lt;= 0.
+     * @throws IllegalStateException if this reliability calculator was not properly configured.
+     * @throws ProjectCategoryNotSupportedException if project category with the given ID is not supported by this
+     *             reliability calculator.
+     * @throws ReliabilityDataPersistenceException if some error occurred when accessing the persistence.
      */
     private void calculateHelper(String signature, long projectCategoryId, boolean updateCurrentReliability)
         throws ProjectCategoryNotSupportedException, ReliabilityDataPersistenceException {
@@ -389,32 +370,30 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
         ProjectCategoryParams projectCategoryParams = projectCategoryParamsById.get(projectCategoryId);
         if (projectCategoryParams == null) {
             throw new ProjectCategoryNotSupportedException("Project category with the ID '" + projectCategoryId
-                + "' is not supported by this reliability calculator.", projectCategoryId);
+                    + "' is not supported by this reliability calculator.", projectCategoryId);
         }
-
         // Open the connection to persistence
         reliabilityDataPersistence.open();
-
+        // delete all old reliability data for this track (projectCategoryId)
+        reliabilityDataPersistence.deleteReliabilityData(projectCategoryId);
         // Get reliability calculation start date
         Date startDate = projectCategoryParams.getReliabilityStartDate();
         // Get user reliability calculator to be used
         UserReliabilityCalculator userReliabilityCalculator = projectCategoryParams.getUserReliabilityCalculator();
         // Get resolution date detector to be used
         ResolutionDateDetector resolutionDateDetector = projectCategoryParams.getResolutionDateDetector();
-
         try {
             // Get IDs of all users that have reliability rating for this project category
-            List<Long> userIds = reliabilityDataPersistence.getIdsOfUsersWithReliability(projectCategoryId,
-                startDate);
-
+            List < Long > userIds =
+                    reliabilityDataPersistence.getIdsOfUsersWithReliability(projectCategoryId, startDate);
             for (long userId : userIds) {
                 try {
                     // Get user participation data for this project category:
-                    List<UserProjectParticipationData> userParticipationData = reliabilityDataPersistence
-                        .getUserParticipationData(userId, projectCategoryId, startDate);
+                    List < UserProjectParticipationData > userParticipationData =
+                            reliabilityDataPersistence.getUserParticipationData(userId, projectCategoryId, startDate);
                     // Create a list for projects for which resolution date can be detected
-                    List<UserProjectParticipationData> resolvedProjects =
-                        new ArrayList<UserProjectParticipationData>();
+                    List < UserProjectParticipationData > resolvedProjects =
+                            new ArrayList < UserProjectParticipationData >();
                     for (UserProjectParticipationData projectData : userParticipationData) {
                         // Detect the resolution date
                         resolutionDateDetector.detect(projectData);
@@ -428,45 +407,43 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
                     // Sort the projects using the configured comparator
                     Collections.sort(resolvedProjects, participationDataComparator);
                     // Calculate the reliability ratings for all projects of this user
-                    List<UserProjectReliabilityData> reliabilityDataList = userReliabilityCalculator
-                        .calculate(resolvedProjects);
+                    List < UserProjectReliabilityData > reliabilityDataList =
+                            userReliabilityCalculator.calculate(resolvedProjects);
                     // Save user reliability data to persistence:
                     reliabilityDataPersistence.saveUserReliabilityData(reliabilityDataList);
                     if (!reliabilityDataList.isEmpty()) {
                         // Get reliability data for the last resolved project:
-                        UserProjectReliabilityData lastProjectReliabilityData = reliabilityDataList
-                            .get(reliabilityDataList.size() - 1);
+                        UserProjectReliabilityData lastProjectReliabilityData =
+                                reliabilityDataList.get(reliabilityDataList.size() - 1);
                         // Get reliability after the the last resolved project:
                         double reliability = lastProjectReliabilityData.getReliabilityAfterResolution();
                         if (updateCurrentReliability) {
-	                        // Update the current user reliability in persistence:
-	                        reliabilityDataPersistence.updateCurrentUserReliability(userId, projectCategoryId,
-	                        		reliability);
+                            // Update the current user reliability in persistence:
+                            reliabilityDataPersistence.updateCurrentUserReliability(userId, projectCategoryId,
+                                    reliability);
                         }
                         if (log != null) {
-                    	log.log(Level.INFO, "Current reliability for user " + userId + " in category " +
-                            projectCategoryId + " is " + DECIMAL_FORMAT.format(reliability));
+                            log.log(Level.INFO, "Current reliability for user " + userId + " in category "
+                                    + projectCategoryId + " is " + DECIMAL_FORMAT.format(reliability));
                         }
                     }
                 } catch (UserReliabilityCalculationException e) {
                     // Log exception
                     Helper.logException(log, signature, e,
-                        "UserReliabilityCalculationException is thrown (will be ignored).");
-
+                            "UserReliabilityCalculationException is thrown (will be ignored).");
                     // Ignore
                 } catch (ResolutionDateDetectionException e) {
                     // Log exception
                     Helper.logException(log, signature, e,
-                        "ResolutionDateDetectionException is thrown (will be ignored).");
-
+                            "ResolutionDateDetectionException is thrown (will be ignored).");
                     // Ignore
                 }
             }
             if (log != null) {
-            	log.log(Level.INFO, "Total number of users processed in category " + projectCategoryId + " is " + userIds.size());
+                log.log(Level.INFO, "Total number of users processed in category " + projectCategoryId + " is "
+                        + userIds.size());
             }
         } finally {
-
             // Close the reliability data persistence
             reliabilityDataPersistence.close();
         }
@@ -476,10 +453,7 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      * <p>
      * Gets the signature for given method for logging.
      * </p>
-     *
-     * @param method
-     *            the method name.
-     *
+     * @param method the method name.
      * @return the signature for given method.
      */
     private static String getSignature(String method) {
@@ -491,21 +465,19 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
      * This is an inner class of ReliabilityCalculatorImpl that is a container for reliability calculation parameters
      * for specific project category. It is a simple JavaBean (POJO) that provides getters and setters for all private
      * attributes and performs no argument validation in the setters.
-     *</p>
-     *
+     * </p>
      * <p>
      * <strong>Thread Safety: </strong> This class is mutable and not thread safe.
      * </p>
-     *
      * @author saarixx, sparemax
      * @version 1.0
      */
     private class ProjectCategoryParams {
+
         /**
          * <p>
          * The date when reliability for this project category started to be counted.
          * </p>
-         *
          * <p>
          * Has getter and setter.
          * </p>
@@ -516,7 +488,6 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * The user reliability calculator to be used for calculating reliability for this project category.
          * </p>
-         *
          * <p>
          * Has getter and setter.
          * </p>
@@ -527,7 +498,6 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * The resolution date detector for this project category.
          * </p>
-         *
          * <p>
          * Has getter and setter.
          * </p>
@@ -547,7 +517,6 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * Gets the date when reliability for this project category started to be counted.
          * </p>
-         *
          * @return the date when reliability for this project category started to be counted.
          */
         public Date getReliabilityStartDate() {
@@ -558,9 +527,7 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * Sets the date when reliability for this project category started to be counted.
          * </p>
-         *
-         * @param reliabilityStartDate
-         *            the date when reliability for this project category started to be counted.
+         * @param reliabilityStartDate the date when reliability for this project category started to be counted.
          */
         public void setReliabilityStartDate(Date reliabilityStartDate) {
             this.reliabilityStartDate = reliabilityStartDate;
@@ -570,7 +537,6 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * Gets the user reliability calculator to be used for calculating reliability for this project category.
          * </p>
-         *
          * @return the user reliability calculator to be used for calculating reliability for this project category.
          */
         public UserReliabilityCalculator getUserReliabilityCalculator() {
@@ -581,10 +547,8 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * Sets the user reliability calculator to be used for calculating reliability for this project category.
          * </p>
-         *
-         * @param userReliabilityCalculator
-         *            the user reliability calculator to be used for calculating reliability for this project
-         *            category.
+         * @param userReliabilityCalculator the user reliability calculator to be used for calculating reliability for
+         *            this project category.
          */
         public void setUserReliabilityCalculator(UserReliabilityCalculator userReliabilityCalculator) {
             this.userReliabilityCalculator = userReliabilityCalculator;
@@ -594,7 +558,6 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * Gets the resolution date detector for this project category.
          * </p>
-         *
          * @return the resolution date detector for this project category.
          */
         public ResolutionDateDetector getResolutionDateDetector() {
@@ -605,13 +568,10 @@ public class ReliabilityCalculatorImpl implements ReliabilityCalculator {
          * <p>
          * Sets the resolution date detector for this project category.
          * </p>
-         *
-         * @param resolutionDateDetector
-         *            the resolution date detector for this project category.
+         * @param resolutionDateDetector the resolution date detector for this project category.
          */
         public void setResolutionDateDetector(ResolutionDateDetector resolutionDateDetector) {
             this.resolutionDateDetector = resolutionDateDetector;
         }
     }
 }
-

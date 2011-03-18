@@ -3,13 +3,12 @@
  */
 package com.topcoder.reliability.accuracytests;
 
+import java.util.List;
+
 import com.topcoder.reliability.impl.UserProjectReliabilityData;
 import com.topcoder.reliability.impl.UserReliabilityCalculationException;
 import com.topcoder.reliability.impl.calculators.BaseUserReliabilityCalculator;
-
 import com.topcoder.util.log.Log;
-
-import java.util.List;
 
 
 /**

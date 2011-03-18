@@ -3,13 +3,13 @@
  */
 package com.topcoder.reliability;
 
-import com.topcoder.reliability.accuracytests.AccuracyTests;
-import com.topcoder.reliability.failuretests.FailureTests;
-import com.topcoder.reliability.stresstests.StressTests;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import com.topcoder.reliability.accuracytests.AccuracyTests;
+import com.topcoder.reliability.failuretests.FailureTests;
+import com.topcoder.reliability.stresstests.StressTests;
 
 /**
  * <p>

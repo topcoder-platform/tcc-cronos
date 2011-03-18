@@ -6,7 +6,8 @@ insert into project values (4, 1, 2, 132456, current, 132456, current, 4);
 insert into project values (5, 1, 2, 132456, current, 132456, current, 5);
 insert into project values (6, 1, 2, 132456, current, 132456, current, 6);
 insert into project values (7, 1, 2, 132456, current, 132456, current, 7);
-insert into project values (8, 1, 2, 132456, current, 132456, current, 8);
+-- project of other category
+insert into project values (8, 1, 3, 132456, current, 132456, current, 8);
 
 insert into contest_eligibility values (9, 9, 0);
 
@@ -19,6 +20,7 @@ insert into project_info values (5, 13, 'Yes', 132456, current, 132456, current)
 insert into project_info values (6, 13, 'Yes', 132456, current, 132456, current);
 insert into project_info values (7, 13, 'Yes', 132456, current, 132456, current);
 insert into project_info values (8, 13, 'Yes', 132456, current, 132456, current);
+
 
 -- user 132456 has registered for all 8 projects
 insert into component_inquiry values (1, 1, 132456, 'test 1', 1, 999, 1, 132456, 1, TO_DATE('2010-01-01 09:01', '%Y-%m-%d %H:%M'), 1);
@@ -77,7 +79,7 @@ insert into project_result (user_id, project_id, passed_review_ind) values (1324
 insert into project_result (user_id, project_id, passed_review_ind) values (132456, 5, NULL);
 insert into project_result (user_id, project_id, passed_review_ind) values (132456, 6, 0);
 insert into project_result (user_id, project_id, passed_review_ind) values (132456, 7, 1);
-insert into project_result (user_id, project_id, passed_review_ind) values (132456, 8, 0);
+insert into project_result (user_id, project_id, passed_review_ind) values (132456, 8, 1);
 
 -- creates submissions for the submitted projects
 insert into resource (project_id, resource_id, resource_role_id, create_user, create_date, modify_user, modify_date) values (1, 1, 1, 132456, current, 132456, current);
@@ -107,3 +109,13 @@ insert into submission (submission_id, upload_id, submission_status_id, final_sc
 insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (6, 6, 2, NULL, 1, 132456, current, 132456, current);
 insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (7, 7, 1, 100, 1, 132456, current, 132456, current);
 insert into submission (submission_id, upload_id, submission_status_id, final_score, submission_type_id, create_user, create_date, modify_user, modify_date) values (8, 8, 3, 50, 1, 132456, current, 132456, current);
+
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (1, 132456, current, 1.0, 0.5, 0.3, 1);
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (2, 132456, current, 0.7, 0.5, 0.4, 1);
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (3, 132456, current, 0.7, 0.5, 0.4, 1);
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (4, 132456, current, 0.7, 0.5, 0.4, 1);
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (5, 132456, current, 0.7, 0.5, 0.4, 1);
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (6, 132456, current, 0.7, 0.5, 0.4, 1);
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (7, 132456, current, 0.7, 0.5, 0.4, 1);
+-- project of other category
+insert into project_reliability(project_id , user_id ,resolution_date ,reliability_before_resolution , reliability_after_resolution ,reliability_on_registration ,reliable_ind) values (8, 132456, current, 0.4, 0.4, 0.4, 1);

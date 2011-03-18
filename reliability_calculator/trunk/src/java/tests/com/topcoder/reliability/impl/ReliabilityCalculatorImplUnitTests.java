@@ -24,11 +24,11 @@ import com.topcoder.reliability.TestsHelper;
  * <p>
  * Unit tests for {@link ReliabilityCalculatorImpl} class.
  * </p>
- *
  * @author sparemax
  * @version 1.0
  */
 public class ReliabilityCalculatorImplUnitTests {
+
     /**
      * <p>
      * Represents the <code>ReliabilityCalculatorImpl</code> instance used in tests.
@@ -57,7 +57,6 @@ public class ReliabilityCalculatorImplUnitTests {
      */
     private long projectCategoryId = 2;
 
-
     /**
      * <p>
      * Represents the update current reliability flag used in tests.
@@ -69,7 +68,6 @@ public class ReliabilityCalculatorImplUnitTests {
      * <p>
      * Adapter for earlier versions of JUnit.
      * </p>
-     *
      * @return a test suite.
      */
     public static junit.framework.Test suite() {
@@ -80,18 +78,14 @@ public class ReliabilityCalculatorImplUnitTests {
      * <p>
      * Sets up the unit tests.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Before
     public void setUp() throws Exception {
         connection = TestsHelper.getConnection();
         TestsHelper.clearDB(connection);
         TestsHelper.loadDB(connection);
-
         config = TestsHelper.getConfig().getChild("reliabilityCalculator1").getChild("config");
-
         instance = new ReliabilityCalculatorImpl();
         instance.configure(config);
     }
@@ -100,15 +94,12 @@ public class ReliabilityCalculatorImplUnitTests {
      * <p>
      * Cleans up the unit tests.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @After
     public void tearDown() throws Exception {
         TestsHelper.clearDB(connection);
         TestsHelper.closeConnection(connection);
-
         connection = null;
         instance = null;
     }
@@ -122,14 +113,13 @@ public class ReliabilityCalculatorImplUnitTests {
     @Test
     public void testCtor() {
         instance = new ReliabilityCalculatorImpl();
-
         assertNull("'log' should be correct.", TestsHelper.getField(instance, "log"));
         assertNull("'projectCategoryParamsById' should be correct.",
-            TestsHelper.getField(instance, "projectCategoryParamsById"));
+                TestsHelper.getField(instance, "projectCategoryParamsById"));
         assertNull("'reliabilityDataPersistence' should be correct.",
-            TestsHelper.getField(instance, "reliabilityDataPersistence"));
+                TestsHelper.getField(instance, "reliabilityDataPersistence"));
         assertNull("'participationDataComparator' should be correct.",
-            TestsHelper.getField(instance, "participationDataComparator"));
+                TestsHelper.getField(instance, "participationDataComparator"));
     }
 
     /**
@@ -141,14 +131,13 @@ public class ReliabilityCalculatorImplUnitTests {
     @Test
     public void test_configure_1() {
         instance.configure(config);
-
         assertNotNull("'log' should be correct.", TestsHelper.getField(instance, "log"));
         assertNotNull("'projectCategoryParamsById' should be correct.",
-            TestsHelper.getField(instance, "projectCategoryParamsById"));
+                TestsHelper.getField(instance, "projectCategoryParamsById"));
         assertNotNull("'reliabilityDataPersistence' should be correct.",
-            TestsHelper.getField(instance, "reliabilityDataPersistence"));
+                TestsHelper.getField(instance, "reliabilityDataPersistence"));
         assertNotNull("'participationDataComparator' should be correct.",
-            TestsHelper.getField(instance, "participationDataComparator"));
+                TestsHelper.getField(instance, "participationDataComparator"));
     }
 
     /**
@@ -156,23 +145,19 @@ public class ReliabilityCalculatorImplUnitTests {
      * Accuracy test for the method <code>configure(ConfigurationObject config)</code>.<br>
      * The result should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test
     public void test_configure_2() throws Exception {
         config.removeProperty("loggerName");
-
         instance.configure(config);
-
         assertNull("'log' should be correct.", TestsHelper.getField(instance, "log"));
         assertNotNull("'projectCategoryParamsById' should be correct.",
-            TestsHelper.getField(instance, "projectCategoryParamsById"));
+                TestsHelper.getField(instance, "projectCategoryParamsById"));
         assertNotNull("'reliabilityDataPersistence' should be correct.",
-            TestsHelper.getField(instance, "reliabilityDataPersistence"));
+                TestsHelper.getField(instance, "reliabilityDataPersistence"));
         assertNotNull("'participationDataComparator' should be correct.",
-            TestsHelper.getField(instance, "participationDataComparator"));
+                TestsHelper.getField(instance, "participationDataComparator"));
     }
 
     /**
@@ -185,7 +170,6 @@ public class ReliabilityCalculatorImplUnitTests {
     @Test(expected = IllegalArgumentException.class)
     public void test_configure_configNull() {
         config = null;
-
         instance.configure(config);
     }
 
@@ -195,14 +179,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * string.<br>
      * <code>ReliabilityCalculatorConfigurationException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ReliabilityCalculatorConfigurationException.class)
     public void test_configure_loggerNameNotString() throws Exception {
         config.setPropertyValue("loggerName", 1);
-
         instance.configure(config);
     }
 
@@ -211,14 +192,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * Failure test for the method <code>configure(ConfigurationObject config)</code> with 'loggerName' is empty.<br>
      * <code>ReliabilityCalculatorConfigurationException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ReliabilityCalculatorConfigurationException.class)
     public void test_configure_loggerNameEmpty() throws Exception {
         config.setPropertyValue("loggerName", TestsHelper.EMPTY_STRING);
-
         instance.configure(config);
     }
 
@@ -228,15 +206,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * missing.<br>
      * <code>ReliabilityCalculatorConfigurationException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ReliabilityCalculatorConfigurationException.class)
     public void test_configure_reliabilityStartDateMissing() throws Exception {
-        config.getChild("projectCategoryConfig1")
-            .removeProperty("reliabilityStartDate");
-
+        config.getChild("projectCategoryConfig1").removeProperty("reliabilityStartDate");
         instance.configure(config);
     }
 
@@ -246,15 +220,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * empty.<br>
      * <code>ReliabilityCalculatorConfigurationException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ReliabilityCalculatorConfigurationException.class)
     public void test_configure_reliabilityStartDateEmpty() throws Exception {
-        config.getChild("projectCategoryConfig1")
-            .setPropertyValue("reliabilityStartDate", TestsHelper.EMPTY_STRING);
-
+        config.getChild("projectCategoryConfig1").setPropertyValue("reliabilityStartDate", TestsHelper.EMPTY_STRING);
         instance.configure(config);
     }
 
@@ -264,15 +234,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * invalid.<br>
      * <code>ReliabilityCalculatorConfigurationException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ReliabilityCalculatorConfigurationException.class)
     public void test_configure_reliabilityStartDateInvalid() throws Exception {
-        config.getChild("projectCategoryConfig1")
-            .setPropertyValue("reliabilityStartDate", "invalid_date");
-
+        config.getChild("projectCategoryConfig1").setPropertyValue("reliabilityStartDate", "invalid_date");
         instance.configure(config);
     }
 
@@ -282,59 +248,45 @@ public class ReliabilityCalculatorImplUnitTests {
      * is missing.<br>
      * <code>ReliabilityCalculatorConfigurationException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ReliabilityCalculatorConfigurationException.class)
     public void test_configure_projectCategoryConfigMissing() throws Exception {
         config.removeChild("projectCategoryConfig1");
         config.removeChild("projectCategoryConfig2");
-
         instance = new ReliabilityCalculatorImpl();
         instance.configure(config);
     }
 
     /**
      * <p>
-     * Accuracy test for the method <code>calculate(long projectCategoryId, boolean updateCurrentReliability)</code>.
-     * <br>
+     * Accuracy test for the method <code>calculate(long projectCategoryId, boolean updateCurrentReliability)</code>. <br>
      * The result should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test
     public void test_calculate_1() throws Exception {
         instance.calculate(projectCategoryId, updateCurrentReliability);
-
-        assertEquals("'calculate' should be correct.",
-            4, TestsHelper.getRowsCount(connection, "project_reliability"));
-        assertEquals("'updateCurrentUserReliability' should be correct.",
-            1, TestsHelper.getRowsCount(connection, "user_reliability"));
+        assertEquals("'calculate' should be correct.", 4, TestsHelper.getRowsCount(connection, "project_reliability"));
+        assertEquals("'updateCurrentUserReliability' should be correct.", 1,
+                TestsHelper.getRowsCount(connection, "user_reliability"));
     }
 
     /**
      * <p>
-     * Accuracy test for the method <code>calculate(long projectCategoryId, boolean updateCurrentReliability)</code>.
-     * <br>
+     * Accuracy test for the method <code>calculate(long projectCategoryId, boolean updateCurrentReliability)</code>. <br>
      * The result should be correct.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test
     public void test_calculate_2() throws Exception {
         TestsHelper.clearDB(connection);
-
         instance.calculate(projectCategoryId, updateCurrentReliability);
-
-        assertEquals("'calculate' should be correct.",
-            0, TestsHelper.getRowsCount(connection, "project_reliability"));
-        assertEquals("'updateCurrentUserReliability' should be correct.",
-            0, TestsHelper.getRowsCount(connection, "user_reliability"));
+        assertEquals("'calculate' should be correct.", 0, TestsHelper.getRowsCount(connection, "project_reliability"));
+        assertEquals("'updateCurrentUserReliability' should be correct.", 0,
+                TestsHelper.getRowsCount(connection, "user_reliability"));
     }
 
     /**
@@ -343,14 +295,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * with projectCategoryId is negative.<br>
      * <code>IllegalArgumentException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = IllegalArgumentException.class)
     public void test_calculate_projectCategoryIdNegative() throws Exception {
         projectCategoryId = -1;
-
         instance.calculate(projectCategoryId, updateCurrentReliability);
     }
 
@@ -360,14 +309,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * with projectCategoryId is zero.<br>
      * <code>IllegalArgumentException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = IllegalArgumentException.class)
     public void test_calculate_projectCategoryIdZero() throws Exception {
         projectCategoryId = 0;
-
         instance.calculate(projectCategoryId, updateCurrentReliability);
     }
 
@@ -377,14 +323,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * with this reliability calculator was not properly configured.<br>
      * <code>IllegalStateException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = IllegalStateException.class)
     public void test_calculate_NotConfigured() throws Exception {
         instance = new ReliabilityCalculatorImpl();
-
         instance.calculate(projectCategoryId, updateCurrentReliability);
     }
 
@@ -394,14 +337,11 @@ public class ReliabilityCalculatorImplUnitTests {
      * with an error occurred.<br>
      * <code>ProjectCategoryNotSupportedException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ProjectCategoryNotSupportedException.class)
     public void test_calculate_Error1() throws Exception {
         projectCategoryId = Long.MAX_VALUE;
-
         instance.calculate(projectCategoryId, updateCurrentReliability);
     }
 
@@ -411,16 +351,85 @@ public class ReliabilityCalculatorImplUnitTests {
      * with an error occurred.<br>
      * <code>ReliabilityDataPersistenceException</code> is expected.
      * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
+     * @throws Exception to JUnit.
      */
     @Test(expected = ReliabilityDataPersistenceException.class)
     public void test_calculate_Error2() throws Exception {
         config.getChild("reliabilityDataPersistenceConfig").setPropertyValue("connectionName", "unknown_name");
         instance = new ReliabilityCalculatorImpl();
         instance.configure(config);
-
         instance.calculate(projectCategoryId, updateCurrentReliability);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>configure(ConfigurationObject config)</code> with missing
+     * 'includedProjectStatutes'.<br>
+     * <code>ReliabilityCalculatorConfigurationException</code> is expected.
+     * </p>
+     * @throws Exception to JUnit.
+     */
+    @Test(expected = ReliabilityCalculatorConfigurationException.class)
+    public void test_configure_includedProjectStatusesNull() throws Exception {
+        config.removeProperty("includedProjectStatuses");
+        instance.configure(config);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>configure(ConfigurationObject config)</code> with empty
+     * 'includedProjectStatutes'.<br>
+     * <code>ReliabilityCalculatorConfigurationException</code> is expected.
+     * </p>
+     * @throws Exception to JUnit.
+     */
+    @Test(expected = ReliabilityCalculatorConfigurationException.class)
+    public void test_configure_includedProjectStatusesEmpty() throws Exception {
+        config.setPropertyValues("includedProjectStatuses", new String[0]);
+        instance.configure(config);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>configure(ConfigurationObject config)</code> with not positive
+     * 'includedProjectStatutes'.<br>
+     * <code>ReliabilityCalculatorConfigurationException</code> is expected.
+     * </p>
+     * @throws Exception to JUnit.
+     */
+    @Test(expected = ReliabilityCalculatorConfigurationException.class)
+    public void test_configure_includedProjectStatusesNotPositive() throws Exception {
+        config.setPropertyValues("includedProjectStatuses", new String[] {"-1"});
+        instance.configure(config);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>configure(ConfigurationObject config)</code> with invalid value in
+     * 'includedProjectStatutes'.<br>
+     * <code>ReliabilityCalculatorConfigurationException</code> is expected.
+     * </p>
+     * @throws Exception to JUnit.
+     */
+    @Test(expected = ReliabilityCalculatorConfigurationException.class)
+    public void test_configure_includedProjectStatusesInvalid() throws Exception {
+        config.setPropertyValues("includedProjectStatuses", new String[] {"Uknown"});
+        instance.configure(config);
+    }
+    
+    /**
+     * <p>
+     * Accuracy test for the method <code>calculate(long projectCategoryId, boolean updateCurrentReliability)</code>. <br>
+     * The result should be correct.
+     * </p>
+     * @throws Exception to JUnit.
+     */
+    @Test
+    public void test_calculate_3() throws Exception {
+        projectCategoryId = 3;
+        instance.calculate(projectCategoryId, updateCurrentReliability);
+        assertEquals("'calculate' should be correct.", 8, TestsHelper.getRowsCount(connection, "project_reliability"));
+        assertEquals("'updateCurrentUserReliability' should be correct.", 1,
+                TestsHelper.getRowsCount(connection, "user_reliability"));
     }
 }

@@ -11,7 +11,6 @@ import java.util.List;
 import com.topcoder.configuration.ConfigurationAccessException;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.reliability.impl.BaseUserProjectData;
-import com.topcoder.reliability.impl.UserProjectParticipationData;
 import com.topcoder.util.errorhandling.BaseCriticalException;
 import com.topcoder.util.errorhandling.BaseRuntimeException;
 import com.topcoder.util.log.Level;

@@ -153,4 +153,20 @@ public class MockStressPersistence implements ReliabilityDataPersistence {
      */
     public void configure(ConfigurationObject config) {
     }
+
+    /**
+     * Do nothing.
+     * @param includedProjectStatuses the included project statuses
+     */
+    public void setIncludedProjectStatuses(List < Long > includedProjectStatuses) {
+    }
+
+    /**
+     * Do nothing.
+     * @param projectCategoryId the project category id
+     * @throws ReliabilityDataPersistenceException never
+     */
+    public void deleteReliabilityData(long projectCategoryId) throws ReliabilityDataPersistenceException {
+        
+    }
 }
