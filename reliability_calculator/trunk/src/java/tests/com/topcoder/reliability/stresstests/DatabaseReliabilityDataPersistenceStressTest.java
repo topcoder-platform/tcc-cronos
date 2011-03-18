@@ -238,46 +238,6 @@ public class DatabaseReliabilityDataPersistenceStressTest extends BaseStressTest
 
     /**
      * <p>
-     * Tests {@link DatabaseReliabilityDataPersistence#updateCurrentUserReliability(long, long, double)} with valid
-     * arguments passed and small test case.
-     * </p>
-     * <p>
-     * User reliability data should be updated. No exception is expected.
-     * </p>
-     * @throws Exception if any error occurs
-     */
-    public void testUpdateCurrentUserReliability_Large() throws Exception {
-        // Copilot
-        int projectCategoryId = 2;
-        int userId = 1;
-        for (int i = 0; i < getRunCount(); i++) {
-            persistence.updateCurrentUserReliability(userId, projectCategoryId, 1 / (i + 1.0));
-            assertEquals("Invalid inserted rows count.", 1, getTableRowCount("user_reliability"));
-        }
-    }
-
-    /**
-     * <p>
-     * Tests {@link DatabaseReliabilityDataPersistence#updateCurrentUserReliability(long, long, double)} with valid
-     * arguments passed and small test case.
-     * </p>
-     * <p>
-     * User reliability data should be updated. No exception is expected.
-     * </p>
-     * @throws Exception if any error occurs
-     */
-    public void testUpdateCurrentUserReliability_Small() throws Exception {
-        // Copilot
-        int projectCategoryId = 2;
-        int userId = 1;
-        for (int i = 0; i < getRunCount(); i++) {
-            persistence.updateCurrentUserReliability(userId, projectCategoryId, 1 / (i + 1.0));
-            assertEquals("Invalid inserted rows count.", 1, getTableRowCount("user_reliability"));
-        }
-    }
-
-    /**
-     * <p>
      * Clears database tables.
      * </p>
      * @throws Exception if any error occurs

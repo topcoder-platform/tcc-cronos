@@ -201,12 +201,6 @@ public class DatabaseReliabilityDataPersistenceAccuracy extends TestCase {
             Assert.assertTrue("Incorrect rating", rs.getDouble("rating") == 0.6);
             rs.close();
             pstmt.close();
-            instance.updateCurrentUserReliability(123, 10, 1.0);
-            pstmt = conn.prepareStatement("select rating from user_reliability where user_id = ?");
-            pstmt.setLong(1, 123);
-            rs = pstmt.executeQuery();
-            Assert.assertTrue("The data should be exist", rs.next());
-            Assert.assertTrue("Incorrect rating", rs.getDouble("rating") == 1.0);
         } finally {
             instance.close();
         }

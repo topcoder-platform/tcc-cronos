@@ -836,7 +836,6 @@ public class DatabaseReliabilityDataPersistenceUnitTests {
     @Test
     public void test_updateCurrentUserReliability_2() throws Exception {
         instance.updateCurrentUserReliability(userId, projectCategoryId, reliability);
-        instance.updateCurrentUserReliability(userId, projectCategoryId, reliability);
         assertEquals("'updateCurrentUserReliability' should be correct.", 1,
                 TestsHelper.getRowsCount(connection, "user_reliability"));
     }
