@@ -1,0 +1,12 @@
+DROP TABLE 'informix'.project_result;
+DROP TABLE 'informix'.project_phase;
+DROP TABLE 'informix'.project;
+DROP TABLE 'informix'.project_info;
+DROP TABLE 'informix'.component_inquiry;
+DROP TABLE 'informix'.submission;
+DROP TABLE 'informix'.resource_info;
+DROP TABLE 'informix'.resource;
+DROP TABLE 'informix'.upload;
+DROP TABLE 'informix'.contest_eligibility;
+DROP TABLE 'informix'.user_reliability;
+DROP TABLE 'informix'.project_reliability;
