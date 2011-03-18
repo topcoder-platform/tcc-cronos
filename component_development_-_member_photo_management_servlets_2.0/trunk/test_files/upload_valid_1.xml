@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="uploadServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoUploadServlet">
+		<property name="memberIdParameterName">
+			<value>member_id</value>
+		</property>
+		<property name="memberIdSessionKey">
+			<value>member_id_session_key</value>
+		</property>
+		<property name="fileUploaderNamespace">
+			<value>MemoryFileUpload</value>
+		</property>
+		<property name="photoImageFormFileName">
+			<value>test.jpg</value>
+		</property>
+		<property name="photoImageErrorName">
+			<value>photo_image_error_name</value>
+		</property>
+		<property name="memberIdErrorName">
+			<value>member_id_error_name</value>
+		</property>
+		<property name="validationErrorForwardUrl">
+			<value>validation_error_forward_url</value>
+		</property>
+		<property name="targetImageWidth">
+			<value>10</value>
+		</property>
+		<property name="targetImageHeight">
+			<value>100</value>
+		</property>
+		<property name="photoImageSubmittedDirectory">
+			<value>test_files/submitted</value>
+		</property>
+		<property name="photoImagePreviewDirectory">
+			<value>test_files/preview</value>
+		</property>
+		<property name="previewPhotoImagePathName">
+			<value>/preview</value>
+		</property>
+		<property name="previewForwardUrl">
+			<value>/preview</value>
+		</property>
+		<property name="submittedRedirectUrl">
+			<value>/submitted</value>
+		</property>
+				<property name="targetImageLeftCornerXParameterName">
+			<value>10</value>
+		</property>	
+		<property name="targetImageLeftCornerYParameterName">
+			<value>10</value>
+		</property>
+		<property name="targetImageRightCornerXParameterName">
+			<value>10</value>
+		</property>
+		<property name="targetImageRightCornerYParameterName">
+			<value>10</value>
+		</property>
+		<property name="maxFileSize">
+			<value>100000000000</value>
+		</property>
+		<property name="maxFileExceededErrorName">
+			<value>max_File_Exceeded_Error_Name</value>
+		</property>
+		<property name="submittedActionParameterName">
+			<value>submit_action</value>
+		</property>
+		<property name="photoImageCropDirectory">
+			<value>test_files/crop</value>
+		</property>
+		<property name="memberPhotoManager" ref="memberPhotoManager"/>
+	</bean>
+	
+	<bean id="memberPhotoManager"
+		class="com.topcoder.web.memberphoto.servlet.MockMemberPhotoManagerImpl">
+	</bean>
+</beans>

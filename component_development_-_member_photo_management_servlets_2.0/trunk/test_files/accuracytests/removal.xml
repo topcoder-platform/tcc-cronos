@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	
+	<context:annotation-config />
+	
+	<bean id="removalServlet" class="com.topcoder.web.memberphoto.servlet.MemberPhotoRemovalServlet">
+		<property name="memberIdParameterName">
+			<value>memberId</value>
+		</property>
+		<property name="removalReasonParameterName">
+			<value>removalReason</value>
+		</property>
+		<property name="isAdministratorSessionKey">
+			<value>isAdmin</value>
+		</property>
+		<property name="notAdministratorErrorName">
+			<value>notAdministratorErrorName</value>
+		</property>
+		<property name="validationErrorForwardUrl">
+			<value>validationErrorUrl</value>
+		</property>
+		<property name="memberHasNoPhotoErrorName">
+			<value>memberHasNoPhotoErrorName</value>
+		</property>
+		<property name="emailBodyTemplateFileName">
+			<value>test_files/accuracytests/template.txt</value>
+		</property>
+		<property name="fromEmailAddress">
+			<value>test@topcoder.com</value>
+		</property>
+		<property name="emailSubject">
+			<value>Test Subject</value>
+		</property>
+		<property name="successResultForwardUrl">
+			<value>successResultUrl</value>
+		</property>
+		<property name="photoImageRemovedDirectory">
+			<value>test_files/accuracytests/removal</value>
+		</property>
+		
+		
+		<property name="documentGenerator" ref="documentGenerator"/>
+		<property name="memberPhotoManager" ref="memberPhotoManager"/>
+		<property name="memberInformationRetriever" ref="memberInformationRetriever"/>
+		<property name="imageDirectoryName">
+		<value>test_files/accuracytests/images</value>
+		</property>
+	</bean>
+
+	<bean id="documentGenerator"
+		class="com.topcoder.util.file.DocumentGenerator">
+		<constructor-arg value="test_namespace"/>
+	</bean>
+		<bean id="memberPhotoManager" class="com.topcoder.web.memberphoto.servlet.accuracytests.MockMemberPhotoManager">
+	</bean>
+	
+	<bean id="memberInformationRetriever" class="com.topcoder.web.memberphoto.servlet.accuracytests.MockMemberInformationRetriever">
+	</bean>
+</beans>

@@ -1,0 +1,10 @@
+<CMConfig>
+    <Config name="com.topcoder.smtp.server.test.TestSMTPServer">
+        <Property name="commandHandler">
+            <Value>com.topcoder.smtp.server.test.TestAbstractCommand</Value>
+        </Property>
+        <Property name="port">
+            <Value>25</Value>
+        </Property>
+    </Config>
+</CMConfig>

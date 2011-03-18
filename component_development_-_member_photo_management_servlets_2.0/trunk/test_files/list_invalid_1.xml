@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="listServlet"
+		class="com.topcoder.web.memberphoto.servlet.MemberPhotoListServlet">
+		<property name="memberIdParameterName">
+			<value>member_id</value>
+		</property>
+		<property name="isAdministratorSessionKey">
+			<value>is_admin_session_key</value>
+		</property>
+		<property name="notAdministratorErrorName">
+			<value>not_admin_error_name</value>
+		</property>
+		<property name="validationErrorForwardUrl">
+			<value>validation_error_forward_url</value>
+		</property>
+		<property name="successResultForwardUrl">
+			<value>success_result_forward_url</value>
+		</property>
+		<property name="pageNumberParameterName">
+			<value>page_number_parameter_name</value>
+		</property>
+		<property name="pageSizeParameterName">
+			<value>page_size_parameter_name</value>
+		</property>
+		<property name="photoListName">
+			<value>photo_list_name</value>
+		</property>
+	</bean>
+</beans>

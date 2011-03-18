@@ -1,0 +1,4 @@
+To run tests:
+1. Add variable and setter  private MemberInformationRetriever memberInformationRetriever to MemberPhotoUploadServlet as mentioned here http://forums.topcoder.com/?module=Thread&threadID=700421&start=0.
+2. Add variable and setter String imageDirectoryName to MemberPhotoRemovalServlet as mentioned here http://forums.topcoder.com/?module=Thread&threadID=700380&start=0.
+3. Use Document Generator 3.X

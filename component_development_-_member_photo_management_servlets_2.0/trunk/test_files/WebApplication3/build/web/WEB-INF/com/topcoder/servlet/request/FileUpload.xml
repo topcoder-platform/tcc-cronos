@@ -1,0 +1,20 @@
+<CMConfig>
+	<Property name="allowed_directories">
+		<Value></Value>
+	</Property>
+	<Property name="temp_directory">
+		<Value>C:/temp</Value>
+	</Property>
+	<Property name="default_directory">
+		<Value>C:/upload_default</Value>
+	</Property>
+	<Property name="overwrite_allowed">
+		<Value>yes</Value>
+	</Property>
+	<Property name="max_single_file_size">
+		<Value>50000</Value>
+	</Property>
+	<Property name="max_total_file_size">
+		<Value>100000</Value>
+	</Property>
+</CMConfig>
