@@ -609,6 +609,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final long SUBMISSION_ACTIVE_STATUS_ID = 1;
 
+     /**
+     * DELETE submission status id
+     *
+     * @since 1.6
+     */
+    private static final long SUBMISSION_DELETE_STATUS_ID = 5;
+
     /**
      * Draft status list.
      *
@@ -8120,7 +8127,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public Submission[] getSoftwareProjectSubmissions(long projectId)
         throws SearchBuilderException, UploadPersistenceException {
         Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
-        Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
+        Filter filter2 = SearchBundle.buildNotFilter(SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_DELETE_STATUS_ID));
         Filter andfilter = SearchBundle.buildAndFilter(filter, filter2);
         return uploadManager.searchSubmissions(andfilter);
     }
