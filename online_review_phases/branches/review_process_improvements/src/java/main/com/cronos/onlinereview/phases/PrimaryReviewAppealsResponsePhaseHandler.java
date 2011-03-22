@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -47,8 +47,18 @@ import com.topcoder.util.log.LogFactory;
  * Thread Safety: This class is thread-safe because it's immutable.
  * </p>
  *
+ * <p>
+ * Version 1.6 (Online Review Update Review Management Process assembly 2) Change notes:
+ * <ol>
+ * <li>Update {@link #canPerform(Phase)} method. The appeal response phase can be closed
+ * only when all the appeals have been responsed.</li>
+ * <li>Update {@link #perform(Phase, String)} method. The <code>Aggregation</code> phase should be after appeals
+ * response phase.</li>
+ * </ol>
+ * </p>
+ * 
  * @author mekanizumu, TCSDEVELOPER
- * @version 1.5
+ * @version 1.6
  * @since 1.5
  */
 public class PrimaryReviewAppealsResponsePhaseHandler extends AbstractPhaseHandler {
@@ -215,7 +225,7 @@ public class PrimaryReviewAppealsResponsePhaseHandler extends AbstractPhaseHandl
                 return PhasesHelper.canPhaseStart(phase);
             }
 
-            return (PhasesHelper.reachedPhaseEndTime(phase) || allAppealsResolved(phase));
+            return (PhasesHelper.arePhaseDependenciesMet(phase, false) && allAppealsResolved(phase));
         } catch (PhaseHandlingException ex) {
             throw PhasesHelper.logPhaseHandlingException(LOG, ex, null, phase.getProject().getId());
         }
@@ -268,7 +278,7 @@ public class PrimaryReviewAppealsResponsePhaseHandler extends AbstractPhaseHandl
                     PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(),
                         operation);
                 }
-                Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", false,
+                Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true,
                     true));
                 values.put("N_AGGREGATOR", aggregators.length);
             }
@@ -441,7 +451,7 @@ public class PrimaryReviewAppealsResponsePhaseHandler extends AbstractPhaseHandl
                 conn, phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
             // locate previous review phase
-            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, true);
+            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.SECONDARY_REVIEWER_REVIEW, false, true);
             long reviewPhaseId = reviewPhase.getId();
 
             // Search all review score card for the review phase

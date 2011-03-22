@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2004 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -131,8 +131,15 @@ import com.topcoder.util.log.Log;
  * </ol>
  * </p>
  *
- * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy
- * @version 1.6
+ * <p>
+ * Version 1.7(Online Review Update Review Management Process assembly 2)  Change notes:
+ * <ol>
+ * <li>Update {@link #REVIEWER_ROLE_NAMES} to include <code>Secondary Reviewer</code> Role.</li>
+ * </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, TCSASSEMBER
+ * @version 1.7
  * @since 1.0
  */
 final class PhasesHelper {
@@ -142,7 +149,7 @@ final class PhasesHelper {
      * and review scorecards.
      */
     static final String[] REVIEWER_ROLE_NAMES = new String[]{"Reviewer", "Accuracy Reviewer",
-        "Failure Reviewer", "Stress Reviewer"};
+        "Failure Reviewer", "Stress Reviewer", "Secondary Reviewer"};
 
     /**
      * One The property name of resource.
