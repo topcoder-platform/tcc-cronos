@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.ejb;
 
@@ -167,12 +167,20 @@ import com.topcoder.util.log.LogManager;
  * </p>
  * 
  * <p>
+ * Version 1.4.5 (TC Direct Replatforming Release 3) Change notes:
+ * <ul>
+ * <li>Add {@link #getScorecardAndMilestoneReviews(long, long)} method.</li>
+ * <li>Add {@link #updateReview(Review)} method to update the review board.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
  * <strong>Thread safety:</strong> It is stateless and it uses a ProjectServices instance which is required to be thread
  * safe.
  * </p>
  *
  * @author fabrizyo, znyyddf, pulky, murphydog, waits, hohosky, isv, TCSASSEMBER
- * @version 1.4.4
+ * @version 1.4.5
  * @since 1.0
  */
 @Stateless
@@ -2009,18 +2017,18 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
      * single reviewer / review is assumed.
      *
      * @param projectId  the project id to search for.
-     * @param reviewerId the reviewer ID.
+     * @param reviewerId the reviewer resource ID.
      * @return the aggregated scorecard and review data.
      * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid number of
      * reviewers or reviews are found or if the code fails to retrieve scorecard id.
      * @since 1.4.3
      */
-    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId)
+    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerResourceId)
         throws ProjectServicesException {
         String method = "ProjectServicesBean#getScorecardAndReviews method.";
         Util.log(logger, Level.INFO, "Enters " + method);
         try {
-            return getProjectServices().getScorecardAndReviews(projectId, reviewerId);
+            return getProjectServices().getScorecardAndReviews(projectId, reviewerResourceId);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;
@@ -2029,7 +2037,29 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         }
     }
 
-
+    /**
+     * This method retrieves milestone scorecard and milestone review information associated to a project determined by parameter.
+     *
+     * @param projectId the project id to search for.
+     * @param reviewerResourceId the reviewer resource ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @since 1.4.5
+     */
+    public List<ScorecardReviewData> getScorecardAndMilestoneReviews(long projectId, long reviewerResourceId)
+        throws ProjectServicesException {
+        String method = "ProjectServicesBean#getScorecardAndMilestoneReviews method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            return getProjectServices().getScorecardAndMilestoneReviews(projectId, reviewerResourceId);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    
     /**
      * This method retrieves scorecard and screening information associated to a project determined by parameter. Note: a
      * single primary screener / screening is assumed.
@@ -2067,6 +2097,26 @@ public class ProjectServicesBean implements ProjectServicesLocal, ProjectService
         Util.log(logger, Level.INFO, "Enters " + method);
         try {
             getProjectServices().createReview(review);
+        } catch (ProjectServicesException e) {
+            Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
+            throw e;
+        } finally {
+            Util.log(logger, Level.INFO, "Exits " + method);
+        }
+    }
+    
+    /**
+     * <p>Updates specified review for software project.</p>
+     *
+     * @param review a <code>Review</code> providing the details for review to be created.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.4.5
+     */
+    public void updateReview(Review review) throws ReviewManagementException {
+        String method = "ProjectServicesBean#updateReview method.";
+        Util.log(logger, Level.INFO, "Enters " + method);
+        try {
+            getProjectServices().updateReview(review);
         } catch (ProjectServicesException e) {
             Util.log(logger, Level.ERROR, "ProjectServicesException occurred in " + method);
             throw e;

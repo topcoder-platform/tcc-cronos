@@ -305,13 +305,22 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * <p>
+ * Version 1.4.6 (TC Direct Replatforming Release 2) Change notes:
+ * <ul>
+ * <li>Added {@link #getScorecardAndMilestoneReviews(long, long)} method.</li>
+ * <li>Added {@link #updateReview(Review)} method.</li>
+ * <li>Updated {@link #getScorecardAndReviews(long, long)} method.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv, TCSASSEMBER
- * @version 1.4.5
+ * @version 1.4.6
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -3765,35 +3774,30 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.
-     * Note: a single reviewer / review is assumed.
      *
      * @param projectId the project id to search for.
-     * @param reviewerId the reviewer ID.
+     * @param reviewerResourceId the reviewer resource ID.
+     * @param phaseType the phase type of the review to search for.
      * @return the aggregated scorecard and review data.
-     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
-     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
-     * @since 1.4.3
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @since 1.4.6
      */
-    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId) 
+    private List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerResourceId, PhaseType phaseType)
         throws ProjectServicesException {
-        String method = "ProjectServicesImpl#getScorecardAndReviews(" + projectId + ") method.";
-
+        String method = "ProjectServicesImpl#getScorecardAndReviews method.";
+        
         List<ScorecardReviewData> scorecardReviewData = new ArrayList<ScorecardReviewData>();
 
         log(Level.INFO, "Enters " + method);
         try {
-            // Build resources filter
-            Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_ID);
-            Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
-
-            // Search for the reviewers
-            Resource[] reviewers = resourceManager.searchResources(filterRoles);
-            if (reviewers.length > 1) {
-                throw new ProjectServicesException("Invalid number of reviewers found: " + reviewers.length);
+            // Search for the milestone reviewers
+            Resource reviewer = resourceManager.getResource(reviewerResourceId);
+            if (reviewer == null) {
+                throw new ProjectServicesException("Can not find the reviewer.");
             }
-
-            Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
+            Filter filterReviewer = new AndFilter(
+                    new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewer.getId()),
+                    new EqualToFilter("project", String.valueOf(projectId)));
             Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
             for (int i = 0; i < reviews.length; i++) {
                 Review review = reviews[i];
@@ -3811,7 +3815,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     Iterator<Phase> iter = phases.iterator();
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
-                        if (phase.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName())) {
+                        if (phase.getPhaseType().getName().equals(phaseType.getName())) {
                             scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
                         }
                     }
@@ -3824,7 +3828,6 @@ public class ProjectServicesImpl implements ProjectServices {
                 data.setScorecard(scorecardManager.getScorecard(scorecardId));
                 scorecardReviewData.add(data);
             }
-
         } catch (ReviewManagementException ex) {
             log(Level.ERROR, "ReviewManagementException occurred in " + method);
             throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
@@ -3838,9 +3841,6 @@ public class ProjectServicesImpl implements ProjectServices {
         } catch (PhaseManagementException ex) {
             log(Level.ERROR, "PhaseManagementException occurred in " + method);
             throw new ProjectServicesException("PhaseManagementException occurred when operating Phase Manager.", ex);
-        } catch (SearchBuilderException ex) {
-            log(Level.ERROR, "SearchBuilderException occurred in " + method);
-            throw new ProjectServicesException("SearchBuilderException occurred when operating Search Builder.", ex);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
@@ -3848,6 +3848,35 @@ public class ProjectServicesImpl implements ProjectServices {
         return scorecardReviewData;
     }
 
+    /**
+     * This method retrieves milestone scorecard and milestone review information associated to a project determined by parameter.
+     *
+     * @param projectId the project id to search for.
+     * @param reviewerResourceId the reviewer resource ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @since 1.4.6
+     */
+    public List<ScorecardReviewData> getScorecardAndMilestoneReviews(long projectId, long reviewerResourceId)
+        throws ProjectServicesException {
+        return getScorecardAndReviews(projectId, reviewerResourceId, PhaseType.MILESTONE_REVIEW_PHASE);
+    }
+    
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     *
+     * @param projectId the project id to search for.
+     * @param reviewerResourceId the reviewer ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerResourceId) 
+        throws ProjectServicesException {
+        return getScorecardAndReviews(projectId, reviewerResourceId, PhaseType.REVIEW_PHASE);
+    }
 
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.
@@ -3946,6 +3975,20 @@ public class ProjectServicesImpl implements ProjectServices {
             throw new IllegalArgumentException("The parameter [review] is NULL");
         }
         reviewManager.createReview(review, review.getCreationUser());
+    }
+
+    /**
+     * <p>Updates specified review for software project.</p>
+     *
+     * @param review a <code>Review</code> providing the details for review to be updated.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.4.6
+     */
+    public void updateReview(Review review) throws ReviewManagementException {
+        if (review == null) {
+            throw new IllegalArgumentException("The parameter [review] is NULL");
+        }
+        reviewManager.updateReview(review, review.getCreationUser());
     }
 
     /**

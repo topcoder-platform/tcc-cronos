@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service;
 
@@ -129,13 +129,21 @@ import com.topcoder.security.TCSubject;
  * </p>
  * 
  * <p>
+ * Version 1.4.5 (TC Direct Replatforming Release 3) Change notes:
+ * <ul>
+ * <li>Add {@link #getScorecardAndMilestoneReviews(long, long)} method.</li>
+ * <li>Add {@link #updateReview(Review)} method to update the review board.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety:</strong> Implementations must be thread-safe from the point of view of
  * their use. Implementations can assume that passed objects will be operated on by just one thread.
  * </p>
  *
  * @author argolite, moonli, pulky
  * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv, TCSASSEMBER
- * @version 1.4.4
+ * @version 1.4.5
  * @since 1.0
  */
 public interface ProjectServices {
@@ -1163,16 +1171,27 @@ public interface ProjectServices {
      * Note: a single reviewer / review is assumed.
      *
      * @param projectId the project id to search for.
-     * @param reviewerId the reviewer ID.
+     * @param reviewerResourceId the reviewer resource ID.
      * @return the aggregated scorecard and review data.
      * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
      * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
      * @since 1.4.3
      */
-    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId) 
+    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerResourceId) 
         throws ProjectServicesException;
 
-
+    /**
+     * This method retrieves milestone scorecard and milestone review information associated to a project determined by parameter.
+     *
+     * @param projectId the project id to search for.
+     * @param reviewerResourceId the reviewer resource ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @since 1.4.5
+     */
+    public List<ScorecardReviewData> getScorecardAndMilestoneReviews(long projectId, long reviewerResourceId)
+        throws ProjectServicesException;
+    
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.
      * Note: a single primary screener / screen is assumed.
@@ -1195,6 +1214,15 @@ public interface ProjectServices {
      * @since 1.4.3 
      */
     void createReview(Review review) throws ReviewManagementException;
+
+    /**
+     * <p>Updates specified review for software project.</p>
+     * 
+     * @param review a <code>Review</code> providing the details for review to be updated.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.4.5
+     */
+    void updateReview(Review review) throws ReviewManagementException;
 
     /**
      * Gets all FileType entities.
