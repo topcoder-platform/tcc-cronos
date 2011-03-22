@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.ajax.handlers;
 
@@ -19,8 +19,6 @@ import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -37,10 +35,21 @@ import com.topcoder.util.log.LogFactory;
  * This class is immutable an thread safe. any manager class used by this handler is supposed to be thread safe.
  * </p>
  *
+ * <p>
+ * Version 1.0.2 (Online Review Update Review Management Process assembly 2) Change notes:
+ * <ol>
+ * <li>Added {@link #TYPE_SECONDARY_REVIEWER_REVIEW} constant.</li>
+ * <li>Added {@link #TYPE_NEW_APPEALS} constant.</li>
+ * <li>Update {@link #PlaceAppealHandler()} method to work for the new <code>New Appeals</code> phase.</li>
+ * <li>Update {@link #service(AjaxRequest, Long)} method to work for the new <code>New Appeals</code> phase. It
+ * allows <code>Secondary Reviewer</code> to submit appeals in <code>New Appeals</code> phase.</li>.
+ * </ol>
+ * </p>
+ *
  * @author topgear
  * @author assistant
- * @author George1
- * @version 1.0.1
+ * @author George1, TCSASSEMBER
+ * @version 1.0.2
  */
 public class PlaceAppealHandler extends ReviewCommonHandler {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
@@ -57,9 +66,19 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
     private static final String TYPE_REVIEW = "Review";
 
     /**
+     * The magic string for type Secondary Reviewer Review.
+     */
+    private static final String TYPE_SECONDARY_REVIEWER_REVIEW = "Secondary Reviewer Review";
+
+    /**
      * The magic string for type appeals response.
      */
     private static final String TYPE_APPEALS = "Appeals";
+
+    /**
+     * The magic string for type New Appeals.
+     */
+    private static final String TYPE_NEW_APPEALS = "New Appeals";
 
     /**
      * Represents the status of success.
@@ -135,12 +154,30 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
 
     /**
      * <p>
+     * The id of the phase type with name "Secondary Reviewer Review". it is used to check that a phase has the "Secondary Reviewer Review" phase type.
+     * This variable is immutable, it is initialized by the constructor to a negative/0/positive long number,
+     * and used by the service method.
+     * </p>
+     */
+    private final long secondaryReviewerReviewPhaseTypeId;
+
+    /**
+     * <p>
      * The id of the phase type with name "Appeals". it is used to check that a phase has the "Appeals" phase type.
      * This variable is immutable, it is initialized by the constructor to a negative/0/positive long number,
      * and used by the service method.
      * </p>
      */
     private final long appealsPhaseTypeId;
+
+    /**
+     * <p>
+     * The id of the phase type with name "New Appeals". it is used to check that a phase has the "New Appeals" phase type.
+     * This variable is immutable, it is initialized by the constructor to a negative/0/positive long number,
+     * and used by the service method.
+     * </p>
+     */
+    private final long newAppealsPhaseTypeId;
 
     /**
      * <p>
@@ -180,15 +217,23 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
             // get all phase types and find the review phase type id and appeals phase type id
             PhaseType[] phaseTypes = getPhaseManager().getAllPhaseTypes();
             long reviewTypeId = 0;
+            long secondaryReviewerReviewTypeId = 0;
             long appealTypeId = 0;
+            long newApplealsTypeId = 0;
             boolean foundReview = false;
             boolean foundAppeal = false;
             for (int i = 0; i < phaseTypes.length; i++) {
                 if (phaseTypes[i].getName().equals(TYPE_REVIEW)) {
                     reviewTypeId = phaseTypes[i].getId();
                     foundReview = true;
+                } else if (phaseTypes[i].getName().equals(TYPE_SECONDARY_REVIEWER_REVIEW)) {
+                    secondaryReviewerReviewTypeId = phaseTypes[i].getId();
+                    foundReview = true;
                 } else if (phaseTypes[i].getName().equals(TYPE_APPEALS)) {
                     appealTypeId = phaseTypes[i].getId();
+                    foundAppeal = true;
+                } else if (phaseTypes[i].getName().equals(TYPE_NEW_APPEALS)) {
+                    newApplealsTypeId = phaseTypes[i].getId();
                     foundAppeal = true;
                 }
             }
@@ -200,7 +245,9 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                 throw new ConfigurationException("The appeal phase type id can't be found.");
             }
             this.reviewPhaseTypeId = reviewTypeId;
+            this.secondaryReviewerReviewPhaseTypeId = secondaryReviewerReviewTypeId;
             this.appealsPhaseTypeId = appealTypeId;
+            this.newAppealsPhaseTypeId = newApplealsTypeId;
 
             // get the open phase status id
             PhaseStatus[] statuses = getPhaseManager().getAllPhaseStatuses();
@@ -348,10 +395,36 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId);
         }
 
+        // get all the phases
+        Phase[] phases = null;
         try {
-            if (!checkResourceAssignedToUser(submitterResource, userId.longValue())) {
+            phases = getPhaseManager().getPhases(upload.getProject()).getAllPhases();
+        } catch (Exception e) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Can't get phases.",
+                    "User id : " + userId + "\tsubmission id : " + submissionId + "\tupload id :" + upload.getId(), e);
+        }
+        
+        // get the secondary reviewer resource if the review phase is secondary reviewer review phase
+        Resource secondaryReviewerResource = null;
+        try {
+            for (Phase phase : phases) {
+                if (phase.getPhaseType().getId() == secondaryReviewerReviewPhaseTypeId) {
+                    secondaryReviewerResource = getResourceManager().getResource(review.getAuthor());
+                }
+            }
+        } catch (Exception e) {
+            return AjaxSupportHelper.createAndLogError(request.getType(),
+                    BUSINESS_ERROR, "Error when finding the resource.",
+                    "User id : " + review.getAuthor() + "\tsubmission id : " + submissionId, e);
+        }
+
+        try {
+            // only submitter or secondary review can appeal
+            if (!(checkResourceAssignedToUser(submitterResource, userId.longValue()) ||
+                    (secondaryReviewerResource != null && checkResourceAssignedToUser(secondaryReviewerResource, userId.longValue())))) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
-                        ROLE_ERROR, "The user should be a submitter.",
+                        ROLE_ERROR, "The user should be a submitter or secondary reviewer.",
                         "User id : " + userId + "\tsubmission id : " + submissionId);
             }
         } catch (ResourceException e) {
@@ -360,11 +433,12 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
 
-        // check the user has submitter role
+        // check the user has submitter role or secondary reviewer role
         try {
-            if (!checkResourceHasRole(submitterResource, "Submitter")) {
+            if (! (checkResourceHasRole(submitterResource, "Submitter") || 
+                    (secondaryReviewerResource != null && !checkResourceHasRole(secondaryReviewerResource, "Secondary Reviewer")))) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
-                        ROLE_ERROR, "The user should be a submitter.",
+                        ROLE_ERROR, "The user should be a submitter or secondary reviewer.",
                         "User id : " + userId + "\tsubmission id : " + submissionId);
             }
         } catch (ResourceException e) {
@@ -373,17 +447,31 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
 
-        // ISV : Get the user ID for the submitter resource
-        Object extRefId = submitterResource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
-        if (extRefId == null) {
+        // ISV : Get the user ID for the submitter resource and secondary reviewer resource
+        Object submitterExtRefId = submitterResource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
+        Object secondaryReviewerExtRefId = null;
+        Resource appealResource = null;
+        if (secondaryReviewerResource != null) {
+            secondaryReviewerExtRefId = secondaryReviewerResource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
+        }
+        if (submitterExtRefId == null && secondaryReviewerExtRefId == null) {
             return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "The resource matching the resource ID [" + submitterResource.getId() + "] does not"
+                    BUSINESS_ERROR, "The resource matching the resource ID [" + submitterResource.getId() + "] or secondary reviewer resource does not"
                                          + " provide the 'External Reference ID' property",
                     "User id : " + userId + "\tsubmission id : " + submissionId);
         } else {
             // ISV : Convert to string as at this point the exact type of the property is not clarified
-            String extRefIdString = String.valueOf(extRefId);
-            if (userId.longValue() != Long.parseLong(extRefIdString)) {
+            Long submitterExtRefIdLong = Long.parseLong(String.valueOf(submitterExtRefId));
+            Long secondaryReviewerExtRefIdLong = 0L;
+            if (secondaryReviewerExtRefId != null) {
+                secondaryReviewerExtRefIdLong = Long.parseLong(String.valueOf(secondaryReviewerExtRefId));
+            }
+            if (userId.longValue() == submitterExtRefIdLong) {
+                appealResource = submitterResource;
+            } else if (secondaryReviewerExtRefIdLong == userId.longValue()) {
+                appealResource = secondaryReviewerResource;
+            }
+            if (appealResource == null) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
                                                            ROLE_ERROR, "The user is not right.",
                                                            "User id : " + userId + "\tsubmission id : " + submissionId);
@@ -411,7 +499,8 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
             if (!(checkResourceHasRole(reviewerResource, "Reviewer") ||
                   checkResourceHasRole(reviewerResource, "Accuracy Reviewer") ||
                   checkResourceHasRole(reviewerResource, "Failure Reviewer") ||
-                  checkResourceHasRole(reviewerResource, "Stress Reviewer"))) {
+                  checkResourceHasRole(reviewerResource, "Stress Reviewer") ||
+                  checkResourceHasRole(reviewerResource, "Secondary Reviewer"))) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
                         ROLE_ERROR, "The author should be a reviewer.",
                         "User id : " + userId + "\tsubmission id : " + submissionId
@@ -423,21 +512,10 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
                     "User id : " + userId + "\tsubmission id : " + submissionId, e);
         }
 
-
-        // get all the phases
-        Phase[] phases = null;
-        try {
-            phases = getPhaseManager().getPhases(upload.getProject()).getAllPhases();
-        } catch (Exception e) {
-            return AjaxSupportHelper.createAndLogError(request.getType(),
-                    BUSINESS_ERROR, "Can't get phases.",
-                    "User id : " + userId + "\tsubmission id : " + submissionId + "\tupload id :" + upload.getId(), e);
-        }
-
         // get the review phase
         Phase reviewPhase = null;
         for (int i = 0; i < phases.length; i++) {
-            if (phases[i].getPhaseType().getId() == reviewPhaseTypeId) {
+            if (phases[i].getPhaseType().getId() == reviewPhaseTypeId || phases[i].getPhaseType().getId() == secondaryReviewerReviewPhaseTypeId) {
                 reviewPhase = phases[i];
                 break;
             }
@@ -465,7 +543,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         // get the appeal phase
         Phase appealPhase = null;
         for (int i = 0; i < phases.length; i++) {
-            if (phases[i].getPhaseType().getId() == appealsPhaseTypeId) {
+            if (phases[i].getPhaseType().getId() == appealsPhaseTypeId || phases[i].getPhaseType().getId() == newAppealsPhaseTypeId) {
                 appealPhase = phases[i];
                 break;
             }
@@ -508,7 +586,8 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         for (int i = 0; i < comments.length; i++) {
             if (comments[i].getCommentType() != null
                     && appealCommentType.getName().equals(comments[i].getCommentType().getName())
-                    && appealCommentType.getId() == comments[i].getCommentType().getId()) {
+                    && appealCommentType.getId() == comments[i].getCommentType().getId()
+                    && comments[i].getAuthor() == appealResource.getId()) {
                 return AjaxSupportHelper.createAndLogError(request.getType(),
                         PHASE_ERROR, "The appeal comment exists.",
                         "User id : " + userId + "\tsubmission id : " + submissionId + "\titem id :" + itemId);
@@ -519,7 +598,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         Comment comment = new Comment();
         // ISV : The appeal should be associated with resource but not external reference ID
 //        comment.setAuthor(userId.longValue());
-        comment.setAuthor(submitterResource.getId());
+        comment.setAuthor(appealResource.getId());
         comment.setComment(text);
         comment.setCommentType(appealCommentType);
 
