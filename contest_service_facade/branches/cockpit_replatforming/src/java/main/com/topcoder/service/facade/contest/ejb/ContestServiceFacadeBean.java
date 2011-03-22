@@ -7537,7 +7537,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param phase the <code>Phase</code> associated with the resource.
      * @since 1.6.9
      */
-    private void assignRole(TCSubject tcSubject, long projectId, long roleId, long userId, com.topcoder.project.phases.Phase phase)
+    private void assignRole(TCSubject tcSubject, long projectId, long roleId, long userId, com.topcoder.project.phases.Phase phase, boolean addNotification, boolean addForumWatch)
         throws ContestServiceException {
         logger.debug("enter methods assignRole");
 
@@ -7633,7 +7633,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId)
             throws ContestServiceException {
-        assignRole(tcSubject, projectId, roleId, userId, null);
+        assignRole(tcSubject, projectId, roleId, userId, null, true, true);
     }
 
      /* Assigns the role for the given tc project and user, it will assign all projects
@@ -8107,7 +8107,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws PermissionServiceException if an unexpected error occurs.
      * @since 1.6.2
      */
-        public void updateProjectPermissions(TCSubject tcSubject,
+     public void updateProjectPermissions(TCSubject tcSubject,
             List<ProjectPermission> projectPermissions, long role)
             throws PermissionServiceException {
         logger.debug("contest service facade bean #updateProjectPermissions("
@@ -8165,8 +8165,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
                     // for each OR project, find all observers
                     for (Long pid : projectIds) {
-                        this.assginRole(tcSubject, pid.longValue(), role,
-                                permission.getUserId(), addNotification,
+                        this.assignRole(tcSubject, pid.longValue(), role,
+                                permission.getUserId(), null, addNotification,
                                 addForumWatch);
                     }
                 } else if (permission.getPermission() == null
@@ -9049,7 +9049,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         break;
                     }
                 }
-                assignRole(tcSubject, projectId, resourceRoleId, tcSubject.getUserId(), targetPhase);
+                assignRole(tcSubject, projectId, resourceRoleId, tcSubject.getUserId(), targetPhase, true, true);
                 for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
                     if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
                         reviewerResource = resource;
