@@ -201,12 +201,17 @@ import com.topcoder.util.file.DocumentGeneratorFactory;
 import com.topcoder.util.file.Template;
 import com.topcoder.util.objectfactory.ObjectFactory;
 import com.topcoder.util.objectfactory.impl.ConfigManagerSpecificationFactory;
+import com.topcoder.web.common.RowNotFoundException;
 import com.topcoder.web.ejb.forums.Forums;
 import com.topcoder.web.ejb.forums.ForumsHome;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseHome;
 import com.topcoder.web.ejb.user.UserTermsOfUse;
 import com.topcoder.web.ejb.user.UserTermsOfUseHome;
+import com.topcoder.web.ejb.user.UserPreference;
+import com.topcoder.web.ejb.user.UserPreferenceHome;
+
+import com.topcoder.shared.util.DBMS;
 
 /**
  * <p>
@@ -653,6 +658,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final long SUBMISSION_ACTIVE_STATUS_ID = 1;
 
+     /**
+     * DELETE submission status id
+     *
+     * @since 1.6
+     */
+    private static final long SUBMISSION_DELETE_STATUS_ID = 5;
+
     /**
      * Draft status list.
      *
@@ -708,7 +720,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         "Cancelled - Requirement Infeasible");
 
     private final static String COPILOT_PERMISSION = "full";
+
+    private final static int GLOBAL_TIMELINE_NOTIFICATION = 29;
+
+    private final static int GLOBAL_FORUM_WATCH = 30;
     
+
     /**
      * <p>
      * A <code>StudioService</code> providing access to available
@@ -4139,19 +4156,53 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 forumId = contest.getAssetDTO().getForum().getJiveCategoryId();
             }
 
-            if(forumId > 0 && createForum) {
-                for(com.topcoder.management.resource.Resource r : contest.getProjectResources()) {
-                    long roleId = r.getResourceRole().getId();
-                    // add forum watch/permission for each copilot to create
-                    if (roleId == ResourceRole.RESOURCE_ROLE_COPILOT_ID || roleId == ResourceRole.RESOURCE_ROLE_OBSERVER_ID) {
-                        createForumWatchAndRole(forumId, Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)));
-                    }
+            String adminRole = getEligibilityAdminRole(tcSubject, billingProjectId).trim();
+            
+            for (com.topcoder.management.resource.Resource r : contest.getProjectResources()) {
+                long roleId = r.getResourceRole().getId();
+                long uid = Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID));
+
+
+                if (r.getProperty(RESOURCE_INFO_HANDLE).equals(RESOURCE_INFO_HANDLE_COMPONENTS) 
+                    || r.getProperty(RESOURCE_INFO_HANDLE).equals(RESOURCE_INFO_HANDLE_APPLICATIONS)
+                    || r.getProperty(RESOURCE_INFO_HANDLE).equals(adminRole))
+                {
+                    continue;
+                }
+                boolean addNotification;
+                boolean addForumWatch;
+        
+                List<Integer> preferenceIds = new ArrayList<Integer>();
+                // notification preference
+                preferenceIds.add(GLOBAL_TIMELINE_NOTIFICATION);
+                // forum preference
+                preferenceIds.add(GLOBAL_FORUM_WATCH);
+                
+                Map<Integer, String> preferences = getUserPreferenceMaps(uid, preferenceIds);
+                
+                addNotification = Boolean.parseBoolean(preferences.get(GLOBAL_TIMELINE_NOTIFICATION));
+                addForumWatch = Boolean.parseBoolean(preferences.get(GLOBAL_FORUM_WATCH));
+                if(forumId > 0 && createForum) {
+                        // add forum watch/permission for each copilot to create
+                        if (roleId == ResourceRole.RESOURCE_ROLE_COPILOT_ID) {
+                            createForumWatchAndRole(forumId, uid, true);
+                        }
+                        else if (roleId == ResourceRole.RESOURCE_ROLE_OBSERVER_ID) {
+                            createForumWatchAndRole(forumId, uid, addForumWatch);
+                        }
+                }
+
+                if (roleId != ResourceRole.RESOURCE_ROLE_OBSERVER_ID || addNotification)
+                {
+                    // set timeline notification
+                    projectServices.addNotifications(uid, new long[]{projectData.getProjectHeader().getId()}, String.valueOf(tcSubject.getUserId()));
                 }
             }
 
+
             // set timeline notification
             projectServices.addNotifications(tcSubject.getUserId(), new long[]{projectData.getProjectHeader().getId()}, String.valueOf(tcSubject.getUserId()));
-
+           
 
             //preparing the result
             com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
@@ -4738,7 +4789,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
                     // insert copilot forum watch/permission for all new copilots
                     for(String copilotId : currentCopilots) {
-                            createForumWatchAndRole(forumId, Long.parseLong(copilotId));
+                            createForumWatchAndRole(forumId, Long.parseLong(copilotId), true);
                     }
 
 
@@ -5110,6 +5161,38 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             logger.error(e);
 
             return forumId;
+        }
+    }
+
+    /**
+     * Close the forum
+     *
+     * @param forumid The long id of the forum
+     */
+    public void closeForum(long forumid) {
+        long forumId = -1;
+        logger.debug("closeForum (forumid = " + forumid + ")");
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES,
+                "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            forums.closeCategory(forumid);
+
+            logger.debug("Exit closeForum (" + forumid + ")");
+
+        } catch (Exception e) {
+            logger.error("*** Could not close forum for " + forumId);
+            logger.error(e);
         }
     }
 
@@ -6984,7 +7067,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *            The project category id to
      * @return The long id of the created forum
      */
-    private void createForumWatchAndRole(long forumId, long userId) {
+    private void createForumWatchAndRole(long forumId, long userId, boolean watch) {
         logger.debug("createForumWatch (" + forumId + ", " + userId + ")");
 
         try {
@@ -7001,7 +7084,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             Forums forums = forumsHome.create();
 
             String roleId = "Software_Users_" + forumId;
-            forums.createCategoryWatch(userId, forumId);
+            if (watch)
+            {
+                forums.createCategoryWatch(userId, forumId);
+            }
+            
             forums.assignRole(userId, roleId);
 
             logger.debug("Exit createForumWatch (" + forumId + ", " + userId + ")");
@@ -7240,6 +7327,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             dto.setPhase("Completed");
             com.topcoder.project.phases.Phase[] phases = contest.getAllPhases();
             dto.setProductionDate(getXMLGregorianCalendar(phases[phases.length-1].getActualEndDate()));
+            // close current forum
+            if (createForum && dto.getForum() != null)
+            {
+                closeForum(dto.getForum().getJiveCategoryId());
+            }
             dto.setForum(null);
             catalogService.updateAsset(dto);
 
@@ -7456,16 +7548,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             found = projectServices.resourceExists(projectId, roleId, userId);
 
-            // Check if the resource with the role already exists
-          /*  if (resources != null && resources.length > 0) {
-                for (com.topcoder.management.resource.Resource resource : resources) {
-                    if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
-                            && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(userId)) {
-                        found = true;
-                        break;
-                    }
-                }
-            } */
 
             // if not found && user agreed terms (if any) && is eligible, add resource
             if (!found && checkTerms(projectId, userId, new int[] { (int) roleId })
@@ -7504,14 +7586,28 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 newRes.setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
 
                 projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
-                projectServices.addNotifications(userId, new long[]{projectId}, String.valueOf(tcSubject.getUserId()));
+                
+                // only check notification setting for observer, else always addd
+                if (roleId != ResourceRole.RESOURCE_ROLE_OBSERVER_ID || addNotification) {
+                    projectServices.addNotifications(userId,
+                            new long[] { projectId },
+                            String.valueOf(tcSubject.getUserId()));
+                }
+                
 
                 // create forum watch
                 long forumId = projectServices.getForumId(projectId);
 
-                if (forumId > 0 && createForum) {
-                    createForumWatchAndRole(forumId, userId);
+                // only check notification for observer
+                if (roleId != ResourceRole.RESOURCE_ROLE_OBSERVER_ID)
+                {
+                    addForumWatch = true;
                 }
+
+                if (forumId > 0 && createForum) {
+                    createForumWatchAndRole(forumId, userId, addForumWatch);
+                }                    
+                
             }
 
         } catch (UserServiceException use) {
@@ -8048,15 +8144,30 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (permission.getUserPermissionId() < 0
                         && permission.getPermission() != null
                         && permission.getPermission().length() > 0) {
+                    
+                    boolean addNotification;
+                    boolean addForumWatch;
+                    
+                    List<Integer> preferenceIds = new ArrayList<Integer>();
+                    // notification preference
+                    preferenceIds.add(GLOBAL_TIMELINE_NOTIFICATION);
+                    // forum preference
+                    preferenceIds.add(GLOBAL_FORUM_WATCH);
+                    
+                    Map<Integer, String> preferences = getUserPreferenceMaps(permission.getUserId(), preferenceIds);
+                    
+                    addNotification = Boolean.parseBoolean(preferences.get(GLOBAL_TIMELINE_NOTIFICATION));
+                    addForumWatch = Boolean.parseBoolean(preferences.get(GLOBAL_FORUM_WATCH));
+                    
                     List<Long> projectIds = projectServices
                             .getProjectIdByTcDirectProject(permission
                                     .getProjectId());
 
                     // for each OR project, find all observers
                     for (Long pid : projectIds) {
-                        this.assginRole(tcSubject, pid.longValue(),
-                                role,
-                                permission.getUserId());
+                        this.assginRole(tcSubject, pid.longValue(), role,
+                                permission.getUserId(), addNotification,
+                                addForumWatch);
                     }
                 } else if (permission.getPermission() == null
                         || "".equals(permission.getPermission())) {
@@ -8120,7 +8231,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch (ContestServiceException e) {
             sessionContext.setRollbackOnly();
             throw new PermissionServiceException(e.getMessage(), e);
-        }
+        } catch (Exception e) {
+            sessionContext.setRollbackOnly();
+            throw new PermissionServiceException(e.getMessage(), e);
+        }  
 
         logger.debug("Exit updateProjectPermissions");
     }
@@ -8291,7 +8405,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public Submission[] getSoftwareProjectSubmissions(long projectId)
         throws SearchBuilderException, UploadPersistenceException {
         Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
-        Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
+        Filter filter2 = SearchBundle.buildNotFilter(SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_DELETE_STATUS_ID));
         Filter andfilter = SearchBundle.buildAndFilter(filter, filter2);
         return uploadManager.searchSubmissions(andfilter);
     }
@@ -8806,6 +8920,38 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
 
         return userPermissionMaps;
+    }
+    
+    private Map<Integer, String> getUserPreferenceMaps(long userId,
+            List<Integer> preferenceIds) throws Exception {
+        Properties p = new Properties();
+        p.put(Context.INITIAL_CONTEXT_FACTORY,
+                "org.jnp.interfaces.NamingContextFactory");
+        p.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
+        p.put(Context.PROVIDER_URL, userBeanProviderUrl);
+
+        Context c = new InitialContext(p);
+        
+        UserPreferenceHome userPreferenceHome = (UserPreferenceHome) c
+                .lookup("com.topcoder.web.ejb.user.UserPreferenceHome");
+        UserPreference userPreference = userPreferenceHome.create();
+        Map<Integer, String> ret = new HashMap<Integer, String>();
+        
+        for (int preferenceId : preferenceIds) {
+            String value;
+            
+            try {
+                value = userPreference.getValue(userId, preferenceId,
+                        DBMS.COMMON_OLTP_DATASOURCE_NAME);
+
+            } catch (RowNotFoundException e) {
+                value = "false";  
+            }
+            
+            ret.put(preferenceId, value);
+        }
+        
+        return ret;
     }
 
     /**
