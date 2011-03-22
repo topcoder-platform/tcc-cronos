@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 
@@ -8,14 +8,11 @@ import java.util.List;
 
 import javax.activation.DataHandler;
 
-import com.cronos.onlinereview.services.uploads.InvalidProjectException;
-import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
-import com.cronos.onlinereview.services.uploads.InvalidUserException;
-import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
 import com.topcoder.clients.model.ProjectContestFee;
+import com.topcoder.direct.services.copilot.model.CopilotProject;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.project.DesignComponents;
@@ -24,8 +21,8 @@ import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
+import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.service.FullProjectData;
-import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.security.TCSubject;
@@ -65,7 +62,6 @@ import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.user.Registrant;
-import com.topcoder.direct.services.copilot.model.CopilotProject;
 
 /**
  * <p>
@@ -179,8 +175,19 @@ import com.topcoder.direct.services.copilot.model.CopilotProject;
  * </ul>
  * </p>
  * 
+ * <p>
+ * Version 1.6.5 (TC Direct Replatforming Release 3) Change notes:
+ * <ul>
+ * <li>Add {@link #getMilestoneSubmissions(long)} method to get the milestone submissions in OR.</li>
+ * <li>Add {@link #getStudioSubmissionFeedback(TCSubject, long, long, PhaseType)} method to get client feedback for a specified submission.</li>
+ * <li>Add {@link #saveStudioSubmisionWithRankAndFeedback(TCSubject, long, long, int, String, Boolean, PhaseType)} method to save placement and
+ * client feedback for a specified submission.</li>
+ * <li>Add {@link #updateSoftwareSubmissions(TCSubject, List)} method to update the submissions in OR.</li>
+ * </ul>
+ * </p>
+ *
  * @author pulky, murphydog, waits, BeBetter, hohosky, isv, TCSASSEMBER
- * @version 1.6.4
+ * @version 1.6.5
  */
 public interface ContestServiceFacade {
     /**
@@ -2611,6 +2618,17 @@ public interface ContestServiceFacade {
      */
     Submission[] getSoftwareProjectSubmissions(long projectId) throws SearchBuilderException, 
                                                                       UploadPersistenceException;
+    /**
+     * <p>Gets the milestone submissions for specified project</p>.
+     * 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @return a <code>List</code> listing the milestone submissions for project.
+     * @throws SearchBuilderException if an unexpected error occurs.
+     * @throws UploadPersistenceException if an unexpected error occurs.
+     * @since 1.6.5
+     */
+    public Submission[] getMilestoneSubmissions(long projectId) throws SearchBuilderException,
+                                                                       UploadPersistenceException;
 
     /**
      * <p>Creates specified review for software project.</p>
@@ -2666,4 +2684,46 @@ public interface ContestServiceFacade {
     public List<CopilotProject> updateCopilotProjects(TCSubject currentUser,
             List<CopilotProject> copilotProjects, List<Boolean> removeFlags)
             throws PermissionServiceException, ContestServiceException;
+    
+    /**
+     * <p>Gets the client feedback of the specified studio submission. The client feedback is the comment in the review board
+     * of the submission.</p>
+     *
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionId a <code>long</code> providing the ID of the submission.
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @return a <code>String</code> providing the client feedback of the submission.
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.5
+     */
+    public String getStudioSubmissionFeedback(TCSubject currentUser, long projectId, long submissionId, PhaseType phaseType) throws ContestServiceException ;
+    
+    /**
+     * <p>save the rank and client feedback for a specified submission. The reviewer is the current user. And the review board is assumed only have one
+     * question rating from 1 to 10. The client feedback is the comment in the review board.</p>
+     *
+     * @param tcSubject a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionId a <code>long</code> providing the ID of the submission.
+     * @param placement a <code>int</code> providing the placement of the submission.
+     * @param feedback a <code>String</code> providing the client feedback of the submission. Feedback will not changed if it is null.
+     * @param committed a <code>boolean</code> representing whether to commit the review board.
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.5
+     */
+    public void saveStudioSubmisionWithRankAndFeedback(TCSubject tcSubject, long projectId, long submissionId,
+            int placement, String feedback, Boolean committed, PhaseType phaseType)
+        throws ContestServiceException;
+    
+    /**
+     * <p>Update the software submissions.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param submissions a <code>List</code> providing the submissions to be updated.
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.5
+     */
+    public void updateSoftwareSubmissions(TCSubject currentUser, List<Submission> submissions) throws ContestServiceException;
 }

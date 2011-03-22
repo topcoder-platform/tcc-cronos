@@ -68,11 +68,11 @@ import com.topcoder.clients.model.ProjectContestFee;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.direct.services.copilot.dao.CopilotDAOException;
-import com.topcoder.direct.services.copilot.dao.CopilotProjectDAO;
 import com.topcoder.direct.services.copilot.dao.CopilotProfileDAO;
+import com.topcoder.direct.services.copilot.dao.CopilotProjectDAO;
 import com.topcoder.direct.services.copilot.dao.LookupDAO;
-import com.topcoder.direct.services.copilot.dao.impl.CopilotProjectDAOImpl;
 import com.topcoder.direct.services.copilot.dao.impl.CopilotProfileDAOImpl;
+import com.topcoder.direct.services.copilot.dao.impl.CopilotProjectDAOImpl;
 import com.topcoder.direct.services.copilot.dao.impl.LookupDAOImpl;
 import com.topcoder.direct.services.copilot.model.CopilotProfile;
 import com.topcoder.direct.services.copilot.model.CopilotProject;
@@ -86,7 +86,6 @@ import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.Prize;
-import com.topcoder.management.project.PrizeType;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPropertyType;
@@ -112,6 +111,7 @@ import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.RolePrincipal;
 import com.topcoder.security.TCSubject;
@@ -150,12 +150,11 @@ import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.PersistenceFault;
 import com.topcoder.service.project.ProjectData;
+import com.topcoder.service.project.ProjectNotFoundFault;
 import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.UserNotFoundFault;
-import com.topcoder.service.project.ProjectNotFoundFault;
-import com.topcoder.service.project.AuthorizationFailedFault;
 import com.topcoder.service.specreview.SpecReview;
 import com.topcoder.service.specreview.SpecReviewService;
 import com.topcoder.service.specreview.SpecReviewServiceException;
@@ -392,8 +391,19 @@ import com.topcoder.web.ejb.user.UserTermsOfUseHome;
  *   </ol>
  * </p>
  *
+ * <p>
+ * Version 1.6.9 (TC Direct Replatforming Release 3) Change notes:
+ * <ul>
+ * <li>Add {@link #getMilestoneSubmissions(long)} method to get the milestone submissions in OR.</li>
+ * <li>Add {@link #getStudioSubmissionFeedback(TCSubject, long, long, PhaseType)} method to get client feedback for a specified submission.</li>
+ * <li>Add {@link #saveStudioSubmisionWithRankAndFeedback(TCSubject, long, long, int, String, Boolean, PhaseType)} method to save placement and
+ * client feedback for a specified submission.</li>
+ * <li>Add {@link #updateSoftwareSubmissions(TCSubject, List)} method to update the submissions in OR.</li>
+ * </ul>
+ * </p>
+ *
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSDEVELOPER
- * @version 1.6.8
+ * @version 1.6.9
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -681,6 +691,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6.8
      */
     private final static long MILESTONE_PRIZE_TYPE_ID = 14L;
+
+    /**
+     * Represents the milestone submission type id.
+     * 
+     * @since 1.6.9
+     */
+    private final static long MILESTONE_SUBMISSION_TYPE_ID = 3L;
 
     /**
      * Cancelled status list.
@@ -7425,12 +7442,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param projectId the id of the project.
      * @param roleId the id of the role.
      * @param userId the id of the user.
-     *
-     * @since BUGR-3731
+     * @param phase the <code>Phase</code> associated with the resource.
+     * @since 1.6.9
      */
-    public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId)
-            throws ContestServiceException {
-        logger.debug("enter methods assginRole");
+    private void assignRole(TCSubject tcSubject, long projectId, long roleId, long userId, com.topcoder.project.phases.Phase phase)
+        throws ContestServiceException {
+        logger.debug("enter methods assignRole");
 
         try {
           //  com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, roleId);
@@ -7477,6 +7494,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
 
                 newRes.setResourceRole(roleToSet);
+                if (phase != null) {
+                    newRes.setPhase(phase.getId());
+                }
 
                 newRes.setProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID, String.valueOf(userId));
                 newRes.setProperty(RESOURCE_INFO_HANDLE, String.valueOf(userService.getUserHandle(userId)));
@@ -7501,8 +7521,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             sessionContext.setRollbackOnly();
             throw new ContestServiceException(cse.getMessage(), cse);
         } finally {
-            logger.debug("exist method assginRole");
+            logger.debug("exist method assignRole");
         }
+    }
+
+    /**
+     * Assign the given roleId to the specified userId in the given project.
+     *
+     * @param tcSubject the TCSubject instance.
+     * @param projectId the id of the project.
+     * @param roleId the id of the role.
+     * @param userId the id of the user.
+     *
+     * @since BUGR-3731
+     */
+    public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId)
+            throws ContestServiceException {
+        assignRole(tcSubject, projectId, roleId, userId, null);
     }
 
      /* Assigns the role for the given tc project and user, it will assign all projects
@@ -8191,9 +8226,35 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
         }
 
+        data.get(0).setReview(null);
         return data.get(0);
     }
 
+    /**
+     * <p>Gets the <code>ScorecardReviewData</code> data for a specified submission.</p>
+     *
+     * @param projectId a <code>long</code> providing the project ID.
+     * @param reviewerResourceId a <code>long</code> providing the ID for reviewer resource.
+     * @param submissionId a <code>long</code> providing the ID for submission.
+     * @return a <code>ScorecardReviewData</code> providing the details for review or <code>null</code> if review and
+     *         scorecard is not found,
+     * @since 1.6.9
+     */
+    private ScorecardReviewData getMilestoneReview(long projectId, long reviewerResourceId, long submissionId) {
+        List<ScorecardReviewData> data = projectServices.getScorecardAndMilestoneReviews(projectId, reviewerResourceId);
+        for (ScorecardReviewData r : data) {
+            Review review = r.getReview();
+            if (review != null) {
+                if (review.getSubmission() == submissionId) {
+                    return r;
+                }
+            }
+        }
+
+        data.get(0).setReview(null);
+        return data.get(0);
+    }
+    
     /**
      * <p>Gets the screening for specified submission.</p>
      *
@@ -8233,6 +8294,24 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
         Filter andfilter = SearchBundle.buildAndFilter(filter, filter2);
         return uploadManager.searchSubmissions(andfilter);
+    }
+    
+    /**
+     * <p>Gets the milestone submissions for specified project.</p>
+     * 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @return a <code>List</code> listing the milestone submissions for project.
+     * @throws SearchBuilderException if an unexpected error occurs.
+     * @throws UploadPersistenceException if an unexpected error occurs.
+     * @since 1.6.9
+     */
+    public Submission[] getMilestoneSubmissions(long projectId)
+        throws SearchBuilderException, UploadPersistenceException {
+        Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
+        Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
+        Filter filter3 = SubmissionFilterBuilder.createSubmissionTypeIdFilter(MILESTONE_SUBMISSION_TYPE_ID);
+        Filter andFilter = new AndFilter(Arrays.asList(new Filter[] {filter, filter2, filter3}));
+        return uploadManager.searchSubmissions(andFilter);
     }
 
     /**
@@ -8727,5 +8806,203 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
 
         return userPermissionMaps;
+    }
+
+    /**
+     * <p>Gets the client feedback of the specified studio submission. The client feedback is the comment in the review board
+     * of the submission.</p>
+     *
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionId a <code>long</code> providing the ID of the submission.
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @return a <code>String</code> providing the client feedback of the submission.
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.9
+     */
+    public String getStudioSubmissionFeedback(TCSubject tcSubject, long projectId, long submissionId, PhaseType phaseType)
+        throws ContestServiceException {
+        
+        // gets the reviewer resoruce role id based on the phase type
+        long resourceRoleId;
+        if (phaseType.getId() == PhaseType.MILESTONE_REVIEW_PHASE.getId()) {
+            resourceRoleId = ResourceRole.RESOURCE_ROLE_MILESTONE_REVIEWER_ID;
+        } else if (phaseType.getId() == PhaseType.REVIEW_PHASE.getId()) {
+            resourceRoleId = ResourceRole.RESOURCE_ROLE_REVIEWER_ID;
+        } else {
+            throw new ContestServiceException("The phaseType can only be Milestone Review phase or Review phase.");
+        }
+        
+        // gets the reviewer resource, the user of reviewer resource must be current user
+        com.topcoder.management.resource.Resource reviewerResource = null;
+        for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
+            if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
+                reviewerResource = resource;
+                break;
+            }
+        }
+        if (reviewerResource == null) {
+            return "";
+        }
+        // gets the review data
+        ScorecardReviewData reviewData;
+        if (phaseType.getId() == PhaseType.MILESTONE_REVIEW_PHASE.getId()) {
+            reviewData = getMilestoneReview(projectId, reviewerResource.getId(), submissionId);
+        } else {
+            reviewData = getReview(projectId, reviewerResource.getId(), submissionId);
+        }
+        if (reviewData.getReview() == null) {
+            return "";
+        }
+        return reviewData.getReview().getItem(0).getComment(0).getComment();
+    }
+
+    /**
+     * <p>save the rank and client feedback for a specified submission. The reviewer is the current user. And the review board is assumed only have one
+     * question rating from 1 to 10. The client feedback is the comment in the review board.</p>
+     *
+     * @param tcSubject a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionId a <code>long</code> providing the ID of the submission.
+     * @param placement a <code>int</code> providing the placement of the submission.
+     * @param feedback a <code>String</code> providing the client feedback of the submission. Feedback will not changed if it is null.
+     * @param committed a <code>boolean</code> representing whether to commit the review board.
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.9
+     */
+    public void saveStudioSubmisionWithRankAndFeedback(TCSubject tcSubject, long projectId, long submissionId,
+            int placement, String feedback, Boolean committed, PhaseType phaseType)
+        throws ContestServiceException {
+        
+        try {
+            // gets the reviewer resoruce role id based on the phase type
+            long resourceRoleId;
+            if (phaseType.getId() == PhaseType.MILESTONE_REVIEW_PHASE.getId()) {
+                resourceRoleId = ResourceRole.RESOURCE_ROLE_MILESTONE_REVIEWER_ID;
+            } else if (phaseType.getId() == PhaseType.REVIEW_PHASE.getId()) {
+                resourceRoleId = ResourceRole.RESOURCE_ROLE_REVIEWER_ID;
+            } else {
+                throw new ContestServiceException("The phaseType can only be Milestone Review phase or Review phase.");
+            }
+            
+            // gets the reviewer resource, the user of reviewer resource must be current user
+            com.topcoder.management.resource.Resource reviewerResource = null;
+            for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
+                if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
+                    reviewerResource = resource;
+                    break;
+                }
+            }
+            if (reviewerResource == null) {
+                // userId is not a reviewer resource, add it as reviewer resource
+                com.topcoder.project.phases.Phase targetPhase = null;
+                for (com.topcoder.project.phases.Phase phase : projectServices.getFullProjectData(projectId).getAllPhases()) {
+                    if (phase.getPhaseType().getId() == phaseType.getId()) {
+                        targetPhase = phase;
+                        break;
+                    }
+                }
+                assignRole(tcSubject, projectId, resourceRoleId, tcSubject.getUserId(), targetPhase);
+                for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
+                    if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
+                        reviewerResource = resource;
+                        break;
+                    }
+                }
+            }
+            if (reviewerResource == null) {
+                // failed to add the current user as reviwer resource
+                throw new ContestServiceException("Failed to add the current user as reviewer/milestone reviewer resource.");
+            }
+
+            // gets the review data
+            ScorecardReviewData reviewData;
+            if (phaseType.getId() == PhaseType.MILESTONE_REVIEW_PHASE.getId()) {
+                reviewData = getMilestoneReview(projectId, reviewerResource.getId(), submissionId);
+            } else {
+                reviewData = getReview(projectId, reviewerResource.getId(), submissionId);
+            }
+            Scorecard scorecard = reviewData.getScorecard();
+            if (reviewData.getReview() == null) {
+                // no review board yet, create a new review
+                Review review = new Review();
+                review.setAuthor(reviewerResource.getId());
+                review.setCommitted(committed);
+                review.setCreationUser(String.valueOf(tcSubject.getUserId()));
+                review.setCreationTimestamp(new Date());
+                review.setModificationUser(String.valueOf(tcSubject.getUserId()));
+                review.setModificationTimestamp(new Date());
+                review.setSubmission(submissionId);
+                review.setScorecard(scorecard.getId());
+    
+                List<Item> items = new ArrayList<Item>();
+                int rate = 11 - placement;
+                for (Group group : scorecard.getAllGroups()) {
+                    for (Section section : group.getAllSections()) {
+                        for (Question question : section.getAllQuestions()) {
+                            Item item = new Item();
+                            item.setAnswer(String.valueOf(rate) + "/10");
+                            item.setQuestion(question.getId());
+                            Comment comment = new Comment();
+                            comment.setAuthor(reviewerResource.getId());
+                            comment.setComment(feedback == null ? "" : feedback);
+                            comment.setCommentType(CommentType.COMMENT_TYPE_COMMENT);
+                            item.addComment(comment);
+                            items.add(item);
+                        }
+                    }
+                }
+    
+                review.setItems(items);
+                review.setInitialScore(10.0f * rate);
+                review.setScore(10.0f * rate);
+                projectServices.createReview(review);
+            } else {
+                // update the exists review board
+                Review review = reviewData.getReview();
+                review.setCommitted(committed);
+                review.setModificationUser(String.valueOf(tcSubject.getUserId()));
+                review.setModificationTimestamp(new Date());
+                int itemIndex = 0;
+                int rate = 11 - placement;
+                for (Group group : scorecard.getAllGroups()) {
+                    for (Section section : group.getAllSections()) {
+                        for (Question question : section.getAllQuestions()) {
+                            Item item = review.getItem(itemIndex++);
+                            item.setAnswer(String.valueOf(rate) + "/10");
+                            for (Comment comment : item.getAllComments()) {
+                                if (feedback != null) {
+                                    comment.setComment(feedback);
+                                }
+                            }
+                        }
+                    }
+                }
+                review.setInitialScore(10.0f * rate);
+                review.setScore(10.0f * rate);
+                projectServices.updateReview(review);
+            }
+        } catch (ReviewManagementException e) {
+            throw new ContestServiceException("Error occurs when saving the review.", e);
+        }
+    }
+    
+    /**
+     * <p>Update the software submissions.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param submissions a <code>List</code> providing the submissions to be updated.
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.9
+     */
+    public void updateSoftwareSubmissions(TCSubject currentUser, List<Submission> submissions) throws ContestServiceException {
+        try {
+            for (Submission submission : submissions) {
+                uploadManager.updateSubmission(submission, String.valueOf(currentUser.getUserId()));
+            }
+        } catch (UploadPersistenceException e) {
+            throw new ContestServiceException("Error occurs when updating submission.", e);
+        }
     }
 }
