@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -172,14 +172,19 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *  - Add support for ProjectStudioSpecification.contestIntroduction and ProjectStudioSpecification.contestDescription fields.
  *  - Update {@link #createOrUpdateProjectFileTypes(long, List, Connection, String, boolean)} to let fileTypes can be null.
  *  - Update {@link #createOrUpdateProjectPrizes(long, List, Connection, String, boolean) to update the logic for updating prizes.
- *
- *
+ *  </p>
+ *  <p>
+ *  Version 1.3.4 - TC Direct Replatforming Release 3
+ *  - Update {@link #getProjectStudioSpecification(long)} and {@link #createProjectStudioSpecification(ProjectStudioSpecification, String)
+ *  and {@link #updateProjectStudioSpecification(ProjectStudioSpecification, String)} methods to support the new generalFeedback field.
+ *  </p>
+ * 
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter, isv
- * @version 1.3.3
+ * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter, isv, TCSASSEMBER
+ * @version 1.3.4
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -1867,8 +1872,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         = "INSERT INTO project_studio_specification (project_studio_spec_id, "
             + "goals, target_audience, branding_guidelines, disliked_design_websites, other_instructions, "
             + "winning_criteria, submitters_locked_between_rounds, round_one_introduction, round_two_introduction, "
-            + "colors, fonts, layout_and_size, contest_introduction, contest_description, create_user, create_date, modify_user, modify_date)"
-            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "colors, fonts, layout_and_size, contest_introduction, contest_description, general_feedback, create_user, create_date, modify_user, modify_date)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * Represents the sql statement to update studio specification data.
@@ -1879,7 +1884,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         + "SET goals=?, target_audience=?, branding_guidelines=?, disliked_design_websites=?, "
         + "other_instructions=?, winning_criteria=?, submitters_locked_between_rounds=?, "
         + "round_one_introduction=?, round_two_introduction=?, colors=?, fonts=?, "
-        + "layout_and_size=?, contest_introduction=?, contest_description=?, modify_user=?, modify_date=? " + "WHERE project_studio_spec_id=";
+        + "layout_and_size=?, contest_introduction=?, contest_description=?, general_feedback=?, modify_user=?, modify_date=? " + "WHERE project_studio_spec_id=";
 
     /**
      * Represents the sql statement to delete studio specification data with the specified project studio specification
@@ -1908,7 +1913,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         + "spec.branding_guidelines, spec.disliked_design_websites, spec.other_instructions, "
         + "spec.winning_criteria, spec.submitters_locked_between_rounds, "
         + "spec.round_one_introduction, spec.round_two_introduction, spec.colors, "
-        + "spec.fonts, spec.layout_and_size, spec.contest_introduction, spec.contest_description " + "FROM project_studio_specification AS spec JOIN project AS project "
+        + "spec.fonts, spec.layout_and_size, spec.contest_introduction, spec.contest_description, spec.general_feedback " + "FROM project_studio_specification AS spec JOIN project AS project "
         + "ON project.project_studio_spec_id=spec.project_studio_spec_id " + "WHERE project.project_id=";
     /**
      * Represents the data types for the result set by querying studio specification data with the specified project id.
@@ -1918,7 +1923,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final DataType[] QUERY_STUDIO_SPEC_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.STRING_TYPE, Helper.BOOLEAN_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
      * Represents the sql statement to set studio specification id for project table with the specified project id.
@@ -3712,7 +3717,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Object[] queryArgs = new Object[]{newId, spec.getGoals(), spec.getTargetAudience(),
                 spec.getBrandingGuidelines(), spec.getDislikedDesignWebSites(), spec.getOtherInstructions(),
                 spec.getWinningCriteria(), spec.isSubmittersLockedBetweenRounds(), spec.getRoundOneIntroduction(),
-                spec.getRoundTwoIntroduction(), spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), operator,
+                spec.getRoundTwoIntroduction(), spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), spec.getGeneralFeedback(), operator,
                 createDate, operator, createDate};
             Helper.doDMLQuery(conn, CREATE_STUDIO_SPEC_SQL, queryArgs);
 
@@ -3777,7 +3782,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             Object[] queryArgs = new Object[]{spec.getGoals(), spec.getTargetAudience(), spec.getBrandingGuidelines(),
                 spec.getDislikedDesignWebSites(), spec.getOtherInstructions(), spec.getWinningCriteria(),
                 spec.isSubmittersLockedBetweenRounds(), spec.getRoundOneIntroduction(), spec.getRoundTwoIntroduction(),
-                spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), operator, modifyDate};
+                spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), spec.getGeneralFeedback(), operator, modifyDate};
             Helper.doDMLQuery(conn, UPDATE_STUDIO_SPEC_SQL + spec.getId(), queryArgs);
 
             closeConnection(conn);
@@ -3930,6 +3935,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             studioSpec.setLayoutAndSize((String) rows[0][12]);
             studioSpec.setContestIntroduction((String) rows[0][13]);
             studioSpec.setContestDescription((String) rows[0][14]);
+            studioSpec.setGeneralFeedback((String) rows[0][15]);
 
             closeConnection(conn);
             return studioSpec;
