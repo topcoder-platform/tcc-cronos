@@ -10,9 +10,9 @@ import com.topcoder.util.scheduler.scheduling.JobType;
 import com.topcoder.util.scheduler.scheduling.ScheduledJobRunner;
 
 /**
- * Unit tests for <code>{@link LateDeliverablesTracker}</code> class.
+ * Unit tests for <code>{@link LateDeliverablesTrackingJobRunner}</code> class.
  *
- * @author myxgyy, TCSDEVELOPER
+ * @author myxgyy, sparemax
  * @version 1.1
  */
 public class LateDeliverablesTrackingJobRunnerTests extends BaseTestCase {

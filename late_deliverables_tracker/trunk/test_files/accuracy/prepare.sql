@@ -242,7 +242,7 @@ create_user,create_date,modify_user,modify_date) VALUES (86, NULL, 'Deactivated'
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(1, 'External Reference ID', 'External Reference ID', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
-  VALUES(2, 'Handle', 'Handle', 'System', CURRENT, 'System', CURRENT);
+  VALUES(2, 'External Reference ID', 'External Reference ID', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date)
   VALUES(3, 'Email', 'Email', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO resource_info_type_lu(resource_info_type_id, name, description, create_user, create_date, modify_user, modify_date)

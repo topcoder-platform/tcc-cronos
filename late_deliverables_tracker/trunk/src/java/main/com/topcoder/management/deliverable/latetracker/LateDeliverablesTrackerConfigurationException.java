@@ -8,8 +8,8 @@ import com.topcoder.util.errorhandling.ExceptionData;
 
 /**
  * <p>
- * This exception is thrown by <code>LateDeliverablesTracker</code> and implementations
- * of Configurable when some error occurs while initializing an instance using the given
+ * This exception is thrown by <code>LateDeliverablesTracker</code>, NotRespondedLateDeliverablesNotifier and
+ * implementations of Configurable when some error occurs while initializing an instance using the given
  * configuration.
  * </p>
  * <p>

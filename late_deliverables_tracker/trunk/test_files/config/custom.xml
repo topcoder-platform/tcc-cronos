@@ -268,7 +268,7 @@
 			                        <Value>informix</Value>
 			                    </Property>
 			                    <Property name="password">
-			                        <Value>system</Value>
+			                        <Value>adminadmin</Value>
 			                    </Property>
 			                </Property>
 			            </Property>

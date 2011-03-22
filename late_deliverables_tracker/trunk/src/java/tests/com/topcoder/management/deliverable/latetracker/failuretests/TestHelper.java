@@ -27,18 +27,24 @@ import com.topcoder.util.config.ConfigManager;
  * @author gjw99, TCSDEVELOPER
  * @version 1.1
  */
-final class TestHelper {
-    /**
-     * The tables to be cleaned.
-     */
-    private static final String[] ALL_TABLE_NAMES = new String[] {"id_sequences"};
+public final class TestHelper {
 
     /**
-     * Config fiiles to be loaded.
+     * An array of table names to be cleaned.
      */
-    private static final String[] COMPONENT_FILE_NAMES = new String[] { "config/Project_Management.xml",
-        "config/Phase_Management.xml", "config/Upload_Resource_Search.xml", "config/SearchBuilderCommon.xml",
-        "failure/Project_Management_Invalid.xml"};
+    private static final String[] ALL_TABLE_NAMES = new String[] {"resource_info", "resource",
+        "project_phase", "project_info", "project", "comp_versions", "comp_catalog", "user_reliability",
+        "user_rating", "user", "email", "id_sequences", "project_category_lu", "project_type_lu",
+        "project_status_lu", "project_info_type_lu", "deliverable_lu", "phase_status_lu",
+        "phase_criteria_type_lu", "resource_role_lu", "resource_info_type_lu", "comment_type_lu",
+        "phase_type_lu", "submission_type_lu", "late_deliverable"};
+
+    /**
+     * Config files to be loaded.
+     */
+    private static final String[] COMPONENT_FILE_NAMES = new String[] {"failure/Project_Management.xml",
+            "failure/Phase_Management.xml", "failure/Upload_Resource_Search.xml",
+            "failure/SearchBuilderCommon.xml", "failure/Project_Management_Invalid.xml"};
 
     /**
      * The database connection factory instance.

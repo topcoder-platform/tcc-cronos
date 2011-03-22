@@ -39,11 +39,11 @@
 				</Property>
 			</Property>
         </Property>
-		<Property name="jobName">
+		<Property name="trackingJobName">
 		    <Value>lateDeliverablesTrackingJob</Value>
 		</Property>
 		
-		<Property name="jobConfig">
+		<Property name="trackingJobConfig">
 			<Property name="loggerName">
 				<Value>myLogger</Value>
 			</Property>
@@ -306,13 +306,13 @@
 			                        <Value>com.informix.jdbc.IfxDriver</Value>
 			                    </Property>
 			                    <Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://192.168.1.168:1526/tcs:informixserver=topcoder</Value>
+			                        <Value>jdbc:informix-sqli://localhost:9088/dev:informixserver=informix_db</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>
 			                    </Property>
 			                    <Property name="password">
-			                        <Value>topcoder</Value>
+			                        <Value>adminadmin</Value>
 			                    </Property>
 			                </Property>
 			            </Property>
@@ -1228,13 +1228,13 @@
 			                        <Value>com.informix.jdbc.IfxDriver</Value>
 			                    </Property>
 			                    <Property name="jdbc_url">
-			                        <Value>jdbc:informix-sqli://192.168.1.168:1526/tcs:informixserver=topcoder</Value>
+			                        <Value>jdbc:informix-sqli://localhost:9088/dev:informixserver=informix_db</Value>
 			                    </Property>
 			                    <Property name="user">
 			                        <Value>informix</Value>
 			                    </Property>
 			                    <Property name="password">
-			                        <Value>topcoder</Value>
+			                        <Value>adminadmin</Value>
 			                    </Property>
 			                </Property>
 			            </Property>

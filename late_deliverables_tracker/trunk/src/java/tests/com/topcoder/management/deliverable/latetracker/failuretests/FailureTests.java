@@ -3,6 +3,7 @@
  */
 package com.topcoder.management.deliverable.latetracker.failuretests;
 
+import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotifier;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -27,6 +28,9 @@ public class FailureTests extends TestCase {
         suite.addTestSuite(LateDeliverablesRetrieverImplFailureTests.class);
         suite.addTestSuite(LateDeliverablesTrackerFailureTest.class);
         suite.addTestSuite(LateDeliverablesTrackingJobRunnerFailureTest.class);
+
+        suite.addTestSuite(NotRespondedLateDeliverablesNotificationJobRunnerFailureTests.class);
+        suite.addTestSuite(NotRespondedLateDeliverablesNotifierFailureTests.class);
 
         return suite;
     }

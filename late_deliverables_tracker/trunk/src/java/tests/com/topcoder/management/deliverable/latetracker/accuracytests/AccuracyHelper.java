@@ -6,7 +6,9 @@ package com.topcoder.management.deliverable.latetracker.accuracytests;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Iterator;
 
@@ -22,8 +24,8 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * <b>Thread safety:</b> This class is immutable and so thread safe.
  *
- * @author mumujava
- * @version 1.0
+ * @author mumujava, KLW
+ * @version 1.2
  */
 public class AccuracyHelper extends TestCase {
 
@@ -33,7 +35,10 @@ public class AccuracyHelper extends TestCase {
     private static final String[] DEPENDENCIES_CONFIGS = new String[] {"accuracy/config/Project_Management.xml",
         "accuracy/config/Phase_Management.xml", "accuracy/config/Upload_Resource_Search.xml",
         "accuracy/config/SearchBuilderCommon.xml", "accuracy/config/DB_Factory.xml",
-        "accuracy/config/Logging_Wrapper.xml"};
+        "accuracy/config/Logging_Wrapper.xml",
+        "accuracy/config/InformixPhasePersistence.xml",
+        "accuracy/config/SearchBundleManager.xml",
+        "accuracy/config/LateDeliverableManagerImpl.xml"};
 
     /**
      * The db connection.
@@ -58,6 +63,7 @@ public class AccuracyHelper extends TestCase {
      * @param namespace
      *            the namespace.
      * @return the configuration object.
+     * @throws Exception to junit
      */
     public static ConfigurationObject getConfigurationObject(String file, String namespace) throws Exception {
         ConfigurationFileManager manager = new ConfigurationFileManager();
@@ -132,7 +138,6 @@ public class AccuracyHelper extends TestCase {
      * Executes the sql scripts in the given sql file.
      * </p>
      *
-     * @param connection Connection instance to access the database
      * @param sqlPath the path of the sql file to execute
      *
      * @throws Exception if exception occurs during database operation
@@ -149,7 +154,9 @@ public class AccuracyHelper extends TestCase {
                 }
             }
         } finally {
-            stmt.close();
+            if (stmt != null) {
+                stmt.close();
+            }
         }
     }
 
@@ -174,5 +181,56 @@ public class AccuracyHelper extends TestCase {
         } finally {
             in.close();
         }
+    }
+
+        /**
+         * <p>
+         * update value to a column in the given table.
+         * </p>
+         *
+         * @param table
+         *            the table name.
+         * @param column
+         *            the column name.
+         * @param value
+         *            the value.
+         *
+         * @throws Exception
+         *             to JUnit
+         */
+    public static void updateColumn(String table, String column, Object value) throws Exception {
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = connection.prepareStatement("UPDATE  " + table + " SET " + column + "=?");
+            stmt.setObject(1, value);
+            stmt.executeUpdate();
+        } finally {
+            stmt.close();
+            // connection.close();
+        }
+    }
+    /**
+     * get value of field for check.
+     *
+     * @param obj
+     *            the given object.
+     * @param field
+     *            the field name.
+     * @return the field value.
+     */
+    public static Object getField(Object obj, String field) {
+        Object value = null;
+        try {
+            Field declaredField = obj.getClass().getDeclaredField(field);
+            declaredField.setAccessible(true);
+
+            value = declaredField.get(obj);
+            declaredField.setAccessible(false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 }

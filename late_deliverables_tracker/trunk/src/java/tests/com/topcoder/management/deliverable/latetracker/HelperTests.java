@@ -1,18 +1,16 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
 
+import junit.framework.TestCase;
+
 import com.topcoder.configuration.ConfigurationObject;
-
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl;
+import com.topcoder.management.deliverable.persistence.DeliverablePersistence;
 import com.topcoder.management.phase.PhaseManager;
-import com.topcoder.management.project.ProjectManager;
-
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
-
-import junit.framework.TestCase;
 
 /**
  * Unit tests for <code>{@link Helper}</code> class.
@@ -24,8 +22,15 @@ import junit.framework.TestCase;
  * </ol>
  * </p>
  *
+ * <p>
+ * <em>Change in 1.2:</em>
+ * <ol>
+ * <li>Added test cases for delayToString().</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.1
+ * @version 1.2
  */
 public class HelperTests extends TestCase {
     /**
@@ -65,6 +70,102 @@ public class HelperTests extends TestCase {
      */
     protected void tearDown() throws Exception {
         BaseTestCase.clearNamespace();
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>delayToString(Long delay)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.2
+     */
+    public void test_delayToString_null() {
+        Long delay = null;
+
+        String res = Helper.delayToString(delay);
+
+        assertEquals("'delayToString' should be correct.", "N/A", res);
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>delayToString(Long delay)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.2
+     */
+    public void test_delayToString_1() {
+        Long delay = 0L;
+
+        String res = Helper.delayToString(delay);
+
+        assertEquals("'delayToString' should be correct.", "1 minute", res);
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>delayToString(Long delay)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.2
+     */
+    public void test_delayToString_2() {
+        Long delay = 161000L;
+
+        String res = Helper.delayToString(delay);
+
+        assertEquals("'delayToString' should be correct.", "2 minutes", res);
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>delayToString(Long delay)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.2
+     */
+    public void test_delayToString_3() {
+        Long delay = 7261000L;
+
+        String res = Helper.delayToString(delay);
+
+        assertEquals("'delayToString' should be correct.", "2 hours 1 minute", res);
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>delayToString(Long delay)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.2
+     */
+    public void test_delayToString_4() {
+        Long delay = 266461000L;
+
+        String res = Helper.delayToString(delay);
+
+        assertEquals("'delayToString' should be correct.", "3 days 2 hours 1 minute", res);
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>delayToString(Long delay)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.2
+     */
+    public void test_delayToString_5() {
+        Long delay = 259261000L;
+
+        String res = Helper.delayToString(delay);
+
+        assertEquals("'delayToString' should be correct.", "3 days 0 hour 1 minute", res);
     }
 
     /**
@@ -266,7 +367,7 @@ public class HelperTests extends TestCase {
      */
     public void test_createObject_1() {
         assertNotNull("should not be null", Helper.createObject(config, Helper
-            .createObjectFactory(config), "projectManagerKey", ProjectManager.class));
+            .createObjectFactory(config), "deliverablePersistenceKey", DeliverablePersistence.class));
     }
 
     /**

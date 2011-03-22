@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.processors;
 
@@ -27,6 +27,8 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.management.deliverable.Deliverable;
+import com.topcoder.management.deliverable.latetracker.EmailSendingException;
+import com.topcoder.management.deliverable.latetracker.EmailSendingUtility;
 import com.topcoder.management.deliverable.latetracker.Helper;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverableProcessor;
@@ -60,6 +62,17 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * is not sent to the user.</li>
  * <li>Using DB current time instead of JVM one.</li>
  * <li>COMPENSATED_DEADLINE and COMPENSATED_AND_REAL_DEADLINES_DIFFER parameters are supported in email templates.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
+ * <em>Changes in 1.2:</em>
+ * <ol>
+ * <li>Added support for EXPLANATION, EXPLANATION_DEADLINE and EXPLANATION_CAN_BE_SENT parameters in email
+ *     templates.</li>
+ * <li>Delay is computed based on the compensated deadline if exists (previously was always computed based on the real
+ *     deadline).</li>
+ * <li>Storing compensated deadline in the database.</li>
  * </ol>
  * </p>
  *
@@ -221,7 +234,7 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * </p>
  *
  * @author saarixx, myxgyy, sparemax
- * @version 1.1
+ * @version 1.2
  */
 public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     /**
@@ -230,6 +243,15 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </p>
      */
     private static final String CLASS_NAME = LateDeliverableProcessorImpl.class.getName();
+
+    /**
+     * <p>
+     * Represents the default value for 'explanationDeadlineIntervalInHours'.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final int DEFAULT_EXPLANATION_DEADLINE_INTERVAL = 24;
 
     /**
      * <p>
@@ -256,41 +278,71 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         + " and ld.deadline = (select max(deadline) from late_deliverable ld2"
         + " where ld2.project_phase_id = ld.project_phase_id and ld2.resource_id = ld.resource_id"
         + " and ld2.deliverable_id = ld.deliverable_id)";
-    
+
     /**
      * <p>
      * Represents the sql statement to retrieve last notified time and forgive flag.
      * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Added columns for retrieving late deliverable explanation and creation date from DB.</li>
+     * </ol>
+     * </p>
      */
     private static final String SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL = "select last_notified,"
-        + " forgive_ind from late_deliverable where project_phase_id = ? and resource_id = ? and deadline = ?"
-        + " and deliverable_id = ?";
+        + " forgive_ind, explanation, create_date from late_deliverable where project_phase_id = ?"
+        + " and resource_id = ? and deadline = ? and deliverable_id = ?";
 
     /**
      * <p>
      * Represents the sql statement to insert a record with last notified time.
      * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Added parameters for storing compensated deadline in the database.</li>
+     * </ol>
+     * </p>
      */
     private static final String INSERT_WITH_LAST_NOTIFICATION_SQL = "insert into late_deliverable (project_phase_id,"
-        + " resource_id, deliverable_id, deadline, create_date, forgive_ind, last_notified, delay) values (?, ?, ?,"
-        + " ?, current, ?, current, (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
+        + " resource_id, deliverable_id, deadline, compensated_deadline, create_date, forgive_ind, last_notified,"
+        + " delay) values (?, ?, ?, ?, ?, current, ?, current,"
+        + " (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
 
     /**
      * <p>
      * Represents the sql statement to insert a record without last notified time.
      * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Added parameters for storing compensated deadline in the database.</li>
+     * </ol>
+     * </p>
      */
-    private static final String INSERT_SQL = "insert into late_deliverable"
-        + " (project_phase_id, resource_id, deliverable_id, deadline, create_date, forgive_ind, delay)"
-        + " values (?, ?, ?, ?, current, ?, (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
+    private static final String INSERT_SQL = "insert into late_deliverable(project_phase_id, resource_id,"
+        + " deliverable_id, deadline, compensated_deadline, create_date, forgive_ind, delay)"
+        + " values (?, ?, ?, ?, ?, current, ?, (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
 
     /**
      * <p>
-     * Represents the sql statement to the late deliverable.
+     * Represents the sql statement to update the late deliverable.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Delay is computed based on the compensated deadline if exists (previously was always computed based on the
+     * real deadline).</li>
+     * </ol>
      * </p>
      */
-    private static final String UPDATE_SQL = "update late_deliverable"
-        + " set %1$sdelay = (current - deadline)::interval second(9) to second::char(16)::decimal(16,0)"
+    private static final String UPDATE_SQL = "update late_deliverable set %1$sdelay ="
+        + " (current - nvl(compensated_deadline, deadline))::interval second(9) to second::char(16)::decimal(16,0)"
         + " where project_phase_id = ? and resource_id = ? and deadline = ? and deliverable_id = ?";
 
     /**
@@ -381,26 +433,13 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     private static final String EMAIL_BODY_PREFIX = "emailBodyForDeliverable";
 
     /**
-     * Represents one minute time in long.
-     */
-    private static final long MINUTE = 60000;
-
-    /**
      * <p>
-     * Represents one second in long value.
+     * Represents &quot;explanationDeadlineIntervalInHours&quot; property key in configuration.
      * </p>
+     *
+     * @since 1.2
      */
-    private static final long THOUSAND = 1000;
-
-    /**
-     * Represents constant value 60.
-     */
-    private static final int SIXTY = 60;
-
-    /**
-     * Represents constant value 24.
-     */
-    private static final int TWENTY_FOUR = 24;
+    private static final String EXPLANATION_DEADLINE_INTERVAL = "explanationDeadlineIntervalInHours";
 
     /**
      * <p>
@@ -635,21 +674,40 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     private Log log;
 
     /**
+     * <p>
+     * The time interval between the late record creation date and the explanation deadline (in hours).
+     * </p>
+     *
+     * <p>
+     * Is initialized in configure() and never changed after that. Must be positive after initialization. Is used in
+     * prepareParameters().
+     * </p>
+     */
+    private int explanationDeadlineIntervalInHours;
+
+    /**
      * Creates an instance of <code>LateDeliverableProcessorImpl</code>.
      */
     public LateDeliverableProcessorImpl() {
+        // Empty
     }
 
     /**
      * Configures this instance with use of the given configuration object.
+     *
+     * <p>
+     * <em>Change in 1.2:</em>
+     * <ol>
+     * <li>Added step for reading "explanationDeadlineIntervalInHours".</li>
+     * </ol>
+     * </p>
      *
      * @param config
      *            the configuration object
      * @throws IllegalArgumentException
      *             if <code>config</code> is <code>null</code>.
      * @throws LateDeliverablesTrackerConfigurationException
-     *             if some error occurred when initializing an instance using the given
-     *             configuration.
+     *             if some error occurred when initializing an instance using the given configuration.
      */
     public void configure(ConfigurationObject config) {
         ExceptionUtils.checkNull(config, null, null, "The parameter 'config' should not be null.");
@@ -733,6 +791,50 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             notificationInterval = Helper.parseLong(notificationIntervalStr,
                 NOTIFICATION_INTERVAL_KEY, 1);
         }
+
+        // Read and parse explanation deadline interval:
+        explanationDeadlineIntervalInHours = getExplanationDeadlineInterval(config);
+    }
+
+    /**
+     * <p>
+     * Gets the value of 'explanationDeadlineIntervalInHours'.
+     * </p>
+     *
+     * @param config
+     *            the configuration object.
+     *
+     * @return the value of 'explanationDeadlineIntervalInHours'.
+     *
+     * @throws LateDeliverablesTrackerConfigurationException
+     *             if any error occurs.
+     *
+     * @since 1.2
+     */
+    private static int getExplanationDeadlineInterval(ConfigurationObject config) {
+
+        // Read explanation deadline interval:
+        String valueStr = Helper.getPropertyValue(config, EXPLANATION_DEADLINE_INTERVAL, false, false);
+        int value;
+        try {
+            if (valueStr != null) {
+                value = Integer.parseInt(valueStr);
+
+                if (value <= 0) {
+                    throw new LateDeliverablesTrackerConfigurationException(
+                        "The property 'explanationDeadlineIntervalInHours' should be a positive integer.");
+                }
+            } else {
+                value = DEFAULT_EXPLANATION_DEADLINE_INTERVAL;
+            }
+
+        } catch (NumberFormatException e) {
+            throw new LateDeliverablesTrackerConfigurationException(
+                "The property 'explanationDeadlineIntervalInHours' should be a positive integer.", e);
+        }
+
+        return value;
+
     }
 
     /**
@@ -809,8 +911,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     }
 
     /**
-     * Processes the given late deliverable. The actual actions to be performed depend on
-     * the implementation.
+     * Processes the given late deliverable. The actual actions to be performed depend on the implementation.
      *
      * <p>
      * <em>Changes in 1.1:</em>
@@ -821,15 +922,25 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Additionally storing compensated deadline in the database.</li>
+     * <li>Delay is computed based on the compensated deadline if exists (previously was always computed based on the
+     * real deadline).</li>
+     * <li>Added steps for retrieving late deliverable explanation and creation date from DB (to be used when
+     * preparing email parameters).</li>
+     * </ol>
+     * </p>
+     *
      * @param lateDeliverable
      *            the late deliverable to be processed.
      * @throws IllegalArgumentException
-     *             if lateDeliverable is null, or any one of phase, project and
-     *             deliverable of lateDeliverable is null, or the scheduled end
-     *             date of phase is null.
+     *             if lateDeliverable is null, or any one of phase, project and deliverable of lateDeliverable is
+     *             null, or the scheduled end date of phase is null.
      * @throws IllegalStateException
-     *             if this class was not configured properly with use of
-     *             {@link #configure(ConfigurationObject)} method.
+     *             if this class was not configured properly with use of {@link #configure(ConfigurationObject)}
+     *             method.
      * @throws EmailSendingException
      *             if some error occurred when sending a notification email message.
      * @throws LateDeliverablesProcessingException
@@ -850,7 +961,6 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         Deliverable deliverable = lateDeliverable.getDeliverable();
         Phase phase = lateDeliverable.getPhase();
         Date currentDeadline = phase.getScheduledEndDate();
-        Project project = lateDeliverable.getProject();
         long deliverableId = deliverable.getId();
         boolean needToNotify = notificationDeliverableIds.contains(deliverableId);
 
@@ -862,74 +972,9 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             long phaseId = phase.getId();
             long resourceId = deliverable.getResource();
 
-            Object[] result = doQuery(SELECT_MAX_DEADLINE_SQL, connection, new Object[] {phaseId,
-                resourceId, deliverableId}, true, Timestamp.class);
-
-            boolean alreadyTracked = result[0] != null;
-            boolean canSendNotification = false;
-            boolean addTrackingRecord = false;
-            Date recordDeadline = currentDeadline;
-
-            if (alreadyTracked) {
-                Date oldDeadline = (Timestamp) result[0];
-
-                if (oldDeadline.compareTo(currentDeadline) < 0) {
-                    // deadline was extended, but the user is late again
-                    addTrackingRecord = true;
-                    canSendNotification = true;
-                } else if (needToNotify && (notificationInterval != 0)) {
-                    recordDeadline = oldDeadline;
-                    // Prepare statement for retrieving last notification time and
-                    // "forgive" flag for this late deliverable
-                    result = doQuery(SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL, connection,
-                        new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()),
-                        deliverableId}, false, Timestamp.class, Boolean.class);
-
-                    // Get the previous notification timestamp
-                    Date previousNotificationTime = (Timestamp) result[0];
-
-                    // Get value of the "forgive" flag
-                    boolean forgiveInd = (Boolean) result[1];
-
-                    if (!forgiveInd
-                        && (previousNotificationTime != null)
-                        && ((System.currentTimeMillis() - previousNotificationTime.getTime())
-                        >= (notificationInterval * THOUSAND))) {
-                        // notificationInterval passed, need to send one more
-                        // notification
-                        canSendNotification = true;
-                    }
-                }
-            } else {
-                // the user is late for the first time with this deliverable
-                addTrackingRecord = true;
-                canSendNotification = true;
-            }
-
-            canSendNotification = canSendNotification && needToNotify;
-
-            if (addTrackingRecord) {
-                String sqlStr = canSendNotification ? INSERT_WITH_LAST_NOTIFICATION_SQL : INSERT_SQL;
-                doDMLQuery(sqlStr, connection, new Object[] {phaseId, resourceId, deliverableId,
-                    new Timestamp(currentDeadline.getTime()), false, new Timestamp(currentDeadline.getTime())});
-
-                // log data for record added to late_deliverables table
-                Helper.logInfo(log, "late deliverable data : project id[" + project.getId() + "], phase id["
-                    + phaseId + "]," + " resource id[" + resourceId + "], deliverable id[" + deliverableId + "].");
-            } else {
-                doDMLQuery(String.format(UPDATE_SQL, canSendNotification ? "last_notified = current, " : ""),
-                    connection, new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()),
-                    deliverableId});
-            }
-
-            if (canSendNotification) {
-                // retrieve late deliverable ID
-                result = doQuery(SELECT_LATE_DELIVERABLE_ID_WITH_MAX_DEADLINE_SQL, connection, new Object[] {phaseId,
-                        resourceId, deliverableId}, false, Long.class);
-                long lateDeliverableId = (Long) result[0];
-
-                sendEmail(lateDeliverableId, lateDeliverable);
-            }
+            // Delegate to the helper method
+            processLateDeliverable(connection, lateDeliverable, currentDeadline, deliverableId, needToNotify,
+                phaseId, resourceId);
 
             connection.commit();
 
@@ -945,6 +990,113 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         }
 
         Helper.logExit(log, signature, null, start);
+    }
+
+    /**
+     * <p>
+     * A helper method to process the given late deliverable.
+     * </p>
+     *
+     * @param connection
+     *            the connection.
+     * @param lateDeliverable
+     *            the late deliverable.
+     * @param currentDeadline
+     *            the current deadline.
+     * @param deliverableId
+     *            the deliverable id.
+     * @param needToNotify
+     *            the need to notify flag.
+     * @param phaseId
+     *            the phase id.
+     * @param resourceId
+     *            the resource id.
+     *
+     * @throws SQLException
+     *             if a database access error occurs .
+     * @throws LateDeliverablesProcessingException
+     *             if another error occurs.
+     *
+     * @since 1.2
+     */
+    private void processLateDeliverable(Connection connection, LateDeliverable lateDeliverable, Date currentDeadline,
+        long deliverableId, boolean needToNotify, long phaseId, long resourceId) throws SQLException,
+        LateDeliverablesProcessingException {
+        Project project = lateDeliverable.getProject();
+
+        boolean canSendNotification = false;
+        boolean addTrackingRecord = false;
+        Date recordDeadline = currentDeadline;
+        String explanation = null; // NEW in 1.2
+        // Prepare variable that will store late deliverable record creation date:
+        Date createDate = new Date(); // NEW in 1.2
+
+        Date oldDeadline = (Timestamp) doQuery(SELECT_MAX_DEADLINE_SQL, connection, new Object[] {phaseId,
+            resourceId, deliverableId}, true, Timestamp.class)[0];
+        if (oldDeadline != null) {
+            if (oldDeadline.compareTo(currentDeadline) < 0) {
+                // deadline was extended, but the user is late again
+                addTrackingRecord = true;
+                canSendNotification = true;
+            } else if (needToNotify && (notificationInterval != 0)) {
+                recordDeadline = oldDeadline;
+                // Prepare statement for retrieving last notification time and
+                // "forgive" flag for this late deliverable
+                Object[] result = doQuery(SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL, connection,
+                    new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()), deliverableId},
+                    false, Timestamp.class, Boolean.class, String.class, Timestamp.class);
+
+                int index = 0;
+                // Get the previous notification timestamp
+                Date previousNotificationTime = (Timestamp) result[index++];
+
+                if (!((Boolean) result[index++])
+                    && (previousNotificationTime != null)
+                    && ((System.currentTimeMillis() - previousNotificationTime.getTime())
+                    >= (notificationInterval * Helper.THOUSAND))) {
+                    // notificationInterval passed, need to send one more
+                    // notification
+                    canSendNotification = true;
+                }
+
+                // Get explanation:
+                explanation = (String) result[index++]; // NEW in 1.2
+                // Get record creation date:
+                createDate = (Timestamp) result[index]; // NEW in 1.2
+            }
+        } else {
+            // the user is late for the first time with this deliverable
+            addTrackingRecord = true;
+            canSendNotification = true;
+        }
+
+        canSendNotification = canSendNotification && needToNotify;
+
+        if (addTrackingRecord) {
+            Timestamp deadlineTimestamp = new Timestamp(currentDeadline.getTime());
+            // Get compensated deadline:
+            Timestamp compensatedDeadlineTimestamp = (lateDeliverable.getCompensatedDeadline() != null)
+                ? new Timestamp(lateDeliverable.getCompensatedDeadline().getTime()) : null; // NEW in 1.2
+
+            doDMLQuery(canSendNotification ? INSERT_WITH_LAST_NOTIFICATION_SQL : INSERT_SQL, connection,
+                new Object[] {phaseId, resourceId, deliverableId, deadlineTimestamp, compensatedDeadlineTimestamp,
+                    false, (compensatedDeadlineTimestamp != null) ? compensatedDeadlineTimestamp : deadlineTimestamp});
+
+            // log data for record added to late_deliverables table
+            Helper.logInfo(log, "late deliverable data : project id[" + project.getId() + "], phase id["
+                + phaseId + "]," + " resource id[" + resourceId + "], deliverable id[" + deliverableId + "].");
+        } else {
+            doDMLQuery(String.format(UPDATE_SQL, canSendNotification ? "last_notified = current, " : ""),
+                connection, new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()), deliverableId});
+        }
+
+        if (canSendNotification) {
+            // retrieve late deliverable ID
+            Object[] result = doQuery(SELECT_LATE_DELIVERABLE_ID_WITH_MAX_DEADLINE_SQL, connection, new Object[] {
+                phaseId, resourceId, deliverableId}, false, Long.class);
+
+            sendEmail((Long) result[0], lateDeliverable, explanation, createDate);
+        }
     }
 
     /**
@@ -1000,9 +1152,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     }
 
     /**
-     * Does select query and return result as object array. The result will always
-     * contains two elements, if the <code>hasSecondColumn</code> is false, the second
-     * element of result is null.
+     * Does select query and return result as object array. The result will always contains two elements, if the
+     * <code>hasSecondColumn</code> is false, the second element of result is null.
      *
      * @param query
      *            the query statement.
@@ -1012,17 +1163,16 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      *            the parameters to set.
      * @param emptyResultSet
      *            whether the query can return an empty result set.
-     * @param resultColumnTypes 
+     * @param resultColumnTypes
      *            the expected types of columns in the result set.
      * @return the result from the query.
      * @throws SQLException
      *             if any error occurs.
      * @throws LateDeliverablesProcessingException
-     *             if query result does not contain record if <code>hasSecondColumn</code>
-     *             is <code>true</code>.
+     *             if query result does not contain record if <code>hasSecondColumn</code> is <code>true</code>.
      */
-    private static Object[] doQuery(String query, Connection connection, Object[] parameters,
-        boolean emptyResultSet, Class... resultColumnTypes) throws SQLException, LateDeliverablesProcessingException {
+    private static Object[] doQuery(String query, Connection connection, Object[] parameters, boolean emptyResultSet,
+        Class<?>... resultColumnTypes) throws SQLException, LateDeliverablesProcessingException {
         PreparedStatement ps = null;
 
         try {
@@ -1071,7 +1221,16 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     }
 
     /**
+     * <p>
      * Does update or insert query.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Added support for null value.</li>
+     * </ol>
+     * </p>
      *
      * @param query
      *            the sql statement to do.
@@ -1094,8 +1253,10 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                     ps.setTimestamp(i + 1, (Timestamp) parameters[i]);
                 } else if (parameters[i] instanceof Long) {
                     ps.setLong(i + 1, (Long) parameters[i]);
-                } else {
+                } else if (parameters[i] instanceof Boolean) {
                     ps.setBoolean(i + 1, (Boolean) parameters[i]);
+                } else {
+                    ps.setObject(i + 1, parameters[i]);
                 }
             }
 
@@ -1166,23 +1327,35 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Added explanation and createDate parameters.</li>
+     * </ol>
+     * </p>
+     *
      * @param lateDeliverableId
-     *            the id of the late delivarable.
+     *            the id of the late deliverable.
      * @param lateDeliverable
      *            the late deliverable for which parameters should be prepared.
+     * @param explanation
+     *            the explanation of the late deliverable (null if not provided).
+     * @param createDate
+     *            the creation date of the late deliverable record.
      *
      * @throws EmailSendingException
      *             if some error occurred when sending a notification email message.
      * @throws LateDeliverablesProcessingException
      *             if fails to get the required information of email.
      */
-    private void sendEmail(long lateDeliverableId, LateDeliverable lateDeliverable)
+    private void sendEmail(long lateDeliverableId, LateDeliverable lateDeliverable, String explanation,
+        Date createDate)
         throws LateDeliverablesProcessingException {
         long resourceId = lateDeliverable.getDeliverable().getResource();
         long deliverableId = lateDeliverable.getDeliverable().getId();
 
         String recipient = getEmailAddressForResource(resourceId);
-        Map<String, String> params = prepareParameters(lateDeliverableId, lateDeliverable);
+        Map<String, Object> params = prepareParameters(lateDeliverableId, lateDeliverable, explanation, createDate);
 
         String subjectTemplateText;
 
@@ -1258,7 +1431,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             userId = Long.parseLong((String) resource.getProperty("External Reference ID"));
         } catch (NumberFormatException e) {
             throw new LateDeliverablesProcessingException("External Reference ID property value"
-                + " of resource can not parse to long.", e);
+                + " of resource can not be parsed to long.", e);
         } catch (ClassCastException e) {
             throw new LateDeliverablesProcessingException("External Reference ID property value"
                 + " is not type of String.", e);
@@ -1301,10 +1474,23 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Changed return type.</li>
+     * <li>Added explanation and createDate parameters.</li>
+     * <li>Added steps for preparing EXPLANATION, EXPLANATION_DEADLINE and EXPLANATION_CAN_BE_SENT parameters.</li>
+     * </ol>
+     * </p>
+     *
      * @param lateDeliverableId
      *            the id of the late deliverable
      * @param lateDeliverable
      *            the late deliverable for which parameters should be prepared.
+     * @param explanation
+     *            the explanation of the late deliverable (null if not provided).
+     * @param createDate
+     *            the creation date of the late deliverable record.
      *
      * @return the map with prepared parameters (keys are parameter names, map values parameter values; not null,
      *         doesn't contain null/empty key or null value).
@@ -1312,7 +1498,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * @throws LateDeliverablesProcessingException
      *             if any error occurred.
      */
-    private Map<String, String> prepareParameters(long lateDeliverableId, LateDeliverable lateDeliverable)
+    private Map<String, Object> prepareParameters(long lateDeliverableId, LateDeliverable lateDeliverable,
+        String explanation, Date createDate)
         throws LateDeliverablesProcessingException {
         // Get deliverable:
         Deliverable deliverable = lateDeliverable.getDeliverable();
@@ -1325,18 +1512,15 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         // Check if compensated deadline differs with the real one:
         boolean deadlinesDiffer = (compensatedDeadline != null);
 
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, Object> result = new HashMap<String, Object>(); // UPDATED in 1.2
 
-        // Get project name from the properties:
-        String projectName = getPropertyValue(project, "Project Name");
-        result.put("PROJECT_NAME", projectName);
+        // project name
+        result.put("PROJECT_NAME", getPropertyValue(project, "Project Name"));
 
-        // Get project version from the properties:
-        String projectVersion = getPropertyValue(project, "Project Version");
-        result.put("PROJECT_VERSION", projectVersion);
+        // project version
+        result.put("PROJECT_VERSION", getPropertyValue(project, "Project Version"));
 
-        long projectId = project.getId();
-        result.put("PROJECT_ID", String.valueOf(projectId));
+        result.put("PROJECT_ID", String.valueOf(project.getId()));
 
         PhaseType phaseType = phase.getPhaseType();
         checkNull(phaseType, "phaseType of phase");
@@ -1355,20 +1539,28 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         checkNull(phaseEndDate, "scheduledEndDate of phase");
 
         // Convert date/time to string:
-        String phaseEndDateStr = timestampFormat.format(phaseEndDate);
-        result.put("DEADLINE", phaseEndDateStr);
+        result.put("DEADLINE", timestampFormat.format(phaseEndDate));
         // Construct and put delay string to the result map
-        result.put("DELAY", getCurrentDelayString(phaseEndDate));
+        result.put("DELAY", Helper.delayToString(System.currentTimeMillis() - phaseEndDate.getTime()));
 
-        if (compensatedDeadline == null) {
-            compensatedDeadline = phaseEndDate;
-        }
         // Put the value that indicates whether compensated deadline differs from the real one:
         result.put("COMPENSATED_AND_REAL_DEADLINES_DIFFER", Boolean.toString(deadlinesDiffer));
         // Put compensated deadline string to the map:
-        result.put("COMPENSATED_DEADLINE", timestampFormat.format(compensatedDeadline));
+        result.put("COMPENSATED_DEADLINE",
+            timestampFormat.format((compensatedDeadline == null) ? phaseEndDate : compensatedDeadline));
         // Put late deliverable ID to the map:
         result.put("LATE_DELIVERABLE_ID", String.valueOf(lateDeliverableId));
+
+        // Put late deliverable explanation to the map:
+        result.put("EXPLANATION", (explanation == null) ? "" : explanation); // NEW in 1.2
+        // Calculate explanation deadline:
+        Date explanationDeadline = new Date(createDate.getTime()
+            + Helper.MINUTE * Helper.SIXTY * explanationDeadlineIntervalInHours); // NEW in 1.2
+        // Put explanation deadline string to the map:
+        result.put("EXPLANATION_DEADLINE", timestampFormat.format(explanationDeadline)); // NEW in 1.2
+        // Put flag indicating whether explanation can be sent:
+        result.put("EXPLANATION_CAN_BE_SENT", Boolean.toString(
+            (explanation == null && (System.currentTimeMillis() < explanationDeadline.getTime())))); // NEW in 1.2
 
         return result;
     }
@@ -1416,65 +1608,5 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         if (value == null) {
             throw new LateDeliverablesProcessingException("The " + name + " should not be null.");
         }
-    }
-
-    /**
-     * Retrieves the delay string for the specified deadline. The delay string has format
-     * &quot;[[X day[s] ]Y hour[s] ]Z minute[s]&quot; and is counted as a difference
-     * between the deadline and the current time. The minimum delay is assumed to be equal
-     * to one minute.
-     *
-     * @param deadline
-     *            the deadline.
-     * @return the constructed current delay string (not null).
-     */
-    private static String getCurrentDelayString(Date deadline) {
-        // delay in milliseconds
-        long delay = System.currentTimeMillis() - deadline.getTime();
-
-        delay /= MINUTE; // delay in minutes;
-
-        if (delay == 0) {
-            delay = 1;
-        }
-
-        long delayMinutes = delay % SIXTY;
-        delay /= SIXTY; // delay in hours
-
-        long delayHours = delay % TWENTY_FOUR;
-        delay /= TWENTY_FOUR; // delay in days
-
-        long delayDays = delay;
-        StringBuilder sb = new StringBuilder();
-
-        if (delayDays != 0) {
-            sb.append(delayDays).append(' ').append("day");
-
-            if (delayDays != 1) {
-                sb.append('s');
-            }
-
-            sb.append(' ');
-        }
-
-        if (delayHours != 0) {
-            sb.append(delayHours).append(' ').append("hour");
-
-            if (delayHours != 1) {
-                sb.append('s');
-            }
-
-            sb.append(' ');
-        }
-
-        if (delayMinutes != 0) {
-            sb.append(delayMinutes).append(' ').append("minute");
-
-            if (delayMinutes != 1) {
-                sb.append('s');
-            }
-        }
-
-        return sb.toString().trim();
     }
 }

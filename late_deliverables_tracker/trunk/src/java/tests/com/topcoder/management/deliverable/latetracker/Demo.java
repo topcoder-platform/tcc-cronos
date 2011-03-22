@@ -1,14 +1,15 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
 
-import com.topcoder.configuration.ConfigurationObject;
+import java.io.File;
 
+import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotifier;
 import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl;
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl;
 import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility;
-
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 
@@ -16,7 +17,7 @@ import com.topcoder.util.log.LogFactory;
  * Tests the demo of this component.
  *
  * @author saarixx, myxgyy, sparemax
- * @version 1.1
+ * @version 1.2
  */
 public class Demo extends BaseTestCase {
     /**
@@ -29,6 +30,8 @@ public class Demo extends BaseTestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        new File("guard.tmp").delete();
+
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
     }
 
@@ -42,10 +45,19 @@ public class Demo extends BaseTestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
+
+        new File("guard.tmp").delete();
     }
 
     /**
      * Tests the API usage of this component.
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Added usage of "NotRespondedLateDeliverablesNotifier".</li>
+     * </ol>
+     * </p>
      *
      * @throws Exception
      *             to JUnit.
@@ -75,10 +87,29 @@ public class Demo extends BaseTestCase {
             lateDeliverablesRetriever, lateDeliverableProcessor, log);
         // Track for late deliverables
         lateDeliverablesTracker.execute();
+
+        // Prepare configuration for NotRespondedLateDeliverablesNotifier
+        ConfigurationObject notRespondedLateDeliverablesNotifierConfig = getConfigurationObject(
+            "config/NotRespondedLateDeliverablesNotifier.xml", NotRespondedLateDeliverablesNotifier.class.getName());
+
+        // Create an instance of NotRespondedLateDeliverablesNotifier
+        NotRespondedLateDeliverablesNotifier notRespondedLateDeliverablesNotifier =
+            new NotRespondedLateDeliverablesNotifier(notRespondedLateDeliverablesNotifierConfig);
+
+        // Send notifications for explained but not responded late deliverables
+        notRespondedLateDeliverablesNotifier.execute();
     }
 
     /**
      * Tests the command line usage of this component.
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * <li>Added switch "notificationInterval".</li>
+     * </ol>
+     * </p>
      *
      * @throws Exception
      *             to JUnit.
@@ -93,10 +124,14 @@ public class Demo extends BaseTestCase {
         // To use the custom configuration file the user can provide "-c" switch
         // The user can specify custom import files utility configuration file name and
         // namespace
+        runMain(new String[] {"-c=config/LateDeliverablesTrackingUtility.properties",
+            "-ns=com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility",
+            "-guardFile=guard.tmp", "-background=true"});
         // The user can specify the interval between late deliverable checks
-        // in the command line (in this example deliverables will be checked every 5
-        // minutes)
-        runMain(new String[] {"-c=test_files/config/custom_config.properties", "-ns=custom_namespace",
-            "-interval=300"});
+        // and interval between sending PM notifications in the command line
+        // (in this example deliverables will be checked every 5 minutes,
+        // and notifications will be sent every hour)
+        runMain(new String[] {"-trackingInterval =300", "-notificationInterval =3600", "-guardFile=guard.tmp",
+            "-background=true"});
     }
 }

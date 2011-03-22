@@ -994,17 +994,21 @@ link_type_id INT
 );
 
 create table late_deliverable (
-    late_deliverable_id serial not null,
-    project_phase_id INTEGER not null,
-    resource_id INTEGER not null,
-    deliverable_id INTEGER not null,
-    deadline DATETIME YEAR TO FRACTION not null,
-    create_date DATETIME YEAR TO FRACTION not null,
-    forgive_ind DECIMAL(1,0) not null,
+    late_deliverable_id serial NOT NULL,
+    project_phase_id INTEGER NOT NULL,
+    resource_id INTEGER NOT NULL,
+    deliverable_id INTEGER NOT NULL,
+    deadline DATETIME YEAR TO FRACTION NOT NULL,
+    compensated_deadline DATETIME YEAR TO FRACTION,
+    create_date DATETIME YEAR TO FRACTION NOT NULL,
+    forgive_ind DECIMAL(1,0) NOT NULL,
     last_notified DATETIME YEAR TO FRACTION,
     delay DECIMAL(16,0),
     explanation lvarchar(4096),
-    response lvarchar(4096)
+    explanation_date DATETIME YEAR TO FRACTION,
+    response lvarchar(4096),
+    response_user VARCHAR(64),
+    response_date DATETIME YEAR TO FRACTION
 );
 
 create table phase (

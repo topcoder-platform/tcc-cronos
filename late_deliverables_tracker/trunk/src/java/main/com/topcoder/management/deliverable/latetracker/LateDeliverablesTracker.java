@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
 
@@ -15,14 +15,21 @@ import java.util.List;
 
 /**
  * <p>
- * This class provides a programmatic API for tracking late deliverables. It provides just
- * a single {@link #execute()} method that uses pluggable
- * <code>LateDeliverablesRetriever</code> and <code>LateDeliverableProcessor</code>
- * instances to find and process all late deliverables. This class performs the logging of
- * errors and debug information using Logging Wrapper component.
+ * This class provides a programmatic API for tracking late deliverables. It provides just a single {@link #execute()}
+ * method that uses pluggable <code>LateDeliverablesRetriever</code> and <code>LateDeliverableProcessor</code>
+ * instances to find and process all late deliverables. This class performs the logging of errors and debug
+ * information using Logging Wrapper component.
+ * </p>
+ *
+ * <p>
+ * <em>Changes in 1.2:</em>
+ * <ol>
+ * <li>Log unexpected exceptions in execute().</li>
+ * </ol>
  * </p>
  * <p>
  * Sample usage:
+ *
  * <pre>
  * // Prepare configuration for LateDeliverablesRetriever
  * ConfigurationObject lateDeliverablesRetrieverConfig = getConfigurationObject(
@@ -314,19 +321,22 @@ import java.util.List;
  *  &lt;Property name=&quot;notificationInterval&quot;&gt;
  *  &lt;Value&gt;10&lt;/Value&gt;
  *  &lt;/Property&gt;
+ *  &lt;Property name="explanationDeadlineIntervalInHours"&gt;
+ *  &lt;Value&gt;24&lt;/Value&gt;
+ *  &lt;/Property&gt;
  *  &lt;/Property&gt;
  *  &lt;/Config&gt;
  *  &lt;/CMConfig&gt;
  * </pre>
+ *
  * </p>
  * <p>
- * Thread Safety: This class is immutable, but not thread safe since it uses
- * <code>LateDeliverablesRetriever</code> and <code>LateDeliverableProcessor</code>
- * instances that are not guaranteed to be thread safe.
+ * Thread Safety: This class is immutable, but not thread safe since it uses <code>LateDeliverablesRetriever</code>
+ * and <code>LateDeliverableProcessor</code> instances that are not guaranteed to be thread safe.
  * </p>
  *
- * @author saarixx, myxgyy
- * @version 1.0
+ * @author saarixx, myxgyy, sparemax
+ * @version 1.2
  */
 public class LateDeliverablesTracker {
     /**
@@ -475,8 +485,17 @@ public class LateDeliverablesTracker {
     }
 
     /**
+     * <p>
      * Executes a single deliverable tracking operation. Retrieves all late deliverables
      * and processes them one by one.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Log unexpected exceptions.</li>
+     * </ol>
+     * </p>
      *
      * @throws LateDeliverablesRetrievalException
      *             if some error occurred when retrieving a list of late deliverables.
@@ -499,6 +518,9 @@ public class LateDeliverablesTracker {
             throw Helper.logException(log, method, e);
         } catch (LateDeliverablesRetrievalException e) {
             throw Helper.logException(log, method, e);
+        } catch (Exception e) {
+            // Log exception (ignored)
+            Helper.logException(log, method, e);
         }
 
         Helper.logExit(log, method, null, start);

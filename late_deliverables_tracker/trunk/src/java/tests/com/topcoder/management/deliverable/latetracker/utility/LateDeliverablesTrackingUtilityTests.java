@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.utility;
 
@@ -13,10 +13,21 @@ import com.topcoder.management.deliverable.latetracker.BaseTestCase;
 import com.topcoder.management.deliverable.latetracker.LateDeliverableData;
 
 /**
+ * <p>
  * Unit tests for <code>{@link LateDeliverablesTrackingUtility}</code> class.
+ * </p>
+ *
+ * <p>
+ * <em>Changes in 1.2:</em>
+ * <ol>
+ * <li>"interval" switch was renamed to "trackingInterval".</li>
+ * <li>Added switch "notificationInterval".</li>
+ * <li>Added some test cases.</li>
+ * </ol>
+ * </p>
  *
  * @author myxgyy, sparemax
- * @version 1.1
+ * @version 1.2
  */
 public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     /**
@@ -30,9 +41,12 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     private String guardFileName = "test_files/guard.txt";
 
     /**
-     * <p>Sets up the test environment.</p>
+     * <p>
+     * Sets up the test environment.
+     * </p>
      *
-     * @throws Exception throws exception if any.
+     * @throws Exception
+     *             throws exception if any.
      */
     protected void setUp() throws Exception {
         super.setUp();
@@ -43,9 +57,12 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     }
 
     /**
-     * <p>Tears down the test environment.</p>
+     * <p>
+     * Tears down the test environment.
+     * </p>
      *
-     * @throws Exception throws exception if any.
+     * @throws Exception
+     *             throws exception if any.
      */
     protected void tearDown() throws Exception {
         super.tearDown();
@@ -55,78 +72,120 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     }
 
     /**
-     * <p>Accuracy test case for main method.</p>
-     * <p>The job should be executed one time, one record should be written to late
-     * deliverable table, and the notification email should be sent.</p>
+     * <p>
+     * Accuracy test case for main method.
+     * </p>
+     * <p>
+     * The job should be executed one time, one record should be written to late deliverable table, and the
+     * notification email should be sent.
+     * </p>
      *
-     * @throws Exception to JUnit
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * <li>Added switch "notificationInterval".</li>
+     * </ol>
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit
      */
     public void test_main_1() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
 
-        runMain(new String[] {"-interval=20", "-guardFile=" + guardFileName, "-background=true"});
+        runMain(new String[] {"-trackingInterval=20", "-notificationInterval=30", "-guardFile=" + guardFileName,
+            "-background=true"});
 
         new File(guardFileName).createNewFile();
 
+        Thread.sleep(3000);
 
         List<LateDeliverableData> datas = getLateDeliverable();
         assertEquals("should have one record", 0, datas.size());
     }
 
     /**
-     * <p>Accuracy test case for main method.</p>
-     * <p>Help switch presents, help message should be printed console.</p>
+     * <p>
+     * Accuracy test case for main method.
+     * </p>
+     * <p>
+     * Help switch presents, help message should be printed console.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_2() throws Exception {
-        String result = callMainOut(new String[] {"-h"});
+        String result = callMainOut(new String[] {"-h"}, true);
 
         System.err.println(result);
         checkHelperMessage(result);
     }
 
     /**
-     * <p>Accuracy test case for main method.</p>
-     * <p>Help switch presents, help message should be printed console.</p>
+     * <p>
+     * Accuracy test case for main method.
+     * </p>
+     * <p>
+     * Help switch presents, help message should be printed console.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_3() throws Exception {
-        String result = callMainOut(new String[] {"-help"});
+        String result = callMainOut(new String[] {"-help"}, true);
         checkHelperMessage(result);
     }
 
     /**
-     * <p>Accuracy test case for main method.</p>
-     * <p>Help switch presents, help message should be printed console.</p>
+     * <p>
+     * Accuracy test case for main method.
+     * </p>
+     * <p>
+     * Help switch presents, help message should be printed console.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_4() throws Exception {
-        String result = callMainOut(new String[] {"-?"});
+        String result = callMainOut(new String[] {"-?"}, true);
         checkHelperMessage(result);
     }
 
     /**
-     * <p>Failure test case for main method.</p>
-     * <p>Switch value not presents, error message should be printed.</p>
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * Switch value not presents, error message should be printed.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_5() throws Exception {
-        String result = callMainOut(new String[] {"-c"});
+        String result = callMainOut(new String[] {"-c="}, true);
         assertTrue("check the output message", result.contains("Fails to parse the arguments."));
     }
 
     /**
-     * <p>Failure test case for main method.</p>
-     * <p>The configuration file type is invalid.</p>
-     * @throws Exception to JUnit.
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The configuration file type is invalid.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_6() throws Exception {
-        String result = callMainOut(new String[] {"-c=xxx.xxx"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
+        String result = callMainOut(new String[] {"-c=xxx.xxx", "-guardFile=" + guardFileName, "-background=true"},
+            false);
+        assertTrue("check the output message", result.contains("Unrecognized file type of the config file."));
     }
 
     /**
@@ -141,58 +200,210 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_main_7() throws Exception {
-        String result = callMainOut(new String[] {"-c=notexist.properties", "-c=notexist.properties"});
-        assertTrue("check the output message", result.contains("Fails to parse the arguments."));
+        String result = callMainOut(new String[] {"-c=notexist.properties", "-guardFile=" + guardFileName,
+            "-background=true"}, false);
+        assertTrue("check the output message", result.contains("IO error when reading config file."));
     }
 
     /**
-     * <p>Failure test case for main method.</p>
-     * <p>The arguments is invalid.</p>
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The arguments is invalid.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * </ol>
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_8() throws Exception {
-        String result = callMainOut(new String[] {"-interval=xxx", "-interval=123"});
-        assertTrue("check the output message", result.contains("Fails to validate the value of interval argument."));
+        String result = callMainOut(new String[] {"-trackingInterval=xxx", "-trackingInterval=123",
+            "-guardFile=" + guardFileName, "-background=true"}, true);
+        assertTrue("check the output message", result.contains("Fails to validate the value of interval arguments."));
     }
 
     /**
-     * <p>Failure test case for main method.</p>
-     * <p>The interval cannot parse to integer.</p>
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The trackingInterval cannot parse to integer.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * </ol>
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_9() throws Exception {
-        String result = callMainOut(new String[] {"-interval=xxx"});
-        assertTrue("check the output message", result.contains("Fails to validate the value of interval argument."));
+        String result = callMainOut(new String[] {"-trackingInterval=xxx", "-guardFile=" + guardFileName,
+            "-background=true"}, true);
+        assertTrue("check the output message", result.contains("Fails to validate the value of interval arguments."));
     }
 
     /**
-     * <p>Failure test case for main method.</p>
-     * <p>The interval value is not positive.</p>
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The trackingInterval value is not positive.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * </ol>
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_10() throws Exception {
-        String result = callMainOut(new String[] {"-interval=-15"});
-        assertTrue("check the output message", result.contains("Fails to validate the value of interval argument."));
+        String result = callMainOut(new String[] {"-trackingInterval=-15", "-guardFile=" + guardFileName,
+            "-background=true"}, true);
+        assertTrue("check the output message", result.contains("Fails to validate the value of interval arguments."));
     }
 
     /**
-     * <p>Failure test case for main method.</p>
+     * <p>
+     * Accuracy test case for main method.
+     * </p>
      *
-     * @throws Exception to JUnit.
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * </ol>
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
      */
     public void test_main_11() throws Exception {
         new File(guardFileName).createNewFile();
 
-        callMainOut(new String[] {"-interval=20", "-guardFile=" + guardFileName, "-background=true"});
+        callMainOut(new String[] {"-trackingInterval=20", "-guardFile=" + guardFileName, "-background=true"}, true);
+    }
+
+    /**
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The '-c' switch is invalid.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_main_12() throws Exception {
+        String result = callMainOut(new String[] {
+            "-c=com/topcoder/util/config/ConfigManager.properties",
+            "-guardFile=" + guardFileName, "-background=true"}, false);
+        assertTrue("check the output message", result.contains("Unrecognized namespace : "));
+    }
+
+    /**
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The '-c' switch is invalid.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_main_13() throws Exception {
+        String result = callMainOut(new String[] {
+            "-c=invalid_config/namespace_conflict.properties",
+            "-guardFile=" + guardFileName, "-background=true"}, false);
+        assertTrue("check the output message", result.contains("Namespace conflict."));
+    }
+
+    /**
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The '-c' switch is invalid.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_main_14() throws Exception {
+        String result = callMainOut(new String[] {
+            "-c=invalid_config/LateDeliverablesTrackingUtilityInvalid.properties",
+            "-guardFile=" + guardFileName, "-background=true"}, false);
+        assertTrue("check the output message", result.contains("Fails to parse the configuration file."));
+    }
+
+    /**
+     * <p>
+     * Failure test case for main method.
+     * </p>
+     * <p>
+     * The '-c' switch is invalid.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_main_15() throws Exception {
+        String result = callMainOut(new String[] {
+            "-c=invalid_config/LateDeliverablesTrackingUtility1.properties",
+            "-guardFile=" + guardFileName, "-background=false"}, false);
+        assertTrue("check the output message", result.contains("Configuration error occurred,"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for main method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_main_16() throws Exception {
+        runMain(new String[] {"-guardFile=" + guardFileName, "-background=false"});
     }
 
     /**
      * Checks the output message.
      *
-     * @param result the output message.
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * </ol>
+     * </p>
+     *
+     * @param result
+     *            the output message.
      */
     private static void checkHelperMessage(String result) {
         assertTrue("check the output message", result.contains("<file_name> Optional. Provides the"
@@ -210,23 +421,37 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
     }
 
     /**
-     * Calls the {@link LateDeliverablesTrackingUtility#main(String[])} and return the
-     * standard output string.
+     * Calls the {@link LateDeliverablesTrackingUtility#main(String[])} and return the standard output string.
      *
-     * @param args the arguments to call main method.
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Added a parameter "out".</li>
+     * </ol>
+     * </p>
+     *
+     * @param args
+     *            the arguments to call main method.
+     * @param out
+     *            <code>true</code> the System.out; <code>false</code> the System.err.
      *
      * @return the output string.
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
-    private static String callMainOut(String[] args) throws Exception {
+    private static String callMainOut(String[] args, boolean out) throws Exception {
         OutputStream os = new ByteArrayOutputStream();
         PrintStream newOut = new PrintStream(os);
-        PrintStream oldOut = System.out;
+        PrintStream oldOut = out ? System.out : System.err;
 
         try {
             // Redirect the output stream
-            System.setOut(newOut);
+            if (out) {
+                System.setOut(newOut);
+            } else {
+                System.setErr(newOut);
+            }
             // Call main
             LateDeliverablesTrackingUtility.main(args);
 
@@ -243,7 +468,11 @@ public class LateDeliverablesTrackingUtilityTests extends BaseTestCase {
             }
 
             // Restore
-            System.setOut(oldOut);
+            if (out) {
+                System.setOut(oldOut);
+            } else {
+                System.setErr(oldOut);
+            }
         }
         return os.toString();
     }

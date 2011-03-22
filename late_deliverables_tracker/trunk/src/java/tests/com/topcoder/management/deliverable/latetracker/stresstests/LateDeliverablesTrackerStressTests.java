@@ -4,12 +4,12 @@
 
 package com.topcoder.management.deliverable.latetracker.stresstests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTracker;
 import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl;
@@ -44,7 +44,8 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
         LateDeliverableProcessorImpl processor = new LateDeliverableProcessorImpl();
         processor.configure(StressTestUtil.getConfig(LateDeliverableProcessorImpl.class));
 
-        instance = new LateDeliverablesTracker(retriever, processor, LogFactory.getLog("stress_tests_logger"));
+        instance = new LateDeliverablesTracker(retriever, processor, LogFactory
+                .getLog("stress_tests_logger"));
     }
 
     /**
@@ -99,7 +100,7 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
                 assertLateDeliverables(projectsCount, subCount);
             } finally {
                 System.out.println("Run test: test_execute for " + testCount + " times takes "
-                    + (new Date().getTime() - start) + "ms");
+                        + (new Date().getTime() - start) + "ms");
             }
         }
     }
@@ -117,7 +118,8 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
         ResultSet rs = null;
 
         try {
-            con = StressTestUtil.createConnection(StressTestUtil.loadProperties(StressTestUtil.DB_PROPERTIES_FILE));
+            con = StressTestUtil.createConnection(StressTestUtil
+                    .loadProperties(StressTestUtil.DB_PROPERTIES_FILE));
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT * FROM late_deliverable");
 
@@ -125,19 +127,23 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
             while (rs.next()) {
                 insertedRecordsCount++;
 
-                assertEquals("Should be equal", insertedRecordsCount * 3 + 2, rs.getLong(2)); // project phase id
+                assertEquals("Should be equal", insertedRecordsCount * 3 + 2, rs.getLong(2)); // project
+                                                                                              // phase
+                                                                                              // id
 
-                assertEquals("Should be equal", insertedRecordsCount * (subCount + 1) + subCount, rs.getLong(3)); // resource
-                                                                                                                  // id
+                assertEquals("Should be equal", insertedRecordsCount * (subCount + 1) + subCount,
+                        rs.getLong(3)); // resource
+                // id
 
                 assertEquals("Should be equal", 2, rs.getLong(4)); // deliverable id
 
-                assertFalse("Should be false", rs.getBoolean(7)); // forgive ind
+                assertFalse("Should be false", rs.getBoolean(8)); // forgive ind
             }
 
-            assertEquals("Should have " + projectCount + " records in the late_deliverable table.", projectCount,
-                insertedRecordsCount);
-            System.out.println("The number of records inserted into late_deliverable table is " + insertedRecordsCount);
+            assertEquals("Should have " + projectCount + " records in the late_deliverable table.",
+                    projectCount, insertedRecordsCount);
+            System.out.println("The number of records inserted into late_deliverable table is "
+                    + insertedRecordsCount);
         } finally {
             StressTestUtil.closeStatement(stmt);
             stmt = null;

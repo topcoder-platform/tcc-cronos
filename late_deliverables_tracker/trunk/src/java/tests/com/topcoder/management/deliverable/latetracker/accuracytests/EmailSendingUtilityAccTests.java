@@ -6,7 +6,8 @@ package com.topcoder.management.deliverable.latetracker.accuracytests;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.topcoder.management.deliverable.latetracker.processors.EmailSendingUtility;
+import com.topcoder.management.deliverable.latetracker.EmailSendingUtility;
+
 
 /**
  * Accuracy tests for EmailSendingUtility.
@@ -50,7 +51,7 @@ public class EmailSendingUtilityAccTests extends AccuracyHelper {
      * @throws Exception to junit
      */
     public void test_sendEmail() throws Exception {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<String, Object>();
         //empty maps
         instance.sendEmail("subject", "test_files\\accuracy\\email_template.html", "to@topcoder.com", map);
 
@@ -66,7 +67,7 @@ public class EmailSendingUtilityAccTests extends AccuracyHelper {
      * @throws Exception to junit
      */
     public void test_sendEmail2() throws Exception {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("PROJECT_NAME", "Type safe enum");
         map.put("PROJECT_VERSION", "1.01");
         map.put("PROJECT_ID", "32135");

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.failuretests;
 
@@ -23,8 +23,8 @@ import com.topcoder.project.phases.Phase;
 /**
  * Failure test cases <code>LateDeliverableProcessorImpl</code>.
  *
- * @author gjw99, TCSDEVELOPER
- * @version 1.1
+ * @author gjw99, jmn
+ * @version 1.2
  * @since 1.0
  */
 public class LateDeliverableProcessorImplFailureTests extends TestCase {
@@ -315,6 +315,48 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
         } catch (LateDeliverablesTrackerConfigurationException e) {
             // pass
         }
+    }
+
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     */
+    public void test_configure17() throws Exception {
+        try {
+            config.setPropertyValue("explanationDeadlineIntervalInHours", "explanationDeadlineIntervalInHours");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     */
+    public void test_configure18() throws Exception {
+        try {
+            config.setPropertyValue("explanationDeadlineIntervalInHours", " ");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     */
+    public void test_configure() throws Exception {
+            instance.configure(config);
     }
 
     /**

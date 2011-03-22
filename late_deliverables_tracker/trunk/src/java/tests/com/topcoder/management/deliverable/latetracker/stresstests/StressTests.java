@@ -23,6 +23,8 @@ public class StressTests extends TestCase {
 
         suite.addTest(LateDeliverablesTrackerStressTests.suite());
         suite.addTest(LateDeliverablesTrackingJobRunnerStressTests.suite());
+        suite.addTest(NotRespondedLateDeliverablesNotificationJobRunnerStressTests.suite());
+
         return suite;
     }
 }

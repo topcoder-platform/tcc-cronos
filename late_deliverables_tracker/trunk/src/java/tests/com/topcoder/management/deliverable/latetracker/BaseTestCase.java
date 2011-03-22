@@ -1,28 +1,7 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
-
-import com.topcoder.configuration.ConfigurationObject;
-import com.topcoder.configuration.persistence.ConfigurationFileManager;
-
-import com.topcoder.date.workdays.DefaultWorkdays;
-
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-
-import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility;
-import com.topcoder.management.resource.Resource;
-import com.topcoder.management.resource.ResourceRole;
-
-import com.topcoder.project.phases.Phase;
-import com.topcoder.project.phases.PhaseStatus;
-import com.topcoder.project.phases.PhaseType;
-import com.topcoder.project.phases.Project;
-
-import com.topcoder.util.config.ConfigManager;
-
-import junit.framework.TestCase;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -31,29 +10,46 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-
 import java.lang.reflect.Field;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import junit.framework.TestCase;
+
+import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.configuration.persistence.ConfigurationFileManager;
+import com.topcoder.date.workdays.DefaultWorkdays;
+import com.topcoder.db.connectionfactory.DBConnectionFactory;
+import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.management.deliverable.Deliverable;
+import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility;
+import com.topcoder.management.project.ProjectCategory;
+import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.management.project.ProjectType;
+import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceRole;
+import com.topcoder.project.phases.Phase;
+import com.topcoder.project.phases.PhaseStatus;
+import com.topcoder.project.phases.PhaseType;
+import com.topcoder.project.phases.Project;
+import com.topcoder.util.config.ConfigManager;
+
 /**
  * <p>
  * The base test case for Unit tests.
  * </p>
  *
- * @author myxgyy, TCSDEVELOPER
- * @version 1.1
+ * @author myxgyy, sparemax
+ * @version 1.2
  */
 public abstract class BaseTestCase extends TestCase {
     /**
@@ -75,9 +71,10 @@ public abstract class BaseTestCase extends TestCase {
      * Array of all the config file names for various dependency components.
      */
     private static final String[] COMPONENT_FILE_NAMES = new String[] {"config/Project_Management.xml",
-        "config/Phase_Management.xml", "config/Upload_Resource_Search.xml",
-        "config/SearchBuilderCommon.xml", "invalid_config/Project_Management.xml",
-        "invalid_config/Phase_Management.xml", "invalid_config/Deliverable_Search.xml"};
+        "config/Phase_Management.xml", "config/Upload_Resource_Search.xml", "config/InformixPhasePersistence.xml",
+        "config/SearchBuilderCommon.xml", "config/SearchBundleManager.xml", "config/LateDeliverableManagerImpl.xml",
+        "invalid_config/Project_Management.xml", "invalid_config/Phase_Management.xml",
+        "invalid_config/Deliverable_Search.xml"};
 
     /**
      * An array of table names to be cleaned.
@@ -201,6 +198,37 @@ public abstract class BaseTestCase extends TestCase {
             }
 
             stmt.executeBatch();
+        } finally {
+            closeStatement(stmt);
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Sets value to a column of a table.
+     * </p>
+     *
+     * @param table
+     *            the table name.
+     * @param column
+     *            the column name.
+     * @param value
+     *            the value.
+     *
+     * @throws Exception
+     *             to JUnit
+     */
+    protected void setColumn(String table, String column, Object value) throws Exception {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = getConnection();
+            stmt = conn.prepareStatement("UPDATE  " + table + " SET " + column + "=?");
+            stmt.setObject(1, value);
+
+            stmt.executeUpdate();
         } finally {
             closeStatement(stmt);
             closeConnection();
@@ -753,6 +781,48 @@ public abstract class BaseTestCase extends TestCase {
 
             closeStatement(statement);
         }
+    }
+
+    /**
+     * Creates <code>LateDeliverable</code> instance for tests.
+     *
+     * @param flag
+     *            the flag to set the required value.
+     * @return the <code>LateDeliverable</code> instance.
+     */
+    protected static LateDeliverable createLateDeliverable(int flag) {
+        LateDeliverable d = new LateDeliverable();
+        Deliverable deliverable = new Deliverable(1, 112, 1000, null, false);
+        deliverable.setId(4);
+
+        Phase phase = new Phase(new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 100);
+        phase.setScheduledEndDate(new Date());
+
+        com.topcoder.management.project.Project project = new com.topcoder.management.project.Project(1,
+            new ProjectCategory(1, "Dev", new ProjectType(1, "type")), new ProjectStatus(2, "Active"));
+
+        project.setProperty("Project Name", "name");
+        project.setProperty("Project Version", "version");
+        deliverable.setName("Screening scorecard");
+        phase.setPhaseType(new PhaseType(1, "review"));
+
+        if (flag == 1) {
+            project.setProperty("Project Name", null);
+        } else if (flag == 2) {
+            project.setProperty("Project Version", null);
+        } else if (flag == 3) {
+            deliverable.setName(null);
+        } else if (flag == 4) {
+            project.setProperty("Project Name", new Exception());
+        } else if (flag == 5) {
+            phase.setPhaseType(null);
+        }
+
+        d.setDeliverable(deliverable);
+        d.setPhase(phase);
+        d.setProject(project);
+
+        return d;
     }
 
     /**

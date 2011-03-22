@@ -58,13 +58,13 @@
 		                        <Value>com.informix.jdbc.IfxDriver</Value>
 		                    </Property>
 		                    <Property name="jdbc_url">
-		                        <Value>jdbc:informix-sqli://192.168.1.168:1526/tcs:informixserver=topcoder</Value>
+		                        <Value>jdbc:informix-sqli://localhost:9088/dev:informixserver=informix_db</Value>
 		                    </Property>
 		                    <Property name="user">
 		                        <Value>informix</Value>
 		                    </Property>
 		                    <Property name="password">
-		                        <Value>topcoder</Value>
+		                        <Value>adminadmin</Value>
 		                    </Property>
 		                </Property>
 		            </Property>
@@ -101,5 +101,8 @@
 		<Property name="notificationInterval">
 		    <Value>10</Value>
 		</Property>
+        <Property name="explanationDeadlineIntervalInHours">
+          <Value>24</Value>
+        </Property>
     </Config>
 </CMConfig>

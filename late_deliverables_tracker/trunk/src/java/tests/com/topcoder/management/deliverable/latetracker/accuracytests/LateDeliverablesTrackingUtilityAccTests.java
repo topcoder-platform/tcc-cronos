@@ -3,6 +3,7 @@
  */
 package com.topcoder.management.deliverable.latetracker.accuracytests;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
@@ -12,16 +13,21 @@ import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesT
 
 /**
  * Accuracy tests for LateDeliverablesTrackingUtility.
- * @author mumujava
- * @version 1.0
+ * @author mumujava, KLW
+ * @version 1.2
  */
 public class LateDeliverablesTrackingUtilityAccTests extends AccuracyHelper {
-
+    /**
+     * The guard file path.
+     */
+    private String guardFileName = "test_files/accuracy/guard.txt";
     /**
      * <p>Sets up the unit tests.</p>
      */
     public void setUp() throws Exception {
         super.setUp();
+
+        new File(guardFileName).delete();
     }
 
     /**
@@ -30,6 +36,7 @@ public class LateDeliverablesTrackingUtilityAccTests extends AccuracyHelper {
      */
     public void tearDown() throws Exception {
         super.tearDown();
+        new File(guardFileName).delete();
     }
 
     /**
@@ -38,7 +45,7 @@ public class LateDeliverablesTrackingUtilityAccTests extends AccuracyHelper {
      *
      * @throws Exception to junit
      */
-    public void test_main6() throws Exception {
+    public void test_main1() throws Exception {
         final PipedOutputStream out = new PipedOutputStream();
         InputStream in = new PipedInputStream(out);
         InputStream org = System.in;
@@ -63,6 +70,61 @@ public class LateDeliverablesTrackingUtilityAccTests extends AccuracyHelper {
             LateDeliverablesTrackingUtility.main(new String[] {});
 
             //no exception is thrown
+        } finally {
+            System.setIn(org);
+        }
+    }
+    /**
+     * Accuracy test for method main.
+     *
+     *
+     * @throws Exception to junit
+     * @since 1.2
+     */
+    public void test_main2() throws Exception {
+        AccuracyHelper.executeSqlFile("test_files/accuracy/test.sql");
+        runMain(new String[] {"-trackingInterval=20", "-notificationInterval=30", "-guardFile=" + guardFileName,
+            "-background=true"});
+        // check the email
+    }
+    /**
+     * Runs the main method with given arguments.
+     *
+     * @param args
+     *            the arguments.
+     * @throws Exception to JUnit.
+     */
+    private void runMain(String[] args) throws Exception {
+        final PipedOutputStream out = new PipedOutputStream();
+        InputStream in = new PipedInputStream(out);
+        InputStream org = System.in;
+        System.setIn(in);
+
+        try {
+            class MainThread extends Thread {
+                private String[] args;
+                public MainThread(String[] args) {
+                    this.args = args;
+                }
+                public void run() {
+                    LateDeliverablesTrackingUtility.main(args);
+                    try {
+                        Thread.sleep(10 * 1000);
+                    } catch (InterruptedException e) {
+                        // ignore
+                    }
+                    // write a char
+                    try {
+                        out.write(1);
+                    } catch (IOException e) {
+                        // ignore
+                    }
+                }
+            }
+            Thread thread = new MainThread(args);
+            thread.start();
+
+            Thread.sleep(1000);
         } finally {
             System.setIn(org);
         }

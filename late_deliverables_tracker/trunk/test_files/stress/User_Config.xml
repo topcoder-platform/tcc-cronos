@@ -47,7 +47,7 @@
 
                     <Property name = "password">
 
-                        <Value>system</Value>
+                        <Value>adminadmin</Value>
                     </Property>
                 </Property>
             </Property>
@@ -98,7 +98,7 @@
 
                     <Property name = "password">
 
-                        <Value>system</Value>
+                        <Value>adminadmin</Value>
                     </Property>
 				</Property>
             </Property>

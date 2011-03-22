@@ -1,7 +1,10 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.utility;
+
+import java.io.File;
+import java.io.IOException;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
@@ -9,11 +12,10 @@ import com.topcoder.configuration.persistence.ConfigurationParserException;
 import com.topcoder.configuration.persistence.NamespaceConflictException;
 import com.topcoder.configuration.persistence.UnrecognizedFileTypeException;
 import com.topcoder.configuration.persistence.UnrecognizedNamespaceException;
-
 import com.topcoder.management.deliverable.latetracker.Helper;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackingJobRunner;
-
+import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotificationJobRunner;
 import com.topcoder.util.commandline.ArgumentValidationException;
 import com.topcoder.util.commandline.CommandLineUtility;
 import com.topcoder.util.commandline.IllegalSwitchException;
@@ -28,68 +30,94 @@ import com.topcoder.util.scheduler.scheduling.ConfigurationException;
 import com.topcoder.util.scheduler.scheduling.Job;
 import com.topcoder.util.scheduler.scheduling.Scheduler;
 import com.topcoder.util.scheduler.scheduling.SchedulingException;
+import com.topcoder.util.scheduler.scheduling.Second;
 import com.topcoder.util.scheduler.scheduling.persistence.ConfigurationObjectScheduler;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * <p>
- * This is the main class of the standalone command line application that performs
- * periodical late deliverables tracking. It uses
- * <code>LateDeliverablesTrackingJobRunner</code> and schedules its repetitive execution
- * with use of Job Scheduling and Job Processor components. This utility reads a
- * configuration from a file using Configuration Persistence and Configuration API
- * components. <code>LateDeliverablesTrackingUtility</code> performs the logging of
- * errors and debug information using Logging Wrapper.
+ * This is the main class of the standalone command line application that performs periodical late deliverables
+ * tracking. It uses <code>LateDeliverablesTrackingJobRunner</code> and
+ * <code>NotRespondedLateDeliverablesNotificationJobRunner</code>, and schedules its repetitive execution with use
+ * of Job Scheduling and Job Processor components. This utility reads a configuration from a file using Configuration
+ * Persistence and Configuration API components. <code>LateDeliverablesTrackingUtility</code> performs the logging
+ * of errors and debug information using Logging Wrapper.
  * </p>
+ *
  * <p>
- * Sample command line utility:
+ * Version 1.0.1 (SVN Automation and Late Deliverables Tracker Integration Assembly Assembly 1.0) Change notes:
+ * <ol>
+ * <li>Updated the class so it could be launched and run in background thread and stopped if a guard file exists.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
+ * <em>Changes in 1.2:</em>
+ * <ol>
+ * <li>"interval" switch was renamed to "trackingInterval".</li>
+ * <li>Added support for "notificationInterval" switch.</li>
+ * <li>Added support for scheduling not responded late deliverables notification job.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
+ * Sample command line utility:<br>
+ *
+ * This command line can be used to print out the usage string:
  *
  * <pre>
- *  // This command line can be used to print out the usage string
- *  java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility -help
- *  // If configuration for the utility is stored in the default namespace of the default configuration file,
- *  // then the application can be executed without additional arguments
- *  java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
- *  // To use the custom configuration file the user can provide &quot;-c&quot; switch
- *  java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
- *    -c custom_config.properties
- *  // The user can specify custom import files utility configuration file name and namespace
- *  java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
- *    -c cusom_config.properties -ns custom_namespace
- *  // The user can specify the interval between late deliverable checks in the command
- *  // line (in this example deliverables will be checked every 5 minutes)
- *  java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
- *    -interval 300
+ * java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
+ * -help
+ * </pre>
+ *
+ * If configuration for the utility is stored in the default namespace of the default configuration file, then the
+ * application can be executed in background with the following arguments:
+ *
+ * <pre>
+ * java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
+ * -guardFile guard.tmp -background true
+ * </pre>
+ *
+ * To use the custom configuration file the user can provide "-c" switch:
+ *
+ * <pre>
+ * java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
+ * -c custom_config.properties -guardFile guard.tmp -background true
+ * </pre>
+ *
+ * The user can specify custom import files utility configuration file name and namespace:
+ *
+ * <pre>
+ * java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
+ * -c custom_config.properties -ns custom_namespace -guardFile guard.tmp -background true
+ * </pre>
+ *
+ * The user can specify interval between late deliverable checks and interval between sending PM notifications in the
+ * command line (in this example deliverables will be checked every 5 minutes, and notifications will be sent every
+ * hour):
+ *
+ * <pre>
+ * java com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility
+ * -trackingInterval 300 -notificationInterval 3600 -guardFile guard.tmp -background true
  * </pre>
  *
  * Sample config: please refer CS 4.3.3.
  * </p>
  * <p>
- * Thread Safety: This class is immutable and thread safe. But it's not safe to execute
- * multiple instances of LateDeliverablesTrackingUtility command line application
- * (configured to use the same persistence) at a time.
+ * Thread Safety: This class is immutable and thread safe. But it's not safe to execute multiple instances of
+ * LateDeliverablesTrackingUtility command line application (configured to use the same persistence) at a time.
  * </p>
  *
- * <p>
- * Version 1.0.1 (SVN Automation and Late Deliverables Tracker Integration Assembly Assembly 1.0) Change notes:
- *   <ol>
- *     <li>Updated the class so it could be launched and run in background thread and stopped if a guard file exists.
- *     </li>
- *   </ol>
- * </p>
-
- * @author saarixx, TCSDEVELOPER, isv
- * @version 1.0.1
+ * @author saarixx, myxgyy, isv, sparemax
+ * @version 1.2
  */
 public class LateDeliverablesTrackingUtility {
     /**
      * <p>
-     * Represents the name of this class used for logging.
+     * Represents the signature of main() method used for logging.
      * </p>
      */
-    private static final String CLASS_NAME = LateDeliverablesTrackingUtility.class.getName();
+    private static final String MAIN_SIGNATURE = LateDeliverablesTrackingUtility.class.getName()
+        + ".main(String[] args)";
 
     /**
      * <p>
@@ -123,10 +151,27 @@ public class LateDeliverablesTrackingUtility {
 
     /**
      * <p>
-     * Represents switch name &quot;interval&quot;.
+     * Represents switch name &quot;trackingInterval&quot;.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * <li>"INTERVAL" was renamed to "TRACKING_INTERVAL".</li>
+     * </ol>
      * </p>
      */
-    private static final String INTERVAL = "interval";
+    private static final String TRACKING_INTERVAL = "trackingInterval";
+
+    /**
+     * <p>
+     * Represents switch name &quot;notificationInterval&quot;.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String NOTIFICATION_INTERVAL = "notificationInterval";
 
     /**
      * <p>
@@ -192,12 +237,30 @@ public class LateDeliverablesTrackingUtility {
 
     /**
      * <p>
-     * Represents the usage of interval switch.
+     * Represents the usage of tracking interval switch.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"INTERVAL_SWITCH_USAGE" was renamed to "TRACKING_INTERVAL_SWITCH_USAGE".</li>
+     * </ol>
      * </p>
      */
-    private static final String INTERVAL_SWITCH_USAGE = "<interval_in_sec> Optional. The"
+    private static final String TRACKING_INTERVAL_SWITCH_USAGE = "<interval_in_sec> Optional. The"
         + " interval in seconds between checks of projects for late deliverables. If not specified,"
         + " the value from the scheduler configuration is used.";
+
+    /**
+     * <p>
+     * Represents the usage of notification interval switch.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String NOTIFICATION_INTERVAL_SWITCH_USAGE = "<interval_in_sec> Optional. The interval in"
+        + " seconds between sending notifications about explained but not responded late deliverables to the"
+        + " managers. If not specified, the value from the scheduler configuration is used.";
 
     /**
      * Represents the usage documentation for the guardFile switch.
@@ -245,10 +308,26 @@ public class LateDeliverablesTrackingUtility {
 
     /**
      * <p>
-     * This is a Command Line switch that is used to retrieve the interval time.
+     * This is a Command Line switch that is used to retrieve the tracking interval time.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"intervalSwitch" was renamed to "trackingIntervalSwitch".</li>
+     * </ol>
      * </p>
      */
-    private static Switch intervalSwitch;
+    private static Switch trackingIntervalSwitch;
+
+    /**
+     * <p>
+     * This is a Command Line switch that is used to retrieve the notification interval time.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static Switch notificationIntervalSwitch;
 
     /**
      * <p>This is a Command Line switch that is used to retrieve the path to guard file.</p>
@@ -271,10 +350,27 @@ public class LateDeliverablesTrackingUtility {
 
     /**
      * <p>
-     * Represents &quot;jobConfig&quot; child configuration key in configuration.
+     * Represents &quot;trackingJobConfig&quot; child configuration key in configuration.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"jobConfig" was renamed to "trackingJobConfig".</li>
+     * <li>"JOB_CONFIG" was renamed to "TRACKING_JOB_CONFIG".</li>
+     * </ol>
      * </p>
      */
-    private static final String JOB_CONFIG = "jobConfig";
+    private static final String TRACKING_JOB_CONFIG = "trackingJobConfig";
+
+    /**
+     * <p>
+     * Represents &quot;notificationJobConfig&quot; child configuration key in configuration.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String NOTIFICATION_JOB_CONFIG = "notificationJobConfig";
 
     /**
      * <p>
@@ -287,25 +383,54 @@ public class LateDeliverablesTrackingUtility {
      * <p>
      * Represents &quot;jobName&quot; property key in configuration.
      * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"jobName" was renamed to "trackingJobName".</li>
+     * <li>"JOB_NAME_KEY" was renamed to "TRACKING_JOB_NAME_KEY".</li>
+     * </ol>
+     * </p>
      */
-    private static final String JOB_NAME_KEY = "jobName";
+    private static final String TRACKING_JOB_NAME_KEY = "trackingJobName";
+
+    /**
+     * <p>
+     * Represents &quot;notificationJobName&quot; property key in configuration.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String NOTIFICATION_JOB_NAME_KEY = "notificationJobName";
 
     /**
      * Empty private constructor.
      */
     private LateDeliverablesTrackingUtility() {
+        // Empty
     }
 
     /**
-     * This is the main method of the command line application that periodically performs
-     * a late deliverables tracking.
+     * <p>
+     * This is the main method of the command line application that periodically performs a late deliverables
+     * tracking.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" switch was renamed to "trackingInterval".</li>
+     * <li>Added support for "notificationInterval" switch.</li>
+     * <li>Added support for scheduling not responded late deliverables notification job.</li>
+     * <li>Fixed a bug of incorrect overriding of scheduling interval specified in the configuration.</li>
+     * </ol>
+     * </p>
      *
      * @param args
      *            the command line arguments
      */
     public static void main(String[] args) {
         final long start = System.currentTimeMillis();
-        final String signature = CLASS_NAME + "main(String[] args)";
 
         // create command line utility
         commandLineUtility = new CommandLineUtility();
@@ -335,15 +460,17 @@ public class LateDeliverablesTrackingUtility {
             namespace = DEFAULT_NAME_SPACE;
         }
 
-        String intervalStr = intervalSwitch.getValue();
-        Integer interval = (intervalStr == null) ? null : Integer.parseInt(intervalStr);
+        // UPDATED in 1.2
+        Integer trackingInterval = getInterval(trackingIntervalSwitch);
+        // NEW in 1.2
+        Integer notificationInterval = getInterval(notificationIntervalSwitch);
 
         // Guard file
         String guardFileName = guardFileSwitch.getValue();
         File guardFile = new File(guardFileName);
         if (guardFile.exists()) {
             System.out.println("Guard file '" + guardFileName
-                               + "' exists. Late Deliverables Tracker exits immediately");
+                + "' exists. Late Deliverables Tracker exits immediately");
             return;
         }
 
@@ -351,14 +478,44 @@ public class LateDeliverablesTrackingUtility {
         String backgroundFlag = backgroundSwitch.getValue();
         boolean isBackground = "true".equalsIgnoreCase(backgroundFlag);
 
-        Log log = null;
-        doTrack(configFileName, namespace, interval, log, signature, guardFile, isBackground);
-        Helper.logExit(log, signature, null, start);
+        ConfigurationObject config = loadConfiguration(configFileName, namespace);
+
+        // Get logger name from the configuration
+        String loggerName = Helper.getPropertyValue(config, Helper.LOGGER_NAME_KEY, false, false);
+
+        Log log = (loggerName != null) ? LogFactory.getLog(loggerName) : LogFactory.getLog();
+
+        doTrack(config, trackingInterval, notificationInterval, log, guardFile, isBackground);
+        Helper.logExit(log, MAIN_SIGNATURE, null, start);
+    }
+
+    /**
+     * <p>
+     * Gets the interval.
+     * </p>
+     *
+     * @param intervalSwitch
+     *            the switch.
+     *
+     * @return the interval.
+     */
+    private static Integer getInterval(Switch intervalSwitch) {
+        String intervalStr = intervalSwitch.getValue();
+
+        return (intervalStr == null) ? null : Integer.parseInt(intervalStr);
     }
 
     /**
      * <p>
      * Parse the arguments.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Updated codes for "trackingInterval".</li>
+     * <li>Added support for "notificationInterval" switch.</li>
+     * </ol>
      * </p>
      *
      * @param commandLineUtility
@@ -373,13 +530,17 @@ public class LateDeliverablesTrackingUtility {
             // create switches
             configSwitch = new Switch(CONFIG, false, 0, 1, null, CONFIG_SWITCH_USAGE);
             namespaceSwitch = new Switch(NAMESPACE, false, 0, 1, null, NAMESPACE_SWITCH_USAGE);
-            intervalSwitch = new Switch(INTERVAL, false, 0, 1, new IntegerValidator(1, null), INTERVAL_SWITCH_USAGE);
+            trackingIntervalSwitch = new Switch(TRACKING_INTERVAL, false, 0, 1, new IntegerValidator(1, null),
+                TRACKING_INTERVAL_SWITCH_USAGE);
+            notificationIntervalSwitch = new Switch(NOTIFICATION_INTERVAL, false, 0, 1, new IntegerValidator(1, null),
+                NOTIFICATION_INTERVAL_SWITCH_USAGE);
             guardFileSwitch = new Switch(GUARD_FILE, true, 1, 1, null, GUARD_FILE_SWITCH_USAGE);
             backgroundSwitch = new Switch(BACKGROUND, true, 1, 1, null, BACKGROUND_SWITCH_USAGE);
             // create command line utility
             commandLineUtility = new CommandLineUtility();
             commandLineUtility.addSwitch(configSwitch);
-            commandLineUtility.addSwitch(intervalSwitch);
+            commandLineUtility.addSwitch(trackingIntervalSwitch);
+            commandLineUtility.addSwitch(notificationIntervalSwitch);
             commandLineUtility.addSwitch(namespaceSwitch);
             commandLineUtility.addSwitch(guardFileSwitch);
             commandLineUtility.addSwitch(backgroundSwitch);
@@ -401,7 +562,7 @@ public class LateDeliverablesTrackingUtility {
 
             return true;
         } catch (ArgumentValidationException e) {
-            System.out.println("Fails to validate the value of interval argument.");
+            System.out.println("Fails to validate the value of interval arguments.");
 
             return false;
         } catch (UsageException e) {
@@ -412,47 +573,54 @@ public class LateDeliverablesTrackingUtility {
     }
 
     /**
+     * <p>
      * Creates job processor and start the tracking job.
+     * </p>
      *
-     * @param configFileName the configuration file name.
-     * @param namespace the namespace.
-     * @param interval the interval.
-     * @param log the log to use.
-     * @param signature the method name.
-     * @param guardFile a file to monitor for presence of.
-     * @param background <code>true</code> if tracker is running in background thread; <code>false</code> otherwise.
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>"interval" parameter was renamed to "trackingInterval".</li>
+     * <li>Added parameter "notificationInterval".</li>
+     * <li>Updated implementation.</li>
+     * </ol>
+     * </p>
+     *
+     * @param config
+     *            the configuration.
+     * @param trackingInterval
+     *            the tracking interval.
+     * @param notificationInterval
+     *            the notification interval.
+     * @param log
+     *            the log to use.
+     * @param guardFile
+     *            a file to monitor for presence of.
+     * @param background
+     *            <code>true</code> if tracker is running in background thread; <code>false</code> otherwise.
      */
-    private static void doTrack(String configFileName, String namespace, Integer interval, Log log,
-                                String signature, File guardFile, boolean background) {
+    private static void doTrack(ConfigurationObject config, Integer trackingInterval, Integer notificationInterval,
+        Log log, File guardFile, boolean background) {
         try {
-            ConfigurationObject config = loadConfiguration(configFileName, namespace);
-
-            // Get logger name from the configuration
-            String loggerName = Helper.getPropertyValue(config, Helper.LOGGER_NAME_KEY, false, false);
-
-            if (loggerName != null) {
-                log = LogFactory.getLog(loggerName);
-            } else {
-                log = LogFactory.getLog();
-            }
-
             ConfigurationObject schedulerConfig = Helper.getChildConfig(config, SCHEDULER_CONFIG);
-            String jobName = Helper.getPropertyValue(config, JOB_NAME_KEY, true, false);
-            ConfigurationObject jobConfig = Helper.getChildConfig(config, JOB_CONFIG);
 
             Scheduler scheduler = new ConfigurationObjectScheduler(schedulerConfig);
-            Job job = scheduler.getJob(jobName);
 
-            if (job == null) {
-                printAndExit(log, null, "Job with name[" + jobName + "] is not under config.", signature);
-            }
+            // UPDATED in 1.2
+            Job trackingJob = getJob(config, scheduler, TRACKING_JOB_NAME_KEY, log, MAIN_SIGNATURE);
+            LateDeliverablesTrackingJobRunner.setConfig(Helper.getChildConfig(config, TRACKING_JOB_CONFIG));
 
-            LateDeliverablesTrackingJobRunner.setConfig(jobConfig);
+            // NEW in 1.2
+            Job notificationJob = getJob(config, scheduler, NOTIFICATION_JOB_NAME_KEY, log, MAIN_SIGNATURE);
+            NotRespondedLateDeliverablesNotificationJobRunner.setConfig(
+                Helper.getChildConfig(config, NOTIFICATION_JOB_CONFIG));
 
-            JobProcessor jobProcessor = new JobProcessor(scheduler, ONE_DAY, log);
-            if (interval != null) {
-                jobProcessor.setExecuteInternal(interval);
-            }
+            // UPDATED in 1.2
+            updateJob(scheduler, trackingJob, trackingInterval);
+            // NEW in 1.2
+            updateJob(scheduler, notificationJob, notificationInterval);
+
+            JobProcessor jobProcessor = new JobProcessor(scheduler, ONE_DAY, log); // MOVED in 1.2
             jobProcessor.start();
 
             // Wait until the user presses Enter
@@ -476,18 +644,80 @@ public class LateDeliverablesTrackingUtility {
             jobProcessor.shutdown();
         } catch (LateDeliverablesTrackerConfigurationException e) {
             printAndExit(log, e, "Configuration error occurred, error details : " + e.getMessage(),
-                signature);
+                MAIN_SIGNATURE);
         } catch (IOException e) {
-            printAndExit(log, e, "IO error occurred, error details : " + e.getMessage(), signature);
+            printAndExit(log, e, "IO error occurred, error details : " + e.getMessage(), MAIN_SIGNATURE);
         } catch (ConfigurationException e) {
             printAndExit(log, e, "Configuration error occurred, error details : " + e.getMessage(),
-                signature);
+                MAIN_SIGNATURE);
         } catch (SchedulingException e) {
             printAndExit(log, e, "Scheduling error occurred, error details : " + e.getMessage(),
-                signature);
+                MAIN_SIGNATURE);
         } catch (NullPointerException e) {
             printAndExit(log, e, "Required configuration for job is missing.",
-                signature);
+                MAIN_SIGNATURE);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the job with the given key.
+     * </p>
+     *
+     * @param config
+     *            the configuration.
+     * @param scheduler
+     *            the scheduler.
+     * @param jobNameKey
+     *            the key.
+     * @param log
+     *            the log to use.
+     * @param signature
+     *            the method name.
+     *
+     * @return the job.
+     *
+     * @throws SchedulingException
+     *             if the scheduler is unable to get this job from persistence.
+     *
+     * @since 1.2
+     */
+    private static Job getJob(ConfigurationObject config, Scheduler scheduler, String jobNameKey, Log log,
+        String signature) throws SchedulingException {
+        String jobName = Helper.getPropertyValue(config, jobNameKey, true, false);
+
+        Job job = scheduler.getJob(jobName);
+        if (job == null) {
+            printAndExit(log, null, "Job with name[" + jobName + "] is not under config.", signature);
+        }
+        return job;
+    }
+
+    /**
+     * <p>
+     * Updates the job in the scheduler.
+     * </p>
+     *
+     * @param scheduler
+     *            the scheduler.
+     * @param job
+     *            the job.
+     * @param interval
+     *            the interval.
+     *
+     * @throws SchedulingException
+     *             if the scheduler is unable to update this job in persistence.
+     *
+     * @since 1.2
+     */
+    private static void updateJob(Scheduler scheduler, Job job, Integer interval) throws SchedulingException {
+        if (interval != null) {
+            // Set execution interval value:
+            job.setIntervalValue(interval); // NEW in 1.2
+            // Set interval unit to second:
+            job.setIntervalUnit(new Second()); // NEW in 1.2
+            // Update job in the scheduler:
+            scheduler.updateJob(job); // NEW in 1.2
         }
     }
 
@@ -504,11 +734,14 @@ public class LateDeliverablesTrackingUtility {
      *            the method name.
      */
     private static void printAndExit(Log log, Exception exception, String message, String signature) {
+        System.err.println(message);
+
         if (exception != null) {
+            exception.printStackTrace();
+
+            // Log Exception
             Helper.logException(log, signature, exception);
         }
-
-        System.err.println(message);
         System.exit(1);
     }
 
@@ -532,34 +765,41 @@ public class LateDeliverablesTrackingUtility {
     /**
      * Loads configuration object from given file and namespace.
      *
+     * <p>
+     * <em>Changes in 1.2:</em>
+     * <ol>
+     * <li>Prints out the detailed error explanation if any error occurs.</li>
+     * </ol>
+     * </p>
+     *
      * @param configFileName
      *            the configuration file to load from.
      * @param namespace
      *            the namespace of the configuration object.
+     *
      * @return the configuration object load from file.
-     * @throws LateDeliverablesTrackerConfigurationException
-     *             if any error occurs.
      */
     private static ConfigurationObject loadConfiguration(String configFileName, String namespace) {
+        ConfigurationObject config = null;
+
         try {
             ConfigurationFileManager manager = new ConfigurationFileManager(configFileName);
-            ConfigurationObject config = manager.getConfiguration(namespace);
+            config = manager.getConfiguration(namespace);
 
-            return Helper.getChildConfig(config, namespace);
+            config = Helper.getChildConfig(config, namespace);
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            printAndExit(null, e, "Configuration error occurred, error details : " + e.getMessage(), null);
         } catch (ConfigurationParserException e) {
-            throw new LateDeliverablesTrackerConfigurationException(
-                "Fails to parse the configuration file.", e);
+            printAndExit(null, e, "Fails to parse the configuration file.", null);
         } catch (NamespaceConflictException e) {
-            throw new LateDeliverablesTrackerConfigurationException("Namespace conflict.", e);
+            printAndExit(null, e, "Namespace conflict.", null);
         } catch (UnrecognizedFileTypeException e) {
-            throw new LateDeliverablesTrackerConfigurationException(
-                "Unrecognized file type of the config file.", e);
+            printAndExit(null, e, "Unrecognized file type of the config file.", null);
         } catch (IOException e) {
-            throw new LateDeliverablesTrackerConfigurationException(
-                "IO error when reading config file.", e);
+            printAndExit(null, e, "IO error when reading config file.", null);
         } catch (UnrecognizedNamespaceException e) {
-            throw new LateDeliverablesTrackerConfigurationException("Unrecognized namespace : "
-                + namespace, e);
+            printAndExit(null, e, "Unrecognized namespace : " + namespace, null);
         }
+        return config;
     }
 }

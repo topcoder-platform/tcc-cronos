@@ -12,7 +12,7 @@ import junit.framework.TestSuite;
  * <p>This test case aggregates all Accuracy test cases.</p>
  *
  * @author TopCoder
- * @version 1.0
+ * @version 1.2
  */
 public class AccuracyTests extends TestCase {
 
@@ -22,6 +22,8 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(EmailSendingUtilityAccTests.class);
         suite.addTestSuite(LateDeliverableProcessorImplAccTests.class);
         suite.addTestSuite(LateDeliverablesTrackingUtilityAccTests.class);
+        suite.addTestSuite(NotRespondedLateDeliverablesNotificationJobRunnerAccTests.class);
+        suite.addTestSuite(NotRespondedLateDeliverablesNotifierAccTests.class);
         return suite;
     }
 

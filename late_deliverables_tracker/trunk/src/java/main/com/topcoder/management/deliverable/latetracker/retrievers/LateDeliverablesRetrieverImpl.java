@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.retrievers;
 
@@ -33,9 +33,6 @@ import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectFilterUtility;
 import com.topcoder.management.project.ProjectManager;
-import com.topcoder.management.resource.Resource;
-import com.topcoder.management.resource.ResourceManager;
-import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
@@ -66,6 +63,13 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * ended earlier than expected (e.g. Appeals Response phase can be compensated when Appeals phase ended earlier due to
  * "Complete Appeals" feature). For such phases the deliverable is late only after the compensated deadline is
  * reached.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
+ * <em>Changes in 1.2:</em>
+ * <ol>
+ * <li>Removed useless code.</li>
  * </ol>
  * </p>
  *
@@ -183,7 +187,7 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * </p>
  *
  * @author saarixx, myxgyy, sparemax
- * @version 1.1
+ * @version 1.2
  */
 public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever {
     /**
@@ -216,13 +220,6 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * </p>
      */
     private static final String PHASE_MANAGER_KEY = "phaseManagerKey";
-
-    /**
-     * <p>
-     * Represents &quot;resourceManagerKey&quot; property key in configuration.
-     * </p>
-     */
-    private static final String RESOURCE_MANAGER_KEY = "resourceManagerKey";
 
     /**
      * <p>
@@ -302,13 +299,6 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * </p>
      */
     private static final String TRUE = "true";
-
-    /**
-     * <p>
-     * Represents id of final fix.
-     * </p>
-     */
-    private static final long FINAL_FIX_ID = 20;
 
     /**
      * <p>
@@ -398,21 +388,6 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
     /**
      * <p>
-     * The resource manager to be used by this class for retrieving user ID by resource
-     * ID.
-     * </p>
-     * <p>
-     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
-     * that.
-     * </p>
-     * <p>
-     * Cannot be null after initialization.
-     * </p>
-     */
-    private ResourceManager resourceManager;
-
-    /**
-     * <p>
      * The maximum duration of the phase in milliseconds (not inclusive) for which compensated deadline should be
      * calculated.
      * </p>
@@ -481,9 +456,6 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
         // // create phase manager via object factory
         phaseManager = Helper.createObject(config, objectFactory, PHASE_MANAGER_KEY, PhaseManager.class);
-
-        // Create resource manager with OF
-        resourceManager = Helper.createObject(config, objectFactory, RESOURCE_MANAGER_KEY, ResourceManager.class);
 
         Map<String, DeliverableChecker> deliverableCheckers = getDeliverableCheckers(config,
             objectFactory);
@@ -628,52 +600,75 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
                 projectById.put(projectId, projects[i]);
             }
 
-            // The line below was commented out to reduce the size of the produced log. Uncomment if needed.
-            //Helper.logInfo(log, "IDs of all active projects : " + Arrays.toString(projectIds));
+            Helper.logInfo(log, "IDs of all active projects : " + Arrays.toString(projectIds));
 
             // Get phase projects for all matched project IDs
             com.topcoder.project.phases.Project[] phaseProjects = getPhaseProjects(projectIds, signature);
 
-            List<Long> latePhaseIds = new ArrayList<Long>();
-            Map<Long, Phase> phaseById = new HashMap<Long, Phase>();
-            // holds the ids of projects that have late deliverables
-            Set<Long> lateProjectIds = new HashSet<Long>();
-            Date currentDate = new Date();
-
-            for (com.topcoder.project.phases.Project phaseProject : phaseProjects) {
-                // get all phases for the project
-                Phase[] phases = phaseProject.getAllPhases();
-
-                for (Phase phase : phases) {
-                    if (!phase.getPhaseStatus().getName().equals(PHASE_STATUS_OPEN)) {
-                        continue;
-                    }
-
-                    if (currentDate.after(phase.getScheduledEndDate())) {
-                        long phaseId = phase.getId();
-                        latePhaseIds.add(phaseId);
-                        phaseById.put(phaseId, phase);
-                        lateProjectIds.add(phaseProject.getId());
-                    }
-                }
-            }
-
-            if (latePhaseIds.isEmpty()) {
-                result = new ArrayList<LateDeliverable>();
-            } else {
-                // log IDs of projects that have late phases
-                Helper.logInfo(log, "IDs of projects that have late phases : " + lateProjectIds);
-                Helper.logInfo(log, "IDs of late phases : " + latePhaseIds);
-
-                Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
-
-                result = createResult(deliverables, projectById, phaseById, signature);
-            }
+            result = getLateDeliverables(phaseProjects, projectById, log, signature);
         }
 
         Helper.logExit(log, signature, result, start);
 
         return result;
+    }
+
+    /**
+     * <p>
+     * Gets the late deliverables.
+     * </p>
+     *
+     * @param phaseProjects
+     *            the phase projects.
+     * @param projectById
+     *            the project by id map.
+     * @param log
+     *            the log.
+     * @param signature
+     *            the signature.
+     *
+     * @return the late deliverables.
+     *
+     * @throws LateDeliverablesRetrievalException
+     *             if any error occurs.
+     */
+    private List<LateDeliverable> getLateDeliverables(com.topcoder.project.phases.Project[] phaseProjects,
+        Map<Long, Project> projectById, Log log, String signature) throws LateDeliverablesRetrievalException {
+        List<Long> latePhaseIds = new ArrayList<Long>();
+        Map<Long, Phase> phaseById = new HashMap<Long, Phase>();
+        // holds the ids of projects that have late deliverables
+        Set<Long> lateProjectIds = new HashSet<Long>();
+        Date currentDate = new Date();
+
+        for (com.topcoder.project.phases.Project phaseProject : phaseProjects) {
+            // get all phases for the project
+            Phase[] phases = phaseProject.getAllPhases();
+
+            for (Phase phase : phases) {
+                if (!phase.getPhaseStatus().getName().equals(PHASE_STATUS_OPEN)) {
+                    continue;
+                }
+
+                if (currentDate.after(phase.getScheduledEndDate())) {
+                    long phaseId = phase.getId();
+                    latePhaseIds.add(phaseId);
+                    phaseById.put(phaseId, phase);
+                    lateProjectIds.add(phaseProject.getId());
+                }
+            }
+        }
+
+        if (latePhaseIds.isEmpty()) {
+            return new ArrayList<LateDeliverable>();
+        } else {
+            // log IDs of projects that have late phases
+            Helper.logInfo(log, "IDs of projects that have late phases : " + lateProjectIds);
+            Helper.logInfo(log, "IDs of late phases : " + latePhaseIds);
+
+            Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
+
+            return createResult(deliverables, projectById, phaseById, signature);
+        }
     }
 
     /**

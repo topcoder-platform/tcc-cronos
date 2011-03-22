@@ -180,5 +180,8 @@
 		<Property name="notificationInterval">
 		    <Value>10</Value>
 		</Property>
+        <Property name="explanationDeadlineIntervalInHours">
+		    <Value>12</Value>
+		</Property>
     </Config>
 </CMConfig>

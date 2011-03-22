@@ -17,10 +17,23 @@ import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverabl
 
 /**
  * Accuracy tests for LateDeliverableProcessorImpl.
- * @author mumujava, victorsam
- * @version 1.1
+ * @author mumujava, victorsam, KLW
+ * @version 1.2
  */
 public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
+    /**
+     * <p>
+     * Represents one minute time in long.
+     * </p>
+     */
+    public static final long MINUTE = 60000;
+    /**
+     * <p>
+     * Represents constant value 60.
+     * </p>
+     */
+    public static final int SIXTY = 60;
+    
     /** Represents the LateDeliverableProcessorImpl instance to test. */
     private LateDeliverableProcessorImpl instance;
 
@@ -69,7 +82,8 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         retriever.configure(config);
         LateDeliverable result = retriever.retrieve().get(0);
         // test the new functionality
-        result.setCompensatedDeadline(new Date());
+        Date compensatedDeadline = new Date(new Date().getTime()-MINUTE);
+       result.setCompensatedDeadline(compensatedDeadline);
 
         config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
             "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
@@ -78,11 +92,18 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //an email is expected to sent to wuyb@topcoder.com, manually check the mails please
 
         Object[] lateDeliverable = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable.length, 3);
+        assertEquals(lateDeliverable.length, 4);
         assertEquals(lateDeliverable[0], false);
         assertNotNull(lateDeliverable[1]);
         //should be notified
         assertEquals(lateDeliverable[2], 4);
+        
+        int delay = Integer.valueOf(lateDeliverable[3].toString());
+        System.out.println(delay);
+        //update in version 1.2
+        //Delay is computed based on the compensated deadline if exists (previously was always computed based on the real deadline). 
+        //check the dalay  
+         assertTrue("The delay is inocrrect.",delay<SIXTY+1);
     }
 
     /**
@@ -110,7 +131,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //an email is expected to sent to wuyb@topcoder.com, manually check the mails please
 
         Object[] lateDeliverable = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable.length, 3);
+        assertEquals(lateDeliverable.length, 4);
         assertEquals(lateDeliverable[0], false);
         assertNull(lateDeliverable[1]);
         //should not be notified
@@ -146,7 +167,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
 
         Object[] lateDeliverable = getLateDeliverable(112, 1);
         assertEquals(lateDeliverable[0], false);
-        assertEquals(lateDeliverable.length, 3);
+        assertEquals(lateDeliverable.length, 4);
         assertNotNull(lateDeliverable[1]);
         //should be notified
         assertEquals(lateDeliverable[2], 4);
@@ -160,16 +181,15 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
 
         //double records is obtained.
         lateDeliverable = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable.length, 6);
+        assertEquals(lateDeliverable.length, 8);
         assertEquals(lateDeliverable[0], false);
         assertNotNull(lateDeliverable[1]);
         //should be notified
         assertEquals(lateDeliverable[2], 4);
-
-        assertEquals(lateDeliverable[3], false);
-        assertNotNull(lateDeliverable[4]);
+        assertEquals(lateDeliverable[4], false);
+        assertNotNull(lateDeliverable[5]);
         //should be notified
-        assertEquals(lateDeliverable[5], 4);
+        assertEquals(lateDeliverable[6], 4);
     }
 
     /**
@@ -201,7 +221,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
 
         Object[] lateDeliverable = getLateDeliverable(112, 1);
         assertEquals(lateDeliverable[0], false);
-        assertEquals(lateDeliverable.length, 3);
+        assertEquals(lateDeliverable.length, 4);
         assertNotNull(lateDeliverable[1]);
         //should be notified
         assertEquals(lateDeliverable[2], 4);
@@ -212,7 +232,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         instance.processLateDeliverable(res.get(0));
         //db is unchanged.
         Object[] lateDeliverable2 = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable2.length, 3);
+        assertEquals(lateDeliverable2.length, 4);
         assertEquals(lateDeliverable[0], false);
         assertNotNull(lateDeliverable[1]);
         //should be notified
@@ -246,7 +266,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //an email is expected to sent to wuyb@topcoder.com, manually check the mails please
 
         Object[] lateDeliverable = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable.length, 3);
+        assertEquals(lateDeliverable.length, 4);
         assertEquals(lateDeliverable[0], false);
         assertNotNull(lateDeliverable[1]);
         //should be notified
@@ -257,7 +277,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         instance.processLateDeliverable(res.get(0));
         //db is unchanged.
         Object[] lateDeliverable2 = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable2.length, 3);
+        assertEquals(lateDeliverable2.length, 4);
         assertEquals(lateDeliverable2[0], false);
         assertNotNull(lateDeliverable2[1]);
         //should be notified
@@ -291,7 +311,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //an email is expected to sent to wuyb@topcoder.com, manually check the mails please
 
         Object[] lateDeliverable = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable.length, 3);
+        assertEquals(lateDeliverable.length, 4);
         assertEquals(lateDeliverable[0], false);
         assertNotNull(lateDeliverable[1]);
         //should be notified
@@ -302,7 +322,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         instance.processLateDeliverable(res.get(0));
         //db is unchanged.
         Object[] lateDeliverable2 = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable2.length, 3);
+        assertEquals(lateDeliverable2.length, 4);
         assertEquals(lateDeliverable2[0], false);
         assertNotNull(lateDeliverable2[1]);
         //should be notified
@@ -339,7 +359,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //an email is expected to sent to wuyb@topcoder.com, manually check the mails please
 
         Object[] lateDeliverable = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable.length, 3);
+        assertEquals(lateDeliverable.length, 4);
         assertEquals(lateDeliverable[0], false);
         assertNotNull(lateDeliverable[1]);
         //should be notified
@@ -352,7 +372,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         instance.processLateDeliverable(res.get(0));
         //db is unchanged.
         Object[] lateDeliverable2 = getLateDeliverable(112, 1);
-        assertEquals(lateDeliverable2.length, 3);
+        assertEquals(lateDeliverable2.length, 4);
         assertNotNull(lateDeliverable2[1]);
         //should be notified
         assertEquals(lateDeliverable2[2], 4);
@@ -360,7 +380,47 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //should update the notification datetime
         assertTrue(((Comparable) lateDeliverable2[1]).compareTo(lateDeliverable[1]) == 0);
     }
+    /**
+     * Accuracy test for method processLateDeliverable.
+     *
+     * "Review Scorecard" deliverable is late.
+     *
+     * Manually check the mails.
+     *
+     *
+     * @throws Exception to JUnit
+     */
+    public void test_processLateDeliverable8() throws Exception {
+        //addTrackingRecord = true, canSendNotification = true and needToNotify = true
+        AccuracyHelper.executeSqlFile("test_files/accuracy/test.sql");
 
+        LateDeliverablesRetrieverImpl retriever = new LateDeliverablesRetrieverImpl();
+        ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
+            "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
+        retriever.configure(config);
+        LateDeliverable result = retriever.retrieve().get(0);
+       //not set the compensatedDeadline
+       //result.setCompensatedDeadline(compensatedDeadline);
+
+        config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
+            "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
+        instance.configure(config);
+        instance.processLateDeliverable(result);
+        //an email is expected to sent to wuyb@topcoder.com, manually check the mails please
+
+        Object[] lateDeliverable = getLateDeliverable(112, 1);
+        assertEquals(lateDeliverable.length, 4);
+        assertEquals(lateDeliverable[0], false);
+        assertNotNull(lateDeliverable[1]);
+        //should be notified
+        assertEquals(lateDeliverable[2], 4);
+        
+        int delay = Integer.valueOf(lateDeliverable[3].toString());
+        //update in version 1.2
+        //Delay is computed based on the compensated deadline if exists (previously was always computed based on the real deadline). 
+        //check the dalay  
+         assertTrue("The delay is inocrrect.",delay>SIXTY);
+    }
     /**
      * <p>
      * Gets the late Deliverable.
@@ -376,7 +436,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ResultSet rs = null;
 
         try {
-            ps = connection.prepareStatement("select forgive_ind, last_notified, deliverable_id from late_deliverable where "
+            ps = connection.prepareStatement("select forgive_ind, last_notified, deliverable_id, delay from late_deliverable where "
                 + "project_phase_id = ? and resource_id = ?");
             ps.setInt(1, projectPhaseId);
             ps.setInt(2, resourceId);
@@ -387,6 +447,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
                 res.add(rs.getBoolean(1));
                 res.add(rs.getDate(2));
                 res.add(rs.getInt(3));
+                res.add(rs.getInt(4));
             }
             return res.toArray();
         } finally {

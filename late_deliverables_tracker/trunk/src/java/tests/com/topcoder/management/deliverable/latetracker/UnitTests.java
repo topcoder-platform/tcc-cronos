@@ -1,24 +1,28 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
-
-import com.topcoder.management.deliverable.latetracker.processors.EmailSendingExceptionTests;
-import com.topcoder.management.deliverable.latetracker.processors.EmailSendingUtilityTests;
-import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImplTests;
-import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImplTests;
-import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtilityTests;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.topcoder.management.deliverable.latetracker.notification
+       .NotRespondedLateDeliverablesNotificationExceptionTests;
+import com.topcoder.management.deliverable.latetracker.notification
+       .NotRespondedLateDeliverablesNotificationJobRunnerTests;
+import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotifierTests;
+import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImplTests;
+import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImplTests;
+import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtilityTests;
 
 /**
- * <p>This test case aggregates all Unit test cases.</p>
+ * <p>
+ * This test case aggregates all Unit test cases.
+ * </p>
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author myxgyy, sparemax
+ * @version 1.2
  */
 public class UnitTests extends TestCase {
     /**
@@ -39,14 +43,18 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(LateDeliverablesRetrievalExceptionTests.class);
         suite.addTestSuite(LateDeliverablesTrackerConfigurationExceptionTests.class);
         suite.addTestSuite(LateDeliverablesTrackingExceptionTests.class);
+        suite.addTestSuite(EmailSendingExceptionTests.class);
 
         suite.addTestSuite(LateDeliverablesRetrieverImplTests.class);
 
-        suite.addTestSuite(EmailSendingExceptionTests.class);
         suite.addTestSuite(EmailSendingUtilityTests.class);
         suite.addTestSuite(LateDeliverableProcessorImplTests.class);
 
         suite.addTestSuite(LateDeliverablesTrackingUtilityTests.class);
+
+        suite.addTestSuite(NotRespondedLateDeliverablesNotificationExceptionTests.class);
+        suite.addTestSuite(NotRespondedLateDeliverablesNotificationJobRunnerTests.class);
+        suite.addTestSuite(NotRespondedLateDeliverablesNotifierTests.class);
 
         return suite;
     }

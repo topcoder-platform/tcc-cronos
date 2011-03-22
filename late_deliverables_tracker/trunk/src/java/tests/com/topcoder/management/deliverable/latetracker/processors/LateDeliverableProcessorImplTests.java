@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.processors;
 
@@ -10,20 +10,15 @@ import java.util.Set;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.date.workdays.DefaultWorkdays;
-import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.deliverable.latetracker.BaseTestCase;
+import com.topcoder.management.deliverable.latetracker.EmailSendingException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverableData;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesProcessingException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl;
-import com.topcoder.management.project.Project;
-import com.topcoder.management.project.ProjectCategory;
-import com.topcoder.management.project.ProjectStatus;
-import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.project.phases.Phase;
-import com.topcoder.project.phases.PhaseType;
 
 /**
  * Unit tests for <code>{@link LateDeliverableProcessorImpl}</code> class.
@@ -35,8 +30,15 @@ import com.topcoder.project.phases.PhaseType;
  * </ol>
  * </p>
  *
+ * <p>
+ * <em>Change in 1.2:</em>
+ * <ol>
+ * <li>Updated tests for explanationDeadlineIntervalInHours.</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.1
+ * @version 1.2
  */
 public class LateDeliverableProcessorImplTests extends BaseTestCase {
     /**
@@ -122,11 +124,17 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link
-     * LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
+     * Accuracy test case for the {@link LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
      * Verifies all class fields have been set by configuration correctly.
+     * </p>
+     *
+     * <p>
+     * <em>Change in 1.2:</em>
+     * <ol>
+     * <li>Updated tests for explanationDeadlineIntervalInHours.</li>
+     * </ol>
      * </p>
      *
      * @throws Exception
@@ -160,8 +168,11 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         assertNotNull("resourceManager field should be null", getField(target, "resourceManager"));
         assertNotNull("userRetrieval field should be null", getField(target, "userRetrieval"));
         assertNotNull("timestampFormat field should be null", getField(target, "timestampFormat"));
-        assertEquals("notificationInterval field should be zero", new Long(10),
+        assertEquals("notificationInterval field should be correct", new Long(10),
             getField(target, "notificationInterval"));
+
+        assertEquals("explanationDeadlineIntervalInHours field should be correct", 24,
+            getField(target, "explanationDeadlineIntervalInHours"));
     }
 
     /**
@@ -969,6 +980,84 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
 
     /**
      * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method with
+     * 'explanationDeadlineIntervalInHours' is empty.
+     * </p>
+     * <p>
+     * <code>LateDeliverablesTrackerConfigurationException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_Configure_explanationDeadlineIntervalInHoursEmpty() throws Exception {
+        config.setPropertyValue("explanationDeadlineIntervalInHours", " \t ");
+
+        try {
+            target.configure(config);
+
+            fail("LateDeliverablesTrackerConfigurationException is expected.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // Good
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method with
+     * 'explanationDeadlineIntervalInHours' is invalid.
+     * </p>
+     * <p>
+     * <code>LateDeliverablesTrackerConfigurationException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_Configure_explanationDeadlineIntervalInHoursInvalid() throws Exception {
+        config.setPropertyValue("explanationDeadlineIntervalInHours", "invalid_num");
+
+        try {
+            target.configure(config);
+
+            fail("LateDeliverablesTrackerConfigurationException is expected.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // Good
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method with
+     * 'explanationDeadlineIntervalInHours' is non-positive.
+     * </p>
+     * <p>
+     * <code>LateDeliverablesTrackerConfigurationException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.2
+     */
+    public void test_Configure_explanationDeadlineIntervalInHoursNonPositive() throws Exception {
+        config.setPropertyValue("explanationDeadlineIntervalInHours", "0");
+
+        try {
+            target.configure(config);
+
+            fail("LateDeliverablesTrackerConfigurationException is expected.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // Good
+        }
+    }
+
+    /**
+     * <p>
      * Accuracy test case for the {@link
      * LateDeliverableProcessorImpl#processLateDeliverable(LateDeliverable)} method.
      * </p>
@@ -981,9 +1070,13 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_processLateDeliverable_1() throws Exception {
+        config.removeProperty("explanationDeadlineIntervalInHours");
+        target.configure(config);
+
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
         LateDeliverable lateDeliverable = retriever.retrieve().get(0);
         lateDeliverable.setCompensatedDeadline(new Date());
+
         target.processLateDeliverable(lateDeliverable);
 
         // check database record
@@ -1019,6 +1112,8 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.processLateDeliverable(retriever.retrieve().get(0));
         // sleep to pass the interval
         Thread.sleep(15000);
+
+        setColumn("late_deliverable", "explanation", "Dog ate my laptop.");
         target.processLateDeliverable(retriever.retrieve().get(0));
 
         // verify the update
@@ -1891,47 +1986,5 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         } catch (IllegalArgumentException e) {
             // pass
         }
-    }
-
-    /**
-     * Creates <code>LateDeliverable</code> instance for tests.
-     *
-     * @param flag
-     *            the flag to set the required value.
-     * @return the <code>LateDeliverable</code> instance.
-     */
-    private static LateDeliverable createLateDeliverable(int flag) {
-        LateDeliverable d = new LateDeliverable();
-        Deliverable deliverable = new Deliverable(1, 112, 1000, null, false);
-        deliverable.setId(4);
-
-        Phase phase = new Phase(new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 100);
-        phase.setScheduledEndDate(new Date());
-
-        Project project = new Project(1, new ProjectCategory(1, "Dev", new ProjectType(1, "type")), new ProjectStatus(
-            2, "Active"));
-
-        project.setProperty("Project Name", "name");
-        project.setProperty("Project Version", "version");
-        deliverable.setName("Screening scorecard");
-        phase.setPhaseType(new PhaseType(1, "review"));
-
-        if (flag == 1) {
-            project.setProperty("Project Name", null);
-        } else if (flag == 2) {
-            project.setProperty("Project Version", null);
-        } else if (flag == 3) {
-            deliverable.setName(null);
-        } else if (flag == 4) {
-            project.setProperty("Project Name", new Exception());
-        } else if (flag == 5) {
-            phase.setPhaseType(null);
-        }
-
-        d.setDeliverable(deliverable);
-        d.setPhase(phase);
-        d.setProject(project);
-
-        return d;
     }
 }
