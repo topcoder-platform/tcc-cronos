@@ -654,6 +654,7 @@ public class NotRespondedLateDeliverablesNotifier {
             lateDeliverableParams.put("PHASE_NAME", lateDeliverableDetails.getPhaseName());
             lateDeliverableParams.put("DELIVERABLE_NAME", lateDeliverableDetails.getDeliverableName());
             lateDeliverableParams.put("DEADLINE", timestampFormat.format(deadline));
+            lateDeliverableParams.put("LATE_MEMBER_HANDLE", lateDeliverableDetails.getLateMemberHandle());
 
             Long delay = lateDeliverableDetails.getDelay();
             lateDeliverableParams.put("DELAY",
@@ -733,6 +734,18 @@ public class NotRespondedLateDeliverablesNotifier {
             // Get phase name:
             String phaseName = phase.getPhaseType().getName();
 
+            String lateMemberHandle = null;
+            Resource lateResource = resourceManager.getResource(lateDeliverable.getResourceId());
+
+            if (lateResource != null) {
+                try {
+                    lateMemberHandle = (String) lateResource.getProperty("Handle");
+                } catch (ClassCastException e) {
+                    throw new NotRespondedLateDeliverablesNotificationException("Handle property value"
+                        + " is not type of String.", e);
+                }
+            }
+
             lateDeliverableIds.add(lateDeliverable.getId());
 
             // Get deliverable:
@@ -747,7 +760,7 @@ public class NotRespondedLateDeliverablesNotifier {
 
             // Create late deliverable details instance:
             LateDeliverableDetails lateDeliverableDetails = getLateDeliverableDetails(lateDeliverable,
-                deliverables[0], project, projectId, phaseName);
+                deliverables[0], project, projectId, phaseName, lateMemberHandle);
 
             for (Long managerUserId : managerUserIds) {
                 // Get list of late deliverable details for this user:
@@ -791,7 +804,7 @@ public class NotRespondedLateDeliverablesNotifier {
      */
     private LateDeliverableDetails getLateDeliverableDetails(
         com.topcoder.management.deliverable.late.LateDeliverable lateDeliverable, Deliverable deliverable,
-        Project project, long projectId, String phaseName) {
+        Project project, long projectId, String phaseName, String lateMemberHandle) {
         // Create late deliverable details instance:
         LateDeliverableDetails lateDeliverableDetails = new LateDeliverableDetails();
 
@@ -813,6 +826,8 @@ public class NotRespondedLateDeliverablesNotifier {
         lateDeliverableDetails.setDelay(lateDeliverable.getDelay());
         // Set compensated deadline to the late deliverable details instance:
         lateDeliverableDetails.setCompensatedDeadline(lateDeliverable.getCompensatedDeadline());
+        // Set late member handle to the late deliverable details instance:
+        lateDeliverableDetails.setLateMemberHandle(lateMemberHandle);
 
         return lateDeliverableDetails;
     }
@@ -1066,6 +1081,17 @@ public class NotRespondedLateDeliverablesNotifier {
 
         /**
          * <p>
+         * The handle of the late member.
+         * </p>
+         *
+         * <p>
+         * Can be any value. Has getter and setter.
+         * </p>
+         */
+        private String lateMemberHandle;
+
+        /**
+         * <p>
          * Creates an instance of LateDeliverableDetails.
          * </p>
          */
@@ -1278,6 +1304,29 @@ public class NotRespondedLateDeliverablesNotifier {
          */
         public void setCompensatedDeadline(Date compensatedDeadline) {
             this.compensatedDeadline = compensatedDeadline;
+        }
+
+        /**
+         * <p>
+         * Gets the handle of the late member.
+         * </p>
+         *
+         * @return the handle of the late member.
+         */
+        public String getLateMemberHandle() {
+            return lateMemberHandle;
+        }
+
+        /**
+         * <p>
+         * Sets the handle of the late member.
+         * </p>
+         *
+         * @param lateMemberHandle
+         *            the handle of the late member.
+         */
+        public void setLateMemberHandle(String lateMemberHandle) {
+            this.lateMemberHandle = lateMemberHandle;
         }
     }
 }

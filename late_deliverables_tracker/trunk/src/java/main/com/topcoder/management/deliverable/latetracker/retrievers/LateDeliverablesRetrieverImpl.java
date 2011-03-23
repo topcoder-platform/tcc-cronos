@@ -600,8 +600,6 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
                 projectById.put(projectId, projects[i]);
             }
 
-            Helper.logInfo(log, "IDs of all active projects : " + Arrays.toString(projectIds));
-
             // Get phase projects for all matched project IDs
             com.topcoder.project.phases.Project[] phaseProjects = getPhaseProjects(projectIds, signature);
 
