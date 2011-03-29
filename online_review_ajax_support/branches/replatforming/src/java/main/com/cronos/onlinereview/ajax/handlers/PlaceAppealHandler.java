@@ -44,10 +44,17 @@ import com.topcoder.util.log.LogFactory;
  *   </ol>
  * </p>
  *
+ * <p>
+ * Version 1.0.3 (Online Review Replatforming Release 2 ) Change notes:
+ *   <ol>
+ *     <li>Change submission.getUploads() to submission.getUpload().</li>
+ *   </ol>
+ * </p>
+ *
  * @author topgear
  * @author assistant
  * @author George1, TCSDEVELOPER
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class PlaceAppealHandler extends ReviewCommonHandler {
 	private static final com.topcoder.util.log.Log log = com.topcoder.util.log.LogFactory
@@ -338,7 +345,7 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         }
 
         // Get the upload
-        Upload upload = submission.getUploads().get(0);
+        Upload upload = submission.getUpload();
 
         // get the submission resource
         Resource submitterResource = null;
