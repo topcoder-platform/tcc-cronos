@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -74,7 +74,7 @@ import javax.naming.NamingException;
  * </p>
  *
  * @author argolite, waits, isv, VolodymyrK
- * @version 1.4.5
+ * @version 1.4.7
  * @since 1.1
  */
 public class PostMortemPhaseHandler extends AbstractPhaseHandler {
@@ -394,8 +394,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             }
 
             return true;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Error retrieving data from persistence", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

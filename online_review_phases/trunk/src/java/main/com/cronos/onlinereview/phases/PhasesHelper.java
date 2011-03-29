@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 - 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2004 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -135,7 +135,7 @@ import java.util.Set;
  * </p>
  *
  * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy
- * @version 1.4.3
+ * @version 1.4.7
  * @since 1.0
  */
 final class PhasesHelper {
@@ -200,6 +200,24 @@ final class PhasesHelper {
      * @since 1.4
      */
     static final String PHASE_FINAL_REVIEW = "Final Review";
+
+    /**
+     * <p>
+     * A <code>String</code> providing the approver role name.
+     * </p>
+     *
+     * @since 1.4.7
+     */
+    static final String APPROVER_ROLE_NAME = "Approver";
+
+    /**
+     * <p>
+     * A <code>String</code> providing the approval phase name.
+     * </p>
+     *
+     * @since 1.4.7
+     */
+    static final String PHASE_APPROVAL = "Approval";
 
     /**
      * <p>
@@ -1194,61 +1212,32 @@ final class PhasesHelper {
     }
 
     /**
-     * This method checks if the winning submission has one aggregated review scorecard
-     * committed and returns the same.
+     * Returns the worksheet for the given resource role name and phase id..
      *
      * @param conn
      *            database connection
      * @param managerHelper
      *            ManagerHelper instance.
-     * @param aggPhaseId
-     *            aggregation phase id.
-     * @return aggregated review scorecard, null if does not exist.
+     * @param roleName
+     *            Resource role name.
+     * @param phaseId
+     *            phase id.
+     * @return review scorecard, null if does not exist.
      * @throws PhaseHandlingException
-     *             if an error occurs when retrieving data or if there are multiple
-     *             scorecards.
+     *             if an error occurs when retrieving data or if there are multiple scorecards.
      */
-    static Review getAggregationWorksheet(Connection conn, ManagerHelper managerHelper, long aggPhaseId)
+    static Review getWorksheet(Connection conn, ManagerHelper managerHelper, String roleName, long phaseId)
         throws PhaseHandlingException  {
-        // Search the aggregated review scorecard
-        Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, aggPhaseId,
-            new String[] {"Aggregator"}, null);
+        // Search the scorecard
+        Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, phaseId,
+            new String[] {roleName}, null);
 
         if (reviews.length == 0) {
             return null;
         } else if (reviews.length == 1) {
             return reviews[0];
         } else {
-            throw new PhaseHandlingException("Cannot have multiple aggregation scorecards.");
-        }
-    }
-
-    /**
-     * returns the final review worksheet for the given final review phase id.
-     *
-     * @param conn
-     *            the Connection
-     * @param managerHelper
-     *            ManagerHelper instance.
-     * @param finalReviewPhaseId
-     *            final review phase id.
-     * @return the final review worksheet, or null if not existing.
-     * @throws PhaseHandlingException
-     *             if an error occurs when retrieving data.
-     * @throws SQLException
-     *             if an error occurs when looking up resource role id.
-     */
-    static Review getFinalReviewWorksheet(Connection conn, ManagerHelper managerHelper,
-        long finalReviewPhaseId) throws PhaseHandlingException, SQLException {
-        Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, finalReviewPhaseId,
-            new String[] {"Final Reviewer"}, null);
-
-        if (reviews.length == 0) {
-            return null;
-        } else if (reviews.length == 1) {
-            return reviews[0];
-        } else {
-            throw new PhaseHandlingException("Multiple final review worksheets found");
+            throw new PhaseHandlingException("Cannot have multiple scorecards for " + roleName);
         }
     }
 
@@ -2373,13 +2362,10 @@ final class PhasesHelper {
      * @return Review[] which match filter conditions.
      * @throws PhaseHandlingException
      *             if there was an error during retrieval.
-     * @throws SQLException
-     *             in case of error when looking up resource role id.
      * @since 1.3
      */
     static Review[] searchProjectReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper,
-        long projectId, String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException,
-        SQLException {
+        long projectId, String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException {
         Resource[] reviewers = searchProjectResourcesForRoleNames(managerHelper, conn,
             resourceRoleNames, projectId);
 

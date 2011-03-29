@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -82,7 +82,7 @@ import com.topcoder.util.log.LogFactory;
  * </p>
  *
  * @author tuenm, bose_java, argolite, waits
- * @version 1.2
+ * @version 1.4.7
  */
 public class AggregationPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -313,9 +313,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
 
             Review aggWorksheet = null;
             if (previousAggregationPhase != null) {
-                aggWorksheet = PhasesHelper.getAggregationWorksheet(conn,
-                                getManagerHelper(), previousAggregationPhase
-                                                .getId());
+                aggWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
+                    "Aggregator", previousAggregationPhase.getId());
             }
 
             if (aggWorksheet == null) {
@@ -501,7 +500,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         Connection conn = null;
         try {
             conn = createConnection();
-            Review review = PhasesHelper.getAggregationWorksheet(conn, getManagerHelper(), phase.getId());
+            Review review = PhasesHelper.getWorksheet(conn, getManagerHelper(), "Aggregator", phase.getId());
             return (review != null && review.isCommitted());
         } finally {
             PhasesHelper.closeConnection(conn);
