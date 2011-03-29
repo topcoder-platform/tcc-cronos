@@ -27,9 +27,17 @@ import com.topcoder.management.deliverable.Deliverable;
  *   </ol>
  * </p>
  *
+ * <p>
+ * Version 1.0.2 (Online Review Replatforming Release 2 ) Change notes:
+ *   <ol>
+ *     <li>Update sql statement to adapt for the new database schema. The upload_submission table
+ *     is dropped.</li>
+ *   </ol>
+ * </p>
+ * 
  * @author aubergineanode
  * @author kr00tki, TCSDEVELOPER
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableChecker {
 
@@ -93,8 +101,7 @@ public class SubmissionDeliverableChecker extends SingleQuerySqlDeliverableCheck
         return "SELECT MAX(upload.modify_date) FROM upload "
                 + "INNER JOIN upload_type_lu ON upload.upload_type_id = upload_type_lu.upload_type_id "
                 + "INNER JOIN upload_status_lu ON upload.upload_status_id = upload_status_lu.upload_status_id "
-                + "LEFT JOIN upload_submission ON upload_submission.upload_id = upload.upload_id "
-                + "LEFT JOIN submission ON upload_submission.submission_id = submission.submission_id "
+                + "LEFT JOIN submission ON upload.upload_id = submission.upload_id "
                 + "WHERE upload_type_lu.name = 'Submission' AND upload_status_lu.name = 'Active' "
                 + "AND upload.resource_id = ? AND submission.submission_type_id = ?";
     }
