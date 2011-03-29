@@ -108,8 +108,15 @@ import java.util.Map;
  *   </ol>
  * </p>
  *
+ * <p>
+ * Version 1.7 (Online Review Replatforming Release 2 ) Change notes:
+ *   <ol>
+ *     <li>Change submission.getUploads() to submission.getUpload().</li>
+ *   </ol>
+ * </p>
+ *
  * @author tuenm, bose_java, argolite, waits, isv, TCSDEVELOPER
- * @version 1.6
+ * @version 1.7
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -425,7 +432,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                 int placement = rankedSubmission.getRank();
 
                 // update submitter's final score
-                long submitterId = submission.getUploads().get(0).getOwner();
+                long submitterId = submission.getUpload().getOwner();
                 Resource submitter = getManagerHelper().getResourceManager()
                                 .getResource(submitterId);
 
@@ -507,7 +514,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             for (Submission submission : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
                 infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(getManagerHelper().getResourceManager()
-                        .getResource(submission.getUploads().get(0).getOwner()).getProperty(PhasesHelper.HANDLE)));
+                        .getResource(submission.getUpload().getOwner()).getProperty(PhasesHelper.HANDLE)));
                 infos.put("SUBMITTER_PRE_APPEALS_SCORE", submission.getInitialScore());
                 infos.put("SUBMITTER_POST_APPEALS_SCORE", submission.getFinalScore());
                 infos.put("SUBMITTER_RESULT", submission.getPlacement());

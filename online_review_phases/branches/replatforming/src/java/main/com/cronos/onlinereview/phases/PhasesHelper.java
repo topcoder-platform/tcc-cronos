@@ -145,8 +145,15 @@ import java.util.Set;
  * </ol>
  * </p>
  *
+ * <p>
+ * Version 1.7 (Online Review Replatforming Release 2 ) Change notes:
+ *   <ol>
+ *     <li>Change submission.getUploads() to submission.getUpload().</li>
+ *   </ol>
+ * </p>
+ *
  * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, TCSDEVELOPER
- * @version 1.6
+ * @version 1.7
  */
 final class PhasesHelper {
     /**
@@ -1102,7 +1109,7 @@ final class PhasesHelper {
             long[] uploadIds = new long[submissions.length];
 
             for (int i = 0; i < submissions.length; i++) {
-                uploadIds[i] = submissions[i].getUploads().get(0).getId();
+                uploadIds[i] = submissions[i].getUpload().getId();
             }
 
             // get screening tasks for the upload ids
@@ -2115,7 +2122,7 @@ final class PhasesHelper {
             for (Submission submission : submissions) {
                 Map<String, Object> values = new HashMap<String, Object>();
                 values.put("SUBMITTER_HANDLE", notNullValue(helper.getResourceManager().getResource(
-                    submission.getUploads().get(0).getOwner()).getProperty("Handle")));
+                    submission.getUpload().getOwner()).getProperty("Handle")));
                 values.put(appealPhase ? "SUBMITTER_SCORE" : "SUBMITTER_PRE_APPEALS_SCORE", submission
                     .getInitialScore());
                 result.add(values);
@@ -2152,7 +2159,7 @@ final class PhasesHelper {
                 Map<String, Object> values = new HashMap<String, Object>();
 
                 // find the submitter (it is a resource) by the id
-                Resource submitter = resourceManager.getResource(submission.getUploads().get(0).getOwner());
+                Resource submitter = resourceManager.getResource(submission.getUpload().getOwner());
                 values.put("SUBMITTER_HANDLE", notNullValue(submitter.getProperty("Handle")));
 
                 if (!screeningEnd) {
@@ -2312,7 +2319,7 @@ final class PhasesHelper {
                 CONTEST_SUBMISSION_TYPE);
 
             for (Submission s : activeSubmissions) {
-                if (!earlyAppealResourceIds.contains(new Long(s.getUploads().get(0).getOwner()))) {
+                if (!earlyAppealResourceIds.contains(new Long(s.getUpload().getOwner()))) {
                     return false;
                 }
             }
@@ -2791,11 +2798,11 @@ final class PhasesHelper {
     static RankedSubmission breakTies(RankedSubmission submission, Submission[] submissions,
             RankedSubmission[] placements) throws PhaseHandlingException {
         int rank = submission.getRank();
-        Date timestamp1 = getSubmissionById(submissions, submission.getId()).getUploads().get(0).getCreationTimestamp();
+        Date timestamp1 = getSubmissionById(submissions, submission.getId()).getUpload().getCreationTimestamp();
         for (int i = 0; i < placements.length; ++i) {
             if (placements[i].getRank() == submission.getRank()) {
                 Submission tie = getSubmissionById(submissions, placements[i].getId());
-                Date timestamp2 = tie.getUploads().get(0).getCreationTimestamp();
+                Date timestamp2 = tie.getUpload().getCreationTimestamp();
 
                 if (timestamp1 != null && timestamp2 != null && timestamp2.before(timestamp1)) {
                     ++rank;

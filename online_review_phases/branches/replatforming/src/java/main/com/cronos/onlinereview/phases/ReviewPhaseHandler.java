@@ -93,11 +93,19 @@ import com.topcoder.util.log.LogFactory;
  * </p>
  * 
  * <p>
+ * Version 1.6.2 (Online Review Replatforming Release 2 ) Change notes:
+ *   <ol>
+ *     <li>Change submission.getUploads() to submission.getUpload().</li>
+ *     <li>Change contest submission prize type name from "Submission Prize" to "Contest Prize".</li>
+ *   </ol>
+ * </p>
+ * 
+ * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, FireIce, TCSDEVELOPER
- * @version 1.6.1
+ * @version 1.6.2
  */
 public class ReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -421,7 +429,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                     int placement = rankedSubmission.getRank();
 
                     // update submitter's final score
-                    long submitterId = submission.getUploads().get(0).getOwner();
+                    long submitterId = submission.getUpload().getOwner();
                     Resource submitter = getManagerHelper().getResourceManager().getResource(submitterId);
 
                     submission.setInitialScore(Double.valueOf(aggScore + ""));
@@ -463,7 +471,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                     for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
                         Prize prize = iter.next();
 
-                        if (!"Submission Prize".equals(prize.getPrizeType().getDescription())) {
+                        if (!"Contest Prize".equals(prize.getPrizeType().getDescription())) {
                             iter.remove();
                         }
                     }
@@ -495,8 +503,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                                 if (result == 0) {
                                     // Break ties if exist: Submission with earlier upload date gets
                                     // a higher placement.
-                                    return o1.getUploads().get(0).getCreationTimestamp().compareTo(
-                                            o2.getUploads().get(0).getCreationTimestamp());
+                                    return o1.getUpload().getCreationTimestamp().compareTo(
+                                            o2.getUpload().getCreationTimestamp());
                                 }
                                 return result;
                             }
@@ -533,7 +541,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             for (Submission sub : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
                 Resource submitt = getManagerHelper().getResourceManager().getResource(
-                        sub.getUploads().get(0).getOwner());
+                        sub.getUpload().getOwner());
                 infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(submitt.getProperty(PhasesHelper.HANDLE)));
                 infos.put("SUBMITTER_SCORE", sub.getInitialScore());
                 result.add(infos);
