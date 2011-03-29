@@ -184,8 +184,16 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *   </ol>
  * </p>
  *
+ * <p>
+ * Version 1.2.2 (Online Review Replatforming Release 2) Change notes:
+ * <ol>
+ *   <li>Updated {@link #getProjects(long[], Connection)} method to handle the
+ *   situation that tc_direct_project_id is null.</li>
+ * </ol>
+ * </p>
+ * 
  * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER
- * @version 1.2.1
+ * @version 1.2.2
  * @since 1.0
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
@@ -2822,7 +2830,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
         // update the project type and project category
         Object[] queryArgs = new Object[]{new Long(project.getProjectStatus().getId()),
-            new Long(project.getProjectCategory().getId()), operator, modifyDate, project.getTcDirectProjectId(),
+            new Long(project.getProjectCategory().getId()), operator, modifyDate, project.getTcDirectProjectId() == 0 ? null : project.getTcDirectProjectId(),
             projectId};
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SQL, queryArgs);
 
@@ -3028,7 +3036,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             projects[i].setModificationTimestamp((Date) row[10]);
 
             // set the tc direct project id
-            projects[i].setTcDirectProjectId(((Long) row[12]).intValue());
+            projects[i].setTcDirectProjectId(row[12] == null ? 0 : ((Long) row[12]).intValue());
             // set the file types
             projects[i].setProjectFileTypes(Arrays.asList(getProjectFileTypes(projectId)));
 
