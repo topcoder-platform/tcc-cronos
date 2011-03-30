@@ -183,8 +183,17 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter, isv, TCSASSEMBER
- * @version 1.3.4
+ * <p>
+ * Version 1.2.2 (Online Review Replatforming Release 2) Change notes:
+ * <ol>
+ *   <li>Updated {@link #getProjects(long[], Connection)} method to handle the
+ *   situation that tc_direct_project_id is null.</li>
+ * </ol>
+ * </p>
+ * 
+ * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER
+ * @version 1.2.2
+ * @since 1.0
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -894,7 +903,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            // contest fee/ price sum
            + "  case when p.project_status_id in (1, 2) then "
            + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39, 49) "
            + "         and project_id = p.project_id), 0) "
            + "     + "
            + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
@@ -1051,7 +1060,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            // contest fee/ price sum
          + "  case when p.project_status_id in (1, 2) then "
            + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39, 49) "
            + "         and project_id = p.project_id), 0) "
            + "     + "
            + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
@@ -4300,10 +4309,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
          Timestamp modifyDate = new Timestamp(System.currentTimeMillis());
         // update the project type and project category
-        Object[] queryArgs = new Object[] {
-            new Long(project.getProjectStatus().getId()),
-            new Long(project.getProjectCategory().getId()), operator, modifyDate, tcDirectProjectId, 
-            projectId };
+        Object[] queryArgs = new Object[]{new Long(project.getProjectStatus().getId()),
+            new Long(project.getProjectCategory().getId()), operator, modifyDate, project.getTcDirectProjectId() == 0 ? null : project.getTcDirectProjectId(),
+            projectId};
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SQL, queryArgs);
 
        // update the project object so this data's correct for audit purposes
@@ -4606,7 +4614,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             projects[i].setModificationTimestamp((Date) row[10]);
 
             // set the tc direct project id
-            projects[i].setTcDirectProjectId(((Long) row[12]).intValue());
+            projects[i].setTcDirectProjectId(row[12] == null ? 0 : ((Long) row[12]).intValue());
             // set the file types
             projects[i].setProjectFileTypes(Arrays.asList(getProjectFileTypes(projectId)));
 
@@ -6228,7 +6236,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
            // contest fee/ price sum
            + "  case when p.project_status_id in (1, 2) then "
            + "       nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info "
-           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39) "
+           + "         where project_info_type_id in (31, 33, 35, 16, 38, 39, 49) "
            + "         and project_id = p.project_id), 0) "
            + "     + "
            + "       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 "
@@ -6593,7 +6601,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         PreparedStatement preparedStatement = null;
         try {
             //hold the role ids that has client's terms of use
-            Set<Integer> privateTermOfUseRoleIds = new HashSet<Integer>();
+            Set<String> added = new HashSet<String>();
             // build the statement            
             Object[][] rows = Helper.doQuery(conn, SELCT_PRIVATE_CONTEST_TERMS,
                 new Object[] {billingProjectId}, new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE});
@@ -6602,6 +6610,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
             preparedStatement.setLong(1, projectId);
 
+            
 
             boolean hasClientTerm = false;
             if (rows.length > 0) {
@@ -6617,7 +6626,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                                 preparedStatement.setInt(2, roleId);
                                 preparedStatement.setObject(3, os[0]);
                                 preparedStatement.execute();
-                                privateTermOfUseRoleIds.add(roleId);
+                                added.add(roleId+"-"+os[0]);
                             }
                         }
                     } else { // otherwise insert for specified role                        
@@ -6627,7 +6636,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                             preparedStatement.setObject(2, os[1]);
                             preparedStatement.setObject(3, os[0]);
                             preparedStatement.execute();
-                            privateTermOfUseRoleIds.add(roleId);
+                            added.add(os[1]+"-"+os[0]);
                         }
                     }
                 }
@@ -6647,7 +6656,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                         && roleId != COPILOT_ROLE_ID
                         && !isSpecReviewSubmitter(roleId, projectCategoryId)) {
                         preparedStatement.setInt(2, roleId);
-                        preparedStatement.execute(); 
+                        if (!added.contains(roleId+"-"+STANDARD_CCA_TERMS_ID))
+                        {
+                            preparedStatement.execute(); 
+                            added.add(roleId+"-"+STANDARD_CCA_TERMS_ID);
+                        }
+                        
                     }
                 }
 
@@ -6668,18 +6682,49 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                         preparedStatement.setInt(2, roleId);
 
                         preparedStatement.setLong(3, COPILOT_MSA_TERMS_ID);
-                        preparedStatement.execute(); 
+                        if (!added.contains(roleId+"-"+COPILOT_MSA_TERMS_ID))
+                        {
+                            preparedStatement.execute(); 
+                            added.add(roleId+"-"+COPILOT_MSA_TERMS_ID);
+                        }
 
                         preparedStatement.setLong(3, COPILOT_ASSIGNMENT_2_0_TERMS_ID);
-                        preparedStatement.execute(); 
+                        if (!added.contains(roleId+"-"+COPILOT_ASSIGNMENT_2_0_TERMS_ID))
+                        {
+                            preparedStatement.execute(); 
+                            added.add(roleId+"-"+COPILOT_ASSIGNMENT_2_0_TERMS_ID);
+                        }
                     }
+                }
+            }
+            // set copilot terms
+            else
+            {
+                preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
+                preparedStatement.setLong(1, projectId);
+
+                preparedStatement.setInt(2, COPILOT_ROLE_ID);
+
+				preparedStatement.setLong(3, COPILOT_MSA_TERMS_ID);
+                if (!added.contains(COPILOT_ROLE_ID+"-"+COPILOT_MSA_TERMS_ID))
+                {
+                    preparedStatement.execute(); 
+                    added.add(COPILOT_ROLE_ID+"-"+COPILOT_MSA_TERMS_ID);
+                }
+
+                preparedStatement.setLong(3, COPILOT_ASSIGNMENT_2_0_TERMS_ID);
+                if (!added.contains(COPILOT_ROLE_ID+"-"+COPILOT_ASSIGNMENT_2_0_TERMS_ID))
+                {
+                    preparedStatement.execute(); 
+                    added.add(COPILOT_ROLE_ID+"-"+COPILOT_ASSIGNMENT_2_0_TERMS_ID);
                 }
             }
 
             //3. insert stardard terms
-            if (!hasClientTerm)
+            if (!hasClientTerm && !added.contains(MANAGER_ROLE_ID+"-"+MANAGER_TERMS_ID))
             {
                 createProjectRoleTermsOfUse(projectId, MANAGER_ROLE_ID, MANAGER_TERMS_ID, conn);  
+                added.add(MANAGER_ROLE_ID+"-"+MANAGER_TERMS_ID);
             }
             // get the instance of ConfigManager
             ConfigManager cm = ConfigManager.getInstance();
@@ -6694,8 +6739,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // no submitter for spec review and no any client term
             if (projectCategoryId != ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW 
-                    && !hasClientTerm) {
+                    && !hasClientTerm && !added.contains(submitterRoleId+"-"+submitterTermsId)) {
                 createProjectRoleTermsOfUse(projectId, submitterRoleId, submitterTermsId, conn);
+                added.add(submitterRoleId+"-"+submitterTermsId);
             }
 
             if (projectCategoryId == PROJECT_CATEGORY_DEVELOPMENT) {
@@ -6707,17 +6753,31 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                         STRESS_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(STRESS_REVIEWER_ROLE_ID)));
                 // if it's a development project there are several reviewer roles
                 if (!hasClientTerm) {
-                    createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
-                    createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
-                    createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
+                    if (!added.contains(accuracyReviewerRoleId+"-"+reviewerTermsId))
+                    {
+                        createProjectRoleTermsOfUse(projectId, accuracyReviewerRoleId, reviewerTermsId, conn);
+                        added.add(accuracyReviewerRoleId+"-"+reviewerTermsId);
+                    }
+                    if (!added.contains(failureReviewerRoleId+"-"+reviewerTermsId))
+                    {
+                        createProjectRoleTermsOfUse(projectId, failureReviewerRoleId, reviewerTermsId, conn);
+                        added.add(failureReviewerRoleId+"-"+reviewerTermsId);
+                    }
+                    if (!added.contains(stressReviewerRoleId+"-"+reviewerTermsId))
+                    {
+                        createProjectRoleTermsOfUse(projectId, stressReviewerRoleId, reviewerTermsId, conn);
+                        added.add(stressReviewerRoleId+"-"+reviewerTermsId);
+                    }
+                    
                 }
                
             } else {
                 int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                         REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
                 // if it's not development there is a single reviewer role
-                if (!hasClientTerm) {
+                if (!hasClientTerm && !added.contains(reviewerRoleId+"-"+reviewerTermsId)) {
                     createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
+                    added.add(reviewerRoleId+"-"+reviewerTermsId);
                 }
             }
 
@@ -6728,14 +6788,29 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     AGGREGATOR_ROLE_ID_PARAMETER, getLogger(), Integer.toString(AGGREGATOR_ROLE_ID)));
             int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                     FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
-            if (!privateTermOfUseRoleIds.contains(primaryScreenerRoleId)) {
-                
-            }
+            
             if (!hasClientTerm) {
-                createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
-                createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);  
-                createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
-                createProjectRoleTermsOfUse(projectId, SPECIFICATION_REVIEWER_ROLE_ID, reviewerTermsId, conn);
+                if (!added.contains(primaryScreenerRoleId+"-"+reviewerTermsId))
+                {
+                    createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
+                    added.add(primaryScreenerRoleId+"-"+reviewerTermsId);
+                }
+                if (!added.contains(aggregatorRoleId+"-"+reviewerTermsId))
+                {
+                    createProjectRoleTermsOfUse(projectId, aggregatorRoleId, reviewerTermsId, conn);
+                    added.add(aggregatorRoleId+"-"+reviewerTermsId);
+                }
+                if (!added.contains(finalReviewerRoleId+"-"+reviewerTermsId))
+                {
+                    createProjectRoleTermsOfUse(projectId, finalReviewerRoleId, reviewerTermsId, conn);
+                    added.add(finalReviewerRoleId+"-"+reviewerTermsId);
+                }
+                if (!added.contains(SPECIFICATION_REVIEWER_ROLE_ID+"-"+reviewerTermsId))
+                {
+                    createProjectRoleTermsOfUse(projectId, SPECIFICATION_REVIEWER_ROLE_ID, reviewerTermsId, conn);
+                    added.add(SPECIFICATION_REVIEWER_ROLE_ID+"-"+reviewerTermsId);
+                }
+                
             }
 
         } catch (ConfigurationException e) {
@@ -6902,7 +6977,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             sb.append("  ");
             sb.append("     case when c.project_status_id in (1, 2) then   ");
             sb.append("        nvl((select nvl(sum (cast (nvl (value, '0') as DECIMAL (10,2))), 0) from project_info ");
-            sb.append("             where project_info_type_id in (33, 35, 16, 38, 39) ");
+            sb.append("             where project_info_type_id in (33, 35, 16, 38, 39, 49) ");
             sb.append("             and project_id = c.project_id), 0)  ");
             sb.append("        +  ");
             sb.append("       nvl((select nvl(sum (cast (nvl (pi30.value, '0') as DECIMAL (10,2))), 0) from project_info pi30, project_info pi26 ");
