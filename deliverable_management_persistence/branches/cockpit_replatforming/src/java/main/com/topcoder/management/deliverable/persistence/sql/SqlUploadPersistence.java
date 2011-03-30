@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence.sql;
 
@@ -166,6 +166,15 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </ul>
  * </p>
  * <p>
+ * 
+ * <p>
+ * Changes in 1.3:
+ * <ul>
+ * <li>Updated existing methods and sql statement the support new Upload and Submission properties.
+ * A Submission can only have one upload now.</li>
+ * </ul>
+ * </p>
+ * 
  * <strong>Thread Safety:</strong> This class is immutable and thread-safe in the sense that multiple threads can not
  * corrupt its internal data structures. However, the results if used from multiple threads can be unpredictable as the
  * database is changed from different threads. This can equally well occur when the component is used on multiple
@@ -174,7 +183,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *
  * @author aubergineanode, saarixx, urtks, George1
  * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.2
+ * @version 1.3
  */
 public class SqlUploadPersistence implements UploadPersistence {
 
@@ -341,8 +350,8 @@ public class SqlUploadPersistence implements UploadPersistence {
     private static final String ADD_SUBMISSION_SQL = "INSERT INTO submission "
             + "(submission_id, create_user, create_date, modify_user, modify_date, "
             + "submission_status_id, submission_type_id, screening_score, "
-            + "initial_score, final_score, placement, feedback_thumb, user_rank, mark_for_purchase, prize_id)"
-            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "initial_score, final_score, placement, feedback_thumb, user_rank, mark_for_purchase, prize_id, upload_id)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -355,27 +364,7 @@ public class SqlUploadPersistence implements UploadPersistence {
     private static final DataType[] ADD_SUBMISSION_ARGUMENT_TYPES = new DataType[] {Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
         Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.BOOLEAN_TYPE,
-        Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE, Helper.LONG_TYPE};
-
-    /**
-     * <p>
-     * Represents the sql statement to add upload-submission relation.
-     * </p>
-     *
-     * @since 1.2
-     */
-    private static final String ADD_UPLOAD_SUBMISSION_SQL = "INSERT INTO upload_submission(upload_id, submission_id)"
-            + " VALUES (?, ?)";
-
-    /**
-     * <p>
-     * Represents the argument types for the sql statement to add upload-submission relation.
-     * </p>
-     *
-     * @since 1.2
-     */
-    private static final DataType[] ADD_UPLOAD_SUBMISSION_ARGUMENT_TYPES = new DataType[] {Helper.LONG_TYPE,
-        Helper.LONG_TYPE};
+        Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
 
     /**
      * <p>
@@ -438,7 +427,7 @@ public class SqlUploadPersistence implements UploadPersistence {
     private static final String UPDATE_SUBMISSION_SQL = "UPDATE submission "
             + "SET modify_user = ?, modify_date = ?, submission_status_id = ?, submission_type_id = ?, "
             + "screening_score = ?, initial_score = ?, final_score = ?, placement = ?, feedback_thumb = ?,"
-            + " user_rank = ?, mark_for_purchase = ?, prize_id = ? WHERE submission_id = ?";
+            + " user_rank = ?, mark_for_purchase = ?, prize_id = ?, upload_id = ? WHERE submission_id = ?";
 
     /**
      * <p>
@@ -451,7 +440,7 @@ public class SqlUploadPersistence implements UploadPersistence {
     private static final DataType[] UPDATE_SUBMISSION_WITH_ARGUMENT_TYPES = new DataType[] {Helper.STRING_TYPE,
         Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE,
         Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.BOOLEAN_TYPE, Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE,
-        Helper.LONG_TYPE, Helper.LONG_TYPE};
+        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
 
     /**
      * <p>
@@ -521,12 +510,23 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "submission.feedback_thumb, submission.user_rank, submission.mark_for_purchase, "
             + "prize.prize_id, prize.place, prize.prize_amount, prize.prize_type_id, prize.number_of_submissions, "
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
-            + "prize_type_lu.prize_type_desc FROM submission "
+            + "prize_type_lu.prize_type_desc, "
+            + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
+            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
+            + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
+            + "upload_type_lu.modify_user, upload_type_lu.modify_date, "
+            + "upload_type_lu.name, upload_type_lu.description, "
+            + "upload_status_lu.upload_status_id, upload_status_lu.create_user, upload_status_lu.create_date, "
+            + "upload_status_lu.modify_user, upload_status_lu.modify_date, "
+            + "upload_status_lu.name, upload_status_lu.description " + "FROM submission "
             + "INNER JOIN submission_status_lu ON submission.submission_status_id "
             + "= submission_status_lu.submission_status_id "
             + "INNER JOIN submission_type_lu ON submission.submission_type_id = submission_type_lu.submission_type_id "
             + "LEFT JOIN prize ON submission.prize_id = prize.prize_id "
             + "LEFT JOIN prize_type_lu ON prize.prize_type_id = prize_type_lu.prize_type_id "
+            + "INNER JOIN upload ON submission.upload_id = upload.upload_id "
+            + "INNER JOIN upload_type_lu ON upload.upload_type_id=upload_type_lu.upload_type_id "
+            + "INNER JOIN upload_status_lu ON upload.upload_status_id=upload_status_lu.upload_status_id "
             + "WHERE submission.submission_id IN ";
 
     /**
@@ -550,7 +550,14 @@ public class SqlUploadPersistence implements UploadPersistence {
         Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE,
 
         Helper.LONG_TYPE, Helper.INTEGER_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.INTEGER_TYPE,
-        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE};
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
+        
+        Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
+        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE
+    };
 
     /**
      * Represents the sql statement for retrieving user submission for the given project.
@@ -568,15 +575,23 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "submission.feedback_thumb, submission.user_rank, submission.mark_for_purchase, "
             + "prize.prize_id, prize.place, prize.prize_amount, prize.prize_type_id, prize.number_of_submissions, "
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
-            + "prize_type_lu.prize_type_desc FROM submission " + "INNER JOIN submission_status_lu "
+            + "prize_type_lu.prize_type_desc, "
+            + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
+            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
+            + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
+            + "upload_type_lu.modify_user, upload_type_lu.modify_date, "
+            + "upload_type_lu.name, upload_type_lu.description, "
+            + "upload_status_lu.upload_status_id, upload_status_lu.create_user, upload_status_lu.create_date, "
+            + "upload_status_lu.modify_user, upload_status_lu.modify_date, "
+            + "upload_status_lu.name, upload_status_lu.description " + "FROM submission "
+            + "INNER JOIN submission_status_lu "
             + "ON submission.submission_status_id = submission_status_lu.submission_status_id "
             + "INNER JOIN submission_type_lu ON submission.submission_type_id = submission_type_lu.submission_type_id "
             + "LEFT JOIN prize ON submission.prize_id = prize.prize_id "
             + "LEFT JOIN prize_type_lu ON prize.prize_type_id = prize_type_lu.prize_type_id "
-            + "WHERE EXISTS (SELECT upload.upload_id FROM upload "
-            + "INNER JOIN upload_submission ON upload.upload_id = upload_submission.upload_id"
-            + " WHERE upload_submission.submission_id = submission.submission_id"
-            + " AND upload.project_id = ? AND upload.resource_id = ?)";
+            + "INNER JOIN upload ON submission.upload_id = upload.upload_id AND upload.project_id = ? AND upload.resource_id = ? "
+            + "INNER JOIN upload_type_lu ON upload.upload_type_id=upload_type_lu.upload_type_id "
+            + "INNER JOIN upload_status_lu ON upload.upload_status_id=upload_status_lu.upload_status_id";
 
     /**
      * Represents the sql statement for retrieving project submissions.
@@ -594,15 +609,23 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "submission.feedback_thumb, submission.user_rank, submission.mark_for_purchase, "
             + "prize.prize_id, prize.place, prize.prize_amount, prize.prize_type_id, prize.number_of_submissions, "
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
-            + "prize_type_lu.prize_type_desc FROM submission "
+            + "prize_type_lu.prize_type_desc, "
+            + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
+            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
+            + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
+            + "upload_type_lu.modify_user, upload_type_lu.modify_date, "
+            + "upload_type_lu.name, upload_type_lu.description, "
+            + "upload_status_lu.upload_status_id, upload_status_lu.create_user, upload_status_lu.create_date, "
+            + "upload_status_lu.modify_user, upload_status_lu.modify_date, "
+            + "upload_status_lu.name, upload_status_lu.description " + "FROM submission "
             + "INNER JOIN submission_status_lu ON submission.submission_status_id "
             + "= submission_status_lu.submission_status_id "
             + "INNER JOIN submission_type_lu ON submission.submission_type_id = submission_type_lu.submission_type_id "
             + "LEFT JOIN prize ON submission.prize_id = prize.prize_id "
             + "LEFT JOIN prize_type_lu ON prize.prize_type_id = prize_type_lu.prize_type_id "
-            + "WHERE EXISTS (SELECT upload.upload_id FROM upload "
-            + "INNER JOIN upload_submission ON upload.upload_id = upload_submission.upload_id "
-            + "WHERE upload_submission.submission_id = submission.submission_id AND upload.project_id = ?)";
+            + "INNER JOIN upload ON submission.upload_id = upload.upload_id AND upload.project_id = ? "
+            + "INNER JOIN upload_type_lu ON upload.upload_type_id=upload_type_lu.upload_type_id "
+            + "INNER JOIN upload_status_lu ON upload.upload_status_id=upload_status_lu.upload_status_id";
 
     /**
      * Represents the sql statement for retrieving the submission images for the given submission.
@@ -619,49 +642,6 @@ public class SqlUploadPersistence implements UploadPersistence {
      */
     private static final DataType[] GET_SUBMISSION_IMAGES_FOR_SUBMISSION_COLUMN_TYPES = new DataType[] {
         Helper.INTEGER_TYPE, Helper.INTEGER_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE};
-
-    /**
-     * Represents the sql statement for loading uploads associated with the given submission.
-     *
-     * @since 1.2
-     */
-    private static final String LOAD_UPLOADS_ASSOCIATED_WITH_SUBMISSION_SQL = "SELECT "
-            + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
-            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
-            + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
-            + "upload_type_lu.modify_user, upload_type_lu.modify_date, upload_type_lu.name, "
-            + "upload_type_lu.description, upload_status_lu.upload_status_id, upload_status_lu.create_user, "
-            + "upload_status_lu.create_date, upload_status_lu.modify_user, upload_status_lu.modify_date, "
-            + "upload_status_lu.name, upload_status_lu.description FROM upload "
-            + "INNER JOIN upload_type_lu ON upload.upload_type_id = upload_type_lu.upload_type_id "
-            + "INNER JOIN upload_status_lu ON upload.upload_status_id = upload_status_lu.upload_status_id "
-            + "INNER JOIN upload_submission ON upload.upload_id = upload_submission.upload_id "
-            + "INNER JOIN submission ON upload_submission.submission_id = submission.submission_id "
-            + "WHERE submission.submission_id = ?";
-
-    /**
-     * Represents the column types for loading uploads associated with the given submission.
-     *
-     * @since 1.2
-     */
-    private static final DataType[] LOAD_UPLOADS_ASSOCIATED_WITH_SUBMISSION_COLUMN_TYPES = new DataType[] {
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE,
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
-
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
-        Helper.STRING_TYPE, Helper.STRING_TYPE,
-
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
-        Helper.STRING_TYPE, Helper.STRING_TYPE
-
-    };
-
-    /**
-     * Represents the sql statement for delete the upload-submission relation for the given submission.
-     *
-     * @since 1.2
-     */
-    private static final String DELETE_UPLOAD_SUBMISSION_SQL = "DELETE FROM upload_submission WHERE submission_id = ?";
 
     /**
      * <p>
@@ -1405,20 +1385,12 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.getSubmissionStatus().getId(), submission.getSubmissionType().getId(),
             submission.getScreeningScore(), submission.getInitialScore(), submission.getFinalScore(),
             submission.getPlacement(), submission.isThumb(), submission.getUserRank(), submission.isExtra(),
-            submission.getPrize() != null ? submission.getPrize().getId() : null};
+            submission.getPrize() != null ? submission.getPrize().getId() : null,
+            submission.getUpload() != null ? submission.getUpload().getId() : null};
 
         // add submission to database
         doDMLQuery(connectionFactory, connectionName, ADD_SUBMISSION_SQL, ADD_SUBMISSION_ARGUMENT_TYPES, queryArgs,
                 new LogMessage("Submission", submission.getId(), null, "Failed to add new submission"));
-
-        // add upload-submission relation in database.
-        for (Upload upload : submission.getUploads()) {
-            doDMLQuery(connectionFactory, connectionName, ADD_UPLOAD_SUBMISSION_SQL,
-                    ADD_UPLOAD_SUBMISSION_ARGUMENT_TYPES, new Object[] {upload.getId(), submission.getId()},
-                    new LogMessage("Submission", submission.getId(), null,
-                            "Failed to add new upload submission relation"));
-        }
-
     }
 
     /**
@@ -1452,23 +1424,12 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.getSubmissionStatus().getId(), submission.getSubmissionType().getId(),
             submission.getScreeningScore(), submission.getInitialScore(), submission.getFinalScore(),
             submission.getPlacement(), submission.isThumb(), submission.getUserRank(), submission.isExtra(),
-            submission.getPrize() != null ? submission.getPrize().getId() : null, submission.getId()};
+            submission.getPrize() != null ? submission.getPrize().getId() : null,
+            submission.getUpload() != null ? submission.getUpload().getId() : null, submission.getId()};
 
         // update submission to database
         doDMLQuery(connectionFactory, connectionName, UPDATE_SUBMISSION_SQL, UPDATE_SUBMISSION_WITH_ARGUMENT_TYPES,
                 queryArgs, new LogMessage("Submission", submission.getId(), null, "Failed to update submission"));
-
-        // delete the old upload-submission relation in upload_submission table.
-        doDMLQuery(connectionFactory, connectionName, DELETE_UPLOAD_SUBMISSION_SQL, new DataType[] {Helper.LONG_TYPE},
-                new Object[] {submission.getId()}, new LogMessage("Submission", submission.getId(), null,
-                        "Failed to delete old upload submission relation"));
-
-        // add new upload-submission relation in upload_submission table.
-        for (Upload upload : submission.getUploads()) {
-            doDMLQuery(connectionFactory, connectionName, ADD_UPLOAD_SUBMISSION_SQL, new DataType[] {Helper.LONG_TYPE,
-                Helper.LONG_TYPE}, new Object[] {upload.getId(), submission.getId()}, new LogMessage("Submission",
-                    submission.getId(), null, "Failed to add new upload submission relation"));
-        }
     }
 
     /**
@@ -2044,58 +2005,6 @@ public class SqlUploadPersistence implements UploadPersistence {
     }
 
     /**
-     * Retrieves the uploads associated with the submission with the given ID. If submissionId is unknown, this method
-     * returns an empty array.
-     *
-     * @param submissionId
-     *            the ID of the submission
-     * @return the retrieved uploads for submission (not null, doesn't contain null)
-     * @throws IllegalArgumentException
-     *             If submissionId <= 0
-     * @throws UploadPersistenceException
-     *             If some error occurred when accessing the persistence
-     * @since 1.2
-     */
-    public Upload[] getUploadsForSubmission(long submissionId) throws UploadPersistenceException {
-        LOGGER.log(Level.INFO, new LogMessage("Upload", null, null, MessageFormat.format(
-                "Load Uploads for submission id [{0}].", submissionId)));
-
-        assertLongBePositive(submissionId, "submissionId", LOGGER);
-
-        Object[][] rows;
-        try {
-            // load submission
-            rows = Helper.doQuery(connectionFactory, connectionName, LOAD_UPLOADS_ASSOCIATED_WITH_SUBMISSION_SQL,
-                    new DataType[] {Helper.LONG_TYPE}, new Object[] {submissionId},
-                    LOAD_UPLOADS_ASSOCIATED_WITH_SUBMISSION_COLUMN_TYPES, LOGGER);
-        } catch (PersistenceException e) {
-            LOGGER
-                    .log(Level.ERROR, "Unable to load uploads to the database. \n"
-                            + LogMessage.getExceptionStackTrace(e));
-            throw new UploadPersistenceException("Unable to load submissions to the database.", e);
-        }
-
-        // create a new Upload array
-        Upload[] uploads = new Upload[rows.length];
-
-        // enumerate each data row
-        for (int i = 0; i < rows.length; ++i) {
-            // reference the current data row
-            Object[] row = rows[i];
-
-            // create a new Upload object
-            Upload upload = new Upload();
-
-            loadUploadFieldsSequentially(upload, row, 0);
-
-            // assign it to the array
-            uploads[i] = upload;
-        }
-
-        return uploads;
-    }
-
-    /**
      * <p>
      * Removes the given AuditedDeliverableStructure instance (by id) from the persistence.
      * </p>
@@ -2301,7 +2210,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             prizeType.setDescription((String) row[startIndex++]);
         } else {
             // increase the index, in case there are some additional fields.
-            startIndex += 10;
+            startIndex += 9;
         }
 
         return startIndex;
@@ -2365,8 +2274,10 @@ public class SqlUploadPersistence implements UploadPersistence {
         // retrieve the submission images.
         submission.setImages(Arrays.asList(getImagesForSubmission(submission.getId())));
 
-        // retrieve the submission uploads
-        submission.setUploads(Arrays.asList(getUploadsForSubmission(submission.getId())));
+        // retrieve the submission upload
+        Upload upload = new Upload();
+        startIndex = loadUploadFieldsSequentially(upload, row, startIndex);
+        submission.setUpload(upload);
 
         return startIndex;
     }
@@ -2452,6 +2363,8 @@ public class SqlUploadPersistence implements UploadPersistence {
                 prizeType.setDescription(resultSet.getString("prize_type_desc"));
                 prize.setPrizeType(prizeType);
             }
+            
+            submission.setUpload(loadUpload(resultSet));
 
             return submission;
         } catch (InvalidCursorStateException e) {
