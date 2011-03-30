@@ -12,7 +12,7 @@
     <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.2/configuration_persistence.jar"/>
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/1.2.0/logging_wrapper.jar"/>
     <property name="email_engine.jar" value="${tcs_libdir}/email_engine/3.2.0/email_engine.jar" />
-    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.1.0/document_generator.jar"/>
+    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.1.1/document_generator.jar"/>
     <property name="command_line_utility.jar" value="${tcs_libdir}/command_line_utility/1.0.0/command_line_utility.jar"/>
     <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1.0/db_connection_factory.jar"/>
     <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar"/>
@@ -31,7 +31,6 @@
     <property name="workdays.jar" value="${tcs_libdir}/workdays/1.0.1/workdays.jar"/>
     <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0.2/id_generator.jar"/>
     <property name="executable_wrapper.jar" value="${tcs_libdir}/executable_wrapper/1.0.1/executable_wrapper.jar"/>
-    
 
     <property name="user_project_data_store.jar" value="${cronos_libdir}/user_project_data_store/1.0.1/user_project_data_store.jar"/>
     <property name="project_management.jar" value="${tcs_libdir}/project_management/1.0.1/project_management.jar"/>
@@ -46,6 +45,7 @@
 		<property name="review_management_persistence.jar" value="${cronos_libdir}/review_management_persistence/1.0.0/review_management_persistence.jar" />
 		<property name="scorecard_management_persistence.jar" value="${cronos_libdir}/scorecard_management_persistence/1.0.1/scorecard_management_persistence.jar" />
 		<property name="deliverable_management_persistence.jar" value="${cronos_libdir}/deliverable_management_persistence/1.1.2/deliverable_management_persistence.jar" />
+		<property name="late_deliverables_management.jar" value="${cronos_libdir}/late_deliverables_management/1.0.4/late_deliverables_management.jar"/>
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
@@ -93,6 +93,7 @@
         <pathelement location="${project_management_persistence.jar}" />
         <pathelement location="${phase_management_persistence.jar}" />
         <pathelement location="${deliverable_management_persistence.jar}" />
+        <pathelement location="${late_deliverables_management.jar}" />
     </path>
     
     <path id="component.3rdParty-dependencies">
