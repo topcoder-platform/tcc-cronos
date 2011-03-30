@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.failuretests;
 
@@ -38,7 +38,6 @@ public class ApprovalPhaseHandlerFailureTest2 extends AbstractTestCase {
 	 */
     public static final String[] CONFIGURATION_FILES = new String[] {
         "failure/DB_Factory.xml",
-        "failure/Document_Manager.xml",
         "failure/Phase_Handler.xml",
         "failure/Manager_Helper.xml",
         "failure/Email_Engine.xml",

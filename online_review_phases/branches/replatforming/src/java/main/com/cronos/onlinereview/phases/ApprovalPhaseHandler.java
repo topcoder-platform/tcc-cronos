@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -77,7 +77,7 @@ import com.topcoder.project.phases.Project;
  * </p>
  *
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy
- * @version 1.4
+ * @version 1.4.7
  */
 public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -85,18 +85,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * default constructor to load configuration settings.
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.ApprovalPhaseHandler";
-
-    /**
-     * constant for Approval phase type.
-     */
-    private static final String PHASE_TYPE_APPROVAL = "Approval";
-
-    /**
-     * constant for Approver.
-     *
-     * @since 1.4
-     */
-    private static final String APPROVER = "Approver";
 
     /**
      * Create a new instance of ApprovalPhaseHandler using the default namespace
@@ -164,7 +152,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      */
     public boolean canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPROVAL);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_APPROVAL);
 
         // Throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -248,7 +236,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPROVAL);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_APPROVAL);
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();
@@ -326,7 +314,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
-                                                                   new String[]{APPROVER},
+                                                                   new String[]{PhasesHelper.APPROVER_ROLE_NAME},
                                                                    phase.getProject().getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -351,7 +339,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
             Review[] approveReviews
                 = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
                                                                     phase.getProject().getId(),
-                                                                    new String[] {APPROVER},
+                                                                    new String[] {PhasesHelper.APPROVER_ROLE_NAME},
                                                                     null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
@@ -378,8 +366,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
             // Check whether required number of reviews are all committed
             return commitedCount >= approverNum;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -400,7 +386,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn,
-                getManagerHelper(), phase.getProject().getId(), new String[] {APPROVER}, null);
+                getManagerHelper(), phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME}, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // check for approved/rejected comments.
@@ -430,8 +416,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
             return rejected;
 
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when connecting to database", e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);
         } finally {
@@ -454,7 +438,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn,
-                getManagerHelper(), phase.getProject().getId(), new String[] {APPROVER}, null);
+                getManagerHelper(), phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME}, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // check for approved/rejected comments.
@@ -477,8 +461,6 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 }
             }
             return required;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when connecting to database", e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases", e);
         } finally {

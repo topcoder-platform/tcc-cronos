@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -69,7 +69,7 @@ import com.topcoder.util.log.LogFactory;
  * </p>
  *
  * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy, isv
- * @version 1.4
+ * @version 1.4.7
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -264,7 +264,8 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         if (!toStart) {
             checkAggregationReview(phase, operator);
 
-            Resource[] finalReviewers = getFinalReviewers(PhasesHelper.locatePhase(phase, "Final Review", true, true));
+            Resource[] finalReviewers = getFinalReviewers(PhasesHelper.locatePhase(phase,
+			  PhasesHelper.PHASE_FINAL_REVIEW, true, true));
             values.put("N_FINAL_REVIEWERS", finalReviewers.length);
         }
 
@@ -284,7 +285,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         Connection connection = createConnection();
         try {
             finalReviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                    connection, new String[] {"Final Reviewer"}, finalReviewPhase.getId());
+                    connection, new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME}, finalReviewPhase.getId());
         } finally {
             PhasesHelper.closeConnection(connection);
         }
@@ -527,8 +528,8 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             // Search the aggregated review scorecard
-            Review aggWorksheet = PhasesHelper.getAggregationWorksheet(conn,
-                            getManagerHelper(), aggPhase.getId());
+            Review aggWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
+                AGGREGATOR, aggPhase.getId());
 
             if (aggWorksheet == null) {
                 throw new PhaseHandlingException(

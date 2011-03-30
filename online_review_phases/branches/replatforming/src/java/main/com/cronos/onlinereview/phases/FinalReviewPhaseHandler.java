@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -64,7 +64,7 @@ import com.topcoder.project.phases.Project;
  * </p>
  *
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, isv
- * @version 1.4
+ * @version 1.4.7
  * @since 1.0
  */
 public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
@@ -264,7 +264,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
-                                                                   new String[] {"Approver"},
+                                                                   new String[] {PhasesHelper.APPROVER_ROLE_NAME},
                                                                    phase.getProject().getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -286,11 +286,9 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         Connection conn = null;
         try {
             conn = createConnection();
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn,
-                            getManagerHelper(), phase.getId());
+            Review finalWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
+                PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
             return ((finalWorksheet != null) && finalWorksheet.isCommitted());
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -326,7 +324,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
             ManagerHelper managerHelper = getManagerHelper();
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, managerHelper, phase.getId());
+            Review finalWorksheet = PhasesHelper.getWorksheet(conn, managerHelper,
+			  PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
 
             // check for approved/rejected comments.
             Comment[] comments = finalWorksheet.getAllComments();
@@ -395,9 +394,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             }
             return rejected;
 
-        } catch (SQLException e) {
-            throw new PhaseHandlingException(
-                            "Problem when connecting to database", e);
         } catch (PhaseManagementException e) {
             throw new PhaseHandlingException("Problem when persisting phases",
                             e);

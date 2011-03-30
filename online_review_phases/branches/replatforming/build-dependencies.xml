@@ -23,7 +23,7 @@
     <property name="email_engine.jar" value="${tcs_libdir}/email_engine/3.1.0/email_engine.jar" />
     <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.1.2/object_factory.jar" />
 
-    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/2.1.0/document_generator.jar" />
+    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.1.1/document_generator.jar" />
     <property name="project_phases.jar" value="${tcs_libdir}/project_phases/2.0.1/project_phases.jar" />
 
     <property name="phase_management.jar" value="${tcs_libdir}/phase_management/1.0.4/phase_management.jar" />

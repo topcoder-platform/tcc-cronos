@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -247,6 +247,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                 PhasesHelper.PHASE_FINAL_REVIEW, true, true);
         Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase,
                 PhasesHelper.PHASE_FINAL_REVIEW, false, false);
+        Phase previousAprovalPhase = PhasesHelper.locatePhase(phase,
+                PhasesHelper.PHASE_APPROVAL, false, false);
 
         Connection conn = null;
 
@@ -260,15 +262,36 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
             if (resources.length == 0) {
                 throw new PhaseHandlingException(
-                                "No Final Reviewer found for phase: "
-                                                + finalReviewPhase.getId());
+                                "No Final Reviewer found for phase: " + finalReviewPhase.getId());
             }
 
             Review finalWorksheet = null;
-            if (previousFinalReviewPhase != null) {
-                finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn,
-                                getManagerHelper(), previousFinalReviewPhase
-                                                .getId());
+            if (previousAprovalPhase != null) {
+                Review[] approvalWorksheets = PhasesHelper.searchProjectReviewsForResourceRoles(
+                    conn, getManagerHelper(), phase.getProject().getId(),
+					new String[] {PhasesHelper.APPROVER_ROLE_NAME}, null);
+
+                approvalWorksheets = PhasesHelper.getApprovalPhaseReviews(approvalWorksheets, previousAprovalPhase);
+
+                if (approvalWorksheets == null || approvalWorksheets.length == 0) {
+                    throw new PhaseHandlingException("Approval worksheets do not exist.");
+                }
+                
+                finalWorksheet = new Review();
+
+                // Copy the review items.
+                for (int r = 0; r < approvalWorksheets.length; r++) {
+                    finalWorksheet.setScorecard(approvalWorksheets[r].getScorecard());
+                    finalWorksheet.setSubmission(approvalWorksheets[r].getSubmission());
+					
+                    // No review comments to copy from approval, only the review item comments.
+                    PhasesHelper.copyReviewItems(approvalWorksheets[r],
+                        finalWorksheet, COMMENT_TYPES_TO_COPY);
+                }
+
+            } else if (previousFinalReviewPhase != null) {
+                finalWorksheet = PhasesHelper.getWorksheet(conn,
+                    getManagerHelper(), PhasesHelper.FINAL_REVIEWER_ROLE_NAME, previousFinalReviewPhase.getId());
             }
 
             if (finalWorksheet == null) {
@@ -286,8 +309,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     // Create final review from aggregation worksheet
 
                     // Search the aggregated review scorecard
-                    Review aggWorksheet = PhasesHelper.getAggregationWorksheet(
-                                    conn, getManagerHelper(), aggPhase.getId());
+                    Review aggWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
+                        "Aggregator", aggPhase.getId());
 
                     if (aggWorksheet == null) {
                         throw new PhaseHandlingException(
@@ -380,8 +403,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review",
                             e);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when persisting upload",
                             e);

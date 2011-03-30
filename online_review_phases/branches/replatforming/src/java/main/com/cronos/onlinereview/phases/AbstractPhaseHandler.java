@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -48,6 +48,7 @@ import com.topcoder.util.file.fieldconfig.Loop;
 import com.topcoder.util.file.fieldconfig.Node;
 import com.topcoder.util.file.fieldconfig.NodeList;
 import com.topcoder.util.file.fieldconfig.TemplateFields;
+import com.topcoder.util.file.templatesource.FileTemplateSource;
 import com.topcoder.util.file.templatesource.TemplateSourceException;
 
 import java.sql.Connection;
@@ -96,9 +97,6 @@ import java.util.Map;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
  *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
- *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&phasesEmailTemplate;&lt;/Value&gt;
  *                &lt;/Property&gt;
@@ -115,9 +113,6 @@ import java.util.Map;
  *            &lt;Property name="EndPhaseEmail"&gt;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
- *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
  *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&phasesEmailTemplate;&lt;/Value&gt;
@@ -138,9 +133,6 @@ import java.util.Map;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
  *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
- *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&managerNotificationEmailTemplatesBase;/registration/start.txt&lt;/Value&gt;
  *                &lt;/Property&gt;
@@ -157,9 +149,6 @@ import java.util.Map;
  *            &lt;Property name="EndPhaseEmail"&gt;
  *                &lt;Property name="SendEmail"&gt;
  *                    &lt;Value&gt;yes&lt;/Value&gt;
- *                &lt;/Property&gt;
- *                &lt;Property name="EmailTemplateSource"&gt;
- *                    &lt;Value&gt;file&lt;/Value&gt;
  *                &lt;/Property&gt;
  *                &lt;Property name="EmailTemplateName"&gt;
  *                    &lt;Value&gt;&managerNotificationEmailTemplatesBase;/registration/end.txt&lt;/Value&gt;
@@ -255,9 +244,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /** Format for property name constant for "XXPhaseEmail", XX could be 'Start' or 'End'. */
     private static final String PROP_PHASE_EMAIL = "{0}PhaseEmail";
-
-    /** Format for property name constant for "XXPhaseEmail.EmailTemplateSource", XX could be 'Start' or 'End'. */
-    private static final String PROP_EMAIL_TEMPLATE_SOURCE = "{0}PhaseEmail.EmailTemplateSource";
 
     /** Format for property name constant for "XXPhaseEmail.EmailTemplateName", XX could be 'Start' or 'End'. */
     private static final String PROP_EMAIL_TEMPLATE_NAME = "{0}PhaseEmail.EmailTemplateName";
@@ -663,9 +649,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         }
 
         try {
-            // instantiate document generator instance
-            DocumentGenerator docGenerator = DocumentGenerator.getInstance();
-
             // prepare email content and send email to each user...
             for (int i = 0; i < resourcesToSendEmail.size(); i++) {
                 Resource resource = resourcesToSendEmail.get(i);
@@ -681,7 +664,11 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                     continue;
                 }
 
-                Template template = docGenerator.getTemplate(options.getTemplateSource(), options.getTemplateName());
+                // instantiate document generator instance
+                DocumentGenerator docGenerator = new DocumentGenerator();
+                docGenerator.setDefaultTemplateSource(new FileTemplateSource());
+
+                Template template = docGenerator.getTemplate(options.getTemplateName());
                 long externalId = Long.parseLong((String) resource.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID));
                 ExternalUser user = managerHelper.getUserRetrieval().retrieveUser(externalId);
 
@@ -700,8 +687,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         } catch (PhaseHandlingException e) {
             throw e;
         } catch (ConfigManagerException e) {
-            throw new PhaseHandlingException("There was a configuration error", e);
-        } catch (InvalidConfigException e) {
             throw new PhaseHandlingException("There was a configuration error", e);
         } catch (TemplateSourceException e) {
             throw new PhaseHandlingException("Problem with template source", e);
@@ -878,7 +863,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         } else if ("PHASE_TYPE".equals(field.getName())) {
             field.setValue(phase.getPhaseType().getName());
         } else if ("OR_LINK".equals(field.getName())) {
-            field.setValue("<![CDATA[" + projectDetailsBaseURL + project.getId() + "]]>");
+            field.setValue(projectDetailsBaseURL + project.getId());
         } else if ("STUDIO_LINK".equals(field.getName())) {
             field.setValue("<![CDATA[" + studioProjectDetailsBaseURL + project.getId() + "]]>");
         } else if (values.containsKey(field.getName())) {
@@ -918,8 +903,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         EmailOptions options = new EmailOptions();
         options.setFromAddress(PhasesHelper.getPropertyValue(namespace,
                 format(PROP_EMAIL_FROM_ADDRESS, propertyPrefix), true));
-        options.setTemplateSource(PhasesHelper.getPropertyValue(namespace,
-                format(PROP_EMAIL_TEMPLATE_SOURCE, propertyPrefix), true));
         options.setTemplateName(PhasesHelper.getPropertyValue(namespace,
                 format(PROP_EMAIL_TEMPLATE_NAME, propertyPrefix), true));
         options.setSubject(PhasesHelper.getPropertyValue(namespace, format(PROP_EMAIL_SUBJECT, propertyPrefix), true));

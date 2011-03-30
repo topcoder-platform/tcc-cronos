@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -114,7 +114,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
     private static final String[] POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES = new String[] {
         PhasesHelper.SUBMITTER_ROLE_NAME, REVIEWER_ROLE_NAME,
         PhasesHelper.ACCURACY_REVIEWER_ROLE_NAME, PhasesHelper.FAILURE_REVIEWER_ROLE_NAME,
-        PhasesHelper.STRESS_REVIEWER_ROLE_NAME};
+        PhasesHelper.STRESS_REVIEWER_ROLE_NAME, PhasesHelper.COPILOT_REVIEWER_ROLE_NAME};
 
     /**
      * <p>A <code>String</code> array listing the name for Post-Mortem Reviewer role.</p>
@@ -330,8 +330,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                                 newPostMortemReviewer.setProperty(PhasesHelper.HANDLE, candidateUserHandle);
                                 newPostMortemReviewer.setProperty(EMAIL, resource.getProperty(EMAIL));
                                 newPostMortemReviewer.setProperty(RATING, resource.getProperty(RATING));
-                                newPostMortemReviewer.setProperty(PhasesHelper.PAYMENT_PROPERTY_KEY, "0.00");
-                                newPostMortemReviewer.setProperty(PAYMENT_STATUS, "No");
+                                newPostMortemReviewer.setProperty(PAYMENT_STATUS, "N/A");
                                 newPostMortemReviewer.setProperty(REGISTRATION_DATE, dateFormatter.format(new Date()));
 
                                 resourceManager.updateResource(newPostMortemReviewer, operator);
@@ -411,8 +410,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             }
 
             return true;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Error retrieving data from persistence", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
