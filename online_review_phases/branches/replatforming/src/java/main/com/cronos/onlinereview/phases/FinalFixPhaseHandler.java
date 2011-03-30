@@ -403,6 +403,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review",
                             e);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when persisting upload",
                             e);
