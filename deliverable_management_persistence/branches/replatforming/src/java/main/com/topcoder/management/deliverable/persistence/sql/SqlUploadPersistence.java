@@ -350,7 +350,7 @@ public class SqlUploadPersistence implements UploadPersistence {
     private static final String ADD_SUBMISSION_SQL = "INSERT INTO submission "
             + "(submission_id, create_user, create_date, modify_user, modify_date, "
             + "submission_status_id, submission_type_id, screening_score, "
-            + "initial_score, final_score, placement, feedback_thumb, user_rank, mark_for_purchase, prize_id, upload_id)"
+            + "initial_score, final_score, placement, user_rank, mark_for_purchase, prize_id, upload_id)"
             + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
@@ -363,7 +363,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      */
     private static final DataType[] ADD_SUBMISSION_ARGUMENT_TYPES = new DataType[] {Helper.LONG_TYPE,
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-        Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.BOOLEAN_TYPE,
+        Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE,
         Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
 
     /**
@@ -426,7 +426,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      */
     private static final String UPDATE_SUBMISSION_SQL = "UPDATE submission "
             + "SET modify_user = ?, modify_date = ?, submission_status_id = ?, submission_type_id = ?, "
-            + "screening_score = ?, initial_score = ?, final_score = ?, placement = ?, feedback_thumb = ?,"
+            + "screening_score = ?, initial_score = ?, final_score = ?, placement = ?, "
             + " user_rank = ?, mark_for_purchase = ?, prize_id = ?, upload_id = ? WHERE submission_id = ?";
 
     /**
@@ -439,7 +439,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      */
     private static final DataType[] UPDATE_SUBMISSION_WITH_ARGUMENT_TYPES = new DataType[] {Helper.STRING_TYPE,
         Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE,
-        Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.BOOLEAN_TYPE, Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE,
+        Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE,
         Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
 
     /**
@@ -507,7 +507,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "submission_type_lu.modify_user, submission_type_lu.modify_date, "
             + "submission_type_lu.name, submission_type_lu.description, "
             + "submission.screening_score, submission.initial_score, submission.final_score, submission.placement, "
-            + "submission.feedback_thumb, submission.user_rank, submission.mark_for_purchase, "
+            + "submission.user_rank, submission.mark_for_purchase, "
             + "prize.prize_id, prize.place, prize.prize_amount, prize.prize_type_id, prize.number_of_submissions, "
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
             + "prize_type_lu.prize_type_desc, "
@@ -546,7 +546,7 @@ public class SqlUploadPersistence implements UploadPersistence {
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
         Helper.STRING_TYPE, Helper.STRING_TYPE,
 
-        Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.BOOLEAN_TYPE,
+        Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE,
         Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE,
 
         Helper.LONG_TYPE, Helper.INTEGER_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.INTEGER_TYPE,
@@ -572,7 +572,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "submission_type_lu.create_user, submission_type_lu.create_date, submission_type_lu.modify_user,"
             + "submission_type_lu.modify_date, submission_type_lu.name, submission_type_lu.description, "
             + "submission.screening_score, submission.initial_score, submission.final_score, submission.placement, "
-            + "submission.feedback_thumb, submission.user_rank, submission.mark_for_purchase, "
+            + " submission.user_rank, submission.mark_for_purchase, "
             + "prize.prize_id, prize.place, prize.prize_amount, prize.prize_type_id, prize.number_of_submissions, "
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
             + "prize_type_lu.prize_type_desc, "
@@ -606,7 +606,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "submission_type_lu.create_user, submission_type_lu.create_date, submission_type_lu.modify_user, "
             + "submission_type_lu.modify_date, submission_type_lu.name, submission_type_lu.description, "
             + "submission.screening_score, submission.initial_score, submission.final_score, submission.placement, "
-            + "submission.feedback_thumb, submission.user_rank, submission.mark_for_purchase, "
+            + "submission.user_rank, submission.mark_for_purchase, "
             + "prize.prize_id, prize.place, prize.prize_amount, prize.prize_type_id, prize.number_of_submissions, "
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
             + "prize_type_lu.prize_type_desc, "
@@ -1359,7 +1359,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * other fields needed for persistence.
      * </p>
      * <p>
-     * Change in 1.2: The method is updated to support thumb, userRank and extra properties of Submission.
+     * Change in 1.2: The method is updated to support userRank and extra properties of Submission.
      * Additionally removal of upload_id field is handled. Association between submission and the list of uploads
      * is created properly. The foreign key relation to prize table is added if the prize property set.
      * </p>
@@ -1384,7 +1384,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.getCreationTimestamp(), submission.getModificationUser(), submission.getModificationTimestamp(),
             submission.getSubmissionStatus().getId(), submission.getSubmissionType().getId(),
             submission.getScreeningScore(), submission.getInitialScore(), submission.getFinalScore(),
-            submission.getPlacement(), submission.isThumb(), submission.getUserRank(), submission.isExtra(),
+            submission.getPlacement(), submission.getUserRank(), submission.isExtra(),
             submission.getPrize() != null ? submission.getPrize().getId() : null,
             submission.getUpload() != null ? submission.getUpload().getId() : null};
 
@@ -1399,7 +1399,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * fields needed for persistence must also be assigned.
      * </p>
      * <p>
-     * Change in 1.2: The method is updated to support thumb, userRank and extra properties of Submission.
+     * Change in 1.2: The method is updated to support userRank and extra properties of Submission.
      * Additionally removal of upload_id field is handled. Association between submission and the list of uploads
      * is updated properly. The foreign key relation to prize table is updated if the prize property set.
      * </p>
@@ -1423,7 +1423,7 @@ public class SqlUploadPersistence implements UploadPersistence {
         Object[] queryArgs = new Object[] {submission.getModificationUser(), submission.getModificationTimestamp(),
             submission.getSubmissionStatus().getId(), submission.getSubmissionType().getId(),
             submission.getScreeningScore(), submission.getInitialScore(), submission.getFinalScore(),
-            submission.getPlacement(), submission.isThumb(), submission.getUserRank(), submission.isExtra(),
+            submission.getPlacement(), submission.getUserRank(), submission.isExtra(),
             submission.getPrize() != null ? submission.getPrize().getId() : null,
             submission.getUpload() != null ? submission.getUpload().getId() : null, submission.getId()};
 
@@ -1573,7 +1573,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * Loads all Submissions with the given ids from persistence. May return a 0-length array.
      * </p>
      * <p>
-     * Changes in 1.2: The method is updated to support thumb, userRank, extra, and prize properties of Submission. A
+     * Changes in 1.2: The method is updated to support userRank, extra, and prize properties of Submission. A
      * list of images for each submission is loaded by using getImagesForSubmission() method. A list of uploads for each
      * submission is loaded by using getUploadsForSubmission() method.
      * </p>
@@ -1634,7 +1634,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * </p>
      * <p>
      * Changes in 1.2: Step for loading of Upload from the result set is removed (refer to private
-     * loadSubmission(CustomResultSet) method). Additionally thumb, userRank, extra and prize properties of Submission
+     * loadSubmission(CustomResultSet) method). Additionally userRank, extra and prize properties of Submission
      * are loaded. Notes, images and uploads properties are not loaded, please use the corresponding methods.
      * </p>
      *
@@ -2262,9 +2262,12 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.setPlacement(((Long) placement));
         }
 
-        submission.setThumb((Boolean) row[startIndex++]);
         submission.setUserRank((Integer) row[startIndex++]);
-        submission.setExtra((Boolean) row[startIndex++]);
+		
+		Object extra = row[startIndex++];
+		if (extra != null) {
+            submission.setExtra((Boolean) extra);
+		}
         Prize prize = new Prize();
         startIndex = loadPrizeEntityFieldsSequentially(prize, row, startIndex);
 
@@ -2311,10 +2314,12 @@ public class SqlUploadPersistence implements UploadPersistence {
                 submission.setPlacement(resultSet.getLong("placement"));
             }
 
+			if (resultSet.getObject("mark_for_purchase") != null) {
+                submission.setExtra(resultSet.getBoolean("mark_for_purchase"));
+            }
+			
             submission.setId(resultSet.getLong("submission_id"));
-            submission.setThumb(resultSet.getBoolean("feedback_thumb"));
             submission.setUserRank(resultSet.getInt("user_rank"));
-            submission.setExtra(resultSet.getBoolean("mark_for_purchase"));
             submission.setCreationUser(resultSet.getString("submission_create_user"));
             submission.setCreationTimestamp(resultSet.getDate("submission_create_date"));
             submission.setModificationUser(resultSet.getString("submission_modify_user"));
