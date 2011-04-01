@@ -175,7 +175,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
 
             // version 1.1 : can stop if there is no submission
             return (dependencyMet && reachEndTime
-                    && (!hasAnySubmission(phase, null));
+                    && (!hasAnySubmission(phase, null)));
         }
     }
 
