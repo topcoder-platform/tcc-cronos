@@ -366,14 +366,6 @@ public class SqlUploadPersistence implements UploadPersistence {
         Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE,
         Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
 		
-		Object[] queryArgs = new Object[] {submission.getId(), submission.getCreationUser(),
-            submission.getCreationTimestamp(), submission.getModificationUser(), submission.getModificationTimestamp(),
-            submission.getSubmissionStatus().getId(), submission.getSubmissionType().getId(),
-            submission.getScreeningScore(), submission.getInitialScore(), submission.getFinalScore(),
-            submission.getPlacement(), submission.getUserRank(), submission.isExtra(),
-            submission.getPrize() != null ? submission.getPrize().getId() : null,
-            submission.getUpload() != null ? submission.getUpload().getId() : null};
-
     /**
      * <p>
      * Represents the sql statement to add submission image.
