@@ -351,7 +351,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "(submission_id, create_user, create_date, modify_user, modify_date, "
             + "submission_status_id, submission_type_id, screening_score, "
             + "initial_score, final_score, placement, user_rank, mark_for_purchase, prize_id, upload_id)"
-            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -365,6 +365,14 @@ public class SqlUploadPersistence implements UploadPersistence {
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
         Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.DOUBLE_TYPE, Helper.LONG_TYPE,
         Helper.INTEGER_TYPE, Helper.BOOLEAN_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE};
+		
+		Object[] queryArgs = new Object[] {submission.getId(), submission.getCreationUser(),
+            submission.getCreationTimestamp(), submission.getModificationUser(), submission.getModificationTimestamp(),
+            submission.getSubmissionStatus().getId(), submission.getSubmissionType().getId(),
+            submission.getScreeningScore(), submission.getInitialScore(), submission.getFinalScore(),
+            submission.getPlacement(), submission.getUserRank(), submission.isExtra(),
+            submission.getPrize() != null ? submission.getPrize().getId() : null,
+            submission.getUpload() != null ? submission.getUpload().getId() : null};
 
     /**
      * <p>
