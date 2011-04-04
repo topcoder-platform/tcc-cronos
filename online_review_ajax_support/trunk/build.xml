@@ -9,7 +9,7 @@
     <property name="package" value="com.cronos.onlinereview.ajax" />
     <property name="packagedir" value="com/cronos/onlinereview/ajax" />
     <property name="distfilename" value="online_review_ajax_support" />
-    <property name="component_version" value="1.0.2" />
+    <property name="component_version" value="1.0.3" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->

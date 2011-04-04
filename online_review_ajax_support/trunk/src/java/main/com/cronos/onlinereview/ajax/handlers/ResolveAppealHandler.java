@@ -350,8 +350,12 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
         // ISV : Appeal text is required and must be provided by "Text" parameter but not "text"
         text = request.getParameter("Text");
         if ((text == null) || (text.trim().length() == 0)) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
-                    "The appeal text must be provided.", "ResolveAppeal. " + "User id : " + userId);
+            return AjaxSupportHelper.createAndLogError(request.getType(), "The appeal response text must be provided.",
+                    "The appeal response text must be provided.", "ResolveAppeal. " + "User id : " + userId);
+        }
+        if (text != null && text.length() > 4096) {
+            return AjaxSupportHelper.createAndLogError(request.getType(), "The appeal response text must contain less than or equal to 4096 characters.",
+                    "The appeal response text must contain less than or equal to 4096 characters.", "ResolveAppeal. User id : " + userId);
         }
 
         // check the userId for validation

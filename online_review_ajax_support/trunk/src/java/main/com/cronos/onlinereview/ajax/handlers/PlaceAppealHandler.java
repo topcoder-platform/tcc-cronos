@@ -269,8 +269,12 @@ public class PlaceAppealHandler extends ReviewCommonHandler {
         // Text parameter
         text = request.getParameter("Text");
         if (text == null || text.trim().length() == 0) {
-            return AjaxSupportHelper.createAndLogError(request.getType(), INVALID_PARAMETER_ERROR,
+            return AjaxSupportHelper.createAndLogError(request.getType(), "The appeal text must be provided.",
                     "The appeal text must be provided.", "PlaceAppeal. User id : " + userId);
+        }
+        if (text != null && text.length() > 4096) {
+            return AjaxSupportHelper.createAndLogError(request.getType(), "The appeal text must contain less than or equal to 4096 characters.",
+                    "The appeal text must contain less than or equal to 4096 characters.", "PlaceAppeal. User id : " + userId);
         }
         // TextLength parameter
         try {
