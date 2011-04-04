@@ -15,9 +15,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -30,9 +32,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import com.cronos.onlinereview.external.ExternalUser;
-import com.cronos.onlinereview.external.UserRetrieval;
-import com.cronos.onlinereview.external.impl.DBUserRetrieval;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
@@ -75,15 +74,15 @@ import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.user.UserService;
-import com.topcoder.service.user.UserServiceException;
 import com.topcoder.service.review.specification.SpecificationReview;
 import com.topcoder.service.review.specification.SpecificationReviewServiceConfigurationException;
 import com.topcoder.service.review.specification.SpecificationReviewServiceException;
 import com.topcoder.service.review.specification.SpecificationReviewStatus;
+import com.topcoder.util.config.ConfigManager;
+import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -237,6 +236,13 @@ import com.topcoder.util.log.LogFactory;
 @Stateless
 public class SpecificationReviewServiceBean implements SpecificationReviewServiceLocal,
     SpecificationReviewServiceRemote {
+
+    /**
+     * Represents the default namespace for this stateless bean.
+     */
+    public static final String DEFAULT_NAMESPACE =
+        "com.topcoder.service.review.specification.ejb.SpecificationReviewServiceBean";
+
     /**
      * Represents the &quot;Specification Submission&quot; phase type.
      */
@@ -542,6 +548,11 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
     private String dbConnectionFactoryNamespace;
 
     /**
+     * Represents the mapping from the contest type id to default spec reviewer map.
+     */
+    private Map<Long, Long> defaultSpecReviewerMap = new HashMap<Long, Long>();
+
+    /**
      * Creates an instance of <code>SpecificationReviewServiceBean</code>.
      */
     public SpecificationReviewServiceBean() {
@@ -607,6 +618,26 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             throw new SpecificationReviewServiceConfigurationException(
                 "Fails to create resource manager implementation"
                     + " due to required search bundle or id generator not found.", e);
+        }
+
+        ConfigManager configManager = ConfigManager.getInstance();
+
+        try {
+            Enumeration propertyNames = configManager.getPropertyNames(DEFAULT_NAMESPACE);
+
+            while(propertyNames.hasMoreElements()) {
+                String contestTypeId = (String) propertyNames.nextElement();
+
+                String defaultSpecReviewerId = configManager.getString(DEFAULT_NAMESPACE, contestTypeId);
+
+
+                defaultSpecReviewerMap.put(Long.parseLong(contestTypeId), Long.parseLong(defaultSpecReviewerId));
+            }
+        } catch (NumberFormatException e) {
+            throw new SpecificationReviewServiceConfigurationException(
+                    "Both contest type id and default spec reviewer id should be numeric.", e);
+        } catch (ConfigManagerException e) {
+            throw new SpecificationReviewServiceConfigurationException("Unable to read configuration from file.", e);
         }
     }
 
@@ -870,7 +901,16 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             {
                 updatePhases(fullProjectData, operator);
             }
-            
+
+            // get the project category id
+            long projectCategoryId = fullProjectData.getProjectHeader().getProjectCategory().getId();
+
+            if (defaultSpecReviewerMap.containsKey(projectCategoryId)) {
+                long specReviewerId = defaultSpecReviewerMap.get(projectCategoryId);
+
+                // assign default sepc reviewer by contest type.
+                addDefaultSpecificationReviewer(projectId, specReviewerId, specificationReviewPhase.getId());
+            }
 
             //turn on AP
             fullProjectData.getProjectHeader().setProperty(AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY, AUTOPILOT_OPTION_PROJECT_PROPERTY_VALUE_ON);
@@ -1444,6 +1484,57 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             throw logException(new SpecificationReviewServiceException("Fails to add specification submitter role to user", e));
         }
     }
+
+    /**
+     * <p>
+     * Add the default specification reviewer resource to a given project by contest type.
+     * </p>
+     *
+     * @param projectId the id of the given project
+     * @param specReviewerId the default specification reviewer
+     * @param specReviewPhaseId the spec review phase id
+     * @return boolean if resource already exists or no need to add return false, otherwise true
+     * @throws SpecificationReviewServiceException if some error occurred.
+     * @since 1.1
+     */
+    private boolean addDefaultSpecificationReviewer(long projectId, long specReviewerId, long specReviewPhaseId) throws SpecificationReviewServiceException{
+        try {
+            ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
+            ResourceRole specificationReviewerRole = null;
+            for (int i = 0; i < resourceRoles.length; i++) {
+                ResourceRole role = resourceRoles[i];
+                if ("Specification Reviewer".equals(role.getName())) {
+                    specificationReviewerRole = role;
+                    break;
+                }
+            }
+
+
+            if (specificationReviewerRole != null &&
+                    resourceManager.resourceExists(projectId, specificationReviewerRole.getId(), specReviewerId)) {
+                return false;
+            }
+
+            String handle = userService.getUserHandle(specReviewerId);
+
+            com.topcoder.management.resource.Resource resource = new com.topcoder.management.resource.Resource();
+            // set resource properties
+            resource.setProject(projectId);
+            resource.setResourceRole(specificationReviewerRole);
+            resource.setPhase(specReviewPhaseId);
+            resource.setProperty("Handle", handle);
+            resource.setProperty("Payment", "100");
+            resource.setProperty("Payment Status", "N/A");
+            resource.setProperty("External Reference ID", Long.toString(specReviewerId));
+            resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
+            resourceManager.updateResource(resource, Long.toString(specReviewerId));
+
+            return true;
+        } catch (Exception e) {
+            throw logException(new SpecificationReviewServiceException("Fails to add specification reviewer role to user", e));
+        }
+    }
+
 
     /**
      * Gets all specification reviews, including the scorecard structure as well
