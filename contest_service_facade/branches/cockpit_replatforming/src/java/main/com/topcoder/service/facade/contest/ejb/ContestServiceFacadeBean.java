@@ -1161,6 +1161,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             forumBeanProviderUrl = configManager.getString(DEFAULT_NAMESAPCE, "forumBeanProviderUrl");
 
+            studioForumBeanProviderUrl = configManager.getString(DEFAULT_NAMESAPCE, "studioForumBeanProviderUrl");
+
             userBeanProviderUrl = configManager.getString(DEFAULT_NAMESAPCE, "userBeanProviderUrl");
 
             projectBeanProviderUrl = configManager.getString(DEFAULT_NAMESAPCE, "projectBeanProviderUrl");
