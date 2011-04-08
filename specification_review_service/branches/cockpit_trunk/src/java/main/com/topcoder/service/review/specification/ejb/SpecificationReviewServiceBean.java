@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +23,16 @@ import java.util.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Properties;
+import java.sql.PreparedStatement;
+
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import javax.ejb.CreateException;
+import javax.ejb.EJB;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -80,9 +91,12 @@ import com.topcoder.service.review.specification.SpecificationReviewServiceExcep
 import com.topcoder.service.review.specification.SpecificationReviewStatus;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.Property;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
+
+
 
 /**
  * <p>
@@ -275,6 +289,12 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
     private static final String AUTOPILOT_OPTION_PROJECT_PROPERTY_KEY = "Autopilot Option";
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
+
+    /**
+     * rBoardApplicationBeanProviderUrl is used in the jndi context to get the rboard bean.
+     * It's injected, non-null and non-empty after set.
+     */
+    private String rBoardApplicationBeanProviderUrl;
 
     /**
      * <p>
@@ -552,6 +572,16 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      */
     private Map<Long, Long> defaultSpecReviewerMap = new HashMap<Long, Long>();
 
+     /**
+     * Represents the mapping from the contest type id to rboard phase map.
+     */
+    private Map<Long, Long> projectCategoryToRBoarPhaseMap = new HashMap<Long, Long>();
+
+    /**
+     * Represents the mapping from the contest type id to rboard phase map.
+     */
+    private Map<Long, Long> projectCategoryToReviewRespMap = new HashMap<Long, Long>();
+
     /**
      * Creates an instance of <code>SpecificationReviewServiceBean</code>.
      */
@@ -623,19 +653,32 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         ConfigManager configManager = ConfigManager.getInstance();
 
         try {
-            Enumeration propertyNames = configManager.getPropertyNames(DEFAULT_NAMESPACE);
+            
+            
+            Property  defaultSpecReviewersProp = configManager.getPropertyObject(DEFAULT_NAMESPACE, "defaultSpecReviewers");
+            List defaultSpecReviewers = defaultSpecReviewersProp.list();
 
-            while(propertyNames.hasMoreElements()) {
-                String contestTypeId = (String) propertyNames.nextElement();
-
-                String defaultSpecReviewerId = configManager.getString(DEFAULT_NAMESPACE, contestTypeId);
-
-
-                defaultSpecReviewerMap.put(Long.parseLong(contestTypeId), Long.parseLong(defaultSpecReviewerId));
+            if (defaultSpecReviewers != null && defaultSpecReviewers.size() > 0)
+            {
+                for (int i = 0; i < defaultSpecReviewers.size(); i++)
+                {
+                    Property p = (Property)defaultSpecReviewers.get(i);
+                    String contestTypeId = (String) p.getName();
+                    String defaultSpecReviewerId = (String)p.getValue();
+                    defaultSpecReviewerMap.put(Long.parseLong(contestTypeId), Long.parseLong(defaultSpecReviewerId));
+                }
             }
+
+
+            rBoardApplicationBeanProviderUrl = configManager.getString(DEFAULT_NAMESPACE, "rBoardApplicationBeanProviderUrl");
+
+            projectCategoryToRBoarPhaseMap.put((long)14, (long)1125);
+
+            projectCategoryToReviewRespMap.put((long)14, (long)40);
+
         } catch (NumberFormatException e) {
             throw new SpecificationReviewServiceConfigurationException(
-                    "Both contest type id and default spec reviewer id should be numeric.", e);
+                    "Error in config " + e, e);
         } catch (ConfigManagerException e) {
             throw new SpecificationReviewServiceConfigurationException("Unable to read configuration from file.", e);
         }
@@ -909,7 +952,8 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
                 long specReviewerId = defaultSpecReviewerMap.get(projectCategoryId);
 
                 // assign default sepc reviewer by contest type.
-                addDefaultSpecificationReviewer(projectId, specReviewerId, specificationReviewPhase.getId());
+                addDefaultSpecificationReviewer(projectId, specReviewerId, specificationReviewPhase.getId(), 
+                                                projectCategoryToRBoarPhaseMap.get(projectCategoryId), projectCategoryToReviewRespMap.get(projectCategoryId));
             }
 
             //turn on AP
@@ -1497,7 +1541,10 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      * @throws SpecificationReviewServiceException if some error occurred.
      * @since 1.1
      */
-    private boolean addDefaultSpecificationReviewer(long projectId, long specReviewerId, long specReviewPhaseId) throws SpecificationReviewServiceException{
+    private boolean addDefaultSpecificationReviewer(long projectId, long specReviewerId, long specReviewPhaseId, long rboardPhaseId, long reviewRespId) throws SpecificationReviewServiceException{
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
             ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
             ResourceRole specificationReviewerRole = null;
@@ -1529,11 +1576,36 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
             resourceManager.updateResource(resource, Long.toString(specReviewerId));
 
+            connection = createConnection();
+            preparedStatement = connection.prepareStatement("insert into rboard_application(user_id, project_id, phase_id, review_resp_id, primary_ind) values (?, ?, ?, ?, ?);");
+            preparedStatement.setObject(1, specReviewerId);
+            preparedStatement.setObject(2, projectId);
+            preparedStatement.setObject(3, rboardPhaseId);
+            preparedStatement.setObject(4, reviewRespId);
+            preparedStatement.setObject(5, 0);
+
+            preparedStatement.executeUpdate();
+
             return true;
         } catch (Exception e) {
             throw logException(new SpecificationReviewServiceException("Fails to add specification reviewer role to user", e));
+        } finally {
+            try
+            {
+                if (preparedStatement != null)
+                {
+                    preparedStatement.close();
+                }
+                 if (connection != null)
+                {
+                    connection.close();
+                }
+            }
+            catch (Exception ee) {}
+
         }
     }
+
 
 
     /**
