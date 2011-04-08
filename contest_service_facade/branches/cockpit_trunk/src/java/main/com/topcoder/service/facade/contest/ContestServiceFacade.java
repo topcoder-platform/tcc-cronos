@@ -2498,8 +2498,8 @@ public interface ContestServiceFacade {
      * @throws UploadPersistenceException if an unexpected error occurs.
      * @since 1.6.3 
      */
-    Submission[] getSoftwareProjectSubmissions(long projectId) throws SearchBuilderException, 
-                                                                      UploadPersistenceException;
+    Submission[] getSoftwareProjectSubmissions(TCSubject currentUser, long projectId) throws SearchBuilderException, 
+                                                                      UploadPersistenceException, PermissionServiceException;
 
     /**
      * <p>Creates specified review for software project.</p>
