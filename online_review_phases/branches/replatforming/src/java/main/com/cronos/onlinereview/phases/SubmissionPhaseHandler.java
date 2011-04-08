@@ -137,10 +137,6 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      * <ul>
      * <li>The dependencies are met</li>
      * <li>The phase's end time is reached.</li>
-     * <li>If manual screening is absent, the number of submissions that have
-     * passed auto-screening meets the required number;</li>
-     * <li>If manual screening is required, the number of submissions that have
-     * passed manual screening meets the required number.</li>
      * </ul>
      * </p>
      * <p>
@@ -174,8 +170,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
             boolean reachEndTime = PhasesHelper.reachedPhaseEndTime(phase);
 
             // version 1.1 : can stop if there is no submission
-            return (dependencyMet && reachEndTime
-                    && (!hasAnySubmission(phase, null)));
+            return (dependencyMet && reachEndTime);
         }
     }
 
