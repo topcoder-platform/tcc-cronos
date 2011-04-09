@@ -1,14 +1,10 @@
 <?xml version="1.0" ?>
 <CMConfig>
     <Config name="com.topcoder.service.review.specification.ejb.SpecificationReviewServiceBean">
-        <Property name="1">
-        	<Value>124766</Value>
-        </Property>
-        <Property name="2">
-        	<Value>124776</Value>
-        </Property>
-        <Property name="3">
-        	<Value>124834</Value>
+        <Property name="defaultSpecReviewers">
+            <Property name="@defaultSepcReviewerContestType1@">
+                <Value>@defaultSepcReviewerUserId1@</Value>
+            </Property>
         </Property>
     </Config>
 </CMConfig>
