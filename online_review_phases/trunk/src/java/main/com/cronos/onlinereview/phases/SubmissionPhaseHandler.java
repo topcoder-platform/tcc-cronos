@@ -173,9 +173,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
                             false);
             boolean reachEndTime = PhasesHelper.reachedPhaseEndTime(phase);
 
-            // version 1.1 : can stop if there is no submission
-            return (dependencyMet && reachEndTime
-                    && (!hasAnySubmission(phase, null) || arePassedSubmissionsEnough(phase)));
+            return dependencyMet && reachEndTime;
         }
     }
 
