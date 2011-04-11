@@ -76,6 +76,10 @@
 
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
 
+    <property name="forums.jar" value="${tcs_libdir}/forums/1.0.0/forums.jar"/>
+    <property name="jiveforums.jar" value="${tcs_libdir}/forums/1.0.0/jiveforums.jar"/>
+    <property name="jivebase_modified.jar" value="${tcs_libdir}/forums/1.0.0/jivebase_modified.jar"/>
+     
     <path id="component.tcs-dependencies">
         <pathelement location="${auto_screening_management.jar}"/>
         <pathelement location="${class_associations.jar}"/>
@@ -142,6 +146,9 @@
         <pathelement location="${jnp-client.jar}"/>
         <pathelement location="${jaxb-api.jar}"/>
         <pathelement location="${jbossws-client.jar}"/>
+        <pathelement location="${forums.jar}"/>
+        <pathelement location="${jiveforums.jar}"/>
+        <pathelement location="${jivebase_modified.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">

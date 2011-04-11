@@ -95,7 +95,8 @@ import com.topcoder.util.config.Property;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-
+import com.topcoder.web.ejb.forums.Forums;
+import com.topcoder.web.ejb.forums.ForumsHome;
 
 
 /**
@@ -290,11 +291,18 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
 
-    /**
-     * rBoardApplicationBeanProviderUrl is used in the jndi context to get the rboard bean.
-     * It's injected, non-null and non-empty after set.
+
+     /**
+     * A flag indicating whether or not create the forum. It's injected, used in
+     * the createSoftwareContest method. In the old version, this variable
+     * misses the document, it's added in the version 1.1
      */
-    private String rBoardApplicationBeanProviderUrl;
+    private boolean createForum = false;
+
+    /**
+     * the forum bean provider url in configuration.
+     */
+    private String forumBeanProviderUrl;
 
     /**
      * <p>
@@ -670,7 +678,11 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             }
 
 
-            rBoardApplicationBeanProviderUrl = configManager.getString(DEFAULT_NAMESPACE, "rBoardApplicationBeanProviderUrl");
+            String createForumProp = configManager.getString(DEFAULT_NAMESPACE, "createForum");
+
+            createForum = Boolean.parseBoolean(createForumProp);
+
+            forumBeanProviderUrl = configManager.getString(DEFAULT_NAMESPACE, "forumBeanProviderUrl");
 
             projectCategoryToRBoarPhaseMap.put((long)14, (long)1125);
 
@@ -953,7 +965,8 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
 
                 // assign default sepc reviewer by contest type.
                 addDefaultSpecificationReviewer(projectId, specReviewerId, specificationReviewPhase.getId(), 
-                                                projectCategoryToRBoarPhaseMap.get(projectCategoryId), projectCategoryToReviewRespMap.get(projectCategoryId));
+                                                projectCategoryToRBoarPhaseMap.get(projectCategoryId), projectCategoryToReviewRespMap.get(projectCategoryId),
+                                                tcSubject);
             }
 
             //turn on AP
@@ -1541,50 +1554,83 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      * @throws SpecificationReviewServiceException if some error occurred.
      * @since 1.1
      */
-    private boolean addDefaultSpecificationReviewer(long projectId, long specReviewerId, long specReviewPhaseId, long rboardPhaseId, long reviewRespId) throws SpecificationReviewServiceException{
+    private boolean addDefaultSpecificationReviewer(long projectId, long specReviewerId, long specReviewPhaseId, long rboardPhaseId, long reviewRespId, TCSubject tcSubject) throws SpecificationReviewServiceException{
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
             ResourceRole specificationReviewerRole = null;
+            ResourceRole observerRole = null;
             for (int i = 0; i < resourceRoles.length; i++) {
                 ResourceRole role = resourceRoles[i];
                 if ("Specification Reviewer".equals(role.getName())) {
                     specificationReviewerRole = role;
+                }
+
+                if ("Observer".equals(role.getName())) {
+                    observerRole = role;
+                }
+
+                if (specificationReviewerRole != null && observerRole != null) {
                     break;
                 }
             }
 
-
+            String handle = userService.getUserHandle(specReviewerId);
+            
+            // if no spec reviewer
             if (specificationReviewerRole != null &&
-                    resourceManager.resourceExists(projectId, specificationReviewerRole.getId(), specReviewerId)) {
-                return false;
+                    !resourceManager.resourceExists(projectId, specificationReviewerRole.getId(), specReviewerId)) {
+
+                com.topcoder.management.resource.Resource resource = new com.topcoder.management.resource.Resource();
+                // set resource properties
+                resource.setProject(projectId);
+                resource.setResourceRole(specificationReviewerRole);
+                resource.setPhase(specReviewPhaseId);
+                resource.setProperty("Handle", handle);
+                resource.setProperty("Payment", "100");
+                resource.setProperty("Payment Status", "N/A");
+                resource.setProperty("External Reference ID", Long.toString(specReviewerId));
+                resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
+                resourceManager.updateResource(resource, Long.toString(specReviewerId));
+
+                connection = createConnection();
+                preparedStatement = connection.prepareStatement("insert into rboard_application(user_id, project_id, phase_id, review_resp_id, primary_ind) values (?, ?, ?, ?, ?);");
+                preparedStatement.setObject(1, specReviewerId);
+                preparedStatement.setObject(2, projectId);
+                preparedStatement.setObject(3, rboardPhaseId);
+                preparedStatement.setObject(4, reviewRespId);
+                preparedStatement.setObject(5, 0);
+
+                preparedStatement.executeUpdate();
             }
 
-            String handle = userService.getUserHandle(specReviewerId);
+            // if not observer
+            if (specificationReviewerRole != null &&
+                    !resourceManager.resourceExists(projectId, observerRole.getId(), specReviewerId)) {
+                com.topcoder.management.resource.Resource resource = new com.topcoder.management.resource.Resource();
+                // set resource properties
+                resource.setProject(projectId);
+                resource.setResourceRole(observerRole);
+                resource.setProperty("Handle", handle);
+                resource.setProperty("Payment", null);
+                resource.setProperty("Payment Status", "N/A");
+                resource.setProperty("External Reference ID", Long.toString(specReviewerId));
+                resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
+                resourceManager.updateResource(resource, Long.toString(specReviewerId));
+            }
 
-            com.topcoder.management.resource.Resource resource = new com.topcoder.management.resource.Resource();
-            // set resource properties
-            resource.setProject(projectId);
-            resource.setResourceRole(specificationReviewerRole);
-            resource.setPhase(specReviewPhaseId);
-            resource.setProperty("Handle", handle);
-            resource.setProperty("Payment", "100");
-            resource.setProperty("Payment Status", "N/A");
-            resource.setProperty("External Reference ID", Long.toString(specReviewerId));
-            resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
-            resourceManager.updateResource(resource, Long.toString(specReviewerId));
+            // add notification
+            projectServices.addNotifications(specReviewerId, new long[] { projectId }, String.valueOf(tcSubject.getUserId()));
 
-            connection = createConnection();
-            preparedStatement = connection.prepareStatement("insert into rboard_application(user_id, project_id, phase_id, review_resp_id, primary_ind) values (?, ?, ?, ?, ?);");
-            preparedStatement.setObject(1, specReviewerId);
-            preparedStatement.setObject(2, projectId);
-            preparedStatement.setObject(3, rboardPhaseId);
-            preparedStatement.setObject(4, reviewRespId);
-            preparedStatement.setObject(5, 0);
-
-            preparedStatement.executeUpdate();
+            if (createForum)
+            {
+                // add forum watch
+                long forumId = projectServices.getForumId(projectId);
+                createForumWatchAndRole(forumId, specReviewerId, true);
+            }
+            
 
             return true;
         } catch (Exception e) {
@@ -1762,5 +1808,43 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         throws SpecificationReviewServiceException {
         // upload a mock submission
         return submitSpecificationAsString(tcSubject, projectId, mockSubmissionContent.replace("[pj]", new Long(projectId).toString()));
-    }        
+    }
+
+
+        /**
+     * create forum watch with given parameters. It will lookup the ForumsHome
+     * interface, and create the forum by the ejb home interface.
+     *
+     *
+     * @param forumId
+     *            The forum id
+     * @param userId
+     *            userId The user id to use
+     * @param watch
+     *            whether to create category watch.
+     */
+    private void createForumWatchAndRole(long forumId, long userId, boolean watch) {
+
+        try {
+            Properties p = new Properties();
+            p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
+            p.put(Context.PROVIDER_URL, forumBeanProviderUrl);
+
+            Context c = new InitialContext(p);
+            ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
+
+            Forums forums = forumsHome.create();
+
+            String roleId = "Software_Users_" + forumId;
+            if (watch)
+            {
+                forums.createCategoryWatch(userId, forumId);
+            }
+
+            forums.assignRole(userId, roleId);
+        } catch (Exception e) {
+            logException(e);
+        }
+    }
 }
