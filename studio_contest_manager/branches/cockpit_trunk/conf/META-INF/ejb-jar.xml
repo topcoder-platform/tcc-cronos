@@ -51,7 +51,7 @@
             <env-entry>
                 <env-entry-name>submitter_terms_id</env-entry-name>
                 <env-entry-type>java.lang.Long</env-entry-type>
-                <env-entry-value>20943</env-entry-value>
+                <env-entry-value>20543</env-entry-value>
             </env-entry>
             <env-entry>
                 <env-entry-name>submitter_role_id</env-entry-name>
