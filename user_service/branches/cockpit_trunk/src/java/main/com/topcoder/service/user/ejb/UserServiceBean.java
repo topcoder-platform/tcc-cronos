@@ -527,17 +527,16 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             // handle_lower and modify_date are not specified because a trigger sets these values.
             Query userInsert = em.createNativeQuery(
                     "insert into user "
-                    + "(user_id, first_name, last_name, handle, last_login, status, password, "
+                    + "(user_id, first_name, last_name, handle, last_login, status, "
                     + "activation_code, middle_name, timezone_id, last_site_hit_date) "
                     + "values "
-                    + "(:userId, :firstName, :lastName, :handle, NULL, 'A', :password, "
+                    + "(:userId, :firstName, :lastName, :handle, NULL, 'A', "
                     + "NULL, NULL, " + DEFAULT_TIMEZONE_ID + " , NULL)");
 
             userInsert.setParameter("userId", userId);
             userInsert.setParameter("firstName", user.getFirstName());
             userInsert.setParameter("lastName", user.getLastName());
             userInsert.setParameter("handle", user.getHandle());
-            userInsert.setParameter("password", "");
 
             // generate the security user id
             long securityUserId = userId;
