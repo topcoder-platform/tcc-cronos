@@ -537,7 +537,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             userInsert.setParameter("firstName", user.getFirstName());
             userInsert.setParameter("lastName", user.getLastName());
             userInsert.setParameter("handle", user.getHandle());
-            userInsert.setParameter("password", user.getPassword());
+            userInsert.setParameter("password", "");
 
             // generate the security user id
             long securityUserId = userId;
