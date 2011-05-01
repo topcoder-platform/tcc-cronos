@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence;
 
@@ -64,11 +64,20 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *   	<li>Added logic to process the new column review_evaluation_id added to the review table</li>
  *   </ol>
  * </p>
+ * <p>
+ * Version 1.2 (Online Review Update Review Management Process assembly 4) Change notes:
+ *   <ol>
+ *      <li>Update {@link #getReviewComments(String, Connection, Map, Map, Map)} and
+ *      {@link #getReviewItemComments(String, Connection, Map, Map, Map)} methods to support for the 
+ *      new added modificationTimestamp property in <code>Comment</code>.</li>
+ *   </ol>
+ * </p>
+ *
  * @author woodjhon
  * @author urtks
  * @author George1
  * @author saarixx, TCSDEVELOPER
- * @version 1.1
+ * @version 1.2
  */
 public class InformixReviewPersistence implements ReviewPersistence {
     /**
@@ -246,7 +255,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
      */
     private static final String QUERY_REVIEW_COMMENTS_SQL = "SELECT "
             + "review_comment_id, resource_id, review_id, comment_type_id, "
-            + "evaluation_type_id, content, extra_info " + "FROM " + REVIEW_COMMENT_TABLE
+            + "evaluation_type_id, content, extra_info, modify_date " + "FROM " + REVIEW_COMMENT_TABLE
             + " WHERE review_id IN (" + ID_ARRAY_PARAMETER_PLACEHOLDER
             + ") ORDER BY review_id, sort";
 
@@ -263,7 +272,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
      */
     private static final String QUERY_REVIEW_ITEM_COMMENTS_SQL = "SELECT "
             + "review_item_comment_id, resource_id, review_item_id, comment_type_id,"
-            + " evaluation_type_id, content, extra_info " + "FROM " + REVIEW_ITEM_COMMENT_TABLE
+            + " evaluation_type_id, content, extra_info, modify_date " + "FROM " + REVIEW_ITEM_COMMENT_TABLE
             + " WHERE review_item_id IN (" + "SELECT review_item_id FROM " + REVIEW_ITEM_TABLE
             + " WHERE review_id IN (" + ID_ARRAY_PARAMETER_PLACEHOLDER
             + ")) ORDER BY review_item_id, sort";
@@ -2022,7 +2031,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
         // find the review comments with review id in idList in the table
         DataType[] columnTypes =
                 new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-                        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+                        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE};
         Object[][] rows =
                 Helper.doQuery(conn, QUERY_REVIEW_COMMENTS_SQL.replaceFirst(
                         ID_ARRAY_PARAMETER_REGULAR_EXP, idList), new Object[] {}, columnTypes);
@@ -2040,6 +2049,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             comment.setEvaluationType((EvaluationType) evaluationTypeMap.get(row[4]));
             comment.setComment((String) row[5]);
             comment.setExtraInfo((String) row[6]);
+            comment.setModificationTimestamp((Date) row[7]);
         }
     }
 
@@ -2109,7 +2119,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
         // find the review comments with review id in idList in the table
         DataType[] columnTypes =
                 new DataType[] {Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
-                        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+                        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE};
         Object[][] rows =
                 Helper.doQuery(conn, QUERY_REVIEW_ITEM_COMMENTS_SQL.replaceFirst(
                         ID_ARRAY_PARAMETER_REGULAR_EXP, idList), new Object[] {}, columnTypes);
@@ -2127,6 +2137,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             comment.setEvaluationType((EvaluationType) evaluationTypeMap.get(row[4]));
             comment.setComment((String) row[5]);
             comment.setExtraInfo((String) row[6]);
+            comment.setModificationTimestamp((Date) row[7]);
         }
     }
 
