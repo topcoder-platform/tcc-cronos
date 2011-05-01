@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.UploadManager;
@@ -24,7 +23,6 @@ import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 
@@ -45,8 +43,17 @@ import com.topcoder.util.log.LogFactory;
  * Thread Safety: This class is thread-safe because it's immutable.
  * </p>
  *
+ * <p>
+ * Version 1.6 (Online Review Update Review Management Process assembly 4) Change notes:
+ * <ol>
+ *   <li>Removed <code>secondaryReviewerCount</code> property.</li>
+ *   <li>Updated {@link #canCloseAppealsEarly(ResourceManager, UploadManager, Connection, long)} method, the number of
+ *   reviewer is dynamic read from database.</li>
+ * </ol>
+ * </p>
+ *
  * @author mekanizumu, TCSDEVELOPER
- * @version 1.5
+ * @version 1.6
  * @since 1.5
  */
 public class GenericAppealPhaseHandler extends AbstractPhaseHandler {
@@ -127,21 +134,6 @@ public class GenericAppealPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * The number of secondary reviewers needed.
-     * </p>
-     * <p>
-     * LegalValue: It must be non-negative. Initialization and Mutability: It's initialized within
-     * constructor, won't change afterwards. The default value is 2.
-     * </p>
-     * <p>
-     * Usage: It is used in {@link #GenericAppealPhaseHandler()} (for initialization),
-     * {@link #canCloseAppealsEarly()}.
-     * </p>
-     */
-    private final int secondaryReviewerCount;
-
-    /**
-     * <p>
      * Create an instance of the class with the default namespace.
      * </p>
      *
@@ -171,29 +163,6 @@ public class GenericAppealPhaseHandler extends AbstractPhaseHandler {
         secondaryReviewerRoleName = PhasesHelper.getPropertyValue(namespace, "secondaryReviewerRoleName",
             true);
         phaseType = PhasesHelper.getPropertyValue(namespace, "phaseType", true);
-
-        // secondary reviewer count string
-        String count = PhasesHelper.getPropertyValue(namespace, "secondaryReviewerCount", false);
-        if (count == null) {
-            secondaryReviewerCount = 2;
-        } else {
-            // exception detail
-            String detail;
-            try {
-                secondaryReviewerCount = Integer.parseInt(count);
-                // the secondaryReviewerCount must equal or greater than zero
-                if (secondaryReviewerCount < 0) {
-                    detail = "The value of secondaryReviewerCount must be non-negative integer.";
-                    LOG.log(Level.ERROR, detail);
-                    throw new ConfigurationException(detail);
-                }
-            } catch (NumberFormatException nfe) {
-                detail = "The value of secondaryReviewerCount must be integer string.";
-                LOG.log(Level.ERROR, new LogMessage(null, null, detail, nfe));
-                throw new ConfigurationException(detail, nfe);
-            }
-        }
-
     }
 
     /**
@@ -274,7 +243,6 @@ public class GenericAppealPhaseHandler extends AbstractPhaseHandler {
      */
     private boolean canCloseAppealsEarly(ResourceManager resourceManager, UploadManager uploadManager,
         Connection conn, long projectId) throws PhaseHandlingException {
-
         try {
             // This block checks if all submitters have closed appeal early
             long submitterRoleId = ResourceRoleLookupUtility.lookUpId(conn, submitterRoleName);
@@ -309,12 +277,14 @@ public class GenericAppealPhaseHandler extends AbstractPhaseHandler {
             long secondaryReviewerRoleId = ResourceRoleLookupUtility
                 .lookUpId(conn, secondaryReviewerRoleName);
 
-            fullFilter = createNewAndFilter(secondaryReviewerRoleId, projectId);
-
-            Resource[] earlyAppealCompletionsReviewers = resourceManager.searchResources(fullFilter);
-
-            if (earlyAppealCompletionsReviewers.length != secondaryReviewerCount) {
-                return false;
+            fullFilter = new AndFilter(Arrays.asList(new Filter[]{
+                    ResourceFilterBuilder.createResourceRoleIdFilter(secondaryReviewerRoleId),
+                    ResourceFilterBuilder.createProjectIdFilter(projectId)}));
+            Resource[] secondaryReviewers = resourceManager.searchResources(fullFilter);
+            for (Resource resource : secondaryReviewers) {
+                if (!"Yes".equalsIgnoreCase(resource.getProperty("Appeals Completed Early"))) {
+                    return false;
+                }
             }
 
             return true;

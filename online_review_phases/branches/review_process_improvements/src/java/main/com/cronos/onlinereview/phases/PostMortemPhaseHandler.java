@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -70,11 +70,18 @@ import javax.naming.NamingException;
  * </p>
  *
  * <p>
+ * Version 1.5 (Online Review Update Review Management Release assembly 4) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES} property to include Primary Review Evaluator and Secondary Reviewer.</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author argolite, waits, isv
- * @version 1.4
+ * @author argolite, waits, isv, TCSASSEMBER
+ * @version 1.5
  * @since 1.1
  */
 public class PostMortemPhaseHandler extends AbstractPhaseHandler {
@@ -109,7 +116,8 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
     private static final String[] POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES = new String[] {
         PhasesHelper.SUBMITTER_ROLE_NAME, REVIEWER_ROLE_NAME,
         PhasesHelper.ACCURACY_REVIEWER_ROLE_NAME, PhasesHelper.FAILURE_REVIEWER_ROLE_NAME,
-        PhasesHelper.STRESS_REVIEWER_ROLE_NAME};
+        PhasesHelper.STRESS_REVIEWER_ROLE_NAME,
+        PhasesHelper.PRIMARY_REVIEW_EVALUATOR_ROLE_NAME, PhasesHelper.SECONDARY_REVIEWER_ROLE_NAME};
 
     /**
      * <p>A <code>String</code> array listing the name for Post-Mortem Reviewer role.</p>

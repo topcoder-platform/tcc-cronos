@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -10,26 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.topcoder.management.phase.PhaseHandlingException;
-import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.deliverable.Submission;
-import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
-import com.topcoder.management.resource.search.ResourceFilterBuilder;
-import com.topcoder.management.resource.search.ResourceRoleFilterBuilder;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
 import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
 import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
 import com.topcoder.project.phases.Phase;
-import com.topcoder.search.builder.SearchBuilderConfigurationException;
-import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.InFilter;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
@@ -56,8 +46,15 @@ import com.topcoder.util.log.LogFactory;
  * </ol>
  * </p>
  *
+ * <p>
+ * Version 1.7 (Online Review Update Review Management Release assembly 4) Change notes:
+ *   <ol>
+ *     <li>Update {@link #updateScores(Phase, String, Map)} method to fix the bug of setting submission initial score.</li>
+ *   </ol>
+ * </p>
+ *
  * @author mekanizumu, TCSDEVELOPER
- * @version 1.6
+ * @version 1.7
  * @since 1.5
  */
 public class PrimaryReviewEvaluationPhaseHandler extends AbstractPhaseHandler {
@@ -279,7 +276,7 @@ public class PrimaryReviewEvaluationPhaseHandler extends AbstractPhaseHandler {
                 PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
             // Search the reviewIds
-            Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,new String[]{PhasesHelper.SECONDARY_REVIEWER_ROLE_NAME}, phase.getId());
+            Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,new String[]{PhasesHelper.PRIMARY_REVIEW_EVALUATOR_ROLE_NAME}, phase.getId());
 
             // Search all review scorecard for the current phase
             Review[] reviews = PhasesHelper.searchReviewsForResources(conn, getManagerHelper(),

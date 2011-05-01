@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -77,12 +77,18 @@ import com.topcoder.util.log.LogFactory;
  * </li>
  * </ul>
  * </p>
+ * 
+ * <p>
+ * Version 1.3 (Online Review Update Review Management Process assembly 4) Change notes: Add support for Secondary
+ * Reviewer Review phase.
+ * </p>
+ *
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author tuenm, bose_java, argolite, waits
- * @version 1.2
+ * @author tuenm, bose_java, argolite, waits, TCSASSEMBER
+ * @version 1.3
  */
 public class AggregationPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -102,7 +108,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         "Comment", "Required", "Recommended", "Appeal",
         "Appeal Response", "Aggregation Comment",
         "Aggregation Review Comment", "Submitter Comment",
-        "Manager Comment"};
+        "Manager Comment", "Primary Review Evaluation Comment"};
 
     /**
      * The log instance used by this handler.
@@ -325,7 +331,11 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
 
                 // copy the comments from review scorecards
                 Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW,
-                                false, true);
+                                false, false);
+                if (reviewPhase == null) {
+                    reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.SECONDARY_REVIEWER_REVIEW,
+                            false, true);
+                }
                 Resource[] reviewers = PhasesHelper
                                 .searchResourcesForRoleNames(
                                                 getManagerHelper(),

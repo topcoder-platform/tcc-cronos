@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -68,8 +68,13 @@ import com.topcoder.util.log.LogFactory;
  * </ol>
  * </p>
  *
- * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy, isv
- * @version 1.4
+ * <p>
+ * Version 1.5 (Online Review Update Review Management Process assembly 4) Change notes: Add support for Secondary
+ * Reviewer Review phase.
+ * </p>
+ *
+ * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy, isv, TCSASSEMBER
+ * @version 1.5
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -442,6 +447,11 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         // Locate the nearest Review and Aggregation phase
         Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false,
                         false);
+        if (reviewPhase == null) {
+            // if Review phase is not presented, then try to search Secondary Reviewer Review phase
+            reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.SECONDARY_REVIEWER_REVIEW, false,
+                    false);
+        }
         Phase aggregationPhase = PhasesHelper.locatePhase(phase, AGGREGATION,
                         false, false);
         if (reviewPhase == null || aggregationPhase == null) {
