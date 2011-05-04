@@ -19,6 +19,10 @@ import com.topcoder.management.deliverable.IdentifiableDeliverableStructure;
 import com.topcoder.management.deliverable.MimeType;
 import com.topcoder.management.deliverable.NamedDeliverableStructure;
 import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.SubmissionDeclaration;
+import com.topcoder.management.deliverable.SubmissionExternalContent;
+import com.topcoder.management.deliverable.SubmissionExternalContentProperty;
+import com.topcoder.management.deliverable.SubmissionExternalContentType;
 import com.topcoder.management.deliverable.SubmissionImage;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.SubmissionType;
@@ -175,6 +179,14 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </ul>
  * </p>
  * 
+ * <p>
+ * Changes in 1.4 (TC Direct Replatforming Release 5):
+ * <ul>
+ * <li>Added {@link #getSubmissionDeclaration(long)} method to retrieve SubmissionDeclaration for submission.</li>
+ * <li>Added {@link #loadSubmission(CustomResultSet)} method to set <code>Prize</code> to <code>Submission</code>.</li>
+ * </ul>
+ * </p>
+ *
  * <strong>Thread Safety:</strong> This class is immutable and thread-safe in the sense that multiple threads can not
  * corrupt its internal data structures. However, the results if used from multiple threads can be unpredictable as the
  * database is changed from different threads. This can equally well occur when the component is used on multiple
@@ -183,7 +195,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *
  * @author aubergineanode, saarixx, urtks, George1
  * @author TCSDESIGNER, TCSDEVELOPER
- * @version 1.3
+ * @version 1.4
  */
 public class SqlUploadPersistence implements UploadPersistence {
 
@@ -643,6 +655,38 @@ public class SqlUploadPersistence implements UploadPersistence {
     private static final DataType[] GET_SUBMISSION_IMAGES_FOR_SUBMISSION_COLUMN_TYPES = new DataType[] {
         Helper.INTEGER_TYPE, Helper.INTEGER_TYPE, Helper.DATE_TYPE, Helper.DATE_TYPE};
 
+    /**
+     * Represents the sql statement for retrieving the submission declaration data for the given submission.
+     *
+     * @since 1.4
+     */
+    private static final String GET_SUBMISSION_DECLARATION_SQL = "SELECT "
+            + "sd.submission_declaration_id, sd.comment, sd.has_external_content, "
+            + "sec.external_content_id, sec.display_position, "
+            + "ect.external_content_type_id, ect.name, "
+            + "ecp.external_content_property_id, ecp.name, ecp.value "
+            + "FROM submission_declaration sd, "
+            + " submission_external_content sec, "
+            + " external_content_property ecp, "
+            + " external_content_type ect "
+            + "WHERE sd.submission_id = ? "
+            + " AND sd.submission_declaration_id = sec.submission_declaration_id "
+            + " AND ecp.external_content_id = sec.external_content_id "
+            + " AND ect.external_content_type_id = sec.external_content_type_id "
+            + "ORDER BY sd.submission_declaration_id, sec.display_position, sec.external_content_id";
+    
+    /**
+     * Represents the column types for submission declaration data.
+     *
+     * @since 1.4
+     */
+    private static final DataType[] GET_SUBMISSION_DECLARATION_COLUMN_TYPES = new DataType[] {
+        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.BOOLEAN_TYPE,
+        Helper.LONG_TYPE, Helper.INTEGER_TYPE,
+        Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE
+    };
+    
     /**
      * <p>
      * The name of the connection producer to use when a connection to the database is retrieved from the
@@ -2005,6 +2049,70 @@ public class SqlUploadPersistence implements UploadPersistence {
     }
 
     /**
+     * Retrieves the <code>SubmissionDeclaration</code> for submission with the given ID. If submissionId is unknown, this method returns null.
+     * 
+     * @param submissionId the ID of the submission
+     * @return the retrieved <code>SubmissionDeclaration</code>, null if not found
+     * @throws IllegalArgumentException
+     *             If submissionId <= 0
+     * @throws UploadPersistenceException
+     *             If some error occurred when accessing the persistence
+     * @since 1.4
+     */
+    public SubmissionDeclaration getSubmissionDeclaration(long submissionId) throws UploadPersistenceException {
+        LOGGER.log(Level.INFO, new LogMessage("SubmissionDeclaration", null, null, MessageFormat.format(
+                "Load SubmissionDeclaration for submission id [{0}].", submissionId)));
+        
+        assertLongBePositive(submissionId, "submissionId", LOGGER);
+        
+        Object[][] rows;
+        try {
+            // load submission declaration data
+            rows = Helper.doQuery(connectionFactory, connectionName, GET_SUBMISSION_DECLARATION_SQL,
+                    new DataType[] {Helper.LONG_TYPE}, new Object[] {submissionId}, GET_SUBMISSION_DECLARATION_COLUMN_TYPES, LOGGER);
+            
+        } catch (PersistenceException e) {
+            LOGGER.log(Level.ERROR, "Unable to load submission_declaration to the database. \n"
+                    + LogMessage.getExceptionStackTrace(e));
+            throw new UploadPersistenceException("Unable to load submission_declaration to the database.", e);
+        }
+        
+        if (rows != null && rows.length > 0) {
+            SubmissionDeclaration submissionDeclaration = new SubmissionDeclaration();
+            submissionDeclaration.setId((Long) rows[0][0]);
+            submissionDeclaration.setComment((String) rows[0][1]);
+            submissionDeclaration.setHasExternalContent((Boolean) rows[0][2]);
+            if (submissionDeclaration.hasExternalContent()) {
+                // load submission external content and properties
+                List<SubmissionExternalContent> externalContents = new ArrayList<SubmissionExternalContent>();
+                submissionDeclaration.setExternalContents(externalContents);
+                SubmissionExternalContent currentExternalContent = null;
+                for (int i = 0; i < rows.length; i++) {
+                    if (currentExternalContent == null || (Long) rows[i][3] != currentExternalContent.getId()) {
+                        // new submission external content
+                        currentExternalContent = new SubmissionExternalContent();
+                        currentExternalContent.setId((Long) rows[i][3]);
+                        currentExternalContent.setDisplayPosition((Integer) rows[i][4]);
+                        SubmissionExternalContentType externalContentType = new SubmissionExternalContentType();
+                        externalContentType.setId((Long) rows[i][5]);
+                        externalContentType.setName((String) rows[i][6]);
+                        currentExternalContent.setExternalContentType(externalContentType);
+                        currentExternalContent.setExternalContentProperties(new ArrayList<SubmissionExternalContentProperty>());
+                        externalContents.add(currentExternalContent);
+                    }
+                    SubmissionExternalContentProperty property = new SubmissionExternalContentProperty();
+                    property.setId((Long) rows[i][7]);
+                    property.setName((String) rows[i][8]);
+                    property.setValue((String) rows[i][9]);
+                    currentExternalContent.getExternalContentProperties().add(property);
+                }
+            }
+            return submissionDeclaration;
+        }
+        return null;
+    }
+
+    /**
      * <p>
      * Removes the given AuditedDeliverableStructure instance (by id) from the persistence.
      * </p>
@@ -2276,6 +2384,9 @@ public class SqlUploadPersistence implements UploadPersistence {
 
         // retrieve the submission images.
         submission.setImages(Arrays.asList(getImagesForSubmission(submission.getId())));
+        
+        // retrieve the submission declaration
+        submission.setSubmissionDeclaration(getSubmissionDeclaration(submission.getId()));
 
         // retrieve the submission upload
         Upload upload = new Upload();
@@ -2367,6 +2478,7 @@ public class SqlUploadPersistence implements UploadPersistence {
                 prizeType.setId(resultSet.getLong("prize_type_id"));
                 prizeType.setDescription(resultSet.getString("prize_type_desc"));
                 prize.setPrizeType(prizeType);
+                submission.setPrize(prize);
             }
             
             submission.setUpload(loadUpload(resultSet));
