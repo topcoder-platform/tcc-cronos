@@ -186,8 +186,16 @@ import com.topcoder.service.user.Registrant;
  * </ul>
  * </p>
  *
+ * <p>
+ * Version 1.6.6 (TC Direct Replatforming Release 5) Change notes:
+ * <ul>
+ * <li>Changed method name from <code>getMilestoneSubmissions</code> to {@link #getSoftwareActiveSubmissions(long, int)}. The new method
+ * support searching the active submissions for a specified submission type.</li>
+ * </ul>
+ * </p>
+ *
  * @author pulky, murphydog, waits, BeBetter, hohosky, isv, TCSASSEMBER
- * @version 1.6.5
+ * @version 1.6.6
  */
 public interface ContestServiceFacade {
     /**
@@ -2619,15 +2627,16 @@ public interface ContestServiceFacade {
     Submission[] getSoftwareProjectSubmissions(long projectId) throws SearchBuilderException, 
                                                                       UploadPersistenceException;
     /**
-     * <p>Gets the milestone submissions for specified project</p>.
+     * <p>Gets the active submissions for specified project with the specified submission type.</p>.
      * 
      * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionType a <code>int</code> providing the id of the submission type.
      * @return a <code>List</code> listing the milestone submissions for project.
      * @throws SearchBuilderException if an unexpected error occurs.
      * @throws UploadPersistenceException if an unexpected error occurs.
      * @since 1.6.5
      */
-    public Submission[] getMilestoneSubmissions(long projectId) throws SearchBuilderException,
+    public Submission[] getSoftwareActiveSubmissions(long projectId, int submissionType) throws SearchBuilderException,
                                                                        UploadPersistenceException;
 
     /**

@@ -407,8 +407,16 @@ import com.topcoder.shared.util.DBMS;
  * </ul>
  * </p>
  *
+ * <p>
+ * Version 1.6.10 (TC Direct Replatforming Release 5) Change notes:
+ * <ul>
+ * <li>Changed method name from <code>getMilestoneSubmissions</code> to {@link #getSoftwareActiveSubmissions(long, int)}. The new method
+ * support searching the active submissions for a specified submission type.</li>
+ * </ul>
+ * </p>
+ *
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSDEVELOPER
- * @version 1.6.9
+ * @version 1.6.10
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -703,13 +711,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6.8
      */
     private final static long MILESTONE_PRIZE_TYPE_ID = 14L;
-
-    /**
-     * Represents the milestone submission type id.
-     * 
-     * @since 1.6.9
-     */
-    private final static long MILESTONE_SUBMISSION_TYPE_ID = 3L;
 
     /**
      * Cancelled status list.
@@ -8413,19 +8414,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
     
     /**
-     * <p>Gets the milestone submissions for specified project.</p>
+     * <p>Gets the active submissions for specified project with the specified submission type.</p>
      * 
      * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionType a <code>int</code> providing the id of the submission type.
      * @return a <code>List</code> listing the milestone submissions for project.
      * @throws SearchBuilderException if an unexpected error occurs.
      * @throws UploadPersistenceException if an unexpected error occurs.
      * @since 1.6.9
      */
-    public Submission[] getMilestoneSubmissions(long projectId)
+    public Submission[] getSoftwareActiveSubmissions(long projectId, int submissionType)
         throws SearchBuilderException, UploadPersistenceException {
         Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
         Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
-        Filter filter3 = SubmissionFilterBuilder.createSubmissionTypeIdFilter(MILESTONE_SUBMISSION_TYPE_ID);
+        Filter filter3 = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionType);
         Filter andFilter = new AndFilter(Arrays.asList(new Filter[] {filter, filter2, filter3}));
         return uploadManager.searchSubmissions(andFilter);
     }
