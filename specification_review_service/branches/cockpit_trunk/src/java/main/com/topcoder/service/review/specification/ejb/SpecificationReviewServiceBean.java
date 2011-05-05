@@ -1219,10 +1219,10 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
         if (specSubmissions.length == 0) {
             return null;
         }
-        if (specSubmissions.length > 1) {
+     /*   if (specSubmissions.length > 1) {
             throw logException(new SpecificationReviewServiceException(
                 "Multiple specification submissions exist for project: " + projectId));
-        }
+        } */
 
         long specSubmissionId = specSubmissions[0].getId();
 
