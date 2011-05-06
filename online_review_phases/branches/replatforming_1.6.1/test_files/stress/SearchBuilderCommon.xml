@@ -23,6 +23,18 @@
     <Config name="com.topcoder.search.builder.validator.factory">
         <Property name="validator:default">
             <Property name="type">
+                <Value>com.topcoder.util.datavalidator.NotValidator</Value>
+            </Property>
+            <Property name="params">
+                <Property name="param1">
+                    <Property name="name">
+                        <Value>validator:null</Value>
+                    </Property>
+                </Property>
+            </Property>
+        </Property>
+        <Property name="validator:null">
+            <Property name="type">
                 <Value>com.topcoder.util.datavalidator.NullValidator</Value>
             </Property>
         </Property>

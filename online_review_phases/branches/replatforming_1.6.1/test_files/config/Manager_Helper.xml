@@ -45,12 +45,6 @@
 		</Property>
 	</Property>
 
-	<Property name="ScreeningManager">
-		<Property name="Namespace">
-			<Value>com.cronos.onlinereview.autoscreening.management.DefaultDBScreeningManager</Value>
-		</Property>
-	</Property>
-
 	<Property name="ConnectionFactoryNS">
 		<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
 	</Property>

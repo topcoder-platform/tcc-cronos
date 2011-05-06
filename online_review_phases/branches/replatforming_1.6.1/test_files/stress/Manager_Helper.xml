@@ -9,12 +9,12 @@
 		</Property>
 	</Property>
 
-    <Property name="ProjectLinkManager">
+      <Property name="ProjectLinkManager">
             <Property name="ClassName">
                 <Value>com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl</Value>
             </Property>
             <Property name="Namespace">
-                <Value>com.topcoder.management.project.persistence.link.ProjectLinkManager</Value>
+                <Value>com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl</Value>
             </Property>
         </Property>
 
@@ -118,6 +118,9 @@
 		<Property name="SubmissionStatusIdGeneratorName">
 			<Value>submission_status_id_seq</Value>
 		</Property>
+		<Property name="SubmissionTypeIdGeneratorName">
+			<Value>submission_type_id_seq</Value>
+		</Property>
 		<Property name="PersistenceClassName">
 			<Value>com.topcoder.management.deliverable.persistence.sql.SqlUploadPersistence</Value>
 		</Property>
@@ -142,9 +145,24 @@
 		<Value>http://www.topcoder.com/tc?projectDetails=?</Value>
 	</Property>
 
+  <Property name="StudioProjectDetailsURL">
+		<Value>http://studio.topcoder.com/?projectDetails=?</Value>
+	</Property>
+	
+  <Property name="ProjectRoleTermsOfUse">
+      <Property name="ClassName">
+          <Value>com.cronos.onlinereview.phases.MockProjectRoleTermsOfUse</Value>
+      </Property>
+  </Property>
+  
+  <Property name="UserTermsOfUse">
+      <Property name="ClassName">
+          <Value>com.cronos.onlinereview.phases.MockUserTermsOfUse</Value>
+      </Property>
+  </Property> 
 </Config>
 
-  <Config name="com.topcoder.management.project.persistence.link.ProjectLinkManager">
+  <Config name="com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl">
         <!-- The DBConnectionFactory class name used to create DB Connection Factory, required -->
         <Property name="ConnectionFactoryNS">
             <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -155,10 +173,4 @@
         </Property>
     </Config>
 
-
-        <Config name="com.topcoder.util.log">
-        <Property name="logClass">
-            <Value>com.topcoder.util.log.log4j.Log4jLog</Value>
-        </Property>
-    </Config>
     </CMConfig>

@@ -360,13 +360,15 @@
 						submission.screening_score,
 						submission.initial_score,
 						submission.final_score,
-						submission.placement
+						submission.placement,
+						submission.user_rank AS user_rank
 						FROM submission,
 						upload,
 						submission_status_lu,
 						submission_type_lu,
 						upload_type_lu,
-						upload_status_lu
+						upload_status_lu,
+						upload_submission 
 						WHERE submission.upload_id = upload.upload_id
 						AND submission.submission_status_id = submission_status_lu.submission_status_id
 						AND submission.submission_type_id = submission_type_lu.submission_type_id
