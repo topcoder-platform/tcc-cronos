@@ -240,56 +240,10 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Failure test. Tests the {@link AbstractPhaseHandler#AbstractPhaseHandler,String} for proper behavior if the
      * configuration is invalid.</p>
      *
-     * <p>Removes the <code>StartPhaseEmail.EmailTemplateSource</code> configuration property from the configuration
-     * namespace and expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testAbstractPhaseHandler_String_5() {
-        String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "DefaultScheme.StartPhaseEmail.EmailTemplateSource");
-        try {
-            new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        } finally {
-            ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "DefaultScheme.StartPhaseEmail.EmailTemplateSource", values);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link AbstractPhaseHandler#AbstractPhaseHandler,String} for proper behavior if the
-     * configuration is invalid.</p>
-     *
-     * <p>Sets the <code>StartPhaseEmail.EmailTemplateSource</code> configuration property from the configuration
-     * namespace to empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testAbstractPhaseHandler_String_6() {
-        String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "DefaultScheme.StartPhaseEmail.EmailTemplateSource", "");
-        try {
-            new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        } finally {
-            ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "DefaultScheme.StartPhaseEmail.EmailTemplateSource", values);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link AbstractPhaseHandler#AbstractPhaseHandler,String} for proper behavior if the
-     * configuration is invalid.</p>
-     *
      * <p>Removes the <code>StartPhaseEmail.EmailTemplateName</code> configuration property from the configuration
      * namespace and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_7() {
+    public void testAbstractPhaseHandler_String_5() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
                                                       "DefaultScheme.StartPhaseEmail.EmailTemplateName");
         try {
@@ -312,7 +266,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Sets the <code>StartPhaseEmail.EmailTemplateName</code> configuration property from the configuration
      * namespace to empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_8() {
+    public void testAbstractPhaseHandler_String_6() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
                                                    "DefaultScheme.StartPhaseEmail.EmailTemplateName", "");
         try {
@@ -335,7 +289,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Removes the <code>StartPhaseEmail.EmailSubject</code> configuration property from the configuration namespace
      * and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_9() {
+    public void testAbstractPhaseHandler_String_7() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
                                                       "DefaultScheme.StartPhaseEmail.EmailSubject");
         try {
@@ -358,7 +312,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Sets the <code>StartPhaseEmail.EmailSubject</code> configuration property from the configuration namespace to
      * empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_10() {
+    public void testAbstractPhaseHandler_String_8() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
                                                    "DefaultScheme.StartPhaseEmail.EmailSubject", "");
         try {
@@ -381,7 +335,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Removes the <code>StartPhaseEmail.EmailFromAddress</code> configuration property from the configuration
      * namespace and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_11() {
+    public void testAbstractPhaseHandler_String_9() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
                                                       "DefaultScheme.StartPhaseEmail.EmailFromAddress");
         try {
@@ -404,7 +358,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Sets the <code>StartPhaseEmail.EmailFromAddress</code> configuration property from the configuration namespace
      * to empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_12() {
+    public void testAbstractPhaseHandler_String_10() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
                                                    "DefaultScheme.StartPhaseEmail.EmailFromAddress", "");
         try {
@@ -424,56 +378,10 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Failure test. Tests the {@link AbstractPhaseHandler#AbstractPhaseHandler,String} for proper behavior if the
      * configuration is invalid.</p>
      *
-     * <p>Removes the <code>EndPhaseEmail.EmailTemplateSource</code> configuration property from the configuration
-     * namespace and expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testAbstractPhaseHandler_String_13() {
-        String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
-                                                      "DefaultScheme.EndPhaseEmail.EmailTemplateSource");
-        try {
-            new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        } finally {
-            ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "DefaultScheme.EndPhaseEmail.EmailTemplateSource", values);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link AbstractPhaseHandler#AbstractPhaseHandler,String} for proper behavior if the
-     * configuration is invalid.</p>
-     *
-     * <p>Sets the <code>EndPhaseEmail.EmailTemplateSource</code> configuration property from the configuration
-     * namespace to empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
-     */
-    public void testAbstractPhaseHandler_String_14() {
-        String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-                                                   "DefaultScheme.EndPhaseEmail.EmailTemplateSource", "");
-        try {
-            new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
-            Assert.fail("ConfigurationException should have been thrown");
-        } catch (ConfigurationException e) {
-            // expected behavior
-        } catch (Exception e) {
-            fail("ConfigurationException was expected but the original exception is : " + e);
-        } finally {
-            ConfigHelper.restoreProperty("com.cronos.onlinereview.phases.failuretests",
-                                         "DefaultScheme.EndPhaseEmail.EmailTemplateSource", values);
-        }
-    }
-
-    /**
-     * <p>Failure test. Tests the {@link AbstractPhaseHandler#AbstractPhaseHandler,String} for proper behavior if the
-     * configuration is invalid.</p>
-     *
      * <p>Removes the <code>EndPhaseEmail.EmailTemplateName</code> configuration property from the configuration
      * namespace and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_15() {
+    public void testAbstractPhaseHandler_String_11() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
                                                       "DefaultScheme.EndPhaseEmail.EmailTemplateName");
         try {
@@ -496,7 +404,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Sets the <code>EndPhaseEmail.EmailTemplateName</code> configuration property from the configuration namespace
      * to empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_16() {
+    public void testAbstractPhaseHandler_String_12() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
                                                    "DefaultScheme.EndPhaseEmail.EmailTemplateName", "");
         try {
@@ -519,7 +427,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Removes the <code>EndPhaseEmail.EmailSubject</code> configuration property from the configuration namespace
      * and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_17() {
+    public void testAbstractPhaseHandler_String_13() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
                                                       "DefaultScheme.EndPhaseEmail.EmailSubject");
         try {
@@ -542,7 +450,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Sets the <code>EndPhaseEmail.EmailSubject</code> configuration property from the configuration namespace to
      * empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_18() {
+    public void testAbstractPhaseHandler_String_14() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
                                                    "DefaultScheme.EndPhaseEmail.EmailSubject", "");
         try {
@@ -565,7 +473,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Removes the <code>EndPhaseEmail.EmailFromAddress</code> configuration property from the configuration
      * namespace and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_19() {
+    public void testAbstractPhaseHandler_String_15() {
         String[] values = ConfigHelper.removeProperty("com.cronos.onlinereview.phases.failuretests",
                                                       "DefaultScheme.EndPhaseEmail.EmailFromAddress");
         try {
@@ -588,7 +496,7 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Sets the <code>EndPhaseEmail.EmailFromAddress</code> configuration property from the configuration namespace
      * to empty value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
-    public void testAbstractPhaseHandler_String_20() {
+    public void testAbstractPhaseHandler_String_16() {
         String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
                                                    "DefaultScheme.EndPhaseEmail.EmailFromAddress", "");
         try {

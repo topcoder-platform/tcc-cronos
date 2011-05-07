@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -23,25 +23,29 @@ import java.util.Date;
 /**
  * All tests for ScreeningPhaseHandler class.
  * <p>
- * Version 1.1 change notes: 4 test cases have been added since version 1.1 to test the new added logic: When Screening
- * phase is stopping, if no submissions have passed screening, a Post-Mortem phase is inserted that depends on the end
- * of the finished Screening phase.
+ * Version 1.1 change notes: 4 test cases have been added since version 1.1 to test the new added logic: When
+ * Screening phase is stopping, if no submissions have passed screening, a Post-Mortem phase is inserted that
+ * depends on the end of the finished Screening phase.
  * </p>
  * <p>
- * Version 1.2 change notes : since the email-templates and role-supported has been enhanced. The test cases will try to
- * do on that way while for email content, please check it manually.
+ * Version 1.2 change notes : since the email-templates and role-supported has been enhanced. The test cases will
+ * try to do on that way while for email content, please check it manually.
  * </p>
  * <p>
  * Version 1.3, different cases are tested, coverage is improved.
  * </p>
- *
- * @author bose_java, waits, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, TCSDEVELOPER, microsky
+ * @version 1.6.1
  */
 public class ScreeningPhaseHandlerTest extends BaseTest {
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -52,7 +56,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
 
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -64,7 +67,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -74,7 +76,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -91,7 +92,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -109,7 +109,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -127,7 +126,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -144,7 +142,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -162,7 +159,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -180,7 +176,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -198,7 +193,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -216,7 +210,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the ScreeningPhaseHandler() constructor and canPerform with Scheduled statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -234,11 +227,11 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             screeningPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
 
             // time has passed, but dependency not met.
             screeningPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
 
             // time has passed and dependency met.
             screeningPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
@@ -246,7 +239,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             // Set up a active submission for screening phase
             super.setupSubmissionForScreening();
 
-            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -254,7 +247,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the ScreeningPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -275,7 +267,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             screeningPhase.getAllDependencies()[0].setDependentStart(false);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -283,7 +275,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the ScreeningPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -304,7 +295,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             screeningPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -312,7 +303,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -327,7 +317,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with OPEN statuses.
-     *
      * @throws Exception
      *             to JUnit.
      * @since 1.1
@@ -351,7 +340,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {submitter});
+            insertResources(conn, new Resource[] {submitter });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -361,7 +350,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Resource screener = createResource(101, screenPhase.getId(), project.getId(), 3);
 
             // insert records
-            insertResources(conn, new Resource[] {screener});
+            insertResources(conn, new Resource[] {screener });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -372,18 +361,19 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
-            this.insertUploads(conn, new Upload[] {submitterUpload});
-            this.insertSubmissions(conn, new Submission[] {submission1});
+            this.insertUploads(conn, new Upload[] {submitterUpload });
+            this.insertSubmissions(conn, new Submission[] {submission1 });
 
             // 4. insert a scorecard here
             Scorecard scorecard1 = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // 5. insert a screening review
-            Review screenReview = createReview(11, screener.getId(), submission1.getId(), scorecard1.getId(), true,
+            Review screenReview = createReview(11, screener.getId(), submission1.getId(), scorecard1.getId(),
+                true,
                     90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard1});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard1 });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.perform(screenPhase, "1001");
         } finally {
@@ -394,7 +384,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with OPEN statuses.
-     *
      * @throws Exception
      *             to JUnit.
      * @since 1.1
@@ -418,7 +407,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {submitter});
+            insertResources(conn, new Resource[] {submitter });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -428,7 +417,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Resource primaryScreener = createResource(101, screenPhase.getId(), project.getId(), 2);
 
             // insert records
-            insertResources(conn, new Resource[] {primaryScreener});
+            insertResources(conn, new Resource[] {primaryScreener });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -439,18 +428,19 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
-            this.insertUploads(conn, new Upload[] {submitterUpload});
-            this.insertSubmissions(conn, new Submission[] {submission1});
+            this.insertUploads(conn, new Upload[] {submitterUpload });
+            this.insertSubmissions(conn, new Submission[] {submission1 });
 
             // 4. insert a scorecard here
             Scorecard scorecard1 = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // 5. insert a screening review
-            Review screenReview = createReview(11, primaryScreener.getId(), submission1.getId(), scorecard1.getId(),
+            Review screenReview = createReview(11, primaryScreener.getId(), submission1.getId(),
+                scorecard1.getId(),
                     true, 90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard1});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard1 });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.canPerform(screenPhase);
             handler.perform(screenPhase, "1001");
@@ -462,7 +452,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with OPEN statuses.
-     *
      * @throws Exception
      *             to JUnit.
      * @since 1.1
@@ -475,7 +464,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // test with scheduled status.
             Project project = super.setupPhases();
-            insertProjectInfo(getConnection(), project.getId(), new long[] {44}, new String[] {"true"});
+            insertProjectInfo(getConnection(), project.getId(), new long[] {44 }, new String[] {"true" });
             Phase[] phases = project.getAllPhases();
             Phase screenPhase = phases[2];
 
@@ -487,7 +476,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {submitter});
+            insertResources(conn, new Resource[] {submitter });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -497,7 +486,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Resource primaryScreener = createResource(101, screenPhase.getId(), project.getId(), 2);
 
             // insert records
-            insertResources(conn, new Resource[] {primaryScreener});
+            insertResources(conn, new Resource[] {primaryScreener });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -508,18 +497,19 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
-            this.insertUploads(conn, new Upload[] {submitterUpload});
-            this.insertSubmissions(conn, new Submission[] {submission1});
+            this.insertUploads(conn, new Upload[] {submitterUpload });
+            this.insertSubmissions(conn, new Submission[] {submission1 });
 
             // 4. insert a scorecard here
             Scorecard scorecard1 = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // 5. insert a screening review
-            Review screenReview = createReview(11, primaryScreener.getId(), submission1.getId(), scorecard1.getId(),
+            Review screenReview = createReview(11, primaryScreener.getId(), submission1.getId(),
+                scorecard1.getId(),
                     true, 65.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard1});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard1 });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.canPerform(screenPhase);
 
@@ -536,7 +526,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with OPEN statuses.
-     *
      * @throws Exception
      *             to JUnit.
      * @since 1.1
@@ -560,7 +549,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {submitter});
+            insertResources(conn, new Resource[] {submitter });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -570,7 +559,7 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Resource screener = createResource(101, screenPhase.getId(), project.getId(), 3);
 
             // insert records
-            insertResources(conn, new Resource[] {screener});
+            insertResources(conn, new Resource[] {screener });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -581,18 +570,19 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Submission submission1 = createSubmission(102, submitterUpload.getId(), 1, 1);
             submission1.setUpload(submitterUpload);
 
-            this.insertUploads(conn, new Upload[] {submitterUpload});
-            this.insertSubmissions(conn, new Submission[] {submission1});
+            this.insertUploads(conn, new Upload[] {submitterUpload });
+            this.insertSubmissions(conn, new Submission[] {submission1 });
 
             // 4. insert a scorecard here
             Scorecard scorecard1 = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // 5. insert a screening review
-            Review screenReview = createReview(11, screener.getId(), submission1.getId(), scorecard1.getId(), true,
+            Review screenReview = createReview(11, screener.getId(), submission1.getId(), scorecard1.getId(),
+                true,
                     90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard1});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard1 });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.canPerform(screenPhase);
             handler.perform(screenPhase, "1001");
@@ -604,7 +594,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses. without screener.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.2
@@ -625,30 +614,30 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             handler.perform(screeningPhase, operator);
 
@@ -661,7 +650,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses. With screener assigned.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.2
@@ -682,34 +670,34 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert screener
             resource = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "2");
 
             handler.perform(screeningPhase, operator);
@@ -723,7 +711,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.2
@@ -746,22 +733,22 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
@@ -769,28 +756,28 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Review screenReview =
                 createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true, 90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             scorecard = createScorecard(2, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // 5. insert a screening review
             screenReview = createReview(12, screener.getId(), submission.getId(), scorecard.getId(), true, 70.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.perform(screeningPhase, operator);
 
@@ -803,7 +790,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -826,22 +812,22 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
@@ -849,24 +835,24 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Review screenReview =
                 createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true, 90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             scorecard = createScorecard(2, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
 
             handler.perform(screeningPhase, operator);
 
@@ -881,7 +867,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -902,22 +887,22 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
@@ -925,8 +910,8 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Review screenReview =
                 createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true, 90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.canPerform(screeningPhase);
 
@@ -941,7 +926,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -962,12 +946,12 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 103L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
@@ -986,7 +970,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -1007,22 +990,22 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 103L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             handler.canPerform(screeningPhase);
 
@@ -1037,7 +1020,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -1058,22 +1040,22 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 103L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
@@ -1081,10 +1063,10 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Review screenReview =
                 createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true, 90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
-            assertTrue("exptect true", handler.canPerform(screeningPhase));
+            assertTrue("exptect true", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -1093,7 +1075,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -1114,28 +1095,28 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 3);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 103L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload1 = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload1});
+            super.insertUploads(conn, new Upload[] {upload1 });
 
             Upload upload2 = super.createUpload(2, project.getId(), screener.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload2});
+            super.insertUploads(conn, new Upload[] {upload2 });
 
             Submission submission1 = super.createSubmission(1, upload1.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission1});
+            super.insertSubmissions(conn, new Submission[] {submission1 });
 
             Submission submission2 = super.createSubmission(2, upload2.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission2});
+            super.insertSubmissions(conn, new Submission[] {submission2 });
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
@@ -1143,10 +1124,10 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
             Review screenReview = createReview(11, screener.getId(), submission2.getId(), scorecard.getId(), true,
                     90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
-            assertFalse("expect false", handler.canPerform(screeningPhase));
+            assertFalse("expect false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -1155,7 +1136,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -1176,24 +1156,24 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 2);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 103L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            assertFalse("exptect false", handler.canPerform(screeningPhase));
+            assertFalse("exptect false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -1202,7 +1182,6 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform. To stop the phase and check the email.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.3
@@ -1223,32 +1202,32 @@ public class ScreeningPhaseHandlerTest extends BaseTest {
 
             // insert screener
             Resource screener = createResource(6, screeningPhase.getId(), 1, 2);
-            super.insertResources(conn, new Resource[] {screener});
+            super.insertResources(conn, new Resource[] {screener });
             insertResourceInfo(conn, screener.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 103L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             Review screenReview = createReview(11, screener.getId(), submission.getId(), scorecard.getId(), false,
                     90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
-            assertFalse("exptect false", handler.canPerform(screeningPhase));
+            assertFalse("exptect false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();

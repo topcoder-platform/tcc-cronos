@@ -10,6 +10,7 @@ import com.cronos.onlinereview.phases.AppealsPhaseHandler;
 import com.cronos.onlinereview.phases.ReviewPhaseHandler;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -43,7 +44,7 @@ public class AppealsPhaseHandlerTest extends StressBaseTest {
         ConfigManager configManager = ConfigManager.getInstance();
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
+      //  configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -87,12 +88,12 @@ public class AppealsPhaseHandlerTest extends StressBaseTest {
             appealsPhase.getAllDependencies()[0].setDependentStart(false);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(appealsPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(appealsPhase).equals(OperationCheckResult.SUCCESS));
 
             // time has passed, but dependency not met.
             appealsPhase.setActualStartDate(new Date(System.currentTimeMillis() - 1000));
             appealsPhase.setActualEndDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(appealsPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(appealsPhase).equals(OperationCheckResult.SUCCESS));
 
             // time has passed and dependency met
             appealsPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);

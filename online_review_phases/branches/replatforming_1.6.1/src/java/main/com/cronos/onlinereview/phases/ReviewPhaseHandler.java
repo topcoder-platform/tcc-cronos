@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -19,6 +19,7 @@ import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Prize;
@@ -45,10 +46,10 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add extra
- * logic to execute a phase. It will be used by Phase Management component. It is configurable using an input namespace.
- * The configurable parameters include database connection and email sending. This class handle the review phase. If the
- * input is of other phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection and email sending. This class handle the
+ * review phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
  * The review phase can start as soon as the dependencies are met and can stop when the following conditions met:
@@ -59,16 +60,16 @@ import com.topcoder.util.log.LogFactory;
  * </ul>
  * </p>
  * <p>
- * The additional logic for executing this phase is: When Review phase is starting, all submissions failed automated
- * screening must be set to the status &quot;Failed Screening&quot;.
+ * The additional logic for executing this phase is: When Review phase is starting, all submissions failed
+ * automated screening must be set to the status &quot;Failed Screening&quot;.
  * </p>
  * <p>
  * Version 1.2 changes note:
  * <ul>
- * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager, etc).
- * </li>
- * <li>Support for more information in the email generated: for start, Submitter info with review info. for stop, review
- * result.</li>
+ * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager,
+ * etc).</li>
+ * <li>Support for more information in the email generated: for start, Submitter info with review info. for stop,
+ * review result.</li>
  * </ul>
  * </p>
  * <p>
@@ -80,32 +81,35 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * Version 1.6 changes note:
  * <ul>
- * <li>For Studio competitions, there will be no Appeal, Appeal Response, Aggregation and Aggregation Review phases, so
- * we will populate the winner information and set prizes for submissions.</li>
+ * <li>For Studio competitions, there will be no Appeal, Appeal Response, Aggregation and Aggregation Review
+ * phases, so we will populate the winner information and set prizes for submissions.</li>
  * </ul>
  * </p>
- *
  * <p>
  * Version 1.6.1 (Milestone Support Assembly 1.0) Change notes:
- *   <ol>
- *     <li>Updated {@link #updateSubmissionScores(Phase, String, Map)} method to properly map prizes to submissions.</li>
- *   </ol>
+ * <ol>
+ * <li>Updated {@link #updateSubmissionScores(Phase, String, Map)} method to properly map prizes to submissions.</li>
+ * </ol>
  * </p>
- * 
  * <p>
  * Version 1.6.2 (Online Review Replatforming Release 2 ) Change notes:
- *   <ol>
- *     <li>Change submission.getUploads() to submission.getUpload().</li>
- *     <li>Change contest submission prize type name from "Submission Prize" to "Contest Prize".</li>
- *   </ol>
+ * <ol>
+ * <li>Change submission.getUploads() to submission.getUpload().</li>
+ * <li>Change contest submission prize type name from "Submission Prize" to "Contest Prize".</li>
+ * </ol>
  * </p>
- * 
+ * <p>
+ * Version 1.6.1 (Component development) changes note:
+ * <ul>
+ * <li>canPerform() method was updated to return not only true/false value, but additionally an explanation message
+ * in case if operation cannot be performed.</li>
+ * </ul>
+ * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
- * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, FireIce, TCSDEVELOPER
- * @version 1.6.2
+ * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, FireIce, microsky
+ * @version 1.6.1
  */
 public class ReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -116,21 +120,18 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Logger instance for this class.
-     *
      * @since 1.1
      */
     private static final Log LOG = LogFactory.getLog(ReviewPhaseHandler.class.getName());
 
     /**
      * Represents the studio project id.
-     *
      * @since 1.6
      */
     private static final long STUDIO_PROJECT_ID = 3;
 
     /**
      * Create a new instance of ReviewPhaseHandler using the default namespace for loading configuration settings.
-     *
      * @throws ConfigurationException
      *             if errors occurred while loading configuration settings.
      */
@@ -140,7 +141,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Create a new instance of ReviewPhaseHandler using the given namespace for loading configuration settings.
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @throws ConfigurationException
@@ -154,14 +154,16 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Check if the input phase can be executed or not. This method will check the phase status to see what will be
-     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in Phase
+     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in
+     * Phase
      * Management component.
      * <p>
      * If the input phase status is Scheduled, then it will check if the phase can be started using the following
      * conditions: The dependencies are met.
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be stopped using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met</li>
      * <li>All active submissions have one review scorecard from each reviewer for the phase;</li>
@@ -171,10 +173,16 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            The input phase to check.
-     * @return True if the input phase can be executed, false otherwise.
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException
      *             if the input phase type is not "Review" type.
      * @throws PhaseHandlingException
@@ -182,7 +190,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws IllegalArgumentException
      *             if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PhasesHelper.REVIEW);
 
@@ -190,11 +198,13 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
         // "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
             // return true if all dependencies have stopped and start time has
             // been reached.
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             Connection conn = null;
@@ -202,23 +212,36 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 conn = createConnection();
                 // change in version 1.4
                 // Search all "Active" submissions for current project with contest submission type
-                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                    conn,
                         phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-                return (subs.length > 0);
+                if (subs.length > 0) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult("No submissions that passed screening");
+                }
             } catch (SQLException sqle) {
                 throw new PhaseHandlingException("Failed to search submissions.", sqle);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
-            boolean deps = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            boolean reviews = allReviewsDone(phase);
-            boolean tests = allTestCasesUploaded(phase);
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
             LOG.log(Level.INFO, "pid: " + phase.getProject().getId()
-                    + " - PhasesHelper.arePhaseDependenciesMet(phase, false): " + deps);
-            LOG.log(Level.INFO, "pid: " + phase.getProject().getId() + " - allReviewsDone(phase): " + reviews);
-            LOG.log(Level.INFO, "pid: " + phase.getProject().getId() + " - allTestCasesUploaded(phase): " + tests);
-            return deps && reviews && tests;
+                + " - PhasesHelper.arePhaseDependenciesMet(phase, false): " + result.isSuccess());
+            if (!result.isSuccess()) {
+                return result;
+            }
+            result = allReviewsDone(phase);
+            LOG.log(Level.INFO,
+                "pid: " + phase.getProject().getId() + " - allReviewsDone(phase): " + result.isSuccess());
+            if (!result.isSuccess()) {
+                return result;
+            }
+            result = allTestCasesUploaded(phase);
+            LOG.log(Level.INFO,
+                "pid: " + phase.getProject().getId() + " - allTestCasesUploaded(phase): " + result.isSuccess());
+            return result;
         }
     }
 
@@ -226,17 +249,17 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Provides additional logic to execute a phase. This method will be called by start() and end() methods of
      * PhaseManager implementations in Phase Management component. This method can send email to a group of users
-     * associated with timeline notification for the project. The email can be send on start phase or end phase base on
-     * configuration settings.
+     * associated with timeline notification for the project. The email can be send on start phase or end phase
+     * base on configuration settings.
      * </p>
      * <p>
-     * If the input phase status is Scheduled, then it will perform the following additional logic to start the phase:
-     * All submissions failed automated screening must be set to the status &quot;Failed Screening&quot;.
+     * If the input phase status is Scheduled, then it will perform the following additional logic to start the
+     * phase: All submissions failed automated screening must be set to the status &quot;Failed Screening&quot;.
      * </p>
      * <p>
-     * If the input phase status is Open, then it will perform the following additional logic to stop the phase: Initial
-     * score for the all passed screening submissions will be calculated and saved to the submitters's resource
-     * properties named &quot;Initial Score&quot;.
+     * If the input phase status is Open, then it will perform the following additional logic to stop the phase:
+     * Initial score for the all passed screening submissions will be calculated and saved to the submitters's
+     * resource properties named &quot;Initial Score&quot;.
      * </p>
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
@@ -244,7 +267,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Update for version 1.2, for start, put the reviewer/submission info for stop, put the result info.
      * </p>
-     *
      * @param phase
      *            The input phase to check.
      * @param operator
@@ -279,7 +301,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Puts the start review phase information about submissions and reviewer info to the value map.
      * </p>
-     *
      * @param phase
      *            the current Phase, not null
      * @param values
@@ -295,7 +316,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
             // change in version 1.4
             // Search all "Active" submissions for current project with contest submission type
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn, phase
+            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                phase
                     .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
             values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs,
                     getManagerHelper().getResourceManager(), false));
@@ -320,7 +342,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * This method calculates initial score of all submissions that passed screening and saves it to the submitter's
+     * This method calculates initial score of all submissions that passed screening and saves it to the
+     * submitter's
      * resource properties. It is called from perform method when phase is stopping.
      * <p>
      * Update for version 1.2, for stop, put the result info.
@@ -329,7 +352,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * Changes in version 1.6: For studio competitions, there will be no Appeal, Appeal Response, Aggregation, and
      * Aggregation Review Phase, so the ranking and score will be calculated here, and no change later.
      * </p>
-     *
      * @param phase
      *            phase instance.
      * @param operator
@@ -352,7 +374,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             // change in version 1.4
             // Search all "Active" submissions with contest submission type for current project
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn, phase
+            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                phase
                     .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
             // Search the reviewIds
@@ -367,8 +390,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                     .getScorecardMinimumScore(getManagerHelper().getScorecardManager(), reviews[0]);
 
             // create array to hold scores from all reviewers for all submissions
-            com.topcoder.management.review.scoreaggregator.Submission[] submissionScores
-                = new com.topcoder.management.review.scoreaggregator.Submission[subs.length];
+            com.topcoder.management.review.scoreaggregator.Submission[] submissionScores = new com.topcoder.management.review.scoreaggregator.Submission[subs.length];
 
             // for each submission, populate scores array to use with review score aggregator.
             for (int iSub = 0; iSub < subs.length; iSub++) {
@@ -398,7 +420,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                     scores[iScore] = ((Float) scoresList.get(iScore)).floatValue();
                 }
 
-                submissionScores[iSub] = new com.topcoder.management.review.scoreaggregator.Submission(subId, scores);
+                submissionScores[iSub] = new com.topcoder.management.review.scoreaggregator.Submission(subId,
+                    scores);
             }
 
             // now calculate the aggregated scores
@@ -411,7 +434,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             RankedSubmission[] placements = scoreAggregator.calcPlacements(aggregations);
 
             // status objects
-            SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
+            SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(
+                getManagerHelper().getUploadManager(),
                     "Failed Review");
             SubmissionStatus noWinStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
                     "Completed Without Win");
@@ -465,9 +489,10 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             // populate places and update project with placement details for studio competitions.
             // studio project type id is 3.
             if (isStudioProject) {
-                List<Prize> prizes = new ArrayList(project.getPrizes());
+                List<Prize> prizes = project.getPrizes();
 
                 if (prizes != null && prizes.size() != 0) {
+                    prizes=new ArrayList<Prize>(prizes);
                     for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
                         Prize prize = iter.next();
 
@@ -482,7 +507,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
                             /**
                              * compare the prize by prize amount.
-                             *
                              * @param o1
                              *            the first prize
                              * @param o2
@@ -531,7 +555,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                     }
 
                     // update the project
-                    getManagerHelper().getProjectManager().updateProject(project, "Update the winner and runner up.",
+                    getManagerHelper().getProjectManager().updateProject(project,
+                        "Update the winner and runner up.",
                             operator);
                 }
             }
@@ -567,21 +592,28 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * This method checks if all active submissions have one review scorecard from each reviewer for the phase and
      * returns true if conditions are met, false otherwise.
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            the phase instance.
-     * @return true if all active submissions have one review from each reviewer, false otherwise.
+     * @return the validation result indicating whether all the reviews are done, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseHandlingException
      *             if there was an error retrieving data.
      */
-    private boolean allReviewsDone(Phase phase) throws PhaseHandlingException {
+    private OperationCheckResult allReviewsDone(Phase phase) throws PhaseHandlingException {
         Connection conn = null;
 
         try {
             // Search all "Active" submissions for current project
             conn = createConnection();
 
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn, phase
+            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                phase
                     .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
             // Search the reviewIds
@@ -604,14 +636,15 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 }
 
                 for (int i = 0; i < reviews.length; i++) {
-                    LOG.log(Level.DEBUG, "review: " + reviews[i].getId() + ", " + reviews[i].getSubmission() + ", "
+                    LOG.log(Level.DEBUG, "review: " + reviews[i].getId() + ", " + reviews[i].getSubmission()
+                        + ", "
                             + reviews[i].getAuthor() + ", " + reviews[i].isCommitted());
                 }
             }
 
             if (reviewers.length == 0) {
                 LOG.log(Level.INFO, "no reviewrs for project: " + phase.getProject().getId());
-                return false;
+                return new OperationCheckResult("No reviewrs for project: " + phase.getProject().getId());
             }
 
             if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
@@ -620,7 +653,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 if (reviewers.length < reviewerNum) {
                     LOG.log(Level.INFO, "can't end phase because: reviewers.length < reviewerNum, projectId: "
                             + phase.getProject().getId());
-                    return false;
+                    return new OperationCheckResult("No reviewrs for project: " + phase.getProject().getId());
                 }
             }
 
@@ -634,7 +667,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 for (int j = 0; j < reviews.length; j++) {
                     // check if review is committed
                     if (!reviews[j].isCommitted()) {
-                        return false;
+                        return new OperationCheckResult("Not all review scorecards are committed");
                     }
                     if (subId == reviews[j].getSubmission()) {
                         // this author of review should also match reviewer id
@@ -652,11 +685,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 if (noReviews != reviewers.length) {
                     LOG.log(Level.INFO, "can't end phase because: numReviews != reviewers.length, projectId: "
                             + phase.getProject().getId());
-                    return false;
+                    return new OperationCheckResult("Not all review scorecards are committed");
                 }
             }
 
-            return true;
+            return OperationCheckResult.SUCCESS;
         } catch (SQLException e) {
             throw new PhaseHandlingException("Error retrieving submission status id", e);
         } finally {
@@ -666,21 +699,27 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * This method checks if all test case reviewers have one test case uploaded.
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            the phase instance.
-     * @return true if all test case reviewers have one test case uploaded, or if there are no test case reviewers;
-     *         false otherwise.
+     * @return the validation result indicating whether all the test cases are uploaded, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseHandlingException
      *             if any error occurred when retrieving data.
      */
-    private boolean allTestCasesUploaded(Phase phase) throws PhaseHandlingException {
+    private OperationCheckResult allTestCasesUploaded(Phase phase) throws PhaseHandlingException {
         // get test case reviewers for phase id
         Resource[] reviewers = getReviewers(phase);
 
         if (LOG.isEnabled(Level.DEBUG)) {
             for (int i = 0; i < reviewers.length; i++) {
-                LOG.log(Level.DEBUG, "projectId: " + phase.getProject().getId() + "reviwer: " + reviewers[i].getId()
+                LOG.log(Level.DEBUG,
+                    "projectId: " + phase.getProject().getId() + "reviwer: " + reviewers[i].getId()
                         + ", " + reviewers[i].getProperty(PhasesHelper.HANDLE) + ", "
                         + reviewers[i].getResourceRole().getName());
             }
@@ -689,7 +728,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
         // if there are no test case reviewers,
         // no need to check if all uploads have been uploaded
         if (reviewers.length == 0) {
-            return true;
+            return OperationCheckResult.SUCCESS;
         }
 
         List<Long> reviewerIds = new ArrayList<Long>();
@@ -718,7 +757,8 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                     LOG.log(Level.INFO, "can't end phase. cant find upload for reviewer: " + reviewers[i].getId()
                             + ", " + reviewers[i].getProperty("Handle") + ", "
                             + reviewers[i].getResourceRole().getName());
-                    return false;
+                    return new OperationCheckResult("Not all test cases are uploaded (see reviewer with "
+                        + reviewers[i].getResourceRole().getName() + " role)");
                 }
             }
         } catch (UploadPersistenceException e) {
@@ -727,12 +767,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Problem with search builder", e);
         }
 
-        return true;
+        return OperationCheckResult.SUCCESS;
     }
 
     /**
      * This method retrieves the reviewer ids for Accuracy, Failure and Stress reviews for the given phase id.
-     *
      * @param phase
      *            the phase instance.
      * @return reviewers matching search criteria.
@@ -746,8 +785,10 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
             long accuracyReviewerId = ResourceRoleLookupUtility
                     .lookUpId(conn, PhasesHelper.ACCURACY_REVIEWER_ROLE_NAME);
-            long failureReviewerId = ResourceRoleLookupUtility.lookUpId(conn, PhasesHelper.FAILURE_REVIEWER_ROLE_NAME);
-            long stressReviewerId = ResourceRoleLookupUtility.lookUpId(conn, PhasesHelper.STRESS_REVIEWER_ROLE_NAME);
+            long failureReviewerId = ResourceRoleLookupUtility.lookUpId(conn,
+                PhasesHelper.FAILURE_REVIEWER_ROLE_NAME);
+            long stressReviewerId = ResourceRoleLookupUtility.lookUpId(conn,
+                PhasesHelper.STRESS_REVIEWER_ROLE_NAME);
 
             List<Long> resourceRoleIds = new ArrayList<Long>();
             resourceRoleIds.add(new Long(accuracyReviewerId));

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.resource.Resource;
@@ -25,38 +26,33 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a
- * phase can be executed and to add extra logic to execute a phase. It will be
- * used by Phase Management component. It is configurable using an input
- * namespace. The configurable parameters include database connection and email
- * sending. This class handle the aggregation review phase. If the input is of
- * other phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection and email sending. This class handle the
+ * aggregation review phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
- * The aggregation review phase can start as soon as the dependencies are met
- * and can stop when the following conditions met:
+ * The aggregation review phase can start as soon as the dependencies are met and can stop when the following
+ * conditions met:
  * </p>
  * <ul>
  * <li>The dependencies are met</li>
- * <li>The aggregation review is performed by two reviewers other than the
- * aggregator, and the winning submitter.</li>
+ * <li>The aggregation review is performed by two reviewers other than the aggregator, and the winning submitter.</li>
  * </ul>
  * <p>
  * The additional logic for executing this phase is:
  * </p>
  * <ul>
- * <li>When Aggregation Review phase is stopping, if the aggregation is rejected
- * by anyone, another aggregation/aggregation review cycle is inserted.</li>
+ * <li>When Aggregation Review phase is stopping, if the aggregation is rejected by anyone, another
+ * aggregation/aggregation review cycle is inserted.</li>
  * </ul>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
  * <p>
  * Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
  * <ol>
- * <li>Added support for automated aggregation review completion when phase
- * ends.</li>
+ * <li>Added support for automated aggregation review completion when phase ends.</li>
  * </ol>
  * </p>
  * <p>
@@ -67,9 +63,14 @@ import com.topcoder.util.log.LogFactory;
  * bind it to map used for filling email template.</li>
  * </ol>
  * </p>
- *
- * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy, isv
- * @version 1.4.7
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>The return changes from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, pulky, argolite, waits, saarixx, myxgyy, isv, microsky
+ * @version 1.6.1
  */
 public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -83,28 +84,24 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * constant for aggregation review comment.
-     *
      * @since 1.4
      */
     private static final String AGGREGATION_REVIEW_COMMENT = "Aggregation Review Comment";
 
     /**
      * constant for Submitter comment.
-     *
      * @since 1.4
      */
     private static final String SUBMITTER_COMMENT = "Submitter Comment";
 
     /**
      * constant for Aggregation phase.
-     *
      * @since 1.4
      */
     private static final String AGGREGATION = "Aggregation";
 
     /**
      * constant for Aggregator.
-     *
      * @since 1.4
      */
     private static final String AGGREGATOR = "Aggregator";
@@ -118,9 +115,8 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AggregationReviewPhaseHandler using the default
      * namespace for loading configuration settings.
-     *
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      */
     public AggregationReviewPhaseHandler() throws ConfigurationException {
         super(DEFAULT_NAMESPACE);
@@ -129,10 +125,9 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AggregationReviewPhaseHandler using the given
      * namespace for loading configuration settings.
-     *
      * @param namespace the namespace to load configuration settings from.
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      * @throws IllegalArgumentException if the input is null or empty string.
      */
     public AggregationReviewPhaseHandler(String namespace) throws ConfigurationException {
@@ -141,43 +136,44 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Check if the input phase can be executed or not. This method will check
-     * the phase status to see what will be executed. This method will be called
-     * by canStart() and canEnd() methods of PhaseManager implementations in
+     * Check if the input phase can be executed or not. This method will check the phase status to see what will be
+     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in
      * Phase Management component.
      * </p>
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase
-     * can be started using the following conditions:
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met.</li>
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be
-     * stopped using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met</li>
-     * <li>The aggregation review is performed by two reviewers other than the
-     * aggregator, and the winning submitter or the phase reaches its end.</li>
+     * <li>The aggregation review is performed by two reviewers other than the aggregator, and the winning
+     * submitter or the phase reaches its end.</li>
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase The input phase to check.
-     *
      * @return True if the input phase can be executed, false otherwise.
-     *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Aggregation Review" type.
+     *             "Aggregation Review" type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
 
         LOG.log(Level.DEBUG, "entering canPerform: phaseId" + phase.getId());
@@ -191,15 +187,14 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         if (toStart) {
             // return true if all dependencies have stopped and start time has
             // been reached.
-            return PhasesHelper.canPhaseStart(phase);
+            return PhasesHelper.checkPhaseCanStart(phase);
         } else {
 
-            boolean dependencyMet = PhasesHelper.arePhaseDependenciesMet(phase,
-                            false);
+            OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
 
-            if (!dependencyMet) {
+            if (!result.isSuccess()) {
                 // dependency not met
-                return false;
+                return result;
             }
 
             boolean aggregationReviewDone = aggregationReviewDone(phase);
@@ -212,17 +207,20 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                     LOG.log(Level.DEBUG, "Automatically approving pending aggregation reviews");
                     approvePendingAggregationReview(phase);
                 } catch (Exception e) {
-                    LOG.log(Level.WARN, new LogMessage(new Long(phase.getId()),
-                                                       null,
-                                        "Was not able to automatically approve pending aggregation reviews.",
-                                                       e));
+                    LOG.log(Level.WARN, new LogMessage(new Long(phase.getId()), null,
+                        "Was not able to automatically approve pending aggregation reviews.", e));
                     aggregationReviewDone = false;
                 }
             }
 
             LOG.log(Level.DEBUG, "ret: " + aggregationReviewDone);
 
-            return aggregationReviewDone;
+            if (aggregationReviewDone) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult(
+                    "Phase end time is not yet reached and not all aggregation reviews are complete");
+            }
         }
     }
 
@@ -237,21 +235,18 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
      * is Open, then it will perform the following additional logic to stop the
      * phase:
      * <ul>
-     * <li>If the aggregation is rejected by anyone, another
-     * aggregation/aggregation review cycle is inserted.</li>
+     * <li>If the aggregation is rejected by anyone, another aggregation/aggregation review cycle is inserted.</li>
      * </ul>
      * If the input phase status is Closed, then PhaseHandlingException will be
      * thrown.
-     *
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
-     *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Aggregation Review" type.
+     *             "Aggregation Review" type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
-     *         string.
+     *             string.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
@@ -265,7 +260,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             checkAggregationReview(phase, operator);
 
             Resource[] finalReviewers = getFinalReviewers(PhasesHelper.locatePhase(phase,
-			  PhasesHelper.PHASE_FINAL_REVIEW, true, true));
+                PhasesHelper.PHASE_FINAL_REVIEW, true, true));
             values.put("N_FINAL_REVIEWERS", finalReviewers.length);
         }
 
@@ -273,8 +268,9 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * <p>Gets the list of resources assigned <code>Final Reviewer</code> role.</p>
-     *
+     * <p>
+     * Gets the list of resources assigned <code>Final Reviewer</code> role.
+     * </p>
      * @param finalReviewPhase a <code>Phase</code> providing the details for <code>Final Review</code> phase.
      * @return a <code>Resource</code> array listing the resources granted <code>Final Reviewer</code> role.
      * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
@@ -285,7 +281,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         Connection connection = createConnection();
         try {
             finalReviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                    connection, new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME}, finalReviewPhase.getId());
+                    connection, new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
         } finally {
             PhasesHelper.closeConnection(connection);
         }
@@ -294,11 +290,9 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * This method approves all pending aggregation reviews.
-     *
      * @param phase the phase instance.
-     *
      * @throws PhaseHandlingException if an error occurs when retrieving or
-     *         storing the data.
+     *             storing the data.
      * @since 1.1
      */
     private void approvePendingAggregationReview(Phase phase) throws PhaseHandlingException {
@@ -334,12 +328,10 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
      * This method is called by perform method when the phase is stopping. If
      * the aggregation is rejected by anyone, another aggregation/aggregation
      * review cycle is inserted by this method.
-     *
      * @param phase phase instance.
      * @param operator operator name.
-     *
      * @throws PhaseHandlingException if an error occurs when retrieving/saving
-     *         data.
+     *             data.
      */
     private void checkAggregationReview(Phase phase, String operator) throws PhaseHandlingException {
         Review aggregationWorksheet = getAggregationWorksheet(phase);
@@ -402,7 +394,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
                 // use helper method to create and save the new phases
                 int currentPhaseIndex = PhasesHelper.createNewPhases(
-                                currentPrj, phase, new PhaseType[] {aggPhaseType, aggReviewPhaseType},
+                                currentPrj, phase, new PhaseType[] {aggPhaseType, aggReviewPhaseType },
                                 phaseStatus, getManagerHelper().getPhaseManager(), operator, false);
 
                 // save the phases
@@ -429,11 +421,8 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * This method checks if the aggregation review has been performed by two
      * reviewers other than the aggregator, and the winning submitter.
-     *
      * @param phase the phase instance.
-     *
      * @return true if aggregation review is done.
-     *
      * @throws PhaseHandlingException if an error occurs when retrieving data.
      */
     private boolean aggregationReviewDone(Phase phase) throws PhaseHandlingException {
@@ -460,7 +449,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                                             .getId());
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
-                            new String[] {AGGREGATOR}, aggregationPhase
+                            new String[] {AGGREGATOR }, aggregationPhase
                                             .getId());
             if (aggregators.length == 0) {
                 LOG.log(Level.DEBUG, "No Aggregator resource found for phase: "
@@ -491,9 +480,10 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                 }
                 if (!doesCommentExist(comments, reviewers[i].getId(),
                                 AGGREGATION_REVIEW_COMMENT)) {
-                    LOG.log(Level.INFO,
+                    LOG.log(
+                        Level.INFO,
                             "cant't start phase: not exists comment type 'Aggregation Review Comment' for reviewer: "
-                            + reviewers[i].getId());
+                                + reviewers[i].getId());
                     return false;
                 }
             }
@@ -503,7 +493,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             }
             LOG.log(Level.INFO,
                     "cant't start phase: not exists comment type 'Submitter Comment' for reviewer: "
-                    + winningSubmitter.getId());
+                        + winningSubmitter.getId());
             return false;
         } finally {
             PhasesHelper.closeConnection(conn);
@@ -512,11 +502,8 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * This method returns the aggregation review scorecard.
-     *
      * @param phase phase instance.
-     *
      * @return aggregation review scorecard.
-     *
      * @throws PhaseHandlingException if an error occurs when retrieving data.
      */
     private Review getAggregationWorksheet(Phase phase) throws PhaseHandlingException {
@@ -544,11 +531,9 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Returns true if the specified resourceId is the author of atleast one
      * comment in the given array.
-     *
      * @param comments comments array.
      * @param resourceId resource id.
      * @param commentType the type
-     *
      * @return true if the specified resourceId is the author of atleast one
      *         comment in the given array.
      */

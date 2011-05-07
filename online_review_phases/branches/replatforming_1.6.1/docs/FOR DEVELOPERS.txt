@@ -1,0 +1,12 @@
+The following not used methods must be removed from the existing classes:
+- SubmissionPhaseHandler#arePassedSubmissionsEnough
+- SubmissionPhaseHandler#getManualScreeningPasses
+- SubmissionPhaseHandler#getAutoScreeningPasses
+- PhasesHelper#getScreeningTasks
+- ManagerHelper#initScreeningManager
+
+Please see versions of indirect dependency components in RS. Some of them need to be updated.
+
+Dependency to "Auto Screening Management" component must be removed.
+
+Configuration parameter "ScreeningManager.Namespace" must be removed.

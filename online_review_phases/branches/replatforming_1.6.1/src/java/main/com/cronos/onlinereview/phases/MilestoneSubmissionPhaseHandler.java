@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
@@ -17,11 +18,11 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add extra
- * logic to execute a phase. It will be used by <b>Phase Management</b> component. It is configurable using an input
- * namespace. The configurable parameters include database connection, email sending and the required number of
- * submissions that pass screening. This class handle the milestone submission phase. If the input is of other phase
- * types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by <b>Phase Management</b> component. It is configurable using
+ * an input namespace. The configurable parameters include database connection, email sending and the required
+ * number of submissions that pass screening. This class handle the milestone submission phase. If the input is of
+ * other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
  * The milestone submission phase can be started using when the following conditions:
@@ -35,8 +36,8 @@ import com.topcoder.util.log.LogFactory;
  * <ul>
  * <li>The dependencies are met</li>
  * <li>The phase's end time is reached.</li>
- * <li>If there are no milestone submissions or if manually milestone screening is required, the number of milestone
- * submissions that have passed manual milestone screening meets the required number.</li>
+ * <li>If there are no milestone submissions or if manually milestone screening is required, the number of
+ * milestone submissions that have passed manual milestone screening meets the required number.</li>
  * </ul>
  * </p>
  * <p>
@@ -48,9 +49,14 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
- * @author FireIce, TCSDEVELOPER
- * @version 1.6
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>The return changes from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author FireIce, saarixx, TCSDEVELOPER, microsky
+ * @version 1.6.1
  * @since 1.6
  */
 public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
@@ -76,10 +82,9 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Create a new instance of MilestoneSubmissionPhaseHandler using the default namespace for loading configuration
-     * settings.
+     * Create a new instance of MilestoneSubmissionPhaseHandler using the default namespace for loading
+     * configuration settings.
      * </p>
-     *
      * @throws ConfigurationException
      *             if errors occurred while loading configuration settings.
      */
@@ -92,7 +97,6 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      * Create a new instance of MilestoneSubmissionPhaseHandler using the given namespace for loading configuration
      * settings.
      * </p>
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @throws ConfigurationException
@@ -107,8 +111,8 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
     /**
      * <p>
      * Check if the input phase can be executed or not. This method will check the phase status to see what will be
-     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in Phase
-     * Management component.
+     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in
+     * Phase Management component.
      * </p>
      * <p>
      * If the input phase status is Scheduled, then it will check if the phase can be started using the following
@@ -119,21 +123,28 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be stopped using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met</li>
      * <li>The phase's end time is reached.</li>
-     * <li>If there are no milestone submissions or if manually milestone screening is required, the number of milestone
-     * submissions that have passed manual milestone screening meets the required number.</li>
+     * <li>If there are no milestone submissions or if manually milestone screening is required, the number of
+     * milestone submissions that have passed manual milestone screening meets the required number.</li>
      * </ul>
      * </p>
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            The input phase to check.
-     * @return True if the input phase can be executed, false otherwise.
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException
      *             if the input phase type is not &quot;Milestone Submission&quot; type.
      * @throws PhaseHandlingException
@@ -141,7 +152,7 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      * @throws IllegalArgumentException
      *             if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_MILESTONE_SUBMISSION);
 
@@ -149,16 +160,24 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
-            return PhasesHelper.canPhaseStart(phase);
+            return PhasesHelper.checkPhaseCanStart(phase);
         } else {
             Connection conn = null;
             try {
                 conn = createConnection();
-                boolean dependencyMet = PhasesHelper.arePhaseDependenciesMet(phase, false);
-                boolean reachEndTime = PhasesHelper.reachedPhaseEndTime(phase);
+                OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+                if (!result.isSuccess()) {
+                    return result;
+                }
+                if (!PhasesHelper.reachedPhaseEndTime(phase)) {
+                    return new OperationCheckResult("Phase end time is not yet reached");
+                }
 
-                return (dependencyMet && reachEndTime
-                        && (!hasAnySubmission(conn, phase, null) || arePassedSubmissionsEnough(conn, phase)));
+                if (!hasAnySubmission(conn, phase, null) || arePassedSubmissionsEnough(
+                    conn, phase)) {
+                    return OperationCheckResult.SUCCESS;
+                }
+                return new OperationCheckResult("Not enough milestone submissions for the project");
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
@@ -168,12 +187,12 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
     /**
      * Provides additional logic to execute a phase. This method will be called by start() and end() methods of
      * PhaseManager implementations in Phase Management component. This method can send email to a group of users
-     * associated with timeline notification for the project. The email can be send on start phase or end phase base on
+     * associated with timeline notification for the project. The email can be send on start phase or end phase
+     * base on
      * configuration settings.
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
      * @param phase
      *            The input phase to check.
      * @param operator
@@ -212,7 +231,6 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * This method checks whether there is any milestone submission in this phase.
      * </p>
-     *
      * @param phase
      *            the phase to check.
      * @param values
@@ -225,7 +243,8 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     private boolean hasAnySubmission(Connection conn, Phase phase, Map<String, Object> values)
         throws PhaseHandlingException {
-        Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper().getUploadManager(), conn,
+        Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper().getUploadManager(),
+            conn,
                 phase.getProject().getId(), phase.getId(), LOG);
 
         // for stop phase, we are going to support more information.
@@ -241,7 +260,6 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Returns true if the number of submissions that passed screenings meets the required number.
      * </p>
-     *
      * @param conn
      *            the Connection instance
      * @param phase
@@ -271,7 +289,7 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
 
             // get reviews for the phase
             Review[] milestoneScreenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                    milestoneScreeningPhaseId, new String[] {"Milestone Screener"}, null);
+                    milestoneScreeningPhaseId, new String[] {"Milestone Screener" }, null);
             if (milestoneScreenReviews.length == 0) {
                 LOG.log(Level.INFO, "There is no milestone screening review.");
                 return false;

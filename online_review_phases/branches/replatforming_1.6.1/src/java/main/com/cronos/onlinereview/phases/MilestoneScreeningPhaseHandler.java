@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -10,6 +10,7 @@ import java.util.Map;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
@@ -20,10 +21,10 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add extra
- * logic to execute a phase. It will be used by Phase Management component. It is configurable using an input namespace.
- * The configurable parameters include database connection, email sending. This class handle the milestone screening
- * phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection, email sending. This class handle the
+ * milestone screening phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
  * The milestone screening phase can start as soon as the following conditions met:
@@ -43,16 +44,21 @@ import com.topcoder.util.log.LogFactory;
  * <ul>
  * <li>all submissions with failed screening scorecard scores should be set to the status &quot;Failed Milestone
  * Screening&quot;.</li>
- * <li>Screening score for the all submissions will be calculated and saved to the submitters&rsquo; resource properties
- * named &quot;Screening Score&quot;.</li>
+ * <li>Screening score for the all submissions will be calculated and saved to the submitters&rsquo; resource
+ * properties named &quot;Screening Score&quot;.</li>
  * </ul>
  * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
- * @author FireIce, TCSDEVELOPER
- * @version 1.6
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>The return changes from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author FireIce, saarixx, TCSDEVELOPER, microsky
+ * @version 1.6.1
  * @since 1.6
  */
 public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
@@ -94,10 +100,9 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Create a new instance of MilestoneScreeningPhaseHandler using the default namespace for loading configuration
-     * settings.
+     * Create a new instance of MilestoneScreeningPhaseHandler using the default namespace for loading
+     * configuration settings.
      * </p>
-     *
      * @throws ConfigurationException
      *             if errors occurred while loading configuration settings.
      */
@@ -110,7 +115,6 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * Create a new instance of MilestoneScreeningPhaseHandler using the given namespace for loading configuration
      * settings.
      * </p>
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @throws ConfigurationException
@@ -124,7 +128,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Check if the input phase can be executed or not. This method will check the phase status to see what will be
-     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in Phase
+     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in
+     * Phase
      * Management component.
      * <p>
      * If the input phase status is Scheduled, then it will check if the phase can be started using the following
@@ -136,7 +141,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be stopped using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met</li>
      * <li>All active milestone submissions have one screening scorecard committed.</li>
@@ -145,10 +151,16 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            The input phase to check.
-     * @return True if the input phase can be executed, false otherwise.
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException
      *             if the input phase type is not "Milestone Screening" type.
      * @throws PhaseHandlingException
@@ -156,17 +168,19 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * @throws IllegalArgumentException
      *             if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_MILESTONE_SCREENING);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
             // return true if all dependencies have stopped and start time has been reached.
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             Connection conn = null;
@@ -174,14 +188,20 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
                 conn = createConnection();
                 // Search all "Active" milestone submissions for current project
                 Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(
-                        getManagerHelper().getUploadManager(), conn, phase.getProject().getId(), phase.getId(), LOG);
-                return subs.length > 0;
+                        getManagerHelper().getUploadManager(), conn, phase.getProject().getId(), phase.getId(),
+                    LOG);
+                if (subs.length > 0) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult("There are no milestone submissions for the project");
+                }
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
-            if (!PhasesHelper.arePhaseDependenciesMet(phase, false)) {
-                return false;
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             return areScorecardsCommitted(phase);
@@ -192,8 +212,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Provides additional logic to execute a phase. This method will be called by start() and end() methods of
      * PhaseManager implementations in Phase Management component. This method can send email to a group of users
-     * associated with timeline notification for the project. The email can be send on start phase or end phase base on
-     * configuration settings.
+     * associated with timeline notification for the project. The email can be send on start phase or end phase
+     * base on configuration settings.
      * </p>
      * <p>
      * If the input phase status is Scheduled, then it will do nothing.
@@ -201,8 +221,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * If the input phase status is Open, then it will perform the following additional logic to stop the phase:
      * <ul>
-     * <li>all submissions with failed screening scorecard scores should be set to the status &quot;Failed Milestone
-     * Screening&quot;.</li>
+     * <li>all submissions with failed screening scorecard scores should be set to the status &quot;Failed
+     * Milestone Screening&quot;.</li>
      * <li>Screening score for the all submissions will be calculated and saved to the submitters&rsquo; resource
      * properties named &quot;Screening Score&quot;.</li>
      * </ul>
@@ -210,7 +230,6 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
      * @param phase
      *            The input phase to check.
      * @param operator
@@ -248,13 +267,15 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
                         .getUploadManager(), conn, phase.getProject().getId(), phase.getId(), LOG);
 
                 // Search all screening scorecard for the current phase
-                Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase
-                        .getId(), new String[] {ROLE_MILESTONE_SCREENER}, null);
+                Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
+                    phase
+                        .getId(), new String[] {ROLE_MILESTONE_SCREENER }, null);
 
                 if (submissions.length != screenReviews.length) {
                     LOG.log(Level.ERROR, "Submission count does not match screening count for project:"
                             + phase.getProject().getId());
-                    throw new PhaseHandlingException("Submission count does not match screening count for project:"
+                    throw new PhaseHandlingException(
+                        "Submission count does not match screening count for project:"
                             + phase.getProject().getId());
                 }
 
@@ -263,7 +284,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
                     noScreeningPass = true;
 
                     // get minimum score
-                    float minScore = PhasesHelper.getScorecardMinimumScore(getManagerHelper().getScorecardManager(),
+                    float minScore = PhasesHelper.getScorecardMinimumScore(getManagerHelper()
+                        .getScorecardManager(),
                             screenReviews[0]);
 
                     // for each submission...
@@ -294,7 +316,6 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Puts the milestone screening start phase info for email generation.
      * </p>
-     *
      * @param phase
      *            the current Phase
      * @param values
@@ -308,13 +329,14 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
         Submission[] subs = null;
         // get the screener
         Resource[] screeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                new String[] {ROLE_MILESTONE_SCREENER}, phase.getId());
+                new String[] {ROLE_MILESTONE_SCREENER }, phase.getId());
         values.put("NEED_MILESTONE_SCREENER", screeners.length == 0 ? 1 : 0);
         // get submissions
         subs = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper().getUploadManager(), conn, phase
                 .getProject().getId(), phase.getId(), LOG);
         // put the submitter info into the map
-        values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs, getManagerHelper().getResourceManager(),
+        values.put("SUBMITTER",
+            PhasesHelper.constructSubmitterValues(subs, getManagerHelper().getResourceManager(),
                 false));
     }
 
@@ -328,7 +350,6 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * &quot;Screening Score&quot;.</li>
      * </ul>
      * </p>
-     *
      * @param submission
      *            the submission to process and update.
      * @param screenReviews
@@ -372,7 +393,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
             // If screeningScore < screening minimum score, Set submission status to "Failed Milestone Screening"
             if (screeningScore.floatValue() < minScore) {
 
-                SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
+                SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(getManagerHelper()
+                    .getUploadManager(),
                         SUBMISSION_STATUS_FAILED_MILESTONE_SCREENING);
                 submission.setSubmissionStatus(subStatus);
 
@@ -390,15 +412,20 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Checks if all the submissions for the given project have one scorecard committed, false otherwise.
      * </p>
-     * .
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            the phase to check.
-     * @return true if all the submissions for the given project have one scorecard committed, false otherwise.
+     * @return the validation result indicating whether the scorecards are committed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseHandlingException
      *             if there was an error retrieving data.
      */
-    private boolean areScorecardsCommitted(Phase phase) throws PhaseHandlingException {
+    private OperationCheckResult areScorecardsCommitted(Phase phase) throws PhaseHandlingException {
         Connection conn = null;
 
         try {
@@ -406,7 +433,7 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
 
             // get all screening scorecards for the phase
             Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                    phase.getId(), new String[] {ROLE_MILESTONE_SCREENER}, null);
+                    phase.getId(), new String[] {ROLE_MILESTONE_SCREENER }, null);
 
             // get the submissions for the project
             Submission[] submissions = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper()
@@ -416,7 +443,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
             // screener.
             if (screenReviews.length != submissions.length) {
                 LOG.log(Level.INFO, "The number of screening reviews is't matched with the submissions");
-                return false;
+                return  new OperationCheckResult(
+                    "Not all milestone screening scorecards are committed");
             }
 
             for (int i = 0; i < submissions.length; i++) {
@@ -432,7 +460,9 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
                         // also check if each review is committed
                         if (!screenReviews[j].isCommitted()) {
                             LOG.log(Level.INFO, "Some screening scorecards are not committed.");
-                            return false;
+                            return new OperationCheckResult(
+                                "Not all milestone screening scorecards are committed (see submission with ID="
+                                    + subId + ")");
                         }
 
                         break;
@@ -442,11 +472,13 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
                 // if a review was not found for a particular submission, return false.
                 if (!foundReview) {
                     LOG.log(Level.INFO, "There is no screening review for submission with id - " + subId);
-                    return false;
+                    return new OperationCheckResult(
+                        "Not all milestone screening scorecards are committed (see submission with ID="
+                            + subId + ")");
                 }
             }
 
-            return true;
+            return OperationCheckResult.SUCCESS;
         } finally {
             PhasesHelper.closeConnection(conn);
         }

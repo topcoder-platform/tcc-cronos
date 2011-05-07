@@ -42,7 +42,7 @@ public class ApprovalPhaseHandlerTest extends StressBaseTest {
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
 
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
+        // configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 

@@ -13,6 +13,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.cronos.onlinereview.phases.failuretests.mock.MockConnection;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.sql.Connection;
 
@@ -253,10 +254,10 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
-    public static Phase getOpenSubmissionPhase() {
+    public static Phase getScheduledSubmissionPhase() {
         Phase result = new Phase(getProject(), 1000);
         result.setPhaseType(getSubmissionPhaseType());
-        result.setPhaseStatus(getOpenPhaseStatus());
+        result.setPhaseStatus(getScheduledPhaseStatus());
         result.setAttribute("Submission Number", "1");
         result.setFixedStartDate(new Date());
         result.setId(1);
@@ -735,11 +736,27 @@ public class TestDataFactory {
      *
      * @return a new <code>Phase</code> instance.
      */
+    public static Phase getScheduleApprovalPhase() {
+        Phase result = new Phase(getProject(), 1000);
+        result.setPhaseType(getApprovalPhaseType());
+        result.setPhaseStatus(getScheduledPhaseStatus());
+        result.setFixedStartDate(new Date());
+        result.setId(1);
+        return result;
+    }
+
+    /**
+     * <p>Generates a new instance of <code>Phase</code> type initialized with random data.</p>
+     *
+     * @return a new <code>Phase</code> instance.
+     */
     public static Phase getOpenApprovalPhase() {
         Phase result = new Phase(getProject(), 1000);
         result.setPhaseType(getApprovalPhaseType());
         result.setPhaseStatus(getOpenPhaseStatus());
-        result.setFixedStartDate(new Date());
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2020);
+        result.setFixedStartDate(cal.getTime());
         result.setId(1);
         return result;
     }

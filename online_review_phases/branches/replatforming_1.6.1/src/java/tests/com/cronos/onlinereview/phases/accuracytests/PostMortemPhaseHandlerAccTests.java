@@ -7,6 +7,7 @@ import com.cronos.onlinereview.phases.PostMortemPhaseHandler;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandler;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
@@ -74,19 +75,27 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
         // time has not passed
-        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+        OperationCheckResult result = handler.canPerform(postMortemPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Approval phase is not yet ended.",  result.getMessage());
 
         // time has passed, but dependency not met.
         postMortemPhase.setActualStartDate(new Date());
-        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+        result = handler.canPerform(postMortemPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Approval phase is not yet ended.",  result.getMessage());
 
         // set the number of required post-mortem reviewer to 1
         postMortemPhase.setAttribute("Reviewer Number", "1");
 
         // time has passed and dependency met
         postMortemPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
-        assertTrue("canPerform should return true when dependencies met and time is up",
-            handler.canPerform(postMortemPhase));
+         result = handler.canPerform(postMortemPhase);
+
+        assertTrue("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  null,  result.getMessage());
     }
 
     /**
@@ -106,7 +115,10 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setPhaseStatus(PhaseStatus.OPEN);
 
         // dependencies not met
-        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+        OperationCheckResult result = handler.canPerform(postMortemPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Approval phase is not yet ended.",  result.getMessage());
 
         // remove all dependencies
         for (int i = 0; i < postMortemPhase.getAllDependencies().length; ++i) {
@@ -117,7 +129,10 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         postMortemPhase.setAttribute("Reviewer Number", "1");
 
         // dependencies met but without post-mortem reviewer
-        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+        result = handler.canPerform(postMortemPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Phase end time is not yet reached",  result.getMessage());
 
         // insert post-mortem reviewer
         Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 14);
@@ -132,7 +147,10 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         insertResourceInfo(conn, postMortemReviewer.getId(), 1, "1001");
 
         // there is not scorecard filled
-        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+        result = handler.canPerform(postMortemPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Phase end time is not yet reached",  result.getMessage());
 
         // insert a scorecard here
         Upload upload = createUpload(101, project.getId(), postMortemReviewer.getId(), 4, 1, "parameter");
@@ -151,7 +169,10 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         this.insertReviews(conn, new Review[] { postMortemScorecard });
 
         // scorecard not committed return false
-        assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+        result = handler.canPerform(postMortemPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Phase end time is not yet reached",  result.getMessage());
     }
 
     /**
@@ -207,6 +228,9 @@ public class PostMortemPhaseHandlerAccTests extends BaseTestCase {
         this.insertReviews(conn, new Review[] { postMortemScorecard });
 
         // scorecard committed
-        assertTrue("canPerform should have returned true", handler.canPerform(postMortemPhase));
+        OperationCheckResult result = handler.canPerform(postMortemPhase);
+
+        assertTrue("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  null,  result.getMessage());
     }
 }

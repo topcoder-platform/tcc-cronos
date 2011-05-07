@@ -4,6 +4,8 @@
 
 package com.cronos.onlinereview.phases.failuretests.mock;
 
+import com.topcoder.management.deliverable.MimeType;
+import com.topcoder.management.deliverable.SubmissionImage;
 import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.Upload;
@@ -1133,5 +1135,51 @@ public class MockUploadManager implements UploadManager {
     public void updateSubmissionType(SubmissionType arg0, String arg1) throws UploadPersistenceException {
         // Empty
     }
+
+	public void createSubmissionImage(SubmissionImage submissionImage,
+			String operator) throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public MimeType[] getAllMimeTypes() throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public SubmissionImage[] getImagesForSubmission(long submissionId)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public MimeType getMimeType(long id) throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Submission[] getProjectSubmissions(long projectId)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Submission[] getUserSubmissionsForProject(long projectId,
+			long ownerId) throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeSubmissionImage(SubmissionImage submissionImage,
+			String operator) throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateSubmissionImage(SubmissionImage submissionImage,
+			String operator) throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

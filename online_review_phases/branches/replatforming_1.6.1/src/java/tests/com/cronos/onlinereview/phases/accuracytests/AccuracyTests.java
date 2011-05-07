@@ -22,8 +22,6 @@ public class AccuracyTests extends TestCase {
      */
     public static Test suite() {
         final TestSuite suite = new TestSuite();
-        suite.addTestSuite(AppealPhaseHandlerTestV12.class);
-        suite.addTestSuite(AppealsResponsePhaseHandlerTestV12.class);
         suite.addTestSuite(AbstractPhaseHandlerTestV13.class);
         suite.addTestSuite(ApprovalPhaseHandlerAccTest.class);
         suite.addTestSuite(FinalReviewPhaseHandlerAccTest.class);
@@ -41,15 +39,11 @@ public class AccuracyTests extends TestCase {
         suite.addTestSuite(ProjectInfoTypeLookupUtilityAccTest.class);
         suite.addTestSuite(ResourceRoleLookupUtilityAccTest.class);
         suite.addTestSuite(FinalReviewPhaseHandlerTestV12.class);
-        suite.addTestSuite(PostMortemPhaseHandlerTestV12.class);
         suite.addTestSuite(RegistrationPhaseHandlerTestV12.class);
-        suite.addTestSuite(ScreeningPhaseHandlerTestV12.class);
         suite.addTestSuite(SubmissionPhaseHandlerTestV12.class);
-        suite.addTestSuite(ReviewPhaseHandlerTestV12.class);
         suite.addTestSuite(ApprovalPhaseHandlerAccTestsV11.class);
         suite.addTestSuite(FinalReviewPhaseHandlerAccTestsV11.class);
         suite.addTestSuite(RegistrationPhaseHandlerAccTestsV11.class);
-        suite.addTestSuite(ScreeningPhaseHandlerAccTestsV11.class);
         suite.addTestSuite(SubmissionPhaseHandlerAccTestsV11.class);
         suite.addTestSuite(ApprovalPhaseHandlerTestV12.class);
         suite.addTestSuite(SubmissionTypeLookupUtilityAccuracyTests.class);

@@ -314,7 +314,7 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new SearchBuilderConfigurationException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenApprovalPhase());
+                this.testedInstances[i].canPerform(TestDataFactory.getScheduleApprovalPhase());
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
@@ -335,7 +335,7 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new ResourcePersistenceException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenApprovalPhase());
+                this.testedInstances[i].canPerform(TestDataFactory.getScheduleApprovalPhase());
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
@@ -356,7 +356,7 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new SearchBuilderException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenApprovalPhase());
+                this.testedInstances[i].canPerform(TestDataFactory.getScheduleApprovalPhase());
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior

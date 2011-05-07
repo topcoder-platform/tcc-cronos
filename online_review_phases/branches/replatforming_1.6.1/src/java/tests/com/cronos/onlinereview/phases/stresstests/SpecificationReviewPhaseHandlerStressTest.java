@@ -9,6 +9,7 @@ import java.util.Date;
 import com.cronos.onlinereview.phases.SpecificationReviewPhaseHandler;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -84,7 +85,7 @@ public class SpecificationReviewPhaseHandlerStressTest extends StressBaseTest {
 
         ConfigManager configManager = ConfigManager.getInstance();
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
+        // configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -262,7 +263,7 @@ public class SpecificationReviewPhaseHandlerStressTest extends StressBaseTest {
      * @throws Exception to JUnit
      */
     private boolean runCanPerform() throws Exception {
-        return handler.canPerform(reviewPhase);
+        return handler.canPerform(reviewPhase).equals(OperationCheckResult.SUCCESS);
     }
 
     /**

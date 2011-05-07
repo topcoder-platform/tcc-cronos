@@ -1266,8 +1266,8 @@ public class StressBaseTest extends TestCase {
         try {
             String insertSubmission = "INSERT INTO submission "
                 + "(submission_id, upload_id, submission_status_id, "
-                + "submission_type_id, create_user, create_date, modify_user, modify_date, placement) "
-                + "VALUES (?, ?, ?, ?, 'user', ?, 'user', ?, ?)";
+                + "submission_type_id, create_user, create_date, modify_user, modify_date, placement, user_rank) "
+                + "VALUES (?, ?, ?, ?, 'user', ?, 'user', ?, ?, ?)";
             preparedStmt = conn.prepareStatement(insertSubmission);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -1280,11 +1280,30 @@ public class StressBaseTest extends TestCase {
                 preparedStmt.setTimestamp(5, now);
                 preparedStmt.setTimestamp(6, now);
 
+
                 preparedStmt.setLong(7, (submissions[i].getPlacement() == null) ? new Long(0)
                     : submissions[i].getPlacement());
+                preparedStmt.setLong(8, i+1);
                 preparedStmt.executeUpdate();
             }
 
+            closeStatement(preparedStmt);
+            preparedStmt = null;
+
+            insertSubmission = "INSERT INTO upload_submission  "
+                + "(upload_id, submission_id ) "
+                + "VALUES (?, ?)";
+            preparedStmt = conn.prepareStatement(insertSubmission);
+
+            for (int i = 0; i < submissions.length; i++) {
+                preparedStmt.setLong(1, submissions[i].getUpload().getId());
+                preparedStmt.setLong(2, submissions[i].getId());
+                try {
+                    preparedStmt.executeUpdate();
+                } catch (SQLException e) {
+                    // ignore
+                }
+            }
             closeStatement(preparedStmt);
             preparedStmt = null;
         } finally {

@@ -6,6 +6,8 @@ package com.cronos.onlinereview.phases.failuretests.mock;
 
 import com.topcoder.management.deliverable.persistence.UploadPersistence;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.MimeType;
+import com.topcoder.management.deliverable.SubmissionImage;
 import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.UploadType;
 import com.topcoder.management.deliverable.UploadStatus;
@@ -1354,5 +1356,58 @@ public class MockUploadPersistence implements UploadPersistence {
     public void updateSubmissionType(SubmissionType arg0) throws UploadPersistenceException {
         // Empty
     }
+
+	public void addSubmissionImage(SubmissionImage submissionImage)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public long[] getAllMimeTypeIds() throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public SubmissionImage[] getImagesForSubmission(long submissionId)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Submission[] getProjectSubmissions(long projectId)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Submission[] getUserSubmissionsForProject(long projectId,
+			long ownerId) throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public MimeType loadMimeType(long mimeTypeId)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public MimeType[] loadMimeTypes(long[] mimeTypeIds)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeSubmissionImage(SubmissionImage submissionImage)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateSubmissionImage(SubmissionImage submissionImage)
+			throws UploadPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

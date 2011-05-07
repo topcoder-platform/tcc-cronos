@@ -24,7 +24,7 @@ import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtilityTest;
  * This test case aggregates all Unit test cases.
  * </p>
  *
- * @author myxgyy, TCSDEVELOPER
+ * @author myxgyy, microsky
  * @version 1.6
  */
 public class UnitTests extends TestCase {

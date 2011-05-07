@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -20,27 +20,29 @@ import java.sql.Connection;
 
 import java.util.Date;
 
-
 /**
  * All tests for FinalReviewPhaseHandler class.
- *
  * <p>
- * Version 1.1 change notes: tests have been added to test the new logic: When Final Review phase is stopping, if final
- * review is approved, an Approval phase is inserted that depends on the end of the finished Final Review phase.
+ * Version 1.1 change notes: tests have been added to test the new logic: When Final Review phase is stopping, if
+ * final review is approved, an Approval phase is inserted that depends on the end of the finished Final Review
+ * phase.
  * </p>
- *
  * <p>
- * Version 1.2 change notes : since the email-templates and role-supported has been enhanced.
- * The test cases will try to do on that way while for email content, please check it manually.
+ * Version 1.2 change notes : since the email-templates and role-supported has been enhanced. The test cases will
+ * try to do on that way while for email content, please check it manually.
  * </p>
- *
- * @author bose_java, waits
- * @version 1.2
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, microsky
+ * @version 1.6.1
  */
 public class FinalReviewPhaseHandlerTest extends BaseTest {
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void setUp() throws Exception {
@@ -50,7 +52,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
 
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -62,7 +63,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void tearDown() throws Exception {
@@ -71,7 +71,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerform() throws Exception {
@@ -87,7 +86,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidStatus() throws Exception {
@@ -104,7 +102,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidType() throws Exception {
@@ -121,7 +118,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullPhase() throws Exception {
@@ -137,7 +133,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidStatus() throws Exception {
@@ -154,7 +149,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidType() throws Exception {
@@ -171,7 +165,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullOperator() throws Exception {
@@ -188,7 +181,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithEmptyOperator() throws Exception {
@@ -205,7 +197,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the FinalReviewPhaseHandler() constructor and canPerform with Scheduled statuses.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithScheduled() throws Exception {
@@ -222,15 +213,15 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
             finalReviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase).isSuccess());
 
             // time has passed, but dependency not met.
             finalReviewPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase).isSuccess());
 
             // time has passed and dependency met.
             finalReviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
-            assertTrue("canPerform should have returned true", handler.canPerform(finalReviewPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(finalReviewPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -238,7 +229,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the FinalReviewPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformHandlerWithOpen() throws Exception {
@@ -258,7 +248,7 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
             finalReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -266,7 +256,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception not under test.
      */
     public void testPerform() throws Exception {
@@ -280,7 +269,6 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status.
-     *
      * @throws Exception not under test.
      */
     public void testPerform_start_noFinalReviewer() throws Exception {
@@ -307,91 +295,90 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insertScorecards
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
 
             Review review = createReview(1000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //perform review first before appeals start
+            // perform review first before appeals start
             reviewPhaseHandler.perform(reviewPhase, operator);
 
             aphandler.perform(appealsResponsePhase, operator);
 
             Phase aggregationPhase = project.getAllPhases()[6];
 
-            //create aggregator
+            // create aggregator
             Resource aggregator = createResource(10, aggregationPhase.getId(), 1, 8);
-            super.insertResources(conn, new Resource[] {aggregator});
+            super.insertResources(conn, new Resource[] {aggregator });
             insertResourceInfo(conn, aggregator.getId(), 1, "2");
 
-            //start aggregation
+            // start aggregation
             aggregatehandler.perform(aggregationPhase, operator);
 
-            //stop now
+            // stop now
             aggregationPhase.setPhaseStatus(PhaseStatus.OPEN);
             aggregatehandler.perform(aggregationPhase, operator);
 
-            //final review phase
+            // final review phase
             Phase finalReviewPhase = project.getAllPhases()[9];
             handler.perform(finalReviewPhase, operator);
 
-
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
         }
     }
+
     /**
      * Tests the perform with Scheduled status.
-     *
      * @throws Exception not under test.
      */
     public void testPerform_start_withFinalReviewer() throws Exception {
@@ -418,89 +405,87 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insertScorecards
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
 
             Review review = createReview(1000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //perform review first before appeals start
+            // perform review first before appeals start
             reviewPhaseHandler.perform(reviewPhase, operator);
 
             aphandler.perform(appealsResponsePhase, operator);
 
             Phase aggregationPhase = project.getAllPhases()[6];
 
-            //create aggregator
+            // create aggregator
             Resource aggregator = createResource(10, aggregationPhase.getId(), 1, 8);
-            super.insertResources(conn, new Resource[] {aggregator});
+            super.insertResources(conn, new Resource[] {aggregator });
             insertResourceInfo(conn, aggregator.getId(), 1, "2");
 
-            //start aggregation
+            // start aggregation
             aggregatehandler.perform(aggregationPhase, operator);
 
-            //stop now
+            // stop now
             aggregationPhase.setPhaseStatus(PhaseStatus.OPEN);
             aggregatehandler.perform(aggregationPhase, operator);
 
-            //final review phase
+            // final review phase
             Phase finalReviewPhase = project.getAllPhases()[9];
 
             Resource finalReviwer = createResource(13, finalReviewPhase.getId(), 1, 9);
-            super.insertResources(conn, new Resource[] {finalReviwer});
+            super.insertResources(conn, new Resource[] {finalReviwer });
             insertResourceInfo(conn, finalReviwer.getId(), 1, "2");
-
 
             handler.perform(finalReviewPhase, operator);
 
-
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -509,9 +494,7 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Open status.
-     *
      * @throws Exception to JUnit.
-     *
      * @since 1.1
      * @version 1.2
      */
@@ -534,25 +517,27 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1000, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            Review frWorksheet = createReview(111, finalReviewer.getId(), frSubmission.getId(), scorecard1.getId(),
+            Review frWorksheet = createReview(111, finalReviewer.getId(), frSubmission.getId(),
+                scorecard1.getId(),
                     true, 90.0f);
 
             // add a rejected comment
-            frWorksheet.addComment(createComment(1111, finalReviewer.getId(), "Rejected", 10, "Final Review Comment"));
+            frWorksheet.addComment(createComment(1111, finalReviewer.getId(), "Rejected", 10,
+                "Final Review Comment"));
 
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "2");
-            insertUploads(conn, new Upload[] {frUpload});
-            insertSubmissions(conn, new Submission[] {frSubmission});
+            insertUploads(conn, new Upload[] {frUpload });
+            insertSubmissions(conn, new Submission[] {frSubmission });
             insertResourceSubmission(conn, finalReviewer.getId(), frSubmission.getId());
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {frWorksheet});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {finalReviewer.getId()},
-                new long[] {frWorksheet.getId()}, new String[] {"Rejected COmment"}, new long[] {10},
-                new String[] {"Rejected"});
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {frWorksheet });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {finalReviewer.getId() },
+                new long[] {frWorksheet.getId() }, new String[] {"Rejected COmment" }, new long[] {10 },
+                new String[] {"Rejected" });
             insertScorecardQuestion(conn, 1, scorecard1.getId());
 
             // no exception should be thrown.
@@ -567,9 +552,7 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Open status.
-     *
      * @throws Exception to JUnit.
-     *
      * @since 1.1
      * @version 1.2
      */
@@ -580,7 +563,7 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
             cleanTables();
 
             Project project = this.setupProjectResourcesNotification("Final Review");
-            insertProjectInfo(getConnection(), project.getId(), new long[] {41}, new String[] {"true"});
+            insertProjectInfo(getConnection(), project.getId(), new long[] {41 }, new String[] {"true" });
             Phase[] phases = project.getAllPhases();
             Phase finalReviewPhase = phases[9];
             finalReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
@@ -597,21 +580,22 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
                     true, 90.0f);
 
             // add a Approved comment
-            frWorksheet.addComment(createComment(1, finalReviewer.getId(), "Approved", 10, "Final Review Comment"));
+            frWorksheet
+                .addComment(createComment(1, finalReviewer.getId(), "Approved", 10, "Final Review Comment"));
 
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "100001");
-            insertUploads(conn, new Upload[] {frUpload});
-            insertSubmissions(conn, new Submission[] {frSubmission});
+            insertUploads(conn, new Upload[] {frUpload });
+            insertSubmissions(conn, new Submission[] {frSubmission });
             insertResourceSubmission(conn, finalReviewer.getId(), frSubmission.getId());
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {frWorksheet});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {finalReviewer.getId()},
-                new long[] {frWorksheet.getId()}, new String[] {"Approved Comment"}, new long[] {10},
-                new String[] {"Approved"});
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {frWorksheet });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {finalReviewer.getId() },
+                new long[] {frWorksheet.getId() }, new String[] {"Approved Comment" }, new long[] {10 },
+                new String[] {"Approved" });
             insertScorecardQuestion(conn, 1, 1);
 
             // no exception should be thrown.
@@ -622,7 +606,7 @@ public class FinalReviewPhaseHandlerTest extends BaseTest {
 
             assertTrue("Approval phase should be inserted.", haveApprovalPhase(conn));
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();

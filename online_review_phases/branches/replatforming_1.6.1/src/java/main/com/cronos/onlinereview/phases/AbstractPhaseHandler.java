@@ -38,7 +38,6 @@ import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.file.DocumentGenerator;
-import com.topcoder.util.file.InvalidConfigException;
 import com.topcoder.util.file.Template;
 import com.topcoder.util.file.TemplateDataFormatException;
 import com.topcoder.util.file.TemplateFormatException;
@@ -220,7 +219,7 @@ import java.util.Map;
  * </ul>
  * </p>
  *
- * @author tuenm, bose_java, pulky, argolite, waits, FireIce, TCSDEVELOPER
+ * @author tuenm, bose_java, pulky, argolite, waits, FireIce, microsky
  * @version 1.6
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
@@ -813,7 +812,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     private void setLoopItems(Loop loop, ExternalUser user, Project project,
         Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
         try {
-            List loopItems = (List) values.get(loop.getLoopElement());
+            List<?> loopItems = (List<?>) values.get(loop.getLoopElement());
             if (loopItems == null) {
                 throw new PhaseHandlingException("For loop :" + loop.getLoopElement()
                                                   + ", the value in look up maps should not be null.");

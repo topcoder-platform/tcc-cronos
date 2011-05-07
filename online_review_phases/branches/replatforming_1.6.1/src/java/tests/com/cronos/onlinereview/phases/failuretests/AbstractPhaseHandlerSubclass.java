@@ -6,6 +6,7 @@ package com.cronos.onlinereview.phases.failuretests;
 
 import com.cronos.onlinereview.phases.AbstractPhaseHandler;
 import com.cronos.onlinereview.phases.ConfigurationException;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.project.phases.Phase;
 
@@ -63,8 +64,8 @@ class AbstractPhaseHandlerSubclass extends AbstractPhaseHandler {
      * @return <code>true</code> if the associated action can be performed
      * @throws IllegalArgumentException if <code>phase</code> is <code>null</code>
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
-        return false;
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
+        return new OperationCheckResult(false, "can't perform");
     }
 
     /**

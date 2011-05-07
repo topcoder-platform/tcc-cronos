@@ -1,11 +1,12 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
@@ -32,91 +33,81 @@ import java.util.Map;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a
- * phase can be executed and to add extra logic to execute a phase. It will be
- * used by Phase Management component. It is configurable using an input
- * namespace. The configurable parameters include database connection and email
- * sending. This class handle the appeals response phase. If the input is of
- * other phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection and email sending. This class handle the
+ * appeals response phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
- * The appeals response phase can start as soon as the dependencies are met and
- * can stop when the following conditions met: The dependencies are met and all
- * appeals are resolved.
+ * The appeals response phase can start as soon as the dependencies are met and can stop when the following
+ * conditions met: The dependencies are met and all appeals are resolved.
  * </p>
  * <p>
  * The additional logic for executing this phase is:<br>
  * When Appeals Response is stopping:
  * <ul>
- * <li>All submissions with failed review scores will be set to the status
- * &quot;Failed Review&quot;.</li>
- * <li>Overall score for the passing submissions will be calculated and saved to
- * the submitters&#146; resource properties together with their placements. The
- * property names are &quot;Final Score&quot; and &quot;Placement&quot;.</li>
- * <li>The winner and runner-up will be populated in the project properties. The
- * property names are &quot;Winner External Reference ID&quot; and
- * &quot;Runner-up External Reference ID&quot;.</li>
- * <li>Submissions that do not win will be set to the status &quot;Completed
- * Without Win&quot;.</li>
+ * <li>All submissions with failed review scores will be set to the status &quot;Failed Review&quot;.</li>
+ * <li>Overall score for the passing submissions will be calculated and saved to the submitters&#146; resource
+ * properties together with their placements. The property names are &quot;Final Score&quot; and
+ * &quot;Placement&quot;.</li>
+ * <li>The winner and runner-up will be populated in the project properties. The property names are &quot;Winner
+ * External Reference ID&quot; and &quot;Runner-up External Reference ID&quot;.</li>
+ * <li>Submissions that do not win will be set to the status &quot;Completed Without Win&quot;.</li>
  * </ul>
  * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
  * <p>
- * version 1.1 change notes: Modify the method <code>perform</code> to add a
- * post-mortem phase if there is no submission passes review after appeal
- * response.
+ * version 1.1 change notes: Modify the method <code>perform</code> to add a post-mortem phase if there is no
+ * submission passes review after appeal response.
  * </p>
- *
  * <p>
  * Version 1.2 changes note:
  * <ul>
- * <li>
- * Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager, etc).
- * </li>
- * <li>
- * Support for more information in the email generated:
- * for start/stop, puts the submissions info/scores into the values map for email generation.
- * </li>
+ * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager,
+ * etc).</li>
+ * <li>Support for more information in the email generated: for start/stop, puts the submissions info/scores into
+ * the values map for email generation.</li>
  * </ul>
  * </p>
- *
  * <p>
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
- *   <ol>
- *     <li>Updated {@link #perform(Phase, String)} method to use updated
- *     PhasesHelper#insertPostMortemPhase(com.topcoder.project.phases.Project, Phase, ManagerHelper, String)
- *     method for creating <code>Post-Mortem</code> phase.</li>
- *   </ol>
+ * <ol>
+ * <li>Updated {@link #perform(Phase, String)} method to use updated
+ * PhasesHelper#insertPostMortemPhase(com.topcoder.project.phases.Project, Phase, ManagerHelper, String) method for
+ * creating <code>Post-Mortem</code> phase.</li>
+ * </ol>
  * </p>
- *
  * <p>
  * Version 1.4 Change notes:
- *   <ol>
- *     <li>Updated {@link #perform(Phase, String)} method to calculate the number of aggregators for project and bind it
- *     to map used for filling email template.</li>
- *   </ol>
+ * <ol>
+ * <li>Updated {@link #perform(Phase, String)} method to calculate the number of aggregators for project and bind
+ * it to map used for filling email template.</li>
+ * </ol>
  * </p>
- *
  * <p>
  * Version 1.6 Change notes:
- *   <ol>
- *     <li>Refactor breakTies and getSubmissionById methods to PhaseHelper to reduce code redundancy.</li>
- *     <li>Change to use getUploads().get(0) to retrieve the only upload for software competitions.</li>
- *   </ol>
+ * <ol>
+ * <li>Refactor breakTies and getSubmissionById methods to PhaseHelper to reduce code redundancy.</li>
+ * <li>Change to use getUploads().get(0) to retrieve the only upload for software competitions.</li>
+ * </ol>
  * </p>
- *
  * <p>
  * Version 1.7 (Online Review Replatforming Release 2 ) Change notes:
- *   <ol>
- *     <li>Change submission.getUploads() to submission.getUpload().</li>
- *   </ol>
+ * <ol>
+ * <li>Change submission.getUploads() to submission.getUpload().</li>
+ * </ol>
  * </p>
- *
- * @author tuenm, bose_java, argolite, waits, isv, TCSDEVELOPER
- * @version 1.7
+ * <p>
+ * Version 1.6.1 (Component development) changes note:
+ * <ul>
+ * <li>canPerform() method was updated to return not only true/false value, but additionally an explanation message
+ * in case if operation cannot be performed.</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, argolite, waits, isv, microsky
+ * @version 1.6.1
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -131,9 +122,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AppealsResponsePhaseHandler using the default
      * namespace for loading configuration settings.
-     *
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      */
     public AppealsResponsePhaseHandler() throws ConfigurationException {
         super(DEFAULT_NAMESPACE);
@@ -142,10 +132,9 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AppealsResponsePhaseHandler using the given
      * namespace for loading configuration settings.
-     *
      * @param namespace the namespace to load configuration settings from.
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      * @throws IllegalArgumentException if the input is null or empty string.
      */
     public AppealsResponsePhaseHandler(String namespace) throws ConfigurationException {
@@ -154,34 +143,37 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Check if the input phase can be executed or not. This method will check
-     * the phase status to see what will be executed. This method will be called
-     * by canStart() and canEnd() methods of PhaseManager implementations in
+     * Check if the input phase can be executed or not. This method will check the phase status to see what will be
+     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in
      * Phase Management component.
      * </p>
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase
-     * can be started using the following conditions: The dependencies are met
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions: The dependencies are met
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be
-     * stopped using the following conditions: The dependencies are met and All
-     * appeals are resolved.
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions: The dependencies are met and All appeals are resolved.
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase The input phase to check.
-     * @return True if the input phase can be executed, false otherwise.
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         &quot;Appeals Response&quot; type.
+     *             &quot;Appeals Response&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS_RESPONSE);
 
@@ -192,63 +184,60 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         if (toStart) {
             // return true if all dependencies have stopped and start time has
             // been reached.
-            return PhasesHelper.canPhaseStart(phase);
+            return PhasesHelper.checkPhaseCanStart(phase);
         } else {
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false) && allAppealsResolved(phase));
+            OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
+            }
+            if (!allAppealsResolved(phase)) {
+                return new OperationCheckResult("Not all appeals are resolved");
+            }
+            return OperationCheckResult.SUCCESS;
         }
     }
 
     /**
      * <p>
-     * Provides additional logic to execute a phase. This method will be called
-     * by start() and end() methods of PhaseManager implementations in Phase
-     * Management component. This method can send email to a group of users
-     * associated with timeline notification for the project. The email can be
-     * send on start phase or end phase base on configuration settings.
+     * Provides additional logic to execute a phase. This method will be called by start() and end() methods of
+     * PhaseManager implementations in Phase Management component. This method can send email to a group of users
+     * associated with timeline notification for the project. The email can be send on start phase or end phase
+     * base on configuration settings.
      * </p>
      * <p>
      * If the input phase status is Scheduled, then it will do nothing.
      * </p>
      * <p>
-     * If the input phase status is Open, then it will perform the following
-     * additional logic to stop the phase:
+     * If the input phase status is Open, then it will perform the following additional logic to stop the phase:
      * </p>
      * <ul>
-     * <li>All submissions with failed review scores will be set to the status
-     * &quot;Failed Review&quot;.</li>
-     * <li>Overall score for the passing submissions will be calculated and
-     * saved to the submitters&#146; resource properties together with their
-     * placements. The property names are &quot;Final Score&quot; and
+     * <li>All submissions with failed review scores will be set to the status &quot;Failed Review&quot;.</li>
+     * <li>Overall score for the passing submissions will be calculated and saved to the submitters&#146; resource
+     * properties together with their placements. The property names are &quot;Final Score&quot; and
      * &quot;Placement&quot;.</li>
-     * <li>The winner and runner-up will be populated in the project properties.
-     * The property names are &quot;Winner External Reference ID&quot; and
-     * &quot;Runner-up External Reference ID&quot;.</li>
-     * <li>Submissions that do not win will be set to the status &quot;Completed
-     * Without Win&quot;.</li>
+     * <li>The winner and runner-up will be populated in the project properties. The property names are
+     * &quot;Winner External Reference ID&quot; and &quot;Runner-up External Reference ID&quot;.</li>
+     * <li>Submissions that do not win will be set to the status &quot;Completed Without Win&quot;.</li>
      * </ul>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
      * <p>
-     * Version 1.1. change notes: Add a post-mortem phase after this phase if
-     * there is no submission passes review after appeal response.
+     * Version 1.1. change notes: Add a post-mortem phase after this phase if there is no submission passes review
+     * after appeal response.
      * </p>
-     *
      * <p>
-     * version 1.2. change notes: put the scores of the submissions/submitter handle into the values map.
-     *                            for each submission, there will be a sub-map, all in a list with key 'SUBMITTER'.
+     * version 1.2. change notes: put the scores of the submissions/submitter handle into the values map. for each
+     * submission, there will be a sub-map, all in a list with key 'SUBMITTER'.
      * </p>
-     *
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         &quot;Appeals Response&quot; type.
+     *             &quot;Appeals Response&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
-     *         string.
+     *             string.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
@@ -260,12 +249,12 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         Map<String, Object> values = new HashMap<String, Object>();
 
         if (toStart) {
-            //for start phase, puts the  submission info/initial score
+            // for start phase, puts the submission info/initial score
             values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(createConnection(),
                     getManagerHelper(), phase.getProject().getId(), false));
         } else {
-            //it is going to calculate the final score for every submission
-            //and puts the scores into the values after calculation
+            // it is going to calculate the final score for every submission
+            // and puts the scores into the values after calculation
             boolean passedReview = updateSubmissions(phase, operator, values);
             if (!passedReview) {
                 // if there is no submission passes review after appeal response
@@ -280,8 +269,9 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * <p>Gets the list of resources assigned <code>Aggregator</code> role.</p>
-     *
+     * <p>
+     * Gets the list of resources assigned <code>Aggregator</code> role.
+     * </p>
      * @param aggregationPhase a <code>Phase</code> providing the details for <code>Aggregation</code> phase.
      * @return a <code>Resource</code> array listing the resources granted <code>Aggregator</code> role.
      * @throws PhaseHandlingException if an unexpected error occurs while accessing the data store.
@@ -292,37 +282,30 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         Connection connection = createConnection();
         try {
             aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), connection,
-                    new String[]{"Aggregator"}, aggregationPhase.getId());
+                    new String[] {"Aggregator" }, aggregationPhase.getId());
         } finally {
             PhasesHelper.closeConnection(connection);
         }
         return aggregators;
     }
 
-
     /**
      * This method is called from perform method when phase is stopping. It does
      * the following:
      * <ul>
-     * <li>all submissions with failed review scores are set to the status
-     * Failed Review.</li>
+     * <li>all submissions with failed review scores are set to the status Failed Review.</li>
      * <li>Overall score for the passing submissions are calculated and saved.</li>
      * <li>The winner and runner-up are populated in the project properties.</li>
-     * <li>Submissions that do not win are set to the status Completed Without
-     * Win.</li>
+     * <li>Submissions that do not win are set to the status Completed Without Win.</li>
      * </ul>
-     *
      * <p>
-     * version 1.1. change notes: Change return type from void to boolean,
-     * returning true indicates there is at least one submission passes review
-     * after appeal response, false otherwise.
+     * version 1.1. change notes: Change return type from void to boolean, returning true indicates there is at
+     * least one submission passes review after appeal response, false otherwise.
      * </p>
-     *
      * <p>
-     * version 1.2. change notes: put the scores of the submissions/submitter handle into the values map.
-     *                            for each submission, there will be a sub-map, all in a list with key 'SUBMITTER'.
+     * version 1.2. change notes: put the scores of the submissions/submitter handle into the values map. for each
+     * submission, there will be a sub-map, all in a list with key 'SUBMITTER'.
      * </p>
-     *
      * @param phase the phase instance.
      * @param operator operator name.
      * @param values the values map
@@ -508,8 +491,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                                 "Update the winner and runner up.", operator);
             }
 
-
-            //for each submission, get the submitter and its scores
+            // for each submission, get the submitter and its scores
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
             for (Submission submission : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
@@ -549,7 +531,6 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
     /**
      * This method returns true if all the appeals have been responded to.
-     *
      * @param phase phase instance.
      * @return true if all appeals are resolved, false otherwise.
      * @throws PhaseHandlingException if an error occurs when retrieving data.

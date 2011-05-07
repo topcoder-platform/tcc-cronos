@@ -1,6 +1,7 @@
 package com.cronos.onlinereview.phases.accuracytests;
 
 import com.cronos.onlinereview.phases.AggregationPhaseHandler;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
@@ -72,9 +73,10 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
 
             Phase phase = AccuracyTestHelper.getPhase("Aggregation", phases);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "There is no winner for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -100,9 +102,10 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
 
             Phase phase = AccuracyTestHelper.getPhase("Aggregation", phases);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "There is no winner for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -126,9 +129,10 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
 
             Phase phase = AccuracyTestHelper.getPhase("Aggregation", phases);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "There is no winner for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -160,9 +164,10 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
             phase.setScheduledStartDate(start);
             phase.setActualStartDate(start);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "There is no winner for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -204,9 +209,10 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
             phase.setScheduledEndDate(end);
             phase.setActualEndDate(end);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "Dependency Appeals Response phase is not yet ended.",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();

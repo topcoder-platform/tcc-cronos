@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -13,16 +13,16 @@ import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
 
 /**
  * Mock ProjectRoleTermsOfUse.
- *
- * @author TCSDEVELOPER
- * @version 1.6
+ * Change in 1.6.1:
+ * unchecked to rawtypes
+ * @author TCSDEVELOPER, microsky
+ * @version 1.6.1
  * @since 1.6
  */
 public class MockProjectRoleTermsOfUse implements ProjectRoleTermsOfUse {
 
     /**
      * Returns the list of terms of use.
-     *
      * @param projectId
      *            project id
      * @param is
@@ -31,14 +31,13 @@ public class MockProjectRoleTermsOfUse implements ProjectRoleTermsOfUse {
      *            common oltp datasource name
      * @return the list of terms of use.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public List[] getTermsOfUse(int projectId, int[] is, String commonOltpDatasourceName) {
         return new List[0];
     }
 
     /**
      * Returns the EJB home.
-     *
      * @return the ejb home.
      */
     public EJBHome getEJBHome() {
@@ -47,7 +46,6 @@ public class MockProjectRoleTermsOfUse implements ProjectRoleTermsOfUse {
 
     /**
      * Returns the handle.
-     *
      * @return the handle.
      */
     public Handle getHandle() {
@@ -56,7 +54,6 @@ public class MockProjectRoleTermsOfUse implements ProjectRoleTermsOfUse {
 
     /**
      * Returns the primary key.
-     *
      * @return the primary key.
      */
     public Object getPrimaryKey() {
@@ -65,8 +62,7 @@ public class MockProjectRoleTermsOfUse implements ProjectRoleTermsOfUse {
 
     /**
      * Returns whether it is identical.
-     *
-     *@param ejbObject
+     * @param ejbObject
      *            ejb object
      * @return whether it is identical.
      */

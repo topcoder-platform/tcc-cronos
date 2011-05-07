@@ -4,9 +4,13 @@
 
 package com.cronos.onlinereview.phases.failuretests.mock;
 
+import com.topcoder.management.project.FileType;
+import com.topcoder.management.project.Prize;
+import com.topcoder.management.project.PrizeType;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.PersistenceException;
+import com.topcoder.management.project.ProjectStudioSpecification;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.ProjectCategory;
@@ -585,5 +589,115 @@ public class MockProjectManager implements ProjectManager {
      */
     public static void init() {
     }
+
+	public FileType createFileType(FileType fileType, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Prize createPrize(Prize prize, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ProjectStudioSpecification createProjectStudioSpecification(
+			ProjectStudioSpecification spec, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public FileType[] getAllFileTypes() throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public PrizeType[] getPrizeTypes() throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public FileType[] getProjectFileTypes(long projectId)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Prize[] getProjectPrizes(long projectId) throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ProjectStudioSpecification getProjectStudioSpecification(
+			long projectId) throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Project[] getProjectsByDirectProjectId(long directProjectId)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeFileType(FileType fileType, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removePrize(Prize prize, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeProjectStudioSpecification(
+			ProjectStudioSpecification spec, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateFileType(FileType fileType, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updatePrize(Prize prize, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateProjectFileTypes(long projectId,
+			List<FileType> fileTypes, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateProjectPrizes(long projectId, List<Prize> prizes,
+			String operator) throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateProjectStudioSpecification(
+			ProjectStudioSpecification spec, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateStudioSpecificationForProject(
+			ProjectStudioSpecification spec, long projectId, String operator)
+			throws PersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

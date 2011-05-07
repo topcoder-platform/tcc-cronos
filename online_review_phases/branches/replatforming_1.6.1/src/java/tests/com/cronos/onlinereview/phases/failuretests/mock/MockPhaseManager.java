@@ -4,6 +4,7 @@
 
 package com.cronos.onlinereview.phases.failuretests.mock;
 
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseHandler;
@@ -275,7 +276,7 @@ public class MockPhaseManager implements PhaseManager {
      *
      * @see PhaseManager#canStart(Phase)
      */
-    public boolean canStart(Phase phase0) {
+    public OperationCheckResult canStart(Phase phase0) {
         if (MockPhaseManager.globalException != null) {
             throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
@@ -296,7 +297,7 @@ public class MockPhaseManager implements PhaseManager {
         }
         args.add(arguments);
 
-        return ((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue();
+        return new OperationCheckResult(((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue(), "result");
 
     }
 
@@ -348,7 +349,7 @@ public class MockPhaseManager implements PhaseManager {
      * @see PhaseManager#canEnd(Phase)
      * @throws PhaseManagementException
      */
-    public boolean canEnd(Phase phase0) throws PhaseManagementException {
+    public OperationCheckResult canEnd(Phase phase0) throws PhaseManagementException {
         if (MockPhaseManager.globalException != null) {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
@@ -377,7 +378,7 @@ public class MockPhaseManager implements PhaseManager {
         }
         args.add(arguments);
 
-        return ((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue();
+        return new OperationCheckResult(((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue(), "result");
 
     }
 

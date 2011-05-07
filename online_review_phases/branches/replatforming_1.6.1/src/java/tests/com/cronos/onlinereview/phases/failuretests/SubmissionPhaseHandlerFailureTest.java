@@ -396,14 +396,13 @@ public class SubmissionPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Failure test. Tests the {@link SubmissionPhaseHandler#canPerform,Phase} for proper behavior if the underlying
      * service throws an unexpected exception.</p>
      *
-     * <p>Configures the mock implementation <code>MockUploadManager</code> to throw an exception from any method and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
+     * <p>The submission phase is already closed.</p>
      */
-    public void testCanPerform_Phase_UploadManagerError_UploadPersistenceException() {
+    public void testCanPerform_Phase_Closed_Submission_Phase() {
         MockUploadManager.throwGlobalException(new UploadPersistenceException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenSubmissionPhase());
+                this.testedInstances[i].canPerform(TestDataFactory.getClosedSubmissionPhase());
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
@@ -417,14 +416,13 @@ public class SubmissionPhaseHandlerFailureTest extends AbstractTestCase {
      * <p>Failure test. Tests the {@link SubmissionPhaseHandler#canPerform,Phase} for proper behavior if the underlying
      * service throws an unexpected exception.</p>
      *
-     * <p>Configures the mock implementation <code>MockUploadManager</code> to throw an exception from any method and
-     * expects the <code>PhaseHandlingException</code> to be thrown.</p>
+     * <p>It is not the submission phase.</p>
      */
-    public void testCanPerform_Phase_UploadManagerError_SearchBuilderException() {
+    public void testCanPerform_Phase_NotSubmissionPhase() {
         MockUploadManager.throwGlobalException(new SearchBuilderException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                this.testedInstances[i].canPerform(TestDataFactory.getOpenSubmissionPhase());
+                this.testedInstances[i].canPerform(TestDataFactory.getOpenAggregationPhase());
                 Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior

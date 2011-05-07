@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 - 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -7,8 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
-import com.cronos.onlinereview.autoscreening.management.ScreeningManagerFactory;
 import com.cronos.onlinereview.external.UserRetrieval;
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.deliverable.UploadManager;
@@ -41,9 +39,9 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
 /**
  * <p>
  * This is the helper class to load manager instances from a default configuration namespace. The namespace is
- * &quot;com.cronos.onlinereview.phases.ManagerHelper&quot;. For configuration properties in this namespace, see the
- * Component Specification, section &quot;3.2 Configuration Parameters&quot;. This class is used by PhaseHandler
- * implementations to retrieve manager instances.
+ * &quot;com.cronos.onlinereview.phases.ManagerHelper&quot;. For configuration properties in this namespace, see
+ * the Component Specification, section &quot;3.2 Configuration Parameters&quot;. This class is used by
+ * PhaseHandler implementations to retrieve manager instances.
  * </p>
  * <p>
  * Sample configuration file is given below:
@@ -58,7 +56,6 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
  *          &lt;Value&gt;com.topcoder.management.project.ProjectManagerImpl&lt;/Value&gt;
  *      &lt;/Property&gt;
  *  &lt;/Property&gt;
- *
  *  &lt;Property name="ProjectLinkManager"&gt;
  *      &lt;Property name="ClassName"&gt;
  *          &lt;Value&gt;com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl&lt;/Value&gt;
@@ -67,7 +64,6 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
  *          &lt;Value&gt;com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl&lt;/Value&gt;
  *      &lt;/Property&gt;
  *  &lt;/Property&gt;
- *
  *  &lt;Property name="PhaseManager"&gt;
  *      &lt;Property name="ClassName"&gt;
  *          &lt;Value&gt;com.topcoder.management.phase.DefaultPhaseManager&lt;/Value&gt;
@@ -90,11 +86,6 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
  *      &lt;/Property&gt;
  *      &lt;Property name="Namespace"&gt;
  *          &lt;Value&gt;com.topcoder.management.scorecard.ScorecardManagerImpl&lt;/Value&gt;
- *      &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name="ScreeningManager"&gt;
- *      &lt;Property name="Namespace"&gt;
- *          &lt;Value&gt;com.cronos.onlinereview.autoscreening.management.DefaultDBScreeningManager&lt;/Value&gt;
  *      &lt;/Property&gt;
  *  &lt;/Property&gt;
  *  &lt;Property name="ConnectionFactoryNS"&gt;
@@ -180,21 +171,17 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
  *          &lt;Value&gt;com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator&lt;/Value&gt;
  *      &lt;/Property&gt;
  *  &lt;/Property&gt;
- *
  *  &lt;Property name=&quot;ProjectDetailsURL&quot;&gt;
  *      &lt;Value&gt;http://www.topcoder.com/tc?projectDetails=?&lt;/Value&gt;
  *  &lt;/Property&gt;
- *
  *  &lt;Property name=&quot;StudioProjectDetailsURL&quot;&gt;
  *      &lt;Value&gt;http://studio.topcoder.com/?projectDetails=?&lt;/Value&gt;
  *  &lt;/Property&gt;
- *
  *  &lt;Property name=&quot;ProjectRoleTermsOfUse&quot;&gt;
  *      &lt;Property name=&quot;ClassName&quot;&gt;
  *          &lt;Value&gt;com.cronos.onlinereview.phases.MockProjectRoleTermsOfUse&lt;/Value&gt;
  *      &lt;/Property&gt;
  *  &lt;/Property&gt;
- *
  *  &lt;Property name=&quot;UserTermsOfUse&quot;&gt;
  *      &lt;Property name=&quot;ClassName&quot;&gt;
  *          &lt;Value&gt;com.cronos.onlinereview.phases.MockUserTermsOfUse&lt;/Value&gt;
@@ -218,9 +205,15 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
  * <li>add configuration of ProjectRoleTermsOfUse and UserTermsOfUse for access.</li>
  * </ul>
  * </p>
- *
- * @author tuenm, bose_java, waits, saarixx, myxgyy, FireIce, TCSDEVELOPER
- * @version 1.6
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Removed screeningManager together with its getter.</li>
+ * <li>Removed private initScreeningManager() method.</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, waits, saarixx, myxgyy, FireIce, microsky
+ * @version 1.6.1
  */
 public class ManagerHelper {
     /**
@@ -265,11 +258,6 @@ public class ManagerHelper {
      * Property name constant for namespace to be passed to scorecard manager implementation constructor.
      */
     private static final String PROP_SCORECARD_MGR_NAMESPACE = "ScorecardManager.Namespace";
-
-    /**
-     * Property name constant for namespace to be passed to screening manager implementation constructor.
-     */
-    private static final String PROP_SCREENING_MGR_NAMESPACE = "ScreeningManager.Namespace";
 
     /** Property name constant for connection factory namespace. */
     private static final String PROP_CONNECTION_FACTORY_NS = "ConnectionFactoryNS";
@@ -365,14 +353,12 @@ public class ManagerHelper {
 
     /**
      * This constant stores Online Review's project details page url property name.
-     *
      * @since 1.3
      */
     private static final String PROP_PROJECT_DETAILS_URL = "ProjectDetailsURL";
 
     /**
      * This constant stores studio project details page url property name.
-     *
      * @since 1.6
      */
     private static final String PROP_STUDIO_PROJECT_DETAILS_URL = "StudioProjectDetailsURL";
@@ -385,7 +371,6 @@ public class ManagerHelper {
 
     /**
      * Property name constant for submission type IDgenerator name when creating UploadManager instance.
-     *
      * @since 1.4
      */
     private static final String PROP_UPLOAD_MGR_SUBMISSION_TYPE_IDGEN_NAME =
@@ -409,21 +394,18 @@ public class ManagerHelper {
 
     /**
      * Property name constant for ProjectRoleTermsOfUse implementation class name.
-     *
      * @since 1.6
      */
     private static final String PROJECT_ROLE_TERMS_OF_USE_CLASS_NAME = "ProjectRoleTermsOfUse.ClassName";
 
     /**
      * Property name constant for namespace to be passed to ProjectRoleTermsOfUse constructor.
-     *
      * @since 1.6
      */
     private static final String PROJECT_ROLE_TERMS_OF_USE_NAMESPACE = "ProjectRoleTermsOfUse.Namespace";
 
     /**
      * Property name constant for UserTermsOfUse implementation class name.
-     *
      * @since 1.6
      */
     private static final String USER_TERMS_OF_USE_CLASS_NAME = "UserTermsOfUse.ClassName";
@@ -434,117 +416,119 @@ public class ManagerHelper {
     private static final String USER_TERMS_OF_USE_NAMESPACE = "UserTermsOfUse.Namespace";
 
     /**
-     * ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval all use same constructor signature which is
-     * the one that takes a String parameter. This constant array is used as parameter types array when instantiating
+     * ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval all use same constructor signature which
+     * is
+     * the one that takes a String parameter. This constant array is used as parameter types array when
+     * instantiating
      * using reflection in the initManager() method.
      */
-    private static final Class<?>[] MANAGER_PARAM_TYPES = new Class[] {String.class};
+    private static final Class<?>[] MANAGER_PARAM_TYPES = new Class[] {String.class };
 
     /**
-     * ProjectyLinkManager all use same constructor signature which is the one that takes a String and ProjectManager
+     * ProjectyLinkManager all use same constructor signature which is the one that takes a String and
+     * ProjectManager
      * parameter. This constant array is used as parameter types array when instantiating using reflection in the
      * initManager() method.
-     *
      * @since 1.3
      */
-    private static final Class<?>[] PROJECT_LINK_MANAGER_PARAM_TYPES = new Class[] {String.class, ProjectManager.class};
+    private static final Class<?>[] PROJECT_LINK_MANAGER_PARAM_TYPES = new Class[] {String.class,
+        ProjectManager.class };
 
     /**
-     * Represents the ProjectManager instance. It is initialized in the constructor and never changed after that. It is
+     * Represents the ProjectManager instance. It is initialized in the constructor and never changed after that.
+     * It is
      * never null.
      */
     private final ProjectManager projectManager;
 
     /**
-     * Represents the ProjectLinkManager instance. It is initialized in the constructor and never changed after that. It
+     * Represents the ProjectLinkManager instance. It is initialized in the constructor and never changed after
+     * that. It
      * is never null.
-     *
      * @since 1.3
      */
     private final ProjectLinkManager projectLinkManager;
 
     /**
-     * Represents the PhaseManager instance. It is initialized in the constructor and never changed after that. It is
+     * Represents the PhaseManager instance. It is initialized in the constructor and never changed after that. It
+     * is
      * never null.
      */
     private final PhaseManager phaseManager;
 
     /**
-     * Represents the ScorecardManager instance. It is initialized in the constructor and never changed after that. It
+     * Represents the ScorecardManager instance. It is initialized in the constructor and never changed after that.
+     * It
      * is never null.
      */
     private final ScorecardManager scorecardManager;
 
     /**
-     * Represents the ScreeningManager instance. It is initialized in the constructor and never changed after that. It
-     * is never null.
-     */
-    private final ScreeningManager screeningManager;
-
-    /**
-     * Represents the ReviewManager instance. It is initialized in the constructor and never changed after that. It is
+     * Represents the ReviewManager instance. It is initialized in the constructor and never changed after that. It
+     * is
      * never null.
      */
     private final ReviewManager reviewManager;
 
     /**
-     * Represents the ResourceManager instance. It is initialized in the constructor and never changed after that. It is
+     * Represents the ResourceManager instance. It is initialized in the constructor and never changed after that.
+     * It is
      * never null.
      */
     private final ResourceManager resourceManager;
 
     /**
-     * Represents the UploadManager instance. It is initialized in the constructor and never changed after that. It is
+     * Represents the UploadManager instance. It is initialized in the constructor and never changed after that. It
+     * is
      * never null.
      */
     private final UploadManager uploadManager;
 
     /**
-     * Represents the UserRetrieval instance. It is initialized in the constructor and never changed after that. It is
+     * Represents the UserRetrieval instance. It is initialized in the constructor and never changed after that. It
+     * is
      * never null.
      */
     private final UserRetrieval userRetrieval;
 
     /**
-     * Represents the ReviewScoreAggregator instance. It is initialized in the constructor and never changed after that.
+     * Represents the ReviewScoreAggregator instance. It is initialized in the constructor and never changed after
+     * that.
      * It is never null.
      */
     private final ReviewScoreAggregator scorecardAggregator;
 
     /**
      * This constant stores Online Review's project details page URL.
-     *
      * @since 1.3
      */
     private final String projectDetailsBaseURL;
 
     /**
      * This constant stores studio project details page URL.
-     *
      * @since 1.6
      */
     private final String studioProjectDetailsBaseURL;
 
     /**
      * Represents the ProjectRoleTermsOfUse instance.
-     *
      * @since 1.6
      */
     private final ProjectRoleTermsOfUse projectRoleTermsOfUse;
 
     /**
      * Represents the UserTermsOfUse instance.
-     *
      * @since 1.6
      */
     private final UserTermsOfUse userTermsOfUse;
 
     /**
-     * Creates a new instance of ManagerHelper using the default configuration namespace of this class. This constructor
-     * loads the manager instances using the configuration settings in the default namespace. Please see Configuration
+     * Creates a new instance of ManagerHelper using the default configuration namespace of this class. This
+     * constructor
+     * loads the manager instances using the configuration settings in the default namespace. Please see
+     * Configuration
      * Parameters section the Component Specification for properties used. Also see class documentation for sample
      * configuration file.
-     *
      * @throws ConfigurationException
      *             if required properties are missing or error occurs when instantiating the managers.
      */
@@ -553,8 +537,10 @@ public class ManagerHelper {
     }
 
     /**
-     * Creates a new instance of ManagerHelper using the given namespace. This constructor loads the manager instances
-     * using the configuration settings from given namespace. Please see Configuration Parameters section the Component
+     * Creates a new instance of ManagerHelper using the given namespace. This constructor loads the manager
+     * instances
+     * using the configuration settings from given namespace. Please see Configuration Parameters section the
+     * Component
      * Specification for properties used. Also see class documentation for sample configuration file. *
      * <p>
      * Change in version 1.6:
@@ -563,7 +549,6 @@ public class ManagerHelper {
      * <li>add configuration of ProjectRoleTermsOfUse and UserTermsOfUse for access.</li>
      * </ul>
      * </p>
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @throws ConfigurationException
@@ -583,16 +568,17 @@ public class ManagerHelper {
                 PhaseManager.class, false);
         this.reviewManager = initManager(namespace, PROP_REVIEW_MGR_CLASS_NAME, PROP_REVIEW_MGR_NAMESPACE,
                 ReviewManager.class, false);
-        this.scorecardManager = initManager(namespace, PROP_SCORECARD_MGR_CLASS_NAME, PROP_SCORECARD_MGR_NAMESPACE,
+        this.scorecardManager = initManager(namespace, PROP_SCORECARD_MGR_CLASS_NAME,
+            PROP_SCORECARD_MGR_NAMESPACE,
                 ScorecardManager.class, false);
-        this.screeningManager = initScreeningManager(namespace);
         this.uploadManager = initUploadManager(namespace);
         this.resourceManager = initResourceManager(namespace);
         this.userRetrieval = initManager(namespace, PROP_USER_RETRIEVAL_CLASS_NAME, PROP_USER_RETRIEVAL_NAMESPACE,
                 UserRetrieval.class, true);
         this.scorecardAggregator = initScorecardAggregator(namespace);
         this.projectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_PROJECT_DETAILS_URL, true);
-        this.studioProjectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_STUDIO_PROJECT_DETAILS_URL,
+        this.studioProjectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace,
+            PROP_STUDIO_PROJECT_DETAILS_URL,
                 true);
         this.projectRoleTermsOfUse = initManager(namespace, PROJECT_ROLE_TERMS_OF_USE_CLASS_NAME,
                 PROJECT_ROLE_TERMS_OF_USE_NAMESPACE, ProjectRoleTermsOfUse.class, false);
@@ -602,7 +588,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null ProjectManager instance.
-     *
      * @return The non-null ProjectManager instance.
      */
     public ProjectManager getProjectManager() {
@@ -611,7 +596,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null ProjectLinkManager instance.
-     *
      * @return The non-null ProjectLinkManager instance.
      * @since 1.3
      */
@@ -621,7 +605,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null PhaseManager instance.
-     *
      * @return The non-null PhaseManager instance.
      */
     public PhaseManager getPhaseManager() {
@@ -630,7 +613,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null ScorecardManager instance.
-     *
      * @return The non-null ScorecardManager instance.
      */
     public ScorecardManager getScorecardManager() {
@@ -638,17 +620,7 @@ public class ManagerHelper {
     }
 
     /**
-     * Gets the non-null ScreeningManager instance.
-     *
-     * @return The non-null ScreeningManager instance.
-     */
-    public ScreeningManager getScreeningManager() {
-        return screeningManager;
-    }
-
-    /**
      * Gets the non-null ReviewManager instance.
-     *
      * @return The non-null ReviewManager instance.
      */
     public ReviewManager getReviewManager() {
@@ -657,7 +629,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null ResourceManager instance.
-     *
      * @return The non-null ResourceManager instance.
      */
     public ResourceManager getResourceManager() {
@@ -666,7 +637,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null UploadManager instance.
-     *
      * @return The non-null UploadManager instance.
      */
     public UploadManager getUploadManager() {
@@ -675,7 +645,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null UserRetrieval instance.
-     *
      * @return The non-null UserRetrieval instance.
      */
     public UserRetrieval getUserRetrieval() {
@@ -684,7 +653,6 @@ public class ManagerHelper {
 
     /**
      * Gets the non-null ReviewScoreAggregator instance.
-     *
      * @return The non-null ReviewScoreAggregator instance.
      */
     public ReviewScoreAggregator getScorecardAggregator() {
@@ -695,7 +663,6 @@ public class ManagerHelper {
      * <p>
      * Gets the project details base url.
      * </p>
-     *
      * @return the project details base url.
      * @since 1.3
      */
@@ -707,7 +674,6 @@ public class ManagerHelper {
      * <p>
      * Gets the studio project details base url.
      * </p>
-     *
      * @return the studio project details base url.
      * @since 1.6
      */
@@ -719,7 +685,6 @@ public class ManagerHelper {
      * <p>
      * Gets the ProjectRoleTermsOfUse instance.
      * </p>
-     *
      * @return the ProjectRoleTermsOfUse instance.
      * @since 1.6
      */
@@ -731,7 +696,6 @@ public class ManagerHelper {
      * <p>
      * Gets the UserTermsOfUse instance.
      * </p>
-     *
      * @return the UserTermsOfUse instance.
      * @since 1.6
      */
@@ -740,38 +704,13 @@ public class ManagerHelper {
     }
 
     /**
-     * This method is called by constructor to create an instance of ScreeningManager. It retrieves the
-     * 'ScreeningManager.Namespace' property and uses either to ScreeningManagerFactory.createScreeningManager() or
-     * ScreeningManagerFactory.createScreeningManager(namespace) create the ScreeningManager instance.
-     *
-     * @param namespace
-     *            the namespace to load configuration settings from.
-     * @return a ScreeningManager instance.
-     * @throws ConfigurationException
-     *             if required properties are missing or error occurs during instantiation.
-     */
-    private ScreeningManager initScreeningManager(String namespace) throws ConfigurationException {
-        String mgrNamespace = PhasesHelper.getPropertyValue(namespace, PROP_SCREENING_MGR_NAMESPACE, false);
-
-        try {
-            if (PhasesHelper.isStringNullOrEmpty(mgrNamespace)) {
-                return ScreeningManagerFactory.createScreeningManager();
-            } else {
-                return ScreeningManagerFactory.createScreeningManager(mgrNamespace);
-            }
-        } catch (com.cronos.onlinereview.autoscreening.management.ConfigurationException ex) {
-            throw new ConfigurationException("Could not instantiate ScreeningManager", ex);
-        }
-    }
-
-    /**
-     * This method is called by constructor to create an instance of UploadManager. It retrieves the required properties
+     * This method is called by constructor to create an instance of UploadManager. It retrieves the required
+     * properties
      * from the given namespace, and creates UploadPersistence, search bundle and id generator instances which are
      * required to create the UploadManager instance.
      * <p>
      * Change in version 1.4: add submission type id generator used to create UploadManager.
      * </p>
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @return a UploadManager instance.
@@ -781,7 +720,8 @@ public class ManagerHelper {
     private UploadManager initUploadManager(String namespace) throws ConfigurationException {
         // get all the property values
         String uploadManagerClassName = PhasesHelper.getPropertyValue(namespace, PROP_UPLOAD_MGR_CLASS_NAME, true);
-        String uploadSearchBundleName = PhasesHelper.getPropertyValue(namespace, PROP_UPLOAD_MGR_UPLOAD_BUNDLE_NAME,
+        String uploadSearchBundleName = PhasesHelper.getPropertyValue(namespace,
+            PROP_UPLOAD_MGR_UPLOAD_BUNDLE_NAME,
                 true);
         String submissionSearchBundleName = PhasesHelper.getPropertyValue(namespace,
                 PROP_UPLOAD_MGR_SUBMISSION_BUNDLE_NAME, true);
@@ -797,7 +737,8 @@ public class ManagerHelper {
                 PROP_UPLOAD_MGR_SUBMISSION_STATUS_IDGEN_NAME, true);
         String submissionTypeIdGeneratorName = PhasesHelper.getPropertyValue(namespace,
                 PROP_UPLOAD_MGR_SUBMISSION_TYPE_IDGEN_NAME, true);
-        String persistenceClassName = PhasesHelper.getPropertyValue(namespace, PROP_UPLOAD_MGR_PERSISTENCE_CLASS_NAME,
+        String persistenceClassName = PhasesHelper.getPropertyValue(namespace,
+            PROP_UPLOAD_MGR_PERSISTENCE_CLASS_NAME,
                 true);
 
         // create persistence instance
@@ -831,21 +772,22 @@ public class ManagerHelper {
         }
 
         // create UploadManager instance using reflection...
-        Object[] params = new Object[] {persistence, uploadSearchBundle, submissionSearchBundle, uploadIdGenerator,
+        Object[] params = new Object[] {persistence, uploadSearchBundle, submissionSearchBundle,
+            uploadIdGenerator,
             uploadTypeIdGenerator, uploadStatusIdGenerator, submissionIdGenerator, submissionStatusIdGenerator,
-            submissionTypeIdGenerator};
+            submissionTypeIdGenerator };
         Class<?>[] paramTypes = new Class[] {UploadPersistence.class, SearchBundle.class, SearchBundle.class,
             IDGenerator.class, IDGenerator.class, IDGenerator.class, IDGenerator.class, IDGenerator.class,
-            IDGenerator.class};
+            IDGenerator.class };
 
         return createObject(uploadManagerClassName, UploadManager.class, params, paramTypes);
     }
 
     /**
      * This method is called by constructor to create an instance of ResourceManager. It retrieves the required
-     * properties from the given namespace, and creates ResourcePersistence, search bundle and id generator instances
+     * properties from the given namespace, and creates ResourcePersistence, search bundle and id generator
+     * instances
      * which are required to create the ResourceManager instance.
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @return a ResourceManager instance.
@@ -854,7 +796,8 @@ public class ManagerHelper {
      */
     private ResourceManager initResourceManager(String namespace) throws ConfigurationException {
         // get all the property values
-        String resourceManagerClassName = PhasesHelper.getPropertyValue(namespace, PROP_RESOURCE_MGR_CLASS_NAME, true);
+        String resourceManagerClassName = PhasesHelper.getPropertyValue(namespace, PROP_RESOURCE_MGR_CLASS_NAME,
+            true);
         String resourceSearchBundleName = PhasesHelper.getPropertyValue(namespace,
                 PROP_RESOURCE_MGR_RESOURCE_BUNDLE_NAME, true);
         String resourceRoleSearchBundleName = PhasesHelper.getPropertyValue(namespace,
@@ -906,16 +849,15 @@ public class ManagerHelper {
         // create ResourceManager instance using reflection...
         Object[] params = new Object[] {persistence, resourceSearchBundle, resourceRoleSearchBundle,
             notificationSearchBundle, notificationTypeSearchBundle, resourceIdGenerator, resourceRoleIdGenerator,
-            notificationTypeIdGenerator};
+            notificationTypeIdGenerator };
         Class<?>[] paramTypes = new Class[] {ResourcePersistence.class, SearchBundle.class, SearchBundle.class,
-            SearchBundle.class, SearchBundle.class, IDGenerator.class, IDGenerator.class, IDGenerator.class};
+            SearchBundle.class, SearchBundle.class, IDGenerator.class, IDGenerator.class, IDGenerator.class };
 
         return createObject(resourceManagerClassName, ResourceManager.class, params, paramTypes);
     }
 
     /**
      * Sets the searchable fields to the search bundle.
-     *
      * @param searchBundle
      *            the search bundle to set
      */
@@ -950,7 +892,6 @@ public class ManagerHelper {
 
     /**
      * Sets the searchable fields to the search bundle.
-     *
      * @param searchBundle
      *            the search bundle to set
      */
@@ -974,8 +915,8 @@ public class ManagerHelper {
     }
 
     /**
-     * This method is called by initResourceManager() and initUploadManager() to create SearchBundleManager instance.
-     *
+     * This method is called by initResourceManager() and initUploadManager() to create SearchBundleManager
+     * instance.
      * @param namespace
      *            the namespace to load configuration settings from.
      * @return SearchBundleManager instance.
@@ -993,10 +934,12 @@ public class ManagerHelper {
     }
 
     /**
-     * This method is called by initResourceManager() and initUploadManager() to create either ResourcePersistence or
-     * UploadPersistence instance. Since constructor signatures for both these classes is same, this common method is
+     * This method is called by initResourceManager() and initUploadManager() to create either ResourcePersistence
+     * or
+     * UploadPersistence instance. Since constructor signatures for both these classes is same, this common method
+     * is
      * used.
-     *
+     * @param <T> template
      * @param namespace
      *            the namespace to load configuration settings from.
      * @param className
@@ -1021,13 +964,13 @@ public class ManagerHelper {
         if (PhasesHelper.isStringNullOrEmpty(connectionName)) {
             // if connection name not specified, call constructor with
             // DBConnectionFactory argument.
-            params = new Object[] {dbConnFactory};
-            paramTypes = new Class<?>[] {DBConnectionFactory.class};
+            params = new Object[] {dbConnFactory };
+            paramTypes = new Class<?>[] {DBConnectionFactory.class };
         } else {
             // else, call constructor with DBConnectionFactory and
             // connectionName arguments.
-            params = new Object[] {dbConnFactory, connectionName};
-            paramTypes = new Class<?>[] {DBConnectionFactory.class, String.class};
+            params = new Object[] {dbConnFactory, connectionName };
+            paramTypes = new Class<?>[] {DBConnectionFactory.class, String.class };
         }
 
         return createObject(className, expectedType, params, paramTypes);
@@ -1035,7 +978,6 @@ public class ManagerHelper {
 
     /**
      * Helper method to instantiate ReviewScoreAggregator.
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @return ReviewScoreAggregator instance.
@@ -1043,7 +985,8 @@ public class ManagerHelper {
      *             if instantiation fails.
      */
     private ReviewScoreAggregator initScorecardAggregator(String namespace) throws ConfigurationException {
-        String scoreAggregatorNS = PhasesHelper.getPropertyValue(namespace, PROP_SCORE_AGGREGATOR_NAMESPACE, false);
+        String scoreAggregatorNS = PhasesHelper
+            .getPropertyValue(namespace, PROP_SCORE_AGGREGATOR_NAMESPACE, false);
         if (PhasesHelper.isStringNullOrEmpty(scoreAggregatorNS)) {
             return new ReviewScoreAggregator();
         } else {
@@ -1056,9 +999,10 @@ public class ManagerHelper {
     }
 
     /**
-     * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval instances
+     * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval
+     * instances
      * since all use the same constructor signature.
-     *
+     * @param <T> template
      * @param namespace
      *            the namespace to load configuration settings from.
      * @param classPropName
@@ -1068,7 +1012,8 @@ public class ManagerHelper {
      * @param expectedType
      *            type of instance to be returned.
      * @param nsPropertyReqd
-     *            whether property by name nsPropName is required, which is true in case of Retrieval classes, false
+     *            whether property by name nsPropName is required, which is true in case of Retrieval classes,
+     *            false
      *            otherwise.
      * @return either a ScorecardManager, ReviewManager, ProjectManager, or UserRetrieval instance.
      * @throws ConfigurationException
@@ -1083,7 +1028,7 @@ public class ManagerHelper {
         Class<?>[] paramTypes = null;
 
         if (!PhasesHelper.isStringNullOrEmpty(mgrNamespace)) {
-            params = new Object[] {mgrNamespace};
+            params = new Object[] {mgrNamespace };
             paramTypes = MANAGER_PARAM_TYPES;
         }
 
@@ -1091,9 +1036,9 @@ public class ManagerHelper {
     }
 
     /**
-     * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval instances
+     * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval
+     * instances
      * since all use the same constructor signature.
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @param classPropName
@@ -1110,18 +1055,18 @@ public class ManagerHelper {
         String mgrClassName = PhasesHelper.getPropertyValue(namespace, classPropName, true);
         String mgrNamespace = PhasesHelper.getPropertyValue(namespace, nsPropName, true);
 
-        Object[] params = new Object[] {mgrNamespace, this.projectManager};
+        Object[] params = new Object[] {mgrNamespace, this.projectManager };
 
         return createObject(mgrClassName, ProjectLinkManager.class, params, PROJECT_LINK_MANAGER_PARAM_TYPES);
     }
 
     /**
-     * Helper method to instantiate the specified className using reflection. The params is passed to constructor during
+     * Helper method to instantiate the specified className using reflection. The params is passed to constructor
+     * during
      * reflection.
      * <p>
      * Change in version 1.4: Use generic type to create object.
      * </p>
-     *
      * @param <T>
      *            the generic class type.
      * @param className

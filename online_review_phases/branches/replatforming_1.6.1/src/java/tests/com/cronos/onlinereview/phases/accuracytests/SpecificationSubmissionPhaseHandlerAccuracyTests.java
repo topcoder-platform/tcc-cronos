@@ -6,6 +6,7 @@ package com.cronos.onlinereview.phases.accuracytests;
 import java.util.Date;
 
 import com.cronos.onlinereview.phases.SpecificationSubmissionPhaseHandler;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
@@ -54,11 +55,17 @@ public class SpecificationSubmissionPhaseHandlerAccuracyTests extends BaseTestCa
 
         // The phase time has elapsed, but a phase dependency has not been met
         phase.setActualStartDate(new Date(new Date().getTime() - 28 * 60 * 60 * 1000));
-        assertFalse(error, handler.canPerform(phase));
+        OperationCheckResult result = handler.canPerform(phase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Post-Mortem phase is not yet ended.",  result.getMessage());
 
         // The phase time has elapsed with the dependency met
         phase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
-        assertTrue(error, handler.canPerform(phase));
+        result = handler.canPerform(phase);
+
+        assertTrue("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  null,  result.getMessage());
     }
 
     /**
@@ -84,7 +91,10 @@ public class SpecificationSubmissionPhaseHandlerAccuracyTests extends BaseTestCa
         // The phase time has elapsed but the dependency has not been met
         phase.setActualStartDate(new Date(System.currentTimeMillis() - 1000));
         phase.setActualEndDate(new Date());
-        assertFalse(error, handler.canPerform(phase));
+        OperationCheckResult result = handler.canPerform(phase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Post-Mortem phase is not yet ended.",  result.getMessage());
     }
 
     /**
@@ -104,7 +114,10 @@ public class SpecificationSubmissionPhaseHandlerAccuracyTests extends BaseTestCa
         Phase phase = phases[1];
         phase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
-        assertFalse("canPerform does not work properly", handler.canPerform(phase));
+        OperationCheckResult result = handler.canPerform(phase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Post-Mortem phase is not yet ended.",  result.getMessage());
     }
 
     /**
@@ -123,7 +136,10 @@ public class SpecificationSubmissionPhaseHandlerAccuracyTests extends BaseTestCa
         // Get the submission phase and check the OPEN phase status
         Phase phase = phases[1];
         phase.setPhaseStatus(PhaseStatus.OPEN);
-        assertFalse("canPerform does not work properly", handler.canPerform(phase));
+        OperationCheckResult result = handler.canPerform(phase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Specification submission doesn't exist",  result.getMessage());
     }
 
     /**

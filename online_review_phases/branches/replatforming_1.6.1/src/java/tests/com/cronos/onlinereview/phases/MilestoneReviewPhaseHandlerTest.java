@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -22,9 +22,14 @@ import java.util.Date;
 
 /**
  * All tests for MilestoneReviewPhaseHandler class.
- *
- * @author TCSDEVELOPER
- * @version 1.6
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author TCSDEVELOPER, microsky
+ * @version 1.6.1
  * @since 1.6
  */
 public class MilestoneReviewPhaseHandlerTest extends BaseTest {
@@ -37,7 +42,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -47,7 +51,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
         ConfigManager configManager = ConfigManager.getInstance();
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -61,7 +64,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Tests the MilestoneReviewPhaseHandler() constructor, instance should be created.
      * </p>
-     *
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
@@ -75,7 +77,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Tests the MilestoneReviewPhaseHandler(String) constructor, instance should be created.
      * </p>
-     *
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
@@ -92,7 +93,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -114,7 +114,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -137,7 +136,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -160,7 +158,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -182,7 +179,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -205,7 +201,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -228,7 +223,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -251,7 +245,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -278,7 +271,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <li>If time passed and dependency met, and there is a submission for screening phase, should return true.
      * </ul>
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -297,11 +289,11 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
             reviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
 
             // time has passed, but dependency not met.
             reviewPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
 
             // time has passed and dependency met.
             reviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
@@ -314,12 +306,12 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
             Upload upload = createUpload(1, 1, submitter.getId(), 1, 1, "parameter");
             Submission submission = createSubmission(1, 1, 1, 3);
 
-            insertResources(conn, new Resource[] {submitter});
+            insertResources(conn, new Resource[] {submitter });
             insertResourceInfo(conn, submitter.getId(), 1, "11111");
-            insertUploads(conn, new Upload[] {upload});
-            insertSubmissions(conn, new Submission[] {submission});
+            insertUploads(conn, new Upload[] {upload });
+            insertSubmissions(conn, new Submission[] {submission });
 
-            assertTrue("canPerform should have returned true", handler.canPerform(reviewPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(reviewPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -336,7 +328,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <li>If time passed and dependency met, but there is no submissions for screening phase, should return false.
      * </ul>
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -354,16 +345,16 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
             reviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
 
             // time has passed, but dependency not met.
             reviewPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
 
             // time has passed and dependency met.
             reviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
 
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -378,7 +369,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <li>If time not passed, should return false</li>
      * </ul>
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -399,7 +389,7 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
             reviewPhase.getAllDependencies()[0].setDependentStart(false);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -412,7 +402,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * If all conditions meet, should return true.
      * </p>
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -432,12 +421,12 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 21);
-            insertResources(conn, new Resource[] {reviewer});
+            insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
@@ -445,34 +434,34 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert upload/submission
             Upload upload = createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             Submission submission = createSubmission(1, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
             // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review[] {review});
+            insertReviews(conn, new Review[] {review });
 
             // another register
             resource = createResource(5, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = createUpload(2, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             submission = createSubmission(2, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review[] {review});
+            insertReviews(conn, new Review[] {review });
 
-            assertTrue("expect true", handler.canPerform(reviewPhase));
+            assertTrue("expect true", handler.canPerform(reviewPhase).isSuccess());
 
             // manually check the email
         } finally {
@@ -488,7 +477,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * If all condition meets, but the review is not committed, the phase can not be stopped.
      * </p>
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -508,12 +496,12 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 21);
-            insertResources(conn, new Resource[] {reviewer});
+            insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
@@ -521,17 +509,17 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert upload/submission
             Upload upload = createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             Submission submission = createSubmission(1, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
             // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), false, 77.0f);
-            insertReviews(conn, new Review[] {review});
+            insertReviews(conn, new Review[] {review });
 
-            assertFalse("expect false", handler.canPerform(reviewPhase));
+            assertFalse("expect false", handler.canPerform(reviewPhase).isSuccess());
 
             // manually check the email
         } finally {
@@ -547,7 +535,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * PhaseHandlingException expected for illegal case.
      * </p>
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -567,17 +554,17 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 21);
-            insertResources(conn, new Resource[] {reviewer});
+            insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // insert another reviewer
             reviewer = createResource(7, reviewPhase.getId(), 1, 21);
-            insertResources(conn, new Resource[] {reviewer});
+            insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
@@ -585,15 +572,15 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert upload/submission
             Upload upload = createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             Submission submission = createSubmission(1, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
             // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review[] {review});
+            insertReviews(conn, new Review[] {review });
 
             handler.canPerform(reviewPhase);
 
@@ -613,7 +600,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * PhaseHandlingException expected for illegal case.
      * </p>
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -633,12 +619,12 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 21);
-            insertResources(conn, new Resource[] {reviewer});
+            insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
@@ -646,34 +632,32 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert upload/submission
             Upload upload = createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             Submission submission = createSubmission(1, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
             // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review[] {review});
+            insertReviews(conn, new Review[] {review });
 
             // another register
             resource = createResource(5, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = createUpload(2, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             submission = createSubmission(2, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
 
             handler.canPerform(reviewPhase);
 
-            fail("expect PhaseHandlingException");
-        } catch (PhaseHandlingException e) {
-            // expected
+            assertFalse("expect false", handler.canPerform(reviewPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -684,7 +668,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the perform method. To start the phase. No reviewer has been assigned.
      * </p>
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -704,17 +687,17 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             Submission submission = createSubmission(1, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
 
             handler.perform(reviewPhase, operator);
 
@@ -729,7 +712,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the perform method. To start the phase. reviewer has been assigned.
      * </p>
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -749,21 +731,21 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             Submission submission = createSubmission(1, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
 
             // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 21);
-            insertResources(conn, new Resource[] {reviewer});
+            insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             handler.perform(reviewPhase, operator);
@@ -779,7 +761,6 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the perform method. To stop the phase.
      * </p>
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -800,12 +781,12 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 21);
-            insertResources(conn, new Resource[] {reviewer});
+            insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
@@ -813,32 +794,32 @@ public class MilestoneReviewPhaseHandlerTest extends BaseTest {
 
             // insert upload/submission
             Upload upload = createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             Submission submission = createSubmission(1, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
             // insert scorecard
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review[] {review});
+            insertReviews(conn, new Review[] {review });
 
             // another register
             resource = createResource(5, 101L, 1, 19);
-            insertResources(conn, new Resource[] {resource});
+            insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = createUpload(2, project.getId(), resource.getId(), 1, 1, "Parameter");
-            insertUploads(conn, new Upload[] {upload});
+            insertUploads(conn, new Upload[] {upload });
 
             submission = createSubmission(2, upload.getId(), 1, 3);
-            insertSubmissions(conn, new Submission[] {submission});
+            insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review[] {review});
+            insertReviews(conn, new Review[] {review });
 
             handler.perform(reviewPhase, operator);
 

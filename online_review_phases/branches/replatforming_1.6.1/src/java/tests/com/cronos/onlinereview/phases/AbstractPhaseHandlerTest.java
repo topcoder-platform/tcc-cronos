@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -19,17 +19,22 @@ import java.util.Map;
  * All test cases for AbstractPhaseHandler class.
  * </p>
  * <p>
- * Version 1.3 change notes : since the configuration for phases handler are changed, this test cases are fully updated
- * correspondingly.
+ * Version 1.3 change notes : since the configuration for phases handler are changed, this test cases are fully
+ * updated correspondingly.
  * </p>
- *
- * @author bose_java, waits, TCSDEVELOPER
- * @version 1.6
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>As EmailTemplateSource does not exist,remove
+ * testAbstractPhaseHandlerWithInvalidCF_EmailTemplateSource_invalid</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, microsky
+ * @version 1.6.1
  */
 public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -40,7 +45,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
 
         // add the component configurations as well
@@ -51,7 +55,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -61,7 +64,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the constructor AbstractPhaseHandler(String) will null argument.
-     *
      * @throws ConfigurationException
      *             not under test.
      */
@@ -76,7 +78,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the constructor AbstractPhaseHandler(String) will empty argument.
-     *
      * @throws ConfigurationException
      *             not under test.
      */
@@ -91,7 +92,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the constructor AbstractPhaseHandler(String) will not-exists argument.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -105,8 +105,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'ConnectionFactoryNS' is missing.
-     *
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'ConnectionFactoryNS' is
+     * missing.
      * @throws Exception
      *             into JUnit
      */
@@ -120,8 +120,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'ManagerHelperNamespace' is invalid.
-     *
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'ManagerHelperNamespace' is
+     * invalid.
      * @throws Exception
      *             into JUnit
      */
@@ -135,24 +135,9 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'EmailTemplateSource' is missing.
-     *
-     * @throws Exception
-     *             into JUnit
-     */
-    public void testAbstractPhaseHandlerWithInvalidCF_EmailTemplateSource_invalid() throws Exception {
-        try {
-            new AbstractPhaseHandlerSubClass("com.cronos.onlinereview.phases.AbstractPhaseHandler.Invalid3");
-            fail("The namespace is invalid.");
-        } catch (ConfigurationException ex) {
-            // expected.
-        }
-    }
-
-    /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/EmailFromAddress' is
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the
+     * 'StartPhaseEmail/EmailFromAddress' is
      * missing.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -166,9 +151,9 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/EmailTemplateName'
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the
+     * 'StartPhaseEmail/EmailTemplateName'
      * is invalid.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -184,7 +169,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     /**
      * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/SendInvalid' is
      * invalid value.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -198,9 +182,9 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/Priority' is invalid
+     * Tests the constructor AbstractPhaseHandler(String) will invalid config, the 'StartPhaseEmail/Priority' is
+     * invalid
      * value.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -214,8 +198,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will valid argument. The configuration is the simplest config.
-     *
+     * Tests the constructor AbstractPhaseHandler(String) will valid argument. The configuration is the simplest
+     * config.
      * @throws ConfigurationException
      *             not under test.
      */
@@ -224,8 +208,8 @@ public class AbstractPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the constructor AbstractPhaseHandler(String) will valid argument. The configuration is the simplest config.
-     *
+     * Tests the constructor AbstractPhaseHandler(String) will valid argument. The configuration is the simplest
+     * config.
      * @throws ConfigurationException
      *             not under test.
      */
@@ -235,7 +219,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the constructor AbstractPhaseHandler(String) will valid argument.
-     *
      * @throws ConfigurationException
      *             not under test.
      */
@@ -263,7 +246,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the constructor AbstractPhaseHandler(String) will valid argument.
-     *
      * @throws ConfigurationException
      *             not under test.
      */
@@ -291,7 +273,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with null.
-     *
      * @throws PhaseHandlingException
      *             into JUnit
      * @throws ConfigurationException
@@ -310,7 +291,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null phase.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -327,7 +307,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null Map.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -344,7 +323,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null Map.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -365,7 +343,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase, Map) method with null Map.
-     *
      * @throws Exception
      *             into JUnit
      */
@@ -386,7 +363,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Scheduled phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -408,7 +384,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -431,7 +406,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -454,7 +428,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with zero length phase, email should not send.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -478,7 +451,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests AbstractPhaseHandler.createConnection() for accuracy.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -498,7 +470,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests AbstractPhaseHandler.getManagerHelper() returns non-null.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -509,7 +480,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -532,7 +502,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -555,7 +524,6 @@ public class AbstractPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AbstractPhaseHandler.sendEmail(Phase) method with Open phase status.
-     *
      * @throws Exception
      *             not under test.
      */
