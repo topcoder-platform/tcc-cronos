@@ -1,0 +1,843 @@
+Testsuite: com.topcoder.commons.utils.AllTests
+Tests run: 618, Failures: 0, Errors: 0, Time elapsed: 29.484 sec
+------------- Standard Output ---------------
+Entering method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)].
+Input parameters [issueName:issue1, priority:1, paramFile:test_files\config.properties]
+Exiting method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)], time spent in the method: 47 milliseconds.
+Output parameter: true
+Entering method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)].
+Input parameters [issueName:issue1, priority:2, paramFile:test_files\not_exist]
+Error in method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)], details: The 'paramFile' parameter should point to an existing file.
+java.lang.IllegalArgumentException: The 'paramFile' parameter should point to an existing file.
+	at com.topcoder.commons.utils.ParameterCheckUtility.checkIsFile(ParameterCheckUtility.java:320)
+	at com.topcoder.commons.utils.IssuesTracker.updateIssue(IssuesTracker.java:81)
+	at com.topcoder.commons.utils.Demo.testDemoAPI(Demo.java:105)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:36,375 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:36,390 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:36,390 - DEBUG [main] - Input parameters [p1:123]
+2011-05-09 08:18:36,390 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:36,390 - DEBUG [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:36,390 -  INFO [main] - Entering method [method_signature].
+2011-05-09 08:18:36,406 -  INFO [main] - Entering method [method_signature].
+2011-05-09 08:18:36,406 -  INFO [main] - Input parameters [p1:123]
+2011-05-09 08:18:36,406 -  INFO [main] - Entering method [method_signature].
+2011-05-09 08:18:36,406 -  INFO [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:36,406 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:36,421 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:36,421 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:36,421 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,437 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,437 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:36,437 -  INFO [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,453 -  INFO [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,453 -  INFO [main] - Output parameter: result
+2011-05-09 08:18:36,453 - ERROR [main] - Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.Log4jUtilityUnitTests.setUp(Log4jUtilityUnitTests.java:101)
+	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:36,468 -  WARN [main] - Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.Log4jUtilityUnitTests.setUp(Log4jUtilityUnitTests.java:101)
+	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:36,484 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:36,484 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:36,484 - DEBUG [main] - Input parameters [p1:123]
+2011-05-09 08:18:36,500 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:36,500 - DEBUG [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:36,500 -  INFO [main] - [2011-05-09 08:18:36] Entering method [method_signature].
+2011-05-09 08:18:36,515 -  INFO [main] - [2011-05-09 08:18:36] Entering method [method_signature].
+2011-05-09 08:18:36,515 -  INFO [main] - Input parameters [p1:123]
+2011-05-09 08:18:36,515 -  INFO [main] - [2011-05-09 08:18:36] Entering method [method_signature].
+2011-05-09 08:18:36,515 -  INFO [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:36,531 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:36,531 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:36,531 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:36,531 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,546 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,546 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:36,546 -  INFO [main] - [2011-05-09 08:18:36] Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,546 -  INFO [main] - [2011-05-09 08:18:36] Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:36,546 -  INFO [main] - Output parameter: result
+2011-05-09 08:18:36,562 - ERROR [main] - Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests.setUp(LoggingWrapperUtilityUnitTests.java:105)
+	at sun.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:36,578 -  WARN [main] - [2011-05-09 08:18:36] Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests.setUp(LoggingWrapperUtilityUnitTests.java:105)
+	at sun.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Run logExit for 50 times takes 0ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 16ms
+Run logEntrance for 50 times takes 0ms
+Run logEntrance for 50 times takes 0ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 16ms
+Run logExit for 50 times takes 0ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 15ms
+Run logEntrance for 50 times takes 0ms
+Run logEntrance for 50 times takes 16ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 0ms
+Run getStringProperty for 50 times takes 0ms
+Run getStringsProperty for 50 times takes 0ms
+Run getIntegerProperty for 50 times takes 0ms
+Run getLongProperty for 50 times takes 0ms
+Run getDoubleProperty for 50 times takes 0ms
+Run getDateProperty for 50 times takes 0ms
+Run getClassProperty for 50 times takes 0ms
+Run getSubConfiguration for 50 times takes 329ms
+Run ParameterCheckUtility for 50 times takes 15ms
+Run ValidationUtility for 50 times takes 16ms
+Run commitTransaction for 50 times takes 1281ms
+Run rollbackTransaction for 50 times takes 1187ms
+Run executeQuery for 50 times takes 1375ms
+Run executeUpdate for 50 times takes 13063ms
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+log4j:WARN No appenders could be found for logger (test).
+log4j:WARN Please initialize the log4j system properly.
+------------- ---------------- ---------------
+
+Testcase: testDemoAPI took 0.329 sec
+Testcase: testDemoSubConfiguration took 0.031 sec
+Testcase: test_containNull_False took 0 sec
+Testcase: test_containNull_True took 0 sec
+Testcase: test_containEmpty_False1 took 0 sec
+Testcase: test_containEmpty_False2 took 0 sec
+Testcase: test_containEmpty_True1 took 0 sec
+Testcase: test_containEmpty_True2 took 0 sec
+Testcase: test_containEmpty_True3 took 0 sec
+Testcase: test_containEmpty_True4 took 0 sec
+Testcase: test_concat took 0 sec
+Testcase: test_checkNotNull took 0 sec
+Testcase: test_checkNotNull_valueNull took 0 sec
+Testcase: test_checkNotEmpty_String took 0 sec
+Testcase: test_checkNotEmpty_String_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotEmpty_String_valueNull took 0 sec
+Testcase: test_checkNotEmpty_String_valueEmpty took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming_valueNull took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming_valueEmpty took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmpty_String took 0 sec
+Testcase: test_checkNotNullNorEmpty_String_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmpty_String_valueNull took 0 sec
+Testcase: test_checkNotNullNorEmpty_String_valueEmpty took 0.016 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming_valueNull took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming_valueEmpty took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkInstance took 0 sec
+Testcase: test_checkInstance_valueNull took 0 sec
+Testcase: test_checkInstance_valueInvalid took 0 sec
+Testcase: test_checkNullOrInstance took 0 sec
+Testcase: test_checkNullOrInstance_valueNull took 0 sec
+Testcase: test_checkNullOrInstance_valueInvalid took 0 sec
+Testcase: test_checkExists_File took 0 sec
+Testcase: test_checkExists_Directory took 0 sec
+Testcase: test_checkExists_fileNull took 0 sec
+Testcase: test_checkExists_NotExist took 0 sec
+Testcase: test_checkIsFile_File took 0 sec
+Testcase: test_checkIsFile_fileNull took 0 sec
+Testcase: test_checkIsFile_NotExist took 0 sec
+Testcase: test_checkIsFile_Directory took 0 sec
+Testcase: test_checkIsDirectory_Directory took 0 sec
+Testcase: test_checkIsDirectory_fileNull took 0 sec
+Testcase: test_checkIsDirectory_NotExist took 0 sec
+Testcase: test_checkIsDirectory_File took 0 sec
+Testcase: test_checkNotEmpty_Collection took 0 sec
+Testcase: test_checkNotEmpty_Collection_collectionNull took 0 sec
+Testcase: test_checkNotEmpty_Collection_collectionEmpty took 0 sec
+Testcase: test_checkNotNullNorEmpty_Collection took 0 sec
+Testcase: test_checkNotNullNorEmpty_Collection_collectionNull took 0 sec
+Testcase: test_checkNotNullNorEmpty_Collection_collectionEmpty took 0 sec
+Testcase: test_checkNotEmpty_Map took 0 sec
+Testcase: test_checkNotEmpty_Map_mapNull took 0 sec
+Testcase: test_checkNotEmpty_Map_mapEmpty took 0 sec
+Testcase: test_checkNotNullNorEmpty_Map took 0 sec
+Testcase: test_checkNotNullNorEmpty_Map_mapNull took 0 sec
+Testcase: test_checkNotNullNorEmpty_Map_mapEmpty took 0 sec
+Testcase: test_checkNotNullElements took 0 sec
+Testcase: test_checkNotNullElements_collectionNull took 0 sec
+Testcase: test_checkNotNullElements_collectionEmpty took 0 sec
+Testcase: test_checkNotNullElements_collectionContainsNull took 0 sec
+Testcase: test_checkNotEmptyElements took 0 sec
+Testcase: test_checkNotEmptyElements_Trim took 0 sec
+Testcase: test_checkNotEmptyElements_collectionNull took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsNull took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty1 took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty2 took 0.016 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty3 took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty4 took 0 sec
+Testcase: test_checkNotNullKeys took 0 sec
+Testcase: test_checkNotNullKeys_mapNull took 0 sec
+Testcase: test_checkNotNullKeys_mapEmpty took 0 sec
+Testcase: test_checkNotNullKeys_mapContainsNullValue took 0 sec
+Testcase: test_checkNotNullKeys_mapContainsNullKey took 0 sec
+Testcase: test_checkNotNullValues took 0 sec
+Testcase: test_checkNotNullValues_mapNull took 0 sec
+Testcase: test_checkNotNullValues_mapEmpty took 0 sec
+Testcase: test_checkNotNullValues_mapContainsNullKey took 0 sec
+Testcase: test_checkNotNullValues_mapContainsNullValue took 0 sec
+Testcase: test_checkNotEmptyKeys took 0 sec
+Testcase: test_checkNotEmptyKeys_Trim took 0 sec
+Testcase: test_checkNotEmptyKeys_mapNull took 0 sec
+Testcase: test_checkNotEmptyKeys_mapEmpty took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyValue took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey1 took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey2 took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey3 took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey4 took 0 sec
+Testcase: test_checkNotEmptyValues took 0 sec
+Testcase: test_checkNotEmptyValues_Trim took 0 sec
+Testcase: test_checkNotEmptyValues_mapNull took 0 sec
+Testcase: test_checkNotEmptyValues_mapEmpty took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyKey took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue1 took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue2 took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue3 took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue4 took 0 sec
+Testcase: test_checkNegative_Double took 0 sec
+Testcase: test_checkNegative_Double_valueNotNegative1 took 0 sec
+Testcase: test_checkNegative_Double_valueNotNegative2 took 0 sec
+Testcase: test_checkPositive_Double took 0 sec
+Testcase: test_checkPositive_Double_valueNotPositive1 took 0 sec
+Testcase: test_checkPositive_Double_valueNotPositive2 took 0 sec
+Testcase: test_checkNotNegative_Double_1 took 0 sec
+Testcase: test_checkNotNegative_Double_2 took 0 sec
+Testcase: test_checkNotNegative_Double_valueNegative took 0 sec
+Testcase: test_checkNotPositive_Double_1 took 0 sec
+Testcase: test_checkNotPositive_Double_2 took 0 sec
+Testcase: test_checkNotPositive_Double_valuePositive took 0 sec
+Testcase: test_checkNotZero_Double_1 took 0 sec
+Testcase: test_checkNotZero_Double_2 took 0 sec
+Testcase: test_checkNotZero_Double_valueZero took 0 sec
+Testcase: test_checkGreaterThan_Double_1 took 0 sec
+Testcase: test_checkGreaterThan_Double_2 took 0 sec
+Testcase: test_checkGreaterThan_Double_3 took 0 sec
+Testcase: test_checkGreaterThan_Double_valueLessThan took 0 sec
+Testcase: test_checkGreaterThan_Double_valueEqualTo took 0 sec
+Testcase: test_checkLessThan_Double_1 took 0 sec
+Testcase: test_checkLessThan_Double_2 took 0 sec
+Testcase: test_checkLessThan_Double_3 took 0 sec
+Testcase: test_checkLessThan_Double_valueGreaterThan took 0 sec
+Testcase: test_checkLessThan_Double_valueEqualTo took 0 sec
+Testcase: test_checkInRange_Double_1 took 0 sec
+Testcase: test_checkInRange_Double_2 took 0 sec
+Testcase: test_checkInRange_Double_3 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange1 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange2 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange3 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange4 took 0 sec
+Testcase: test_checkNegative_Long took 0 sec
+Testcase: test_checkNegative_Long_valueNotNegative1 took 0 sec
+Testcase: test_checkNegative_Long_valueNotNegative2 took 0 sec
+Testcase: test_checkPositive_Long took 0 sec
+Testcase: test_checkPositive_Long_valueNotPositive1 took 0 sec
+Testcase: test_checkPositive_Long_valueNotPositive2 took 0 sec
+Testcase: test_checkNotNegative_Long_1 took 0 sec
+Testcase: test_checkNotNegative_Long_2 took 0 sec
+Testcase: test_checkNotNegative_Long_valueNegative took 0.016 sec
+Testcase: test_checkNotPositive_Long_1 took 0 sec
+Testcase: test_checkNotPositive_Long_2 took 0 sec
+Testcase: test_checkNotPositive_Long_valuePositive took 0 sec
+Testcase: test_checkNotZero_Long_1 took 0 sec
+Testcase: test_checkNotZero_Long_2 took 0 sec
+Testcase: test_checkNotZero_Long_valueZero took 0 sec
+Testcase: test_checkGreaterThan_Long_1 took 0 sec
+Testcase: test_checkGreaterThan_Long_2 took 0 sec
+Testcase: test_checkGreaterThan_Long_3 took 0 sec
+Testcase: test_checkGreaterThan_Long_valueLessThan took 0 sec
+Testcase: test_checkGreaterThan_Long_valueEqualTo took 0 sec
+Testcase: test_checkLessThan_Long_1 took 0 sec
+Testcase: test_checkLessThan_Long_2 took 0 sec
+Testcase: test_checkLessThan_Long_3 took 0 sec
+Testcase: test_checkLessThan_Long_valueGreaterThan took 0 sec
+Testcase: test_checkLessThan_Long_valueEqualTo took 0.015 sec
+Testcase: test_checkInRange_Long_1 took 0 sec
+Testcase: test_checkInRange_Long_2 took 0 sec
+Testcase: test_checkInRange_Long_3 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange1 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange2 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange3 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange4 took 0 sec
+Testcase: test_checkNotNull took 0 sec
+Testcase: test_checkNotNull_valueNull took 0 sec
+Testcase: test_checkNotEmpty_String took 0 sec
+Testcase: test_checkNotEmpty_String_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotEmpty_String_valueNull took 0 sec
+Testcase: test_checkNotEmpty_String_valueEmpty took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming_valueNull took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming_valueEmpty took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmpty_String took 0 sec
+Testcase: test_checkNotNullNorEmpty_String_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmpty_String_valueNull took 0 sec
+Testcase: test_checkNotNullNorEmpty_String_valueEmpty took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming_valueNull took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming_valueEmpty took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming_valueEmptyAfterTrimming took 0 sec
+Testcase: test_checkInstance took 0 sec
+Testcase: test_checkInstance_valueNull took 0 sec
+Testcase: test_checkInstance_valueInvalid took 0 sec
+Testcase: test_checkNullOrInstance took 0 sec
+Testcase: test_checkNullOrInstance_valueNull took 0 sec
+Testcase: test_checkNullOrInstance_valueInvalid took 0 sec
+Testcase: test_checkExists_File took 0 sec
+Testcase: test_checkExists_Directory took 0 sec
+Testcase: test_checkExists_fileNull took 0 sec
+Testcase: test_checkExists_NotExist took 0 sec
+Testcase: test_checkIsFile_File took 0 sec
+Testcase: test_checkIsFile_fileNull took 0 sec
+Testcase: test_checkIsFile_NotExist took 0 sec
+Testcase: test_checkIsFile_Directory took 0 sec
+Testcase: test_checkIsDirectory_Directory took 0 sec
+Testcase: test_checkIsDirectory_fileNull took 0 sec
+Testcase: test_checkIsDirectory_NotExist took 0 sec
+Testcase: test_checkIsDirectory_File took 0 sec
+Testcase: test_checkNotEmpty_Collection took 0 sec
+Testcase: test_checkNotEmpty_Collection_collectionNull took 0 sec
+Testcase: test_checkNotEmpty_Collection_collectionEmpty took 0 sec
+Testcase: test_checkNotNullNorEmpty_Collection took 0 sec
+Testcase: test_checkNotNullNorEmpty_Collection_collectionNull took 0 sec
+Testcase: test_checkNotNullNorEmpty_Collection_collectionEmpty took 0 sec
+Testcase: test_checkNotEmpty_Map took 0 sec
+Testcase: test_checkNotEmpty_Map_mapNull took 0 sec
+Testcase: test_checkNotEmpty_Map_mapEmpty took 0 sec
+Testcase: test_checkNotNullNorEmpty_Map took 0 sec
+Testcase: test_checkNotNullNorEmpty_Map_mapNull took 0 sec
+Testcase: test_checkNotNullNorEmpty_Map_mapEmpty took 0 sec
+Testcase: test_checkNotNullElements took 0 sec
+Testcase: test_checkNotNullElements_collectionNull took 0 sec
+Testcase: test_checkNotNullElements_collectionEmpty took 0 sec
+Testcase: test_checkNotNullElements_collectionContainsNull took 0 sec
+Testcase: test_checkNotEmptyElements took 0 sec
+Testcase: test_checkNotEmptyElements_Trim took 0 sec
+Testcase: test_checkNotEmptyElements_collectionNull took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsNull took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty1 took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty2 took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty3 took 0 sec
+Testcase: test_checkNotEmptyElements_collectionContainsEmpty4 took 0 sec
+Testcase: test_checkNotNullKeys took 0 sec
+Testcase: test_checkNotNullKeys_mapNull took 0 sec
+Testcase: test_checkNotNullKeys_mapEmpty took 0 sec
+Testcase: test_checkNotNullKeys_mapContainsNullValue took 0 sec
+Testcase: test_checkNotNullKeys_mapContainsNullKey took 0 sec
+Testcase: test_checkNotNullValues took 0 sec
+Testcase: test_checkNotNullValues_mapNull took 0 sec
+Testcase: test_checkNotNullValues_mapEmpty took 0 sec
+Testcase: test_checkNotNullValues_mapContainsNullKey took 0 sec
+Testcase: test_checkNotNullValues_mapContainsNullValue took 0 sec
+Testcase: test_checkNotEmptyKeys took 0 sec
+Testcase: test_checkNotEmptyKeys_Trim took 0 sec
+Testcase: test_checkNotEmptyKeys_mapNull took 0 sec
+Testcase: test_checkNotEmptyKeys_mapEmpty took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyValue took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey1 took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey2 took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey3 took 0 sec
+Testcase: test_checkNotEmptyKeys_mapContainsEmptyKey4 took 0 sec
+Testcase: test_checkNotEmptyValues took 0 sec
+Testcase: test_checkNotEmptyValues_Trim took 0 sec
+Testcase: test_checkNotEmptyValues_mapNull took 0 sec
+Testcase: test_checkNotEmptyValues_mapEmpty took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyKey took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue1 took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue2 took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue3 took 0 sec
+Testcase: test_checkNotEmptyValues_mapContainsEmptyValue4 took 0 sec
+Testcase: test_checkNegative_Double took 0 sec
+Testcase: test_checkNegative_Double_valueNotNegative1 took 0 sec
+Testcase: test_checkNegative_Double_valueNotNegative2 took 0 sec
+Testcase: test_checkPositive_Double took 0 sec
+Testcase: test_checkPositive_Double_valueNotPositive1 took 0 sec
+Testcase: test_checkPositive_Double_valueNotPositive2 took 0 sec
+Testcase: test_checkNotNegative_Double_1 took 0 sec
+Testcase: test_checkNotNegative_Double_2 took 0 sec
+Testcase: test_checkNotNegative_Double_valueNegative took 0 sec
+Testcase: test_checkNotPositive_Double_1 took 0 sec
+Testcase: test_checkNotPositive_Double_2 took 0 sec
+Testcase: test_checkNotPositive_Double_valuePositive took 0 sec
+Testcase: test_checkNotZero_Double_1 took 0 sec
+Testcase: test_checkNotZero_Double_2 took 0 sec
+Testcase: test_checkNotZero_Double_valueZero took 0 sec
+Testcase: test_checkGreaterThan_Double_1 took 0 sec
+Testcase: test_checkGreaterThan_Double_2 took 0 sec
+Testcase: test_checkGreaterThan_Double_3 took 0 sec
+Testcase: test_checkGreaterThan_Double_valueLessThan took 0 sec
+Testcase: test_checkGreaterThan_Double_valueEqualTo took 0 sec
+Testcase: test_checkLessThan_Double_1 took 0 sec
+Testcase: test_checkLessThan_Double_2 took 0 sec
+Testcase: test_checkLessThan_Double_3 took 0 sec
+Testcase: test_checkLessThan_Double_valueGreaterThan took 0 sec
+Testcase: test_checkLessThan_Double_valueEqualTo took 0 sec
+Testcase: test_checkInRange_Double_1 took 0 sec
+Testcase: test_checkInRange_Double_2 took 0 sec
+Testcase: test_checkInRange_Double_3 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange1 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange2 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange3 took 0 sec
+Testcase: test_checkInRange_Double_valueNotInRange4 took 0 sec
+Testcase: test_checkNegative_Long took 0 sec
+Testcase: test_checkNegative_Long_valueNotNegative1 took 0 sec
+Testcase: test_checkNegative_Long_valueNotNegative2 took 0 sec
+Testcase: test_checkPositive_Long took 0 sec
+Testcase: test_checkPositive_Long_valueNotPositive1 took 0 sec
+Testcase: test_checkPositive_Long_valueNotPositive2 took 0 sec
+Testcase: test_checkNotNegative_Long_1 took 0 sec
+Testcase: test_checkNotNegative_Long_2 took 0 sec
+Testcase: test_checkNotNegative_Long_valueNegative took 0 sec
+Testcase: test_checkNotPositive_Long_1 took 0 sec
+Testcase: test_checkNotPositive_Long_2 took 0 sec
+Testcase: test_checkNotPositive_Long_valuePositive took 0 sec
+Testcase: test_checkNotZero_Long_1 took 0 sec
+Testcase: test_checkNotZero_Long_2 took 0 sec
+Testcase: test_checkNotZero_Long_valueZero took 0 sec
+Testcase: test_checkGreaterThan_Long_1 took 0 sec
+Testcase: test_checkGreaterThan_Long_2 took 0 sec
+Testcase: test_checkGreaterThan_Long_3 took 0 sec
+Testcase: test_checkGreaterThan_Long_valueLessThan took 0 sec
+Testcase: test_checkGreaterThan_Long_valueEqualTo took 0 sec
+Testcase: test_checkLessThan_Long_1 took 0 sec
+Testcase: test_checkLessThan_Long_2 took 0 sec
+Testcase: test_checkLessThan_Long_3 took 0 sec
+Testcase: test_checkLessThan_Long_valueGreaterThan took 0 sec
+Testcase: test_checkLessThan_Long_valueEqualTo took 0 sec
+Testcase: test_checkInRange_Long_1 took 0 sec
+Testcase: test_checkInRange_Long_2 took 0 sec
+Testcase: test_checkInRange_Long_3 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange1 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange2 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange3 took 0 sec
+Testcase: test_checkInRange_Long_valueNotInRange4 took 0 sec
+Testcase: test_getStringProperty_1 took 0 sec
+Testcase: test_getStringProperty_2 took 0 sec
+Testcase: test_getStringProperty_propertyMissing took 0 sec
+Testcase: test_getStringsProperty_1 took 0 sec
+Testcase: test_getStringsProperty_2 took 0 sec
+Testcase: test_getStringsProperty_3 took 0 sec
+Testcase: test_getStringsProperty_propertyMissing took 0 sec
+Testcase: test_getIntegerProperty_1 took 0 sec
+Testcase: test_getIntegerProperty_2 took 0 sec
+Testcase: test_getIntegerProperty_propertyMissing took 0 sec
+Testcase: test_getIntegerProperty_propertyInvalid took 0 sec
+Testcase: test_getLongProperty_1 took 0.016 sec
+Testcase: test_getLongProperty_2 took 0 sec
+Testcase: test_getLongProperty_propertyMissing took 0 sec
+Testcase: test_getLongProperty_propertyInvalid took 0 sec
+Testcase: test_getDoubleProperty_1 took 0 sec
+Testcase: test_getDoubleProperty_2 took 0 sec
+Testcase: test_getDoubleProperty_propertyMissing took 0 sec
+Testcase: test_getDoubleProperty_propertyInvalid took 0 sec
+Testcase: test_getDateProperty_1 took 0 sec
+Testcase: test_getDateProperty_2 took 0 sec
+Testcase: test_getDateProperty_propertyMissing took 0 sec
+Testcase: test_getDateProperty_propertyInvalid1 took 0.015 sec
+Testcase: test_getDateProperty_propertyInvalid2 took 0 sec
+Testcase: test_getClassProperty_1 took 0 sec
+Testcase: test_getClassProperty_2 took 0 sec
+Testcase: test_getClassProperty_propertyMissing took 0 sec
+Testcase: test_getClassProperty_propertyInvalid took 0 sec
+Testcase: test_getSubConfiguration_1 took 0 sec
+Testcase: test_getSubConfiguration_2 took 0 sec
+Testcase: test_executeQuery_1 took 0.047 sec
+Testcase: test_executeQuery_2 took 0.032 sec
+Testcase: test_executeQuery_3 took 0.046 sec
+Testcase: test_executeQuery_4 took 0.047 sec
+Testcase: test_executeQuery_5 took 0.032 sec
+Testcase: test_executeQuery_6 took 0.031 sec
+Testcase: test_executeQuery_7 took 0.015 sec
+Testcase: test_executeQuery_8 took 0.032 sec
+Testcase: test_executeQuery_9 took 0.047 sec
+Testcase: test_executeQuery_columnTypesInvalid took 0.031 sec
+Testcase: test_executeQuery_ColumnTypeUnsupported took 0.015 sec
+Testcase: test_executeQuery_Error took 0.016 sec
+Testcase: test_executeUpdate_1 took 0.031 sec
+Testcase: test_executeUpdate_2 took 0.031 sec
+Testcase: test_executeUpdate_3 took 0.047 sec
+Testcase: test_executeUpdate_Error took 0.031 sec
+Testcase: test_commitTransaction took 0.063 sec
+Testcase: test_commitTransaction_Error took 0.015 sec
+Testcase: test_rollbackTransaction took 0.032 sec
+Testcase: test_rollbackTransaction_connectionNull took 0.031 sec
+Testcase: test_rollbackTransaction_Error took 0.016 sec
+Testcase: test_logEntrance1_NoParameter took 0.015 sec
+Testcase: test_logEntrance1_OneParameter took 0 sec
+Testcase: test_logEntrance1_TwoParameters took 0 sec
+Testcase: test_logEntrance1_NoLogging took 0 sec
+Testcase: test_logEntrance2_NoParameter took 0.016 sec
+Testcase: test_logEntrance2_OneParameter took 0 sec
+Testcase: test_logEntrance2_TwoParameters took 0 sec
+Testcase: test_logEntrance2_NoLogging took 0 sec
+Testcase: test_logExit1_NoValue took 0 sec
+Testcase: test_logExit1 took 0 sec
+Testcase: test_logExit1_NoLogging took 0 sec
+Testcase: test_logExit2_NoValue took 0 sec
+Testcase: test_logExit2 took 0.016 sec
+Testcase: test_logExit2_NoLogging took 0 sec
+Testcase: test_logExit3_NoValue took 0 sec
+Testcase: test_logExit3 took 0.016 sec
+Testcase: test_logExit3_NoLogging took 0 sec
+Testcase: test_logException1 took 0.015 sec
+Testcase: test_logException1_NoLogging took 0 sec
+Testcase: test_logException2 took 0 sec
+Testcase: test_logException2_NoLogging took 0.016 sec
+Testcase: test_logEntrance1_NoParameter took 0 sec
+Testcase: test_logEntrance1_OneParameter took 0 sec
+Testcase: test_logEntrance1_TwoParameters took 0 sec
+Testcase: test_logEntrance1_NoLogging took 0 sec
+Testcase: test_logEntrance2_NoParameter took 0.015 sec
+Testcase: test_logEntrance2_OneParameter took 0 sec
+Testcase: test_logEntrance2_TwoParameters took 0 sec
+Testcase: test_logEntrance2_NoLogging took 0 sec
+Testcase: test_logExit1_NoValue took 0 sec
+Testcase: test_logExit1 took 0 sec
+Testcase: test_logExit1_NoLogging took 0 sec
+Testcase: test_logExit2_NoValue took 0 sec
+Testcase: test_logExit2 took 0 sec
+Testcase: test_logExit2_NoLogging took 0 sec
+Testcase: test_logExit3_NoValue took 0 sec
+Testcase: test_logExit3 took 0.016 sec
+Testcase: test_logExit3_NoLogging took 0 sec
+Testcase: test_logException1 took 0 sec
+Testcase: test_logException1_NoLogging took 0 sec
+Testcase: test_logException2 took 0 sec
+Testcase: test_logException2_NoLogging took 0 sec
+Testcase: test_getMethodEntranceMessage took 0 sec
+Testcase: test_getInputParametersMessage_One took 0 sec
+Testcase: test_getInputParametersMessage_Two took 0 sec
+Testcase: test_getMethodExitMessage_1 took 0 sec
+Testcase: test_getMethodExitMessage_2 took 0 sec
+Testcase: test_getOutputValueMessage took 0 sec
+Testcase: test_getExceptionMessage took 0 sec
+Testcase: test_constructException1 took 0 sec
+Testcase: test_constructException2 took 0 sec
+Testcase: test_checkNotNull took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming took 0 sec
+Testcase: test_checkInstance took 0 sec
+Testcase: test_checkNullOrInstance took 0 sec
+Testcase: test_checkNotNullElements took 0 sec
+Testcase: test_checkNotEmptyElements took 0 sec
+Testcase: test_checkNotNullKeys took 0 sec
+Testcase: test_checkNotNullValues took 0 sec
+Testcase: test_checkNotEmptyKeys took 0 sec
+Testcase: test_checkNotEmptyValues took 0 sec
+Testcase: test_checkNotEmpty took 0 sec
+Testcase: test_checkNotNullNorEmpty took 0 sec
+Testcase: test_checkExists took 0 sec
+Testcase: test_checkIsFile took 0 sec
+Testcase: test_checkIsDirectory took 0 sec
+Testcase: test_checkNotEmpty2 took 0 sec
+Testcase: test_checkNotNullNorEmpty2 took 0 sec
+Testcase: test_checkNotEmpty3 took 0 sec
+Testcase: test_checkNotNullNorEmpty3 took 0 sec
+Testcase: test_checkNegative took 0 sec
+Testcase: test_checkPositive took 0 sec
+Testcase: test_checkNotNegative took 0 sec
+Testcase: test_checkNotPositive took 0 sec
+Testcase: test_checkNotZero took 0 sec
+Testcase: test_checkGreaterThan took 0 sec
+Testcase: test_checkLessThan took 0 sec
+Testcase: test_checkInRange took 0 sec
+Testcase: test_executeQuery1 took 1.734 sec
+Testcase: test_executeQuery2 took 1.5 sec
+Testcase: test_executeQuery3 took 1.828 sec
+Testcase: test_executeQuery4 took 1.688 sec
+Testcase: test_executeUpdate1 took 1.61 sec
+Testcase: test_executeUpdate2 took 1.516 sec
+Testcase: test_checkNotNull took 0 sec
+Testcase: test_checkNotEmptyAfterTrimming took 0 sec
+Testcase: test_checkNotNullNorEmptyAfterTrimming took 0 sec
+Testcase: test_checkInstance took 0 sec
+Testcase: test_checkNullOrInstance took 0 sec
+Testcase: test_checkNotNullElements took 0 sec
+Testcase: test_checkNotEmptyElements took 0 sec
+Testcase: test_checkNotNullKeys took 0 sec
+Testcase: test_checkNotNullValues took 0 sec
+Testcase: test_checkNotEmptyKeys took 0 sec
+Testcase: test_checkNotEmptyValues took 0 sec
+Testcase: test_checkNotEmpty took 0 sec
+Testcase: test_checkNotNullNorEmpty took 0 sec
+Testcase: test_checkExists took 0 sec
+Testcase: test_checkIsFile took 0 sec
+Testcase: test_checkIsDirectory took 0 sec
+Testcase: test_checkNotEmpty2 took 0 sec
+Testcase: test_checkNotNullNorEmpty2 took 0 sec
+Testcase: test_checkNotEmpty3 took 0 sec
+Testcase: test_checkNotNullNorEmpty3 took 0 sec
+Testcase: test_checkNegative took 0 sec
+Testcase: test_checkPositive took 0 sec
+Testcase: test_checkNotNegative took 0 sec
+Testcase: test_checkNotPositive took 0 sec
+Testcase: test_checkNotZero took 0 sec
+Testcase: test_checkGreaterThan took 0 sec
+Testcase: test_checkLessThan took 0 sec
+Testcase: test_checkInRange took 0 sec
+Testcase: test_getStringProperty took 0 sec
+Testcase: test_getStringsProperty took 0 sec
+Testcase: test_getIntegerProperty took 0 sec
+Testcase: test_getLongProperty took 0 sec
+Testcase: test_getDoubleProperty took 0 sec
+Testcase: test_getDateProperty took 0 sec
+Testcase: test_getClassProperty took 0 sec
+Testcase: test_logExit2 took 0 sec
+Testcase: test_logExit3 took 0 sec
+Testcase: test_logException2 took 0.016 sec
+Testcase: test_logEntrance took 0 sec
+Testcase: test_logEntrance2 took 0 sec
+Testcase: test_logExit took 0 sec
+Testcase: test_logException took 0.016 sec
+Testcase: test_logExit2 took 0 sec
+Testcase: test_logExit3 took 0 sec
+Testcase: test_logException2 took 0.015 sec
+Testcase: test_logEntrance took 0 sec
+Testcase: test_logEntrance2 took 0.016 sec
+Testcase: test_logExit took 0 sec
+Testcase: test_logException took 0 sec
+Testcase: test_getStringProperty took 0 sec
+Testcase: test_getStringsProperty took 0 sec
+Testcase: test_getIntegerProperty took 0 sec
+Testcase: test_getLongProperty took 0 sec
+Testcase: test_getDoubleProperty took 0 sec
+Testcase: test_getDateProperty took 0 sec
+Testcase: test_getClassProperty took 0 sec
+Testcase: test_getSubConfiguration took 0.329 sec
+Testcase: test_getStringProperty took 0.015 sec
+Testcase: test_getStringProperty took 0.016 sec
+Testcase: test_commitTransaction took 1.297 sec
+Testcase: test_rollbackTransaction took 1.203 sec
+Testcase: test_executeQuery took 1.39 sec
+Testcase: test_executeUpdate took 13.079 sec
+Testcase: testConstructException1 took 0 sec
+Testcase: testConstructException2 took 0 sec
+Testcase: testExecuteQuery1 took 0.171 sec
+Testcase: testExecuteUpdate took 0.016 sec
+Testcase: testExecuteCommit took 0 sec
+Testcase: testExecuteRollback took 0.016 sec
+Testcase: testLogEntrance1 took 0 sec
+Testcase: testLogEntrance2 took 0 sec
+Testcase: testLogExit1 took 0 sec
+Testcase: testLogExit2 took 0 sec
+Testcase: testLogExit3 took 0 sec
+Testcase: testLogEexception1 took 0 sec
+Testcase: testLogEexception2 took 0 sec
+Testcase: testGetExceptionMessage took 0 sec
+Testcase: testGetOutputValueMessage took 0 sec
+Testcase: testGetMethodExitMessage took 0 sec
+Testcase: testGetInputParametersMessage took 0 sec
+Testcase: testGetMethodEntranceMessage took 0 sec
+Testcase: testLogEntrance1 took 0.015 sec
+Testcase: testLogEntrance2 took 0 sec
+Testcase: testLogExit1 took 0 sec
+Testcase: testLogExit2 took 0 sec
+Testcase: testLogExit3 took 0 sec
+Testcase: testLogEexception1 took 0 sec
+Testcase: testLogEexception2 took 0 sec
+Testcase: testCheckNotNull took 0 sec
+Testcase: testCheckNotEmpty took 0 sec
+Testcase: testCheckNotEmptyAfterTrimming took 0 sec
+Testcase: testCheckNotNullNorEmpty took 0 sec
+Testcase: testCheckNotNullNorEmptyAfterTrimming took 0 sec
+Testcase: testCheckInstance took 0 sec
+Testcase: testCheckNullOrInstance took 0 sec
+Testcase: testCheckExists took 0 sec
+Testcase: testCheckIsFile took 0 sec
+Testcase: testCheckIsDirectory took 0 sec
+Testcase: testCheckNotEmpty2 took 0 sec
+Testcase: testCheckNotNullNorEmpty2 took 0 sec
+Testcase: testCheckNotEmpty3 took 0 sec
+Testcase: testCheckNotNullNorEmpty3 took 0 sec
+Testcase: testCheckNotNullElements took 0 sec
+Testcase: testCheckNotEmptyElements took 0 sec
+Testcase: testCheckNotNullKeys took 0 sec
+Testcase: testCheckNotNullValues took 0 sec
+Testcase: testCheckNotEmptyKeys took 0 sec
+Testcase: testCheckNotEmptyValues took 0 sec
+Testcase: testCheckNegative took 0 sec
+Testcase: testCheckPositive took 0 sec
+Testcase: testCheckNotNegative took 0 sec
+Testcase: testCheckNotPositive took 0 sec
+Testcase: testCheckNotZero took 0 sec
+Testcase: testCheckGreaterThan took 0 sec
+Testcase: testCheckLesshan took 0 sec
+Testcase: testCheckInRange took 0 sec
+Testcase: testCheckNegative2 took 0 sec
+Testcase: testCheckPositive2 took 0 sec
+Testcase: testCheckNotNegative2 took 0 sec
+Testcase: testCheckNotPositive2 took 0 sec
+Testcase: testCheckNotZero2 took 0 sec
+Testcase: testCheckGreaterThan2 took 0 sec
+Testcase: testCheckLesshan2 took 0 sec
+Testcase: testCheckInRange2 took 0 sec
+Testcase: testGetStringProperty took 0 sec
+Testcase: testGetStringsProperty took 0 sec
+Testcase: testGetIntegerProperty took 0 sec
+Testcase: testGetLongProperty took 0 sec
+Testcase: testGetDoubleProperty took 0 sec
+Testcase: testGetDateProperty took 0 sec
+Testcase: testGetClassProperty took 0 sec
+Testcase: testCheckNotNull took 0 sec
+Testcase: testCheckNotEmpty took 0 sec
+Testcase: testCheckNotEmptyAfterTrimming took 0 sec
+Testcase: testCheckNotNullNorEmpty took 0 sec
+Testcase: testCheckNotNullNorEmptyAfterTrimming took 0 sec
+Testcase: testCheckInstance took 0 sec
+Testcase: testCheckNullOrInstance took 0 sec
+Testcase: testCheckExists took 0 sec
+Testcase: testCheckIsFile took 0 sec
+Testcase: testCheckIsDirectory took 0 sec
+Testcase: testCheckNotEmpty2 took 0 sec
+Testcase: testCheckNotNullNorEmpty2 took 0 sec
+Testcase: testCheckNotEmpty3 took 0 sec
+Testcase: testCheckNotNullNorEmpty3 took 0 sec
+Testcase: testCheckNotNullElements took 0 sec
+Testcase: testCheckNotEmptyElements took 0 sec
+Testcase: testCheckNotNullKeys took 0 sec
+Testcase: testCheckNotNullValues took 0 sec
+Testcase: testCheckNotEmptyKeys took 0 sec
+Testcase: testCheckNotEmptyValues took 0 sec
+Testcase: testCheckNegative took 0 sec
+Testcase: testCheckPositive took 0 sec
+Testcase: testCheckNotNegative took 0 sec
+Testcase: testCheckNotPositive took 0 sec
+Testcase: testCheckNotZero took 0 sec
+Testcase: testCheckGreaterThan took 0 sec
+Testcase: testCheckLesshan took 0 sec
+Testcase: testCheckInRange took 0 sec
+Testcase: testCheckNegative2 took 0 sec
+Testcase: testCheckPositive2 took 0 sec
+Testcase: testCheckNotNegative2 took 0 sec
+Testcase: testCheckNotPositive2 took 0 sec
+Testcase: testCheckNotZero2 took 0 sec
+Testcase: testCheckGreaterThan2 took 0 sec
+Testcase: testCheckLesshan2 took 0 sec
+Testcase: testCheckInRange2 took 0 sec

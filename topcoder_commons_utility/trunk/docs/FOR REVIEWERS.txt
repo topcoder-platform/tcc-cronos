@@ -1,0 +1,21 @@
+Please note that the following enhancements are provided in my design:
+- ValidationUtility
+- ParameterCheckUtility#checkInstance()
+- ParameterCheckUtility#checkNullOrInstance()
+- ParameterCheckUtility#checkGreaterThan()
+- ParameterCheckUtility#checkLessThan()
+- LoggingWrapperUtility allows to use different Levels
+- Log4jUtility allows to use different Priorities
+- PropertiesUtility#getClassProperty()
+- PropertiesUtility#getSubConfiguration()
+- JDBCUtility#commitTransaction()
+- JDBCUtility#rollBackTransaction()
+
+These enhancements were confirmed to be acceptable by the co-pilot in the following threads:
+http://apps.topcoder.com/forums/?module=Thread&threadID=705303&start=0&mc=4
+http://apps.topcoder.com/forums/?module=Thread&threadID=705309&start=0&mc=2
+http://apps.topcoder.com/forums/?module=Thread&threadID=705318&start=0&mc=2
+http://apps.topcoder.com/forums/?module=Thread&threadID=705320&start=0&mc=2
+
+Please note that:
+1) Log4jUtility doesn't need to put timestamp to the log message since the preferred way to do so is to configure message format in log4j config file.

@@ -1,0 +1,1744 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="pc001" id="0" name="AllTests" package="com.topcoder.commons.utils" tests="618" time="29.578" timestamp="2011-05-09T00:18:03">
+      <properties>
+          <property name="java.vendor" value="Sun Microsystems Inc." />
+
+          <property name="package" value="com.topcoder.commons.utils" />
+
+          <property name="docpackage.jar" value="topcoder_commons_utility_docs.jar" />
+
+          <property name="sun.java.launcher" value="SUN_STANDARD" />
+
+          <property name="eclipse.pdebuild.templates" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/" />
+
+          <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+
+          <property name="manifest_file_path" value="build/dist/topcoder_commons_utility-1.0.0/META-INF/" />
+
+          <property name="verbose" value="no" />
+
+          <property name="os.name" value="Windows XP" />
+
+          <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_21\jre\classes" />
+
+          <property name="docsdir" value="docs" />
+
+          <property name="javadoc.jar" value="javadocs.jar" />
+
+          <property name="design_submission.jar" value="topcoder_commons_utility_1.0.0_design_submission.jar" />
+
+          <property name="sun.desktop" value="windows" />
+
+          <property name="component.tests.jar" value="build/dist/lib/tcs/topcoder_commons_utility_tests.jar" />
+
+          <property name="object_formatter.jar" value="e:/tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar" />
+
+          <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="ant.home" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910" />
+
+          <property name="java.runtime.version" value="1.5.0_21-b01" />
+
+          <property name="component_path" value="topcoder_commons_utility/1.0.0" />
+
+          <property name="cobertura.dir" value="e:/tcs/lib/third_party/cobertura/1.8" />
+
+          <property name="component.version.micro" value="0" />
+
+          <property name="user.name" value="Administrator" />
+
+          <property name="manifest_file" value="build/dist/topcoder_commons_utility-1.0.0/META-INF//MANIFEST.MF" />
+
+          <property name="logging_wrapper.jar" value="e:/tcs/lib/tcs/logging_wrapper/2.0.0/logging_wrapper.jar" />
+
+          <property name="debug" value="off" />
+
+          <property name="reports" value="log/reports" />
+
+          <property name="testfiles" value="test_files" />
+
+          <property name="component.version.major" value="1" />
+
+          <property name="component_version" value="1.0.0" />
+
+          <property name="dist_coverage" value="build/dist/topcoder_commons_utility-1.0.0/docs/coverage" />
+
+          <property name="component.packagedir" value="com/topcoder/commons/utils" />
+
+          <property name="user.language" value="en" />
+
+          <property name="cobertura.datafile" value="log/cobertura.ser" />
+
+          <property name="javadoc.locale" value="en_US" />
+
+          <property name="mysql_jdbc.jar" value="e:/tcs/lib/third_party/mysql-connector-java/5.1.7/mysql-connector-java-5.1.7-bin.jar" />
+
+          <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin" />
+
+          <property name="tcs_libdir" value="e:/tcs/lib/tcs" />
+
+          <property name="srcdir" value="src" />
+
+          <property name="ant.project.name" value="TopCoder Java Generic Build" />
+
+          <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+          <property name="component.version.minor" value="0" />
+
+          <property name="java.version" value="1.5.0_21" />
+
+          <property name="user.timezone" value="" />
+
+          <property name="dev_dist.jar" value="topcoder_commons_utility_1.0.0_dev_dist.jar" />
+
+          <property name="sun.arch.data.model" value="32" />
+
+          <property name="cobertura.format" value="html" />
+
+          <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\endorsed" />
+
+          <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+
+          <property name="packagedir" value="com/topcoder/commons/utils" />
+
+          <property name="sun.jnu.encoding" value="GBK" />
+
+          <property name="file.encoding.pkg" value="sun.io" />
+
+          <property name="file.separator" value="\" />
+
+          <property name="java.specification.name" value="Java Platform API Specification" />
+
+          <property name="build_docsdir" value="build/docs" />
+
+          <property name="dev_submission.jar" value="topcoder_commons_utility_1.0.0_dev_submission.jar" />
+
+          <property name="java.class.version" value="49.0" />
+
+          <property name="build_testclassdir" value="build/testClasses" />
+
+          <property name="user.country" value="US" />
+
+          <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_21\jre" />
+
+          <property name="component.distfilename" value="topcoder_commons_utility" />
+
+          <property name="component.version.build" value="1" />
+
+          <property name="java.vm.info" value="mixed mode, sharing" />
+
+          <property name="ant.file" value="E:\review\topcoder_commons_utility_1.0.0_dev_submission\build.xml" />
+
+          <property name="os.version" value="5.1" />
+
+          <property name="build_distdir" value="build/dist" />
+
+          <property name="dist_docpackage" value="build/doc_package" />
+
+          <property name="build_tcsdistdir" value="build/dist/topcoder_commons_utility-1.0.0" />
+
+          <property name="path.separator" value=";" />
+
+          <property name="java.vm.version" value="1.5.0_21-b01" />
+
+          <property name="testlogdir" value="log" />
+
+          <property name="junit3.jar" value="e:/tcs/lib/third_party/junit/3.8.2/junit.jar" />
+
+          <property name="user.variant" value="" />
+
+          <property name="ant.library.dir" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib" />
+
+          <property name="component.name" value="Topcoder Commons Utility" />
+
+          <property name="base_exception.jar" value="e:/tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" />
+
+          <property name="javamain" value="src/java/main" />
+
+          <property name="dist_lib" value="build/dist/lib/tcs" />
+
+          <property name="dist_javadocs" value="build/dist/topcoder_commons_utility-1.0.0/docs/javadocs" />
+
+          <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+
+          <property name="db2jcc.jar" value="e:/tcs/lib/third_party/db2/db2jcc.jar" />
+
+          <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+
+          <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+
+          <property name="component" value="Topcoder Commons Utility" />
+
+          <property name="eclipse.pdebuild.scripts" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/" />
+
+          <property name="user.home" value="D:" />
+
+          <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jdk1.6.0_13/bin/../jre/bin/client;C:/Program Files/Java/jdk1.6.0_13/bin/../jre/bin;D:\apache-ant-1.7.1\bin;C:\Program Files\Java\jdk1.6.0_13\bin;C:\Program Files\Java\jdk1.5.0_21\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati.ace\core-static;c:\program files\intel\dmix;c:\program files\thinkpad wireless lan adapter software;c:\program files\ibm\gsk8\lib;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;D:\Program Files\TortoiseSVN\bin;D:\PROGRA~1\IBM\SQLLIB\BIN;D:\PROGRA~1\IBM\SQLLIB\FUNCTION;D:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;d:\oracle\product\10.1.0\Db_1\bin;d:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin\client;d:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin;;d:\PROGRA~1\F-Secure\SSHTRI~1;" />
+
+          <property name="java.vendor.url" value="http://java.sun.com/" />
+
+          <property name="build_javadocsdir" value="build/docs/javadocs" />
+
+          <property name="configdir" value="conf" />
+
+          <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+
+          <property name="ant.file.TopCoder Java Generic Build" value="E:\review\topcoder_commons_utility_1.0.0_dev_submission\build.xml" />
+
+          <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+
+          <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+
+          <property name="java.class.path" value="E:\review\topcoder_commons_utility_1.0.0_dev_submission\build\testClasses;e:\tcs\lib\third_party\junit\4.5\junit.jar;e:\tcs\lib\third_party\mysql-connector-java\5.1.7\mysql-connector-java-5.1.7-bin.jar;e:\tcs\lib\third_party\db2\db2jcc.jar;E:\review\topcoder_commons_utility_1.0.0_dev_submission\test_reflib\h2-1.3.152.jar;e:\tcs\lib\tcs\logging_wrapper\2.0.0\logging_wrapper.jar;e:\tcs\lib\tcs\base_exception\2.0.0\base_exception.jar;e:\tcs\lib\tcs\object_formatter\1.0.0\object_formatter.jar;e:\tcs\lib\tcs\typesafe_enum\1.1.0\typesafe_enum.jar;e:\tcs\lib\third_party\log4j\1.2.15\log4j.jar;E:\review\topcoder_commons_utility_1.0.0_dev_submission\build\classes;E:\review\topcoder_commons_utility_1.0.0_dev_submission\test_files;E:\review\topcoder_commons_utility_1.0.0_dev_submission\conf;E:\review\topcoder_commons_utility_1.0.0_dev_submission;D:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;D:\PROGRA~1\IBM\SQLLIB\java\db2jcc.jar;D:\PROGRA~1\IBM\SQLLIB\java\sqlj.zip;D:\PROGRA~1\IBM\SQLLIB\java\db2jcc_license_cu.jar;D:\PROGRA~1\IBM\SQLLIB\bin;D:\PROGRA~1\IBM\SQLLIB\java\common.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-launcher.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-junit.jar" />
+
+          <property name="ext_libdir" value="e:/tcs/lib/third_party" />
+
+          <property name="builddir" value="build" />
+
+          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+
+          <property name="java.vm.specification.version" value="1.0" />
+
+          <property name="component.dist.jar" value="build/dist/topcoder_commons_utility-1.0.0.jar" />
+
+          <property name="junit.jar" value="e:/tcs/lib/third_party/junit/4.5/junit.jar" />
+
+          <property name="sun.cpu.endian" value="little" />
+
+          <property name="sun.os.patch.level" value="Service Pack 3" />
+
+          <property name="component.mainclass" value="" />
+
+          <property name="log4j.jar" value="e:/tcs/lib/third_party/log4j/1.2.15/log4j.jar" />
+
+          <property name="eclipse.pdebuild.home" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./" />
+
+          <property name="component.target" value="1.5" />
+
+          <property name="java.io.tmpdir" value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\" />
+
+          <property name="h2-1.3.152.jar" value="test_reflib/h2-1.3.152.jar" />
+
+          <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+
+          <property name="javac.encoding" value="UTF-8" />
+
+          <property name="build_targetclassdir" value="build/targetclasses" />
+
+          <property name="build_classdir" value="build/classes" />
+
+          <property name="javatests" value="src/java/tests" />
+
+          <property name="javadocsdir" value="docs/javadocs" />
+
+          <property name="instrumented.dir" value="build/instrumented" />
+
+          <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+
+          <property name="os.arch" value="x86" />
+
+          <property name="test_reflib" value="test_reflib" />
+
+          <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\ext" />
+
+          <property name="typesafe_enum.jar" value="e:/tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar" />
+
+          <property name="user.dir" value="E:\review\topcoder_commons_utility_1.0.0_dev_submission" />
+
+          <property name="design_dist.jar" value="topcoder_commons_utility_1.0.0_design_dist.jar" />
+
+          <property name="libdir" value="../tcs/lib" />
+
+          <property name="javasrc" value="src/java" />
+
+          <property name="line.separator" value=" " />
+
+          <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+
+          <property name="distfilename" value="topcoder_commons_utility" />
+
+          <property name="basedir" value="E:\review\topcoder_commons_utility_1.0.0_dev_submission" />
+
+          <property name="ant.java.version" value="1.5" />
+
+          <property name="ant.core.lib" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar" />
+
+          <property name="file.encoding" value="Cp1252" />
+
+          <property name="dist_docs" value="build/dist/topcoder_commons_utility-1.0.0/docs" />
+
+          <property name="component.jar" value="build/dist/lib/tcs/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar" />
+
+          <property name="java.specification.version" value="1.5" />
+
+          <property name="target_libdir" value="e:/tcs/lib/tcs" />
+
+          <property name="ant.file.Dependency Import" value="E:\review\topcoder_commons_utility_1.0.0_dev_submission\build-dependencies.xml" />
+
+          <property name="component.package" value="com.topcoder.commons.utils" />
+
+      </properties>
+
+      <testcase classname="com.topcoder.commons.utils.Demo" name="testDemoAPI" time="0.328" />
+
+      <testcase classname="com.topcoder.commons.utils.Demo" name="testDemoSubConfiguration" time="0.047" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containNull_False" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containNull_True" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containEmpty_False1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containEmpty_False2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containEmpty_True1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containEmpty_True2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containEmpty_True3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_containEmpty_True4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.HelperUnitTests" name="test_concat" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNull_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_String" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_String_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_String_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_String_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyAfterTrimming_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyAfterTrimming_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyAfterTrimming_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_String" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_String_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_String_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_String_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInstance_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInstance_valueInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNullOrInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNullOrInstance_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNullOrInstance_valueInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkExists_File" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkExists_Directory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkExists_fileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkExists_NotExist" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsFile_File" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsFile_fileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsFile_NotExist" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsFile_Directory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsDirectory_Directory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsDirectory_fileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsDirectory_NotExist" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkIsDirectory_File" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_Collection" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_Collection_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_Collection_collectionEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_Collection" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_Collection_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_Collection_collectionEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_Map" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_Map_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmpty_Map_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_Map" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_Map_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullNorEmpty_Map_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullElements_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullElements_collectionEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullElements_collectionContainsNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements_Trim" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullKeys_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullKeys_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullKeys_mapContainsNullValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullKeys_mapContainsNullKey" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullValues_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullValues_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullValues_mapContainsNullKey" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNullValues_mapContainsNullValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_Trim" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_Trim" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyKey" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNegative_Double" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNegative_Double_valueNotNegative1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNegative_Double_valueNotNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkPositive_Double" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkPositive_Double_valueNotPositive1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkPositive_Double_valueNotPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNegative_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNegative_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNegative_Double_valueNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotPositive_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotPositive_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotPositive_Double_valuePositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotZero_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotZero_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotZero_Double_valueZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Double_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Double_valueLessThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Double_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Double_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Double_valueGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Double_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Double_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNegative_Long" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNegative_Long_valueNotNegative1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNegative_Long_valueNotNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkPositive_Long" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkPositive_Long_valueNotPositive1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkPositive_Long_valueNotPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNegative_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNegative_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotNegative_Long_valueNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotPositive_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotPositive_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotPositive_Long_valuePositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotZero_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotZero_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkNotZero_Long_valueZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Long_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Long_valueLessThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkGreaterThan_Long_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Long_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Long_valueGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkLessThan_Long_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Long_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNull_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_String" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_String_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_String_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_String_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyAfterTrimming_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyAfterTrimming_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyAfterTrimming_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_String" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_String_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_String_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_String_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming_valueEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmptyAfterTrimming_valueEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInstance_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInstance_valueInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNullOrInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNullOrInstance_valueNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNullOrInstance_valueInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkExists_File" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkExists_Directory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkExists_fileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkExists_NotExist" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsFile_File" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsFile_fileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsFile_NotExist" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsFile_Directory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsDirectory_Directory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsDirectory_fileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsDirectory_NotExist" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkIsDirectory_File" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_Collection" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_Collection_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_Collection_collectionEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_Collection" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_Collection_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_Collection_collectionEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_Map" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_Map_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmpty_Map_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_Map" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_Map_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullNorEmpty_Map_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullElements_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullElements_collectionEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullElements_collectionContainsNull" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements_Trim" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements_collectionNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyElements_collectionContainsEmpty4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullKeys_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullKeys_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullKeys_mapContainsNullValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullKeys_mapContainsNullKey" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullValues_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullValues_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullValues_mapContainsNullKey" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNullValues_mapContainsNullValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_Trim" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyKeys_mapContainsEmptyKey4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_Trim" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_mapNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_mapEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyKey" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotEmptyValues_mapContainsEmptyValue4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNegative_Double" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNegative_Double_valueNotNegative1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNegative_Double_valueNotNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkPositive_Double" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkPositive_Double_valueNotPositive1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkPositive_Double_valueNotPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNegative_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNegative_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNegative_Double_valueNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotPositive_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotPositive_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotPositive_Double_valuePositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotZero_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotZero_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotZero_Double_valueZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Double_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Double_valueLessThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Double_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Double_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Double_valueGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Double_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Double_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Double_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Double_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Double_valueNotInRange4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNegative_Long" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNegative_Long_valueNotNegative1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNegative_Long_valueNotNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkPositive_Long" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkPositive_Long_valueNotPositive1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkPositive_Long_valueNotPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNegative_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNegative_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotNegative_Long_valueNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotPositive_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotPositive_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotPositive_Long_valuePositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotZero_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotZero_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkNotZero_Long_valueZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Long_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Long_valueLessThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkGreaterThan_Long_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Long_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Long_valueGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkLessThan_Long_valueEqualTo" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Long_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Long_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Long_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityUnitTests" name="test_checkInRange_Long_valueNotInRange4" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getStringProperty_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getStringProperty_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getStringProperty_propertyMissing" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getStringsProperty_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getStringsProperty_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getStringsProperty_3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getStringsProperty_propertyMissing" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getIntegerProperty_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getIntegerProperty_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getIntegerProperty_propertyMissing" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getIntegerProperty_propertyInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getLongProperty_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getLongProperty_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getLongProperty_propertyMissing" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getLongProperty_propertyInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDoubleProperty_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDoubleProperty_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDoubleProperty_propertyMissing" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDoubleProperty_propertyInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDateProperty_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDateProperty_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDateProperty_propertyMissing" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDateProperty_propertyInvalid1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getDateProperty_propertyInvalid2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getClassProperty_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getClassProperty_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getClassProperty_propertyMissing" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getClassProperty_propertyInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getSubConfiguration_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityUnitTests" name="test_getSubConfiguration_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_1" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_2" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_3" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_4" time="0.032" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_5" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_6" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_7" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_8" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_9" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_columnTypesInvalid" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_ColumnTypeUnsupported" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeQuery_Error" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeUpdate_1" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeUpdate_2" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeUpdate_3" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_executeUpdate_Error" time="0.032" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_commitTransaction" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_commitTransaction_Error" time="0.032" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_rollbackTransaction" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_rollbackTransaction_connectionNull" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityUnitTests" name="test_rollbackTransaction_Error" time="0.032" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance1_NoParameter" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance1_OneParameter" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance1_TwoParameters" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance1_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance2_NoParameter" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance2_OneParameter" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance2_TwoParameters" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logEntrance2_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit1_NoValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit1_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit2_NoValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit2_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit3_NoValue" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logExit3_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logException1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logException1_NoLogging" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logException2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityUnitTests" name="test_logException2_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance1_NoParameter" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance1_OneParameter" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance1_TwoParameters" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance1_NoLogging" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance2_NoParameter" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance2_OneParameter" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance2_TwoParameters" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logEntrance2_NoLogging" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit1_NoValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit1_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit2_NoValue" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit2_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit3_NoValue" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit3" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logExit3_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logException1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logException1_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logException2" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests" name="test_logException2_NoLogging" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperUnitTests" name="test_getMethodEntranceMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperUnitTests" name="test_getInputParametersMessage_One" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperUnitTests" name="test_getInputParametersMessage_Two" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperUnitTests" name="test_getMethodExitMessage_1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperUnitTests" name="test_getMethodExitMessage_2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperUnitTests" name="test_getOutputValueMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperUnitTests" name="test_getExceptionMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ExceptionHelperUnitTests" name="test_constructException1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ExceptionHelperUnitTests" name="test_constructException2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNullNorEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNullOrInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNullElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotEmptyElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNullKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNullValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotEmptyKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotEmptyValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNullNorEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkExists" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkIsFile" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkIsDirectory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNullNorEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNullNorEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkNotZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkLessThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ValidationUtilityFailureTest" name="test_checkInRange" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.JDBCUtilityFailureTest" name="test_executeQuery1" time="1.859" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.JDBCUtilityFailureTest" name="test_executeQuery2" time="1.656" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.JDBCUtilityFailureTest" name="test_executeQuery3" time="1.922" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.JDBCUtilityFailureTest" name="test_executeQuery4" time="1.609" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.JDBCUtilityFailureTest" name="test_executeUpdate1" time="1.625" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.JDBCUtilityFailureTest" name="test_executeUpdate2" time="1.75" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNullNorEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNullOrInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNullElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotEmptyElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNullKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNullValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotEmptyKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotEmptyValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNullNorEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkExists" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkIsFile" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkIsDirectory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNullNorEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNullNorEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkNotZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkLessThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.ParameterCheckUtilityFailureTest" name="test_checkInRange" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.PropertiesUtilityFailureTest" name="test_getStringProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.PropertiesUtilityFailureTest" name="test_getStringsProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.PropertiesUtilityFailureTest" name="test_getIntegerProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.PropertiesUtilityFailureTest" name="test_getLongProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.PropertiesUtilityFailureTest" name="test_getDoubleProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.PropertiesUtilityFailureTest" name="test_getDateProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.failuretests.PropertiesUtilityFailureTest" name="test_getClassProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.Log4jUtilityStressTest" name="test_logExit2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.Log4jUtilityStressTest" name="test_logExit3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.Log4jUtilityStressTest" name="test_logException2" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.Log4jUtilityStressTest" name="test_logEntrance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.Log4jUtilityStressTest" name="test_logEntrance2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.Log4jUtilityStressTest" name="test_logExit" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.Log4jUtilityStressTest" name="test_logException" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.LoggingWrapperUtilityStressTest" name="test_logExit2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.LoggingWrapperUtilityStressTest" name="test_logExit3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.LoggingWrapperUtilityStressTest" name="test_logException2" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.LoggingWrapperUtilityStressTest" name="test_logEntrance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.LoggingWrapperUtilityStressTest" name="test_logEntrance2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.LoggingWrapperUtilityStressTest" name="test_logExit" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.LoggingWrapperUtilityStressTest" name="test_logException" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getStringProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getStringsProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getIntegerProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getLongProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getDoubleProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getDateProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getClassProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.PropertiesUtilityStressTest" name="test_getSubConfiguration" time="0.297" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.ParameterCheckUtilityStressTest" name="test_getStringProperty" time="0.031" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.ValidationUtilityStressTest" name="test_getStringProperty" time="0.016" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.JDBCUtilityStressTest" name="test_commitTransaction" time="1.265" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.JDBCUtilityStressTest" name="test_rollbackTransaction" time="1.203" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.JDBCUtilityStressTest" name="test_executeQuery" time="1.375" />
+
+      <testcase classname="com.topcoder.commons.utils.stresstests.JDBCUtilityStressTest" name="test_executeUpdate" time="12.86" />
+
+      <testcase classname="com.topcoder.commons.utils.ExceptionHelperAccuracyTests" name="testConstructException1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ExceptionHelperAccuracyTests" name="testConstructException2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityAccuracyTests" name="testExecuteQuery1" time="0.172" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityAccuracyTests" name="testExecuteUpdate" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityAccuracyTests" name="testExecuteCommit" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.JDBCUtilityAccuracyTests" name="testExecuteRollback" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityAccuracyTests" name="testLogEntrance1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityAccuracyTests" name="testLogEntrance2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityAccuracyTests" name="testLogExit1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityAccuracyTests" name="testLogExit2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityAccuracyTests" name="testLogExit3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityAccuracyTests" name="testLogEexception1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.Log4jUtilityAccuracyTests" name="testLogEexception2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperAccuracyTests" name="testGetExceptionMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperAccuracyTests" name="testGetOutputValueMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperAccuracyTests" name="testGetMethodExitMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperAccuracyTests" name="testGetInputParametersMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingUtilityHelperAccuracyTests" name="testGetMethodEntranceMessage" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityAccuracyTests" name="testLogEntrance1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityAccuracyTests" name="testLogEntrance2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityAccuracyTests" name="testLogExit1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityAccuracyTests" name="testLogExit2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityAccuracyTests" name="testLogExit3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityAccuracyTests" name="testLogEexception1" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.LoggingWrapperUtilityAccuracyTests" name="testLogEexception2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNullNorEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNullNorEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNullOrInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckExists" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckIsFile" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckIsDirectory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNullNorEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNullNorEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNullElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotEmptyElements" time="0.015" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNullKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNullValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotEmptyKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotEmptyValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckLesshan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckInRange" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckNotZero2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckGreaterThan2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckLesshan2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ParameterCheckUtilityAccuracyTests" name="testCheckInRange2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityAccuracyTests" name="testGetStringProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityAccuracyTests" name="testGetStringsProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityAccuracyTests" name="testGetIntegerProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityAccuracyTests" name="testGetLongProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityAccuracyTests" name="testGetDoubleProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityAccuracyTests" name="testGetDateProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.PropertiesUtilityAccuracyTests" name="testGetClassProperty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNull" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNullNorEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNullNorEmptyAfterTrimming" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNullOrInstance" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckExists" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckIsFile" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckIsDirectory" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNullNorEmpty2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNullNorEmpty3" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNullElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotEmptyElements" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNullKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNullValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotEmptyKeys" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotEmptyValues" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNegative" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotPositive" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotZero" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckGreaterThan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckLesshan" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckInRange" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotNegative2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotPositive2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckNotZero2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckGreaterThan2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckLesshan2" time="0.0" />
+
+      <testcase classname="com.topcoder.commons.utils.ValidationUtilityAccuracyTests" name="testCheckInRange2" time="0.0" />
+
+      <system-out><![CDATA[Entering method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)].
+Input parameters [issueName:issue1, priority:1, paramFile:test_files\config.properties]
+Exiting method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)], time spent in the method: 47 milliseconds.
+Output parameter: true
+Entering method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)].
+Input parameters [issueName:issue1, priority:2, paramFile:test_files\not_exist]
+Error in method [IssuesTracker#updateIssue(String issueName, int priority, File paramFile)], details: The 'paramFile' parameter should point to an existing file.
+java.lang.IllegalArgumentException: The 'paramFile' parameter should point to an existing file.
+	at com.topcoder.commons.utils.ParameterCheckUtility.checkIsFile(ParameterCheckUtility.java:320)
+	at com.topcoder.commons.utils.IssuesTracker.updateIssue(IssuesTracker.java:81)
+	at com.topcoder.commons.utils.Demo.testDemoAPI(Demo.java:105)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:04,703 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:04,718 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:04,718 - DEBUG [main] - Input parameters [p1:123]
+2011-05-09 08:18:04,718 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:04,718 - DEBUG [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:04,718 -  INFO [main] - Entering method [method_signature].
+2011-05-09 08:18:04,718 -  INFO [main] - Entering method [method_signature].
+2011-05-09 08:18:04,718 -  INFO [main] - Input parameters [p1:123]
+2011-05-09 08:18:04,734 -  INFO [main] - Entering method [method_signature].
+2011-05-09 08:18:04,734 -  INFO [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:04,734 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:04,734 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:04,734 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:04,750 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,750 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,750 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:04,765 -  INFO [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,765 -  INFO [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,765 -  INFO [main] - Output parameter: result
+2011-05-09 08:18:04,765 - ERROR [main] - Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.Log4jUtilityUnitTests.setUp(Log4jUtilityUnitTests.java:101)
+	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:04,781 -  WARN [main] - Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.Log4jUtilityUnitTests.setUp(Log4jUtilityUnitTests.java:101)
+	at sun.reflect.GeneratedMethodAccessor10.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:04,796 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:04,796 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:04,796 - DEBUG [main] - Input parameters [p1:123]
+2011-05-09 08:18:04,796 - DEBUG [main] - Entering method [method_signature].
+2011-05-09 08:18:04,796 - DEBUG [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:04,812 -  INFO [main] - [2011-05-09 08:18:04] Entering method [method_signature].
+2011-05-09 08:18:04,812 -  INFO [main] - [2011-05-09 08:18:04] Entering method [method_signature].
+2011-05-09 08:18:04,812 -  INFO [main] - Input parameters [p1:123]
+2011-05-09 08:18:04,812 -  INFO [main] - [2011-05-09 08:18:04] Entering method [method_signature].
+2011-05-09 08:18:04,812 -  INFO [main] - Input parameters [p1:123, p2:abc]
+2011-05-09 08:18:04,828 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:04,828 - DEBUG [main] - Exiting method [method_signature].
+2011-05-09 08:18:04,828 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:04,843 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,843 - DEBUG [main] - Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,843 - DEBUG [main] - Output parameter: result
+2011-05-09 08:18:04,843 -  INFO [main] - [2011-05-09 08:18:04] Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,859 -  INFO [main] - [2011-05-09 08:18:04] Exiting method [method_signature], time spent in the method: 0 milliseconds.
+2011-05-09 08:18:04,859 -  INFO [main] - Output parameter: result
+2011-05-09 08:18:04,859 - ERROR [main] - Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests.setUp(LoggingWrapperUtilityUnitTests.java:105)
+	at sun.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+2011-05-09 08:18:04,875 -  WARN [main] - [2011-05-09 08:18:04] Error in method [method_signature], details: Exception for testing.
+java.lang.Exception: Exception for testing.
+	at com.topcoder.commons.utils.LoggingWrapperUtilityUnitTests.setUp(LoggingWrapperUtilityUnitTests.java:105)
+	at sun.reflect.GeneratedMethodAccessor12.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:592)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:73)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:46)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:180)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:41)
+	at org.junit.runners.ParentRunner$1.evaluate(ParentRunner.java:173)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:220)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at junit.framework.TestSuite.runTest(TestSuite.java:232)
+	at junit.framework.TestSuite.run(TestSuite.java:227)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:421)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:912)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:766)
+
+Run logExit for 50 times takes 0ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 16ms
+Run logEntrance for 50 times takes 0ms
+Run logEntrance for 50 times takes 0ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 15ms
+Run logExit for 50 times takes 0ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 16ms
+Run logEntrance for 50 times takes 0ms
+Run logEntrance for 50 times takes 0ms
+Run logExit for 50 times takes 0ms
+Run logException for 50 times takes 15ms
+Run getStringProperty for 50 times takes 0ms
+Run getStringsProperty for 50 times takes 0ms
+Run getIntegerProperty for 50 times takes 0ms
+Run getLongProperty for 50 times takes 0ms
+Run getDoubleProperty for 50 times takes 0ms
+Run getDateProperty for 50 times takes 0ms
+Run getClassProperty for 50 times takes 0ms
+Run getSubConfiguration for 50 times takes 297ms
+Run ParameterCheckUtility for 50 times takes 15ms
+Run ValidationUtility for 50 times takes 16ms
+Run commitTransaction for 50 times takes 1250ms
+Run rollbackTransaction for 50 times takes 1188ms
+Run executeQuery for 50 times takes 1344ms
+Run executeUpdate for 50 times takes 12844ms
+]]></system-out>
+
+      <system-err><![CDATA[log4j:WARN No appenders could be found for logger (test).
+log4j:WARN Please initialize the log4j system properly.
+]]></system-err>
+
+  </testsuite>
+</testsuites>
