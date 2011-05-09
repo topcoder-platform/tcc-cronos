@@ -3337,6 +3337,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch (Exception e) {
             voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
+            logger.error("Error processContestSaleInternal ", e);
             throw new ContestServiceException(e.getMessage(), e);
         }
 
@@ -8405,8 +8406,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws UploadPersistenceException if an unexpected error occurs.
      * @since 1.6.5
      */
-    public Submission[] getSoftwareProjectSubmissions(long projectId)
-        throws SearchBuilderException, UploadPersistenceException {
+    public Submission[] getSoftwareProjectSubmissions(TCSubject currentUser, long projectId)
+        throws SearchBuilderException, UploadPersistenceException, PermissionServiceException {
+
+        checkSoftwareContestPermission(currentUser, projectId, true);
+
         Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
         Filter filter2 = SearchBundle.buildNotFilter(SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_DELETE_STATUS_ID));
         Filter andfilter = SearchBundle.buildAndFilter(filter, filter2);
@@ -8466,7 +8470,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
 
             // Find a review for specified resource and submission and if not exists then create one
-            Submission[] submissions = getSoftwareProjectSubmissions(copilotPostingProjectId);
+            Submission[] submissions = getSoftwareProjectSubmissions(currentUser, copilotPostingProjectId);
 
             // Create copilot project for winning copilot only
             if (placement == 1) {
