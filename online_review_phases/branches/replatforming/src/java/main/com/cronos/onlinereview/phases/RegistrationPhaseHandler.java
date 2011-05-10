@@ -102,7 +102,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * @since 1.4
      */
     private static final Log LOG = LogFactory
-        .getLog(SpecificationSubmissionPhaseHandler.class.getName());
+        .getLog(RegistrationPhaseHandler.class.getName());
 
     /**
      * Create a new instance of RegistrationPhaseHandler using the default namespace for

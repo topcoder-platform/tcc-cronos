@@ -3,7 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.topcoder.util.errorhandling.BaseException;
+import com.topcoder.util.errorhandling.BaseCriticalException;
 import com.topcoder.util.errorhandling.ExceptionData;
 
 /**
@@ -24,7 +24,7 @@ import com.topcoder.util.errorhandling.ExceptionData;
  * @author tuenm, saarixx, bose_java, microsky
  * @version 1.6.1
  */
-public class ConfigurationException extends BaseException {
+public class ConfigurationException extends BaseCriticalException {
     /**
      * The generated serial version UID.
      */
