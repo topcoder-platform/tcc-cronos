@@ -2262,7 +2262,10 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.setPlacement(((Long) placement));
         }
 
-        submission.setUserRank((Integer) row[startIndex++]);
+		Object userRank = row[startIndex++];
+		if(userRank != null) {
+		    submission.setUserRank((Integer) userRank);
+		}
 		
 		Object extra = row[startIndex++];
 		if (extra != null) {
