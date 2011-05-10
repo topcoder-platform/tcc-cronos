@@ -53,6 +53,7 @@ import com.topcoder.util.log.LogFactory;
  * Version 1.6.1 changes note:
  * <ul>
  * <li>The return changes from boolean to OperationCheckResult.</li>
+ * <li>Removed private methods arePassedSubmissionsEnough().</li>
  * </ul>
  * </p>
  * @author FireIce, saarixx, TCSDEVELOPER, microsky
@@ -173,11 +174,7 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
                     return new OperationCheckResult("Phase end time is not yet reached");
                 }
 
-                if (!hasAnySubmission(conn, phase, null) || arePassedSubmissionsEnough(
-                    conn, phase)) {
-                    return OperationCheckResult.SUCCESS;
-                }
-                return new OperationCheckResult("Not enough milestone submissions for the project");
+                return OperationCheckResult.SUCCESS;
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
@@ -255,58 +252,4 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
         }
         return subs.length > 0;
     }
-
-    /**
-     * <p>
-     * Returns true if the number of submissions that passed screenings meets the required number.
-     * </p>
-     * @param conn
-     *            the Connection instance
-     * @param phase
-     *            phase to check.
-     * @return true if the number of submissions that passed screenings meets the required number.
-     * @throws PhaseHandlingException
-     *             in case of any error.
-     */
-    private boolean arePassedSubmissionsEnough(Connection conn, Phase phase) throws PhaseHandlingException {
-        if (PhasesHelper.isScreeningManual(phase)) {
-            if (phase.getAttribute("Submission Number") == null) {
-                return true;
-            }
-
-            int submissionNum = PhasesHelper.getIntegerAttribute(phase, "Submission Number");
-            int passedNum = 0;
-
-            // get the next milestone screening phase
-            Phase milestoneScreeningPhase = PhasesHelper.locatePhase(phase, "Milestone Screening", true, false);
-
-            // if the milestone screening phase does not exist, simply return true.
-            if (milestoneScreeningPhase == null) {
-                LOG.log(Level.INFO, "The next milestone screening phase does not exist");
-                return true;
-            }
-            long milestoneScreeningPhaseId = milestoneScreeningPhase.getId();
-
-            // get reviews for the phase
-            Review[] milestoneScreenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                    milestoneScreeningPhaseId, new String[] {"Milestone Screener" }, null);
-            if (milestoneScreenReviews.length == 0) {
-                LOG.log(Level.INFO, "There is no milestone screening review.");
-                return false;
-            }
-            float minScore = PhasesHelper.getScorecardMinimumScore(getManagerHelper().getScorecardManager(),
-                    milestoneScreenReviews[0]);
-            for (int i = 0; i < milestoneScreenReviews.length; i++) {
-                if (milestoneScreenReviews[i].getScore().floatValue() >= minScore) {
-                    passedNum++;
-                }
-            }
-
-            return passedNum >= submissionNum;
-        }
-
-        // manually screening is not required.
-        return true;
-    }
-
 }

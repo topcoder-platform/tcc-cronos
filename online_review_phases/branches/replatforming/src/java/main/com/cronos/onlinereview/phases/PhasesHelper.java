@@ -149,6 +149,7 @@ import java.util.Set;
  * Version 1.6.1 Change notes:
  * <ol>
  * <li>Remove method getScreeningTasks.</li>
+ * <li>Remove method isScreeningManual.</li>
  * <li>Updated arePhaseDependenciesMet(), reachedPhaseStartTime() and canPhaseStart() methods to return
  * OperationCheckResult instead of simply boolean value.</li>
  * <li>Change the name of arePhaseDependenciesMet() to checkPhaseDependenciesMet().</li>
@@ -1073,19 +1074,6 @@ final class PhasesHelper {
             throw new PhaseHandlingException("Resource property '" + propName + "' was non-integer:"
                 + sValue, e);
         }
-    }
-
-    /**
-     * Returns whether the screening is of manual type by checking the "Manual Screening"
-     * phase attribute.
-     * @param phase
-     *            the phase instance.
-     * @return true if screening is of manual type, false otherwise.
-     */
-    static boolean isScreeningManual(Phase phase) {
-        String screeningType = (String) phase.getAttribute("Manual Screening");
-
-        return ((screeningType != null) && screeningType.equals("Yes"));
     }
 
     /**
