@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -11,6 +11,7 @@ import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
@@ -21,11 +22,10 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements <code>PhaseHandler</code> interface to provide methods to check
- * if a phase can be executed and to add extra logic to execute a phase. It will be used
- * by Phase Management component. It is configurable using an input namespace. The
- * configurable parameters include database connection and email sending parameters. This
- * class handles the specification review phase. If the input is of other phase types,
+ * This class implements <code>PhaseHandler</code> interface to provide methods to check if a phase can be executed
+ * and to add extra logic to execute a phase. It will be used by Phase Management component. It is configurable
+ * using an input namespace. The configurable parameters include database connection and email sending parameters.
+ * This class handles the specification review phase. If the input is of other phase types,
  * <code>PhaseNotSupportedException</code> will be thrown.
  * </p>
  * <p>
@@ -44,16 +44,21 @@ import com.topcoder.util.log.LogFactory;
  * </ul>
  * </p>
  * <p>
- * The additional logic for executing this phase is: when specification Review phase is
- * stopping, if the specification review is rejected, another specification
- * submission/review cycle is inserted.
+ * The additional logic for executing this phase is: when specification Review phase is stopping, if the
+ * specification review is rejected, another specification submission/review cycle is inserted.
  * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
- * @author saarixx, myxgyy
- * @version 1.4
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>canPerform() method was updated to return not only true/false value, but additionally an explanation message
+ * in case if operation cannot be performed</li>
+ * </ul>
+ * </p>
+ * @author saarixx, myxgyy, microsky
+ * @version 1.6.1
  * @since 1.4
  */
 public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
@@ -82,7 +87,6 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of SpecificationReviewPhaseHandler using the default
      * namespace for loading configuration settings.
-     *
      * @throws ConfigurationException
      *             if errors occurred while loading configuration settings.
      */
@@ -93,7 +97,6 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of SpecificationReviewPhaseHandler using the given namespace
      * for loading configuration settings.
-     *
      * @throws ConfigurationException
      *             if errors occurred while loading configuration settings.
      * @throws IllegalArgumentException
@@ -110,23 +113,27 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      * status to see what will be executed. This method will be called by canStart() and
      * canEnd() methods of PhaseManager implementations in Phase Management component.
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase can be
-     * started using the following conditions: the dependencies are met, Phase start
-     * date/time is reached (if specified) and If one active submission with
-     * &quot;Specification Submission&quot; type exists.
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions: the dependencies are met, Phase start date/time is reached (if specified) and If one active
+     * submission with &quot;Specification Submission&quot; type exists.
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be stopped
-     * using the following conditions: The dependencies are met and the specification
-     * review is done by Specification Reviewer
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions: The dependencies are met and the specification review is done by Specification Reviewer
      * </p>
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            The input phase to check.
-     * @return True if the input phase can be executed, false otherwise.
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException
      *             if the input phase type is not "Specification Review" type.
      * @throws PhaseHandlingException
@@ -134,7 +141,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws IllegalArgumentException
      *             if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SPECIFICATION_REVIEW);
 
@@ -142,9 +149,11 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
         // neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             // can start if one active submission with "Specification Submission" type
@@ -152,22 +161,30 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
             Connection conn = null;
             try {
                 conn = createConnection();
-                return PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(),
-                    createConnection(), LOG) != null;
+                if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(),
+                    createConnection(), LOG) != null) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult("Specification submission doesn't exist.");
+                }
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
             // Check phase dependencies
-            boolean depsMeet = PhasesHelper.arePhaseDependenciesMet(phase, false);
-
-            return depsMeet && isSpecificationReviewCommitted(phase);
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
+            } else if (isSpecificationReviewCommitted(phase)) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult("Specification review is not yet committed");
+            }
         }
     }
 
     /**
      * Checks whether the specification review is committed.
-     *
      * @param phase
      *            the current phase
      * @return true if the specification review is committed, false otherwise.
@@ -197,7 +214,6 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Searches the Specification Review worksheet.
-     *
      * @param phase
      *            the phase.
      * @param submission
@@ -211,7 +227,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     private Review getSpecificationReview(Phase phase, Submission submission, Connection connection)
         throws PhaseHandlingException {
         Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(connection,
-            getManagerHelper(), phase.getId(), new String[] {ROLE_TYPE_SPECIFICATION_REVIEWER},
+            getManagerHelper(), phase.getId(), new String[] {ROLE_TYPE_SPECIFICATION_REVIEWER },
             submission.getId());
 
         if (reviews.length > 1) {
@@ -229,18 +245,15 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      * notification for the project. The email can be send on start phase or end phase
      * base on configuration settings.
      * <p>
-     * If the input phase status is Scheduled, then it will get the number of
-     * specification reviewers assigned.
+     * If the input phase status is Scheduled, then it will get the number of specification reviewers assigned.
      * </p>
      * <p>
-     * If the input phase status is Open, then it will perform the following additional
-     * logic to stop the phase: if the specification review is rejected, another
-     * specification submission/review cycle is inserted.
+     * If the input phase status is Open, then it will perform the following additional logic to stop the phase: if
+     * the specification review is rejected, another specification submission/review cycle is inserted.
      * </p>
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
      * @param phase
      *            The input phase to check.
      * @param operator
@@ -274,7 +287,6 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * Get the specification reviewer number of the project.
      * </p>
-     *
      * @param phase
      *            the current Phase
      * @return the number of specification reviewer
@@ -288,7 +300,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
             conn = createConnection();
 
             return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                new String[] {ROLE_TYPE_SPECIFICATION_REVIEWER}, phase.getId()).length;
+                new String[] {ROLE_TYPE_SPECIFICATION_REVIEWER }, phase.getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -298,7 +310,6 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      * This method is called from perform method when the phase is stopping. It checks if
      * the specification review is rejected, and inserts another specification
      * submission/review cycle.
-     *
      * @param phase
      *            phase instance.
      * @param operator
@@ -361,7 +372,6 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Finds out if the specification review is rejected. Note if the specification review
      * is found being rejected, the extra info will be reset here.
-     *
      * @param managerHelper
      *            the manager helper.
      * @param connection

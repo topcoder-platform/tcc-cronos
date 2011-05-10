@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -20,26 +20,28 @@ import java.sql.Connection;
 
 import java.util.Date;
 
-
 /**
  * All tests for ApprovalPhaseHandler class.
- *
  * <p>
- * Version 1.1 changes notes: test cases have been added to test the rejected / approval cases of approval phase. When
- * approval review is rejected, a new final fix / final review should be inserted.
+ * Version 1.1 changes notes: test cases have been added to test the rejected / approval cases of approval phase.
+ * When approval review is rejected, a new final fix / final review should be inserted.
  * </p>
  * <p>
- * Version 1.2 change notes : since the email-templates and role-supported has been enhanced.
- * The test cases will try to do on that way while for email content, please check it manually.
+ * Version 1.2 change notes : since the email-templates and role-supported has been enhanced. The test cases will
+ * try to do on that way while for email content, please check it manually.
  * </p>
- *
- * @author bose_java, waits
- * @version 1.2
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, microsky
+ * @version 1.6.1
  */
 public class ApprovalPhaseHandlerTest extends BaseTest {
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void setUp() throws Exception {
@@ -49,7 +51,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
 
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -61,7 +62,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void tearDown() throws Exception {
@@ -70,7 +70,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerform() throws Exception {
@@ -86,7 +85,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidStatus() throws Exception {
@@ -103,7 +101,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidType() throws Exception {
@@ -120,7 +117,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullPhase() throws Exception {
@@ -136,7 +132,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidStatus() throws Exception {
@@ -153,7 +148,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidType() throws Exception {
@@ -170,7 +164,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullOperator() throws Exception {
@@ -187,7 +180,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithEmptyOperator() throws Exception {
@@ -204,11 +196,9 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the ApprovalPhaseHandler() constructor and canPerform with Scheduled statuses.
-     *
      * <p>
      * Version 1.1 changes note: Test updated according to new logic and requirement.
      * </p>
-     *
      * @throws Exception to JUnit.
      */
     public void testCanPerformWithScheduled() throws Exception {
@@ -225,11 +215,11 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             approvalPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(approvalPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(approvalPhase).isSuccess());
 
             // time has passed, but dependency not met.
             approvalPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(approvalPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(approvalPhase).isSuccess());
 
             // set the number of required approver to 1
             approvalPhase.setAttribute("Reviewer Number", "1");
@@ -237,7 +227,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             // time has passed and dependency met, but have no approver set
             approvalPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
             assertFalse("canPerform should have returned false when there is no approver.",
-                handler.canPerform(approvalPhase));
+                handler.canPerform(approvalPhase).isSuccess());
 
             // Let's add an approver here
             Resource approver = createResource(101, approvalPhase.getId(), project.getId(), 10);
@@ -245,13 +235,13 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {approver});
+            insertResources(conn, new Resource[] {approver });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
             insertResourceInfo(conn, approver.getId(), 1, "1001");
             assertTrue("canPerform should have returned true when there is an approver.",
-                handler.canPerform(approvalPhase));
+                handler.canPerform(approvalPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -260,7 +250,6 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the ApprovalPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformHandlerWithOpen() throws Exception {
@@ -280,7 +269,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             approvalPhase.setPhaseStatus(PhaseStatus.OPEN);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(approvalPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(approvalPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -288,9 +277,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception not under test.
-     *
      * @since 1.2
      */
     public void testPerform_start_noApprovals() throws Exception {
@@ -306,7 +293,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             String operator = "operator";
             handler.perform(approvalPhase, operator);
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -315,9 +302,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception not under test.
-     *
      * @since 1.2
      */
     public void testPerform_start_withApprovals() throws Exception {
@@ -332,14 +317,14 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
             Resource approval = createResource(100233, approvalPhase.getId(), project.getId(), 10);
             Connection conn = getConnection();
-            insertResources(conn, new Resource[] {approval});
+            insertResources(conn, new Resource[] {approval });
             insertResourceInfo(conn, approval.getId(), 1, "2");
             approvalPhase.setAttribute("Reviewer Number", "1");
 
             String operator = "operator";
             handler.perform(approvalPhase, operator);
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -349,9 +334,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
     /**
      * Test the method perform with a rejected approval review, the new final review / final fix phases should be
      * inserted.
-     *
      * @throws Exception to JUnit
-     *
      * @since 1.1
      */
     public void testPerformWithOpen_rejected() throws Exception {
@@ -370,7 +353,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             // populate db with required data final reviewer resource
             Resource finalReviewer = createResource(102, 110L, project.getId(), 9);
 
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "2");
 
             // populate db with required data for approver resource
@@ -380,23 +363,24 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1001, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            Review frWorksheet = createReview(1111, approver.getId(), appSubmission.getId(), scorecard1.getId(), true,
+            Review frWorksheet = createReview(1111, approver.getId(), appSubmission.getId(), scorecard1.getId(),
+                true,
                     90.0f);
 
             // add a rejected comment
             frWorksheet.addComment(createComment(11, approver.getId(), "Rejected", 12, "Approval Review Comment"));
 
             // insert records
-            insertResources(conn, new Resource[] {approver});
+            insertResources(conn, new Resource[] {approver });
             insertResourceInfo(conn, approver.getId(), 1, "2");
-            insertUploads(conn, new Upload[] {appUpload});
-            insertSubmissions(conn, new Submission[] {appSubmission});
+            insertUploads(conn, new Upload[] {appUpload });
+            insertSubmissions(conn, new Submission[] {appSubmission });
             insertResourceSubmission(conn, approver.getId(), appSubmission.getId());
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {frWorksheet});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {approver.getId()},
-                new long[] {frWorksheet.getId()}, new String[] {"Rejected Comment"}, new long[] {12},
-                new String[] {"Rejected"});
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {frWorksheet });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {approver.getId() },
+                new long[] {frWorksheet.getId() }, new String[] {"Rejected Comment" }, new long[] {12 },
+                new String[] {"Rejected" });
             insertScorecardQuestion(conn, 1, scorecard1.getId());
 
             // no exception should be thrown.
@@ -419,9 +403,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
     /**
      * Test the method perform with an approved approval review, the final review / final fix phases should NOT be
      * inserted.
-     *
      * @throws Exception to JUnit
-     *
      * @since 1.1
      */
     public void testPerformWithOpen_approved() throws Exception {
@@ -440,7 +422,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             // populate db with required data final reviewer resource
             Resource finalReviewer = createResource(102, 111L, project.getId(), 9);
 
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "100002");
 
             // populate db with required data for approver resource
@@ -450,23 +432,24 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            Review frWorksheet = createReview(11, approver.getId(), appSubmission.getId(), scorecard1.getId(), true,
+            Review frWorksheet = createReview(11, approver.getId(), appSubmission.getId(), scorecard1.getId(),
+                true,
                     90.0f);
 
             // add a rejected comment
             frWorksheet.addComment(createComment(1, approver.getId(), "Approved", 12, "Approval Review Comment"));
 
             // insert records
-            insertResources(conn, new Resource[] {approver});
+            insertResources(conn, new Resource[] {approver });
             insertResourceInfo(conn, approver.getId(), 1, "100001");
-            insertUploads(conn, new Upload[] {appUpload});
-            insertSubmissions(conn, new Submission[] {appSubmission});
+            insertUploads(conn, new Upload[] {appUpload });
+            insertSubmissions(conn, new Submission[] {appSubmission });
             insertResourceSubmission(conn, approver.getId(), appSubmission.getId());
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {frWorksheet});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {approver.getId()},
-                new long[] {frWorksheet.getId()}, new String[] {"Approved Comment"}, new long[] {12},
-                new String[] {"Approved"});
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {frWorksheet });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {approver.getId() },
+                new long[] {frWorksheet.getId() }, new String[] {"Approved Comment" }, new long[] {12 },
+                new String[] {"Approved" });
             insertScorecardQuestion(conn, 1, 1);
 
             // no exception should be thrown.
@@ -489,9 +472,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
     /**
      * Test the method perform with an approved approval review, the final review / final fix phases should NOT be
      * inserted.
-     *
      * @throws Exception to JUnit
-     *
      * @since 1.3
      */
     public void testPerformWithOpen_approved_otherfixes() throws Exception {
@@ -510,7 +491,7 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
             // populate db with required data final reviewer resource
             Resource finalReviewer = createResource(102, 111L, project.getId(), 9);
 
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "100002");
 
             // populate db with required data for approver resource
@@ -520,26 +501,27 @@ public class ApprovalPhaseHandlerTest extends BaseTest {
 
             // reviewer resource and related review
             Scorecard scorecard1 = createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            Review frWorksheet = createReview(11, approver.getId(), appSubmission.getId(), scorecard1.getId(), true,
+            Review frWorksheet = createReview(11, approver.getId(), appSubmission.getId(), scorecard1.getId(),
+                true,
                     90.0f);
 
             // add a approved comment
             frWorksheet.addComment(createComment(1, approver.getId(), "Approved", 12, "Approval Review Comment"));
 
             // insert records
-            insertResources(conn, new Resource[] {approver});
+            insertResources(conn, new Resource[] {approver });
             insertResourceInfo(conn, approver.getId(), 1, "100001");
-            insertUploads(conn, new Upload[] {appUpload});
-            insertSubmissions(conn, new Submission[] {appSubmission});
+            insertUploads(conn, new Upload[] {appUpload });
+            insertSubmissions(conn, new Submission[] {appSubmission });
             insertResourceSubmission(conn, approver.getId(), appSubmission.getId());
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {frWorksheet});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {approver.getId()},
-                new long[] {frWorksheet.getId()}, new String[] {"Approved Comment"}, new long[] {12},
-                new String[] {"Approved"});
-            insertCommentsWithExtraInfo(conn, new long[] {2}, new long[] {approver.getId()},
-                    new long[] {frWorksheet.getId()}, new String[] {"Approved Comment"}, new long[] {13},
-                    new String[] {"Required"});
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {frWorksheet });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {approver.getId() },
+                new long[] {frWorksheet.getId() }, new String[] {"Approved Comment" }, new long[] {12 },
+                new String[] {"Approved" });
+            insertCommentsWithExtraInfo(conn, new long[] {2 }, new long[] {approver.getId() },
+                    new long[] {frWorksheet.getId() }, new String[] {"Approved Comment" }, new long[] {13 },
+                    new String[] {"Required" });
             insertScorecardQuestion(conn, 1, 1);
 
             // no exception should be thrown.

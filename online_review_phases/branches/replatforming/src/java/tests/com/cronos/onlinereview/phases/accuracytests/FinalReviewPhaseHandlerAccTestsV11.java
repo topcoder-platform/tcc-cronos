@@ -7,6 +7,7 @@ import com.cronos.onlinereview.phases.FinalReviewPhaseHandler;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -63,15 +64,24 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
         finalReviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
         // time has not passed, nor dependencies met
-        assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
+        OperationCheckResult result = handler.canPerform(finalReviewPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Final Fix phase is not yet ended.",  result.getMessage());
 
         // time has passed, but dependency not met.
         finalReviewPhase.setActualStartDate(new Date());
-        assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
+         result = handler.canPerform(finalReviewPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Final Fix phase is not yet ended.",  result.getMessage());
 
         // time has passed and dependency met.
         finalReviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
-        assertTrue("canPerform should have returned true", handler.canPerform(finalReviewPhase));
+         result = handler.canPerform(finalReviewPhase);
+
+        assertTrue("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  null,  result.getMessage());
     }
 
     /**
@@ -91,7 +101,10 @@ public class FinalReviewPhaseHandlerAccTestsV11 extends BaseTestCase {
         finalReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
 
         // time has not passed, dependencies not met
-        assertFalse("canPerform should have returned false", handler.canPerform(finalReviewPhase));
+        OperationCheckResult result = handler.canPerform(finalReviewPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Final Fix phase is not yet ended.",  result.getMessage());
     }
 
     /**

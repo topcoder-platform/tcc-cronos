@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -20,9 +20,14 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * All tests for <code>SpecificationReviewPhaseHandler</code> class.
- *
- * @author myxgyy
- * @version 1.0
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author myxgyy, microsky
+ * @version 1.6.1
  * @since 1.4
  */
 public class SpecificationReviewPhaseHandlerTest extends BaseTest {
@@ -33,7 +38,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -56,7 +60,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -65,19 +68,17 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests non-argument constructor of <code>SpecificationSubmissionPhaseHandler</code>
-     * class.
-     *
+     * Tests non-argument constructor of <code>SpecificationSubmissionPhaseHandler</code> class.
      * @throws Exception
      *             to JUnit.
      */
     public void testConstructor1() throws Exception {
         final String[] startContents = new String[] {"topcoder.developer@gmail.com",
             "test_files/email_templates/specification_review/specification_review_start_template.txt",
-            "Phase Start"};
+            "Phase Start" };
         final String[] endContents = new String[] {"topcoder.developer@gmail.com",
             "test_files/email_templates/specification_review/specification_review_end_template.txt",
-            "Phase End"};
+            "Phase End" };
 
         Map<String, String[]> startContentsMap = new HashMap<String, String[]>();
         startContentsMap.put("Specification Reviewer", startContents);
@@ -98,9 +99,7 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests constructor with argument of <code>SpecificationSubmissionPhaseHandler</code>
-     * class.
-     *
+     * Tests constructor with argument of <code>SpecificationSubmissionPhaseHandler</code> class.
      * @throws Exception
      *             to JUnit.
      */
@@ -109,15 +108,15 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
         Map<String, String[]> startContents = new HashMap<String, String[]>();
         startContents.put("Reviewer", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template.txt", "Phase Start"});
+            "test_files/valid_email_template.txt", "Phase Start" });
         startContents.put("Manager", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template_manager.txt", "Phase Start"});
+            "test_files/valid_email_template_manager.txt", "Phase Start" });
 
         Map<String, String[]> endContents = new HashMap<String, String[]>();
         endContents.put("Reviewer", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template.txt", "Phase End"});
+            "test_files/valid_email_template.txt", "Phase End" });
         endContents.put("Manager", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template_manager.txt", "Phase End"});
+            "test_files/valid_email_template_manager.txt", "Phase End" });
 
         Map<String, Map<String, String[]>> contents = new HashMap<String, Map<String, String[]>>();
         contents.put("start", startContents);
@@ -127,7 +126,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -142,7 +140,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -158,7 +155,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -174,7 +170,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -189,7 +184,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -205,7 +199,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -221,7 +214,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -237,7 +229,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -254,7 +245,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Scheduled statuses. The dependencies are not met,
      * the method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -266,7 +256,7 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Phase[] phases = project.getAllPhases();
             Phase phase = phases[12];
             phase.setPhaseStatus(PhaseStatus.SCHEDULED);
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -276,7 +266,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Scheduled statuses. No active submission with
      * specification submission type exists, the method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -288,7 +277,7 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Phase[] phases = project.getAllPhases();
             Phase phase = phases[1];
             phase.setPhaseStatus(PhaseStatus.SCHEDULED);
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -298,7 +287,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Scheduled statuses. Active submission with
      * specification submission type exists, the method will return true.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -316,15 +304,15 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             // insert a submission with specification submission
             Connection conn = getConnection();
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            assertTrue("canPerform should have returned true", handler.canPerform(phase));
+            assertTrue("canPerform should have returned true", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -334,7 +322,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Open statuses. The dependencies are not met, the
      * method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -348,7 +335,7 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             phase.setPhaseStatus(PhaseStatus.OPEN);
             phase.getAllDependencies()[0].setDependentStart(false);
 
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -358,7 +345,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Open statuses. The dependencies are met, but no
      * specification submission exists, the method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -371,7 +357,7 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Phase phase = phases[1];
             phase.setPhaseStatus(PhaseStatus.OPEN);
 
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -381,7 +367,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Open statuses. The dependencies are met, but no
      * specification review exists for submission, the method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -397,15 +382,15 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             // insert a submission with specification submission
             Connection conn = getConnection();
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -415,7 +400,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Open statuses. The dependencies are met, but
      * specification review is not committed, the method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -435,14 +419,14 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(4, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
@@ -450,9 +434,9 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Review review = createReview(11, reviewer.getId(), submission.getId(), scorecard.getId(),
                 false, 90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {review});
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {review });
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             // cleanTables();
             closeConnection();
@@ -463,7 +447,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
      * Tests the canPerform method with Open statuses. The dependencies are met,
      * specification review exists for submission, and it is committed, the method will
      * return true.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -483,23 +466,23 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(4, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
 
             Review review = createReview(11, 5, 1, 1, true, 90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {review});
-            assertTrue("canPerform should have returned true", handler.canPerform(phase));
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {review });
+            assertTrue("canPerform should have returned true", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -509,7 +492,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Scheduled statuses. Verify the content of the email
      * manually.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -529,7 +511,7 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             handler.perform(phase, "1001");
@@ -544,7 +526,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Scheduled statuses. No reviewer exists for the phase, Verify
      * the content of the email manually.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -571,7 +552,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Open statuses. The extra info of comment is invalid,
      * PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -593,14 +573,14 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(4, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
@@ -611,11 +591,11 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
                 "Specification Review Comment"));
 
             insertResourceSubmission(conn, resource.getId(), submission.getId());
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {review});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {reviewer.getId()},
-                new long[] {review.getId()}, new String[] {"Invalid Comment"}, new long[] {14},
-                new String[] {"Invalid"});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {review });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {reviewer.getId() },
+                new long[] {review.getId() }, new String[] {"Invalid Comment" }, new long[] {14 },
+                new String[] {"Invalid" });
 
             handler.perform(phase, "1001");
             fail("should have thrown PhaseHandlingException");
@@ -630,7 +610,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Open statuses. No specification review comment,
      * PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -652,14 +631,14 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(4, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
@@ -667,8 +646,8 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Review review = createReview(11, 5, 1, 1, true, 90.0f);
 
             insertResourceSubmission(conn, resource.getId(), submission.getId());
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {review});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {review });
 
             handler.perform(phase, "1001");
             fail("should have thrown PhaseHandlingException");
@@ -683,7 +662,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Open statuses. No submission exists for the phase,
      * PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -703,11 +681,11 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
 
             // create a register
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             handler.perform(phase, "1001");
@@ -723,7 +701,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Open statuses. No review exists for the submission,
      * PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -745,14 +722,14 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(4, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             insertResourceSubmission(conn, resource.getId(), submission.getId());
 
@@ -769,7 +746,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Open statuses. The review is not committed,
      * PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -791,14 +767,14 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(4, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
@@ -809,11 +785,11 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
                 "Specification Review Comment"));
 
             insertResourceSubmission(conn, resource.getId(), submission.getId());
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {review});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {reviewer.getId()},
-                new long[] {review.getId()}, new String[] {"Rejected Comment"}, new long[] {14},
-                new String[] {"Rejected"});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {review });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {reviewer.getId() },
+                new long[] {review.getId() }, new String[] {"Rejected Comment" }, new long[] {14 },
+                new String[] {"Rejected" });
 
             handler.perform(phase, "1001");
             fail("should have thrown PhaseHandlingException");
@@ -828,7 +804,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Open statuses. The specification review is approved, approve
      * email should be sent.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -850,14 +825,14 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(4, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(5, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
@@ -868,11 +843,11 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
                 "Specification Review Comment"));
 
             insertResourceSubmission(conn, resource.getId(), submission.getId());
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {review});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {reviewer.getId()},
-                new long[] {review.getId()}, new String[] {"Approved Comment"}, new long[] {14},
-                new String[] {"Approved"});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {review });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {reviewer.getId() },
+                new long[] {review.getId() }, new String[] {"Approved Comment" }, new long[] {14 },
+                new String[] {"Approved" });
 
             handler.perform(phase, "1001");
 
@@ -886,7 +861,6 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Open statuses. The specification review is rejected,
      * rejected email should be sent.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -908,14 +882,14 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
             Resource resource = createResource(110, 101L, 1, 17);
             // create a reviewer
             Resource reviewer = createResource(111, 102L, 1, 18);
-            super.insertResources(conn, new Resource[] {resource, reviewer});
+            super.insertResources(conn, new Resource[] {resource, reviewer });
             super.insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             Upload upload = super.createUpload(1, project.getId(), 110, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             // insert a review
             Scorecard scorecard = createScorecard(1, 1, 2, 6, "name", "1.0", 75.0f, 100.0f);
@@ -926,11 +900,11 @@ public class SpecificationReviewPhaseHandlerTest extends BaseTest {
                 "Specification Review Comment"));
 
             insertResourceSubmission(conn, resource.getId(), submission.getId());
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {review});
-            insertCommentsWithExtraInfo(conn, new long[] {1}, new long[] {reviewer.getId()},
-                new long[] {review.getId()}, new String[] {"Rejected Comment"}, new long[] {14},
-                new String[] {"Rejected"});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {review });
+            insertCommentsWithExtraInfo(conn, new long[] {1 }, new long[] {reviewer.getId() },
+                new long[] {review.getId() }, new String[] {"Rejected Comment" }, new long[] {14 },
+                new String[] {"Rejected" });
 
             handler.perform(phase, "1001");
 

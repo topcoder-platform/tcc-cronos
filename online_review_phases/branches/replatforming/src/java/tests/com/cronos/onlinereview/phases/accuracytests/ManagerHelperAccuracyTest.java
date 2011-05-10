@@ -1,6 +1,5 @@
 package com.cronos.onlinereview.phases.accuracytests;
 
-import com.cronos.onlinereview.autoscreening.management.ScreeningManager;
 import com.cronos.onlinereview.external.UserRetrieval;
 import com.cronos.onlinereview.phases.ManagerHelper;
 import com.topcoder.management.deliverable.UploadManager;
@@ -111,17 +110,6 @@ public class ManagerHelperAccuracyTest extends BaseAccuracyTest {
         ManagerHelper helper = new ManagerHelper();
         ReviewManager manager = helper.getReviewManager();
         assertNotNull("Cannot get ReviewManager using ManagerHelper.", manager);
-    }
-
-    /**
-     * Tests get ScreeningManager from ManagerHelper. The returned value is expected to be non null.
-     *
-     * @throws Exception to JUnit.
-     */
-    public void testGetScreeningManager() throws Exception {
-        ManagerHelper helper = new ManagerHelper();
-        ScreeningManager manager = helper.getScreeningManager();
-        assertNotNull("Cannot get ScreeningManager using ManagerHelper.", manager);
     }
 
     /**

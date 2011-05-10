@@ -6,6 +6,7 @@ package com.cronos.onlinereview.phases.accuracytests;
 import com.cronos.onlinereview.phases.AbstractPhaseHandler;
 import com.cronos.onlinereview.phases.EmailOptions;
 
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 
 import com.topcoder.project.phases.Phase;
@@ -32,9 +33,9 @@ public class AbstractPhaseHandlerTestV13 extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         instance = new AbstractPhaseHandler("com.cronos.onlinereview.phases.AbstractPhaseHandler") {
-                    public boolean canPerform(Phase arg0)
+                    public OperationCheckResult canPerform(Phase arg0)
                         throws PhaseHandlingException {
-                        return false;
+                        return new OperationCheckResult(false, "Some requirements are not met");
                     }
 
                     public void perform(Phase arg0, String arg1)
@@ -72,7 +73,7 @@ public class AbstractPhaseHandlerTestV13 extends BaseTestCase {
                 instance, "endPhaseEmailOptions");
         assertNotNull("The configuration is not correct.", endPhaseEmailOptions);
         assertEquals("The configuration is not correct.", 2, endPhaseEmailOptions.size());
-        assertEquals("The value is invalid.", "Phase Start", endPhaseEmailOptions.get("Manager").getSubject());
+        assertEquals("The value is invalid.", "Phase End", endPhaseEmailOptions.get("Manager").getSubject());
         assertNotNull("The value is invalid.", endPhaseEmailOptions.get("Reviewer"));
         assertEquals("The value is invalid.", 0, endPhaseEmailOptions.get("Reviewer").getPriority());
     }
@@ -96,7 +97,7 @@ public class AbstractPhaseHandlerTestV13 extends BaseTestCase {
 
             // pass
         } catch (Exception e) {
-            fail("no exception is expected");
+        	throw e;
         }
     }
 }

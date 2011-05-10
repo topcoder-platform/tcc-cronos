@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.topcoder.date.workdays.ConfigurationFileException;
 import com.topcoder.date.workdays.DefaultWorkdays;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -60,17 +61,50 @@ import java.util.Map;
  * Version 1.4, change notes: add utility methods for testing version 1.4.
  * </p>
  * <p>
- * Version 1.6, change notes, change and add utility methods to support testing version 1.6.
- * Like, Studio project, support multiple uploads for a submission etc.
+ * Version 1.6, change notes, change and add utility methods to support testing version 1.6. Like, Studio project,
+ * support multiple uploads for a submission etc.
  * </p>
- *
- * @author bose_java, waits, myxgyy, TCSDEVELOPER
- * @version 1.6
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>add field WORKDAYS_FILE and update the constructor of DefaultWorkdays.</li>
+ * <li>update insertSubmissions for database table changes.</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, myxgyy, microsky
+ * @version 1.6.1
  */
 public class BaseTest extends TestCase {
     /**
+     * The file for workdays configuration.
+     */
+    private static final String WORKDAYS_FILE = "test_files/workdays.properties";
+
+    /**
+     * an array of table names to be cleaned in setup() and tearDown() methods.
+     * <p>
+     * Version 1.1 change notes: Add clean for table project_user_audit".
+     * </p>
+     */
+    private static final String[] ALL_TABLE_NAMES = new String[] {"project_user_audit",
+        "screening_result", "screening_task", "project_phase_audit", "project_info_audit",
+        "notification", "project_audit", "review_item_comment", "review_comment", "review_item",
+        "review", "resource_submission", "submission", "upload", "resource_info", "resource",
+        "phase_criteria", "phase_dependency", "project_phase", "project_scorecard", "project_info",
+        "project", "scorecard_question", "scorecard_section", "scorecard_group", "scorecard",
+        "comp_forum_xref", "comp_versions", "categories", "comp_catalog", "user_reliability",
+        "user_rating", "user", "email", "linked_project_xref" };
+
+    /** Represents the configuration manager instance used in tests. */
+    private ConfigManager configManager;
+
+    /** Holds db connection factory instance. */
+    private DBConnectionFactory dbFactory;
+
+    /** holds connection. */
+    private Connection connection;
+    /**
      * constant for one day time.
-     *
      * @since 1.5
      */
     public static final long DAY = 24 * 60 * 60 * 1000;
@@ -101,40 +135,15 @@ public class BaseTest extends TestCase {
         "config/Phase_Management.xml", "config/Review_Management.xml",
         "config/Scorecard_Management.xml", "config/Screening_Management.xml",
         "config/Upload_Resource_Search.xml", "config/User_Project_Data_Store.xml",
-        "config/Review_Score_Aggregator.xml", "config/SearchBuilderCommon.xml"};
+        "config/Review_Score_Aggregator.xml", "config/SearchBuilderCommon.xml" };
 
     /** constant for namespace to phase manager to be used during demo. */
     public static final String PHASE_MANAGER_NAMESPACE = "com.topcoder.management.phase.DefaultPhaseManager";
 
     /**
-     * an array of table names to be cleaned in setup() and tearDown() methods.
-     * <p>
-     * Version 1.1 change notes: Add clean for table project_user_audit".
-     * </p>
-     */
-    private static final String[] ALL_TABLE_NAMES = new String[] {"project_user_audit",
-        "screening_result", "screening_task", "project_phase_audit", "project_info_audit",
-        "notification", "project_audit", "review_item_comment", "review_comment", "review_item",
-        "review", "resource_submission", "submission", "upload", "resource_info", "resource",
-        "phase_criteria", "phase_dependency", "project_phase", "project_scorecard", "project_info",
-        "project", "scorecard_question", "scorecard_section", "scorecard_group", "scorecard",
-        "comp_forum_xref", "comp_versions", "categories", "comp_catalog", "user_reliability",
-        "user_rating", "user", "email", "linked_project_xref"};
-
-    /** Represents the configuration manager instance used in tests. */
-    private ConfigManager configManager;
-
-    /** Holds db connection factory instance. */
-    private DBConnectionFactory dbFactory;
-
-    /** holds connection. */
-    private Connection connection;
-
-    /**
      * <p>
      * Sets up the test environment. The configurations are removed.
      * </p>
-     *
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
@@ -162,7 +171,6 @@ public class BaseTest extends TestCase {
      * <p>
      * Cleans up the test environment. The configurations are removed.
      * </p>
-     *
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
@@ -182,7 +190,6 @@ public class BaseTest extends TestCase {
 
     /**
      * adds files to configuration for testing purposes.
-     *
      * @throws ConfigManagerException
      *             in case of config error.
      */
@@ -191,7 +198,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create a phase instance.
-     *
      * @param phaseId
      *            phase id.
      * @param phaseStatusId
@@ -203,10 +209,11 @@ public class BaseTest extends TestCase {
      * @param phaseTypeName
      *            phase Type Name.
      * @return phase instance.
+     * @throws ConfigurationFileException it will never be thrown.
      */
     protected Phase createPhase(long phaseId, long phaseStatusId, String phaseStatusName,
-        long phaseTypeId, String phaseTypeName) {
-        Project project = new Project(new Date(), new DefaultWorkdays());
+        long phaseTypeId, String phaseTypeName) throws ConfigurationFileException {
+        Project project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
         project.setId(1);
 
         Phase phase = new Phase(project, 2000);
@@ -219,7 +226,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create Resource instance.
-     *
      * @param resourceId
      *            resource Id.
      * @param phaseId
@@ -242,7 +248,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create Upload instance.
-     *
      * @param uploadId
      *            upload id.
      * @param projectId
@@ -273,7 +278,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create Submission instance.
-     *
      * @param submissionId
      *            submission id.
      * @param uploadId
@@ -296,7 +300,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create Scorecard instance.
-     *
      * @param scorecardId
      *            scorecard id.
      * @param scorecardStatusId
@@ -331,7 +334,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create Review instance.
-     *
      * @param reviewId
      *            review id.
      * @param resourceId
@@ -360,7 +362,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create Comment instance.
-     *
      * @param id
      *            comment id
      * @param author
@@ -385,7 +386,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to create a review item instance.
-     *
      * @param id
      *            review item id.
      * @param answer
@@ -407,7 +407,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Returns a connection instance.
-     *
      * @return a connection instance.
      * @throws Exception
      *             not for this test case.
@@ -437,7 +436,6 @@ public class BaseTest extends TestCase {
 
     /**
      * helper method to close a statement.
-     *
      * @param stmt
      *            statement to close.
      */
@@ -454,7 +452,6 @@ public class BaseTest extends TestCase {
     /**
      * inserts a project into the database. Inserts records into the project, comp_catalog
      * and comp_versions tables.
-     *
      * @param conn
      *            connection to use.
      * @throws Exception
@@ -503,7 +500,6 @@ public class BaseTest extends TestCase {
     /**
      * inserts a project into the database. Inserts records into the project, comp_catalog
      * and comp_versions tables.
-     *
      * @param conn
      *            connection to use.
      * @throws Exception
@@ -553,7 +549,6 @@ public class BaseTest extends TestCase {
     /**
      * inserts a project into the database. Inserts records into the project, comp_catalog
      * and comp_versions tables.
-     *
      * @param conn
      *            connection to use.
      * @param active whether the dependency is active or not.
@@ -612,7 +607,6 @@ public class BaseTest extends TestCase {
     /**
      * inserts project properties into the database. Inserts records into the project_info
      * table.
-     *
      * @param conn
      *            connection to use.
      * @param projectId
@@ -653,7 +647,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Setup project, phases, resources and project-notifications.
-     *
      * @param step
      *            which phase to create
      * @return The created Project
@@ -667,7 +660,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Setup project, phases, resources and project-notifications.
-     *
      * @param step
      *            which phase to create
      * @param postMorterm
@@ -692,7 +684,7 @@ public class BaseTest extends TestCase {
             conn = getConnection();
 
             // insert project info for "Project Name" and "Project Version" info ids.
-            insertProjectInfo(conn, 1, new long[] {6, 7}, new String[] {"Online Review Phases", "1.5"});
+            insertProjectInfo(conn, 1, new long[] {6, 7 }, new String[] {"Online Review Phases", "1.5" });
 
             // insert into notification
             String insertNotification = "insert into notification(project_id, external_ref_id, notification_type_id,"
@@ -815,7 +807,7 @@ public class BaseTest extends TestCase {
             Resource freviewer = createResource(100008, null, 1, 9);
             Resource reviewer = createResource(100001, null, 1, 4);
             Resource observer = createResource(100002, null, 1, 12);
-            insertResources(conn, new Resource[] {manager, reviewer, freviewer, observer});
+            insertResources(conn, new Resource[] {manager, reviewer, freviewer, observer });
 
             // insert resource info
             insertResourceInfo(conn, manager.getId(), 1, "1");
@@ -833,7 +825,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project and the standard phases into the database.
-     *
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -844,7 +835,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project and the standard phases into the database.
-     *
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -855,7 +845,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project and the standard phases into the database.
-     *
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -867,7 +856,6 @@ public class BaseTest extends TestCase {
     /**
      * inserts a project and the standard phases into the database. The parent project is
      * not completed.
-     *
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -879,7 +867,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project and the standard phases into the database.
-     *
      * @param stepPhase
      *            the step phase
      * @param hasDependentProject
@@ -899,7 +886,7 @@ public class BaseTest extends TestCase {
         Project project = null;
 
         try {
-            project = new Project(new Date(), new DefaultWorkdays());
+            project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
             project.setId(1);
 
             // insert project first
@@ -918,12 +905,13 @@ public class BaseTest extends TestCase {
 
             // insert all standard phases
             long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
-                113, 114, 115, 116};
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17};
-            String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review", "Appeals",
+                113, 114, 115, 116 };
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17 };
+            String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review",
+                "Appeals",
                 "Appeals Response", "Aggregation", "Aggregation Review", "Final Fix", "Final Review", "Approval",
                 "Specification Submission", "Specification Review", "Milestone Submission", "Milestone Screening",
-                "Milestone Review"};
+                "Milestone Review" };
             int step = phaseIds.length - 1;
 
             for (int i = 0; i < phaseTypeNames.length; i++) {
@@ -986,9 +974,9 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertDependency);
 
             long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-                112, 113, 114, 115, 116};
+                112, 113, 114, 115, 116 };
             long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
-                113, 101, 115, 116, 101};
+                113, 101, 115, 116, 101 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < step; i++) {
@@ -1027,15 +1015,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project and the standard phases into the database.
-     *
-     * @param stepPhase
-     *            the step phase
-     * @param hasDependentProject
-     *            has Dependent project or not
-     * @param dependentProjectActive
-     *            whether Dependent project active or not
-     * @param past
-     *            the phase is past or not
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -1046,7 +1025,7 @@ public class BaseTest extends TestCase {
         Project project = null;
 
         try {
-            project = new Project(new Date(), new DefaultWorkdays());
+            project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
             project.setId(1);
 
             // insert project first
@@ -1060,10 +1039,11 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertPhase);
 
             // insert all standard phases
-            long[] phaseIds = new long[] {101, 102, 103, 104, 109, 110, 111};
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 9, 10, 11};
-            String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review", "Final Fix",
-                "Final Review", "Approval"};
+            long[] phaseIds = new long[] {101, 102, 103, 104, 109, 110, 111 };
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 9, 10, 11 };
+            String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review",
+                "Final Fix",
+                "Final Review", "Approval" };
             int step = phaseIds.length - 1;
 
             long now = System.currentTimeMillis();
@@ -1109,8 +1089,8 @@ public class BaseTest extends TestCase {
                 + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertDependency);
 
-            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 109, 110};
-            long[] dependentPhaseIds = new long[] {102, 103, 104, 110, 111, 101};
+            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 109, 110 };
+            long[] dependentPhaseIds = new long[] {102, 103, 104, 110, 111, 101 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < step; i++) {
@@ -1149,7 +1129,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Creates submission for the project at the screening phase.
-     *
      * @throws Exception
      *             to JUnit.
      * @since 1.1
@@ -1164,7 +1143,7 @@ public class BaseTest extends TestCase {
         submitter.setProject(new Long(1));
         submitter.setPhase(new Long(102));
 
-        insertResources(con, new Resource[] {submitter});
+        insertResources(con, new Resource[] {submitter });
 
         // Prepare upload and insert into DB
         Upload upload = new Upload();
@@ -1175,7 +1154,7 @@ public class BaseTest extends TestCase {
         upload.setUploadStatus(new UploadStatus(1));
         upload.setParameter("param");
 
-        insertUploads(con, new Upload[] {upload});
+        insertUploads(con, new Upload[] {upload });
 
         // Prepare submission and insert into DB
         Submission submission = new Submission();
@@ -1184,12 +1163,11 @@ public class BaseTest extends TestCase {
         submission.setSubmissionStatus(new SubmissionStatus(1));
         submission.setSubmissionType(new SubmissionType(1));
 
-        insertSubmissions(con, new Submission[] {submission});
+        insertSubmissions(con, new Submission[] {submission });
     }
 
     /**
      * Creates submission for the project at review phase.
-     *
      * @throws Exception
      *             to JUnit.
      * @since 1.1
@@ -1204,7 +1182,7 @@ public class BaseTest extends TestCase {
         submitter.setProject(new Long(1));
         submitter.setPhase(new Long(103));
 
-        insertResources(con, new Resource[] {submitter});
+        insertResources(con, new Resource[] {submitter });
 
         // Prepare upload and insert into DB
         Upload upload = new Upload();
@@ -1215,7 +1193,7 @@ public class BaseTest extends TestCase {
         upload.setUploadStatus(new UploadStatus(1));
         upload.setParameter("param");
 
-        insertUploads(con, new Upload[] {upload});
+        insertUploads(con, new Upload[] {upload });
 
         // Prepare submission and insert into DB
         Submission submission = new Submission();
@@ -1224,12 +1202,11 @@ public class BaseTest extends TestCase {
         submission.setSubmissionStatus(new SubmissionStatus(1));
         submission.setSubmissionType(new SubmissionType(1));
 
-        insertSubmissions(con, new Submission[] {submission});
+        insertSubmissions(con, new Submission[] {submission });
     }
 
     /**
      * inserts resources required by test cases into the db.
-     *
      * @param resources
      *            resources to insert.
      * @param conn
@@ -1274,7 +1251,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts uploads required by test cases into the db.
-     *
      * @param uploads
      *            uploads to insert.
      * @param conn
@@ -1315,7 +1291,12 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts uploads required by test cases into the db.
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>use getUpload instead of getUploads.</li>
+     * </ul>
+     * </p>
      * @param submissions
      *            submissions to insert.
      * @param conn
@@ -1328,16 +1309,17 @@ public class BaseTest extends TestCase {
 
         try {
             String insertSubmission = "INSERT INTO submission "
-                + "(submission_id, upload_id, submission_status_id, "
+                + "(submission_id, upload_id, user_rank, submission_status_id, "
                 + "submission_type_id, create_user, create_date, modify_user, modify_date, placement) "
-                + "VALUES (?, ?, ?, ?, 'user', ?, 'user', ?, ?)";
+                + "VALUES (?, ?, 1, ?, ?, 'user', ?, 'user', ?, ?)";
+
             preparedStmt = conn.prepareStatement(insertSubmission);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             for (int i = 0; i < submissions.length; i++) {
                 preparedStmt.setLong(1, submissions[i].getId());
-                preparedStmt.setLong(2, submissions[i].getUploads().get(0).getId());
+                preparedStmt.setLong(2, submissions[i].getUpload().getId());
                 preparedStmt.setLong(3, submissions[i].getSubmissionStatus().getId());
                 preparedStmt.setLong(4, submissions[i].getSubmissionType().getId());
                 preparedStmt.setTimestamp(5, now);
@@ -1350,6 +1332,23 @@ public class BaseTest extends TestCase {
 
             closeStatement(preparedStmt);
             preparedStmt = null;
+
+            insertSubmission = "INSERT INTO upload_submission  "
+                + "(upload_id, submission_id ) "
+                + "VALUES (?, ?)";
+            preparedStmt = conn.prepareStatement(insertSubmission);
+
+            for (int i = 0; i < submissions.length; i++) {
+                preparedStmt.setLong(1, submissions[i].getUpload().getId());
+                preparedStmt.setLong(2, submissions[i].getId());
+                try {
+                    preparedStmt.executeUpdate();
+                } catch (SQLException e) {
+                    // ignore
+                }
+            }
+            closeStatement(preparedStmt);
+            preparedStmt = null;
         } finally {
             closeStatement(preparedStmt);
         }
@@ -1357,7 +1356,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts scorecards required by test cases into the db.
-     *
      * @param scorecards
      *            scorecards to insert.
      * @param conn
@@ -1402,7 +1400,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts reviews required by test cases into the db.
-     *
      * @param reviews
      *            reviews to insert.
      * @param conn
@@ -1443,7 +1440,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts screening task.
-     *
      * @param conn
      *            connection to use.
      * @param uploadId the upload id.
@@ -1477,7 +1473,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to insert Comment into the database.
-     *
      * @param conn
      *            connection to use
      * @param ids
@@ -1526,7 +1521,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to insert Comment with extra info into the database.
-     *
      * @param conn
      *            connection to use
      * @param ids
@@ -1580,7 +1574,6 @@ public class BaseTest extends TestCase {
     /**
      * Helper method to insert a question. This inserts a record into the scorecard_group,
      * scorecard_section, scorecard_question tables.
-     *
      * @param conn
      *            connection to use.
      * @param questionId
@@ -1644,7 +1637,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Helper method to insert review item into the database.
-     *
      * @param conn
      *            connection to use
      * @param items
@@ -1684,7 +1676,6 @@ public class BaseTest extends TestCase {
 
     /**
      * This will insert the review item comments into the database.
-     *
      * @param conn
      *            connection to use.
      * @param itemComments
@@ -1729,7 +1720,6 @@ public class BaseTest extends TestCase {
     /**
      * A helper method to insert a winning submitter for the given project id with given
      * resource id.
-     *
      * @param conn
      *            connection to use.
      * @param resourceId
@@ -1742,7 +1732,7 @@ public class BaseTest extends TestCase {
     protected void insertWinningSubmitter(Connection conn, long resourceId, long projectId)
         throws Exception {
         Resource winner = createResource(resourceId, 101L, projectId, 1);
-        insertResources(conn, new Resource[] {winner});
+        insertResources(conn, new Resource[] {winner });
 
         // insert placement : value = 1
         insertResourceInfo(conn, resourceId, 12, "1");
@@ -1751,13 +1741,12 @@ public class BaseTest extends TestCase {
         insertResourceInfo(conn, resourceId, 1, "1");
 
         // insert project winner information
-        insertProjectInfo(conn, projectId, new long[] {23}, new String[] {"1"});
+        insertProjectInfo(conn, projectId, new long[] {23 }, new String[] {"1" });
     }
 
     /**
      * A helper method to insert a winning submitter for the given project id with given
      * resource id.
-     *
      * @param conn
      *            connection to use.
      * @param resourceId
@@ -1797,7 +1786,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Inserts resource-submission mapping into the resource_submission table.
-     *
      * @param conn
      *            connection to use.
      * @param resourceId
@@ -1833,7 +1821,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Checks whether a post-mortem phase is inserted into database.
-     *
      * @param con
      *            the database connection.
      * @return true if there is Post-Mortem phase inserted, false otherwise.
@@ -1867,7 +1854,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Gets submission status.
-     *
      * @param con
      *            the database connection.
      * @param submissionId
@@ -1901,7 +1887,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Checks whether an approval phase is inserted into database.
-     *
      * @param con
      *            the database connection.
      * @return true if there is approval phase inserted, false otherwise.
@@ -1935,7 +1920,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Checks whether a new final review phase is inserted into database.
-     *
      * @param con
      *            the database connection.
      * @return true if there is approval phase inserted, false otherwise.
@@ -1970,7 +1954,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Checks whether a new final fix phase is inserted into database.
-     *
      * @param con
      *            the database connection.
      * @return true if there is approval phase inserted, false otherwise.
@@ -2004,7 +1987,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Cleans up records in the given table names.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -2030,7 +2012,6 @@ public class BaseTest extends TestCase {
 
     /**
      * Delete phase by id.
-     *
      * @param id
      *            the id.
      * @throws Exception
@@ -2054,7 +2035,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project and the standard phases into the database.
-     *
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -2065,7 +2045,7 @@ public class BaseTest extends TestCase {
         Project project = null;
 
         try {
-            project = new Project(new Date(), new DefaultWorkdays());
+            project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
             project.setId(1);
 
             // insert project first
@@ -2079,10 +2059,10 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertPhase);
 
             // insert all standard phases
-            long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 109, 110, 111};
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 9, 10, 11};
+            long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 109, 110, 111 };
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 9, 10, 11 };
             String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review",
-                "Appeals", "Appeals Response", "Final Fix", "Final Review", "Approval"};
+                "Appeals", "Appeals Response", "Final Fix", "Final Review", "Approval" };
             int step = phaseIds.length - 1;
 
             long duration = 24 * 60 * 60 * 1000; // one day
@@ -2129,8 +2109,8 @@ public class BaseTest extends TestCase {
                 + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertDependency);
 
-            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 109, 110};
-            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 109, 110, 111};
+            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 109, 110 };
+            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 109, 110, 111 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < step; i++) {
@@ -2171,7 +2151,6 @@ public class BaseTest extends TestCase {
     /**
      * Set up phases include a new post-mortem phase. This method is brought in in version
      * 1.1.
-     *
      * @return the created project
      * @throws Exception
      *             to JUnit.
@@ -2183,7 +2162,7 @@ public class BaseTest extends TestCase {
         Project project = null;
 
         try {
-            project = new Project(new Date(), new DefaultWorkdays());
+            project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
             project.setId(1);
 
             // insert project first
@@ -2198,11 +2177,11 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertPhase);
 
             // insert all standard phases
-            long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112};
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+            long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 };
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
             String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review",
                 "Appeals", "Appeals Response", "Aggregation", "Aggregation Review", "Final Fix",
-                "Final Review", "Approval", "Post-Mortem"};
+                "Final Review", "Approval", "Post-Mortem" };
             long now = System.currentTimeMillis() - DAY * 24;
             Timestamp scheduledStart = new Timestamp(now);
             Timestamp scheduledEnd = new Timestamp(now + DAY);
@@ -2246,8 +2225,8 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertDependency);
 
             long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-                102};
-            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112};
+                102 };
+            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < dependencyPhaseIds.length; i++) {
@@ -2280,7 +2259,6 @@ public class BaseTest extends TestCase {
      * Gets the value of a private field in the given class. The field has the given name.
      * The value is retrieved from the given instance. If the instance is null, the field
      * is a static field. If any error occurs, null is returned.
-     *
      * @param type
      *            the class which the private field belongs to
      * @param instance
@@ -2320,7 +2298,6 @@ public class BaseTest extends TestCase {
     /**
      * Verifies all fields of the handler has been correctly set according to
      * configuration.
-     *
      * @param handler
      *            the handler
      * @param contents
@@ -2337,8 +2314,9 @@ public class BaseTest extends TestCase {
 
         for (String name : contents.get("start").keySet()) {
             String[] content = contents.get("start").get(name);
-            EmailOptions optionsStart = (EmailOptions) ((Map) (BaseTest.getPrivateField(AbstractPhaseHandler.class,
-                    handler, "startPhaseEmailOptions"))).get(name);
+            EmailOptions optionsStart = (EmailOptions) ((Map<?, ?>) (
+                BaseTest.getPrivateField(AbstractPhaseHandler.class, handler, "startPhaseEmailOptions")))
+                    .get(name);
             assertEquals("from address", content[0], optionsStart.getFromAddress());
             assertEquals("template name", content[1], optionsStart.getTemplateName());
             assertEquals("subject", content[2], optionsStart.getSubject());
@@ -2346,8 +2324,8 @@ public class BaseTest extends TestCase {
 
         for (String name : contents.get("end").keySet()) {
             String[] content = contents.get("end").get(name);
-            EmailOptions optionsEnd = (EmailOptions) ((Map) (BaseTest.getPrivateField(AbstractPhaseHandler.class,
-                    handler, "endPhaseEmailOptions"))).get(name);
+            EmailOptions optionsEnd = (EmailOptions) ((Map<?, ?>) (
+                BaseTest.getPrivateField(AbstractPhaseHandler.class, handler, "endPhaseEmailOptions"))).get(name);
             assertEquals("from address", content[0], optionsEnd.getFromAddress());
             assertEquals("template name", content[1], optionsEnd.getTemplateName());
             assertEquals("subject", content[2], optionsEnd.getSubject());
@@ -2356,7 +2334,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project and the standard phases into the database.
-     *
      * @param dependencyActive whether dependency is active or not.
      * @return project instance with phases populated.
      * @throws Exception
@@ -2369,7 +2346,7 @@ public class BaseTest extends TestCase {
         Project project = null;
 
         try {
-            project = new Project(new Date(), new DefaultWorkdays());
+            project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
             project.setId(1);
 
             // insert project first
@@ -2387,11 +2364,11 @@ public class BaseTest extends TestCase {
 
             // insert all standard phases
             long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
-                113};
-            long[] phaseTypeIds = new long[] {13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+                113 };
+            long[] phaseTypeIds = new long[] {13, 14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             String[] phaseTypeNames = new String[] {"Specification Submission", "Specification Review",
                 "Registration", "Submission", "Screening", "Review", "Appeals", "Appeals Response",
-                "Aggregation", "Aggregation Review", "Final Fix", "Final Review", "Approval"};
+                "Aggregation", "Aggregation Review", "Final Fix", "Final Review", "Approval" };
 
             long now = System.currentTimeMillis();
             Timestamp scheduledStart = new Timestamp(now - DAY * 2);
@@ -2436,9 +2413,9 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertDependency);
 
             long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-                111, 112};
+                111, 112 };
             long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
-                112, 113};
+                112, 113 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < phaseIds.length - 1; i++) {
@@ -2464,7 +2441,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project with double final fix phases into the database.
-     *
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -2476,7 +2452,7 @@ public class BaseTest extends TestCase {
         Project project = null;
 
         try {
-            project = new Project(new Date(), new DefaultWorkdays());
+            project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
             project.setId(1);
 
             // insert project first
@@ -2491,11 +2467,11 @@ public class BaseTest extends TestCase {
 
             // insert all standard phases
             long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
-                113};
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 9, 10, 9, 10, 11, 13, 14};
+                113 };
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 9, 10, 9, 10, 11, 13, 14 };
             String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review",
                 "Appeals", "Appeals Response", "Final Fix", "Final Review", "Final Fix", "Final Review",
-                "Approval", "Specification Submission", "Specification Review"};
+                "Approval", "Specification Submission", "Specification Review" };
 
             long now = System.currentTimeMillis();
             Timestamp scheduledStart = new Timestamp(now - DAY * 2);
@@ -2540,8 +2516,8 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertDependency);
 
             long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-                112};
-            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113};
+                112 };
+            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 113 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < dependencyPhaseIds.length; i++) {
@@ -2567,7 +2543,6 @@ public class BaseTest extends TestCase {
 
     /**
      * inserts a project with double aggregation phases into the database.
-     *
      * @return project instance with phases populated.
      * @throws Exception
      *             not under test.
@@ -2579,7 +2554,7 @@ public class BaseTest extends TestCase {
         Project project = null;
 
         try {
-            project = new Project(new Date(), new DefaultWorkdays());
+            project = new Project(new Date(), new DefaultWorkdays(WORKDAYS_FILE));
             project.setId(1);
 
             // insert project first
@@ -2594,11 +2569,11 @@ public class BaseTest extends TestCase {
             preparedStmt = conn.prepareStatement(insertPhase);
 
             // insert all standard phases
-            long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111};
-            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 7, 9, 10, 11};
+            long[] phaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111 };
+            long[] phaseTypeIds = new long[] {1, 2, 3, 4, 5, 6, 7, 7, 9, 10, 11 };
             String[] phaseTypeNames = new String[] {"Registration", "Submission", "Screening", "Review",
                 "Appeals", "Appeals Response", "Aggregation", "Aggregation", "Final Fix",
-                "Final Review", "Approval"};
+                "Final Review", "Approval" };
 
             long now = System.currentTimeMillis();
             Timestamp scheduledStart = new Timestamp(now - DAY * 2);
@@ -2642,8 +2617,8 @@ public class BaseTest extends TestCase {
                 + "VALUES (?, ?, ?, ?, ?, 'user', ?, 'user', ?)";
             preparedStmt = conn.prepareStatement(insertDependency);
 
-            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110};
-            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111};
+            long[] dependencyPhaseIds = new long[] {101, 102, 103, 104, 105, 106, 107, 108, 109, 110 };
+            long[] dependentPhaseIds = new long[] {102, 103, 104, 105, 106, 107, 108, 109, 110, 111 };
             Phase[] phases = project.getAllPhases();
 
             for (int i = 0; i < dependencyPhaseIds.length; i++) {

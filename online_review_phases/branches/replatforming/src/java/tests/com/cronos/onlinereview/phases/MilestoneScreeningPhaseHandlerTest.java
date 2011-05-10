@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -22,9 +22,14 @@ import java.util.Date;
 
 /**
  * All tests for MilestoneScreeningPhaseHandler class.
- *
- * @author TCSDEVELOPER
- * @version 1.6
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author TCSDEVELOPER, microsky
+ * @version 1.6.1
  * @since 1.6
  */
 public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
@@ -38,7 +43,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -48,7 +52,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
         ConfigManager configManager = ConfigManager.getInstance();
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -62,7 +65,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * Tests the MilestoneScreeningPhaseHandler() constructor, instance should be created.
      * </p>
-     *
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
@@ -76,7 +78,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * Tests the MilestoneScreeningPhaseHandler(String) constructor, instance should be created.
      * </p>
-     *
      * @throws Exception
      *             pass any unexpected exception to JUnit.
      */
@@ -93,7 +94,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -115,7 +115,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -138,7 +137,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -161,7 +159,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -183,7 +180,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -206,7 +202,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * If the conditions meets, should return true, otherwise return false.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -225,11 +220,11 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             screeningPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
 
             // time has passed, but dependency not met.
             screeningPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
 
             // time has passed and dependency met.
             screeningPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
@@ -246,15 +241,15 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(1, screener.getId(), submission.getId(), scorecard.getId(), true, 80.0f);
 
-            insertResources(conn, new Resource[] {submitter, screener});
+            insertResources(conn, new Resource[] {submitter, screener });
             insertResourceInfo(conn, submitter.getId(), 1, "11111");
             insertResourceInfo(conn, screener.getId(), 1, "11112");
-            insertUploads(conn, new Upload[] {upload});
-            insertSubmissions(conn, new Submission[] {submission});
-            insertScorecards(conn, new Scorecard[] {scorecard});
-            insertReviews(conn, new Review[] {review});
+            insertUploads(conn, new Upload[] {upload });
+            insertSubmissions(conn, new Submission[] {submission });
+            insertScorecards(conn, new Scorecard[] {scorecard });
+            insertReviews(conn, new Review[] {review });
 
-            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -267,7 +262,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * If the conditions meets, should return true, otherwise return false.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -288,7 +282,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             screeningPhase.getAllDependencies()[0].setDependentStart(false);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -301,7 +295,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * If the conditions meets, should return true, otherwise return false.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -321,7 +314,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             // make dependency closed
             screeningPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
 
-            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -334,7 +327,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * If the conditions meets, should return true, otherwise return false.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -370,16 +362,16 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(1, screener.getId(), submission1.getId(), scorecard.getId(), true, 80.0f);
 
-            insertResources(conn, new Resource[] {submitter1, submitter2, screener});
+            insertResources(conn, new Resource[] {submitter1, submitter2, screener });
             insertResourceInfo(conn, submitter1.getId(), 1, "11111");
             insertResourceInfo(conn, submitter2.getId(), 1, "11111");
             insertResourceInfo(conn, screener.getId(), 1, "11112");
-            insertUploads(conn, new Upload[] {upload1, upload2});
-            insertSubmissions(conn, new Submission[] {submission1, submission2});
-            insertScorecards(conn, new Scorecard[] {scorecard});
-            insertReviews(conn, new Review[] {review});
+            insertUploads(conn, new Upload[] {upload1, upload2 });
+            insertSubmissions(conn, new Submission[] {submission1, submission2 });
+            insertScorecards(conn, new Scorecard[] {scorecard });
+            insertReviews(conn, new Review[] {review });
 
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -392,7 +384,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * If the conditions meets, should return true, otherwise return false.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -425,15 +416,15 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(1, screener.getId(), submission.getId(), scorecard.getId(), true, 80.0f);
 
-            insertResources(conn, new Resource[] {submitter, screener});
+            insertResources(conn, new Resource[] {submitter, screener });
             insertResourceInfo(conn, submitter.getId(), 1, "11111");
             insertResourceInfo(conn, screener.getId(), 1, "11112");
-            insertUploads(conn, new Upload[] {upload});
-            insertSubmissions(conn, new Submission[] {submission});
-            insertScorecards(conn, new Scorecard[] {scorecard});
-            insertReviews(conn, new Review[] {review});
+            insertUploads(conn, new Upload[] {upload });
+            insertSubmissions(conn, new Submission[] {submission });
+            insertScorecards(conn, new Scorecard[] {scorecard });
+            insertReviews(conn, new Review[] {review });
 
-            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -446,7 +437,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * If the conditions meets, should return true, otherwise return false.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -479,15 +469,15 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
             Review review = createReview(1, screener.getId(), submission.getId(), scorecard.getId(), false, 80.0f);
 
-            insertResources(conn, new Resource[] {submitter, screener});
+            insertResources(conn, new Resource[] {submitter, screener });
             insertResourceInfo(conn, submitter.getId(), 1, "11111");
             insertResourceInfo(conn, screener.getId(), 1, "11112");
-            insertUploads(conn, new Upload[] {upload});
-            insertSubmissions(conn, new Submission[] {submission});
-            insertScorecards(conn, new Scorecard[] {scorecard});
-            insertReviews(conn, new Review[] {review});
+            insertUploads(conn, new Upload[] {upload });
+            insertSubmissions(conn, new Submission[] {submission });
+            insertScorecards(conn, new Scorecard[] {scorecard });
+            insertReviews(conn, new Review[] {review });
 
-            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(screeningPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -500,7 +490,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw PhaseHandlingException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -523,7 +512,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -546,7 +534,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
      * <p>
      * expect throw IllegalArgumentException.
      * </p>
-     *
      * @throws Exception
      *             not under test.
      */
@@ -564,7 +551,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -581,7 +567,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with OPEN statuses.
-     *
      * @throws Exception
      *             to JUnit.
      */
@@ -605,7 +590,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {submitter});
+            insertResources(conn, new Resource[] {submitter });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -615,7 +600,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Resource screener = createResource(101, screenPhase.getId(), project.getId(), 20);
 
             // insert records
-            insertResources(conn, new Resource[] {screener});
+            insertResources(conn, new Resource[] {screener });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -626,18 +611,18 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Submission submission = createSubmission(102, submitterUpload.getId(), 1, 3);
             submission.setUpload(submitterUpload);
 
-            this.insertUploads(conn, new Upload[] {submitterUpload});
-            this.insertSubmissions(conn, new Submission[] {submission});
+            this.insertUploads(conn, new Upload[] {submitterUpload });
+            this.insertSubmissions(conn, new Submission[] {submission });
 
             // 4. insert a scorecard here
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // 5. insert a screening review
-            Review screenReview
-                = createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true, 90.0f);
+            Review screenReview = createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true,
+                90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.perform(screenPhase, "1001");
         } finally {
@@ -648,7 +633,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with OPEN statuses.
-     *
      * @throws Exception
      *             to JUnit.
      */
@@ -672,7 +656,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {submitter});
+            insertResources(conn, new Resource[] {submitter });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -682,7 +666,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Resource screener = createResource(101, screenPhase.getId(), project.getId(), 20);
 
             // insert records
-            insertResources(conn, new Resource[] {screener});
+            insertResources(conn, new Resource[] {screener });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -693,18 +677,18 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Submission submission = createSubmission(102, submitterUpload.getId(), 1, 3);
             submission.setUpload(submitterUpload);
 
-            this.insertUploads(conn, new Upload[] {submitterUpload});
-            this.insertSubmissions(conn, new Submission[] {submission});
+            this.insertUploads(conn, new Upload[] {submitterUpload });
+            this.insertSubmissions(conn, new Submission[] {submission });
 
             // 4. insert a scorecard here
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
 
             // 5. insert a screening review
-            Review screenReview
-                = createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true, 65.0f);
+            Review screenReview = createReview(11, screener.getId(), submission.getId(), scorecard.getId(), true,
+                65.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.perform(screenPhase, "1001");
         } finally {
@@ -715,7 +699,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with OPEN statuses.
-     *
      * @throws Exception
      *             to JUnit.
      */
@@ -740,7 +723,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {submitter1, submitter2});
+            insertResources(conn, new Resource[] {submitter1, submitter2 });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -751,7 +734,7 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Resource screener = createResource(101, screenPhase.getId(), project.getId(), 20);
 
             // insert records
-            insertResources(conn, new Resource[] {screener});
+            insertResources(conn, new Resource[] {screener });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -765,8 +748,8 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             submission1.setUpload(upload1);
             submission2.setUpload(upload2);
 
-            this.insertUploads(conn, new Upload[] {upload1, upload2});
-            this.insertSubmissions(conn, new Submission[] {submission1, submission2});
+            this.insertUploads(conn, new Upload[] {upload1, upload2 });
+            this.insertSubmissions(conn, new Submission[] {submission1, submission2 });
 
             // 4. insert a scorecard here
             Scorecard scorecard = createScorecard(1, 1, 1, 1, "name", "1.0", 75.0f, 100.0f);
@@ -775,8 +758,8 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
             Review screenReview = createReview(11, screener.getId(), submission1.getId(), scorecard.getId(), true,
                     90.0f);
 
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {screenReview});
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {screenReview });
 
             handler.perform(screenPhase, "1001");
 
@@ -791,7 +774,6 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses. without screener.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -811,17 +793,17 @@ public class MilestoneScreeningPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 19);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 3);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             handler.perform(screeningPhase, operator);
 
