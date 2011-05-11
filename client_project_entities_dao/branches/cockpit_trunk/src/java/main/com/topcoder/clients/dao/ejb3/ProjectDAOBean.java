@@ -95,12 +95,12 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
      */
     private static final String SELECT_WORKER_PROJECT = "SELECT distinct project_id FROM project_worker p,"
             + " user_account u WHERE p.start_date <= current and current <= p.end_date and p.active =1 and "
-            + "p.user_account_id = u.user_account_id and u.user_name = ";
+            + "p.user_account_id = u.user_account_id and upper(u.user_name) = ";
     /**
      * The query string used to select projects.
      */
     private static final String SELECT_MANAGER_PROJECT = "SELECT distinct project_id FROM project_manager p,"
-            + " user_account u WHERE p.user_account_id = u.user_account_id and p.active = 1 and  u.user_name = ";
+            + " user_account u WHERE p.user_account_id = u.user_account_id and p.active = 1 and  upper(u.user_name) = ";
 
     /**
      * The query string used to select projects.
@@ -347,8 +347,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
         try {
 
             String queryString = SELECT_PROJECT + " and p.active = 1 and p.project_id in " + "("
-                    + SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
-                    + SELECT_WORKER_PROJECT + "'" + username + "')";
+                    + SELECT_MANAGER_PROJECT +  "upper('" + username + "') " + "union "
+                    + SELECT_WORKER_PROJECT + " upper('" + username + "'))";
             queryString += " order by upper(name) ";
 
             Query query = entityManager.createNativeQuery(queryString);
