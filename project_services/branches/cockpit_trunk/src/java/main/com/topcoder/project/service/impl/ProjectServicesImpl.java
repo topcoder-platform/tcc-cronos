@@ -2363,10 +2363,6 @@ public class ProjectServicesImpl implements ProjectServices {
                     {
                         p.setAttribute("Registration Number", "0");
                     }
-                    else if (p.getPhaseType().getName().equals(PhaseType.SUBMISSION_PHASE.getName()))
-                    {
-                        p.setAttribute("Submission Number", "0");
-                    }
                     else if (p.getPhaseType().getName().equals(PhaseType.SCREENING_PHASE.getName()))
                     {
                         p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
