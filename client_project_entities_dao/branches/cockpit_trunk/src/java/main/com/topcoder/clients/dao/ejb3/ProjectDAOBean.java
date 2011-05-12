@@ -664,8 +664,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
         try {
 
             String queryString = SELECT_PROJECT + " and p.active = 1 and p.project_id in " + "("
-                    + SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
-                    + SELECT_WORKER_PROJECT + "'" + username + "')";
+                    + SELECT_MANAGER_PROJECT + "upper('" + username + "') " + "union "
+                    + SELECT_WORKER_PROJECT + "upper('" + username + "'))";
             queryString += " and p.project_id = " + projectId;
 
             Query query2 = entityManager.createNativeQuery(queryString);
@@ -708,8 +708,8 @@ public class ProjectDAOBean extends GenericEJB3DAO<Project, Long> implements
         try {
 
             String queryString = SELECT_PROJECT + " and p.active = 1 and p.project_id in " + "("
-                    + SELECT_MANAGER_PROJECT + "'" + username + "' " + "union "
-                    + SELECT_WORKER_PROJECT + "'" + username + "')";
+                    + SELECT_MANAGER_PROJECT + "upper('" + username + "') " + "union "
+                    + SELECT_WORKER_PROJECT + "upper('" + username + "'))";
             queryString += " and p.po_box_number = '" + poNumber + "'";
 
             Query query2 = entityManager.createNativeQuery(queryString);
