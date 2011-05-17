@@ -2369,7 +2369,10 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.setPlacement(((Long) placement));
         }
 
-        submission.setUserRank((Integer) row[startIndex++]);
+		Object userRank = row[startIndex++];
+		if(userRank != null) {
+		    submission.setUserRank((Integer) userRank);
+		}
 		
 		Object extra = row[startIndex++];
 		if (extra != null) {
@@ -2429,7 +2432,10 @@ public class SqlUploadPersistence implements UploadPersistence {
             }
 			
             submission.setId(resultSet.getLong("submission_id"));
-            submission.setUserRank(resultSet.getInt("user_rank"));
+			if(resultSet.getObject("user_rank")!=null) {
+			    submission.setUserRank(resultSet.getInt("user_rank"));
+			}
+            
             submission.setCreationUser(resultSet.getString("submission_create_user"));
             submission.setCreationTimestamp(resultSet.getDate("submission_create_date"));
             submission.setModificationUser(resultSet.getString("submission_modify_user"));
