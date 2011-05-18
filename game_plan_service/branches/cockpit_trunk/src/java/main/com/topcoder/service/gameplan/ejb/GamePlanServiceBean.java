@@ -75,8 +75,16 @@ import java.util.Set;
  * EJB container because its state doesn't change after initialization. Instances of EntityManager used by this class
  * are thread safe. This bean assumes that transactions are managed by the container.</p>
  *
- * @author saarixx, FireIce
- * @version 1.0
+ * <p>
+ * Version 1.0.1 (TC Cockpit Contest Duration Calculation Updates Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Updated {@link #RETRIEVE_SOFTWARE_PROJECT_DATA} statement to exclude duration of <code>Approval</code>,
+ *     <code>Specification Submission/Review</code> phases from contest duration.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author saarixx, FireIce, isv
+ * @version 1.0.1
  */
 @Stateless
 public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServiceRemote {
@@ -89,7 +97,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             + "(SELECT MIN(NVL(actual_start_time, scheduled_start_time)) FROM project_phase ph"
             + "    WHERE ph.project_id = p.project_id and ph.phase_type_id = 1) as start_time,"
             + "(SELECT MAX(NVL(actual_end_time, scheduled_end_time)) FROM project_phase ph"
-            + "    WHERE ph.project_id = p.project_id) as end_time,"
+            + "    WHERE ph.project_id = p.project_id AND NOT ph.phase_type_id IN (11, 13, 14)) as end_time,"
             + "tcd.user_id, psl.name as project_status,"
             + "(SELECT ptl.name FROM phase_type_lu ptl WHERE phase_type_id = "
             + "    (SELECT MIN(phase_type_id) FROM project_phase ph "
