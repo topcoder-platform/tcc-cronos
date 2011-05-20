@@ -4194,11 +4194,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 addForumWatch = Boolean.parseBoolean(preferences.get(GLOBAL_FORUM_WATCH));
                 if(forumId > 0 && createForum) {
                         // add forum watch/permission for each copilot to create
-                        if (roleId == ResourceRole.RESOURCE_ROLE_COPILOT_ID) {
-                            createForumWatchAndRole(forumId, uid, true, isStudio(contest));
+                        if (roleId == ResourceRole.RESOURCE_ROLE_COPILOT_ID && !isStudio(contest)) {
+                            createForumWatchAndRole(forumId, uid, true);
                         }
-                        else if (roleId == ResourceRole.RESOURCE_ROLE_OBSERVER_ID) {
-                            createForumWatchAndRole(forumId, uid, addForumWatch, isStudio(contest));
+                        else if (roleId == ResourceRole.RESOURCE_ROLE_OBSERVER_ID && !isStudio(contest)) {
+                            createForumWatchAndRole(forumId, uid, addForumWatch);
                         }
                 }
 
@@ -4778,9 +4778,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 contest.setId(projectData.getProjectHeader().getId());
 
                 long forumId = projectServices.getForumId(projectData.getProjectHeader().getId());
-                if (forumId > 0 && createForum)
+                if (forumId > 0 && createForum && !isStudio(contest))
                 {
-                    updateForumName(forumId, contest.getAssetDTO().getName(), isStudio(contest));
+                    updateForumName(forumId, contest.getAssetDTO().getName());
 
                     // update forum permission for copilots
                     List<String> currentCopilots = new ArrayList<String>();
@@ -4794,13 +4794,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
                     // remove copilot forum watch/permission for all old copilots
                     for(com.topcoder.management.resource.Resource r : oldCopilots) {
-                            deleteForumWatchAndRole(forumId, Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)),
-                            		isStudio(contest));
+                            deleteForumWatchAndRole(forumId, Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)));
                     }
 
                     // insert copilot forum watch/permission for all new copilots
                     for(String copilotId : currentCopilots) {
-                            createForumWatchAndRole(forumId, Long.parseLong(copilotId), true, isStudio(contest));
+                            createForumWatchAndRole(forumId, Long.parseLong(copilotId), true);
                     }
 
 
@@ -5922,9 +5921,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
                                     // delete forum watch
                                     long forumId = projectServices.getForumId(pid);
-                                    if (forumId > 0 && createForum)
+                                    if (forumId > 0 && createForum && !per.isStudio())
                                     {
-                                        deleteForumWatchAndRole(forumId, per.getUserId(), false);
+                                        deleteForumWatchAndRole(forumId, per.getUserId());
                                     }
                                 }
                             }
@@ -7126,11 +7125,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *            The project category id to
      * @return The long id of the created forum
      */
-    private void createForumWatchAndRole(long forumId, long userId, boolean watch, boolean isStudio) {
+    private void createForumWatchAndRole(long forumId, long userId, boolean watch) {
         logger.debug("createForumWatch (" + forumId + ", " + userId + ")");
 
         try {
-        	Forums forums = getForums(isStudio);
+        	Forums forums = getSoftwareForums();
 
             String roleId = "Software_Users_" + forumId;
             if (watch)
@@ -7158,19 +7157,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *            The forum id to delete watch.
      * @param userId
      *            userId The user id to use
-     * @param isStudio
-     *            flag representing which forum to update. Studio or Software.
      */
-    private void deleteForumWatchAndRole(long forumId, long userId, boolean isStudio) {
+    private void deleteForumWatchAndRole(long forumId, long userId) {
         logger.info("deleteForumWatch (" + forumId + ", " + userId + ")");
 
         try {
-        	Forums forums = getForums(isStudio);
+        	Forums forums = getSoftwareForums();
 
             String roleId = "Software_Users_" + forumId;
             forums.deleteCategoryWatch(userId, forumId);
             forums.removeRole(userId, roleId);
-            logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");
+            logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");    	
 
         } catch (Exception e) {
             logger.error("*** Could not delete forum watch for " + forumId + ", " + userId );
@@ -7186,14 +7183,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *            The forum id to update
      * @param name
      *            The name to use
-     * @param isStudio
-     *            flag representing which forum to update, Studio or Software.
      */
-    private void updateForumName(long forumId, String name, boolean isStudio) {
+    private void updateForumName(long forumId, String name) {
         logger.info("updateForumName (" + forumId + ", " + name + ")");
 
         try {
-        	Forums forums = getForums(isStudio);
+        	Forums forums = getSoftwareForums();
 
             forums.updateComponentName(forumId, name);
             
@@ -7562,9 +7557,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param roleId the id of the role.
      * @param userId the id of the user.
      * @param phase the <code>Phase</code> associated with the resource.
+     * @param isStudio whether assign to studio contest.
      * @since 1.6.9
      */
-    private void assignRole(TCSubject tcSubject, long projectId, long roleId, long userId, com.topcoder.project.phases.Phase phase, boolean addNotification, boolean addForumWatch)
+    private void assignRole(TCSubject tcSubject, long projectId, long roleId, long userId, com.topcoder.project.phases.Phase phase, boolean addNotification, boolean addForumWatch,
+    		boolean isStudio)
         throws ContestServiceException {
         logger.debug("enter methods assignRole");
 
@@ -7631,8 +7628,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     addForumWatch = true;
                 }
 
-                if (forumId > 0 && createForum) {
-                    createForumWatchAndRole(forumId, userId, addForumWatch, false);
+                if (forumId > 0 && createForum && !isStudio) {
+                    createForumWatchAndRole(forumId, userId, addForumWatch);
                 }                    
                 
             }
@@ -7660,7 +7657,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId)
             throws ContestServiceException {
-        assignRole(tcSubject, projectId, roleId, userId, null, true, true);
+        assignRole(tcSubject, projectId, roleId, userId, null, true, true, false);
     }
 
      /* Assigns the role for the given tc project and user, it will assign all projects
@@ -8194,7 +8191,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     for (Long pid : projectIds) {
                         this.assignRole(tcSubject, pid.longValue(), role,
                                 permission.getUserId(), null, addNotification,
-                                addForumWatch);
+                                addForumWatch, permission.getStudio());
                     }
                 } else if (permission.getPermission() == null
                         || "".equals(permission.getPermission())) {
@@ -8242,9 +8239,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
                                 // delete forum watch
                                 long forumId = projectServices.getForumId(pid);
-                                if (forumId > 0 && createForum) {
+                                if (forumId > 0 && createForum && !permission.getStudio()) {
                                     deleteForumWatchAndRole(forumId, permission
-                                            .getUserId(), false);
+                                            .getUserId());
                                 }
                             }
                         }
@@ -9080,7 +9077,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         break;
                     }
                 }
-                assignRole(tcSubject, projectId, resourceRoleId, tcSubject.getUserId(), targetPhase, true, true);
+                assignRole(tcSubject, projectId, resourceRoleId, tcSubject.getUserId(), targetPhase, true, true, true);
                 for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
                     if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
                         reviewerResource = resource;
