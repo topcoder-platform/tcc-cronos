@@ -49,6 +49,7 @@ import com.cronos.onlinereview.services.uploads.ConfigurationException;
 import com.cronos.onlinereview.services.uploads.UploadExternalServices;
 import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.cronos.onlinereview.services.uploads.impl.DefaultUploadExternalServices;
+import com.tangosol.coherence.component.application.Console;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.CompDocumentation;
 import com.topcoder.catalog.entity.CompForum;
@@ -5121,7 +5122,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6.11
      */
     private Forums getStudioForums() throws RemoteException, NamingException, CreateException {
-    	return getForumsEJBFromJNDI(softwareForumBeanProviderUrl);
+    	return getForumsEJBFromJNDI(studioForumBeanProviderUrl);
     }
     
     /**
