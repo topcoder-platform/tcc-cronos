@@ -3342,8 +3342,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
 
-                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
+                // String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
+                // this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
+
+                long billingAccountId = ((TCPurhcaseOrderPaymentData) paymentData).getProjectId();
+
+                checkStudioBillingProjectPermission(tcSubject, completedContestData.getContestId(), billingAccountId);
+
+                // get PO number for the billing account
+                String poNumber = this.billingProjectDAO.getProjectById(billingAccountId).getPOBoxNumber();
 
                 result = new PaymentResult();
                 result.setReferenceNumber(poNumber);
@@ -3810,12 +3817,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     /**
      * Checks the billing project permission of the given contest for the current caller.
      *
-     * @param contest the contest to check
+     * @param tcSubject the TCSubject represents current user.
+     * @param contestData the contest to check
      * @throws ContestServiceException fail to retrieve user handle
      * @throws PersistenceException if user(not admin) does not have the permission
      * @throws DAOException fail to checking permission
      */
     private void checkStudioBillingProjectPermission(TCSubject tcSubject, ContestData contestData)
+            throws PermissionServiceException, DAOException, ContestNotFoundException, PersistenceException {
+        checkStudioBillingProjectPermission(tcSubject, contestData.getContestId(), contestData.getBillingProject());
+    }
+
+    /**
+     *  Checks the billing project permission of the given contest id and given billing account id for the current caller.
+     *
+     * @param tcSubject the TCSubject represents current user.
+     * @param contestId the id of the contest to check.
+     * @param billingAccountIdToCheck the billing account id to verify.
+     * @throws PermissionServiceException if user(not admin) does not have the permission
+     * @throws DAOException if any error related to DAO occurs.
+     * @throws ContestNotFoundException if the contest is not found
+     * @throws PersistenceException fail to retrieve user handle
+     */
+    private void checkStudioBillingProjectPermission(TCSubject tcSubject, long contestId, long billingAccountIdToCheck)
             throws PermissionServiceException, DAOException, ContestNotFoundException, PersistenceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             String userName;
@@ -3824,16 +3848,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             } catch (ContestServiceException e) {
                 throw new PermissionServiceException("Fail to get user-handle");
             }
-           if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
+           if (billingAccountIdToCheck > 0 && contestId > 0) {
 
-                ContestData cur = studioService.getContest(contestData.getContestId());
-                if (cur.getBillingProject() == contestData.getBillingProject())
+                ContestData cur = studioService.getContest(contestId);
+
+
+
+                if (cur.getBillingProject() == billingAccountIdToCheck)
                 {
                     return;
                 }
 
-                if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
-                    throw new PermissionServiceException("No permission on billing project " + contestData.getBillingProject());
+                if (!billingProjectDAO.checkClientProjectPermission(userName, billingAccountIdToCheck)) {
+                    throw new PermissionServiceException("No permission on billing project " + billingAccountIdToCheck);
                 }
            }
         }
