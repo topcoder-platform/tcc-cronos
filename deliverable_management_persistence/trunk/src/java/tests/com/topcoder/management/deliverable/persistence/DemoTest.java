@@ -1,12 +1,23 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006,2010 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.persistence;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.Date;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.deliverable.Deliverable;
+import com.topcoder.management.deliverable.MimeType;
 import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.SubmissionImage;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.Upload;
@@ -14,21 +25,14 @@ import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.UploadType;
 import com.topcoder.management.deliverable.persistence.sql.SqlDeliverablePersistence;
 import com.topcoder.management.deliverable.persistence.sql.SqlUploadPersistence;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.Date;
 
 /**
  * This TestCase demonstrates the usage of this component.
  *
  * @author urtks, TCSDEVELOPER
- * @version 1.1
- * @since 1.0
+ * @version 1.2
  */
+@SuppressWarnings("unused")
 public class DemoTest extends TestCase {
 
     /**
@@ -43,7 +47,8 @@ public class DemoTest extends TestCase {
     /**
      * Sets up the test environment. The configuration will be loaded.
      *
-     * @throws Exception throw any exception to JUnit
+     * @throws Exception
+     *             throw any exception to JUnit
      */
     protected void setUp() throws Exception {
         tearDown();
@@ -56,7 +61,8 @@ public class DemoTest extends TestCase {
     /**
      * Clean up the test environment. The configuration will be unloaded.
      *
-     * @throws Exception throw any exception to JUnit
+     * @throws Exception
+     *             throw any exception to JUnit
      */
     protected void tearDown() throws Exception {
         TestHelper.clearConfig();
@@ -70,12 +76,12 @@ public class DemoTest extends TestCase {
     /**
      * This method demonstrates the method to create a SqlUploadPersistence.
      *
-     * @throws Exception throw any exception to JUnit
+     * @throws Exception
+     *             throw any exception to JUnit
      */
     public void testCreateSqlUploadPersistence() throws Exception {
         // first a DBConnectionFactory instance is created.
-        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(
-                DBConnectionFactoryImpl.class.getName());
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
 
         // create the instance of SqlUploadPersistence class, using the default
         // connection name
@@ -83,20 +89,18 @@ public class DemoTest extends TestCase {
 
         // or create the instance of SqlUploadPersistence class, using the given
         // connection name
-        UploadPersistence persistence2 = new SqlUploadPersistence(connectionFactory,
-                "informix_connection");
+        UploadPersistence persistence2 = new SqlUploadPersistence(connectionFactory, "informix_connection");
     }
 
     /**
-     * This method demonstrates the method to create a
-     * SqlDeliverablePersistence.
+     * This method demonstrates the method to create a SqlDeliverablePersistence.
      *
-     * @throws Exception throw any exception to JUnit
+     * @throws Exception
+     *             throw any exception to JUnit
      */
     public void testCreateSqlDeliverablePersistence() throws Exception {
         // first a DBConnectionFactory instance is created.
-        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(
-                DBConnectionFactoryImpl.class.getName());
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
 
         // create the instance of SqlDeliverablePersistence class, using the
         // default connection name
@@ -104,21 +108,19 @@ public class DemoTest extends TestCase {
 
         // or create the instance of SqlDeliverablePersistence class, using the
         // given connection name
-        DeliverablePersistence persistence2 = new SqlDeliverablePersistence(connectionFactory,
-                "informix_connection");
+        DeliverablePersistence persistence2 = new SqlDeliverablePersistence(connectionFactory, "informix_connection");
     }
 
     /**
-     * This method demonstrates the usage of the UploadPersistence to manage all
-     * the AuditedDeliverableStructure entities except Deliverable in this
-     * component.
+     * This method demonstrates the usage of the UploadPersistence to manage all the AuditedDeliverableStructure
+     * entities except Deliverable in this component.
      *
-     * @throws Exception throw any exception to JUnit
+     * @throws Exception
+     *             throw any exception to JUnit
      */
     public void testManageEntity() throws Exception {
         // first a DBConnectionFactory instance is created.
-        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(
-                DBConnectionFactoryImpl.class.getName());
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
 
         // then create the instance of SqlUploadPersistence class
         UploadPersistence persistence = new SqlUploadPersistence(connectionFactory);
@@ -127,7 +129,7 @@ public class DemoTest extends TestCase {
         // load the Upload object from the persistence
         Upload upload = persistence.loadUpload(1);
         // the above loading can be batched.
-        Upload[] uploads = persistence.loadUploads(new long[]{1, 2, 3});
+        Upload[] uploads = persistence.loadUploads(new long[] {1, 2, 3});
 
         // add a new Upload object to the persistence
         Upload upload2 = new Upload();
@@ -145,6 +147,7 @@ public class DemoTest extends TestCase {
 
         // update the Upload object to the persistence
         upload2.setParameter("new param");
+        upload2.setDescription("new desc");
         persistence.updateUpload(upload2);
 
         // finally the Upload object can be removed from the persistence
@@ -154,7 +157,7 @@ public class DemoTest extends TestCase {
         // load the UploadType object from the persistence
         UploadType uploadType = persistence.loadUploadType(1);
         // the above loading can be batched.
-        UploadType[] uploadTypes = persistence.loadUploadTypes(new long[]{1, 2, 3});
+        UploadType[] uploadTypes = persistence.loadUploadTypes(new long[] {1, 2, 3});
 
         // add a new UploadType object to the persistence
         UploadType uploadType2 = new UploadType();
@@ -178,7 +181,7 @@ public class DemoTest extends TestCase {
         // load the UploadStatus object from the persistence
         UploadStatus uploadStatus = persistence.loadUploadStatus(1);
         // the above loading can be batched.
-        UploadStatus[] uploadStatuses = persistence.loadUploadStatuses(new long[]{1, 2, 3});
+        UploadStatus[] uploadStatuses = persistence.loadUploadStatuses(new long[] {1, 2, 3});
 
         // add a new UploadStatus object to the persistence
         UploadStatus uploadStatus2 = new UploadStatus();
@@ -202,8 +205,7 @@ public class DemoTest extends TestCase {
         // load the SubmissionStatus object from the persistence
         SubmissionStatus submissionStatus = persistence.loadSubmissionStatus(1);
         // the above loading can be batched.
-        SubmissionStatus[] submissionStatuses = persistence.loadSubmissionStatuses(new long[]{1,
-            2, 3});
+        SubmissionStatus[] submissionStatuses = persistence.loadSubmissionStatuses(new long[] {1, 2, 3});
 
         // load submission type
         SubmissionType submissionType = persistence.loadSubmissionType(1L);
@@ -225,9 +227,12 @@ public class DemoTest extends TestCase {
         submission.setCreationTimestamp(new Date());
         submission.setModificationUser("admin");
         submission.setModificationTimestamp(new Date());
-        submission.setUpload(upload);
         submission.setSubmissionStatus(submissionStatus);
         submission.setSubmissionType(submissionType);
+        submission.setThumb(true);
+        submission.setUserRank(2);
+        submission.setExtra(true);
+        submission.setUploads(Arrays.asList(persistence.loadUpload(1)));
 
         persistence.addSubmission(submission);
 
@@ -251,15 +256,14 @@ public class DemoTest extends TestCase {
     }
 
     /**
-     * This method demonstrates the usage of DeliverablePersistence to manage
-     * Deliverable in this component.
+     * This method demonstrates the usage of DeliverablePersistence to manage Deliverable in this component.
      *
-     * @throws Exception throw any exception to JUnit
+     * @throws Exception
+     *             throw any exception to JUnit
      */
     public void testManageDeliverable() throws Exception {
         // first a DBConnectionFactory instance is created.
-        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(
-                DBConnectionFactoryImpl.class.getName());
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
 
         // then create the instance of SqlDeliverablePersistence class
         DeliverablePersistence persistence = new SqlDeliverablePersistence(connectionFactory);
@@ -267,28 +271,30 @@ public class DemoTest extends TestCase {
         // load a "per submission" deliverable from the persistence
         Deliverable deliverable = persistence.loadDeliverable(2, 1, 1, 1);
         // the above loading can be batched.
-        Deliverable[] deliverables1 = persistence.loadDeliverables(
-                new long[]{2, 1}, new long[]{1, 2}, new long[]{1, 1}, new long[]{1, 1});
+        Deliverable[] deliverables1 = persistence.loadDeliverables(new long[] {2, 1}, new long[] {1, 2}, new long[] {1,
+            1}, new long[] {1, 1});
 
         // load a general deliverable from the persistence
         Deliverable[] deliverables2 = persistence.loadDeliverables(2, 2, 1);
         // the above loading can be batched.
-        Deliverable[] deliverables3 = persistence.loadDeliverables(
-                new long[]{2, 1}, new long[]{1, 2}, new long[]{1, 1});
+        Deliverable[] deliverables3 = persistence.loadDeliverables(new long[] {2, 1}, new long[] {1, 2}, new long[] {1,
+            1});
     }
 
     /**
-     * <p>Demonstrates creation submission type.</p>
+     * <p>
+     * Demonstrates creation submission type.
+     * </p>
      *
-     * @throws Exception if any error occurs
+     * @throws Exception
+     *             if any error occurs
      */
     public void testCreateSubmissionType() throws Exception {
 
         Connection connection = null;
 
         // first a DBConnectionFactory instance is created.
-        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(
-                DBConnectionFactoryImpl.class.getName());
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
 
         connection = connectionFactory.createConnection();
         Statement statement = connection.createStatement();
@@ -338,11 +344,91 @@ public class DemoTest extends TestCase {
         long[] submissionTypeIds = persistence.getAllSubmissionTypeIds();
 
         // check the ids
-        long[] expected = new long[]{1, 2};
+        long[] expected = new long[] {1, 2};
 
         assertEquals("wrong submissionTypeIds length", expected.length, submissionTypeIds.length);
         for (int i = 0; i < expected.length; ++i) {
             assertEquals("invalid submissionTypeId " + i, expected[i], submissionTypeIds[i]);
         }
+    }
+
+    /**
+     * Demonstrates management of SubmissionImage.
+     *
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     * @since 1.2
+     */
+    public void testManageSubmissionImage() throws Exception {
+        // first a DBConnectionFactory instance is created.
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
+
+        // then create the instance of SqlUploadPersistence class
+        UploadPersistence uploadPersistence = new SqlUploadPersistence(connectionFactory);
+
+        // Create submission image
+        SubmissionImage submissionImage = new SubmissionImage();
+
+        // submission with id 1 is already in database.
+        submissionImage.setSubmissionId(1);
+        submissionImage.setImageId(1);
+        submissionImage.setSortOrder(1);
+        uploadPersistence.addSubmissionImage(submissionImage);
+
+        // Update the submission image
+        submissionImage.setSortOrder(0);
+        uploadPersistence.updateSubmissionImage(submissionImage);
+
+        // Remove the submission image
+        uploadPersistence.removeSubmissionImage(submissionImage);
+    }
+
+    /**
+     * Demonstrates management of MimeType.
+     *
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     * @since 1.2
+     */
+    public void testManageMimeType() throws Exception {
+        // first a DBConnectionFactory instance is created.
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
+
+        // then create the instance of SqlUploadPersistence class
+        UploadPersistence uploadPersistence = new SqlUploadPersistence(connectionFactory);
+
+        // Retrieve the MIME type with ID=1
+        MimeType mimeType = uploadPersistence.loadMimeType(1);
+
+        // Retrieve IDs of all MIME types
+        long[] mimeTypeIds = uploadPersistence.getAllMimeTypeIds();
+
+        // Retrieve all MIME types by their IDs
+        MimeType[] mimeTypes = uploadPersistence.loadMimeTypes(mimeTypeIds);
+    }
+
+    /**
+     * Demonstrates retrieval of Submissions.
+     *
+     * @throws Exception
+     *             pass any unexpected exception to JUnit.
+     * @since 1.2
+     */
+    public void testSubmissionRetrieval() throws Exception {
+        // first a DBConnectionFactory instance is created.
+        DBConnectionFactory connectionFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
+
+        // then create the instance of SqlUploadPersistence class
+        UploadPersistence uploadPersistence = new SqlUploadPersistence(connectionFactory);
+
+        // Retrieve the submissions for project with ID=1 and user with ID=1
+        Submission[] submissions = uploadPersistence.getUserSubmissionsForProject(1, 1);
+
+        // Retrieve all submissions for project with ID=1
+        submissions = uploadPersistence.getProjectSubmissions(1);
+
+        // Retrieve the images for submission with ID=1
+        SubmissionImage[] submissionImages = uploadPersistence.getImagesForSubmission(1);
+
     }
 }

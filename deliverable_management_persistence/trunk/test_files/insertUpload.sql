@@ -10,6 +10,10 @@ INSERT INTO phase_type_lu(phase_type_id) VALUES(1);
 INSERT INTO phase_type_lu(phase_type_id) VALUES(2);
 INSERT INTO phase_type_lu(phase_type_id) VALUES(3);
 
+INSERT INTO file_type_lu(file_type_id, file_type_desc, sort, image_file_ind, extension, bundled_file_ind) VALUES (1, 'file type', 1, 1, 'extension', 1);
+
+INSERT INTO mime_type_lu(mime_type_id, file_type_id, mime_type_desc) VALUES (1, 1, 'mime1');
+
 INSERT INTO project_phase(project_phase_id, project_id, phase_type_id) VALUES(1, 1, 1);
 INSERT INTO project_phase(project_phase_id, project_id, phase_type_id) VALUES(2, 2, 2);
 INSERT INTO project_phase(project_phase_id, project_id, phase_type_id) VALUES(3, 3, 3);
@@ -38,14 +42,20 @@ INSERT INTO submission_type_lu(submission_type_id, name, description, create_use
 INSERT INTO submission_type_lu(submission_type_id, name, description, create_user, create_date, modify_user, modify_date) VALUES(4, 'Development', 'Development', 'System', CURRENT, 'System', CURRENT);
 INSERT INTO submission_type_lu(submission_type_id, name, description, create_user, create_date, modify_user, modify_date) VALUES(5, 'TestCase', 'TestCase', 'System', CURRENT, 'System', CURRENT);
 
+INSERT INTO prize_type_lu(prize_type_id, prize_type_desc) VALUES(1, 'Milestone Prize');
+INSERT INTO prize_type_lu(prize_type_id, prize_type_desc) VALUES(2, 'Submission Prize');
 
-INSERT INTO upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 2, 2, 2, 'parameter 1', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO prize(prize_id, place, prize_amount, prize_type_id, number_of_submissions, create_user, create_date, modify_user, modify_date) VALUES(1, 1, 500, 2, 4, 'System', CURRENT, 'System', CURRENT);  
 
-INSERT INTO upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, create_user, create_date, modify_user, modify_date) VALUES(2, 3, 3, 2, 2, 'parameter 2', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, upload_desc, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 2, 2, 2, 'parameter 1', 'desc 1', 'System', CURRENT, 'System', CURRENT);
 
-INSERT INTO submission(submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date, screening_score, initial_score, final_score, placement) VALUES(1, 2, 3, 1, 'System', CURRENT, 'System', CURRENT, 1, 2, 3, 0);
+INSERT INTO upload(upload_id, project_id, resource_id, upload_type_id, upload_status_id, parameter, upload_desc, create_user, create_date, modify_user, modify_date) VALUES(2, 3, 3, 2, 2, 'parameter 2', 'desc 2', 'System', CURRENT, 'System', CURRENT);
 
-INSERT INTO submission(submission_id, upload_id, submission_status_id, submission_type_id, create_user, create_date, modify_user, modify_date, screening_score, initial_score, final_score, placement) VALUES(2, 1, 1, 2, 'System', CURRENT, 'System', CURRENT, 1, 2, 3, 0);
+INSERT INTO submission(submission_id, submission_status_id, submission_type_id, feedback_thumb, user_rank, mark_for_purchase, create_user, create_date, modify_user, modify_date) VALUES(1, 3, 1, 't', 1, 't', 'System', CURRENT, 'System', CURRENT);
+INSERT INTO submission(submission_id, submission_status_id, submission_type_id, screening_score, initial_score, final_score, placement, feedback_thumb, user_rank, mark_for_purchase, prize_id, create_user, create_date, modify_user, modify_date) VALUES(2, 1, 2, 90.0, 90.0, 90.0, 1, 'f', 1, 'f', 1, 'System', CURRENT, 'System', CURRENT);
+
+INSERT INTO upload_submission(upload_id, submission_id) values (1, 2);
+INSERT INTO upload_submission(upload_id, submission_id) values (2, 1);
 
 INSERT INTO deliverable_lu(deliverable_id, phase_type_id, resource_role_id, submission_type_id, required, name, description, create_user, create_date, modify_user, modify_date) VALUES(1, 2, 2, 1, 1, 'deliverable 1', 'per submission deliverable', 'System', CURRENT, 'System', CURRENT);
 

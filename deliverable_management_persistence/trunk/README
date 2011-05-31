@@ -1,4 +1,4 @@
-This readme file explains how to setup and build this component.
+This  readme file explains how to setup and build this component.
 (See: http://www.topcoder.com/wiki/display/tc/Java+Component+Build+Process for an explanation of the build process used.)
 
 1. Install the component structure in ${basedir}

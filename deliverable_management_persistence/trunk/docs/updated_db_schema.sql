@@ -107,29 +107,6 @@ CREATE TABLE submission_type_lu (
   PRIMARY KEY(submission_type_id)
 );
 
--- create table for PrizeType entity
-CREATE TABLE prize_type_lu (
-  prize_type_id                             DECIMAL(10,0)                         NOT NULL,
-  prize_type_desc                               VARCHAR(254)                    NOT NULL,
-  PRIMARY KEY(prize_type_id)
-);
- 
--- create table for Prize entity
-CREATE TABLE prize (
-  prize_id                                  DECIMAL(10,0)                         NOT NULL,
-  place                                     INTEGER                         NOT NULL,
-  prize_amount                              DECIMAL(10,2)                          NOT NULL,
-  prize_type_id                             DECIMAL(10,0)                         NOT NULL,
-  number_of_submissions                     INTEGER                         NOT NULL,
-  create_user                               VARCHAR(64)                     NOT NULL,
-  create_date                               DATETIME YEAR TO FRACTION(3)    NOT NULL,
-  modify_user                               VARCHAR(64)                     NOT NULL,
-  modify_date                               DATETIME YEAR TO FRACTION(3)    NOT NULL,
-  PRIMARY KEY(prize_id),
-  FOREIGN KEY(prize_type_id)
-    REFERENCES prize_type_lu(prize_type_id)
-);
-
 CREATE TABLE submission (
   submission_id                 INTEGER                         NOT NULL,
   -- Field upload_id was removed in the version 1.2, see upload_submission table
@@ -145,19 +122,16 @@ CREATE TABLE submission (
   modify_user                   VARCHAR(64)                     NOT NULL,
   modify_date                   DATETIME YEAR TO FRACTION(3)    NOT NULL,
   -- Field feedback_thumb was added in the version 1.2
-  feedback_thumb                BOOLEAN(1)                    NOT NULL,
+  feedback_thumb                DECIMAL(3,0)                    NOT NULL,
   -- Field user_rank was added in the version 1.2
   user_rank                     DECIMAL(5,0)                    NOT NULL,
   -- Field mark_for_purchase was added in the version 1.2
   mark_for_purchase             BOOLEAN(1)                      NOT NULL,
-  prize_id                      DECIMAL(10,0),
   PRIMARY KEY(submission_id),
   FOREIGN KEY(submission_status_id)
     REFERENCES submission_status_lu(submission_status_id),
   FOREIGN KEY(submission_type_id)
     REFERENCES submission_type_lu(submission_type_id),
-  FOREIGN KEY(prize_id)
-    REFERENCES prize(prize_id)
   -- FOREIGN KEY(upload_id)
   --  REFERENCES upload(upload_id)
 );
@@ -239,7 +213,7 @@ CREATE TABLE submission_image (
   submission_id                 INTEGER                         NOT NULL,
   image_id                      DECIMAL(10,0)                   NOT NULL,
   sort_order                    INTEGER                         NOT NULL,
-  modify_date                   DATETIME YEAR TO FRACTION(3) DEFAULT CURRENT YEAR TO FRACTION(3),
+  modify_date                   DATETIME YEAR TO FRACTION(3)DEFAULT CURRENT YEAR TO FRACTION(3),
   create_date                   DATETIME YEAR TO FRACTION(3) DEFAULT CURRENT YEAR TO FRACTION(3),
   PRIMARY KEY(submission_id, image_id),
   FOREIGN KEY(submission_id)
