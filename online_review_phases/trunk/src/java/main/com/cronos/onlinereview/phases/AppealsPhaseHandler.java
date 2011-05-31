@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.util.log.Level;
@@ -16,16 +17,13 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a
- * phase can be executed and to add extra logic to execute a phase. It will be
- * used by Phase Management component. It is configurable using an input
- * namespace. The configurable parameters include database connection and email
- * sending. This class handles the appeals phase. If the input is of other phase
- * types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection and email sending. This class handles the
+ * appeals phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
- * The appeals phase can start as soon as the dependencies are met and can stop
- * when the following conditions met:
+ * The appeals phase can start as soon as the dependencies are met and can stop when the following conditions met:
  * </p>
  * <ul>
  * <li>The dependencies are met</li>
@@ -37,29 +35,30 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
  * <p>
  * Version 1.1 (Appeals Early Completion Release Assembly 1.0) Change notes:
  * <ol>
  * <li>Added support for Early Appeals Completion.</li>
  * </ol>
  * </p>
- *
  * <p>
  * Version 1.2 changes note:
  * <ul>
- * <li>
- * Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager, etc).
- * </li>
- * <li>
- * Support for more information in the email generated:
- * for start/stop, puts the submissions info/scores into the values map for email generation.
- * </li>
+ * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager,
+ * etc).</li>
+ * <li>Support for more information in the email generated: for start/stop, puts the submissions info/scores into
+ * the values map for email generation.</li>
  * </ul>
  * </p>
- *
- * @author tuenm, bose_java, pulky, waits
- * @version 1.2
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>canPerform() method was updated to return not only true/false value, but additionally an explanation message
+ * in case if operation cannot be performed.</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, pulky, waits, saarixx, microsky
+ * @version 1.6.1
  */
 public class AppealsPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -70,7 +69,6 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * This constant stores the logger.
-     *
      * @since 1.1
      */
     private static final Log LOG = LogFactory.getLog(AppealsPhaseHandler.class
@@ -82,9 +80,8 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AppealsPhaseHandler using the default namespace
      * for loading configuration settings.
-     *
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      */
     public AppealsPhaseHandler() throws ConfigurationException {
         super(DEFAULT_NAMESPACE);
@@ -93,10 +90,9 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AppealsPhaseHandler using the given namespace
      * for loading configuration settings.
-     *
      * @param namespace the namespace to load configuration settings from.
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      * @throws IllegalArgumentException if the input is null or empty string.
      */
     public AppealsPhaseHandler(String namespace) throws ConfigurationException {
@@ -105,43 +101,44 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Check if the input phase can be executed or not. This method will check
-     * the phase status to see what will be executed. This method will be called
-     * by canStart() and canEnd() methods of PhaseManager implementations in
+     * Check if the input phase can be executed or not. This method will check the phase status to see what will be
+     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in
      * Phase Management component.
      * </p>
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase
-     * can be started using the following conditions:
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions:
      * </p>
      * <ul>
      * <li>The dependencies are met.</li>
      * </ul>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be
-     * stopped using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * </p>
      * <ul>
      * <li>The dependencies are met</li>
-     * <li>The period has passed or appeals can be closed early (according to
-     * submitters input).</li>
+     * <li>The period has passed or appeals can be closed early (according to submitters input).</li>
      * </ul>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase The input phase to check.
-     *
-     * @return True if the input phase can be executed, false otherwise.
-     *
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         &quot;Appeals&quot; type.
+     *             &quot;Appeals&quot; type.
      * @throws PhaseHandlingException if there is any error while processing the
-     *         phase.
+     *             phase.
      * @throws IllegalArgumentException if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS);
 
@@ -149,16 +146,18 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
         // "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
             // return true if all dependencies have stopped and start time has
             // been reached.
-            return PhasesHelper.canPhaseStart(phase);
+            return PhasesHelper.checkPhaseCanStart(phase);
         } else {
-            if (!PhasesHelper.arePhaseDependenciesMet(phase, false)) {
-                return false;
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
             } else {
                 if (PhasesHelper.reachedPhaseEndTime(phase)) {
-                    return true;
+                    return OperationCheckResult.SUCCESS;
                 }
 
                 Connection conn = null;
@@ -178,8 +177,12 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
                 } finally {
                     PhasesHelper.closeConnection(conn);
                 }
-
-                return canCloseAppealsEarly;
+                if (canCloseAppealsEarly) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult(
+                        "Phase end time is not yet reached and appeals cannot be closed early");
+                }
             }
         }
     }
@@ -190,19 +193,17 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      * Management component. This method can send email to a group of users
      * associated with timeline notification for the project. The email can be
      * send on start phase or end phase based on configuration settings.
-     *
      * <p>
      * Update in version 1.2, puts the submissions info/scores into the values map for email generation.
      * </p>
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
-     *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         &quot;Appeals&quot; type.
+     *             &quot;Appeals&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
-     *         string.
+     *             string.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
@@ -211,7 +212,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();
-        //puts the submissions info/scores into the values map
+        // puts the submissions info/scores into the values map
         values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(createConnection(),
                                                                     getManagerHelper(),
                                                                     phase.getProject().getId(), true));

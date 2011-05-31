@@ -1,5 +1,24 @@
 <CMConfig>
 <Config name="com.cronos.onlinereview.phases.ManagerHelper">
+
+
+	  <Property name="StudioProjectDetailsURL">
+			<Value>http://studio.topcoder.com/?projectDetails=?</Value>
+		</Property>
+		
+	  <Property name="ProjectRoleTermsOfUse">
+	      <Property name="ClassName">
+	          <Value>com.cronos.onlinereview.phases.MockProjectRoleTermsOfUse</Value>
+	      </Property>
+	  </Property>
+	  
+	  <Property name="UserTermsOfUse">
+	      <Property name="ClassName">
+	          <Value>com.cronos.onlinereview.phases.MockUserTermsOfUse</Value>
+	      </Property>
+	  </Property> 
+	  
+	  
 	<Property name="ProjectManager">
 		<Property name="ClassName">
 			<Value>com.topcoder.management.project.ProjectManagerImpl</Value>

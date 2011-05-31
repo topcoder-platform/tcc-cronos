@@ -3,6 +3,8 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
+import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
 import com.cronos.onlinereview.phases.lookup.UploadStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.UploadTypeLookupUtility;
 
@@ -11,6 +13,7 @@ import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.deliverable.search.UploadFilterBuilder;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
@@ -28,29 +31,37 @@ import java.util.Arrays;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a
- * phase can be executed and to add extra logic to execute a phase. It will be
- * used by Phase Management component. It is configurable using an input
- * namespace. The configurable parameters include database connection and email
- * sending. This class handle the aggregation phase. If the input is of other
- * phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection and email sending. This class handle the
+ * aggregation phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
- * The final fix phase can start as soon as the dependencies are met and can
- * stop when the following conditions met: the dependencies are met and The
- * final fix has been uploaded.
+ * The final fix phase can start as soon as the dependencies are met and can stop when the following conditions
+ * met: the dependencies are met and The final fix has been uploaded.
  * </p>
  * <p>
- * The additional logic for executing this phase is: When Final Fix is starting
- * and Final Review worksheet is not created, it should be created; otherwise it
- * should be marked uncommitted. Previous final fix upload will be deleted.
+ * The additional logic for executing this phase is: When Final Fix is starting and Final Review worksheet is not
+ * created, it should be created; otherwise it should be marked uncommitted. Previous final fix upload will be
+ * deleted.
  * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
- * @author tuenm, bose_java
- * @version 1.4.7
+ * <p>
+ * Version 1.0.1 (Milestone Support Assembly 1.0) Change notes:
+ * <ol>
+ * <li>Updated {@link #checkFinalReviewWorksheet(Phase, String)} method to filter submissions for submission type.</li>
+ * </ol>
+ * </p>
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>The return changes from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, isv, saarixx, microsky
+ * @version 1.6.1
  */
 public class FinalFixPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -71,14 +82,13 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         "Appeal Response", "Aggregation Comment",
         "Aggregation Review Comment", "Submitter Comment",
         "Final Fix Comment", "Final Review Comment",
-        "Manager Comment"};
+        "Manager Comment" };
 
     /**
      * Create a new instance of FinalFixPhaseHandler using the default namespace
      * for loading configuration settings.
-     *
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      */
     public FinalFixPhaseHandler() throws ConfigurationException {
         super(DEFAULT_NAMESPACE);
@@ -87,10 +97,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of FinalFixPhaseHandler using the given namespace
      * for loading configuration settings.
-     *
      * @param namespace the namespace to load configuration settings from.
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      * @throws IllegalArgumentException if the input is null or empty string.
      */
     public FinalFixPhaseHandler(String namespace) throws ConfigurationException {
@@ -99,36 +108,37 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Check if the input phase can be executed or not. This method will check
-     * the phase status to see what will be executed. This method will be called
-     * by canStart() and canEnd() methods of PhaseManager implementations in
+     * Check if the input phase can be executed or not. This method will check the phase status to see what will be
+     * executed. This method will be called by canStart() and canEnd() methods of PhaseManager implementations in
      * Phase Management component.
      * </p>
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase
-     * can be started using the following conditions: The dependencies are met
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions: The dependencies are met
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be
-     * stopped using the following conditions: the dependencies are met and The
-     * final fix has been uploaded.
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions: the dependencies are met and The final fix has been uploaded.
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase The input phase to check.
-     *
-     * @return True if the input phase can be executed, false otherwise.
-     *
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Final Fix" type.
+     *             "Final Fix" type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_FINAL_FIX);
 
@@ -136,74 +146,80 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         // "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
             // return true if all dependencies have stopped and start time has
             // been reached.
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             // Get nearest Final Review phase
             Phase finalReviewPhase = PhasesHelper.locatePhase(phase,
                             PhasesHelper.PHASE_FINAL_REVIEW, true, false);
             if (finalReviewPhase == null) {
-                return false;
+                return new OperationCheckResult("Final Review phase cannot be located");
             }
             Connection conn = null;
 
             try {
                 conn = createConnection();
 
-                Resource[] finalReviewer = PhasesHelper
-                                .searchResourcesForRoleNames(
-                                                getManagerHelper(),
-                                                conn,
-                                                new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME},
-                                                finalReviewPhase.getId());
+                Resource[] finalReviewer = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                    new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
 
                 // return true if there is a final reviewer
-                return (finalReviewer.length == 1);
+                if (finalReviewer.length == 1) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult(
+                        "There must be one Final Reviewer assigned for the phase");
+                }
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
             // return true if all dependencies have stopped and final fix
             // exists.
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false) && (getFinalFix(phase) != null));
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
+            }
+            if (getFinalFix(phase) != null) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult("Final fix is not yet uploaded");
+            }
         }
     }
 
     /**
      * <p>
-     * Provides additional logic to execute a phase. This method will be called
-     * by start() and end() methods of PhaseManager implementations in Phase
-     * Management component. This method can send email to a group os users
-     * associated with timeline notification for the project. The email can be
-     * send on start phase or end phase base on configuration settings.
+     * Provides additional logic to execute a phase. This method will be called by start() and end() methods of
+     * PhaseManager implementations in Phase Management component. This method can send email to a group of users
+     * associated with timeline notification for the project. The email can be send on start phase or end phase
+     * base on configuration settings.
      * </p>
      * <p>
-     * If the input phase status is Scheduled, then it will perform the
-     * following additional logic to start the phase: if Final Review worksheet
-     * is not created, it should be created; otherwise it should be marked
+     * If the input phase status is Scheduled, then it will perform the following additional logic to start the
+     * phase: if Final Review worksheet is not created, it should be created; otherwise it should be marked
      * uncommitted. Previous final fix upload will be deleted.
      * </p>
      * <p>
      * If the input phase status is Open, then it will do nothing.
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
-     *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Final Fix" type.
+     *             "Final Fix" type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
-     *         string.
+     *             string.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
@@ -223,12 +239,10 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
      * This method is called from perform method when phase is starting. If
      * Final Review worksheet is not created, it is created; otherwise it is
      * marked uncommitted. Previous final fix upload is deleted.
-     *
      * @param phase phase instance.
      * @param operator operator name.
-     *
      * @throws PhaseHandlingException if an error occurs when retrieving/saving
-     *         data.
+     *             data.
      */
     private void checkFinalReviewWorksheet(Phase phase, String operator) throws PhaseHandlingException {
         // Check if the Final Review worksheet is created
@@ -248,7 +262,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             // Search for id of the Final Reviewer
             Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
-                            new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME}, finalReviewPhase.getId());
+                            new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
 
             if (resources.length == 0) {
                 throw new PhaseHandlingException(
@@ -259,21 +273,22 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             if (previousAprovalPhase != null) {
                 Review[] approvalWorksheets = PhasesHelper.searchProjectReviewsForResourceRoles(
                     conn, getManagerHelper(), phase.getProject().getId(),
-					new String[] {PhasesHelper.APPROVER_ROLE_NAME}, null);
+                    new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
 
-                approvalWorksheets = PhasesHelper.getApprovalPhaseReviews(approvalWorksheets, previousAprovalPhase);
+                approvalWorksheets = PhasesHelper
+                    .getApprovalPhaseReviews(approvalWorksheets, previousAprovalPhase);
 
                 if (approvalWorksheets == null || approvalWorksheets.length == 0) {
                     throw new PhaseHandlingException("Approval worksheets do not exist.");
                 }
-                
+
                 finalWorksheet = new Review();
 
                 // Copy the review items.
                 for (int r = 0; r < approvalWorksheets.length; r++) {
                     finalWorksheet.setScorecard(approvalWorksheets[r].getScorecard());
                     finalWorksheet.setSubmission(approvalWorksheets[r].getSubmission());
-					
+
                     // No review comments to copy from approval, only the review item comments.
                     PhasesHelper.copyReviewItems(approvalWorksheets[r],
                         finalWorksheet, COMMENT_TYPES_TO_COPY);
@@ -332,9 +347,19 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     }
 
                     // find the winning submission
-                    Filter filter = SubmissionFilterBuilder
-                                    .createResourceIdFilter(winningSubmitter
-                                                    .getId());
+                    Filter winnerFilter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
+                    long submissionTypeId = SubmissionTypeLookupUtility
+                        .lookUpId(
+                            conn,
+                                                                                 PhasesHelper.CONTEST_SUBMISSION_TYPE);
+                    long submissionStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
+                    Filter submissionTypeFilter = SubmissionFilterBuilder
+                        .createSubmissionTypeIdFilter(submissionTypeId);
+                    Filter submissionStatusFilter = SubmissionFilterBuilder
+                        .createSubmissionStatusIdFilter(submissionStatusId);
+                    Filter filter = new AndFilter(Arrays.asList(winnerFilter, submissionTypeFilter,
+                                                                submissionStatusFilter));
+
                     // change in version 1.4
                     Submission[] submissions = getManagerHelper().getUploadManager().searchSubmissions(filter);
                     if (submissions == null || submissions.length != 1) {
@@ -385,6 +410,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review",
                             e);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("Problem when persisting upload",
                             e);
@@ -398,13 +425,10 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * This retrieves the final fix upload. It returns null if none exist.
-     *
      * @param phase phase instance.
-     *
      * @return the final fix upload, null if none exist.
-     *
      * @throws PhaseHandlingException if error occurs when retrieving, or if
-     *         multiple uploads exist.
+     *             multiple uploads exist.
      */
     private Upload getFinalFix(Phase phase) throws PhaseHandlingException {
         Connection conn = null;
@@ -426,7 +450,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                             getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
             Filter resourceIdFilter = UploadFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
             Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {uploadTypeFilter,
-                uploadStatusFilter, resourceIdFilter}));
+                uploadStatusFilter, resourceIdFilter }));
 
             Upload[] uploads = getManagerHelper().getUploadManager().searchUploads(fullFilter);
 

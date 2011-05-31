@@ -1,6 +1,7 @@
 package com.cronos.onlinereview.phases.accuracytests;
 
 import com.cronos.onlinereview.phases.ApprovalPhaseHandler;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
@@ -11,8 +12,8 @@ import java.sql.Timestamp;
 /**
  * Accuracy test for ApprovalPhaseHandler class.
  *
- * @author tuenm
- * @version 1.0
+ * @author tuenm, mumujava
+ * @version 1.6.1
  */
 public class ApprovalPhaseHandlerAccTest extends BaseAccuracyTest {
     /**
@@ -102,9 +103,10 @@ public class ApprovalPhaseHandlerAccTest extends BaseAccuracyTest {
 
             Phase phase = AccuracyTestHelper.getPhase("Approval", phases);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "Dependency Final Review phase is not yet ended.",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -164,9 +166,10 @@ public class ApprovalPhaseHandlerAccTest extends BaseAccuracyTest {
             phase.setScheduledStartDate(start);
             phase.setActualStartDate(start);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "Phase start time is not yet reached.",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -208,9 +211,44 @@ public class ApprovalPhaseHandlerAccTest extends BaseAccuracyTest {
             phase.setScheduledEndDate(end);
             phase.setActualEndDate(end);
 
-            boolean result = handler.canPerform(phase);
+            OperationCheckResult result = handler.canPerform(phase);
 
-            assertFalse("Not the expected checking result", result);
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "Dependency Final Review phase is not yet ended.",  result.getMessage());
+        } finally {
+            AccuracyTestHelper.closeConnection();
+            AccuracyTestHelper.cleanTables();
+        }
+    }
+    
+    /**
+     * Tests the canPerform() method that check if the phase can start.
+     * The input phase has no dependency, but the ApproversNum is not reached.
+     * The result is expected to be false.
+     *
+     * @throws Exception pass any unexpected exception to JUnit.
+     */
+    public void testCanPerformApproversNumNotReached() throws Exception {
+        ApprovalPhaseHandler handler = new ApprovalPhaseHandler(PHASE_HANDLER_NS);
+
+        try {
+            AccuracyTestHelper.cleanTables();
+            Project project = AccuracyTestHelper.setupPhases();
+
+            Phase[] phases = project.getAllPhases();
+
+            Phase phase = AccuracyTestHelper.getPhase("Approval", phases);
+
+            long now = System.currentTimeMillis();
+            Timestamp start = new Timestamp(now - 1);
+
+            phase.setScheduledStartDate(start);
+            phase.setActualStartDate(start);
+
+            OperationCheckResult result = handler.canPerform(phase);
+
+            assertFalse("Not the expected checking result", result.isSuccess());
+            assertEquals("Wrong message",  "There are not enough approvers assigned for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();

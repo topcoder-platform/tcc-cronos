@@ -3,21 +3,19 @@
  */
 package com.cronos.onlinereview.phases.accuracytests;
 
-import com.cronos.onlinereview.phases.SubmissionPhaseHandler;
+import java.sql.Connection;
+import java.util.Date;
 
+import com.cronos.onlinereview.phases.SubmissionPhaseHandler;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
-
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.Project;
-
-import java.sql.Connection;
-
-import java.util.Date;
 
 
 /**
@@ -63,15 +61,24 @@ public class SubmissionPhaseHandlerAccTestsV11 extends BaseTestCase {
         submission.setPhaseStatus(PhaseStatus.SCHEDULED);
 
         // time has not passed, nor dependencies met
-        assertFalse("canPerform should have returned false", handler.canPerform(submission));
+        OperationCheckResult result = handler.canPerform(submission);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Registration phase is not yet ended.",  result.getMessage());
 
         // time has passed, but dependency not met.
         submission.setActualStartDate(new Date());
-        assertFalse("canPerform should have returned false", handler.canPerform(submission));
+        result = handler.canPerform(submission);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Registration phase is not yet ended.",  result.getMessage());
 
         // time has passed and dependency met.
         submission.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
-        assertTrue("canPerform should have returned true", handler.canPerform(submission));
+        result = handler.canPerform(submission);
+
+        assertTrue("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  null,  result.getMessage());
     }
 
     /**
@@ -91,12 +98,18 @@ public class SubmissionPhaseHandlerAccTestsV11 extends BaseTestCase {
         submissionPhase.getAllDependencies()[0].setDependentStart(false);
 
         // time has not passed, nor dependencies met
-        assertFalse("canPerform should have returned false", handler.canPerform(submissionPhase));
+        OperationCheckResult result = handler.canPerform(submissionPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Phase end time is not yet reached",  result.getMessage());
 
         // time has passed, but dependency not met.
         submissionPhase.setActualStartDate(new Date(System.currentTimeMillis() - 1000));
         submissionPhase.setActualEndDate(new Date());
-        assertFalse("canPerform should have returned false", handler.canPerform(submissionPhase));
+         result = handler.canPerform(submissionPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Registration phase is not yet ended.",  result.getMessage());
 
         // time has passed and dependency met, reviews passed.
         submissionPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
@@ -126,7 +139,10 @@ public class SubmissionPhaseHandlerAccTestsV11 extends BaseTestCase {
         insertSubmissions(conn, new Submission[] { submission });
         insertScorecards(conn, new Scorecard[] { scorecard });
         insertReviews(conn, new Review[] { review });
-        assertTrue("canPerform should have returned true", handler.canPerform(submissionPhase));
+         result = handler.canPerform(submissionPhase);
+
+        assertTrue("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message", null,  result.getMessage());
     }
 
     /**
@@ -152,42 +168,5 @@ public class SubmissionPhaseHandlerAccTestsV11 extends BaseTestCase {
         handler.perform(submissionPhase, operator);
 
         assertTrue("Post-mortem phase should be inserted", havePostMortemPhase(conn));
-    }
-
-    /**
-     * Tests the perform with Open statuses and a post-mortem phase should NOT be inserted when there are
-     * submissions.
-     *
-     * @throws Exception to JUnit.
-     */
-    public void testPerform2() throws Exception {
-        // test with scheduled status.
-        Project project = super.setupPhases();
-        Phase[] phases = project.getAllPhases();
-        Phase submissionPhase = phases[1];
-
-        // test with scheduled status.
-        String operator = "1000001";
-        Connection conn = getConnection();
-
-        // test with open status
-        submissionPhase.setPhaseStatus(PhaseStatus.OPEN);
-
-        // create a submission
-        Resource resource = super.createResource(1, 102, 1, 1);
-        super.insertResources(conn, new Resource[] { resource });
-        super.insertResourceInfo(conn, resource.getId(), 1, "10001");
-
-        Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-        super.insertUploads(conn, new Upload[] { upload });
-
-        Submission submission = super.createSubmission(1, upload.getId(), 1);
-        super.insertSubmissions(conn, new Submission[] { submission });
-
-        handler.perform(submissionPhase, operator);
-
-        // Post-Mortem phase should NOT be inserted
-        // when there is submission
-        assertFalse("Post-mortem phase should NOT be inserted", havePostMortemPhase(conn));
     }
 }

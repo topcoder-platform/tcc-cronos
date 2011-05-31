@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 - 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -21,28 +21,29 @@ import java.sql.Connection;
 
 import java.util.Date;
 
-
 /**
  * Unit tests for the new added phase handler <code>PostMortemPhaseHandler</code> in version 1.1.
- *
  * <p>
- * Version 1.2 change notes : since the email-templates and role-supported has been enhanced.
- * The test cases will try to do on that way while for email content, please check it manually.
+ * Version 1.2 change notes : since the email-templates and role-supported has been enhanced. The test cases will
+ * try to do on that way while for email content, please check it manually.
  * </p>
  * <p>
- * Version 1.4 change notes : tests both user has accepted terms of use or does not has accepted
- * the terms can be assigned specified role.
+ * Version 1.4 change notes : tests both user has accepted terms of use or does not has accepted the terms can be
+ * assigned specified role.
  * </p>
- *
- * @author waits, myxgyy
- * @version 1.4
- *
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author waits, myxgyy, microsky
+ * @version 1.6.1
  * @since 1.1
  */
 public class PostMortemPhaseHandlerTest extends BaseTest {
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception to JUnit.
      */
     protected void setUp() throws Exception {
@@ -52,7 +53,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
 
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -64,7 +64,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception to JUnit.
      */
     protected void tearDown() throws Exception {
@@ -73,7 +72,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the default constructor of PostMortemPhaseHandler.
-     *
      * @throws Exception to JUnit.
      */
     public void testDefaultConstructor() throws Exception {
@@ -84,7 +82,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerform() throws Exception {
@@ -100,7 +97,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status.
-     *
      * @throws Exception to JUnit.
      */
     public void testCanPerformWithInvalidStatus() throws Exception {
@@ -117,7 +113,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type.
-     *
      * @throws Exception to JUnit.
      */
     public void testCanPerformWithInvalidType() throws Exception {
@@ -134,7 +129,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullPhase() throws Exception {
@@ -150,7 +144,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidStatus() throws Exception {
@@ -167,7 +160,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidType() throws Exception {
@@ -184,7 +176,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullOperator() throws Exception {
@@ -201,7 +192,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithEmptyOperator() throws Exception {
@@ -218,7 +208,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the PostMortemPhaseHandler() constructor and canPerform with Scheduled statuses.
-     *
      * @throws Exception to JUnit.
      */
     public void testCanPerformWithScheduled() throws Exception {
@@ -235,12 +224,12 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             postMortemPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed
-            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase).isSuccess());
 
             // time has passed, but dependency not met.
             postMortemPhase.setActualEndDate(new Date());
             postMortemPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase).isSuccess());
 
             // set the number of required post-mortem reviewer to 1
             postMortemPhase.setAttribute("Reviewer Number", "1");
@@ -248,7 +237,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             // time has passed and dependency met
             postMortemPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
             assertTrue("canPerform should return true when dependencies met and time is up",
-                handler.canPerform(postMortemPhase));
+                handler.canPerform(postMortemPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -256,7 +245,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the PostMortemPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception to JUnit.
      */
     public void testCanPerformWithOpen1() throws Exception {
@@ -276,7 +264,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             postMortemPhase.setPhaseStatus(PhaseStatus.OPEN);
 
             // dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase).isSuccess());
 
             // remove all dependencies
             for (int i = 0; i < postMortemPhase.getAllDependencies().length; ++i) {
@@ -287,7 +275,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             postMortemPhase.setAttribute("Reviewer Number", "1");
 
             // dependencies met but without post-mortem reviewer
-            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase).isSuccess());
 
             // insert post-mortem reviewer
             Resource postMortemReviewer = createResource(101, postMortemPhase.getId(), project.getId(), 14);
@@ -295,14 +283,14 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {postMortemReviewer});
+            insertResources(conn, new Resource[] {postMortemReviewer });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
             insertResourceInfo(conn, postMortemReviewer.getId(), 1, "1001");
 
             // there is not scorecard filled
-            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase).isSuccess());
 
             // insert a scorecard here
             Upload upload = createUpload(101, project.getId(), postMortemReviewer.getId(), 4, 1, "parameter");
@@ -315,13 +303,13 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             Review postMortemScorecard = createReview(11, postMortemReviewer.getId(), submission.getId(),
                     scorecard.getId(), false, 90.0f);
 
-            this.insertUploads(conn, new Upload[] {upload});
-            this.insertSubmissions(conn, new Submission[] {submission});
-            this.insertScorecards(conn, new Scorecard[] {scorecard});
-            this.insertReviews(conn, new Review[] {postMortemScorecard});
+            this.insertUploads(conn, new Upload[] {upload });
+            this.insertSubmissions(conn, new Submission[] {submission });
+            this.insertScorecards(conn, new Scorecard[] {scorecard });
+            this.insertReviews(conn, new Review[] {postMortemScorecard });
 
             // scorecard not committed return false
-            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(postMortemPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -330,7 +318,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the PostMortemPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception to JUnit.
      */
     public void testCanPerformWithOpen2() throws Exception {
@@ -363,7 +350,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {postMortemReviewer});
+            insertResources(conn, new Resource[] {postMortemReviewer });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
@@ -380,13 +367,13 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             Review postMortemScorecard = createReview(11, postMortemReviewer.getId(), submission.getId(),
                     scorecard1.getId(), true, 90.0f);
 
-            this.insertUploads(conn, new Upload[] {upload});
-            this.insertSubmissions(conn, new Submission[] {submission});
-            this.insertScorecards(conn, new Scorecard[] {scorecard1});
-            this.insertReviews(conn, new Review[] {postMortemScorecard});
+            this.insertUploads(conn, new Upload[] {upload });
+            this.insertSubmissions(conn, new Submission[] {submission });
+            this.insertScorecards(conn, new Scorecard[] {scorecard1 });
+            this.insertReviews(conn, new Review[] {postMortemScorecard });
 
             // scorecard committed
-            assertTrue("canPerform should have returned true", handler.canPerform(postMortemPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(postMortemPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -395,7 +382,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception not under test
      * @since 1.2
      */
@@ -418,7 +404,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception not under test.
      * @since 1.2
      */
@@ -432,10 +417,10 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             Phase[] phases = project.getAllPhases();
             Phase postMortemPhase = phases[11];
 
-            //assign reviewer
+            // assign reviewer
             Resource postMortemReviewer = createResource(1011, postMortemPhase.getId(), project.getId(), 14);
             Connection conn = getConnection();
-            insertResources(conn, new Resource[] {postMortemReviewer});
+            insertResources(conn, new Resource[] {postMortemReviewer });
             insertResourceInfo(conn, postMortemReviewer.getId(), 1, "2");
 
             // test perform, it should do nothing
@@ -447,8 +432,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests the perform with Scheduled statuses. The 
-     *
+     * Tests the perform with Scheduled statuses.
      * @throws Exception not under test.
      * @since 1.4
      */
@@ -464,20 +448,20 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
 
             // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "Parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             super.insertResourceSubmission(conn, 4, 1);
 
             // assign reviewer
             Resource postMortemReviewer = createResource(1011, postMortemPhase.getId(), project.getId(), 14);
-            insertResources(conn, new Resource[] {postMortemReviewer});
+            insertResources(conn, new Resource[] {postMortemReviewer });
             insertResourceInfo(conn, postMortemReviewer.getId(), 1, "2");
 
             // test perform, it should do nothing
@@ -490,7 +474,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled statuses.
-     *
      * @throws Exception not under test.
      * @since 1.4
      */
@@ -505,29 +488,30 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
             // create a registration
             Resource resource = createResource(1, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             // user has term of use not accepted
             insertResourceInfo(conn, resource.getId(), 1, "1");
 
             // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), 1, 1, 1, "Parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             super.insertResourceSubmission(conn, 1, 1);
 
             // assign reviewer
             Resource postMortemReviewer = createResource(1011, postMortemPhase.getId(), project.getId(), 14);
-            insertResources(conn, new Resource[] {postMortemReviewer});
+            insertResources(conn, new Resource[] {postMortemReviewer });
             insertResourceInfo(conn, postMortemReviewer.getId(), 1, "2");
 
             // test perform
             handler.perform(postMortemPhase, "1001");
             Resource updated = PhasesHelper.searchProjectResourcesForRoleNames(handler.getManagerHelper(),
-                conn, new String[] {"Post-Mortem Reviewer"}, 1)[0];
-            assertEquals("should be '0.00'", "0.00", updated.getProperty(PhasesHelper.PAYMENT_PROPERTY_KEY));
-            assertEquals("should be 'No'", "No", updated.getProperty("Payment Status"));
+                conn, new String[] {"Post-Mortem Reviewer" }, 1)[0];
+            //assertEquals("should be '0.00'", "0.00", updated.getProperty(PhasesHelper.PAYMENT_PROPERTY_KEY));
+            //Change from 'No' to 'N/A'
+            assertEquals("should be 'N/A'", "N/A", updated.getProperty("Payment Status"));
         } finally {
             cleanTables();
             closeConnection();
@@ -536,7 +520,6 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Open statuses.
-     *
      * @throws Exception not under test.
      * @since .12
      */
@@ -554,7 +537,7 @@ public class PostMortemPhaseHandlerTest extends BaseTest {
             // test perform
             handler.perform(postMortemPhase, "1001");
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
         }

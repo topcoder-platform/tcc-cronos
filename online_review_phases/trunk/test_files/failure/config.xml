@@ -233,6 +233,19 @@
         <Property name="ProjectDetailsURL">
             <Value>http://www.topcoder.com/tc?projectDetails=?</Value>
         </Property>
+        <Property name="StudioProjectDetailsURL">
+            <Value>http://studio.topcoder.com/?projectDetails=?</Value>
+        </Property>
+        <Property name="ProjectRoleTermsOfUse">
+            <Property name="ClassName">
+                <Value>com.cronos.onlinereview.phases.failuretests.mock.MockProjectRoleTermsOfUse</Value>
+            </Property>
+        </Property>
+        <Property name="UserTermsOfUse">
+            <Property name="ClassName">
+                <Value>com.cronos.onlinereview.phases.failuretests.mock.MockUserTermsOfUse</Value>
+            </Property>
+        </Property>
     </Config>
         <!-- Namespace for DBConnectionFactory component -->
     <Config name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
@@ -249,13 +262,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://192.168.1.114:9088/online_review:informixserver=ol_topcoder</Value>
+                        <Value>jdbc:informix-sqli://localhost:9088/online_review:informixserver=ol_topcoder</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>system</Value>
+                        <Value>topcoder</Value>
                     </Property>
                 </Property>
             </Property>
@@ -1472,6 +1485,174 @@
             </Property>
         </Property>
     </Config>
+        <!--for the milestone submission phase handler -->
+    <Config name="com.cronos.onlinereview.phases.MilestoneSubmissionPhaseHandler">
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="ManagerHelperNamespace">
+            <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+        </Property>
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="Schemes">
+            <Property name="DefaultScheme">
+                <Value>Manager</Value>
+                <Value>Milestone Submitter</Value>
+                <Value>Milestone Reviewer</Value>
+                <Value>Observer</Value>
+            </Property>
+        </Property>
+        <Property name="DefaultScheme">
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/email_templates/milestone_submission/milestone_submission_start_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/email_templates/milestone_submission/milestone_submission_end_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+        <!--for the milestone screening phase handler -->
+    <Config name="com.cronos.onlinereview.phases.MilestoneScreeningPhaseHandler">
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="ManagerHelperNamespace">
+            <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+        </Property>
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="Schemes">
+            <Property name="DefaultScheme">
+                <Value>Manager</Value>
+                <Value>Milestone Submitter</Value>
+                <Value>Milestone Reviewer</Value>
+                <Value>Observer</Value>
+            </Property>
+        </Property>
+        <Property name="DefaultScheme">
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/email_templates/milestone_screening/milestone_screening_start_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/email_templates/milestone_screening/milestone_screening_end_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
+        <!--for the milestone review phase handler -->
+    <Config name="com.cronos.onlinereview.phases.MilestoneReviewPhaseHandler">
+        <Property name="ConnectionName">
+            <Value>informix_connection</Value>
+        </Property>
+        <Property name="ManagerHelperNamespace">
+            <Value>com.cronos.onlinereview.phases.ManagerHelper</Value>
+        </Property>
+        <Property name="ConnectionFactoryNS">
+            <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
+        </Property>
+        <Property name="Schemes">
+            <Property name="DefaultScheme">
+                <Value>Manager</Value>
+                <Value>Milestone Submitter</Value>
+                <Value>Milestone Reviewer</Value>
+                <Value>Observer</Value>
+            </Property>
+        </Property>
+        <Property name="DefaultScheme">
+            <Property name="StartPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/email_templates/milestone_review/milestone_review_start_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase Start</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+            <Property name="EndPhaseEmail">
+                <Property name="SendEmail">
+                    <Value>yes</Value>
+                </Property>
+                <Property name="EmailTemplateSource">
+                    <Value>file</Value>
+                </Property>
+                <Property name="EmailTemplateName">
+                    <Value>test_files/email_templates/milestone_review/milestone_review_end_template.txt</Value>
+                </Property>
+                <Property name="EmailSubject">
+                    <Value>Phase End</Value>
+                </Property>
+                <Property name="EmailFromAddress">
+                    <Value>topcoder.developer@gmail.com</Value>
+                </Property>
+            </Property>
+        </Property>
+    </Config>
         <!-- Namespace to instantiate the SreeningManager through ObjectFactory -->
     <Config name="com.cronos.onlinereview.phases.failuretests.screening">
         <Property name="com/cronos/onlinereview/autoscreening/management/ScreeningManager">
@@ -1514,16 +1695,16 @@
                 </Property>
                 <Property name="context">
                     <Value>SELECT resource.resource_id
-                          FROM resource
-                          LEFT OUTER JOIN resource_submission
-                          ON resource.resource_id = resource_submission.resource_id
-                          LEFT OUTER JOIN resource_info
-                          ON resource.resource_id = resource_info.resource_id
-                          LEFT OUTER JOIN resource_info_type_lu
-                          ON resource_info.resource_info_type_id =
-                          resource_info_type_lu.resource_info_type_id
-                          WHERE
-                  </Value>
+                        FROM resource
+                        LEFT OUTER JOIN resource_submission
+                        ON resource.resource_id = resource_submission.resource_id
+                        LEFT OUTER JOIN resource_info
+                        ON resource.resource_id = resource_info.resource_id
+                        LEFT OUTER JOIN resource_info_type_lu
+                        ON resource_info.resource_info_type_id =
+                        resource_info_type_lu.resource_info_type_id
+                        WHERE
+                    </Value>
                 </Property>
                 <Property name="DBNamcespace">
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
@@ -1719,7 +1900,8 @@
                 </Property>
                 <Property name="context">
                     <Value>SELECT submission_id FROM submission
-                  INNER JOIN upload ON submission.upload_id = upload.upload_id WHERE</Value>
+                        INNER JOIN upload ON submission.upload_id = upload.upload_id WHERE
+                    </Value>
                 </Property>
                 <Property name="DBNamcespace">
                     <Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>

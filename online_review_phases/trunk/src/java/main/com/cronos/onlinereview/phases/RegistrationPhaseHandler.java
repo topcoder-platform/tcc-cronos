@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 - 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
@@ -25,12 +26,11 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a phase can
- * be executed and to add extra logic to execute a phase. It will be used by Phase
- * Management component. It is configurable using an input namespace. The configurable
- * parameters include database connection, email sending and the required number of
- * registrations. This class handle the registration phase. If the input is of other phase
- * types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection, email sending and the required number of
+ * registrations. This class handle the registration phase. If the input is of other phase types,
+ * PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
  * The registration phase can start whenever the dependencies are met and can stop when:
@@ -46,39 +46,44 @@ import com.topcoder.util.log.LogFactory;
  * </p>
  * <p>
  * <p>
- * Update in version 1.1.: Modify the <code>perform</code> method to add a post-mortem
- * phase where there is no registration at phase end.
+ * Update in version 1.1.: Modify the <code>perform</code> method to add a post-mortem phase where there is no
+ * registration at phase end.
  * </p>
  * <p>
  * Version 1.2 changes note:
  * <ul>
- * <li> Added capability to support different email template for different role (e.g.
- * Submitter, Reviewer, Manager, etc). </li>
- * <li> Support for more information in the email generated: for stop, the number of
- * registrant and info about registrant. </li>
+ * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager,
+ * etc).</li>
+ * <li>Support for more information in the email generated: for stop, the number of registrant and info about
+ * registrant.</li>
  * </ul>
  * </p>
  * <p>
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
  * <ol>
- * <li>Updated {@link #perform(Phase, String)} method to use updated
- * PhasesHelper#insertPostMortemPhase(Project , Phase, ManagerHelper, String)
- * method for creating <code>Post-Mortem</code> phase.</li>
+ * <li>Updated {@link #perform(Phase, String)} method to use updated PhasesHelper#insertPostMortemPhase(Project ,
+ * Phase, ManagerHelper, String) method for creating <code>Post-Mortem</code> phase.</li>
  * </ol>
  * </p>
  * <p>
  * Version 1.4 Change notes:
  * <ol>
- * <li>Dependency projects are checked and project start delayed if required only if this
- * phase is the first phase in the project.</li>
+ * <li>Dependency projects are checked and project start delayed if required only if this phase is the first phase
+ * in the project.</li>
  * </ol>
  * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
- * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy
- * @version 1.4
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>canPerform() method was updated to return not only true/false value, but additionally an explanation message
+ * in case if operation cannot be performed</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, microsky
+ * @version 1.6.1
  * @since 1.0
  */
 public class RegistrationPhaseHandler extends AbstractPhaseHandler {
@@ -94,16 +99,14 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
     /**
      * Represents the logger for this class. Is initialized during class loading and never
      * changed after that.
-     *
      * @since 1.4
      */
     private static final Log LOG = LogFactory
-        .getLog(SpecificationSubmissionPhaseHandler.class.getName());
+        .getLog(RegistrationPhaseHandler.class.getName());
 
     /**
      * Create a new instance of RegistrationPhaseHandler using the default namespace for
      * loading configuration settings.
-     *
      * @throws ConfigurationException
      *             if errors occurred while loading configuration settings.
      */
@@ -114,7 +117,6 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of RegistrationPhaseHandler using the given namespace for
      * loading configuration settings.
-     *
      * @param namespace
      *            the namespace to load configuration settings from.
      * @throws ConfigurationException
@@ -131,18 +133,18 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * status to see what will be executed. This method will be called by canStart() and
      * canEnd() methods of PhaseManager implementations in Phase Management component.
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase can be
-     * started using the following conditions:
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met</li>
      * <li>phase start time is reached</li>
-     * <li>Update in version 1.4: the current phase is the NOT first phase in the project
-     * OR all parent projects are completed</li>
+     * <li>Update in version 1.4: the current phase is the NOT first phase in the project OR all parent projects
+     * are completed</li>
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be stopped
-     * using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met</li>
      * <li>The period has passed</li>
@@ -152,10 +154,16 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * <p>
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase
      *            The input phase to check.
-     * @return True if the input phase can be executed, false otherwise.
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException
      *             if the input phase type is not &quot;Registration&quot; type.
      * @throws PhaseHandlingException
@@ -163,7 +171,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * @throws IllegalArgumentException
      *             if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_REGISTRATION);
 
@@ -171,23 +179,34 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         // "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             // change in version 1.4
             // This is NOT the first phase in the project
             // or all parent projects are completed
-            return !PhasesHelper.isFirstPhase(phase) || PhasesHelper.areParentProjectsCompleted(phase,
-                createConnection(), this.getManagerHelper(), LOG);
+            if (!PhasesHelper.isFirstPhase(phase) || PhasesHelper
+                .areParentProjectsCompleted(phase, createConnection(), this.getManagerHelper(), LOG)) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult("Not all parent projects are completed");
+            }
         } else {
-            boolean dependencyMet = PhasesHelper.arePhaseDependenciesMet(phase, false);
-            boolean reachedEndTime = PhasesHelper.reachedPhaseEndTime(phase);
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
 
             // version 1.1 : can stop if registration is empty
-            return (dependencyMet && reachedEndTime && (areRegistrationsEnough(phase) || isRegistrationEmpty(
-                phase, null)));
+            if (!result.isSuccess()) {
+                return result;
+            } else if (!PhasesHelper.reachedPhaseEndTime(phase)) {
+                return new OperationCheckResult("Phase end time is not yet reached.");
+            } else if (!(areRegistrationsEnough(phase) || isRegistrationEmpty(phase, null))) {
+                return new OperationCheckResult("Not enough registrants.");
+            }
+            return OperationCheckResult.SUCCESS;
         }
     }
 
@@ -201,14 +220,12 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
      * <p>
-     * Update in version 1.1: Add a new post-mortem phase if there is no registration when
-     * phase ends.
+     * Update in version 1.1: Add a new post-mortem phase if there is no registration when phase ends.
      * </p>
      * <p>
-     * Update in version 1.2: Support for more information in the email generated, for
-     * stop, the number of registrant and info about registrant.
+     * Update in version 1.2: Support for more information in the email generated, for stop, the number of
+     * registrant and info about registrant.
      * </p>
-     *
      * @param phase
      *            The input phase to check.
      * @param operator
@@ -239,10 +256,9 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      * This method checks whether the registration phase has empty registrations, if yes,
      * return true.
      * <p>
-     * Update in version 1.2: Support for more information in the email generated, for
-     * stop, the number of registrant and info about registrant.
+     * Update in version 1.2: Support for more information in the email generated, for stop, the number of
+     * registrant and info about registrant.
      * </p>
-     *
      * @param phase
      *            the phase to check.
      * @param values
@@ -271,10 +287,8 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * Constructs the values map list for email generation. All the registrants
-     * information will be listed.
+     * Constructs the values map list for email generation. All the registrants information will be listed.
      * </p>
-     *
      * @param resources
      *            registrant list, not null
      * @return List of map values, not null, could be empty
@@ -296,7 +310,6 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * This method checks if the number of registrations meets the required number.
-     *
      * @param phase
      *            the input phase to check.
      * @return true if registrations are enough, false otherwise.
@@ -316,7 +329,6 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Helper method to search for resources with "Submitter" role and project id filters.
-     *
      * @param phase
      *            phase instance.
      * @return Resource[] array.

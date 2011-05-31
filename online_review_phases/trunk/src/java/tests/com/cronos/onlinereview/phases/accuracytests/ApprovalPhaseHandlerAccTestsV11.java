@@ -7,6 +7,7 @@ import com.cronos.onlinereview.phases.ApprovalPhaseHandler;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -65,13 +66,17 @@ public class ApprovalPhaseHandlerAccTestsV11 extends BaseTestCase {
         approvalPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
         // time has not passed, nor dependencies met
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(approvalPhase));
+        OperationCheckResult result = handler.canPerform(approvalPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Final Review phase is not yet ended.",  result.getMessage());
 
         // time has passed, but dependency not met.
         approvalPhase.setActualStartDate(new Date());
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(approvalPhase));
+         result = handler.canPerform(approvalPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Final Review phase is not yet ended.",  result.getMessage());
 
         // set the number of required approver to 1
         approvalPhase.setAttribute("Reviewer Number", "1");
@@ -79,8 +84,10 @@ public class ApprovalPhaseHandlerAccTestsV11 extends BaseTestCase {
         // time has passed and dependency met, but have no approver set
         approvalPhase.getAllDependencies()[0].getDependency()
                                              .setPhaseStatus(PhaseStatus.CLOSED);
-        assertFalse("canPerform should have returned false when there is no approver.",
-            handler.canPerform(approvalPhase));
+         result = handler.canPerform(approvalPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "There are not enough approvers assigned for the project",  result.getMessage());
 
         Resource approver = createResource(101, approvalPhase.getId(),
                 project.getId(), 10);
@@ -90,8 +97,10 @@ public class ApprovalPhaseHandlerAccTestsV11 extends BaseTestCase {
         insertResources(conn, new Resource[] {approver});
         insertResourceInfo(conn, approver.getId(), 1, "1001");
 
-        assertTrue("canPerform should have returned true when there is an approver.",
-            handler.canPerform(approvalPhase));
+         result = handler.canPerform(approvalPhase);
+
+        assertTrue("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  null,  result.getMessage());
     }
 
     /**
@@ -111,8 +120,10 @@ public class ApprovalPhaseHandlerAccTestsV11 extends BaseTestCase {
         approvalPhase.setPhaseStatus(PhaseStatus.OPEN);
 
         // time has not passed, dependencies not met
-        assertFalse("canPerform should have returned false",
-            handler.canPerform(approvalPhase));
+        OperationCheckResult result = handler.canPerform(approvalPhase);
+
+        assertFalse("Not the expected checking result", result.isSuccess());
+        assertEquals("Wrong message",  "Dependency Final Review phase is not yet ended.",  result.getMessage());
     }
 
     /**

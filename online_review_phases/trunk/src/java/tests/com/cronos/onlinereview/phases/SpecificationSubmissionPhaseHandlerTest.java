@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -19,9 +19,14 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * All tests for <code>SpecificationSubmissionPhaseHandler</code> class.
- *
- * @author myxgyy
- * @version 1.0
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author myxgyy, microsky
+ * @version 1.6.1
  * @since 1.4
  */
 public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
@@ -32,7 +37,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -55,7 +59,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -64,9 +67,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests non-argument constructor of <code>SpecificationSubmissionPhaseHandler</code>
-     * class.
-     *
+     * Tests non-argument constructor of <code>SpecificationSubmissionPhaseHandler</code> class.
      * @throws Exception
      *             to JUnit.
      */
@@ -74,11 +75,11 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
         final String[] startContents = new String[] {
             "topcoder.developer@gmail.com",
             "test_files/email_templates/specification_submission/specification_submission_start_template.txt",
-            "Phase Start"};
+            "Phase Start" };
         final String[] endContents = new String[] {
             "topcoder.developer@gmail.com",
             "test_files/email_templates/specification_submission/specification_submission_end_template.txt",
-            "Phase End"};
+            "Phase End" };
 
         Map<String, String[]> startContentsMap = new HashMap<String, String[]>();
         startContentsMap.put("Specification Reviewer", startContents);
@@ -99,9 +100,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     }
 
     /**
-     * Tests constructor with argument of <code>SpecificationSubmissionPhaseHandler</code>
-     * class.
-     *
+     * Tests constructor with argument of <code>SpecificationSubmissionPhaseHandler</code> class.
      * @throws Exception
      *             to JUnit.
      */
@@ -110,15 +109,15 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
         Map<String, String[]> startContents = new HashMap<String, String[]>();
         startContents.put("Reviewer", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template.txt", "Phase Start"});
+            "test_files/valid_email_template.txt", "Phase Start" });
         startContents.put("Manager", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template_manager.txt", "Phase Start"});
+            "test_files/valid_email_template_manager.txt", "Phase Start" });
 
         Map<String, String[]> endContents = new HashMap<String, String[]>();
         endContents.put("Reviewer", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template.txt", "Phase End"});
+            "test_files/valid_email_template.txt", "Phase End" });
         endContents.put("Manager", new String[] {"topcoder.developer@gmail.com",
-            "test_files/valid_email_template_manager.txt", "Phase End"});
+            "test_files/valid_email_template_manager.txt", "Phase End" });
 
         Map<String, Map<String, String[]>> contents = new HashMap<String, Map<String, String[]>>();
         contents.put("start", startContents);
@@ -128,7 +127,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -143,7 +141,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -159,7 +156,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -175,7 +171,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -190,7 +185,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -206,7 +200,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type. PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -222,7 +215,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -238,7 +230,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator. IllegalArgumentException expected.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -255,7 +246,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Scheduled statuses. The dependencies are not met, the
      * method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -267,7 +257,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
             Phase[] phases = project.getAllPhases();
             Phase phase = phases[11];
             phase.setPhaseStatus(PhaseStatus.SCHEDULED);
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -277,7 +267,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Scheduled statuses. The specification submission
      * phase is not first phase in this case, the method will return true.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -299,7 +288,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
             phase.setActualEndDate(new Date());
 
             phase.setPhaseStatus(PhaseStatus.SCHEDULED);
-            assertTrue("canPerform should have returned true", handler.canPerform(phase));
+            assertTrue("canPerform should have returned true", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -310,7 +299,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
      * Tests the canPerform method with Scheduled statuses. The specification submission
      * phase is the first phase but parent project is not completed in this case, the
      * method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -323,7 +311,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
             Phase phase = phases[0];
 
             phase.setPhaseStatus(PhaseStatus.SCHEDULED);
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -334,7 +322,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
      * Tests the canPerform method with Scheduled statuses. The specification submission
      * phase is the first phase and parent project is completed in this case, the method
      * will return true.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -348,7 +335,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
             // test with scheduled status.
             phase.setPhaseStatus(PhaseStatus.SCHEDULED);
-            assertTrue("canPerform should have returned false", handler.canPerform(phase));
+            assertTrue("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -358,7 +345,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Open statuses. The dependencies are met, but no
      * specification submission exists, the method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -372,7 +358,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
             // test with scheduled status.
             phase.setPhaseStatus(PhaseStatus.OPEN);
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -382,7 +368,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Open statuses. The dependencies are not met, the
      * method will return false.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -397,7 +382,7 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
             // test with scheduled status.
             phase.getAllDependencies()[0].setDependentStart(false);
             phase.setPhaseStatus(PhaseStatus.OPEN);
-            assertFalse("canPerform should have returned false", handler.canPerform(phase));
+            assertFalse("canPerform should have returned false", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -407,7 +392,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     /**
      * Tests the canPerform method with Open statuses. The dependencies are met and there
      * is one specification submission exists, the method will return true.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -425,15 +409,15 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
             // insert a submission with specification submission
             Connection conn = getConnection();
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            assertTrue("canPerform should have returned true", handler.canPerform(phase));
+            assertTrue("canPerform should have returned true", handler.canPerform(phase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -442,7 +426,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Open statuses. Verify the content of the email manually.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -466,7 +449,6 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Scheduled statuses. Verify the content of the email
      * manually.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -484,20 +466,20 @@ public class SpecificationSubmissionPhaseHandlerTest extends BaseTest {
             // insert a reviewer
             Connection conn = getConnection();
             Resource reviewer = createResource(1, 102L, 1, 15);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
 
             // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), 1, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             handler.perform(phase, "operator");
             // two phase start email should be sent

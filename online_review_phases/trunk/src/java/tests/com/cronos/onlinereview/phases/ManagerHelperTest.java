@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -7,9 +7,20 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * Test cases for ManagerHelper class.
- *
- * @author bose_java, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Changes in version 1.6:
+ * <ul>
+ * <li>Added test cases for new APIs, like getUserTermsOfUse and getProjectRoleTermsOfUse.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>As we remove getScreeningManager in this class, we remove the test for it.</li>
+ * </ul>
+ * </p>
+ * @author bose_java, TCSDEVELOPER, microsky
+ * @version 1.6.1
  */
 public class ManagerHelperTest extends BaseTest {
 
@@ -18,7 +29,6 @@ public class ManagerHelperTest extends BaseTest {
 
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void setUp() throws Exception {
@@ -37,7 +47,6 @@ public class ManagerHelperTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void tearDown() throws Exception {
@@ -46,7 +55,6 @@ public class ManagerHelperTest extends BaseTest {
 
     /**
      * Tests the constructor ManagerHelper(String) with null namespace.
-     *
      * @throws ConfigurationException not under test.
      */
     public void testManagerHelperWithNullNS() throws ConfigurationException {
@@ -60,7 +68,6 @@ public class ManagerHelperTest extends BaseTest {
 
     /**
      * Tests the constructor ManagerHelper(String) with empty namespace.
-     *
      * @throws ConfigurationException not under test.
      */
     public void testManagerHelperWithEmptyNS() throws ConfigurationException {
@@ -105,14 +112,6 @@ public class ManagerHelperTest extends BaseTest {
     }
 
     /**
-     * Tests that ManagerHelper.getScreeningManager() returns non-null value.
-     */
-    public void testGetScreeningManager() {
-        assertNotNull("getScreeningManager() returned null.", managerHelper
-                        .getScreeningManager());
-    }
-
-    /**
      * Tests that ManagerHelper.getReviewManager() returns non-null value.
      */
     public void testGetReviewManager() {
@@ -150,6 +149,22 @@ public class ManagerHelperTest extends BaseTest {
     public void testGetScorecardAggregator() {
         assertNotNull("getScorecardAggregator() returned null.", managerHelper
                         .getScorecardAggregator());
+    }
+
+    /**
+     * Tests that ManagerHelper.getUserTermsOfUse() returns non-null value.
+     */
+    public void testGetUserTermsOfUse() {
+        assertNotNull("getUserTermsOfUse() returned null.", managerHelper
+                        .getUserTermsOfUse());
+    }
+
+    /**
+     * Tests that ManagerHelper.getProjectRoleTermsOfUse() returns non-null value.
+     */
+    public void testGetProjectRoleTermsOfUse() {
+        assertNotNull("ProjectRoleTermsOfUse() returned null.", managerHelper
+                        .getProjectRoleTermsOfUse());
     }
 
 }

@@ -13,6 +13,7 @@ import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
@@ -29,23 +30,21 @@ import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a
- * phase can be executed and to add extra logic to execute a phase. It will be
- * used by Phase Management component. It is configurable using an input
- * namespace. The configurable parameters include database connection and email
- * sending. This class handle the aggregation phase. If the input is of other
- * phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection and email sending. This class handle the
+ * aggregation phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
- * If the input phase status is Scheduled, then it will check if the phase can
- * be started using the following conditions:
+ * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+ * conditions:
  * <ul>
  * <li>The dependencies are met.</li>
  * </ul>
  * </p>
  * <p>
- * If the input phase status is Open, then it will check if the phase can be
- * stopped using the following conditions:
+ * If the input phase status is Open, then it will check if the phase can be stopped using the following
+ * conditions:
  * <ul>
  * <li>The dependencies are met.</li>
  * <li>The winning submission have one aggregated review scorecard committed.</li>
@@ -55,34 +54,35 @@ import com.topcoder.util.log.LogFactory;
  * The additional logic for executing this phase is:
  * </p>
  * <p>
- * If the input phase status is Scheduled, then it will perform the following
- * additional logic to start the phase:
+ * If the input phase status is Scheduled, then it will perform the following additional logic to start the phase:
  * <ul>
- * <li>If Aggregation worksheet is not created, it should be created; otherwise
- * it should be marked uncommitted, as well as the aggregation review comments.</li>
+ * <li>If Aggregation worksheet is not created, it should be created; otherwise it should be marked uncommitted, as
+ * well as the aggregation review comments.</li>
  * </ul>
  * </p>
  * <p>
  * If the input phase status is Open, then it will do nothing.
  * </p>
- *
- * <p>
- * Version 1.2 changes note:
- * <ul>
- * <li>
- * Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager, etc).
- * </li>
- * <li>
- * Support for more information in the email generated: for start, puts the aggregators number into the values map.
- * </li>
- * </ul>
- * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
- * @author tuenm, bose_java, argolite, waits
- * @version 1.4.7
+ * <p>
+ * Version 1.2 changes note:
+ * <ul>
+ * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager,
+ * etc).</li>
+ * <li>Support for more information in the email generated: for start, puts the aggregators number into the values
+ * map.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>The return changes from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, argolite, waits, microsky
+ * @version 1.6.1
  */
 public class AggregationPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -102,7 +102,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         "Comment", "Required", "Recommended", "Appeal",
         "Appeal Response", "Aggregation Comment",
         "Aggregation Review Comment", "Submitter Comment",
-        "Manager Comment"};
+        "Manager Comment" };
 
     /**
      * The log instance used by this handler.
@@ -113,9 +113,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AggregationPhaseHandler using the default
      * namespace for loading configuration settings.
-     *
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      */
     public AggregationPhaseHandler() throws ConfigurationException {
         super(DEFAULT_NAMESPACE);
@@ -124,10 +123,9 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of AggregationPhaseHandler using the given
      * namespace for loading configuration settings.
-     *
      * @param namespace the namespace to load configuration settings from.
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      * @throws IllegalArgumentException if the input is null or empty string.
      */
     public AggregationPhaseHandler(String namespace) throws ConfigurationException {
@@ -140,37 +138,39 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      * by canStart() and canEnd() methods of PhaseManager implementations in
      * Phase Management component.
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase
-     * can be started using the following conditions:
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met.</li>
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be
-     * stopped using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met.</li>
-     * <li>The winning submission have one aggregated review scorecard
-     * committed.</li>
+     * <li>The winning submission have one aggregated review scorecard committed.</li>
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase The input phase to check.
-     *
-     * @return True if the input phase can be executed, false otherwise.
-     *
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         &quot;Aggregation&quot; type.
+     *             &quot;Aggregation&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_AGGREGATION);
 
@@ -178,89 +178,86 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         // "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
             // return true if all dependencies have stopped and start time has
-            // been reached and there is a winner
-            // and one aggregator.
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
+            // been reached.
+            result = PhasesHelper.checkPhaseCanStart(phase);
+			if (!result.isSuccess()) {
+                return result;
             }
-
+			
             Connection conn = null;
             try {
                 conn = createConnection();
-                Resource winner = PhasesHelper.getWinningSubmitter(
-                                getManagerHelper().getResourceManager(),
-                                getManagerHelper().getProjectManager(), conn,
-                                phase.getProject().getId());
+                Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
+                    getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
 
-                Resource[] aggregator = PhasesHelper
-                                .searchResourcesForRoleNames(
-                                                getManagerHelper(), conn,
-                                                new String[] {"Aggregator"},
-                                                phase.getId());
+                Resource[] aggregator = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                    new String[] {"Aggregator" }, phase.getId());
 
                 if (winner == null) {
-                    LOG.log(Level.WARN,
-                                    "can't open aggregation because there is no winner for project: "
-                                                    + phase.getProject()
-                                                                    .getId());
+                    LOG.log(Level.WARN, "can't open aggregation because there is no winner for project: "
+                        + phase.getProject().getId());
+                    return new OperationCheckResult("There is no winner for the project");
                 }
                 if (aggregator.length != 1) {
-                    LOG.log(Level.WARN,
-                                    "can't open aggregation because there is no Aggregator for project: "
-                                                    + phase.getProject()
-                                                                    .getId());
+                    LOG.log(Level.WARN, "can't open aggregation because there is no Aggregator for project: "
+                        + phase.getProject().getId());
+                    return new OperationCheckResult("There is no aggregator for the project");
                 }
                 // return true if there is a winner and an aggregator
-                return (winner != null) && (aggregator.length == 1);
+                return OperationCheckResult.SUCCESS;
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
             // return true if all dependencies have stopped and aggregation
             // worksheet exists.
-            return (PhasesHelper.arePhaseDependenciesMet(phase, false) && isAggregationWorksheetPresent(phase));
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
+            }
+            if (isAggregationWorksheetPresent(phase)) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult("Aggregation review scorecard is not yet committed");
+            }
         }
     }
 
     /**
      * <p>
-     * Provides additional logic to execute a phase. This method will be called
-     * by start() and end() methods of PhaseManager implementations in Phase
-     * Management component. This method can send email to a group of users
-     * associated with timeline notification for the project.The email can be
-     * send on start phase or end phase base on configuration settings.
+     * Provides additional logic to execute a phase. This method will be called by start() and end() methods of
+     * PhaseManager implementations in Phase Management component. This method can send email to a group of users
+     * associated with timeline notification for the project.The email can be send on start phase or end phase base
+     * on configuration settings.
      * </p>
      * <p>
-     * If the input phase status is Scheduled, then it will perform the
-     * following additional logic to start the phase:
+     * If the input phase status is Scheduled, then it will perform the following additional logic to start the
+     * phase:
      * <ul>
-     * <li>If Aggregation worksheet is not created, it should be created;
-     * otherwise it should be marked uncommitted, as well as the aggregation
-     * review comments.</li>
+     * <li>If Aggregation worksheet is not created, it should be created; otherwise it should be marked
+     * uncommitted, as well as the aggregation review comments.</li>
      * </ul>
      * </p>
      * <p>
      * If the input phase status is Open, then it will do nothing.
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
      * <p>
      * In version 1.2, put the aggregator number into the values map.
      * </p>
-     *
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
-     *
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Aggregation" type.
+     *             "Aggregation" type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
-     *         string.
+     *             string.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
@@ -270,7 +267,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
         if (toStart) {
-            //put the aggregator number into the values map
+            // put the aggregator number into the values map
             values.put("N_AGGREGATOR", checkAggregationWorksheet(phase, operator));
         }
         sendEmail(phase, values);
@@ -280,13 +277,11 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      * This method is called from perform method when phase is starting. If the
      * Aggregation worksheet is not created, it is created; otherwise it is
      * marked uncommitted, as well as the aggregation review comments.
-     *
      * @param phase the phase.
      * @param operator operator name.
      * @return the number of aggregators
-     *
      * @throws PhaseHandlingException if an error occurs when retrieving/saving
-     *         data.
+     *             data.
      */
     private int checkAggregationWorksheet(Phase phase, String operator)
         throws PhaseHandlingException {
@@ -302,7 +297,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             // Search for id of the Aggregator
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
-                            new String[] {"Aggregator"}, phase.getId());
+                            new String[] {"Aggregator" }, phase.getId());
             if (aggregators.length == 0) {
                 throw new PhaseHandlingException(
                                 "No Aggregator resource found for phase: "
@@ -338,10 +333,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                                 getManagerHelper().getProjectManager(), conn,
                                 phase.getProject().getId());
                 if (winningSubmitter == null) {
-                    throw new PhaseHandlingException(
-                                    "No winner for project[Winner id not set] with id : "
-                                                    + phase.getProject()
-                                                                    .getId());
+                    throw new PhaseHandlingException("No winner for project[Winner id not set] with id : "
+                        + phase.getProject().getId());
                 }
 
                 // find the winning submission
@@ -488,12 +481,10 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * returns true if aggregation worksheets exists.
-     *
      * @param phase phase to check.
-     *
      * @return whether aggregation worksheets exists.
      * @throws PhaseHandlingException if an error occurs when retrieving/saving
-     *         data.
+     *             data.
      */
     private boolean isAggregationWorksheetPresent(Phase phase)
         throws PhaseHandlingException {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -8,6 +8,7 @@ import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
+import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
@@ -26,67 +27,74 @@ import java.util.Map;
 
 /**
  * <p>
- * This class implements PhaseHandler interface to provide methods to check if a
- * phase can be executed and to add extra logic to execute a phase. It will be
- * used by Phase Management component. It is configurable using an input
- * namespace. The configurable parameters include database connection, email
- * sending. This class handle the screening phase. If the input is of other
- * phase types, PhaseNotSupportedException will be thrown.
+ * This class implements PhaseHandler interface to provide methods to check if a phase can be executed and to add
+ * extra logic to execute a phase. It will be used by Phase Management component. It is configurable using an input
+ * namespace. The configurable parameters include database connection, email sending. This class handle the
+ * screening phase. If the input is of other phase types, PhaseNotSupportedException will be thrown.
  * </p>
  * <p>
- * The screening phase can start as soon as the dependencies are met and can
- * stop when the following conditions met:
+ * The screening phase can start as soon as the dependencies are met and can stop when the following conditions
+ * met:
  * <ul>
  * <li>The dependencies are met</li>
- * <li>If manual screening is not required, all submissions have been
- * auto-screened;</li>
- * <li>If manual screening is required, all active submissions have one
- * screening scorecard committed.</li>
+ * <li>If manual screening is not required, all submissions have been auto-screened;</li>
+ * <li>If manual screening is required, all active submissions have one screening scorecard committed.</li>
  * </ul>
  * </p>
  * <p>
  * The additional logic for executing this phase is: When screening is stopping,
  * <ul>
- * <li>all submissions with failed screening scorecard scores should be set to
- * the status &quot;Failed Screening&quot;.</li>
- * <li>Screening score for the all submissions will be calculated and saved to
- * the submitters&rsquo; resource properties named &quot;Screening Score&quot;.</li>
+ * <li>all submissions with failed screening scorecard scores should be set to the status &quot;Failed
+ * Screening&quot;.</li>
+ * <li>Screening score for the all submissions will be calculated and saved to the submitters&rsquo; resource
+ * properties named &quot;Screening Score&quot;.</li>
  * </ul>
  * </p>
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- *
  * <p>
- * Version 1.1 change note: Modify the <code>perform</code> method to add
- * post-mortem phase when there is no passed screening.
+ * Version 1.1 change note: Modify the <code>perform</code> method to add post-mortem phase when there is no passed
+ * screening.
  * </p>
  * <p>
  * Version 1.2 changes note:
  * <ul>
- * <li>
- * Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager, etc).
- * </li>
- * <li>
- * Support for more information in the email generated: for start, Submitter info with screener needed or not.
- *                                                      for stop, screening result.
- * </li>
+ * <li>Added capability to support different email template for different role (e.g. Submitter, Reviewer, Manager,
+ * etc).</li>
+ * <li>Support for more information in the email generated: for start, Submitter info with screener needed or not.
+ * for stop, screening result.</li>
  * </ul>
  * </p>
- *
  * <p>
  * Version 1.3 (Online Review End Of Project Analysis Assembly 1.0) Change notes:
- *   <ol>
- *     <li>Updated {@link #perform(Phase, String)} method to use updated
- *     PhasesHelper#insertPostMortemPhase(Project , Phase, ManagerHelper, String) method for creating
- *     <code>Post-Mortem</code> phase.</li>
- *   </ol>
+ * <ol>
+ * <li>Updated {@link #perform(Phase, String)} method to use updated PhasesHelper#insertPostMortemPhase(Project ,
+ * Phase, ManagerHelper, String) method for creating <code>Post-Mortem</code> phase.</li>
+ * </ol>
  * </p>
- *
- * @author tuenm, bose_java, argolite, waits, TCSDEVELOPER
- * @version 1.3
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>canPerform() method was updated to return not only true/false value, but additionally an explanation message
+ * in case if operation cannot be performed.</li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, argolite, waits, saarixx, microsky
+ * @version 1.6.1
  */
 public class ScreeningPhaseHandler extends AbstractPhaseHandler {
+    /**
+     * String:
+     * Not all primary screening scorecards are committed (see submission with ID=
+     */
+    private static String NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG = "Not all primary screening scorecards are committed (see submission with ID=";
+
+    /**
+     * String:
+     * Individual screening scorecard is not committed
+     */
+    private static String INDIVIDUAL_SCREENING_MSG = "Individual screening scorecard is not committed";
     /**
      * Represents the default namespace of this class. It is used in the default
      * constructor to load configuration settings.
@@ -109,14 +117,13 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * Represents the roles for screening.
      * @since 1.2
      */
-    private static final String [] SCREENING_ROLES = new String[] {ROLE_PRIMARY_SCREENER, ROLE_SCREENER};
+    private static final String[] SCREENING_ROLES = new String[] {ROLE_PRIMARY_SCREENER, ROLE_SCREENER };
 
     /**
      * Create a new instance of ScreeningPhaseHandler using the default
      * namespace for loading configuration settings.
-     *
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      */
     public ScreeningPhaseHandler() throws ConfigurationException {
         super(DEFAULT_NAMESPACE);
@@ -125,10 +132,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     /**
      * Create a new instance of ScreeningPhaseHandler using the given namespace
      * for loading configuration settings.
-     *
      * @param namespace the namespace to load configuration settings from.
      * @throws ConfigurationException if errors occurred while loading
-     *         configuration settings.
+     *             configuration settings.
      * @throws IllegalArgumentException if the input is null or empty string.
      */
     public ScreeningPhaseHandler(String namespace) throws ConfigurationException {
@@ -141,34 +147,37 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * by canStart() and canEnd() methods of PhaseManager implementations in
      * Phase Management component.
      * <p>
-     * If the input phase status is Scheduled, then it will check if the phase
-     * can be started using the following conditions: The dependencies are met
+     * If the input phase status is Scheduled, then it will check if the phase can be started using the following
+     * conditions: The dependencies are met
      * </p>
      * <p>
-     * If the input phase status is Open, then it will check if the phase can be
-     * stopped using the following conditions:
+     * If the input phase status is Open, then it will check if the phase can be stopped using the following
+     * conditions:
      * <ul>
      * <li>The dependencies are met</li>
-     * <li>If manual screening is not required, all submissions have been
-     * auto-screened;</li>
-     * <li>If manual screening is required, all active submissions have one
-     * screening scorecard committed.</li>
+     * <li>If manual screening is not required, all submissions have been auto-screened;</li>
+     * <li>If manual screening is required, all active submissions have one screening scorecard committed.</li>
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase The input phase to check.
-     * @return True if the input phase can be executed, false otherwise.
+     * @return the validation result indicating whether the associated operation can be performed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         "Screening" type.
+     *             "Screening" type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input is null.
      */
-    public boolean canPerform(Phase phase) throws PhaseHandlingException {
+    public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SCREENING);
 
@@ -176,11 +185,13 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         // "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
+        OperationCheckResult result;
         if (toStart) {
             // return true if all dependencies have stopped and start time has
             // been reached.
-            if (!PhasesHelper.canPhaseStart(phase)) {
-                return false;
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             Connection conn = null;
@@ -190,21 +201,24 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 Submission[] subs = PhasesHelper.searchActiveSubmissions(
                                 getManagerHelper().getUploadManager(), conn,
                                 phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-                return (subs.length > 0);
+                if (subs.length == 0) {
+                    return new OperationCheckResult("Contest has no submissions");
+                }
+                return OperationCheckResult.SUCCESS;
             } catch (SQLException sqle) {
-                throw new PhaseHandlingException(
-                                "Failed to search submissions.", sqle);
+                throw new PhaseHandlingException("Failed to search submissions.", sqle);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
         } else {
-            if (!PhasesHelper.arePhaseDependenciesMet(phase, false)) {
-                return false;
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
             }
 
             Boolean bPrimaryScreening = isPrimaryScreening(phase);
             if (bPrimaryScreening == null) {
-                return false;
+                return new OperationCheckResult("Screener is not assigned for the project.");
             }
 
             if (bPrimaryScreening.booleanValue()) {
@@ -225,33 +239,28 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * If the input phase status is Scheduled, then it will do nothing.
      * </p>
      * <p>
-     * If the input phase status is Open, then it will perform the following
-     * additional logic to stop the phase:
+     * If the input phase status is Open, then it will perform the following additional logic to stop the phase:
      * <ul>
-     * <li>all submissions with failed screening scorecard scores should be set
-     * to the status &quot;Failed Screening&quot;.</li>
-     * <li>Screening score for the all submissions will be calculated and saved
-     * to the submitters&rsquo; resource properties named &quot;Screening
-     * Score&quot;.</li>
+     * <li>all submissions with failed screening scorecard scores should be set to the status &quot;Failed
+     * Screening&quot;.</li>
+     * <li>Screening score for the all submissions will be calculated and saved to the submitters&rsquo; resource
+     * properties named &quot;Screening Score&quot;.</li>
      * </ul>
      * </p>
      * <p>
-     * If the input phase status is Closed, then PhaseHandlingException will be
-     * thrown.
+     * If the input phase status is Closed, then PhaseHandlingException will be thrown.
      * </p>
      * <p>
-     * Version 1.2 update: if it is start, get the submission's info.
-     *                     if it is stop, get the screening result info.
+     * Version 1.2 update: if it is start, get the submission's info. if it is stop, get the screening result info.
      * </p>
-     *
      * @param phase The input phase to check.
      * @param operator The operator that execute the phase.
      * @throws PhaseNotSupportedException if the input phase type is not
-     *         &quot;Screening&quot; type.
+     *             &quot;Screening&quot; type.
      * @throws PhaseHandlingException if there is any error occurred while
-     *         processing the phase.
+     *             processing the phase.
      * @throws IllegalArgumentException if the input parameters is null or empty
-     *         string.
+     *             string.
      */
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
@@ -262,7 +271,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         Map<String, Object> values = new HashMap<String, Object>();
 
         if (toStart) {
-            //for start, put the submission information with need_primary_screener or not
+            // for start, put the submission information with need_primary_screener or not
             putPhaseStartInfos(phase, values);
         } else {
             // flag to indicate whether all submissions do not pass screening
@@ -318,9 +327,10 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                         }
                     }
                 }
-                //put the submission screening result
+                // put the submission screening result
                 values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(submissions,
-                                                                              getManagerHelper().getResourceManager(),
+                                                                              getManagerHelper()
+                                                                                  .getResourceManager(),
                                                                               true));
                 values.put("NO_SCREENING_PASS", noScreeningPass ? 1 : 0);
             } catch (SQLException e) {
@@ -355,21 +365,21 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         Submission[] subs = null;
         try {
             conn = createConnection();
-            //get the screeners
+            // get the screeners
             Resource[] screeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                                                                            conn, SCREENING_ROLES , phase.getId());
+                                                                            conn, SCREENING_ROLES, phase.getId());
             values.put("NEED_PRIMARY_SCREENER", screeners.length == 0 ? 1 : 0);
-            //get submissions
+            // get submissions
             // change in version 1.4
             subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
                 phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up submissions.", e);
         } finally {
-            //close the connection after get the submissions
+            // close the connection after get the submissions
             PhasesHelper.closeConnection(conn);
         }
-        //put the submitter info into the map
+        // put the submitter info into the map
         values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs,
                                                                          getManagerHelper().getResourceManager(),
                                                                          false));
@@ -379,18 +389,14 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * This method is called from perform method when phase is stopping. It does
      * the following :
      * <ul>
-     * <li>All submissions with failed screening scorecard scores are set to the
-     * status "Failed Screening".</li>
-     * <li>Screening score for the all submissions will be saved to the
-     * submitters' resource properties named "Screening Score".</li>
+     * <li>All submissions with failed screening scorecard scores are set to the status "Failed Screening".</li>
+     * <li>Screening score for the all submissions will be saved to the submitters' resource properties named
+     * "Screening Score".</li>
      * </ul>
-     *
      * <p>
-     * Change notes: Change return value from void to boolean to indicate
-     * whether the checked submission failed screen. True if failed, false
-     * otherwise.
+     * Change notes: Change return value from void to boolean to indicate whether the checked submission failed
+     * screen. True if failed, false otherwise.
      * </p>
-     *
      * @param submission the submission to process and update.
      * @param screenReviews screening reviews.
      * @param minScore minimum scorecard score.
@@ -398,7 +404,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * @param conn connection to use when looking up ids.
      * @return true if the submission failed screen, false otherwise.
      * @throws PhaseHandlingException if there was a problem retrieving/updating
-     *         data.
+     *             data.
      * @version 1.1
      */
     private boolean processAndUpdateSubmission(Submission submission,
@@ -424,7 +430,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         Float screeningScore = review.getScore();
 
         // Store the screening score for the submission
-        // long submitterId = submission.getUpload().getOwner();
+        // long submitterId = submission.getUploads().get(0).getOwner();
 
         try {
             // Old Code
@@ -471,13 +477,18 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * Checks if the submission that passed review has one scorecard committed.
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase phase instance.
-     * @return true if the submission that passed review has one scorecard
-     *         committed.
+     * @return the validation result indicating whether the scorecards are committed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseHandlingException if there was an error retrieving data.
      */
-    private boolean areScorecardsCommitted(Phase phase) throws PhaseHandlingException {
+    private OperationCheckResult areScorecardsCommitted(Phase phase) throws PhaseHandlingException {
         Connection conn = null;
         try {
             conn = createConnection();
@@ -485,11 +496,10 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             // get the submitter for this phase
             Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
-                            new String[] {PhasesHelper.SUBMITTER_ROLE_NAME}, phase.getId());
+                            new String[] {PhasesHelper.SUBMITTER_ROLE_NAME }, phase.getId());
 
             if (resources.length != 1) {
-                throw new PhaseHandlingException(
-                                "Inconsistent data: Multiple resources");
+                throw new PhaseHandlingException("Inconsistent data: Multiple resources");
             }
 
             Resource submitter = resources[0];
@@ -507,37 +517,37 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(
                     SubmissionTypeLookupUtility.lookUpId(conn, PhasesHelper.CONTEST_SUBMISSION_TYPE));
             Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {projectIdFilter,
-                resourceIdFilter, submissionTypeFilter}));
+                resourceIdFilter, submissionTypeFilter }));
             Submission[] submissions = getManagerHelper().getUploadManager()
                             .searchSubmissions(fullFilter);
 
             if (submissions.length != 1) {
-                throw new PhaseHandlingException(
-                                "Inconsistent data: Multiple submissions");
+                throw new PhaseHandlingException("Inconsistent data: Multiple submissions");
             }
 
             submission = submissions[0];
 
             // search for review
-            Review[] screenReviews = PhasesHelper
-                            .searchReviewsForResourceRoles(conn,
-                                            getManagerHelper(), phase.getId(),
-                                            new String[] {ROLE_SCREENER}, null);
+            Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
+                phase.getId(), new String[] {ROLE_SCREENER }, null);
 
             if (screenReviews.length != 1) {
-                throw new PhaseHandlingException(
-                                "Inconsistent data: Multiple reviews");
+                throw new PhaseHandlingException("Inconsistent data: Multiple reviews");
             }
 
             Review screenReview = screenReviews[0];
 
             // Check if the screening review is associated with the submission
             if (submission.getId() != screenReview.getSubmission()) {
-                return false;
+                return new OperationCheckResult(INDIVIDUAL_SCREENING_MSG);
             }
 
             // Check if the screening scorecards are committed
-            return screenReview.isCommitted();
+            if (screenReview.isCommitted()) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult(INDIVIDUAL_SCREENING_MSG);
+            }
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException(
                             "There was a submission retrieval error", e);
@@ -554,25 +564,29 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     /**
      * returns true if all the submissions for the given project have one
      * scorecard committed, false otherwise.
-     *
+     * <p>
+     * Version 1.6.1 changes note:
+     * <ul>
+     * <li>The return changes from boolean to OperationCheckResult.</li>
+     * </ul>
+     * </p>
      * @param phase the phase to check.
-     * @return true if all the submissions for the given project have one
-     *         scorecard committed, false otherwise.
+     * @return the validation result indicating whether the primary scorecards are committed, and if not,
+     *         providing a reasoning message (not null)
      * @throws PhaseHandlingException if there was an error retrieving data.
      */
-    private boolean arePrimaryScorecardsCommitted(Phase phase) throws PhaseHandlingException {
+    private OperationCheckResult arePrimaryScorecardsCommitted(Phase phase) throws PhaseHandlingException {
+
         Connection conn = null;
 
         try {
             conn = createConnection();
 
             // get all screening scorecards for the phase
-            Review[] screenReviews = PhasesHelper
-                            .searchReviewsForResourceRoles(
-                                            conn,
-                                            getManagerHelper(),
+            Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(
+                                            conn, getManagerHelper(),
                                             phase.getId(),
-                                            new String[] {ROLE_PRIMARY_SCREENER},
+                                            new String[] {ROLE_PRIMARY_SCREENER },
                                             null);
 
             // get the submissions for the project
@@ -580,12 +594,6 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             Submission[] submissions = PhasesHelper.searchActiveSubmissions(
                             getManagerHelper().getUploadManager(), conn, phase
                                             .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-
-            // If the number of reviews doesn't match submission number - not
-            // all reviews are commited for sure
-            if (screenReviews.length != submissions.length) {
-                return false;
-            }
 
             for (int i = 0; i < submissions.length; i++) {
                 long subId = submissions[i].getId();
@@ -599,7 +607,9 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
                         // also check if each review is committed
                         if (!screenReviews[j].isCommitted()) {
-                            return false;
+                            return new OperationCheckResult(
+                                NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG
+                                    + subId + ")");
                         }
 
                         break;
@@ -609,11 +619,13 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 // if a review was not found for a particular submission, return
                 // false.
                 if (!foundReview) {
-                    return false;
+                    return new OperationCheckResult(
+                        NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG
+                            + subId + ")");
                 }
             }
 
-            return true;
+            return OperationCheckResult.SUCCESS;
 
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up ids.", e);
@@ -624,11 +636,10 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * returns true if the screening mode is Primary, false if it is Individual.
-     *
      * @param phase the phase instance.
      * @return true if the screening mode is Primary, false if it is Individual.
      * @throws PhaseHandlingException if an error occurs during data retrieval
-     *         or if data is inconsistent.
+     *             or if data is inconsistent.
      */
     private Boolean isPrimaryScreening(Phase phase) throws PhaseHandlingException {
         Connection conn = null;
@@ -639,25 +650,15 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
             Resource[] screeners = null;
 
             // search for primary screeners first
-            Resource[] primaryScreeners = PhasesHelper
-                            .searchResourcesForRoleNames(
-                                            getManagerHelper(),
-                                            conn,
-                                            new String[] {ROLE_PRIMARY_SCREENER},
-                                            phase.getId());
+            Resource[] primaryScreeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                new String[] {ROLE_PRIMARY_SCREENER }, phase.getId());
 
             // if no row is returned, search for screeners
             if (primaryScreeners.length == 0) {
-                screeners = PhasesHelper.searchResourcesForRoleNames(
-                                getManagerHelper(), conn,
-                                new String[] {ROLE_SCREENER}, phase.getId());
+                screeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+                    new String[] {ROLE_SCREENER }, phase.getId());
             } else {
                 screeners = new Resource[0];
-            }
-
-            // if both searches returned more than one row
-            if ((primaryScreeners.length > 0) && (screeners.length > 0)) {
-                return null;
             }
 
             if (primaryScreeners.length > 0) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 - 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -20,24 +20,27 @@ import java.sql.Connection;
 
 import java.util.Date;
 
-
 /**
  * All tests for AggregationPhaseHandler class.
- *
  * <p>
- * Version 1.2 change notes : since the email-templates and role-supported has been enhanced.
- * The test cases will try to do on that way while for email content, please check it manually.
+ * Version 1.2 change notes : since the email-templates and role-supported has been enhanced. The test cases will
+ * try to do on that way while for email content, please check it manually.
  * </p>
  * <p>
  * Version 1.4 change notes : add some new test cases.
  * </p>
- * @author bose_java, waits, myxgyy
- * @version 1.4
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, myxgyy, microsky
+ * @version 1.6.1
  */
 public class AggregationPhaseHandlerTest extends BaseTest {
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void setUp() throws Exception {
@@ -47,7 +50,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
 
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -59,7 +61,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void tearDown() throws Exception {
@@ -68,7 +69,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests no-arg constructor.
-     *
      * @throws Exception not under test.
      */
     public void testCtor() throws Exception {
@@ -79,7 +79,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerform() throws Exception {
@@ -95,7 +94,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidStatus() throws Exception {
@@ -112,7 +110,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidType() throws Exception {
@@ -129,7 +126,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullPhase() throws Exception {
@@ -145,7 +141,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidStatus() throws Exception {
@@ -162,7 +157,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidType() throws Exception {
@@ -179,7 +173,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullOperator() throws Exception {
@@ -196,7 +189,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithEmptyOperator() throws Exception {
@@ -213,7 +205,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AggregationPhaseHandler() constructor and canPerform with Scheduled statuses.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithScheduled() throws Exception {
@@ -230,15 +221,15 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             aggregationPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase).isSuccess());
 
             // time has passed, but dependency not met.
             aggregationPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase).isSuccess());
 
             // time has passed and dependency met, but no winner
             aggregationPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
-            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase).isSuccess());
 
             // insert winner.
             Connection conn = getConnection();
@@ -247,10 +238,10 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             Resource aggregator = createResource(3, aggregationPhase.getId(), project.getId(), 8);
 
             // insert an aggregator
-            insertResources(conn, new Resource[] {aggregator});
+            insertResources(conn, new Resource[] {aggregator });
             super.insertResourceInfo(conn, aggregator.getId(), 1, "1234");
 
-            assertTrue("canPerform should have returned true", handler.canPerform(aggregationPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(aggregationPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -259,7 +250,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AggregationPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformHandlerWithOpen() throws Exception {
@@ -279,7 +269,7 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             aggregationPhase.setPhaseStatus(PhaseStatus.OPEN);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -287,7 +277,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the AggregationPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -305,16 +294,14 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             aggregationPhase.setPhaseStatus(PhaseStatus.OPEN);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(aggregationPhase).isSuccess());
         } finally {
             cleanTables();
         }
     }
 
-
     /**
      * Tests the perform with Open statuses.
-     *
      * @throws Exception not under test.
      */
     public void testPerform() throws Exception {
@@ -328,7 +315,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status.
-     *
      * @throws Exception not under test.
      */
     public void testPerform_start() throws Exception {
@@ -352,73 +338,72 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insertScorecards
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
 
             Review review = createReview(1000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //perform review first before appeals start
+            // perform review first before appeals start
             reviewPhaseHandler.perform(reviewPhase, operator);
 
             aphandler.perform(appealsResponsePhase, operator);
 
             Phase aggregationPhase = project.getAllPhases()[6];
-            //create aggregator
+            // create aggregator
             Resource aggregator = createResource(10, aggregationPhase.getId(), 1, 8);
-            super.insertResources(conn, new Resource[] {aggregator});
+            super.insertResources(conn, new Resource[] {aggregator });
             insertResourceInfo(conn, aggregator.getId(), 1, "2");
-
 
             handler.perform(aggregationPhase, operator);
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -427,7 +412,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status. It tests the case the previous aggregation exists.
-     *
      * @throws Exception not under test.
      */
     public void testPerform_start_PreviousAggregationExists() throws Exception {
@@ -451,59 +435,59 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insertScorecards
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
 
             Review review = createReview(1000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //perform review first before appeals start
+            // perform review first before appeals start
             reviewPhaseHandler.perform(reviewPhase, operator);
 
             aphandler.perform(appealsResponsePhase, operator);
@@ -511,16 +495,15 @@ public class AggregationPhaseHandlerTest extends BaseTest {
             Phase aggregationPhase = project.getAllPhases()[6];
             // create aggregator
             Resource aggregator = createResource(10, aggregationPhase.getId(), 1, 8);
-            super.insertResources(conn, new Resource[] {aggregator});
+            super.insertResources(conn, new Resource[] {aggregator });
             insertResourceInfo(conn, aggregator.getId(), 1, "2");
-
 
             handler.perform(aggregationPhase, operator);
 
             aggregationPhase = project.getAllPhases()[7];
             // create aggregator
             aggregator = createResource(11, aggregationPhase.getId(), 1, 8);
-            super.insertResources(conn, new Resource[] {aggregator});
+            super.insertResources(conn, new Resource[] {aggregator });
             insertResourceInfo(conn, aggregator.getId(), 1, "2");
             handler.perform(aggregationPhase, operator);
         } finally {
@@ -531,7 +514,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status. No aggregator exists, PhaseHandlingException expected.
-     *
      * @throws Exception not under test.
      * @since 1.4
      */
@@ -556,59 +538,59 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insertScorecards
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
 
             Review review = createReview(1000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //perform review first before appeals start
+            // perform review first before appeals start
             reviewPhaseHandler.perform(reviewPhase, operator);
 
             aphandler.perform(appealsResponsePhase, operator);
@@ -628,7 +610,6 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Open status.
-     *
      * @throws Exception not under test.
      */
     public void testPerform_stop() throws Exception {
@@ -652,77 +633,77 @@ public class AggregationPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insertScorecards
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
 
             Review review = createReview(1000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[] {sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2000, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4000, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review[] {review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //perform review first before appeals start
+            // perform review first before appeals start
             reviewPhaseHandler.perform(reviewPhase, operator);
 
             aphandler.perform(appealsResponsePhase, operator);
 
             Phase aggregationPhase = project.getAllPhases()[6];
-            //create aggregator
+            // create aggregator
             Resource aggregator = createResource(10, aggregationPhase.getId(), 1, 8);
-            super.insertResources(conn, new Resource[] {aggregator});
+            super.insertResources(conn, new Resource[] {aggregator });
             insertResourceInfo(conn, aggregator.getId(), 1, "2");
 
-            //start aggregation
+            // start aggregation
             handler.perform(aggregationPhase, operator);
 
-            //stop now
+            // stop now
             aggregationPhase.setPhaseStatus(PhaseStatus.OPEN);
             handler.perform(aggregationPhase, operator);
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();

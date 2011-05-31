@@ -45,12 +45,6 @@
 		</Property>
 	</Property>
 
-	<Property name="ScreeningManager">
-		<Property name="Namespace">
-			<Value>com.cronos.onlinereview.autoscreening.management.DefaultDBScreeningManager</Value>
-		</Property>
-	</Property>
-
 	<Property name="ConnectionFactoryNS">
 		<Value>com.topcoder.db.connectionfactory.DBConnectionFactoryImpl</Value>
 	</Property>
@@ -145,6 +139,21 @@
 		<Value>http://www.topcoder.com/tc?projectDetails=?</Value>
 	</Property>
 
+  <Property name="StudioProjectDetailsURL">
+		<Value>http://studio.topcoder.com/?projectDetails=?</Value>
+	</Property>
+	
+  <Property name="ProjectRoleTermsOfUse">
+      <Property name="ClassName">
+          <Value>com.cronos.onlinereview.phases.MockProjectRoleTermsOfUse</Value>
+      </Property>
+  </Property>
+  
+  <Property name="UserTermsOfUse">
+      <Property name="ClassName">
+          <Value>com.cronos.onlinereview.phases.MockUserTermsOfUse</Value>
+      </Property>
+  </Property> 
 </Config>
 
   <Config name="com.topcoder.management.project.persistence.link.ProjectLinkManagerImpl">

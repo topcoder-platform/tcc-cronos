@@ -1,11 +1,12 @@
 /*
- * Copyright (C) 2006 - 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 import com.topcoder.management.deliverable.Submission;
@@ -30,15 +31,20 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * version 1.4 changes note : Add some new test cases.
  * </p>
- *
- * @author bose_java, waits, myxgyy
- * @version 1.4
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * <li>PhasesHelper does not have method getFinalReviewWorksheet now, So create new private method .</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, myxgyy, microsky
+ * @version 1.6.1
  */
 public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -60,7 +66,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -70,7 +75,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -86,7 +90,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -103,7 +106,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -120,7 +122,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -136,7 +137,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -153,7 +153,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -170,7 +169,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -187,7 +185,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -204,7 +201,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the FinalFixPhaseHandler() constructor and canPerform with Scheduled statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -221,18 +217,18 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             finalFixPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(finalFixPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(finalFixPhase).isSuccess());
 
             // time has passed, but dependency not met.
             finalFixPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(finalFixPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(finalFixPhase).isSuccess());
 
             // time has passed and dependency met, but there is no final
             // reviewer assigned
             // version 1.1 should return false here
             finalFixPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
             assertFalse("canPerform should have returned false when there is no final reviewer", handler
-                    .canPerform(finalFixPhase));
+                    .canPerform(finalFixPhase).isSuccess());
 
             // Let's add a final reviewer here
             Resource finalReviewer = createResource(101, finalFixPhase.getId(), project.getId(), 9);
@@ -240,13 +236,13 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
 
             // we need to insert an external reference id
             // which references to resource's user id in resource_info table
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
             assertFalse("canPerform should have returned true when final reviewer is assigned.", handler
-                    .canPerform(finalFixPhase));
+                    .canPerform(finalFixPhase).isSuccess());
         } finally {
             cleanTables();
             closeConnection();
@@ -255,7 +251,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the FinalFixPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -275,7 +270,7 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             finalFixPhase.setPhaseStatus(PhaseStatus.OPEN);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(finalFixPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(finalFixPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -283,7 +278,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Open statuses.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -298,7 +292,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -335,23 +328,24 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer, aggregator});
+            insertResources(conn, new Resource[] {finalReviewer, aggregator });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
             insertResourceInfo(conn, aggregator.getId(), 1, "1002");
-            insertUploads(conn, new Upload[] {upload1});
-            insertSubmissions(conn, new Submission[] {submission1});
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {review1});
+            insertUploads(conn, new Upload[] {upload1 });
+            insertSubmissions(conn, new Submission[] {submission1 });
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {review1 });
 
-            insertComments(conn, new long[] {103}, new long[] {aggregator.getId()}, new long[] {review1.getId()},
-                    new String[] {"comment 1"}, new long[] {1});
+            insertComments(conn, new long[] {103 }, new long[] {aggregator.getId() },
+                new long[] {review1.getId() },
+                    new String[] {"comment 1" }, new long[] {1 });
             insertScorecardQuestion(conn, 1, 1);
             insertReviewItems(conn, reviewItems);
-            insertReviewItemComments(conn, reviewItemComments, new long[] {11});
+            insertReviewItemComments(conn, reviewItemComments, new long[] {11 });
             insertWinningSubmitter(conn, 12, project.getId());
 
             // check no final worksheet exists before calling perform method
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, handler.getManagerHelper(),
+            Review finalWorksheet = getFinalReviewWorksheet(conn, handler.getManagerHelper(),
                     finalReviewPhase.getId());
             assertNull("No final worksheet should exist before this test", finalWorksheet);
 
@@ -360,8 +354,8 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             handler.perform(finalFixPhase, operator);
 
             // final worksheet should be created after the perform call.
-            finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, handler.getManagerHelper(), finalReviewPhase
-                    .getId());
+            finalWorksheet = getFinalReviewWorksheet(conn, handler.getManagerHelper(),
+                finalReviewPhase.getId());
             assertNotNull("Final worksheet should exist after perform()", finalWorksheet);
             assertEquals("review items not copied", finalWorksheet.getAllItems().length, reviewItems.length);
             assertEquals("review item comments not accepted should not be copied", 0, finalWorksheet.getItem(0)
@@ -374,7 +368,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.4
@@ -396,27 +389,27 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
             insertWinningSubmitter(conn, 5, project.getId());
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), 5, 1, 1, "Parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-            //insertScorecards
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review []{review});
+            insertReviews(conn, new Review[] {review });
             review.addComment(createComment(21, reviewer.getId(), "Good Submission", 1, "Comment"));
 
             Item[] reviewItems = new Item[1];
@@ -425,13 +418,13 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Comment[] reviewItemComments = new Comment[1];
             reviewItemComments[0] = createComment(11, reviewer.getId(), "Item 1", 1, "Comment");
 
-            insertComments(conn, new long[] {21}, new long[] {reviewer.getId()}, new long[] {review.getId()},
-                new String[] {"Good Submission"}, new long[] {1});
+            insertComments(conn, new long[] {21 }, new long[] {reviewer.getId() }, new long[] {review.getId() },
+                new String[] {"Good Submission" }, new long[] {1 });
             insertScorecardQuestion(conn, 1, 1);
             insertReviewItems(conn, reviewItems);
-            insertReviewItemComments(conn, reviewItemComments, new long[] {11});
+            insertReviewItemComments(conn, reviewItemComments, new long[] {11 });
             // check no final worksheet exists before calling perform method
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, handler.getManagerHelper(),
+            Review finalWorksheet = getFinalReviewWorksheet(conn, handler.getManagerHelper(),
                     finalReviewPhase.getId());
             assertNull("No final worksheet should exist before this test", finalWorksheet);
 
@@ -440,7 +433,8 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             handler.perform(finalFixPhase, operator);
 
             // final worksheet should be created after the perform call.
-            finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, handler.getManagerHelper(), finalReviewPhase
+            finalWorksheet = getFinalReviewWorksheet(conn, handler.getManagerHelper(),
+                finalReviewPhase
                     .getId());
             assertNotNull("Final worksheet should exist after perform()", finalWorksheet);
         } finally {
@@ -451,7 +445,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status. It tests the case the previous final review exists.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.4
@@ -476,28 +469,28 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer, finalReviewer1});
+            insertResources(conn, new Resource[] {finalReviewer, finalReviewer1 });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
             insertResourceInfo(conn, finalReviewer1.getId(), 1, "1002");
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
             insertWinningSubmitter(conn, 5, project.getId());
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), 5, 1, 1, "Parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-            //insertScorecards
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc});
+            insertScorecards(conn, new Scorecard[] {sc });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
-            insertReviews(conn, new Review []{review});
+            insertReviews(conn, new Review[] {review });
             review.addComment(createComment(21, reviewer.getId(), "Good Submission", 1, "Comment"));
 
             Item[] reviewItems = new Item[1];
@@ -506,11 +499,11 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Comment[] reviewItemComments = new Comment[1];
             reviewItemComments[0] = createComment(1001, reviewer.getId(), "Item 1", 1, "Comment");
 
-            insertComments(conn, new long[] {21}, new long[] {reviewer.getId()}, new long[] {review.getId()},
-                new String[] {"Good Submission"}, new long[] {1});
+            insertComments(conn, new long[] {21 }, new long[] {reviewer.getId() }, new long[] {review.getId() },
+                new String[] {"Good Submission" }, new long[] {1 });
             insertScorecardQuestion(conn, 1, 1);
             insertReviewItems(conn, reviewItems);
-            insertReviewItemComments(conn, reviewItemComments, new long[] {1001});
+            insertReviewItemComments(conn, reviewItemComments, new long[] {1001 });
 
             String operator = "1001";
             // insert a final review first
@@ -518,7 +511,7 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
             handler.perform(finalFixPhase2, operator);
 
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn,
+            Review finalWorksheet = getFinalReviewWorksheet(conn,
                 handler.getManagerHelper(), finalReviewPhase.getId());
             assertNotNull("Final worksheet should exist after perform()", finalWorksheet);
             assertFalse("not committed", finalWorksheet.isCommitted());
@@ -530,7 +523,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status. Verify the final fix status has been updated to deleted.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.4
@@ -572,22 +564,23 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
             // insert records
             insertWinningSubmitter(conn, 12, project.getId());
-            insertResources(conn, new Resource[] {finalReviewer, aggregator});
+            insertResources(conn, new Resource[] {finalReviewer, aggregator });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
             insertResourceInfo(conn, aggregator.getId(), 1, "1002");
-            insertUploads(conn, new Upload[] {upload1, upload2});
-            insertSubmissions(conn, new Submission[] {submission1, submission2});
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {review1});
+            insertUploads(conn, new Upload[] {upload1, upload2 });
+            insertSubmissions(conn, new Submission[] {submission1, submission2 });
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {review1 });
 
-            insertComments(conn, new long[] {21}, new long[] {aggregator.getId()}, new long[] {review1.getId()},
-                    new String[] {"comment 1"}, new long[] {1});
+            insertComments(conn, new long[] {21 }, new long[] {aggregator.getId() },
+                new long[] {review1.getId() },
+                    new String[] {"comment 1" }, new long[] {1 });
             insertScorecardQuestion(conn, 1, 1);
             insertReviewItems(conn, reviewItems);
-            insertReviewItemComments(conn, reviewItemComments, new long[] {1001});
+            insertReviewItemComments(conn, reviewItemComments, new long[] {1001 });
 
             // check no final worksheet exists before calling perform method
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, handler.getManagerHelper(),
+            Review finalWorksheet = getFinalReviewWorksheet(conn, handler.getManagerHelper(),
                     finalReviewPhase.getId());
             assertNull("No final worksheet should exist before this test", finalWorksheet);
 
@@ -596,7 +589,8 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             handler.perform(finalFixPhase, operator);
 
             // final worksheet should be created after the perform call.
-            finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, handler.getManagerHelper(), finalReviewPhase
+            finalWorksheet = getFinalReviewWorksheet(conn, handler.getManagerHelper(),
+                finalReviewPhase
                     .getId());
             assertNotNull("Final worksheet should exist after perform()", finalWorksheet);
             assertEquals("review items not copied", finalWorksheet.getAllItems().length, reviewItems.length);
@@ -612,7 +606,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Gets upload status.
-     *
      * @param con the database connection
      * @param id id of upload
      * @return status of upload
@@ -643,7 +636,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status. No winner for project, PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.4
@@ -664,7 +656,7 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
 
             // call perform method
@@ -682,7 +674,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status. Multiple final fix exist, PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.4
@@ -726,19 +717,20 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
             // insert records
             insertWinningSubmitter(conn, 12, project.getId());
-            insertResources(conn, new Resource[] {finalReviewer, aggregator});
+            insertResources(conn, new Resource[] {finalReviewer, aggregator });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
             insertResourceInfo(conn, aggregator.getId(), 1, "1002");
-            insertUploads(conn, new Upload[] {upload1, upload2, upload3});
-            insertSubmissions(conn, new Submission[] {submission1, submission2, submission3});
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {review1});
+            insertUploads(conn, new Upload[] {upload1, upload2, upload3 });
+            insertSubmissions(conn, new Submission[] {submission1, submission2, submission3 });
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {review1 });
 
-            insertComments(conn, new long[] {103}, new long[] {aggregator.getId()}, new long[] {review1.getId()},
-                    new String[] {"comment 1"}, new long[] {1});
+            insertComments(conn, new long[] {103 }, new long[] {aggregator.getId() },
+                new long[] {review1.getId() },
+                    new String[] {"comment 1" }, new long[] {1 });
             insertScorecardQuestion(conn, 1, 1);
             insertReviewItems(conn, reviewItems);
-            insertReviewItemComments(conn, reviewItemComments, new long[] {11});
+            insertReviewItemComments(conn, reviewItemComments, new long[] {11 });
 
             // call perform method
             String operator = "1001";
@@ -755,7 +747,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the perform with Scheduled status.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -793,22 +784,23 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {aggregator});
+            insertResources(conn, new Resource[] {aggregator });
             insertResourceInfo(conn, aggregator.getId(), 1, "1002");
-            insertUploads(conn, new Upload[] {upload1});
-            insertSubmissions(conn, new Submission[] {submission1});
-            insertScorecards(conn, new Scorecard[] {scorecard1});
-            insertReviews(conn, new Review[] {review1});
+            insertUploads(conn, new Upload[] {upload1 });
+            insertSubmissions(conn, new Submission[] {submission1 });
+            insertScorecards(conn, new Scorecard[] {scorecard1 });
+            insertReviews(conn, new Review[] {review1 });
 
-            insertComments(conn, new long[] {103}, new long[] {aggregator.getId()}, new long[] {review1.getId()},
-                    new String[] {"comment 1"}, new long[] {1});
+            insertComments(conn, new long[] {103 }, new long[] {aggregator.getId() },
+                new long[] {review1.getId() },
+                    new String[] {"comment 1" }, new long[] {1 });
             insertScorecardQuestion(conn, 1, 1);
             insertReviewItems(conn, reviewItems);
-            insertReviewItemComments(conn, reviewItemComments, new long[] {11, 12});
+            insertReviewItemComments(conn, reviewItemComments, new long[] {11, 12 });
             insertWinningSubmitter(conn, 12, project.getId());
 
             // check no final worksheet exists before calling perform method
-            Review finalWorksheet = PhasesHelper.getFinalReviewWorksheet(conn, handler.getManagerHelper(),
+            Review finalWorksheet = getFinalReviewWorksheet(conn, handler.getManagerHelper(),
                     finalReviewPhase.getId());
             assertNull("No final worksheet should exist before this test", finalWorksheet);
 
@@ -828,7 +820,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Scheduled status. No aggregated review scorecard exist,
      * PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.4
@@ -856,12 +847,12 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer, aggregator});
+            insertResources(conn, new Resource[] {finalReviewer, aggregator });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
             insertResourceInfo(conn, aggregator.getId(), 1, "1002");
-            insertUploads(conn, new Upload[] {upload1});
-            insertSubmissions(conn, new Submission[] {submission});
-            insertScorecards(conn, new Scorecard[] {scorecard});
+            insertUploads(conn, new Upload[] {upload1 });
+            insertSubmissions(conn, new Submission[] {submission });
+            insertScorecards(conn, new Scorecard[] {scorecard });
             insertWinningSubmitter(conn, 12, project.getId());
 
             // call perform method
@@ -879,7 +870,6 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
     /**
      * Tests the perform with Scheduled status. No winning submission exist,
      * PhaseHandlingException expected.
-     *
      * @throws Exception
      *             not under test.
      * @since 1.4
@@ -901,11 +891,11 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
             Connection conn = getConnection();
 
             // insert records
-            insertResources(conn, new Resource[] {finalReviewer});
+            insertResources(conn, new Resource[] {finalReviewer });
             insertResourceInfo(conn, finalReviewer.getId(), 1, "1001");
             // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             // create a registration
@@ -921,6 +911,28 @@ public class FinalFixPhaseHandlerTest extends BaseTest {
         } finally {
             cleanTables();
             closeConnection();
+        }
+    }
+
+    /**
+     * returns the final review worksheet for the given final review phase id.
+     * @param managerHelper ManagerHelper instance.
+     * @param finalReviewPhaseId final review phase id.
+     * @return the final review worksheet, or null if not existing.
+     * @throws PhaseHandlingException if an error occurs when retrieving data.
+     * @throws SQLException if an error occurs when looking up resource role id.
+     */
+    private Review getFinalReviewWorksheet(Connection conn, ManagerHelper managerHelper, long finalReviewPhaseId)
+        throws PhaseHandlingException, SQLException {
+        Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, managerHelper, finalReviewPhaseId,
+                new String[] {"Final Reviewer" }, null);
+
+        if (reviews.length == 0) {
+            return null;
+        } else if (reviews.length == 1) {
+            return reviews[0];
+        } else {
+            throw new PhaseHandlingException("Multiple final review worksheets found");
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -20,21 +20,27 @@ import java.sql.Connection;
 
 import java.util.Date;
 
-
 /**
  * All tests for ReviewPhaseHandler class.
- *
  * <p>
- * Version 1.2 change notes : since the email-templates and role-supported has been enhanced.
- * The test cases will try to do on that way while for email content, please check it manually.
+ * Version 1.2 change notes : since the email-templates and role-supported has been enhanced. The test cases will
+ * try to do on that way while for email content, please check it manually.
  * </p>
- * @author bose_java, waits
- * @version 1.2
+ * <p>
+ * Version 1.6 change notes: Add test cases for testing review process of studio competitions.
+ * </p>
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
+ * </ul>
+ * </p>
+ * @author bose_java, waits, TCSDEVELOPER, microsky
+ * @version 1.6.1
  */
 public class ReviewPhaseHandlerTest extends BaseTest {
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void setUp() throws Exception {
@@ -43,7 +49,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
         ConfigManager configManager = ConfigManager.getInstance();
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 
@@ -55,7 +60,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception not under test.
      */
     protected void tearDown() throws Exception {
@@ -64,7 +68,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerform() throws Exception {
@@ -80,7 +83,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidStatus() throws Exception {
@@ -97,7 +99,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests canPerform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithInvalidType() throws Exception {
@@ -114,7 +115,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null phase.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullPhase() throws Exception {
@@ -130,7 +130,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase status.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidStatus() throws Exception {
@@ -147,7 +146,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with invalid phase type.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithInvalidType() throws Exception {
@@ -164,7 +162,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with null operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithNullOperator() throws Exception {
@@ -181,7 +178,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests perform(Phase) with empty operator.
-     *
      * @throws Exception not under test.
      */
     public void testPerformWithEmptyOperator() throws Exception {
@@ -198,7 +194,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the ReviewPhaseHandler() constructor and canPerform with Scheduled statuses.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformWithScheduled() throws Exception {
@@ -215,11 +210,11 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             reviewPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
 
             // time has not passed, nor dependencies met
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
 
             // time has passed, but dependency not met.
             reviewPhase.setActualStartDate(new Date());
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
 
             // time has passed and dependency met.
             reviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
@@ -227,7 +222,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             // And we set up a active submission in screening phase
             super.setupSubmissionForReview();
 
-            assertTrue("canPerform should have returned true", handler.canPerform(reviewPhase));
+            assertTrue("canPerform should have returned true", handler.canPerform(reviewPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -235,7 +230,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
     /**
      * Tests the ReviewPhaseHandler() constructor and canPerform with Open statuses.
-     *
      * @throws Exception not under test.
      */
     public void testCanPerformHandlerWithOpen() throws Exception {
@@ -255,7 +249,7 @@ public class ReviewPhaseHandlerTest extends BaseTest {
             reviewPhase.getAllDependencies()[0].setDependentStart(false);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase));
+            assertFalse("canPerform should have returned false", handler.canPerform(reviewPhase).isSuccess());
         } finally {
             cleanTables();
         }
@@ -265,7 +259,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the perform method. To start the phase. No reviewer has been assigned.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.2
      */
@@ -285,44 +278,44 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             handler.perform(reviewPhase, operator);
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
         }
     }
+
     /**
      * <p>
      * Test the perform method. To start the phase. reviewer has been assigned.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.2
      */
@@ -342,39 +335,39 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
             handler.perform(reviewPhase, operator);
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -385,7 +378,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the perform method. To stop the phase.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.2
      */
@@ -404,58 +396,138 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-            //insertScorecards
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
             handler.perform(reviewPhase, operator);
 
-            //manually check the email
+            // manually check the email
+        } finally {
+            cleanTables();
+            closeConnection();
+        }
+    }
+
+    /**
+     * <p>
+     * Test the perform method. To stop the phase.
+     * </p>
+     * @throws Exception into JUnit
+     * @since 1.6
+     */
+    public void testPerformToStopForStudio() throws Exception {
+        ReviewPhaseHandler handler = new ReviewPhaseHandler();
+
+        try {
+            cleanTables();
+
+            Project project = setupPhasesForStudio();
+
+            // test with scheduled status.
+            Phase reviewPhase = project.getAllPhases()[3];
+            reviewPhase.setPhaseStatus(PhaseStatus.OPEN);
+            String operator = "1001";
+
+            Connection conn = getConnection();
+
+            // insert the reviewers
+            Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
+            super.insertResources(conn, new Resource[] {reviewer });
+            insertResourceInfo(conn, reviewer.getId(), 1, "2");
+            Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 4);
+            super.insertResources(conn, new Resource[] {reviewer2 });
+            insertResourceInfo(conn, reviewer2.getId(), 1, "3");
+
+            // create a registration
+            Resource resource = createResource(4, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource });
+            insertResourceInfo(conn, resource.getId(), 1, "4");
+            insertResourceInfo(conn, resource.getId(), 2, "ACRush");
+            insertResourceInfo(conn, resource.getId(), 4, "3808");
+            insertResourceInfo(conn, resource.getId(), 5, "100");
+
+            // insert upload/submission
+            Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Parameter");
+            super.insertUploads(conn, new Upload[] {upload });
+
+            Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
+            Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
+            Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
+            insertReviews(conn, new Review[] {review, review2 });
+
+            // another register
+            resource = createResource(5, 101L, 1, 1);
+            super.insertResources(conn, new Resource[] {resource });
+            insertResourceInfo(conn, resource.getId(), 1, "5");
+            insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
+            insertResourceInfo(conn, resource.getId(), 4, "3338");
+            insertResourceInfo(conn, resource.getId(), 5, "90");
+            upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
+            super.insertUploads(conn, new Upload[] {upload });
+
+            submission = super.createSubmission(2, upload.getId(), 1, 1);
+            super.insertSubmissions(conn, new Submission[] {submission });
+            sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
+            review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
+            review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
+            insertReviews(conn, new Review[] {review, review2 });
+
+            handler.perform(reviewPhase, operator);
+
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -466,7 +538,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the canPerform method. No reviewer has been assigned.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.3
      */
@@ -486,34 +557,34 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            assertFalse(handler.canPerform(reviewPhase));
+            assertFalse(handler.canPerform(reviewPhase).isSuccess());
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -524,7 +595,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the canPerform method. reviewer has been assigned.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.3
      */
@@ -544,39 +614,39 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 4);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
 
-            assertFalse("reviews not match reviewers number.", handler.canPerform(reviewPhase));
+            assertFalse("reviews not match reviewers number.", handler.canPerform(reviewPhase).isSuccess());
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -587,7 +657,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the canPerform method.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.3
      */
@@ -605,58 +674,58 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-            //insertScorecards
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            assertFalse("no test case uploaded", handler.canPerform(reviewPhase));
+            assertFalse("no test case uploaded", handler.canPerform(reviewPhase).isSuccess());
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -667,7 +736,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the canPerform method.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.3
      */
@@ -686,58 +754,58 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-            //insertScorecards
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            assertFalse("no test case uploaded", handler.canPerform(reviewPhase));
+            assertFalse("no test case uploaded", handler.canPerform(reviewPhase).isSuccess());
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -748,7 +816,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the canPerform method.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.3
      */
@@ -765,61 +832,61 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
             Upload reviewerUpload = super.createUpload(3, project.getId(), reviewer.getId(), 1, 1, "Paramter");
             Upload reviewerUpload2 = super.createUpload(4, project.getId(), reviewer2.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {reviewerUpload, reviewerUpload2});
+            super.insertUploads(conn, new Upload[] {reviewerUpload, reviewerUpload2 });
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-            //insertScorecards
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            assertTrue("all test cases uploaded", handler.canPerform(reviewPhase));
+            assertTrue("all test cases uploaded", handler.canPerform(reviewPhase).isSuccess());
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();
@@ -830,7 +897,6 @@ public class ReviewPhaseHandlerTest extends BaseTest {
      * <p>
      * Test the canPerform method.
      * </p>
-     *
      * @throws Exception into JUnit
      * @since 1.3
      */
@@ -847,58 +913,58 @@ public class ReviewPhaseHandlerTest extends BaseTest {
 
             Connection conn = getConnection();
 
-            //insert the reviewers
+            // insert the reviewers
             Resource reviewer = createResource(6, reviewPhase.getId(), 1, 6);
-            super.insertResources(conn, new Resource[] {reviewer});
+            super.insertResources(conn, new Resource[] {reviewer });
             insertResourceInfo(conn, reviewer.getId(), 1, "2");
             Resource reviewer2 = createResource(7, reviewPhase.getId(), 1, 7);
-            super.insertResources(conn, new Resource[] {reviewer2});
+            super.insertResources(conn, new Resource[] {reviewer2 });
             insertResourceInfo(conn, reviewer2.getId(), 1, "3");
 
             // create a registration
             Resource resource = createResource(4, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "4");
             insertResourceInfo(conn, resource.getId(), 2, "ACRush");
             insertResourceInfo(conn, resource.getId(), 4, "3808");
             insertResourceInfo(conn, resource.getId(), 5, "100");
 
-            //insert upload/submission
+            // insert upload/submission
             Upload upload = super.createUpload(1, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
-            //insertScorecards
+            super.insertSubmissions(conn, new Submission[] {submission });
+            // insertScorecards
             Scorecard sc = this.createScorecard(1, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             Scorecard sc2 = this.createScorecard(3, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             Review review = createReview(1, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             Review review2 = createReview(3, reviewer2.getId(), submission.getId(), sc2.getId(), true, 90.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            //another register
+            // another register
             resource = createResource(5, 101L, 1, 1);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
             insertResourceInfo(conn, resource.getId(), 1, "5");
             insertResourceInfo(conn, resource.getId(), 2, "UdH-WiNGeR");
             insertResourceInfo(conn, resource.getId(), 4, "3338");
             insertResourceInfo(conn, resource.getId(), 5, "90");
             upload = super.createUpload(2, project.getId(), resource.getId(), 1, 1, "Paramter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             submission = super.createSubmission(2, upload.getId(), 1, 1);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
             sc = this.createScorecard(2, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
             sc2 = this.createScorecard(4, 1, 2, 1, "name", "1.0", 75.0f, 100.0f);
-            insertScorecards(conn, new Scorecard[]{sc, sc2});
+            insertScorecards(conn, new Scorecard[] {sc, sc2 });
             review = createReview(2, reviewer.getId(), submission.getId(), sc.getId(), true, 77.0f);
             review2 = createReview(4, reviewer2.getId(), submission.getId(), sc2.getId(), true, 70.0f);
-            insertReviews(conn, new Review []{review, review2});
+            insertReviews(conn, new Review[] {review, review2 });
 
-            assertFalse("no test case uploaded", handler.canPerform(reviewPhase));
+            assertFalse("no test case uploaded", handler.canPerform(reviewPhase).isSuccess());
 
-            //manually check the email
+            // manually check the email
         } finally {
             cleanTables();
             closeConnection();

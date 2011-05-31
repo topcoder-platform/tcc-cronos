@@ -744,9 +744,9 @@ abstract class BaseTestCase extends TestCase {
 
         try {
             String insertSubmission = "INSERT INTO submission " + "(submission_id, upload_id, submission_status_id, " +
-                "submission_type_id, create_user, create_date, modify_user, modify_date," +
-                " placement, initial_score, final_score, screening_score) " +
-                "VALUES (?, ?, ?, ?, 'user', ?, 'user', ?, ?, ?, ?, ?)";
+                " submission_type_id, create_user, create_date, modify_user, modify_date," +
+                " placement, initial_score, final_score, screening_score, user_rank) " +
+                "VALUES (?, ?, ?, ?, 'user', ?, 'user', ?, ?, ?, ?, ?, 1)";
             preparedStmt = conn.prepareStatement(insertSubmission);
 
             Timestamp now = new Timestamp(System.currentTimeMillis());

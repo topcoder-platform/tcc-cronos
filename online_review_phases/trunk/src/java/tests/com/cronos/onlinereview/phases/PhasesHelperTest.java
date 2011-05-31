@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -21,11 +21,15 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 
 /**
- * Tests the version 1.4 newly added or updated methods for <code>PhasesHelper</code>
- * class.
- *
- * @author myxgyy
- * @version 1.0
+ * Tests the version 1.4 newly added or updated methods for <code>PhasesHelper</code> class.
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>Change arePhaseDependenciesMet checkPhaseDependenciesMet.</li>
+ * <li>As removing the method getScreeningTasks, remove its test too.</li>
+ * </ul>
+ * @author myxgyy, microsky
+ * @version 1.6.1
  * @since 1.4
  */
 public class PhasesHelperTest extends BaseTest {
@@ -41,7 +45,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * sets up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -64,7 +67,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * cleans up the environment required for test cases for this class.
-     *
      * @throws Exception
      *             not under test.
      */
@@ -73,17 +75,15 @@ public class PhasesHelperTest extends BaseTest {
     }
 
     /**
-     * Tests the arePhaseDependenciesMet method. Note only changed functions are tested.
+     * Tests the checkPhaseDependenciesMet method. Note only changed functions are tested.
      * <p>
-     * If phase B is configured to start when phase A starts (i.e. has a dependency on
-     * phase A) the code checks if the phase A is open. if the phase A is already closed.
-     * Phase B should start in this case.
+     * If phase B is configured to start when phase A starts (i.e. has a dependency on phase A) the code checks if
+     * the phase A is open. if the phase A is already closed. Phase B should start in this case.
      * </p>
-     *
      * @throws Exception
      *             to JUnit.
      */
-    public void testArePhaseDependenciesMet1() throws Exception {
+    public void testCheckPhaseDependenciesMet1() throws Exception {
         Phase specReview = super.createPhase(2, 1, "Sheduled", 2,
                 "Specification Review");
         Phase specSub = createPhase(specReview.getProject(), 1, 1, "Closed", 1,
@@ -92,20 +92,18 @@ public class PhasesHelperTest extends BaseTest {
         specReview.getProject().addPhase(specSub);
         specReview.addDependency(d);
 
-        assertTrue("should return true", PhasesHelper.arePhaseDependenciesMet(
-                specReview, true));
+        assertTrue("should return true", PhasesHelper.checkPhaseDependenciesMet(
+                specReview, true).isSuccess());
     }
 
     /**
      * Helper method to create a phase instance.
-     *
      * @param project the project.
      * @param phaseId phase id.
      * @param phaseStatusId phase Status Id.
      * @param phaseStatusName phase Status Name.
      * @param phaseTypeId phase Type Id.
      * @param phaseTypeName phase Type Name.
-     *
      * @return phase instance.
      */
     private static Phase createPhase(Project project, long phaseId, long phaseStatusId,
@@ -120,16 +118,14 @@ public class PhasesHelperTest extends BaseTest {
     }
 
     /**
-     * Tests the arePhaseDependenciesMet method. Note only changed functions are tested.
+     * Tests the checkPhaseDependenciesMet method. Note only changed functions are tested.
      * <p>
-     * If phase B is configured to end when phase A starts. It should end if the phase A is
-     * already closed.
+     * If phase B is configured to end when phase A starts. It should end if the phase A is already closed.
      * </p>
-     *
      * @throws Exception
      *             to JUnit.
      */
-    public void testArePhaseDependenciesMet2() throws Exception {
+    public void testCheckPhaseDependenciesMet2() throws Exception {
         Phase specReview = super.createPhase(2, 1, "Sheduled", 2,
                 "Specification Review");
         Phase specSub = createPhase(specReview.getProject(), 1, 1, "Closed", 1, "Specification Submission");
@@ -137,13 +133,12 @@ public class PhasesHelperTest extends BaseTest {
         specReview.getProject().addPhase(specSub);
         specReview.addDependency(d);
 
-        assertTrue("should return true", PhasesHelper.arePhaseDependenciesMet(
-                specReview, false));
+        assertTrue("should return true", PhasesHelper.checkPhaseDependenciesMet(
+                specReview, false).isSuccess());
     }
 
     /**
      * Tests the hasOneSpecificationSubmission method. Submission exists and it will return in this case.
-     *
      * @throws Exception
      *             to JUnit.
      */
@@ -161,13 +156,13 @@ public class PhasesHelperTest extends BaseTest {
             // insert a submission with specification submission
             Connection conn = getConnection();
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             assertNotNull("should have one submission", PhasesHelper.hasOneSpecificationSubmission(phase,
                     helper, getConnection(), log));
@@ -179,7 +174,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests the hasOneSpecificationSubmission method. Submission not exists and it will null in this case.
-     *
      * @throws Exception
      *             to JUnit.
      */
@@ -204,7 +198,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests the hasOneSpecificationSubmission method. Two submission exist and PhaseHandlingException expected..
-     *
      * @throws Exception
      *             to JUnit.
      */
@@ -222,14 +215,14 @@ public class PhasesHelperTest extends BaseTest {
             // insert a submission with specification submission
             Connection conn = getConnection();
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission1 = super.createSubmission(1, upload.getId(), 1, 2);
             Submission submission2 = super.createSubmission(2, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission1, submission2});
+            super.insertSubmissions(conn, new Submission[] {submission1, submission2 });
 
             PhasesHelper.hasOneSpecificationSubmission(phase, helper, getConnection(), log);
             fail("Should have thrown PhaseHandlingException.");
@@ -243,7 +236,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests searchSubmissionsForProject method. Submission with given type should be fetched.
-     *
      * @throws Exception to JUnit.
      */
     public void testSearchSubmissionsForProject() throws Exception {
@@ -260,13 +252,13 @@ public class PhasesHelperTest extends BaseTest {
             // insert a submission with specification submission
             Connection conn = getConnection();
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             assertEquals("one submission found", 1,
                     PhasesHelper.searchSubmissionsForProject(helper.getUploadManager(), 1, 2).length);
@@ -277,43 +269,7 @@ public class PhasesHelperTest extends BaseTest {
     }
 
     /**
-     * Tests getScreeningTasks method. ScreeningTask with Contest Submission type should be fetched.
-     *
-     * @throws Exception to JUnit.
-     */
-    public void testGetScreeningTasks() throws Exception {
-        try {
-            cleanTables();
-
-            Project project = super.setupPhasesForSpec(true);
-            Phase[] phases = project.getAllPhases();
-            Phase phase = phases[0];
-
-            // test with scheduled status.
-            phase.setPhaseStatus(PhaseStatus.OPEN);
-
-            // insert a submission with specification submission
-            Connection conn = getConnection();
-            Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
-
-            Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
-
-            Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
-
-            assertEquals("zero screening task for submission", 0,
-                    PhasesHelper.getScreeningTasks(helper, conn, phase).length);
-        } finally {
-            cleanTables();
-            closeConnection();
-        }
-    }
-
-    /**
      * Tests searchActiveSubmissions method. Submission with given submission type should be fetched.
-     *
      * @throws Exception to JUnit.
      */
     public void testSearchActiveSubmissions() throws Exception {
@@ -330,17 +286,17 @@ public class PhasesHelperTest extends BaseTest {
             // insert a submission with specification submission
             Connection conn = getConnection();
             Resource resource = createResource(4, 101L, 1, 17);
-            super.insertResources(conn, new Resource[] {resource});
+            super.insertResources(conn, new Resource[] {resource });
 
             Upload upload = super.createUpload(1, project.getId(), 4, 1, 1, "parameter");
-            super.insertUploads(conn, new Upload[] {upload});
+            super.insertUploads(conn, new Upload[] {upload });
 
             Submission submission = super.createSubmission(1, upload.getId(), 1, 2);
-            super.insertSubmissions(conn, new Submission[] {submission});
+            super.insertSubmissions(conn, new Submission[] {submission });
 
             assertEquals("one submission found", 1,
                     PhasesHelper.searchActiveSubmissions(helper.getUploadManager(),
-                    conn, 1, "Specification Submission").length);
+                        conn, 1, "Specification Submission").length);
         } finally {
             cleanTables();
             closeConnection();
@@ -349,7 +305,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests isFirstPhase method. The given phase is not the first phase. False expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testiIFirstPhase1() throws Exception {
@@ -369,7 +324,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests isFirstPhase method. The given phase is first phase. True expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testiIFirstPhase2() throws Exception {
@@ -389,7 +343,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests insertSpecSubmissionSpecReview method.
-     *
      * @throws Exception to JUnit.
      */
     public void testInsertSpecSubmissionSpecReview() throws Exception {
@@ -411,7 +364,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests areParentProjectsCompleted method. The parent project is not completed, false expected.
-     *
      * @throws Exception to JUnit.
      */
     @SuppressWarnings("deprecation")
@@ -427,7 +379,8 @@ public class PhasesHelperTest extends BaseTest {
 
             assertFalse("parent project not completed",
                 PhasesHelper.areParentProjectsCompleted(phase,
-                new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName()).createConnection(), helper, log));
+                    new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName()).createConnection(),
+                    helper, log));
         } finally {
             cleanTables();
             closeConnection();
@@ -436,7 +389,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests areParentProjectsCompleted method. The parent project is completed, true expected.
-     *
      * @throws Exception to JUnit.
      */
     @SuppressWarnings("deprecation")
@@ -452,7 +404,8 @@ public class PhasesHelperTest extends BaseTest {
 
             assertTrue("parent project completed",
                 PhasesHelper.areParentProjectsCompleted(phase,
-                new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName()).createConnection(), helper, log));
+                    new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName()).createConnection(),
+                    helper, log));
         } finally {
             cleanTables();
             closeConnection();
@@ -460,13 +413,14 @@ public class PhasesHelperTest extends BaseTest {
     }
 
     /**
-     * Tests getIntegerAttribute method, the phase attribute with given name is null, PhaseHandlingException expected.
-     *
+     * Tests getIntegerAttribute method, the phase attribute with given name is null, PhaseHandlingException
+     * expected.
      * @throws Exception to JUnit.
      */
     public void testGetIntegerAttribute_NullValue() throws Exception {
         try {
-            PhasesHelper.getIntegerAttribute(createPhase(1, 1, "Closed", 1, "Specification Submission"), "not exist");
+            PhasesHelper.getIntegerAttribute(createPhase(1, 1, "Closed", 1, "Specification Submission"),
+                "not exist");
             fail("should have thrown PhaseHandlingException");
         } catch (PhaseHandlingException e) {
             // pass
@@ -476,7 +430,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getIntegerAttribute method, the phase attribute with given name can not be parse to integer,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetIntegerAttribute_NotInteger() throws Exception {
@@ -493,7 +446,6 @@ public class PhasesHelperTest extends BaseTest {
 
     /**
      * Tests getIntegerProp method, the resource property with given name is null, PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetIntegerProp_NullValue() throws Exception {
@@ -508,7 +460,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getIntegerProp method, the resource property with given name can not be parse to integer,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetIntegerProp_NotInteger() throws Exception {
@@ -526,7 +477,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getIntegerProp method, the resource property with given name is not type of String,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetIntegerProp_NotString() throws Exception {
@@ -544,7 +494,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getSubmissionStatus method, the status can not be found,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetSubmissionStatus_StatusNotFound() throws Exception {
@@ -559,7 +508,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getPhaseType method, the phase type can not be found,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetPhaseType_TypeNotFound() throws Exception {
@@ -574,7 +522,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getPhaseStatus method, the phase status can not be found,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetPhaseStatus_StatusNotFound() throws Exception {
@@ -589,7 +536,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getUploadStatus method, the upload status can not be found,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetUploadStatus_StatusNotFound() throws Exception {
@@ -604,7 +550,6 @@ public class PhasesHelperTest extends BaseTest {
     /**
      * Tests getCommentType method, the comment type can not be found,
      * PhaseHandlingException expected.
-     *
      * @throws Exception to JUnit.
      */
     public void testGetCommentType_TypeNotFound() throws Exception {
