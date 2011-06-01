@@ -15,6 +15,7 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * Unit test for the <code>Helper</code>.
+ *
  * @author fuyun
  * @version 1.1
  */
@@ -27,21 +28,23 @@ public class HelperTest extends TestCase {
 
     /**
      * Sets up the test environment.
-     * @throws Exception if there is any problem.
+     *
+     * @throws Exception
+     *             if there is any problem.
      */
     protected void setUp() throws Exception {
         ConfigManager.getInstance().add("dbfactory.xml");
-        factory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class
-                .getName());
+        factory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
     }
 
     /**
      * Cleans up the test environment.
-     * @throws Exception if there is any problem.
+     *
+     * @throws Exception
+     *             if there is any problem.
      */
     protected void tearDown() throws Exception {
-        ConfigManager.getInstance().removeNamespace(
-                "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
+        ConfigManager.getInstance().removeNamespace("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl");
     }
 
     /**
@@ -49,10 +52,11 @@ public class HelperTest extends TestCase {
      * Accuracy test for method <code>createConnection</code>.
      * </p>
      * <p>
-     * Verifies that the <code>Connection</code> could be returned if the
-     * connection name is provided.
+     * Verifies that the <code>Connection</code> could be returned if the connection name is provided.
      * </p>
-     * @throws Exception if there is any problem.
+     *
+     * @throws Exception
+     *             if there is any problem.
      */
     public void testCreateConnectionWithConnectionName() throws Exception {
         Connection conn = null;
@@ -69,10 +73,11 @@ public class HelperTest extends TestCase {
      * Accuracy test for method <code>createConnection</code>.
      * </p>
      * <p>
-     * Verifies that the <code>Connection</code> could be returned if the
-     * connection name is not provided.
+     * Verifies that the <code>Connection</code> could be returned if the connection name is not provided.
      * </p>
-     * @throws Exception if there is any problem.
+     *
+     * @throws Exception
+     *             if there is any problem.
      */
     public void testCreateConnectionWithNullConnectionName() throws Exception {
         Connection conn = null;
@@ -89,8 +94,7 @@ public class HelperTest extends TestCase {
      * Failure test for method <code>createConnection</code>.
      * </p>
      * <p>
-     * Verifies taht the <code>PersistenceException</code> will be thrown if
-     * fails to create the connection.
+     * Verifies taht the <code>PersistenceException</code> will be thrown if fails to create the connection.
      * </p>
      */
     public void testCreateConnectionFailure() {

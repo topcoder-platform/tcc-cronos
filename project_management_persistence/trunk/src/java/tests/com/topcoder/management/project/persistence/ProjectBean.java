@@ -13,6 +13,7 @@ import com.topcoder.management.project.Project;
 
 /**
  * The bean class used for EJB Demo.
+ *
  * @author fuyun
  * @version 1.1
  */
@@ -30,12 +31,14 @@ public class ProjectBean implements SessionBean {
 
     /**
      * Creates the bean.
-     * @throws CreateException if fails to create the bean.
+     *
+     * @throws CreateException
+     *             if fails to create the bean.
      */
     public void ejbCreate() throws CreateException {
         try {
             persistence = new UnmanagedTransactionInformixProjectPersistence(
-                    "com.topcoder.management.project.persistence");
+                "com.topcoder.management.project.persistence");
         } catch (Exception e) {
             throw new CreateException("Fails to create the bean.");
         }
@@ -43,7 +46,9 @@ public class ProjectBean implements SessionBean {
 
     /**
      * sets the session context, called by EJB container.
-     * @param ctx the session context to set.
+     *
+     * @param ctx
+     *            the session context to set.
      */
     public void setSessionContext(SessionContext ctx) {
         context = ctx;
@@ -51,14 +56,17 @@ public class ProjectBean implements SessionBean {
 
     /**
      * The business method to create the project.
-     * @param project the project to create in database.
-     * @param operator the operator who create the project.
-     * @throws PersistenceException if fails to create the project in database.
-     * @throws IllegalArgumentException if any arguments is <code>null</code>
-     *             or the operator is empty string.
+     *
+     * @param project
+     *            the project to create in database.
+     * @param operator
+     *            the operator who create the project.
+     * @throws PersistenceException
+     *             if fails to create the project in database.
+     * @throws IllegalArgumentException
+     *             if any arguments is <code>null</code> or the operator is empty string.
      */
-    public void createProject(Project project, String operator)
-        throws PersistenceException {
+    public void createProject(Project project, String operator) throws PersistenceException {
 
         if (project == null) {
             throw new IllegalArgumentException("The argument project could not be null.");
