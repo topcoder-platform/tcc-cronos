@@ -4861,11 +4861,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 preparedStatement.setLong(1, projectId);
 
                 for (int roleId : ALL_ROLES_ID) {
-                    if (roleId != MANAGER_ROLE_ID 
-                        && roleId != APPROVER_ROLE_ID
-                        && roleId != OBSERVER_ROLE_ID
-                        && roleId != CLIENT_MANAGER_ROLE_ID
-                        && roleId != COPILOT_ROLE_ID)
+                    if (roleId == SUBMITTER_ROLE_ID 
+                        || roleId == COPILOT_ROLE_ID)
                 {
                         preparedStatement.setInt(2, roleId);
 
