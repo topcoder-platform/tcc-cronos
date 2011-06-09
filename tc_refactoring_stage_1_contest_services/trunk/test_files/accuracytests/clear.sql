@@ -1,0 +1,16 @@
+delete from project_status_lu;
+delete from project_info_type_lu;
+delete from phase_type_lu;
+delete from contest_eligibility;
+delete from upload;
+delete from resource;
+delete from project_info;
+delete from project_phase;
+delete from resource_info;
+delete from submission;
+delete from project_result;
+delete from resource_submission;
+delete from project_group_category_lu;
+delete from project_catalog_lu;
+delete from project_category_lu;
+delete from project;
