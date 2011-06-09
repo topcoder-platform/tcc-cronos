@@ -6,11 +6,7 @@ package com.cronos.onlinereview.phases;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +18,6 @@ import com.topcoder.management.deliverable.persistence.UploadPersistenceExceptio
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
-import com.topcoder.management.project.Prize;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
@@ -105,11 +100,20 @@ import com.topcoder.util.log.LogFactory;
  * in case if operation cannot be performed.</li>
  * </ul>
  * </p>
+ * 
+ * <p>
+ * Version 1.6.2 (BUGR-4779) changes note:
+ * <ul>
+ * <li>Updated {@link #updateSubmissionScores(Phase, String, Map)} method to use 
+ * <code>PhaseHeleper.setSubmissionPrize</code> to populate contest prizes for studio submissions.</li>
+ * </ul>
+ * </p>
+ *
  * <p>
  * Thread safety: This class is thread safe because it is immutable.
  * </p>
- * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, FireIce, microsky
- * @version 1.6.1
+ * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, FireIce, microsky, flexme
+ * @version 1.6.2
  */
 public class ReviewPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -489,58 +493,10 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             // populate places and update project with placement details for studio competitions.
             // studio project type id is 3.
             if (isStudioProject) {
-                List<Prize> prizes = project.getPrizes();
-
-                if (prizes != null && prizes.size() != 0) {
-                    prizes=new ArrayList<Prize>(prizes);
-                    for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
-                        Prize prize = iter.next();
-
-                        if (!"Contest Prize".equals(prize.getPrizeType().getDescription())) {
-                            iter.remove();
-                        }
-                    }
-
-                    if (prizes.size() != 0) {
-                        // sort the submission prizes
-                        Collections.sort(prizes, new Comparator<Prize>() {
-
-                            /**
-                             * compare the prize by prize amount.
-                             * @param o1
-                             *            the first prize
-                             * @param o2
-                             *            the second prize
-                             * @return 1 if the first prize amount is bigger than the second one, 0 for equation,
-                             *         otherwise -1.
-                             */
-                            public int compare(Prize o1, Prize o2) {
-                                return Double.compare(o1.getPrizeAmount(), o2.getPrizeAmount());
-                            }
-                        });
-
-                        // sort the submissions.
-                        Arrays.sort(subs, new Comparator<Submission>() {
-                            public int compare(Submission o1, Submission o2) {
-                                int result = o1.getFinalScore().compareTo(o2.getFinalScore());
-
-                                if (result == 0) {
-                                    // Break ties if exist: Submission with earlier upload date gets
-                                    // a higher placement.
-                                    return o1.getUpload().getCreationTimestamp().compareTo(
-                                            o2.getUpload().getCreationTimestamp());
-                                }
-                                return result;
-                            }
-                        });
-
-                        int maxIndex = Math.min(prizes.size(), subs.length);
-                        for (int i = 0; i < maxIndex; i++) {
-                            Prize prizeToAward = prizes.get(i);
-                            subs[i].setPrize(prizeToAward);
-                            getManagerHelper().getUploadManager().updateSubmission(subs[i], operator);
-                        }
-                    }
+                // set the contest prize.
+                PhasesHelper.setSubmissionPrize(getManagerHelper(), phase.getProject().getId(), subs, "Contest Prize");
+                for (int iSub = 0; iSub < subs.length; iSub++) {
+                    getManagerHelper().getUploadManager().updateSubmission(subs[iSub], operator);
                 }
 
                 // if there is a winner

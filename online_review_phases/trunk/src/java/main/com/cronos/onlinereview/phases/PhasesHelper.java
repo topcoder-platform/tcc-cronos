@@ -3,15 +3,29 @@
  */
 package com.cronos.onlinereview.phases;
 
+import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionStatusLookupUtility;
 import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
-
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
-
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.UploadManager;
@@ -22,6 +36,7 @@ import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
+import com.topcoder.management.project.Prize;
 import com.topcoder.management.project.ProjectManager;
 import com.topcoder.management.project.link.ProjectLink;
 import com.topcoder.management.resource.Resource;
@@ -39,39 +54,21 @@ import com.topcoder.management.review.scoreaggregator.RankedSubmission;
 import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.Scorecard;
-
 import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.project.phases.PhaseStatus;
 import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.phases.Project;
-
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.EqualToFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.InFilter;
-
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
-
-import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * <p>
@@ -157,8 +154,16 @@ import java.util.Set;
  * <li>Change the name of canPhaseStart() to checkPhaseCanStart() and return OperationCheckResult.</li>
  * </ol>
  * </p>
- * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, microsky
- * @version 1.6.1
+ *
+ * <p>
+ * Version 1.7.1 (BUGR-4779) Change notes:
+ * <ol>
+ * <li>Added {@link #setSubmissionPrize(ManagerHelper, long, Submission[], String)} method to populate prizes for submissions.</li>
+ * </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, microsky, flexme
+ * @version 1.7.1
  */
 final class PhasesHelper {
     /**
@@ -2709,5 +2714,77 @@ final class PhasesHelper {
             }
         }
         throw new PhaseHandlingException("submissions not found for submissionId: " + submissionId);
+    }
+
+    /**
+     * Populate the prize for the submissions.
+     *
+     * @param managerHelper the <code>ManagerHelper</code>instance.
+     * @param projectId the project id
+     * @param subs the submissions
+     * @param prizeType the prize type needs to be populated
+     * @throws com.topcoder.management.project.PersistenceException if any persistence error occurs
+     * @since 1.7.1
+     */
+    public static void setSubmissionPrize(ManagerHelper managerHelper, long projectId, Submission[] subs, String prizeType)
+        throws com.topcoder.management.project.PersistenceException {
+        com.topcoder.management.project.Project project = managerHelper.getProjectManager().getProject(projectId);
+
+        List<Prize> prizes = project.getPrizes();
+
+        if (prizes != null && !prizes.isEmpty()) {
+            prizes = new ArrayList<Prize>(prizes);
+            for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
+                Prize prize = iter.next();
+
+                if (!prizeType.equals(prize.getPrizeType().getDescription())) {
+                    iter.remove();
+                }
+            }
+
+            if (!prizes.isEmpty()) {
+                // sort the prizes
+                Collections.sort(prizes, new Comparator<Prize>() {
+                    public int compare(Prize o1, Prize o2) {
+                        return o1.getPlace() - o2.getPlace();
+                    }
+                });
+
+                // sort the submissions.
+                Arrays.sort(subs, new Comparator<Submission>() {
+                    public int compare(Submission o1, Submission o2) {
+                        int placementResult = o1.getPlacement().compareTo(o2.getPlacement());
+                        if (placementResult == 0) {
+                            return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
+                        } else {
+                            return placementResult;
+                        }
+                    }
+                });
+
+                Prize currentPrize = prizes.get(0);
+                int currentPrizeIndex = 0;
+                int currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
+                for (int i = 0; i < subs.length; i++) {
+                    Submission submission = subs[i];
+                    if (!(submission.getSubmissionStatus().getName().equals("Active")
+                            || submission.getSubmissionStatus().getName().equals("Completed Without Win"))) {
+                        continue;
+                    }
+                    if (currentPrizeNumLeft > 0) {
+                        currentPrizeNumLeft--;
+                    } else {
+                        currentPrizeIndex++;
+                        if (currentPrizeIndex >= prizes.size()) {
+                            break; // No more prizes left for awarding
+                        } else {
+                            currentPrize = prizes.get(currentPrizeIndex);
+                            currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
+                        }
+                    }
+                    submission.setPrize(currentPrize);
+                }
+            }
+        }
     }
 }

@@ -5,11 +5,7 @@ package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +15,6 @@ import com.topcoder.management.deliverable.persistence.UploadPersistenceExceptio
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
-import com.topcoder.management.project.Prize;
-import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Review;
@@ -81,8 +75,17 @@ import com.topcoder.util.log.LogFactory;
  * <li>The return changes from boolean to OperationCheckResult.</li>
  * </ul>
  * </p>
- * @author FireIce, microsky
- * @version 1.6.1
+ *
+ * <p>
+ * Version 1.6.2 (BUGR-4779) changes note:
+ * <ul>
+ * <li>Updated {@link #updateSubmissionScores(Connection, Phase, String, Map)} method to use 
+ * <code>PhaseHeleper.setSubmissionPrize</code> to populate milestone prizes for submissions.</li>
+ * </ul>
+ * </p>
+ *
+ * @author FireIce, microsky, flexme
+ * @version 1.6.2
  * @since 1.6
  */
 public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
@@ -398,64 +401,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
             }
 
             // set the milestone prize.
-            Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
-
-            List<Prize> prizes = project.getPrizes();
-
-            if (prizes != null && !prizes.isEmpty()) {
-                prizes = new ArrayList<Prize>(prizes);
-                for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
-                    Prize prize = iter.next();
-
-                    if (!"Milestone Prize".equals(prize.getPrizeType().getDescription())) {
-                        iter.remove();
-                    }
-                }
-
-                if (!prizes.isEmpty()) {
-                    // sort the milestone prizes
-                    Collections.sort(prizes, new Comparator<Prize>() {
-                        public int compare(Prize o1, Prize o2) {
-                            return o1.getPlace() - o2.getPlace();
-                        }
-                    });
-
-                    // sort the submissions.
-                    Arrays.sort(subs, new Comparator<Submission>() {
-                        public int compare(Submission o1, Submission o2) {
-                            int placementResult = o1.getPlacement().compareTo(o2.getPlacement());
-                            if (placementResult == 0) {
-                                return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
-                            } else {
-                                return placementResult;
-                            }
-                        }
-                    });
-
-                    Prize currentPrize = prizes.get(0);
-                    int currentPrizeIndex = 0;
-                    int currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
-                    for (int i = 0; i < subs.length; i++) {
-                        Submission submission = subs[i];
-                        if (submission.getPlacement() == currentPrize.getPlace()) {
-                            if (currentPrizeNumLeft > 0) {
-                                currentPrizeNumLeft--;
-                            } else {
-                                continue; // no more prizes left for awarding for current place
-                            }
-                        } else {
-                            currentPrizeIndex++;
-                            if (currentPrizeIndex >= prizes.size()) {
-                                break; // No more prizes left for awarding
-                            } else {
-                                currentPrize = prizes.get(currentPrizeIndex);
-                                currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
-                            }
-                        }
-                        submission.setPrize(currentPrize);
-                    }
-                }
-            }
+            PhasesHelper.setSubmissionPrize(getManagerHelper(), phase.getProject().getId(), subs, "Milestone Prize");
 
             // update the submissions
             for (int iSub = 0; iSub < subs.length; iSub++) {

@@ -106,8 +106,16 @@ import java.util.Map;
  * in case if operation cannot be performed.</li>
  * </ul>
  * </p>
- * @author tuenm, bose_java, argolite, waits, isv, microsky
- * @version 1.6.1
+ *
+ * <p>
+ * Version 1.7.1 (BUGR-4779) Change notes:
+ * <ol>
+ * <li>Updated {@link #updateSubmissions(Phase, String, Map)} method to populate contest prizes for submissions.</li>
+ * </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, isv, microsky, flexme
+ * @version 1.7.1
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -456,13 +464,18 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                         submission.setSubmissionStatus(noWinStatus);
                     }
                 }
-                // persist the change
-                getManagerHelper().getUploadManager().updateSubmission(
-                                submission, operator);
                 // getManagerHelper().getResourceManager().updateResource(submitter,
                 // operator);
             } // end for
 
+            // set the contest prize.
+            PhasesHelper.setSubmissionPrize(getManagerHelper(), phase.getProject().getId(), subs, "Contest Prize");
+
+            // update the submissions
+            for (int iSub = 0; iSub < subs.length; iSub++) {
+                getManagerHelper().getUploadManager().updateSubmission(subs[iSub], operator);
+            }
+            
             // cannot be the case where there is a runner up but no winner
             if (runnerUpSubmitter != null && winningSubmitter == null) {
                 throw new PhaseHandlingException(
