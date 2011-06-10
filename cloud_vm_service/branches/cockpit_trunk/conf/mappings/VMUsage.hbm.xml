@@ -3,17 +3,16 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.direct.services.view.dto.cloudvm">
-    <class name="VMAccount" table="vm_account" lazy="false">
+    <class name="VMUsage" table="vm_usage" lazy="false">
 
-        <id name="id" column="vm_account_id" >
+        <id name="id" column="vm_usage_id" >
             <generator class="increment">
             </generator>
         </id>
 
+        <property name="name" column="name"/>
         <property name="createDate" column="create_date" />
         <property name="modifyDate" column="modify_date" />
-        <property name="awsAccessKeyId" column="aws_access_key_id" />
-        <property name="awsSecurityAccessKey" column="aws_security_access_key" />
 
     </class>
 </hibernate-mapping>

@@ -37,6 +37,23 @@ CREATE TABLE vm_key_pair (
   PRIMARY KEY (vm_key_pair_id)
 );
 
+CREATE TABLE vm_account (
+  vm_account_id DECIMAL(10,0) NOT NULL  ,
+  aws_access_key_id VARCHAR(50) NOT NULL ,
+  aws_security_access_key VARCHAR(100) NOT NULL ,
+  create_date DATETIME YEAR to FRACTION(3) NOT NULL ,
+  modify_date DATETIME YEAR to FRACTION(3) NOT NULL ,
+  PRIMARY KEY (vm_account_id)
+);
+
+create table 'informix'.vm_account_user (
+  vm_account_user_id DECIMAL(10,0) NOT NULL,
+  vm_account_id DECIMAL(10,0) NOT NULL,
+  user_id DECIMAL(10,0) NOT NULL ,
+  create_date DATETIME YEAR to FRACTION(3) NOT NULL ,
+  modify_date DATETIME YEAR to FRACTION(3) NOT NULL ,
+  PRIMARY KEY (vm_account_user_id) 
+)
 
 CREATE TABLE vm_image (
   vm_image_id DECIMAL(10,0) NOT NULL  ,
@@ -45,6 +62,7 @@ CREATE TABLE vm_image (
   vm_instance_type_id DECIMAL(10,0)  ,
   vm_availability_zone_id DECIMAL(10,0)  ,
   vm_key_pair_id DECIMAL(10,0)  ,
+  vm_account_id DECIMAL(10,0) NOT NULL, 
   create_date DATETIME YEAR to FRACTION(3) NOT NULL ,
   modify_date DATETIME YEAR to FRACTION(3) NOT NULL ,
   PRIMARY KEY (vm_image_id)
@@ -69,17 +87,6 @@ CREATE TABLE vm_image_user_data (
 );
 
 
-CREATE TABLE vm_account (
-  vm_account_id DECIMAL(10,0) NOT NULL  ,
-  aws_access_key_id VARCHAR(50) NOT NULL ,
-  aws_security_access_key VARCHAR(100) NOT NULL ,
-  user_id DECIMAL(10,0) NOT NULL ,
-  create_date DATETIME YEAR to FRACTION(3) NOT NULL ,
-  modify_date DATETIME YEAR to FRACTION(3) NOT NULL ,
-  PRIMARY KEY (vm_account_id)
-);
-
-
 CREATE TABLE vm_contest_type (
   vm_contest_type_id DECIMAL(10,0) NOT NULL  ,
   name VARCHAR(50) NOT NULL ,
@@ -95,7 +102,7 @@ CREATE TABLE vm_instance (
   create_date DATETIME YEAR to FRACTION(3) NOT NULL ,
   modify_date DATETIME YEAR to FRACTION(3) NOT NULL ,
   vm_image_id DECIMAL(10,0) NOT NULL ,
-  vm_account_id DECIMAL(10,0) NOT NULL ,
+  vm_account_user_id DECIMAL(10,0) NOT NULL ,
   tc_member_handle VARCHAR(50) NOT NULL ,
   svn_branch VARCHAR(200) NOT NULL ,
   contest_id DECIMAL(10,0) NOT NULL ,

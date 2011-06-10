@@ -1,8 +1,9 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010,2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.direct.cloudvm.service;
 
+import com.topcoder.direct.services.view.dto.cloudvm.VMUsage;
 import com.topcoder.direct.services.view.dto.cloudvm.VMContestType;
 import com.topcoder.direct.services.view.dto.cloudvm.VMImage;
 import com.topcoder.direct.services.view.dto.cloudvm.VMInstance;
@@ -73,5 +74,15 @@ public interface CloudVMService {
      * @throws CloudVMServiceException  if any error occurs.
      */
     public List<VMContestType> getVMContestTypes(TCSubject tcSubject) throws CloudVMServiceException;
+
+    /**
+     * Get VM usages.
+     *
+     * @param tcSubject the currently logged-in user info.
+     * @return the vm usages.
+     * @throws IllegalArgumentException if the tcSubject argument is null.
+     * @throws CloudVMServiceException  if any error occurs.
+     */
+    public List<VMUsage> getVMUsages(TCSubject tcSubject) throws CloudVMServiceException;
 }
 

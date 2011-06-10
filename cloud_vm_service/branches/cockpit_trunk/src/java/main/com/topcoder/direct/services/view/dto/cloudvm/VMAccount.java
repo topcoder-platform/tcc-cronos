@@ -28,11 +28,6 @@ public class VMAccount extends AbstractIdEntity {
     private String awsSecurityAccessKey;
 
     /**
-     * User id.
-     */
-    private long userId;
-
-    /**
      * Empty constructor.
      */
     public VMAccount() {
@@ -72,24 +67,6 @@ public class VMAccount extends AbstractIdEntity {
      */
     public void setAwsSecurityAccessKey(String awsSecurityAccessKey) {
         this.awsSecurityAccessKey = awsSecurityAccessKey;
-    }
-
-    /**
-     * Getter for the namesake instance variable. Simply return the namesake instance variable.
-     *
-     * @return field value
-     */
-    public long getUserId() {
-        return userId;
-    }
-
-    /**
-     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
-     *
-     * @param userId
-     */
-    public void setUserId(long userId) {
-        this.userId = userId;
     }
 }
 

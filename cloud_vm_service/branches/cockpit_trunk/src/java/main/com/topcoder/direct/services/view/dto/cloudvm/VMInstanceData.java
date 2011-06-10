@@ -40,6 +40,16 @@ public class VMInstanceData implements Serializable {
      * @since BUGR-3232
      */
     private String vmImageTcName;
+
+    /**
+     * Stores vm creation time for readability.
+     */
+    private String vmCreationTime;
+    
+    /**
+     * vm usage for readability.
+     */         
+    private String usage;
     
     /**
      * Empty constructor.
@@ -140,7 +150,43 @@ public class VMInstanceData implements Serializable {
     public void setVmImageTcName(String vmImageTcName) {
         this.vmImageTcName = vmImageTcName;
     }
+
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     */
+    public String getVmCreationTime() {
+        return vmCreationTime;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param vmCreationTime value to set
+     */
+    public void setVmCreationTime(String vmCreationTime) {
+        this.vmCreationTime = vmCreationTime;
+    }
     
+    
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     */
+    public String getUsage() {
+        return usage;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param usage value to set
+     */
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
     
 }
 

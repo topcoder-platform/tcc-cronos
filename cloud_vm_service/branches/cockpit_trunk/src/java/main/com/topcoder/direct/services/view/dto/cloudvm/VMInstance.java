@@ -3,6 +3,8 @@
  */
 package com.topcoder.direct.services.view.dto.cloudvm;
 
+import java.util.Date;
+
 /**
  * This class represents the VM instance for the Amazon EC2. It contains the Amazon instance id, instance status,
  * associated image id, tc member handle, SVN branch, contest id and contest type.
@@ -54,9 +56,14 @@ public class VMInstance extends AbstractIdEntity {
     private long contestTypeId;
 
     /**
-     * Represents the VM account id. It has getter & setter. It can be any value.
+     * Represents the VM account user id. It has getter & setter. It can be any value.
      */
-    private long accountId;
+    private long vmAccountUserId;
+
+    /**
+     * Represents the usage id. It has getter & setter. It can be any value.
+     */
+    private long usageId;
     
     /**
      * Represents VM public IP address.
@@ -69,7 +76,12 @@ public class VMInstance extends AbstractIdEntity {
      * @since BUGR-3930
      */
     private boolean terminated;
-    
+
+    /**
+     * Represents the creation time. It has getter & setter. It can be any value.
+     */
+    private Date creationTime = new Date();
+
     /**
      * Represents user data properties in the form:
      *  key1=value1 
@@ -216,18 +228,37 @@ public class VMInstance extends AbstractIdEntity {
      *
      * @return field value
      */
-    public long getAccountId() {
-        return accountId;
+    public long getVmAccountUserId() {
+        return vmAccountUserId;
     }
 
     /**
      * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
      *
-     * @param accountId value to set
+     * @param vmAccountUserId value to set
      */
-    public void setAccountId(long accountId) {
-        this.accountId = accountId;
+    public void setVmAccountUserId(long vmAccountUserId) {
+        this.vmAccountUserId = vmAccountUserId;
     }
+
+      /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     */
+    public long getUsageId() {
+        return usageId;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param usageId value to set
+     */
+    public void setUsageId(long usageId) {
+        this.usageId = usageId;
+    }
+
     
     /**
      * Getter for the namesake instance variable. Simply return the namesake instance variable.
@@ -287,5 +318,23 @@ public class VMInstance extends AbstractIdEntity {
      */
     public void setPublicIP(String publicIP) {
         this.publicIP = publicIP;
+    }
+
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     */
+    public Date getCreationTime() {
+        return creationTime;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param creationTime value to set
+     */
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

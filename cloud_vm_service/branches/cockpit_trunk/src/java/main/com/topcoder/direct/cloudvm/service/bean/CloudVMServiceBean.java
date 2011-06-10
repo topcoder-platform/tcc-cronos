@@ -21,8 +21,10 @@ import com.topcoder.direct.cloudvm.service.CloudVMServiceException;
 import com.topcoder.direct.cloudvm.service.CloudVMServiceLocal;
 import com.topcoder.direct.cloudvm.service.CloudVMServiceRemote;
 import com.topcoder.direct.services.view.dto.cloudvm.VMAccount;
+import com.topcoder.direct.services.view.dto.cloudvm.VMAccountUser;
 import com.topcoder.direct.services.view.dto.cloudvm.VMAvailabilityZone;
 import com.topcoder.direct.services.view.dto.cloudvm.VMContestType;
+import com.topcoder.direct.services.view.dto.cloudvm.VMUsage;
 import com.topcoder.direct.services.view.dto.cloudvm.VMImage;
 import com.topcoder.direct.services.view.dto.cloudvm.VMInstance;
 import com.topcoder.direct.services.view.dto.cloudvm.VMInstanceAudit;
@@ -52,6 +54,8 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -80,6 +84,7 @@ import java.util.Set;
 @RolesAllowed({"Administrator", "VMManager"})
 public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceLocal {
 
+    private static final DateFormat DATE_FORMATTER = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     /**
      * Represents the sessionContext of the EJB.
      */
@@ -159,10 +164,12 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 VMInstance vmInstance = new VMInstance();
                 vmInstance.setVmImageId(vmInstanceMain.getVmImageId());
                 vmInstance.setContestId(vmInstanceMain.getContestId());
+                vmInstance.setUsageId(vmInstanceMain.getUsageId());
                 vmInstance.setContestTypeId(vmInstanceMain.getContestTypeId());
                 vmInstance.setSvnBranch(vmInstanceMain.getSvnBranch());
                 vmInstance.setTcMemberHandle(tcMemberHandle);
                 vmInstance.setUserData(vmInstanceMain.getUserData());
+                vmInstance.setCreationTime(new Date());
                 
                 String contestName = "";
                 if (vmInstanceMain.getContestTypeId() == SOFTWARE_CONTEST_TYPE_ID) {
@@ -178,14 +185,16 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 tcMemberHandle = tcMemberHandle.trim();
                 logger.log(Level.DEBUG, "Launching for " + tcMemberHandle);
                 verifySecurityKey(entityManager, tcMemberHandle);
-    
-                VMAccount vmAccount = getVMAccount(tcSubject.getUserId());
-                AmazonEC2Client client = new AmazonEC2Client(
-                    new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
-                VMImage vmImage = getVMImage(vmInstance.getVmImageId());
+
+                VMImage vmImage = getVMImage(vmInstance.getVmImageId(), tcSubject);
                 if (vmImage == null) {
                     throw new CloudVMServiceException("No vm image with id " + vmInstance.getVmImageId());
                 }
+
+                VMAccount vmAccount = vmImage.getVmAccount();
+                AmazonEC2Client client = new AmazonEC2Client(
+                    new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
+
                 VMImage defaultImage = getVMImage(defaultVMImageId);
     
                 // create and populate request
@@ -248,7 +257,7 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 Instance instance = result.getReservation().getInstances().get(0);
     
                 vmInstance.setAwsInstanceId(instance.getInstanceId());
-                vmInstance.setAccountId(vmAccount.getId());
+                vmInstance.setVmAccountUserId(getVMAccountUser(tcSubject.getUserId(), vmAccount.getId()).getId());
                 logger.log(Level.DEBUG, "state=" + instance.getState() + ", public ip= " + instance.getPublicIpAddress());
                 vmInstance.setPublicIP(instance.getPublicIpAddress()); // BUGR-3932
                 vmInstance = entityManager.merge(vmInstance);
@@ -311,13 +320,15 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
         try {
             EntityManager entityManager = getEntityManager();
 
-            // create and populate request
-            VMAccount vmAccount = getVMAccount(tcSubject.getUserId());
-            AmazonEC2Client client = new AmazonEC2Client(
-                new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
+
             VMInstance vmInstance = entityManager.find(VMInstance.class, instanceId);
             TerminateInstancesRequest request =
                 new TerminateInstancesRequest().withInstanceIds(vmInstance.getAwsInstanceId());
+
+            // create and populate request
+            VMAccount vmAccount = getVMAccount(tcSubject.getUserId(), vmInstance.getVmAccountUserId());
+            AmazonEC2Client client = new AmazonEC2Client(
+                new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
 
             // send request
             TerminateInstancesResult result = client.terminateInstances(request);
@@ -394,103 +405,112 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
         checkNull("tcSubject", tcSubject);
         try {
             EntityManager entityManager = getEntityManager();
-            VMAccount vmAccount;
+            List<VMAccount> vmAccounts;
             try {
-                vmAccount = getVMAccount(tcSubject.getUserId());
+                vmAccounts = getVMAccounts(tcSubject);
             } catch (CloudVMServiceException e) { // return empty list
                 return new ArrayList<VMInstanceData>();
             }
 
-            // make db query
-            Query q;
-            if (!inRole(tcSubject, "Administrator")) {
-                q = entityManager.createQuery("select a from VMInstance a where a.accountId=:accountId order by a.contestId desc");
-                q.setParameter("accountId", vmAccount.getId());
-            } else {
-                q = entityManager.createQuery("select a from VMInstance a order by a.contestId desc");
-            }
-            List<VMInstance> instances = q.getResultList();
+            List<VMInstanceData> results = new ArrayList<VMInstanceData>();
 
-            // populate result with data from db
-            AmazonEC2Client client = new AmazonEC2Client(
-                new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
-
-            // map to reference by instance id, list to preserve order
-            List<VMInstanceData> data = new ArrayList<VMInstanceData>();
-            Map<String, VMInstanceData> dataMap = new HashMap<String, VMInstanceData>();
-
-            // create VMInstanceData objects
-            for (VMInstance instance : instances) {
-            	  if(instance.isTerminated()) { // BUGR-3930
-                    continue;
+            for (VMAccount vmAccount : vmAccounts) {
+                // make db query
+                Query q;
+                if (!inRole(tcSubject, "Administrator")) {
+                    q = entityManager.createQuery("select a from VMInstance a, VMAccountUser b where a.vmAccountUserId = b.id and b.vmAccountId=:accountId and b.userId=:userId order by a.contestId desc");
+                    q.setParameter("accountId", vmAccount.getId());
+                    q.setParameter("userId", tcSubject.getUserId());
+                } else {
+                    q = entityManager.createQuery("select a from VMInstance a, VMImage b where a.vmImageId = b.id and b.vmAccount.id=:accountId order by a.contestId desc");
+                    q.setParameter("accountId", vmAccount.getId());
                 }
-                VMInstanceData instanceData = new VMInstanceData();
-                instanceData.setInstance(instance);
-                data.add(instanceData);
-                dataMap.put(instance.getAwsInstanceId(), instanceData);
-                // TODO: Comment ?!?
-                instanceData.setStatus(VMInstanceStatus.TERMINATED);
-               
-            }
-            // make remote call and fetch information about vm statuses
-            DescribeInstancesResult result = null;
-            try {
-             result =
-                client.describeInstances(new DescribeInstancesRequest().withInstanceIds(dataMap.keySet()));
-            }
-            catch(AmazonServiceException  aws) {
-            	logger.log(Level.DEBUG, aws.getErrorCode());
-            	if("InvalidInstanceID.NotFound".equals(aws.getErrorCode())) {
-            		logger.log(Level.DEBUG, "AWS error");
-            	} else {
-            		throw logError(new CloudVMServiceException("Unable to describe instances", aws));
-            	}
-            } catch (Exception e) {
-            	throw logError(new CloudVMServiceException("Unable to describe instances", e));
-            }
-            for (Reservation reservation : result.getReservations()) {
-                for (Instance instance : reservation.getInstances()) {
-                	if (dataMap.get(instance.getInstanceId()) != null) {
-                        VMInstanceData inst = dataMap.get(instance.getInstanceId());
-                        inst.setStatus(convertState(instance.getState()));
-                        logger.log(Level.DEBUG, inst.getInstance() + " " + instance.getState().getName());
-                        // BUGR-3981
-                        if(inst.getStatus() == VMInstanceStatus.TERMINATED) {
-                        	markAsTerminated(inst, instance.getLaunchTime());
-                        	data.remove(inst);
-                        }
-                        
-                        // set public IP if it is not set yet
-                        if(inst.getInstance().getPublicIP() == null ||instance.getPublicIpAddress() != null) {
-                            VMInstance toBeSaved = inst.getInstance();
-                            toBeSaved.setPublicIP(instance.getPublicIpAddress());
-                            toBeSaved = entityManager.merge(toBeSaved);
-                            data.get(data.indexOf(inst)).setInstance(toBeSaved);
-                        }
-                        dataMap.remove(instance.getInstanceId());
+                List<VMInstance> instances = q.getResultList();
+
+                // map to reference by instance id, list to preserve order
+                List<VMInstanceData> data = new ArrayList<VMInstanceData>();
+                Map<String, VMInstanceData> dataMap = new HashMap<String, VMInstanceData>();
+
+                // populate result with data from db
+                AmazonEC2Client client = new AmazonEC2Client(
+                    new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
+
+                // create VMInstanceData objects
+                for (VMInstance instance : instances) {
+                      if(instance.isTerminated()) { // BUGR-3930
+                        continue;
                     }
-                }
-           }
-            
-           for (VMInstanceData inst : dataMap.values()) { // terminated
-                logger.log(Level.DEBUG, "here for " + inst.getInstance().getId());
-                markAsTerminated(inst, new Date());
-                data.remove(inst);
-           }
+                    VMInstanceData instanceData = new VMInstanceData();
+                    instanceData.setInstance(instance);
+                    data.add(instanceData);
+                    dataMap.put(instance.getAwsInstanceId(), instanceData);
+                    // TODO: Comment ?!?
+                    instanceData.setStatus(VMInstanceStatus.TERMINATED);
 
-           for (VMInstanceData instanceData : data) {
-        	   fillInstanceData(tcSubject, instanceData.getInstance(), instanceData);
-           }
-           
+                }
+
+                // make remote call and fetch information about vm statuses
+                DescribeInstancesResult result = null;
+                try {
+                 result =
+                    client.describeInstances(new DescribeInstancesRequest().withInstanceIds(dataMap.keySet()));
+                }
+                catch(AmazonServiceException  aws) {
+                    logger.log(Level.DEBUG, aws.getErrorCode());
+                    if("InvalidInstanceID.NotFound".equals(aws.getErrorCode())) {
+                        logger.log(Level.DEBUG, "AWS error");
+                    } else {
+                        throw logError(new CloudVMServiceException("Unable to describe instances", aws));
+                    }
+                } catch (Exception e) {
+                    throw logError(new CloudVMServiceException("Unable to describe instances", e));
+                }
+                for (Reservation reservation : result.getReservations()) {
+                    for (Instance instance : reservation.getInstances()) {
+                        if (dataMap.get(instance.getInstanceId()) != null) {
+                            VMInstanceData inst = dataMap.get(instance.getInstanceId());
+                            inst.setStatus(convertState(instance.getState()));
+                            logger.log(Level.DEBUG, inst.getInstance() + " " + instance.getState().getName());
+                            // BUGR-3981
+                            if(inst.getStatus() == VMInstanceStatus.TERMINATED) {
+                                markAsTerminated(inst, instance.getLaunchTime());
+                                data.remove(inst);
+                            }
+
+                            // set public IP if it is not set yet
+                            if(inst.getInstance().getPublicIP() == null ||instance.getPublicIpAddress() != null) {
+                                VMInstance toBeSaved = inst.getInstance();
+                                toBeSaved.setPublicIP(instance.getPublicIpAddress());
+                                toBeSaved = entityManager.merge(toBeSaved);
+                                data.get(data.indexOf(inst)).setInstance(toBeSaved);
+                            }
+                            dataMap.remove(instance.getInstanceId());
+                        }
+                    }
+               }
+
+               for (VMInstanceData inst : dataMap.values()) { // terminated
+                    logger.log(Level.DEBUG, "here for " + inst.getInstance().getId());
+                    markAsTerminated(inst, new Date());
+                    data.remove(inst);
+               }
+
+               for (VMInstanceData instanceData : data) {
+                   fillInstanceData(tcSubject, instanceData.getInstance(), instanceData);
+               }
+
+                results.addAll(data);
+            }
+
             // for administrators, fetch vm managers also
             if (inRole(tcSubject, "Administrator")) {
-                for (VMInstanceData instanceData : data) {
-                    VMAccount account = entityManager.find(VMAccount.class, instanceData.getInstance().getAccountId());
-                    instanceData.setManagerHandle(userService.getUserHandle(account.getUserId()));
+                for (VMInstanceData instanceData : results) {
+                    VMAccountUser accountUser = entityManager.find(VMAccountUser.class, instanceData.getInstance().getVmAccountUserId());
+                    instanceData.setManagerHandle(userService.getUserHandle(accountUser.getUserId()));
                 }
             }
 
-            return new ArrayList<VMInstanceData>(data);
+            return new ArrayList<VMInstanceData>(results);
         } catch (UserServiceException e) {
             throw logError(new CloudVMServiceException("Unable to fetch user handle.", e));
         } catch (Exception e) {
@@ -540,6 +560,8 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
             q.setParameter("vmImageId", instance.getVmImageId());
             VMImage img = (VMImage) q.getResultList().get(0);
             instanceData.setVmImageTcName(img.getTcName());
+            instanceData.setVmCreationTime(DATE_FORMATTER.format(instance.getCreationTime()));
+            instanceData.setUsage(getVMUsage(instance.getUsageId()).getName());
             
             /*
             String contestName = "";
@@ -575,7 +597,13 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
         checkNull("tcSubject", tcSubject);
         try {
             EntityManager entityManager = getEntityManager();
-            return entityManager.createQuery("select i from VMImage i ").getResultList();
+            if (inRole(tcSubject, "Administrator")) {
+                return entityManager.createQuery("select i from VMImage i ").getResultList();
+            } else {
+                Query q = entityManager.createQuery("select i from VMImage i, VMAccountUser b where i.vmAccount.id = b.vmAccountId and b.userId=:userId");
+                q.setParameter("userId", tcSubject.getUserId());
+                return q.getResultList();
+            }
         } catch (Exception e) {
             throw logError(new CloudVMServiceException("Unable to fetch vm vm images.", e));
         } finally {
@@ -604,22 +632,120 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
         }
     }
 
+
     /**
-     * Get VM account by user id.
+     * Get VM account by user id and account id.
      *
      * @param userId the user id.
+     * @param accountId the account id.
      * @return the vm account.
      * @throws CloudVMServiceException if any error occurs.
      */
-    private VMAccount getVMAccount(long userId) throws CloudVMServiceException {
+    private VMAccount getVMAccount(long userId, long accountId) throws CloudVMServiceException {
         try {
             EntityManager entityManager = getEntityManager();
-            Query q = entityManager.createQuery("select a from VMAccount a where a.userId=:userId");
+            Query q = entityManager.createQuery("select a from VMAccount a, VMAccountUser b where a.id = b.id AND b.userId=:userId AND a.id =:accountId");
             q.setParameter("userId", userId);
+            q.setParameter("accountId", accountId);
+
             VMAccount result = (VMAccount) q.getSingleResult();
             if (result == null) {
                 throw logError(new CloudVMServiceException("No VM account for user with id [" + userId + "]"));
             }
+            return result;
+        } catch (Exception e) {
+            throw logError(new CloudVMServiceException("You have not set up a VM Account!"));
+        }
+    }
+
+     /**
+     * Get VM usages.
+     *
+     * @param tcSubject the currently logged-in user info.
+     * @return the vm usages.
+     * @throws IllegalArgumentException if the tcSubject argument is null.
+     * @throws CloudVMServiceException  if any error occurs.
+     */
+    public List<VMUsage> getVMUsages(TCSubject tcSubject) throws CloudVMServiceException {
+        logEnter("getVMUsages");
+        checkNull("tcSubject", tcSubject);
+        try {
+            EntityManager entityManager = getEntityManager();
+            return entityManager.createQuery("select c from VMUsage c ").getResultList();
+        } catch (Exception e) {
+            throw logError(new CloudVMServiceException("Unable to fetch vm usages.", e));
+        } finally {
+            logExit("getVMUsages");
+        }
+    }
+
+
+        /**
+     * Get VM account user by user id and account id.
+     *
+     * @param userId the user id.
+     * @param accountId the account id.
+     * @return the vm account user.
+     * @throws CloudVMServiceException if any error occurs.
+     */
+    private VMAccountUser getVMAccountUser(long userId, long accountId) throws CloudVMServiceException {
+        try {
+            EntityManager entityManager = getEntityManager();
+            Query q = entityManager.createQuery("select a from VMAccountUser a where a.userId=:userId AND a.vmAccountId =:accountId");
+            q.setParameter("userId", userId);
+            q.setParameter("accountId", accountId);
+
+            VMAccountUser result = (VMAccountUser) q.getSingleResult();
+            if (result == null) {
+                throw logError(new CloudVMServiceException("No VM account user for user with id [" + userId + "]  and vm account with id [" + accountId + "]" ));
+            }
+            return result;
+        } catch (Exception e) {
+            throw logError(new CloudVMServiceException("You have not set up a VM Account User!"));
+        }
+    }
+
+     /**
+     * Get VM usage by id.
+     *
+     * @param vmUsageId the VM usage id.
+     * @return the vm usage.
+     * @throws CloudVMServiceException if any error occurs.
+     */
+    private VMUsage getVMUsage(long vmUsageId) throws CloudVMServiceException {
+        EntityManager entityManager = getEntityManager();
+        return entityManager.find(VMUsage.class, vmUsageId);
+    }
+
+
+    /**
+     * Get VM accounts by user id.
+     *
+     * @param userId the user id.
+     * @return the vm accounts.
+     * @throws CloudVMServiceException if any error occurs.
+     */
+    private List<VMAccount> getVMAccounts(TCSubject tcSubject) throws CloudVMServiceException {
+        try {
+            EntityManager entityManager = getEntityManager();
+            List<VMAccount> result = new ArrayList<VMAccount>();
+
+            if (inRole(tcSubject, "Administrator")) {
+
+                Query q = entityManager.createQuery("select a from VMAccount a ");
+                result = (List<VMAccount>) q.getResultList();
+                
+            }  else {
+
+                Query q = entityManager.createQuery("select a from VMAccount a, VMAccountUser b where a.id = b.id AND b.userId=:userId");
+                q.setParameter("userId", tcSubject.getUserId());
+
+                result = (List<VMAccount>) q.getResultList();
+                if (result.isEmpty()) {
+                    throw logError(new CloudVMServiceException("No VM account for user with id [" + tcSubject.getUserId() + "]"));
+                }
+            }
+
             return result;
         } catch (Exception e) {
             throw logError(new CloudVMServiceException("You have not set up a VM Account!"));
@@ -636,6 +762,28 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
     private VMImage getVMImage(long vmImageId) throws CloudVMServiceException {
         EntityManager entityManager = getEntityManager();
         return entityManager.find(VMImage.class, vmImageId);
+    }
+
+    /**
+     * Get VM image by id and user id.
+     *
+     * @param vmImageId the VM image id.
+     * @param tcSubject TCSubject instance for user
+     * @return the vm image.
+     * @throws CloudVMServiceException if any error occurs.
+     */
+    private VMImage getVMImage(long vmImageId, TCSubject tcSubject) throws CloudVMServiceException {
+        EntityManager entityManager = getEntityManager();
+        if (inRole(tcSubject, "Administrator")) {
+            Query q = entityManager.createQuery("select i from VMImage i where i.id=:id");
+            q.setParameter("id", vmImageId);
+            return (VMImage) q.getSingleResult();
+        } else {
+            Query q = entityManager.createQuery("select i from VMImage i, VMAccountUser b where i.vmAccount.id = b.vmAccountId and b.userId=:userId and i.id=:id");
+            q.setParameter("id", vmImageId);
+            q.setParameter("userId", tcSubject.getUserId());
+            return (VMImage) q.getSingleResult();
+        }
     }
 
 

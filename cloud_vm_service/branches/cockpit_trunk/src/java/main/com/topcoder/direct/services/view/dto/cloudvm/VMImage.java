@@ -46,6 +46,11 @@ public class VMImage extends AbstractIdEntity {
     private VMKeyPair keyPair;
 
     /**
+     * Represents the vm account for launching this VM Image. It has getter & setter. It can be any value.
+     */
+    private VMAccount vmAccount;
+
+    /**
      * Represents the user data mapping. It has getter & setter. It can be any value.
      */
     private List<VMUserData> userData;
@@ -167,6 +172,18 @@ public class VMImage extends AbstractIdEntity {
         this.tcName = tcName;
     }
     
-    
+    /**
+     * @return field value
+     */
+    public VMAccount getVmAccount() {
+        return vmAccount;
+    }
+
+    /**
+     * @param vmAccount value to set
+     */
+    public void setVmAccount(VMAccount vmAccount) {
+        this.vmAccount = vmAccount;
+    }
 }
 

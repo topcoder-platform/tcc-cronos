@@ -18,6 +18,7 @@
       <many-to-one name="instanceType" column="vm_instance_type_id" class="VMInstanceType" fetch="select" />
       <many-to-one name="availabilityZone" column="vm_availability_zone_id" class="VMAvailabilityZone" fetch="select" />
       <many-to-one name="keyPair" column="vm_key_pair_id" class="VMKeyPair" fetch="select" />
+      <many-to-one name="vmAccount" column="vm_account_id" class="VMAccount" fetch="select" />
 
 
       <bag name="userData" table="vm_image_user_data" fetch="select">
