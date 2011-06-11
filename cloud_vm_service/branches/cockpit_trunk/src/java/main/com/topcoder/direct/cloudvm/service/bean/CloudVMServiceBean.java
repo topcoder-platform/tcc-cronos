@@ -326,7 +326,7 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 new TerminateInstancesRequest().withInstanceIds(vmInstance.getAwsInstanceId());
 
             // create and populate request
-            VMAccount vmAccount = getVMAccount(tcSubject.getUserId(), vmInstance.getVmAccountUserId());
+            VMAccount vmAccount = getVMAccount(tcSubject, vmInstance.getVmAccountUserId());
             AmazonEC2Client client = new AmazonEC2Client(
                 new BasicAWSCredentials(vmAccount.getAwsAccessKeyId(), vmAccount.getAwsSecurityAccessKey()));
 
@@ -634,23 +634,30 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
 
 
     /**
-     * Get VM account by user id and account id.
+     * Get VM account by user id and vm account user id.
      *
-     * @param userId the user id.
-     * @param accountId the account id.
+     * @param tcSubject the currently logged-in user info.
+     * @param vmAccountUserId the vm account user id.
      * @return the vm account.
      * @throws CloudVMServiceException if any error occurs.
      */
-    private VMAccount getVMAccount(long userId, long accountId) throws CloudVMServiceException {
+    private VMAccount getVMAccount(TCSubject tcSubject, long vmAccountUserId) throws CloudVMServiceException {
         try {
             EntityManager entityManager = getEntityManager();
-            Query q = entityManager.createQuery("select a from VMAccount a, VMAccountUser b where a.id = b.id AND b.userId=:userId AND a.id =:accountId");
-            q.setParameter("userId", userId);
-            q.setParameter("accountId", accountId);
+
+            Query q;
+            if (!inRole(tcSubject, "Administrator")) {
+                q = entityManager.createQuery("select a from VMAccount a, VMAccountUser b where a.id = b.vmAccountId AND b.userId=:userId AND b.id =:vmAccountUserId");
+                q.setParameter("userId", tcSubject.getUserId());
+                q.setParameter("vmAccountUserId", vmAccountUserId);
+            } else {
+                q = entityManager.createQuery("select a from VMAccount a, VMAccountUser b where a.id = b.vmAccountId AND b.id =:vmAccountUserId");
+                q.setParameter("vmAccountUserId", vmAccountUserId);
+            }
 
             VMAccount result = (VMAccount) q.getSingleResult();
             if (result == null) {
-                throw logError(new CloudVMServiceException("No VM account for user with id [" + userId + "]"));
+                throw logError(new CloudVMServiceException("No VM account for user with id [" + tcSubject.getUserId() + "]"));
             }
             return result;
         } catch (Exception e) {
@@ -737,7 +744,7 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 
             }  else {
 
-                Query q = entityManager.createQuery("select a from VMAccount a, VMAccountUser b where a.id = b.id AND b.userId=:userId");
+                Query q = entityManager.createQuery("select a from VMAccount a, VMAccountUser b where a.id = b.vmAccountId AND b.userId=:userId");
                 q.setParameter("userId", tcSubject.getUserId());
 
                 result = (List<VMAccount>) q.getResultList();
