@@ -3048,15 +3048,21 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY))
                 + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY))
                 + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY))
-                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY))
                 + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
 
             // add copilot payment if exists
             String copilotPayment = contest.getProperty(ProjectPropertyType.COPILOT_COST_PROJECT_PROPERTY_KEY);
 
+            String drPayment = contest.getProperty(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY);
+
             if (copilotPayment != null && copilotPayment.trim().length() != 0) {
 
                 totalFee += Double.parseDouble(copilotPayment);
+            }
+
+            if (drPayment != null && drPayment.trim().length() != 0) {
+
+                totalFee += Double.parseDouble(drPayment);
             }
 
             double fee = totalFee - pastPayment;
