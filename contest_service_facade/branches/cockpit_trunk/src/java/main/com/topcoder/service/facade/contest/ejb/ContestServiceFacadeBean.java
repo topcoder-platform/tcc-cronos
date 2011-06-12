@@ -3197,7 +3197,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch (Exception e) {
             voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
-            logger.error("Error processContestSaleInternal ", e);
+            logger.error("Error processContestSaleInternal " + e, e);
             throw new ContestServiceException(e.getMessage(), e);
         }
 
