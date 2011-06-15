@@ -1,4 +1,5 @@
-Hello reviewer:
+ steps to test the Unit tests:
+
    +) To run my test, you should set your environment first.
    Please add folder test_files into your class path.
 
@@ -12,5 +13,13 @@ Hello reviewer:
    +) Use the ant deploy_to_tomcat to see demo
 
    +) After testing, use delete.sql to delete all data
+ 
 
-   OK, That's all. Have a nice day!
+steps to test the accuracy tests:
+
+1. Configure database connection in application context.
+2. Create database with "accuracytests/schema.sql".
+3. Populate database with "accuracytests/populate.sql".
+4. Run tests.
+
+Clear database with "accuracytests/clear.sql".
