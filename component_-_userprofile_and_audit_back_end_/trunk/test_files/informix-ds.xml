@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+   <local-tx-datasource>
+      <jndi-name>userds</jndi-name>
+	  <connection-url>jdbc:informix-sqli://127.0.0.1:9090/informixoltp:INFORMIXSERVER=ol_kalc</connection-url>
+      <driver-class>com.informix.jdbc.IfxDriver</driver-class>
+      <user-name>informix</user-name>
+      <password>Password@2</password>
+	  <use-java-context>false</use-java-context>
+	</local-tx-datasource>
+</datasources>

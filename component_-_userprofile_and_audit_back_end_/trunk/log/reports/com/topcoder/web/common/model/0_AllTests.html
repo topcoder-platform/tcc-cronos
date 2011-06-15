@@ -1,0 +1,2041 @@
+<html xmlns:lxslt="http://xml.apache.org/xslt" xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Unit Test Results: com.topcoder.web.common.model.AllTests</title>
+<link rel="stylesheet" type="text/css" title="Style" href="../../../../../stylesheet.css">
+<script type="text/javascript" language="JavaScript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.topcoder.web.common.model.AllTests'] = new Array();
+    
+        cur['ant.core.lib'] = 'E:\\Dev_Lib\\Java\\apache-ant-1.8.1\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\build.xml';
+    
+        cur['ant.file.Dependency Import'] = 'E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\build-dependencies.xml';
+    
+        cur['ant.file.TopCoder Java Generic Build'] = 'E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\build.xml';
+    
+        cur['ant.file.type.Dependency Import'] = 'file';
+    
+        cur['ant.file.type.TopCoder Java Generic Build'] = 'file';
+    
+        cur['ant.home'] = 'E:\\Dev_Lib\\Java\\apache-ant-1.8.1';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = 'E:\\Dev_Lib\\Java\\apache-ant-1.8.1\\lib';
+    
+        cur['ant.project.default-target'] = 'dist';
+    
+        cur['ant.project.invoked-targets'] = 'reports-all';
+    
+        cur['ant.project.name'] = 'TopCoder Java Generic Build';
+    
+        cur['ant.version'] = 'Apache Ant version 1.8.1 compiled on April 30 2010';
+    
+        cur['antlr.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\antlr-2.7.6.jar';
+    
+        cur['asm.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\asm.jar';
+    
+        cur['asm-attrs.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\asm-attrs.jar';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['base_exception.jar'] = 'C:/tc/tc_lib/lib/base_exception.jar';
+    
+        cur['basedir'] = 'E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1';
+    
+        cur['build_classdir'] = 'build/classes';
+    
+        cur['build_distdir'] = 'build/dist';
+    
+        cur['build_docsdir'] = 'build/docs';
+    
+        cur['build_javadocsdir'] = 'build/docs/javadocs';
+    
+        cur['build_targetclassdir'] = 'build/targetclasses';
+    
+        cur['build_tcsdistdir'] = 'build/dist/UserProfile and Audit Back End-1.1.0';
+    
+        cur['build_testclassdir'] = 'build/testClasses';
+    
+        cur['builddir'] = 'build';
+    
+        cur['cglib.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\cglib-2.1.3.jar';
+    
+        cur['cobertura.datafile'] = 'log/cobertura.ser';
+    
+        cur['cobertura.dir'] = 'E:\\Dev_Lib\\Java\\cobertura-1.9.4.1';
+    
+        cur['commons_utility.jar'] = 'C:/tc/tc_lib/lib/topcoder_commons_utility.jar';
+    
+        cur['commons-collections.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\commons-collections-2.1.1.jar';
+    
+        cur['commons-logging.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\commons-logging-1.0.4.jar';
+    
+        cur['component'] = 'UserProfile and Audit Back End';
+    
+        cur['component_path'] = 'UserProfile and Audit Back End/1.1.0';
+    
+        cur['component_version'] = '1.1.0';
+    
+        cur['component.bootclasspath'] = '${java_1_x_bootclasspath}';
+    
+        cur['component.dist.jar'] = 'build/dist/UserProfile and Audit Back End-1.1.0.jar';
+    
+        cur['component.distfilename'] = 'UserProfile and Audit Back End';
+    
+        cur['component.jar'] = 'build/dist/lib/tcs/UserProfile and Audit Back End/1.1.0/UserProfile and Audit Back End.jar';
+    
+        cur['component.mainclass'] = '';
+    
+        cur['component.name'] = 'UserProfile and Audit Back End';
+    
+        cur['component.package'] = 'com.topcoder.web.common.model';
+    
+        cur['component.packagedir'] = 'com/topcoder/web/';
+    
+        cur['component.target'] = '1.x';
+    
+        cur['component.tests.jar'] = 'build/dist/lib/tcs/UserProfile and Audit Back End_tests.jar';
+    
+        cur['component.version.build'] = '1';
+    
+        cur['component.version.major'] = '1';
+    
+        cur['component.version.micro'] = '0';
+    
+        cur['component.version.minor'] = '1';
+    
+        cur['configdir'] = 'conf';
+    
+        cur['configuration_api.jar'] = 'C:/tc/tc_lib/lib/configuration_api.jar';
+    
+        cur['configuration_manager.jar'] = 'C:/tc/tc_lib/lib/configuration_manager.jar';
+    
+        cur['configuration_persistence.jar'] = 'C:/tc/tc_lib/lib/configuration_persistence.jar';
+    
+        cur['db_connection_factory.jar'] = 'C:/tc/tc_lib/lib/db_connection_factory.jar';
+    
+        cur['debug'] = 'off';
+    
+        cur['design_dist.jar'] = 'UserProfile and Audit Back End_1.1.0_design_dist.jar';
+    
+        cur['design_submission.jar'] = 'UserProfile and Audit Back End_1.1.0_design_submission.jar';
+    
+        cur['dev_dist.jar'] = 'UserProfile and Audit Back End_1.1.0_dev_dist.jar';
+    
+        cur['dev_submission.jar'] = 'UserProfile and Audit Back End_1.1.0_dev_submission.jar';
+    
+        cur['dist_coverage'] = 'build/dist/UserProfile and Audit Back End-1.1.0/docs/coverage';
+    
+        cur['dist_docpackage'] = 'build/doc_package';
+    
+        cur['dist_docs'] = 'build/dist/UserProfile and Audit Back End-1.1.0/docs';
+    
+        cur['dist_javadocs'] = 'build/dist/UserProfile and Audit Back End-1.1.0/docs/javadocs';
+    
+        cur['dist_lib'] = 'build/dist/lib/tcs';
+    
+        cur['distfilename'] = 'UserProfile and Audit Back End';
+    
+        cur['docpackage.jar'] = 'UserProfile and Audit Back End_docs.jar';
+    
+        cur['docsdir'] = 'docs';
+    
+        cur['dom4j.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\dom4j-1.6.1.jar';
+    
+        cur['eclipse.pdebuild.home'] = '/E:/MyEclipse-8.6/Common/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/./';
+    
+        cur['eclipse.pdebuild.scripts'] = '/E:/MyEclipse-8.6/Common/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/scripts/';
+    
+        cur['eclipse.pdebuild.templates'] = '/E:/MyEclipse-8.6/Common/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/templates/';
+    
+        cur['ejb3-persistence.jar'] = 'C:\\tc\\ext_lib\\javax persistence\\ejb3-persistence.jar';
+    
+        cur['ext_libdir'] = 'E:/Dev_Lib/Java';
+    
+        cur['file.encoding'] = 'Cp1252';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['hiberbnate-annotations.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\hibernate-annotations-3.3.1.GA.jar';
+    
+        cur['hibernate.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\hibernate3.jar';
+    
+        cur['hibernate-commons-annotations.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\hibernate-commons-annotations-3.3.0.ga.jar';
+    
+        cur['id_generator.jar'] = 'C:/tc/tc_lib/lib/id_generator.jar';
+    
+        cur['ifxjdbc.jar'] = 'E:\\Dev_Lib\\Java\\ifxjdbc.jar';
+    
+        cur['instrumented.dir'] = 'build/instrumented';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\build\\testClasses;E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\build\\classes;E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\conf;E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\test_files;E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\test_files\\lib\\lib_user_profile.jar;E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\test_files\\lib\\shared.jar;E:\\tc_libdir\\base_exception\\2.0.0\\base_exception.jar;E:\\tc_libdir\\class_associations\\1.0.0\\class_associations.jar;E:\\tc_libdir\\command_line_utility\\1.0.0\\command_line_utility.jar;E:\\tc_libdir\\configuration_api\\1.0.0\\configuration_api.jar;E:\\tc_libdir\\configuration_manager\\2.1.5\\configuration_manager.jar;E:\\tc_libdir\\configuration_manager\\2.2.0\\configuration_manager.jar;E:\\tc_libdir\\configuration_persistence\\1.0.0\\configuration_persistence.jar;E:\\tc_libdir\\configuration_persistence\\1.0.2\\configuration_persistence.jar;E:\\tc_libdir\\data_validation\\1.1.0\\data_validation.jar;E:\\tc_libdir\\data_validation\\1.1.1\\data_validation.jar;E:\\tc_libdir\\database_abstraction\\1.1.0\\database_abstraction.jar;E:\\tc_libdir\\database_abstraction\\1.1.1\\database_abstraction.jar;E:\\tc_libdir\\db_connection_factory\\1.1.0\\db_connection_factory.jar;E:\\tc_libdir\\deliverable_management\\1.1.1\\deliverable_management.jar;E:\\tc_libdir\\document_generator\\3.1.0\\document_generator.jar;E:\\tc_libdir\\email_engine\\3.0.0\\email_engine.jar;E:\\tc_libdir\\email_engine\\3.2.0\\email_engine.jar;E:\\tc_libdir\\executable_wrapper\\1.0.1\\executable_wrapper.jar;E:\\tc_libdir\\file_upload\\2.0.2\\file_upload.jar;E:\\tc_libdir\\file_upload\\2.2.0\\file_upload.jar;E:\\tc_libdir\\id_generator\\3.0.0\\id_generator.jar;E:\\tc_libdir\\job_processor\\3.0.1\\job_processor.jar;E:\\tc_libdir\\job_scheduling\\3.2.0\\job_scheduling.jar;E:\\tc_libdir\\json_object\\1.0.0\\json_object.jar;E:\\tc_libdir\\ldap_sdk_interface\\1.0.2\\ldap_sdk_interface.jar;E:\\tc_libdir\\logging_wrapper\\1.2.0\\logging_wrapper.jar;E:\\tc_libdir\\logging_wrapper\\2.0.0\\logging_wrapper.jar;E:\\tc_libdir\\object_factory\\2.0.1\\object_factory.jar;E:\\tc_libdir\\object_factory\\2.1.2\\object_factory.jar;E:\\tc_libdir\\object_factory_config_manager_plugin\\1.0.0\\object_factory_config_manager_plugin.jar;E:\\tc_libdir\\object_factory_configuration_api_plugin\\1.0.0\\object_factory_configuration_api_plugin.jar;E:\\tc_libdir\\object_formatter\\1.0.0\\object_formatter.jar;E:\\tc_libdir\\phase_management\\1.0.4\\phase_management.jar;E:\\tc_libdir\\project_management\\1.0.1\\project_management.jar;E:\\tc_libdir\\project_phases\\2.0.1\\project_phases.jar;E:\\tc_libdir\\random_string_generator\\1.0.0\\random_string_generator.jar;E:\\tc_libdir\\resource_management\\1.1.0\\resource_management.jar;E:\\tc_libdir\\resource_management\\1.3.0\\resource_management.jar;E:\\tc_libdir\\search_builder\\1.3.1\\search_builder.jar;E:\\tc_libdir\\topcoder_commons_utility\\1.0.0\\topcoder_commons_utility.jar;E:\\tc_libdir\\typesafe_enum\\1.1.0\\typesafe_enum.jar;E:\\tc_libdir\\workdays\\1.0.1\\workdays.jar;E:\\tc_libdir\\workdays\\1.1.0\\workdays.jar;E:\\Dev_Lib\\Java\\log4j\\1.2.16\\log4j-1.2.16.jar;E:\\Dev_Lib\\Java\\ifxjdbc.jar;E:\\Dev_Lib\\Java\\jboss-4.2.2.GA\\client\\jboss-common-client.jar;E:\\Dev_Lib\\Java\\jboss-4.2.2.GA\\server\\default\\lib\\jnpserver.jar;E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1\\test_files\\lib\\jbossall-client.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\hibernate3.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\asm-attrs.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\asm.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\c3p0-0.9.1.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\cglib-2.1.3.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\checkstyle-all.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\cleanimports.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\commons-collections-2.1.1.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\commons-logging-1.0.4.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\concurrent-1.3.2.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\dom4j-1.6.1.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\ehcache-1.2.3.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jaas.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jacc-1_0-fr.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\javassist.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jaxen-1.1-beta-7.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jboss-cache.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jboss-common.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jboss-jmx.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jboss-system.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jgroups-2.2.8.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\jta.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\junit-3.8.1.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\log4j-1.2.11.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\oscache-2.1.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\proxool-0.8.3.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\swarmcache-1.0rc2.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\syndiag2.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\versioncheck.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\xerces-2.6.2.jar;E:\\Dev_Lib\\Java\\hibernate-3.2\\lib\\xml-apis.jar;E:\\Dev_Lib\\Java\\hibernate-entitymanager-3.3.1.GA\\lib\\ejb3-persistence.jar;E:\\Dev_Lib\\Java\\hibernate-entitymanager-3.3.1.GA\\lib\\hibernate-annotations.jar;E:\\Dev_Lib\\Java\\hibernate-entitymanager-3.3.1.GA\\lib\\hibernate-commons-annotations.jar;E:\\Dev_Lib\\Java\\hibernate-entitymanager-3.3.1.GA\\lib\\hibernate-validator.jar;E:\\Dev_Lib\\Java\\hibernate-entitymanager-3.3.1.GA\\lib\\jboss-archive-browsing.jar;E:\\Dev_Lib\\Java\\junit\\4.8.2\\junit-4.8.2.jar;E:\\Dev_Lib\\Java\\cobertura-1.9.4.1\\cobertura.jar;E:\\Dev_Lib\\Java\\cobertura-1.9.4.1\\lib\\asm-3.0.jar;E:\\Dev_Lib\\Java\\cobertura-1.9.4.1\\lib\\asm-tree-3.0.jar;E:\\Dev_Lib\\Java\\cobertura-1.9.4.1\\lib\\jakarta-oro-2.0.8.jar;E:\\Dev_Lib\\Java\\cobertura-1.9.4.1\\lib\\log4j-1.2.9.jar;E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1;E:\\DB2\\SQLLIB\\java\\db2java.zip;E:\\DB2\\SQLLIB\\java\\db2jcc.jar;E:\\DB2\\SQLLIB\\java\\sqlj.zip;E:\\DB2\\SQLLIB\\java\\db2jcc_license_cu.jar;E:\\DB2\\SQLLIB\\bin;E:\\DB2\\SQLLIB\\java\\common.jar;E:\\Dev_Lib\\Java\\apache-ant-1.8.1\\lib\\ant-launcher.jar;E:\\Dev_Lib\\Java\\apache-ant-1.8.1\\lib\\ant.jar;E:\\Dev_Lib\\Java\\apache-ant-1.8.1\\lib\\ant-junit.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = 'E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\DOCUME~1\\Frog\\LOCALS~1\\Temp\\';
+    
+        cur['java.library.path'] = 'E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\bin;.;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;E:/MyEclipse-8.6/Common/binary/com.sun.java.jdk.win32.x86_1.6.0.013/jre/bin/client;E:/MyEclipse-8.6/Common/binary/com.sun.java.jdk.win32.x86_1.6.0.013/jre/bin;E:\\oraclexe\\app\\oracle\\product\\10.2.0\\server\\bin;c:\\program files\\pc connectivity solution\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\system32\\wbem;c:\\program files\\ati technologies\\ati.ace\\core-static;c:\\program files\\sinovoice\\jtts 5.0 desktop\\bin;c:\\program files\\ibm\\gsk8\\lib;E:\\DB2\\SQLLIB\\BIN;E:\\DB2\\SQLLIB\\FUNCTION;E:\\DB2\\SQLLIB\\SAMPLES\\REPL;E:\\TortoiseSVN\\bin;C:\\Program Files\\ibm\\gsk7\\bin;C:\\Program Files\\ibm\\gsk7\\lib;C:\\PROGRA~1\\ibm\\gsk7\\bin;C:\\PROGRA~1\\ibm\\gsk7\\lib;e:\\IBM\\Informix\\Client-SDK\\bin;E:\\Dev_Lib\\Java\\apache-ant-1.7.1\\bin;C:\\Java\\jdk1.6.0_13\\bin';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_13-b03';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_13';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) Client VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '11.3-b02';
+    
+        cur['javac.encoding'] = 'UTF-8';
+    
+        cur['javadoc.jar'] = 'javadocs.jar';
+    
+        cur['javadoc.locale'] = 'en_US';
+    
+        cur['javadocsdir'] = 'docs/javadocs';
+    
+        cur['javamain'] = 'src/java/main';
+    
+        cur['javasrc'] = 'src/java';
+    
+        cur['javassist.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\javassist.jar';
+    
+        cur['javatests'] = 'src/java/tests';
+    
+        cur['jboss-allclient.jar'] = './test_files/lib/jbossall-client.jar';
+    
+        cur['jboss-commons.jar'] = 'E:\\Dev_Lib\\Java\\jboss-4.2.2.GA\\client\\jboss-common-client.jar';
+    
+        cur['jboss-j2ee.jar'] = 'C:\\tc\\servers\\jboss-4.2.3.GA\\server\\default\\lib\\jboss-j2ee.jar';
+    
+        cur['jnpserver.jar'] = 'E:\\Dev_Lib\\Java\\jboss-4.2.2.GA\\server\\default\\lib\\jnpserver.jar';
+    
+        cur['jta.jar'] = 'C:\\tc\\ext_lib\\hibernate-3.2\\lib\\jta.jar';
+    
+        cur['junit.jar'] = 'E:/Dev_Lib/Java/junit/4.8.2/junit-4.8.2.jar';
+    
+        cur['lib.jar'] = './test_files/lib/lib_user_profile.jar';
+    
+        cur['line.separator'] = ' ';
+    
+        cur['log4j.jar'] = 'E:/Dev_Lib/Java/log4j/1.2.16/log4j-1.2.16.jar';
+    
+        cur['manifest_file'] = 'build/dist/UserProfile and Audit Back End-1.1.0/META-INF//MANIFEST.MF';
+    
+        cur['manifest_file_path'] = 'build/dist/UserProfile and Audit Back End-1.1.0/META-INF/';
+    
+        cur['os.arch'] = 'x86';
+    
+        cur['os.name'] = 'Windows XP';
+    
+        cur['os.version'] = '5.1';
+    
+        cur['package'] = 'com.topcoder.web.common.model';
+    
+        cur['packagedir'] = 'com/topcoder/web/';
+    
+        cur['path.separator'] = ';';
+    
+        cur['reports'] = 'log/reports';
+    
+        cur['shared.jar'] = './test_files/lib/shared.jar';
+    
+        cur['srcdir'] = 'src';
+    
+        cur['sun.arch.data.model'] = '32';
+    
+        cur['sun.boot.class.path'] = 'E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\resources.jar;E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\rt.jar;E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\sunrsasign.jar;E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\jsse.jar;E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\jce.jar;E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\lib\\charsets.jar;E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'E:\\MyEclipse-8.6\\Common\\binary\\com.sun.java.jdk.win32.x86_1.6.0.013\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'GBK';
+    
+        cur['sun.management.compiler'] = 'HotSpot Client Compiler';
+    
+        cur['sun.os.patch.level'] = 'Service Pack 3, v.3300';
+    
+        cur['target_libdir'] = 'E:/tc_libdir';
+    
+        cur['tcs_libdir'] = 'E:/tc_libdir';
+    
+        cur['test_reflib'] = 'test_reflib';
+    
+        cur['testfiles'] = 'test_files';
+    
+        cur['testlogdir'] = 'log';
+    
+        cur['typesafe_enum.jar'] = 'C:/tc/tc_lib/lib/typesafe_enum.jar';
+    
+        cur['user.country'] = 'US';
+    
+        cur['user.dir'] = 'E:\\Submissions_2011\\FF_UserProfile_and_Audit_Back_End_1.1';
+    
+        cur['user.home'] = 'C:\\Documents and Settings\\Frog';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'Frog';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+        cur['verbose'] = 'no';
+    </script><script type="text/javascript" language="JavaScript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.topcoder.web.common.model.AllTests</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Pass">
+<td><a title="Display all tests" href="0_AllTests.html">AllTests</a></td><td><a title="Display all tests" href="0_AllTests.html">548</a></td><td>0</td><td>0</td><td>44.344</td><td>2011-06-15T02:25:54</td><td>frog-nc6400</td>
+</tr>
+</table>
+<h2>Tests</h2>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUser"></a>testUser</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetId"></a>testSetGetId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetHandle"></a>testSetGetHandle</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetStatus"></a>testSetGetStatus</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetActivationCode"></a>testSetGetActivationCode</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetEmailAddresses"></a>testSetGetEmailAddresses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryEmail"></a>testGetPrimaryEmail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryEmailFail"></a>testGetPrimaryEmailFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEmailAddress"></a>testAddEmailAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEmailFail"></a>testAddEmailFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHandleLower"></a>testGetHandleLower</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetRegistrationTypes"></a>testGetRegistrationTypes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetSecurityGroups"></a>testSetGetSecurityGroups</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserSecurityKey"></a>testSetGetUserSecurityKey</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testhashCode"></a>testhashCode</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEquals"></a>testEquals</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserProfile"></a>testSetGetUserProfile</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetFirstName"></a>testSetGetFirstName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetFirstNameFail"></a>testSetFirstNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetFirstNameFail"></a>testGetFirstNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetMiddleName"></a>testSetGetMiddleName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMiddleNameFail"></a>testSetMiddleNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMiddleNameFail"></a>testGetMiddleNameFail</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetLastName"></a>testSetGetLastName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetLastNameFail"></a>testSetLastNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLastNameFail"></a>testGetLastNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetAddresses"></a>testSetGetAddresses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress"></a>testAddAddress</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddressFail"></a>testAddAddressFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddressFail1"></a>testAddAddressFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHomeAddress"></a>testGetHomeAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTestGetPhoneNumbers"></a>testTestGetPhoneNumbers</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryPhoneNumber"></a>testGetPrimaryPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber"></a>testAddPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTimezone"></a>testSetGetTimezone</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetNotifications"></a>testSetGetNotifications</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddNotification"></a>testAddNotification</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveNotification"></a>testRemoveNotification</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserPreferences"></a>testSetGetUserPreferences</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddGetUserPreference"></a>testAddGetUserPreference</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetDemographicResponses"></a>testSetGetDemographicResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddRemoveDemographicResponse"></a>testAddRemoveDemographicResponse</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testClearDemographicResponses"></a>testClearDemographicResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetContact"></a>testSetGetContact</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTermes"></a>testSetGetTermes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddHasTerms"></a>testAddHasTerms</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetEventRegistrations"></a>testSetGetEventRegistrations</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddGetEventRegistration"></a>testAddGetEventRegistration</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration1"></a>testAddEventRegistration1</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2"></a>testAddEventRegistration2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetSecretQuestion"></a>testSetGetSecretQuestion</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetResponses"></a>testSetGetResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponse"></a>testAddResponse</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetBallots"></a>testSetGetBallots</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddBallot"></a>testAddBallot</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserContestPrizes"></a>testSetGetUserContestPrizes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCompPrize"></a>testAddCompPrize</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetProfessor"></a>testSetGetProfessor</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserSchools"></a>testSetGetUserSchools</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool"></a>testGetSchool</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimarySchool"></a>testGetPrimarySchool</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimarySchool1"></a>testGetPrimarySchool1</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetcreatedSchools"></a>testSetGetcreatedSchools</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCreatedSchool"></a>testAddCreatedSchool</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTransientResponses"></a>testSetGetTransientResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveTransientResponse"></a>testRemoveTransientResponse</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetCoder"></a>testSetGetCoder</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsShowEarningsEnabled"></a>testIsShowEarningsEnabled</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsMemberContactEnabled"></a>testIsMemberContactEnabled</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetFirstName"></a>testSetGetFirstName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetMiddleName"></a>testSetGetMiddleName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetLastName"></a>testSetGetLastName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetAddresses"></a>testSetGetAddresses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress"></a>testAddAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddressFail"></a>testAddAddressFail</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHomeAddress"></a>testGetHomeAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testTestGetPhoneNumbers"></a>testTestGetPhoneNumbers</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryPhoneNumber"></a>testGetPrimaryPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber"></a>testAddPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTimezone"></a>testSetGetTimezone</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetNotifications"></a>testSetGetNotifications</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddNotification"></a>testAddNotification</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveNotification"></a>testRemoveNotification</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserPreferences"></a>testSetGetUserPreferences</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetDemographicResponses"></a>testSetGetDemographicResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddRemoveDemographicResponse"></a>testAddRemoveDemographicResponse</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testClearDemographicResponses"></a>testClearDemographicResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetContact"></a>testSetGetContact</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTermes"></a>testSetGetTermes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddHasTerms"></a>testAddHasTerms</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetEventRegistrations"></a>testSetGetEventRegistrations</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddGetEventRegistration"></a>testAddGetEventRegistration</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration1"></a>testAddEventRegistration1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2"></a>testAddEventRegistration2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetSecretQuestion"></a>testSetGetSecretQuestion</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetResponses"></a>testSetGetResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponse"></a>testAddResponse</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetBallots"></a>testSetGetBallots</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddBallot"></a>testAddBallot</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCompPrize"></a>testAddCompPrize</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetProfessor"></a>testSetGetProfessor</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool"></a>testGetSchool</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimarySchool"></a>testGetPrimarySchool</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimarySchool1"></a>testGetPrimarySchool1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetcreatedSchools"></a>testSetGetcreatedSchools</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCreatedSchool"></a>testAddCreatedSchool</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTransientResponses"></a>testSetGetTransientResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveTransientResponse"></a>testRemoveTransientResponse</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetCoder"></a>testSetGetCoder</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsShowEarningsEnabled"></a>testIsShowEarningsEnabled</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsMemberContactEnabled"></a>testIsMemberContactEnabled</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddGetUserProfilePreference"></a>testAddGetUserProfilePreference</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserProfileContestPrizes"></a>testSetGetUserProfileContestPrizes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetUserProfileSchools"></a>testSetGetUserProfileSchools</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserDAOHibernate"></a>testUserDAOHibernate</td><td>Success</td><td></td><td>4.532</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserDAOHibernateSession"></a>testUserDAOHibernateSession</td><td>Success</td><td></td><td>0.187</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserDAOHibernateSessionFailure"></a>testUserDAOHibernateSessionFailure</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindLong"></a>testFindLong</td><td>Success</td><td></td><td>0.375</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindLong1"></a>testFindLong1</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindLongFailure"></a>testFindLongFailure</td><td>Success</td><td></td><td>0.234</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBoolean"></a>testFindStringBoolean</td><td>Success</td><td></td><td>0.516</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBoolean1"></a>testFindStringBoolean1</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBoolean2"></a>testFindStringBoolean2</td><td>Success</td><td></td><td>0.187</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBooleanFailure"></a>testFindStringBooleanFailure</td><td>Success</td><td></td><td>0.188</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBooleanFailure1"></a>testFindStringBooleanFailure1</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBooleanBoolean"></a>testFindStringBooleanBoolean</td><td>Success</td><td></td><td>0.234</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBooleanBooleanFailure"></a>testFindStringBooleanBooleanFailure</td><td>Success</td><td></td><td>0.156</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringBooleanBoolean1"></a>testFindStringBooleanBoolean1</td><td>Success</td><td></td><td>0.235</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringStringStringString"></a>testFindStringStringStringString</td><td>Success</td><td></td><td>0.234</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringStringStringString1"></a>testFindStringStringStringString1</td><td>Success</td><td></td><td>0.234</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdateUser"></a>testSaveOrUpdateUser</td><td>Success</td><td></td><td>0.672</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdateUser1"></a>testSaveOrUpdateUser1</td><td>Success</td><td></td><td>1.532</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdate2"></a>testSaveOrUpdate2</td><td>Success</td><td></td><td>1.828</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdate3"></a>testSaveOrUpdate3</td><td>Success</td><td></td><td>1.843</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdateFailure"></a>testSaveOrUpdateFailure</td><td>Success</td><td></td><td>0.188</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindString"></a>testFindString</td><td>Success</td><td></td><td>0.516</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringFailure"></a>testFindStringFailure</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFindStringFailure1"></a>testFindStringFailure1</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCanChangeHandle"></a>testCanChangeHandle</td><td>Success</td><td></td><td>0.281</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCanChangeHandleFailure"></a>testCanChangeHandleFailure</td><td>Success</td><td></td><td>0.188</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCanChangeHandleFailure1"></a>testCanChangeHandleFailure1</td><td>Success</td><td></td><td>0.187</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetHandle"></a>testSetGetHandle</td><td>Success</td><td></td><td>0.578</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetActivationCode"></a>testSetGetActivationCode</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetFirstName"></a>testSetGetFirstName</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetFirstNameFail"></a>testSetFirstNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetFirstNameFail"></a>testGetFirstNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetMiddleName"></a>testSetGetMiddleName</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMiddleNameFail"></a>testSetMiddleNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMiddleNameFail"></a>testGetMiddleNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLastNameFail"></a>testGetLastNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserBean"></a>testUserBean</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUser"></a>testCreateNewUser</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUserFail"></a>testCreateNewUserFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUserFail1"></a>testCreateNewUserFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUserFail2"></a>testCreateNewUserFail2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUserFail3"></a>testCreateNewUserFail3</td><td>Success</td><td></td><td>0.079</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateUser1"></a>testCreateUser1</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateUserFail"></a>testCreateUserFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetFirstNameFail1"></a>testSetFirstNameFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetlastName"></a>testSetGetlastName</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetlastNameFail"></a>testSetlastNameFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetlastNameFail1"></a>testSetlastNameFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMiddleNameFail1"></a>testSetMiddleNameFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetActivationCodeFail"></a>testSetActivationCodeFail</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetActivationCodeFail1"></a>testSetActivationCodeFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStatus"></a>testSetStatus</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStatusFail"></a>testSetStatusFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStatusFail1"></a>testSetStatusFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetFirstNameFail1"></a>testGetFirstNameFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLastNameFail1"></a>testGetLastNameFail1</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMiddleNameFail1"></a>testGetMiddleNameFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetActivationCodeFail"></a>testGetActivationCodeFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetActivationCodeFail1"></a>testGetActivationCodeFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetHandleFail"></a>testSetHandleFail</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetHandleFail1"></a>testSetHandleFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetHandleFail2"></a>testSetHandleFail2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetHandleFail3"></a>testSetHandleFail3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHandleFail"></a>testGetHandleFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHandleFail1"></a>testGetHandleFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetStatusFail"></a>testGetStatusFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExists"></a>testUserExists</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExistsFail"></a>testUserExistsFail</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExistsHandle"></a>testUserExistsHandle</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExistsHandleFail"></a>testUserExistsHandleFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetPassword"></a>testSetGetPassword</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPasswordFail"></a>testSetPasswordFail</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPasswordFail1"></a>testSetPasswordFail1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPasswordFail2"></a>testSetPasswordFail2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPasswordFail"></a>testGetPasswordFail</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPasswordFail1"></a>testGetPasswordFail1</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDemo"></a>testDemo</td><td>Success</td><td></td><td>0.500</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHibernate"></a>testHibernate</td><td>Success</td><td></td><td>0.250</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAuditDemo"></a>testAuditDemo</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetId"></a>testSetGetId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetHandle"></a>testSetGetHandle</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetOperationType"></a>testSetGetOperationType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetIpAdress"></a>testSetGetIpAdress</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetPreviousValue"></a>testSetGetPreviousValue</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetNewValue"></a>testSetGetNewValue</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTimestamp"></a>testSetGetTimestamp</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAuditDAOHibernate"></a>testAuditDAOHibernate</td><td>Success</td><td></td><td>0.234</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAuditDAOHibernate1"></a>testAuditDAOHibernate1</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAudit"></a>testAudit</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasOperation"></a>testHasOperation</td><td>Success</td><td></td><td>0.187</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCheckParam"></a>testCheckParam</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCheckParam1"></a>testCheckParam1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetId"></a>testSetGetId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetHandle"></a>testSetGetHandle</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetStatus"></a>testSetGetStatus</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetActivationCode"></a>testSetGetActivationCode</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEmailAddress"></a>testAddEmailAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHandleLower"></a>testGetHandleLower</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetRegistrationTypes"></a>testGetRegistrationTypes</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress"></a>testAddAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHomeAddress"></a>testGetHomeAddress</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryPhoneNumber"></a>testGetPrimaryPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber"></a>testAddPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsShowEarningsEnabled"></a>testIsShowEarningsEnabled</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsMemberContactEnabled"></a>testIsMemberContactEnabled</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetEmailAddresses"></a>testGetSetEmailAddresses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryEmailAddress1"></a>testGetPrimaryEmailAddress1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryEmailAddress2"></a>testGetPrimaryEmailAddress2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetSecurityGroups"></a>testGetSetSecurityGroups</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetUserSecurityKey"></a>testGetSetUserSecurityKey</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHashCode1"></a>testHashCode1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHashCode2"></a>testHashCode2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEquals1"></a>testEquals1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEquals2"></a>testEquals2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEquals3"></a>testEquals3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEquals4"></a>testEquals4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEquals5"></a>testEquals5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testEquals6"></a>testEquals6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetUserProfile"></a>testGetSetUserProfile</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetFirstName"></a>testGetSetFirstName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetMiddleName"></a>testGetSetMiddleName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetLastName"></a>testGetSetLastName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddresses"></a>testGetSetAddresses</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetPhoneNumbers"></a>testGetSetPhoneNumbers</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetTimeZone"></a>testGetSetTimeZone</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddRemoveNotifications"></a>testGetSetAddRemoveNotifications</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddUserPreference"></a>testGetSetAddUserPreference</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddRemoveClearDemographicResponses"></a>testGetSetAddRemoveClearDemographicResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetContact"></a>testGetSetContact</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddHasTerms"></a>testGetSetAddHasTerms</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddEventRegistration"></a>testGetSetAddEventRegistration</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetSecretQuestion"></a>testGetSetSecretQuestion</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddRemoveResponses"></a>testGetSetAddRemoveResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddBallots"></a>testGetSetAddBallots</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddCompPrizes"></a>testGetSetAddCompPrizes</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetProfessor"></a>testGetSetProfessor</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddSchool"></a>testGetSetAddSchool</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddCreatedSchools"></a>testGetSetAddCreatedSchools</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetRemoveTransientResponses"></a>testGetSetRemoveTransientResponses</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetCoder"></a>testGetSetCoder</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetId"></a>testSetGetId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress"></a>testAddAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHomeAddress"></a>testGetHomeAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryPhoneNumber"></a>testGetPrimaryPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber"></a>testAddPhoneNumber</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsShowEarningsEnabled"></a>testIsShowEarningsEnabled</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsMemberContactEnabled"></a>testIsMemberContactEnabled</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetUserProfile"></a>testGetSetUserProfile</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetFirstName"></a>testGetSetFirstName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetMiddleName"></a>testGetSetMiddleName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetLastName"></a>testGetSetLastName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddresses"></a>testGetSetAddresses</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetPhoneNumbers"></a>testGetSetPhoneNumbers</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetTimeZone"></a>testGetSetTimeZone</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddRemoveNotifications"></a>testGetSetAddRemoveNotifications</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddUserPreference"></a>testGetSetAddUserPreference</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddRemoveClearDemographicResponses"></a>testGetSetAddRemoveClearDemographicResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetContact"></a>testGetSetContact</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddHasTerms"></a>testGetSetAddHasTerms</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddEventRegistration"></a>testGetSetAddEventRegistration</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetSecretQuestion"></a>testGetSetSecretQuestion</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddRemoveResponses"></a>testGetSetAddRemoveResponses</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddBallots"></a>testGetSetAddBallots</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddCompPrizes"></a>testGetSetAddCompPrizes</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetProfessor"></a>testGetSetProfessor</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddSchool"></a>testGetSetAddSchool</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetAddCreatedSchools"></a>testGetSetAddCreatedSchools</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetRemoveTransientResponses"></a>testGetSetRemoveTransientResponses</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSetCoder"></a>testGetSetCoder</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetId"></a>testSetGetId</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetHandle"></a>testSetGetHandle</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetOperationType"></a>testSetGetOperationType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetPreviousValue"></a>testSetGetPreviousValue</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetNewValue"></a>testSetGetNewValue</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetTimestamp"></a>testSetGetTimestamp</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetGetIpAddress"></a>testSetGetIpAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdate2"></a>testSaveOrUpdate2</td><td>Success</td><td></td><td>0.656</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdate3"></a>testSaveOrUpdate3</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCanChangeHandle"></a>testCanChangeHandle</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor1"></a>testCtor1</td><td>Success</td><td></td><td>0.218</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor2"></a>testCtor2</td><td>Success</td><td></td><td>0.204</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_Id1"></a>testFind_Id1</td><td>Success</td><td></td><td>0.421</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_Id2"></a>testFind_Id2</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_Name1"></a>testFind_Name1</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_Name2"></a>testFind_Name2</td><td>Success</td><td></td><td>0.406</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_Name3"></a>testFind_Name3</td><td>Success</td><td></td><td>0.234</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_Name4"></a>testFind_Name4</td><td>Success</td><td></td><td>0.250</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_All1"></a>testFind_All1</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_All2"></a>testFind_All2</td><td>Success</td><td></td><td>0.297</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdate1"></a>testSaveOrUpdate1</td><td>Success</td><td></td><td>0.187</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveOrUpdate4"></a>testSaveOrUpdate4</td><td>Success</td><td></td><td>0.469</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_Email"></a>testFind_Email</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor1"></a>testCtor1</td><td>Success</td><td></td><td>0.172</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor2"></a>testCtor2</td><td>Success</td><td></td><td>0.203</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAudit1"></a>testAudit1</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAudit2"></a>testAudit2</td><td>Success</td><td></td><td>0.218</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasOperation1"></a>testHasOperation1</td><td>Success</td><td></td><td>0.219</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasOperation2"></a>testHasOperation2</td><td>Success</td><td></td><td>0.188</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUser"></a>testCreateNewUser</td><td>Success</td><td></td><td>0.516</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStatus"></a>testSetStatus</td><td>Success</td><td></td><td>0.265</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.188</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateUser"></a>testCreateUser</td><td>Success</td><td></td><td>0.422</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetFirstName"></a>testSetFirstName</td><td>Success</td><td></td><td>0.297</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMiddleName"></a>testSetMiddleName</td><td>Success</td><td></td><td>0.281</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetLastName"></a>testSetLastName</td><td>Success</td><td></td><td>0.500</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetActivationCode"></a>testSetActivationCode</td><td>Success</td><td></td><td>0.422</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPassword"></a>testSetPassword</td><td>Success</td><td></td><td>0.406</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetHandle"></a>testSetHandle</td><td>Success</td><td></td><td>0.297</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHandle"></a>testGetHandle</td><td>Success</td><td></td><td>0.469</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetFirstName"></a>testGetFirstName</td><td>Success</td><td></td><td>0.328</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMiddleName"></a>testGetMiddleName</td><td>Success</td><td></td><td>0.281</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLastName"></a>testGetLastName</td><td>Success</td><td></td><td>0.281</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetStatus"></a>testGetStatus</td><td>Success</td><td></td><td>0.360</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetActivationCode"></a>testGetActivationCode</td><td>Success</td><td></td><td>0.297</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPassword"></a>testGetPassword</td><td>Success</td><td></td><td>0.484</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExists_Handle1"></a>testUserExists_Handle1</td><td>Success</td><td></td><td>0.297</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExists_Handle2"></a>testUserExists_Handle2</td><td>Success</td><td></td><td>0.281</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExists_Id1"></a>testUserExists_Id1</td><td>Success</td><td></td><td>0.297</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExists_Id2"></a>testUserExists_Id2</td><td>Success</td><td></td><td>0.484</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAuditDAOHibernateSession_ParamNull"></a>testAuditDAOHibernateSession_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAudit_ParamNull"></a>testAudit_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasOperation_ParamNull"></a>testHasOperation_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasOperation_ParamEmpty"></a>testHasOperation_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUser_ParamNull"></a>testCreateNewUser_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateNewUser_ParamEmpty"></a>testCreateNewUser_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateUser_ParamNull"></a>testCreateUser_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateUser_ParamEmpty"></a>testCreateUser_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetFirstName_ParamNull"></a>testSetFirstName_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetLastName_ParamEmpty"></a>testSetLastName_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMiddleName_ParamNull"></a>testSetMiddleName_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetStatus_ParamNull"></a>testSetStatus_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetActivationCode_ParamNull"></a>testSetActivationCode_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetFirstName_ParamEmpty"></a>testGetFirstName_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="getMiddleName_ParamEmpty"></a>getMiddleName_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLastName_ParamEmpty"></a>testGetLastName_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetActivationCode_ParamNull"></a>testGetActivationCode_ParamNull</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetStatus_ParamNull"></a>testGetStatus_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetHandle_ParamEmpty"></a>testSetHandle_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetHandle2_ParamNull"></a>testSetHandle2_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHandle_ParamEmpty"></a>testGetHandle_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExists_ParamNull"></a>testUserExists_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserExists2_ParamNull"></a>testUserExists2_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPassword_ParamEmpty"></a>testSetPassword_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPassword2_ParamNull"></a>testSetPassword2_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUserDAOHibernateSession_ParamNull"></a>testUserDAOHibernateSession_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind_ParamNull"></a>testFind_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind2_ParamNull"></a>testFind2_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind3_ParamEmpty"></a>testFind3_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testsaveOrUpdate_ParamNull"></a>testsaveOrUpdate_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind4_ParamNull"></a>testFind4_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testFind4_ParamEmpty"></a>testFind4_ParamEmpty</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCanChangeHandle_ParamNull"></a>testCanChangeHandle_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCanChangeHandle_ParamEmpty"></a>testCanChangeHandle_ParamEmpty</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryEmailAddress_NeedFieldNull"></a>testGetPrimaryEmailAddress_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEmailAddress_NeedFieldNull"></a>testAddEmailAddress_NeedFieldNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetRegistrationTypes_NeedFieldNull"></a>testGetRegistrationTypes_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetFirstName_UserProfileNull"></a>testGetFirstName_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetFirstName_UserProfileNull"></a>testSetFirstName_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMiddleName_UserProfileNull"></a>testGetMiddleName_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMiddleName_UserProfileNull"></a>testSetMiddleName_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLastName_UserProfileNull"></a>testGetLastName_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetLastName_UserProfileNull"></a>testSetLastName_UserProfileNull</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetAddresses_UserProfileNull"></a>testGetAddresses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetAddresses_UserProfileNull"></a>testSetAddresses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress_ParamNull"></a>testAddAddress_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress_NeedFieldNull"></a>testAddAddress_NeedFieldNull</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHomeAddress_UserProfileNull"></a>testGetHomeAddress_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHomeAddress_NeedFieldNull"></a>testGetHomeAddress_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPhoneNumbers_UserProfileNull"></a>testGetPhoneNumbers_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPhoneNumbers_UserProfileNull"></a>testSetPhoneNumbers_UserProfileNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryPhoneNumber_NeedFieldNull"></a>testGetPrimaryPhoneNumber_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryPhoneNumber_UserProfileNull"></a>testGetPrimaryPhoneNumber_UserProfileNull</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber_ParamNull"></a>testAddPhoneNumber_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber_NeedFieldNull"></a>testAddPhoneNumber_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber_UserProfileNull"></a>testAddPhoneNumber_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTimeZone_UserProfileNull"></a>testGetTimeZone_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTimeZone_UserProfileNull"></a>testSetTimeZone_UserProfileNull</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetNotifications_UserProfileNull"></a>testGetNotifications_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetNotifications_UserProfileNull"></a>testSetNotifications_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddNotification_ParamNull"></a>testAddNotification_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddNotification_NeedFieldNull"></a>testAddNotification_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddNotification_UserProfileNull"></a>testAddNotification_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveNotification_ParamNull"></a>testRemoveNotification_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveNotification_NeedFieldNull"></a>testRemoveNotification_NeedFieldNull</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveNotification_UserProfileNull"></a>testRemoveNotification_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetUserPreferences_UserProfileNull"></a>testGetUserPreferences_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetUserPreferences_UserProfileNull"></a>testSetUserPreferences_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddUserPreference_ParamNull"></a>testAddUserPreference_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddUserPreference_NeedFieldNull"></a>testAddUserPreference_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddUserPreference_UserProfileNull"></a>testAddUserPreference_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetUserPreference_NeedFieldNull"></a>testGetUserPreference_NeedFieldNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetUserPreference_UserProfileNull"></a>testGetUserPreference_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetDemographicResponses_UserProfileNull"></a>testGetDemographicResponses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetDemographicResponses_UserProfileNull"></a>testSetDemographicResponses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddDemographicResponse_ParamNull"></a>testAddDemographicResponse_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddDemographicResponse_NeedFieldNull"></a>testAddDemographicResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddDemographicResponse_UserProfileNull"></a>testAddDemographicResponse_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveDemographicResponse_ParamNull"></a>testRemoveDemographicResponse_ParamNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveDemographicResponse_NeedFieldNull"></a>testRemoveDemographicResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveDemographicResponse_UserProfileNull"></a>testRemoveDemographicResponse_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testClearDemographicResponses_NeedFieldNull"></a>testClearDemographicResponses_NeedFieldNull</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testClearDemographicResponses_UserProfileNull"></a>testClearDemographicResponses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetContact_UserProfileNull"></a>testGetContact_UserProfileNull</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetContact_UserProfileNull"></a>testSetContact_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTerms_UserProfileNull"></a>testGetTerms_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTerms_UserProfileNull"></a>testSetTerms_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddTerms_ParamNull"></a>testAddTerms_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddTerms_NeedFieldNull"></a>testAddTerms_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddTerms_UserProfileNull"></a>testAddTerms_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasTerms_NeedFieldNull"></a>testHasTerms_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasTerms_UserProfileNull"></a>testHasTerms_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEventRegistrations_UserProfileNull"></a>testGetEventRegistrations_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetEventRegistrations_UserProfileNull"></a>testSetEventRegistrations_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration_ParamNull"></a>testAddEventRegistration_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration_NeedFieldNull"></a>testAddEventRegistration_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration_UserProfileNull"></a>testAddEventRegistration_UserProfileNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEventRegistration_ParamNull"></a>testGetEventRegistration_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEventRegistration_NeedFieldNull"></a>testGetEventRegistration_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEventRegistration_UserProfileNull"></a>testGetEventRegistration_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2_ParamNull"></a>testAddEventRegistration2_ParamNull</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2_NeedFieldNull"></a>testAddEventRegistration2_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2_UserProfileNull"></a>testAddEventRegistration2_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration3_ParamNull"></a>testAddEventRegistration3_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration3_NeedFieldNull"></a>testAddEventRegistration3_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration3_UserProfileNull"></a>testAddEventRegistration3_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSecretQuestion_UserProfileNull"></a>testGetSecretQuestion_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetSecretQuestion_UserProfileNull"></a>testSetSecretQuestion_UserProfileNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetResponses_UserProfileNull"></a>testGetResponses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetResponses_UserProfileNull"></a>testSetResponses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponse_ParamNull"></a>testAddResponse_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponse_NeedFieldNull"></a>testAddResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponse_UserProfileNull"></a>testAddResponse_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponses_ParamNull"></a>testAddResponses_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponses_ParamContainsNull"></a>testAddResponses_ParamContainsNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponses_NeedFieldNull"></a>testAddResponses_NeedFieldNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAdd_UserProfileNull"></a>testAdd_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveResponse_ParamNull"></a>testRemoveResponse_ParamNull</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveResponse_NeedFieldNull"></a>testRemoveResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveResponse_UserProfileNull"></a>testRemoveResponse_UserProfileNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetBallots_UserProfileNull"></a>testGetBallots_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetBallots_UserProfileNull"></a>testSetBallots_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddBallot_ParamNull"></a>testAddBallot_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddBallot_NeedFieldNull"></a>testAddBallot_NeedFieldNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddBallot_UserProfileNull"></a>testAddBallot_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetCompPrizes_UserProfileNull"></a>testGetCompPrizes_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetCompPrizes_UserProfileNull"></a>testSetCompPrizes_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCompPrize_ParamNull"></a>testAddCompPrize_ParamNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCompPrize_NeedFieldNull"></a>testAddCompPrize_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCompPrize_UserProfileNull"></a>testAddCompPrize_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetProfessor_UserProfileNull"></a>testGetProfessor_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetProfessor_UserProfileNull"></a>testSetProfessor_UserProfileNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchools_UserProfileNull"></a>testGetSchools_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetSchools_UserProfileNull"></a>testSetSchools_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool_ParamNull"></a>testGetSchool_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool_ParamNull2"></a>testGetSchool_ParamNull2</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool_NeedFieldNull"></a>testGetSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool_UserProfileNull"></a>testGetSchool_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryTeachingSchool_NeedFieldNull"></a>testGetPrimaryTeachingSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryTeachingSchool_UserProfileNull"></a>testGetPrimaryTeachingSchool_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryStudentSchool_NeedFieldNull"></a>testGetPrimaryStudentSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryStudentSchool_UserProfileNull"></a>testGetPrimaryStudentSchool_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddSchool_ParamNull"></a>testAddSchool_ParamNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddSchool_NeedFieldNull"></a>testAddSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddSchool_UserProfileNull"></a>testAddSchool_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetCreatedSchools_UserProfileNull"></a>testGetCreatedSchools_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetCreatedSchools_UserProfileNull"></a>testSetCreatedSchools_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCreatedSchool_ParamNull"></a>testAddCreatedSchool_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCreatedSchool_NeedFieldNull"></a>testAddCreatedSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCreatedSchool_UserProfileNull"></a>testAddCreatedSchool_UserProfileNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTransientResponses_UserProfileNull"></a>testGetTransientResponses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTransientResponses_UserProfileNull"></a>testSetTransientResponses_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveTransientResponse_ParamNull"></a>testRemoveTransientResponse_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveTransientResponse_NeedFieldNull"></a>testRemoveTransientResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveTransientResponse_UserProfileNull"></a>testRemoveTransientResponse_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetCoder_UserProfileNull"></a>testGetCoder_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetCoder_UserProfileNull"></a>testSetCoder_UserProfileNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsShowEarningsEnabled_UserProfileNull"></a>testIsShowEarningsEnabled_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsShowEarningsEnabled_NeedFieldNull"></a>testIsShowEarningsEnabled_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsMemberContactEnabled_UserProfileNull"></a>testIsMemberContactEnabled_UserProfileNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsMemberContactEnabled_NeedFieldNull"></a>testIsMemberContactEnabled_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress_ParamNull"></a>testAddAddress_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddAddress_NeedFieldNull"></a>testAddAddress_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetHomeAddress_NeedFieldNull"></a>testGetHomeAddress_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryPhoneNumber_NeedFieldNull"></a>testGetPrimaryPhoneNumber_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber_ParamNull"></a>testAddPhoneNumber_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddPhoneNumber_NeedFieldNull"></a>testAddPhoneNumber_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddNotification_ParamNull"></a>testAddNotification_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddNotification_NeedFieldNull"></a>testAddNotification_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveNotification_ParamNull"></a>testRemoveNotification_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveNotification_NeedFieldNull"></a>testRemoveNotification_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddUserPreference_ParamNull"></a>testAddUserPreference_ParamNull</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddUserPreference_NeedFieldNull"></a>testAddUserPreference_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetUserPreference_NeedFieldNull"></a>testGetUserPreference_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddDemographicResponse_ParamNull"></a>testAddDemographicResponse_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddDemographicResponse_NeedFieldNull"></a>testAddDemographicResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveDemographicResponse_ParamNull"></a>testRemoveDemographicResponse_ParamNull</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveDemographicResponse_NeedFieldNull"></a>testRemoveDemographicResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testClearDemographicResponses_NeedFieldNull"></a>testClearDemographicResponses_NeedFieldNull</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddTerms_ParamNull"></a>testAddTerms_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddTerms_NeedFieldNull"></a>testAddTerms_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testHasTerms_NeedFieldNull"></a>testHasTerms_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration_ParamNull"></a>testAddEventRegistration_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration_NeedFieldNull"></a>testAddEventRegistration_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEventRegistration_ParamNull"></a>testGetEventRegistration_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEventRegistration_NeedFieldNull"></a>testGetEventRegistration_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2_ParamNull"></a>testAddEventRegistration2_ParamNull</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2_NeedFieldNull"></a>testAddEventRegistration2_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration3_ParamNull"></a>testAddEventRegistration3_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration3_NeedFieldNull"></a>testAddEventRegistration3_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponse_ParamNull"></a>testAddResponse_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponse_NeedFieldNull"></a>testAddResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponses_ParamNull"></a>testAddResponses_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponses_ParamContainsNull"></a>testAddResponses_ParamContainsNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddResponses_NeedFieldNull"></a>testAddResponses_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveResponse_ParamNull"></a>testRemoveResponse_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveResponse_NeedFieldNull"></a>testRemoveResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddBallot_ParamNull"></a>testAddBallot_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddBallot_NeedFieldNull"></a>testAddBallot_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCompPrize_ParamNull"></a>testAddCompPrize_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCompPrize_NeedFieldNull"></a>testAddCompPrize_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool_ParamNull"></a>testGetSchool_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSchool_ParamNull2"></a>testGetSchool_ParamNull2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryTeachingSchool_NeedFieldNull"></a>testGetPrimaryTeachingSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPrimaryStudentSchool_NeedFieldNull"></a>testGetPrimaryStudentSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddSchool_ParamNull"></a>testAddSchool_ParamNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddSchool_NeedFieldNull"></a>testAddSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCreatedSchool_ParamNull"></a>testAddCreatedSchool_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddCreatedSchool_NeedFieldNull"></a>testAddCreatedSchool_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveTransientResponse_ParamNull"></a>testRemoveTransientResponse_ParamNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testRemoveTransientResponse_NeedFieldNull"></a>testRemoveTransientResponse_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsShowEarningsEnabled_NeedFieldNull"></a>testIsShowEarningsEnabled_NeedFieldNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testIsMemberContactEnabled_NeedFieldNull"></a>testIsMemberContactEnabled_NeedFieldNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration2_ResponseInvalid"></a>testAddEventRegistration2_ResponseInvalid</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAddEventRegistration3_ResponseInvalid"></a>testAddEventRegistration3_ResponseInvalid</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.topcoder.web.common.model.AllTests');">
+                    Properties &raquo;
+                </a>
+</div>
+<div class="Properties">
+<a href="./0_AllTests-out.txt">
+                        System.out &raquo;
+                    </a>
+</div>
+</body>
+</html>

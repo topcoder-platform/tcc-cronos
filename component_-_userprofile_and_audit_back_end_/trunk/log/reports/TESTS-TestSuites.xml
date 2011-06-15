@@ -1,0 +1,1431 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="frog-nc6400" id="0" name="AllTests" package="com.topcoder.web.common.model" tests="548" time="44.344" timestamp="2011-06-15T02:25:54">
+      <properties>
+          <property name="component.version.major" value="1" />
+
+          <property name="file.encoding.pkg" value="sun.io" />
+
+          <property name="java.home" value="E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre" />
+
+          <property name="dist_javadocs" value="build/dist/UserProfile and Audit Back End-1.1.0/docs/javadocs" />
+
+          <property name="debug" value="off" />
+
+          <property name="build_distdir" value="build/dist" />
+
+          <property name="distfilename" value="UserProfile and Audit Back End" />
+
+          <property name="cglib.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\cglib-2.1.3.jar" />
+
+          <property name="component.version.micro" value="0" />
+
+          <property name="component.dist.jar" value="build/dist/UserProfile and Audit Back End-1.1.0.jar" />
+
+          <property name="java.endorsed.dirs" value="E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\endorsed" />
+
+          <property name="sun.os.patch.level" value="Service Pack 3, v.3300" />
+
+          <property name="design_dist.jar" value="UserProfile and Audit Back End_1.1.0_design_dist.jar" />
+
+          <property name="javadocsdir" value="docs/javadocs" />
+
+          <property name="java.vendor.url" value="http://java.sun.com/" />
+
+          <property name="java.version" value="1.6.0_13" />
+
+          <property name="eclipse.pdebuild.home" value="/E:/MyEclipse-8.6/Common/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/./" />
+
+          <property name="hiberbnate-annotations.jar" value="C:\tc\ext_lib\hibernate-3.2\hibernate-annotations-3.3.1.GA.jar" />
+
+          <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+
+          <property name="ant.project.invoked-targets" value="reports-all" />
+
+          <property name="ifxjdbc.jar" value="E:\Dev_Lib\Java\ifxjdbc.jar" />
+
+          <property name="cobertura.datafile" value="log/cobertura.ser" />
+
+          <property name="user.name" value="Frog" />
+
+          <property name="packagedir" value="com/topcoder/web/" />
+
+          <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+
+          <property name="component_version" value="1.1.0" />
+
+          <property name="sun.jnu.encoding" value="GBK" />
+
+          <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+
+          <property name="target_libdir" value="E:/tc_libdir" />
+
+          <property name="reports" value="log/reports" />
+
+          <property name="component.jar" value="build/dist/lib/tcs/UserProfile and Audit Back End/1.1.0/UserProfile and Audit Back End.jar" />
+
+          <property name="java.specification.name" value="Java Platform API Specification" />
+
+          <property name="javamain" value="src/java/main" />
+
+          <property name="user.timezone" value="" />
+
+          <property name="component.version.build" value="1" />
+
+          <property name="path.separator" value=";" />
+
+          <property name="srcdir" value="src" />
+
+          <property name="hibernate.jar" value="C:\tc\ext_lib\hibernate-3.2\hibernate3.jar" />
+
+          <property name="file.encoding" value="Cp1252" />
+
+          <property name="jnpserver.jar" value="E:\Dev_Lib\Java\jboss-4.2.2.GA\server\default\lib\jnpserver.jar" />
+
+          <property name="ant.project.default-target" value="dist" />
+
+          <property name="commons-collections.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\commons-collections-2.1.1.jar" />
+
+          <property name="ant.file" value="E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\build.xml" />
+
+          <property name="javasrc" value="src/java" />
+
+          <property name="instrumented.dir" value="build/instrumented" />
+
+          <property name="component.target" value="1.x" />
+
+          <property name="component.tests.jar" value="build/dist/lib/tcs/UserProfile and Audit Back End_tests.jar" />
+
+          <property name="java.io.tmpdir" value="C:\DOCUME~1\Frog\LOCALS~1\Temp\" />
+
+          <property name="user.language" value="en" />
+
+          <property name="manifest_file_path" value="build/dist/UserProfile and Audit Back End-1.1.0/META-INF/" />
+
+          <property name="line.separator" value=" " />
+
+          <property name="component.name" value="UserProfile and Audit Back End" />
+
+          <property name="verbose" value="no" />
+
+          <property name="manifest_file" value="build/dist/UserProfile and Audit Back End-1.1.0/META-INF//MANIFEST.MF" />
+
+          <property name="ant.file.TopCoder Java Generic Build" value="E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\build.xml" />
+
+          <property name="commons_utility.jar" value="C:/tc/tc_lib/lib/topcoder_commons_utility.jar" />
+
+          <property name="java.vm.info" value="mixed mode" />
+
+          <property name="component_path" value="UserProfile and Audit Back End/1.1.0" />
+
+          <property name="sun.desktop" value="windows" />
+
+          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+
+          <property name="dist_coverage" value="build/dist/UserProfile and Audit Back End-1.1.0/docs/coverage" />
+
+          <property name="builddir" value="build" />
+
+          <property name="cobertura.dir" value="E:\Dev_Lib\Java\cobertura-1.9.4.1" />
+
+          <property name="id_generator.jar" value="C:/tc/tc_lib/lib/id_generator.jar" />
+
+          <property name="configuration_manager.jar" value="C:/tc/tc_lib/lib/configuration_manager.jar" />
+
+          <property name="javac.encoding" value="UTF-8" />
+
+          <property name="eclipse.pdebuild.templates" value="/E:/MyEclipse-8.6/Common/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/templates/" />
+
+          <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+
+          <property name="dist_lib" value="build/dist/lib/tcs" />
+
+          <property name="ejb3-persistence.jar" value="C:\tc\ext_lib\javax persistence\ejb3-persistence.jar" />
+
+          <property name="junit.jar" value="E:/Dev_Lib/Java/junit/4.8.2/junit-4.8.2.jar" />
+
+          <property name="configdir" value="conf" />
+
+          <property name="build_tcsdistdir" value="build/dist/UserProfile and Audit Back End-1.1.0" />
+
+          <property name="ant.file.type.Dependency Import" value="file" />
+
+          <property name="ant.version" value="Apache Ant version 1.8.1 compiled on April 30 2010" />
+
+          <property name="dist_docs" value="build/dist/UserProfile and Audit Back End-1.1.0/docs" />
+
+          <property name="test_reflib" value="test_reflib" />
+
+          <property name="testlogdir" value="log" />
+
+          <property name="configuration_api.jar" value="C:/tc/tc_lib/lib/configuration_api.jar" />
+
+          <property name="os.name" value="Windows XP" />
+
+          <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="component.mainclass" value="" />
+
+          <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+
+          <property name="jboss-commons.jar" value="E:\Dev_Lib\Java\jboss-4.2.2.GA\client\jboss-common-client.jar" />
+
+          <property name="java.library.path" value="E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\bin;.;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;E:/MyEclipse-8.6/Common/binary/com.sun.java.jdk.win32.x86_1.6.0.013/jre/bin/client;E:/MyEclipse-8.6/Common/binary/com.sun.java.jdk.win32.x86_1.6.0.013/jre/bin;E:\oraclexe\app\oracle\product\10.2.0\server\bin;c:\program files\pc connectivity solution\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati.ace\core-static;c:\program files\sinovoice\jtts 5.0 desktop\bin;c:\program files\ibm\gsk8\lib;E:\DB2\SQLLIB\BIN;E:\DB2\SQLLIB\FUNCTION;E:\DB2\SQLLIB\SAMPLES\REPL;E:\TortoiseSVN\bin;C:\Program Files\ibm\gsk7\bin;C:\Program Files\ibm\gsk7\lib;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;e:\IBM\Informix\Client-SDK\bin;E:\Dev_Lib\Java\apache-ant-1.7.1\bin;C:\Java\jdk1.6.0_13\bin" />
+
+          <property name="docpackage.jar" value="UserProfile and Audit Back End_docs.jar" />
+
+          <property name="eclipse.pdebuild.scripts" value="/E:/MyEclipse-8.6/Common/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/scripts/" />
+
+          <property name="shared.jar" value="./test_files/lib/shared.jar" />
+
+          <property name="ant.java.version" value="1.6" />
+
+          <property name="basedir" value="E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1" />
+
+          <property name="java.class.version" value="50.0" />
+
+          <property name="antlr.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\antlr-2.7.6.jar" />
+
+          <property name="asm.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\asm.jar" />
+
+          <property name="ant.home" value="E:\Dev_Lib\Java\apache-ant-1.8.1" />
+
+          <property name="jboss-j2ee.jar" value="C:\tc\servers\jboss-4.2.3.GA\server\default\lib\jboss-j2ee.jar" />
+
+          <property name="log4j.jar" value="E:/Dev_Lib/Java/log4j/1.2.16/log4j-1.2.16.jar" />
+
+          <property name="sun.boot.library.path" value="E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\bin" />
+
+          <property name="ext_libdir" value="E:/Dev_Lib/Java" />
+
+          <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+
+          <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+
+          <property name="user.variant" value="" />
+
+          <property name="build_targetclassdir" value="build/targetclasses" />
+
+          <property name="ant.file.type.TopCoder Java Generic Build" value="file" />
+
+          <property name="docsdir" value="docs" />
+
+          <property name="dev_dist.jar" value="UserProfile and Audit Back End_1.1.0_dev_dist.jar" />
+
+          <property name="ant.project.name" value="TopCoder Java Generic Build" />
+
+          <property name="component.version.minor" value="1" />
+
+          <property name="java.vm.specification.version" value="1.0" />
+
+          <property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
+
+          <property name="asm-attrs.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\asm-attrs.jar" />
+
+          <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+
+          <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+
+          <property name="build_javadocsdir" value="build/docs/javadocs" />
+
+          <property name="java.ext.dirs" value="E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext" />
+
+          <property name="os.version" value="5.1" />
+
+          <property name="user.home" value="C:\Documents and Settings\Frog" />
+
+          <property name="javadoc.jar" value="javadocs.jar" />
+
+          <property name="build_classdir" value="build/classes" />
+
+          <property name="commons-logging.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\commons-logging-1.0.4.jar" />
+
+          <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+
+          <property name="component.distfilename" value="UserProfile and Audit Back End" />
+
+          <property name="component.package" value="com.topcoder.web.common.model" />
+
+          <property name="build_testclassdir" value="build/testClasses" />
+
+          <property name="package" value="com.topcoder.web.common.model" />
+
+          <property name="typesafe_enum.jar" value="C:/tc/tc_lib/lib/typesafe_enum.jar" />
+
+          <property name="base_exception.jar" value="C:/tc/tc_lib/lib/base_exception.jar" />
+
+          <property name="user.dir" value="E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1" />
+
+          <property name="jboss-allclient.jar" value="./test_files/lib/jbossall-client.jar" />
+
+          <property name="component.packagedir" value="com/topcoder/web/" />
+
+          <property name="configuration_persistence.jar" value="C:/tc/tc_lib/lib/configuration_persistence.jar" />
+
+          <property name="lib.jar" value="./test_files/lib/lib_user_profile.jar" />
+
+          <property name="sun.cpu.endian" value="little" />
+
+          <property name="ant.file.Dependency Import" value="E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\build-dependencies.xml" />
+
+          <property name="dist_docpackage" value="build/doc_package" />
+
+          <property name="java.vm.version" value="11.3-b02" />
+
+          <property name="hibernate-commons-annotations.jar" value="C:\tc\ext_lib\hibernate-3.2\hibernate-commons-annotations-3.3.0.ga.jar" />
+
+          <property name="java.class.path" value="E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\build\testClasses;E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\build\classes;E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\conf;E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\test_files;E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\test_files\lib\lib_user_profile.jar;E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\test_files\lib\shared.jar;E:\tc_libdir\base_exception\2.0.0\base_exception.jar;E:\tc_libdir\class_associations\1.0.0\class_associations.jar;E:\tc_libdir\command_line_utility\1.0.0\command_line_utility.jar;E:\tc_libdir\configuration_api\1.0.0\configuration_api.jar;E:\tc_libdir\configuration_manager\2.1.5\configuration_manager.jar;E:\tc_libdir\configuration_manager\2.2.0\configuration_manager.jar;E:\tc_libdir\configuration_persistence\1.0.0\configuration_persistence.jar;E:\tc_libdir\configuration_persistence\1.0.2\configuration_persistence.jar;E:\tc_libdir\data_validation\1.1.0\data_validation.jar;E:\tc_libdir\data_validation\1.1.1\data_validation.jar;E:\tc_libdir\database_abstraction\1.1.0\database_abstraction.jar;E:\tc_libdir\database_abstraction\1.1.1\database_abstraction.jar;E:\tc_libdir\db_connection_factory\1.1.0\db_connection_factory.jar;E:\tc_libdir\deliverable_management\1.1.1\deliverable_management.jar;E:\tc_libdir\document_generator\3.1.0\document_generator.jar;E:\tc_libdir\email_engine\3.0.0\email_engine.jar;E:\tc_libdir\email_engine\3.2.0\email_engine.jar;E:\tc_libdir\executable_wrapper\1.0.1\executable_wrapper.jar;E:\tc_libdir\file_upload\2.0.2\file_upload.jar;E:\tc_libdir\file_upload\2.2.0\file_upload.jar;E:\tc_libdir\id_generator\3.0.0\id_generator.jar;E:\tc_libdir\job_processor\3.0.1\job_processor.jar;E:\tc_libdir\job_scheduling\3.2.0\job_scheduling.jar;E:\tc_libdir\json_object\1.0.0\json_object.jar;E:\tc_libdir\ldap_sdk_interface\1.0.2\ldap_sdk_interface.jar;E:\tc_libdir\logging_wrapper\1.2.0\logging_wrapper.jar;E:\tc_libdir\logging_wrapper\2.0.0\logging_wrapper.jar;E:\tc_libdir\object_factory\2.0.1\object_factory.jar;E:\tc_libdir\object_factory\2.1.2\object_factory.jar;E:\tc_libdir\object_factory_config_manager_plugin\1.0.0\object_factory_config_manager_plugin.jar;E:\tc_libdir\object_factory_configuration_api_plugin\1.0.0\object_factory_configuration_api_plugin.jar;E:\tc_libdir\object_formatter\1.0.0\object_formatter.jar;E:\tc_libdir\phase_management\1.0.4\phase_management.jar;E:\tc_libdir\project_management\1.0.1\project_management.jar;E:\tc_libdir\project_phases\2.0.1\project_phases.jar;E:\tc_libdir\random_string_generator\1.0.0\random_string_generator.jar;E:\tc_libdir\resource_management\1.1.0\resource_management.jar;E:\tc_libdir\resource_management\1.3.0\resource_management.jar;E:\tc_libdir\search_builder\1.3.1\search_builder.jar;E:\tc_libdir\topcoder_commons_utility\1.0.0\topcoder_commons_utility.jar;E:\tc_libdir\typesafe_enum\1.1.0\typesafe_enum.jar;E:\tc_libdir\workdays\1.0.1\workdays.jar;E:\tc_libdir\workdays\1.1.0\workdays.jar;E:\Dev_Lib\Java\log4j\1.2.16\log4j-1.2.16.jar;E:\Dev_Lib\Java\ifxjdbc.jar;E:\Dev_Lib\Java\jboss-4.2.2.GA\client\jboss-common-client.jar;E:\Dev_Lib\Java\jboss-4.2.2.GA\server\default\lib\jnpserver.jar;E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1\test_files\lib\jbossall-client.jar;E:\Dev_Lib\Java\hibernate-3.2\hibernate3.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\asm-attrs.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\asm.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\c3p0-0.9.1.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\cglib-2.1.3.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\checkstyle-all.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\cleanimports.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\commons-collections-2.1.1.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\commons-logging-1.0.4.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\concurrent-1.3.2.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\dom4j-1.6.1.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\ehcache-1.2.3.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jaas.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jacc-1_0-fr.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\javassist.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jaxen-1.1-beta-7.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jboss-cache.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jboss-common.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jboss-jmx.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jboss-system.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jgroups-2.2.8.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\jta.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\junit-3.8.1.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\log4j-1.2.11.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\oscache-2.1.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\proxool-0.8.3.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\swarmcache-1.0rc2.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\syndiag2.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\versioncheck.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\xerces-2.6.2.jar;E:\Dev_Lib\Java\hibernate-3.2\lib\xml-apis.jar;E:\Dev_Lib\Java\hibernate-entitymanager-3.3.1.GA\lib\ejb3-persistence.jar;E:\Dev_Lib\Java\hibernate-entitymanager-3.3.1.GA\lib\hibernate-annotations.jar;E:\Dev_Lib\Java\hibernate-entitymanager-3.3.1.GA\lib\hibernate-commons-annotations.jar;E:\Dev_Lib\Java\hibernate-entitymanager-3.3.1.GA\lib\hibernate-validator.jar;E:\Dev_Lib\Java\hibernate-entitymanager-3.3.1.GA\lib\jboss-archive-browsing.jar;E:\Dev_Lib\Java\junit\4.8.2\junit-4.8.2.jar;E:\Dev_Lib\Java\cobertura-1.9.4.1\cobertura.jar;E:\Dev_Lib\Java\cobertura-1.9.4.1\lib\asm-3.0.jar;E:\Dev_Lib\Java\cobertura-1.9.4.1\lib\asm-tree-3.0.jar;E:\Dev_Lib\Java\cobertura-1.9.4.1\lib\jakarta-oro-2.0.8.jar;E:\Dev_Lib\Java\cobertura-1.9.4.1\lib\log4j-1.2.9.jar;E:\Submissions_2011\FF_UserProfile_and_Audit_Back_End_1.1;E:\DB2\SQLLIB\java\db2java.zip;E:\DB2\SQLLIB\java\db2jcc.jar;E:\DB2\SQLLIB\java\sqlj.zip;E:\DB2\SQLLIB\java\db2jcc_license_cu.jar;E:\DB2\SQLLIB\bin;E:\DB2\SQLLIB\java\common.jar;E:\Dev_Lib\Java\apache-ant-1.8.1\lib\ant-launcher.jar;E:\Dev_Lib\Java\apache-ant-1.8.1\lib\ant.jar;E:\Dev_Lib\Java\apache-ant-1.8.1\lib\ant-junit.jar" />
+
+          <property name="dev_submission.jar" value="UserProfile and Audit Back End_1.1.0_dev_submission.jar" />
+
+          <property name="ant.library.dir" value="E:\Dev_Lib\Java\apache-ant-1.8.1\lib" />
+
+          <property name="os.arch" value="x86" />
+
+          <property name="sun.java.launcher" value="SUN_STANDARD" />
+
+          <property name="ant.core.lib" value="E:\Dev_Lib\Java\apache-ant-1.8.1\lib\ant.jar" />
+
+          <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+
+          <property name="file.separator" value="\" />
+
+          <property name="java.runtime.version" value="1.6.0_13-b03" />
+
+          <property name="sun.boot.class.path" value="E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\resources.jar;E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\rt.jar;E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\sunrsasign.jar;E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\jsse.jar;E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\jce.jar;E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\lib\charsets.jar;E:\MyEclipse-8.6\Common\binary\com.sun.java.jdk.win32.x86_1.6.0.013\jre\classes" />
+
+          <property name="build_docsdir" value="build/docs" />
+
+          <property name="dom4j.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\dom4j-1.6.1.jar" />
+
+          <property name="javadoc.locale" value="en_US" />
+
+          <property name="design_submission.jar" value="UserProfile and Audit Back End_1.1.0_design_submission.jar" />
+
+          <property name="user.country" value="US" />
+
+          <property name="tcs_libdir" value="E:/tc_libdir" />
+
+          <property name="javassist.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\javassist.jar" />
+
+          <property name="component" value="UserProfile and Audit Back End" />
+
+          <property name="java.vendor" value="Sun Microsystems Inc." />
+
+          <property name="jta.jar" value="C:\tc\ext_lib\hibernate-3.2\lib\jta.jar" />
+
+          <property name="db_connection_factory.jar" value="C:/tc/tc_lib/lib/db_connection_factory.jar" />
+
+          <property name="java.specification.version" value="1.6" />
+
+          <property name="testfiles" value="test_files" />
+
+          <property name="sun.arch.data.model" value="32" />
+
+          <property name="javatests" value="src/java/tests" />
+
+      </properties>
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testUser" time="0.219" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetId" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetHandle" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetStatus" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetActivationCode" time="0.047" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetEmailAddresses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetPrimaryEmail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetPrimaryEmailFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddEmailAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddEmailFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetHandleLower" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetRegistrationTypes" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetSecurityGroups" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetUserSecurityKey" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testhashCode" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testEquals" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetUserProfile" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetFirstName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetFirstNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetFirstNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetMiddleName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetMiddleNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetMiddleNameFail" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetLastName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetLastNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetLastNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetAddresses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddAddress" time="0.015" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddAddressFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddAddressFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetHomeAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testTestGetPhoneNumbers" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetPrimaryPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetTimezone" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetNotifications" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddNotification" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testRemoveNotification" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetUserPreferences" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddGetUserPreference" time="0.015" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetDemographicResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddRemoveDemographicResponse" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testClearDemographicResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetContact" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetTermes" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddHasTerms" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetEventRegistrations" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddGetEventRegistration" time="0.016" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddEventRegistration1" time="0.015" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddEventRegistration2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetSecretQuestion" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddResponse" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetBallots" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddBallot" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetUserContestPrizes" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddCompPrize" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetProfessor" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetUserSchools" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetSchool" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetPrimarySchool" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testGetPrimarySchool1" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetcreatedSchools" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testAddCreatedSchool" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetTransientResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testRemoveTransientResponse" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testSetGetCoder" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testIsShowEarningsEnabled" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserTest" name="testIsMemberContactEnabled" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetFirstName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetMiddleName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetLastName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetAddresses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddAddressFail" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testGetHomeAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testTestGetPhoneNumbers" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testGetPrimaryPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetTimezone" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetNotifications" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddNotification" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testRemoveNotification" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetUserPreferences" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetDemographicResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddRemoveDemographicResponse" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testClearDemographicResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetContact" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetTermes" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddHasTerms" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetEventRegistrations" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddGetEventRegistration" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddEventRegistration1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddEventRegistration2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetSecretQuestion" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddResponse" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetBallots" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddBallot" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddCompPrize" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetProfessor" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testGetSchool" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testGetPrimarySchool" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testGetPrimarySchool1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetcreatedSchools" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddCreatedSchool" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetTransientResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testRemoveTransientResponse" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetCoder" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testIsShowEarningsEnabled" time="0.11" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testIsMemberContactEnabled" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testAddGetUserProfilePreference" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetUserProfileContestPrizes" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.UserProfileTest" name="testSetGetUserProfileSchools" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testUserDAOHibernate" time="4.532" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testUserDAOHibernateSession" time="0.187" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testUserDAOHibernateSessionFailure" time="0.172" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindLong" time="0.375" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindLong1" time="0.203" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindLongFailure" time="0.234" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBoolean" time="0.516" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBoolean1" time="0.203" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBoolean2" time="0.187" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBooleanFailure" time="0.188" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBooleanFailure1" time="0.172" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBooleanBoolean" time="0.234" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBooleanBooleanFailure" time="0.156" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringBooleanBoolean1" time="0.235" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringStringStringString" time="0.234" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringStringStringString1" time="0.234" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testSaveOrUpdateUser" time="0.672" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testSaveOrUpdateUser1" time="1.532" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testSaveOrUpdate2" time="1.828" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testSaveOrUpdate3" time="1.843" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testSaveOrUpdateFailure" time="0.188" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindString" time="0.516" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringFailure" time="0.172" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testFindStringFailure1" time="0.172" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testCanChangeHandle" time="0.281" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testCanChangeHandleFailure" time="0.188" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.UserDAOHibernateTest" name="testCanChangeHandleFailure1" time="0.187" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetGetHandle" time="0.578" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetGetActivationCode" time="0.172" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetGetFirstName" time="0.141" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetFirstNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetFirstNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetGetMiddleName" time="0.14" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetMiddleNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetMiddleNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetLastNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testUserBean" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testCreateNewUser" time="0.109" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testCreateNewUserFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testCreateNewUserFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testCreateNewUserFail2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testCreateNewUserFail3" time="0.079" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testCreateUser1" time="0.125" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testCreateUserFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetFirstNameFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetGetlastName" time="0.125" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetlastNameFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetlastNameFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetMiddleNameFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetActivationCodeFail" time="0.062" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetActivationCodeFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetStatus" time="0.141" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetStatusFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetStatusFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetFirstNameFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetLastNameFail1" time="0.047" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetMiddleNameFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetActivationCodeFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetActivationCodeFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetHandleFail" time="0.094" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetHandleFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetHandleFail2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetHandleFail3" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetHandleFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetHandleFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetStatusFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testUserExists" time="0.078" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testUserExistsFail" time="0.015" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testUserExistsHandle" time="0.063" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testUserExistsHandleFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetGetPassword" time="0.078" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetPasswordFail" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetPasswordFail1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testSetPasswordFail2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetPasswordFail" time="0.062" />
+
+      <testcase classname="com.topcoder.web.ejb.user.UserBeanTest" name="testGetPasswordFail1" time="0.047" />
+
+      <testcase classname="com.topcoder.web.common.model.Demo" name="testDemo" time="0.5" />
+
+      <testcase classname="com.topcoder.web.common.model.Demo" name="testHibernate" time="0.25" />
+
+      <testcase classname="com.topcoder.web.common.model.Demo" name="testAuditDemo" time="0.203" />
+
+      <testcase classname="com.topcoder.web.common.model.AuditRecordTest" name="testSetGetId" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.AuditRecordTest" name="testSetGetHandle" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.AuditRecordTest" name="testSetGetOperationType" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.AuditRecordTest" name="testSetGetIpAdress" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.AuditRecordTest" name="testSetGetPreviousValue" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.AuditRecordTest" name="testSetGetNewValue" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.AuditRecordTest" name="testSetGetTimestamp" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.AuditDAOHibernateTest" name="testAuditDAOHibernate" time="0.234" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.AuditDAOHibernateTest" name="testAuditDAOHibernate1" time="0.172" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.AuditDAOHibernateTest" name="testAudit" time="0.203" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.AuditDAOHibernateTest" name="testHasOperation" time="0.187" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.HelperTest" name="testCheckParam" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.dao.hibernate.HelperTest" name="testCheckParam1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testSetGetId" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testSetGetHandle" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testSetGetStatus" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testSetGetActivationCode" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testAddEmailAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetHandleLower" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetRegistrationTypes" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testAddAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetHomeAddress" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetPrimaryPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testAddPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testIsShowEarningsEnabled" time="0.016" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testIsMemberContactEnabled" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetEmailAddresses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetPrimaryEmailAddress1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetPrimaryEmailAddress2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetSecurityGroups" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetUserSecurityKey" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testHashCode1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testHashCode2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testEquals1" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testEquals2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testEquals3" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testEquals4" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testEquals5" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testEquals6" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetUserProfile" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetFirstName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetMiddleName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetLastName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddresses" time="0.109" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetPhoneNumbers" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetTimeZone" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddRemoveNotifications" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddUserPreference" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddRemoveClearDemographicResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetContact" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddHasTerms" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddEventRegistration" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetSecretQuestion" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddRemoveResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddBallots" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddCompPrizes" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetProfessor" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddSchool" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetAddCreatedSchools" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetRemoveTransientResponses" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserAccuracyTest" name="testGetSetCoder" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testSetGetId" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testAddAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetHomeAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetPrimaryPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testAddPhoneNumber" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testIsShowEarningsEnabled" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testIsMemberContactEnabled" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetUserProfile" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetFirstName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetMiddleName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetLastName" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddresses" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetPhoneNumbers" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetTimeZone" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddRemoveNotifications" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddUserPreference" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddRemoveClearDemographicResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetContact" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddHasTerms" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddEventRegistration" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetSecretQuestion" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddRemoveResponses" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddBallots" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddCompPrizes" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetProfessor" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddSchool" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetAddCreatedSchools" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetRemoveTransientResponses" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserProfileAccuracyTest" name="testGetSetCoder" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditRecordAccuracyTest" name="testSetGetId" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditRecordAccuracyTest" name="testSetGetHandle" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditRecordAccuracyTest" name="testSetGetOperationType" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditRecordAccuracyTest" name="testSetGetPreviousValue" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditRecordAccuracyTest" name="testSetGetNewValue" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditRecordAccuracyTest" name="testSetGetTimestamp" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditRecordAccuracyTest" name="testSetGetIpAddress" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testSaveOrUpdate2" time="0.656" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testSaveOrUpdate3" time="0.266" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testCanChangeHandle" time="0.219" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testCtor1" time="0.218" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testCtor2" time="0.204" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_Id1" time="0.421" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_Id2" time="0.219" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_Name1" time="0.266" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_Name2" time="0.406" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_Name3" time="0.234" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_Name4" time="0.25" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_All1" time="0.266" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_All2" time="0.297" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testSaveOrUpdate1" time="0.187" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testSaveOrUpdate4" time="0.469" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserDAOHibernateAccuracyTest" name="testFind_Email" time="0.203" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditDAOHibernateAccuracyTest" name="testCtor1" time="0.172" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditDAOHibernateAccuracyTest" name="testCtor2" time="0.203" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditDAOHibernateAccuracyTest" name="testAudit1" time="0.266" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditDAOHibernateAccuracyTest" name="testAudit2" time="0.218" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditDAOHibernateAccuracyTest" name="testHasOperation1" time="0.219" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.AuditDAOHibernateAccuracyTest" name="testHasOperation2" time="0.188" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testCreateNewUser" time="0.516" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testSetStatus" time="0.265" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testCtor" time="0.188" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testCreateUser" time="0.422" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testSetFirstName" time="0.297" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testSetMiddleName" time="0.281" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testSetLastName" time="0.5" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testSetActivationCode" time="0.422" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testSetPassword" time="0.406" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testSetHandle" time="0.297" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testGetHandle" time="0.469" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testGetFirstName" time="0.328" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testGetMiddleName" time="0.281" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testGetLastName" time="0.281" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testGetStatus" time="0.36" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testGetActivationCode" time="0.297" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testGetPassword" time="0.484" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testUserExists_Handle1" time="0.297" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testUserExists_Handle2" time="0.281" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testUserExists_Id1" time="0.297" />
+
+      <testcase classname="com.topcoder.web.common.model.accuracytests.UserBeanAccuracyTest" name="testUserExists_Id2" time="0.484" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.AuditDAOHibernateFailureTest" name="testAuditDAOHibernateSession_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.AuditDAOHibernateFailureTest" name="testAudit_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.AuditDAOHibernateFailureTest" name="testHasOperation_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.AuditDAOHibernateFailureTest" name="testHasOperation_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testCreateNewUser_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testCreateNewUser_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testCreateUser_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testCreateUser_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetFirstName_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetLastName_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetMiddleName_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetStatus_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetActivationCode_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testGetFirstName_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="getMiddleName_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testGetLastName_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testGetActivationCode_ParamNull" time="0.016" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testGetStatus_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetHandle_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetHandle2_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testGetHandle_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testUserExists_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testUserExists2_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetPassword_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserBeanFailureTest" name="testSetPassword2_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testUserDAOHibernateSession_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testFind_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testFind2_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testFind3_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testsaveOrUpdate_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testFind4_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testFind4_ParamEmpty" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testCanChangeHandle_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserDAOHibernateFailureTest" name="testCanChangeHandle_ParamEmpty" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPrimaryEmailAddress_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEmailAddress_NeedFieldNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetRegistrationTypes_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetFirstName_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetFirstName_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetMiddleName_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetMiddleName_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetLastName_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetLastName_UserProfileNull" time="0.11" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetAddresses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetAddresses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddAddress_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddAddress_NeedFieldNull" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetHomeAddress_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetHomeAddress_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPhoneNumbers_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetPhoneNumbers_UserProfileNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPrimaryPhoneNumber_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPrimaryPhoneNumber_UserProfileNull" time="0.016" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddPhoneNumber_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddPhoneNumber_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddPhoneNumber_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetTimeZone_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetTimeZone_UserProfileNull" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetNotifications_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetNotifications_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddNotification_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddNotification_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddNotification_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveNotification_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveNotification_NeedFieldNull" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveNotification_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetUserPreferences_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetUserPreferences_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddUserPreference_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddUserPreference_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddUserPreference_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetUserPreference_NeedFieldNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetUserPreference_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetDemographicResponses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetDemographicResponses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddDemographicResponse_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddDemographicResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddDemographicResponse_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveDemographicResponse_ParamNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveDemographicResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveDemographicResponse_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testClearDemographicResponses_NeedFieldNull" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testClearDemographicResponses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetContact_UserProfileNull" time="0.016" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetContact_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetTerms_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetTerms_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddTerms_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddTerms_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddTerms_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testHasTerms_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testHasTerms_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetEventRegistrations_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetEventRegistrations_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration_UserProfileNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetEventRegistration_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetEventRegistration_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetEventRegistration_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration2_ParamNull" time="0.109" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration2_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration2_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration3_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration3_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddEventRegistration3_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetSecretQuestion_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetSecretQuestion_UserProfileNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetResponses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetResponses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddResponse_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddResponse_NeedFieldNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddResponse_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddResponses_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddResponses_ParamContainsNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddResponses_NeedFieldNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAdd_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveResponse_ParamNull" time="0.015" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveResponse_UserProfileNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetBallots_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetBallots_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddBallot_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddBallot_NeedFieldNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddBallot_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetCompPrizes_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetCompPrizes_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddCompPrize_ParamNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddCompPrize_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddCompPrize_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetProfessor_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetProfessor_UserProfileNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetSchools_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetSchools_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetSchool_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetSchool_ParamNull2" time="0.109" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetSchool_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPrimaryTeachingSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPrimaryTeachingSchool_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPrimaryStudentSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetPrimaryStudentSchool_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddSchool_ParamNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddSchool_NeedFieldNull" time="0.015" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddSchool_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetCreatedSchools_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetCreatedSchools_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddCreatedSchool_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddCreatedSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testAddCreatedSchool_UserProfileNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetTransientResponses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetTransientResponses_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveTransientResponse_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveTransientResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testRemoveTransientResponse_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testGetCoder_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testSetCoder_UserProfileNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testIsShowEarningsEnabled_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testIsShowEarningsEnabled_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testIsMemberContactEnabled_UserProfileNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserFailureTest" name="testIsMemberContactEnabled_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddAddress_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddAddress_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetHomeAddress_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetPrimaryPhoneNumber_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddPhoneNumber_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddPhoneNumber_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddNotification_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddNotification_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveNotification_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveNotification_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddUserPreference_ParamNull" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddUserPreference_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetUserPreference_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddDemographicResponse_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddDemographicResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveDemographicResponse_ParamNull" time="0.016" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveDemographicResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testClearDemographicResponses_NeedFieldNull" time="0.093" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddTerms_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddTerms_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testHasTerms_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetEventRegistration_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetEventRegistration_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration2_ParamNull" time="0.11" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration2_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration3_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration3_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddResponse_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddResponses_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddResponses_ParamContainsNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddResponses_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveResponse_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddBallot_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddBallot_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddCompPrize_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddCompPrize_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetSchool_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetSchool_ParamNull2" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetPrimaryTeachingSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testGetPrimaryStudentSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddSchool_ParamNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddCreatedSchool_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddCreatedSchool_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveTransientResponse_ParamNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testRemoveTransientResponse_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testIsShowEarningsEnabled_NeedFieldNull" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testIsMemberContactEnabled_NeedFieldNull" time="0.094" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration2_ResponseInvalid" time="0.0" />
+
+      <testcase classname="com.topcoder.web.common.failuretests.UserProfileFailureTest" name="testAddEventRegistration3_ResponseInvalid" time="0.0" />
+
+      <system-out><![CDATA[10:26:06,375        ERROR TCResourceBundle:36 - java.util.MissingResourceException: Can't find bundle for base name DBMS, locale en_US
+]]></system-out>
+
+      <system-err><![CDATA[]]></system-err>
+
+  </testsuite>
+</testsuites>
