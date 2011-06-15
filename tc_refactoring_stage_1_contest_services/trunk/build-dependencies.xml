@@ -22,9 +22,9 @@
 	<path id="component.tcs-dependencies" >
 		<pathelement location="${base_exception.jar}"/>
 		<pathelement location="${json_object.jar}"/>
-    </path>
+  </path>
 
-    <path id="component.3rdParty-dependencies">
+  <path id="component.3rdParty-dependencies">
     	<pathelement location="${log4j.jar}"/>
     	<pathelement location="${ifxjdbc.jar}"/>
     	<pathelement location="${javeee.jar}"/>
@@ -38,13 +38,13 @@
     	<fileset dir="${struts.dir}">
     		 <include name="**/*.jar"/>
     	</fileset>
-    </path>
+  </path>
 
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
-    	<fileset dir="${easymock.dir}">
-    	    <include name="*.jar"/>
-    	</fileset>
+    	  <fileset dir="${easymock.dir}">
+    	        <include name="*.jar"/>
+    	  </fileset>
     </path>
 
 

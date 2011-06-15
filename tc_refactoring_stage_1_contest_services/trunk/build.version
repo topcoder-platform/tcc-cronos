@@ -1,6 +1,6 @@
 # Property file defining the component's information.
-component.name=tc_refactoring_stage_1_contest_service
-component.distfilename=tc_refactoring_stage_1_contest_service
+component.name=TC Refactoring Stage 1 Contest Services
+component.distfilename=tc_refactoring_stage_1_contest_services
 component.package=com.topcoder.web.tc
 component.packagedir=com/topcoder/web/tc
 component.version.major=1
