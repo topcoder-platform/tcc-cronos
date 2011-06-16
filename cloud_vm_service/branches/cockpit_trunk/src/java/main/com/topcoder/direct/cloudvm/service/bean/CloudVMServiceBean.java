@@ -418,12 +418,14 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 // make db query
                 Query q;
                 if (!inRole(tcSubject, "Administrator")) {
-                    q = entityManager.createQuery("select a from VMInstance a, VMAccountUser b where a.vmAccountUserId = b.id and b.vmAccountId=:accountId and b.userId=:userId order by a.contestId desc");
+                    q = entityManager.createQuery("select a from VMInstance a, VMAccountUser b where a.terminated=:terminated and a.vmAccountUserId = b.id and b.vmAccountId=:accountId and b.userId=:userId order by a.contestId desc");
                     q.setParameter("accountId", vmAccount.getId());
                     q.setParameter("userId", tcSubject.getUserId());
+                    q.setParameter("terminated", false);
                 } else {
-                    q = entityManager.createQuery("select a from VMInstance a, VMImage b where a.vmImageId = b.id and b.vmAccount.id=:accountId order by a.contestId desc");
+                    q = entityManager.createQuery("select a from VMInstance a, VMImage b where a.terminated=:terminated and a.vmImageId = b.id and b.vmAccount.id=:accountId order by a.contestId desc");
                     q.setParameter("accountId", vmAccount.getId());
+                    q.setParameter("terminated", false);
                 }
                 List<VMInstance> instances = q.getResultList();
 
@@ -437,9 +439,6 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
 
                 // create VMInstanceData objects
                 for (VMInstance instance : instances) {
-                      if(instance.isTerminated()) { // BUGR-3930
-                        continue;
-                    }
                     VMInstanceData instanceData = new VMInstanceData();
                     instanceData.setInstance(instance);
                     data.add(instanceData);
