@@ -1,0 +1,92 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.x"/>
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+	<property name="json_object.jar" value="${tcs_libdir}/json_object/1.0.0/json_object.jar"/>
+
+    <!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
+	<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.16/log4j-1.2.16.jar"/>
+	<property name="javeee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
+	<property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
+	<property name="spring.dir" value="${ext_libdir}/spring/3.0.5"/>
+	<property name="hibernate.dir" value="${ext_libdir}/hibernate/3.6.4"/>
+	<property name="struts.dir" value="${ext_libdir}/struts/2.1.8.1"/>
+	<property name="easymock.dir" value="${ext_libdir}/easymock/2.5.2"/>
+
+	<path id="component.tcs-dependencies" >
+		<pathelement location="${base_exception.jar}"/>
+		<pathelement location="${json_object.jar}"/>
+  </path>
+
+  <path id="component.3rdParty-dependencies">
+    	<pathelement location="${log4j.jar}"/>
+    	<pathelement location="${ifxjdbc.jar}"/>
+    	<pathelement location="${javeee.jar}"/>
+    	<fileset dir="${spring.dir}">
+    	     <include name="dist/*.jar"/>
+    	</fileset>
+    	<fileset dir="${hibernate.dir}">
+    		 <include name="hibernate3.jar"/>
+    	    <include name="**/*.jar"/>
+    	 </fileset>
+    	<fileset dir="${struts.dir}">
+    		 <include name="**/*.jar"/>
+    	</fileset>
+  </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+    	  <fileset dir="${easymock.dir}">
+    	        <include name="*.jar"/>
+    	  </fileset>
+    </path>
+
+
+	<property name="tomcat.dir" value="${ext_libdir}/tomcat/6.0.26" />
+	<property name="deploy.dir" value="${tomcat.dir}/webapps/demo" />
+
+	<target name="deploy_to_tomcat" depends="compile">
+		<delete dir="${deploy.dir}" />
+		<copy todir="${deploy.dir}" overwrite="true" encoding="UTF-8">
+			<fileset dir="${testfiles}/web/">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<copy file="${testfiles}/applicationContext.xml" todir="${deploy.dir}/WEB-INF" flatten="true" />
+		<copy todir="${deploy.dir}/WEB-INF/classes" overwrite="true" encoding="UTF-8">
+			<fileset dir="${build_classdir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<copy todir="${deploy.dir}/WEB-INF/classes" overwrite="true" encoding="UTF-8" flatten="true">
+			<fileset dir="${testfiles}">
+				<include name="*.hbm.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${deploy.dir}/WEB-INF/lib" overwrite="true" encoding="UTF-8" flatten="true">
+			<file file="${base_exception.jar}" />
+			<file file="${json_object.jar}" />
+			<file file="${log4j.jar}" />
+			<file file="${ifxjdbc.jar}" />
+    	<fileset dir="${spring.dir}">
+    	     <include name="dist/*.jar"/>
+    	</fileset>
+    	<fileset dir="${hibernate.dir}">
+    		 <include name="hibernate3.jar"/>
+    	    <include name="**/*.jar"/>
+    	 </fileset>
+			<fileset dir="${struts.dir}/lib">
+				<exclude name="struts2-*-plugin*.jar" />
+				<exclude name="struts2-osgi*.jar" />
+			</fileset>
+			<file file="${struts.dir}/lib/struts2-spring-plugin-2.1.8.1.jar" />
+		</copy>
+	</target>
+	
+</project>
