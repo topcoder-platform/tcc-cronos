@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.topcoder.web.common.model">
+
+    <class name="User" table="user">
+        <id name="id" column="user_id">
+            <generator class="com.topcoder.web.common.model.IdGenerator">
+                <param name="sequence_name">USER_SEQ</param>
+            </generator>
+        </id>
+        <property name="handle" access="field"/>
+        <property name="status" access="field"/>
+        <property name="activationCode" column="activation_code" access="field"/>
+        <one-to-one name="userSecurityKey" class="UserSecurityKey" cascade="save-update" access="field" fetch="select"/>
+
+        <set name="securityGroups" table="user_group_xref" cascade="none" inverse="true" access="field">
+            <key column="login_id" not-null="true"/>
+            <one-to-many class="UserGroup"/>
+        </set>
+        <set name="emailAddresses" cascade="save-update" inverse="true" access="field">
+            <key column="user_id" not-null="true"/>
+            <one-to-many class="Email"/>
+        </set>
+        <one-to-one name="userProfile" class="UserProfile" cascade="all" access="field" fetch="select" lazy="false"/>
+    </class>
+</hibernate-mapping>
