@@ -1,10 +1,10 @@
 # Property file defining the component's information.
-component.name=UserProfile and Audit Back End
-component.distfilename=UserProfile and Audit Back End
+component.name=UserProfile And Audit Back End
+component.distfilename=userprofile_and_audit_back_end
 component.package=com.topcoder.web.common.model
 component.packagedir=com/topcoder/web/
 component.version.major=1
-component.version.minor=1
+component.version.minor=0
 component.version.micro=0
 component.version.build=1
 

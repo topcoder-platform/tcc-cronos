@@ -2,8 +2,8 @@
     <!-- property file defining the component's dependencies -->
 
     <!-- Properties used in compile_targets ANT target for JDK version x -->
-    <property name="component.target" value="1.x"/>
-    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"/>
+    <property name="component.target" value="1.6"/>
+    <property name="component.bootclasspath" value="${java_1_6_bootclasspath}"/>
 
     <!-- TCS dependencies -->
 	<property name="lib.jar" value="./test_files/lib/lib_user_profile.jar"/>
@@ -18,26 +18,26 @@
 	<property name="commons_utility.jar" value="${tcs_libdir}//topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
 
     <!-- 3rd party dependencies -->
-	<property name="junit.jar" value="${ext_libdir}/junit/4.8.2/junit-4.8.2.jar"/>
+	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
 	<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.16/log4j-1.2.16.jar"/>
-	<property name="ifxjdbc.jar" value="${ext_libdir}\ifxjdbc.jar"/>
-	<property name="hibernate.jar" value="${ext_libdir}\hibernate-3.2\hibernate3.jar"/>
-	<property name="jboss-j2ee.jar" value="${ext_libdir}\jboss-4.2.2.GA\server\default\lib\jboss-j2ee.jar"/>
-	<property name="dom4j.jar" value="${ext_libdir}\hibernate-3.2\lib\dom4j-1.6.1.jar"/>
-	<property name="antlr.jar" value="${ext_libdir}\hibernate-3.2\lib\antlr-2.7.6.jar"/>
-	<property name="commons-collections.jar" value="${ext_libdir}\hibernate-3.2\lib\commons-collections-2.1.1.jar"/>
-	<property name="javassist.jar" value="${ext_libdir}\hibernate-3.2\lib\javassist.jar"/>
-	<property name="jta.jar" value="${ext_libdir}\hibernate-3.2\lib\jta.jar"/>
-	<property name="commons-logging.jar" value="${ext_libdir}\hibernate-3.2\lib\commons-logging-1.0.4.jar"/>
-	<property name="ejb3-persistence.jar" value="${ext_libdir}\hibernate-entitymanager-3.3.1.GA\lib\ejb3-persistence.jar"/>
-	<property name="hibernate-commons-annotations.jar" value="${ext_libdir}\hibernate-entitymanager-3.3.1.GA\lib\hibernate-commons-annotations.jar"/>
-	<property name="hiberbnate-annotations.jar" value="${ext_libdir}\hibernate-entitymanager-3.3.1.GA\lib\hibernate-annotations.jar"/>
-	<property name="cglib.jar" value="${ext_libdir}\hibernate-3.2\lib\cglib-2.1.3.jar"/>
-	<property name="asm.jar" value="${ext_libdir}\hibernate-3.2\lib\asm.jar"/>
-	<property name="asm-attrs.jar" value="${ext_libdir}\hibernate-3.2\lib\asm-attrs.jar"/>
-	<property name="jboss-commons.jar" value="${ext_libdir}\jboss-4.2.2.GA\client\jboss-common-client.jar"/>
-	<property name="jnpserver.jar" value="${ext_libdir}\jboss-4.2.2.GA\server\default\lib\jnpserver.jar"/>
-	<property name="jboss-allclient.jar" value="./test_files/lib/jbossall-client.jar"/>
+	<property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar"/>
+	<property name="hibernate.jar" value="${ext_libdir}/hibernate/3.2.5.ga/hibernate3.jar"/>
+	<property name="jboss-j2ee.jar" value="${ext_libdir}/jboss/4.2.2.GA/server/default/lib/jboss-j2ee.jar"/>
+	<property name="dom4j.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/dom4j-1.6.1.jar"/>
+	<property name="antlr.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/antlr-2.7.6.jar"/>
+	<property name="commons-collections.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/commons-collections-2.1.1.jar"/>
+	<property name="javassist.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/javassist.jar"/>
+	<property name="jta.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/jta.jar"/>
+	<property name="commons-logging.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/commons-logging-1.0.4.jar"/>
+	<property name="ejb3-persistence.jar" value="${ext_libdir}/hibernate-entitymanager/3.3.1.GA/lib/ejb3-persistence.jar"/>
+	<property name="hibernate-commons-annotations.jar" value="${ext_libdir}/hibernate-entitymanager/3.3.1.GA/lib/hibernate-commons-annotations.jar"/>
+	<property name="hiberbnate-annotations.jar" value="${ext_libdir}/hibernate-entitymanager/3.3.1.GA/lib/hibernate-annotations.jar"/>
+	<property name="cglib.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/cglib-2.1.3.jar"/>
+	<property name="asm.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/asm.jar"/>
+	<property name="asm-attrs.jar" value="${ext_libdir}/hibernate/3.2.5.ga/lib/asm-attrs.jar"/>
+	<property name="jboss-commons.jar" value="${ext_libdir}/jboss/4.2.2.GA/client/jboss-common-client.jar"/>
+	<property name="jnpserver.jar" value="${ext_libdir}/jboss/4.2.2.GA/server/default/lib/jnpserver.jar"/>
+	<property name="jboss-allclient.jar" value="${ext_libdir}/jboss/4.2.2.GA/client/jbossall-client.jar"/>
 
     <path id="component.tcs-dependencies">
     	<pathelement location="${base_exception.jar}"/>
@@ -61,17 +61,17 @@
     	<pathelement location="${antlr.jar}"/>
     	<pathelement location="${commons-collections.jar}"/>
     	<pathelement location="${javassist.jar}"/>
-    		<pathelement location="${jta.jar}"/>
-    		<pathelement location="${commons-logging.jar}"/>
+    	<pathelement location="${jta.jar}"/>
+    	<pathelement location="${commons-logging.jar}"/>
     	<pathelement location="${ejb3-persistence.jar}"/>
     	<pathelement location="${hibernate-commons-annotations.jar}"/>
     	<pathelement location="${hiberbnate-annotations.jar}"/>
     	<pathelement location="${cglib.jar}"/>
     	<pathelement location="${asm.jar}"/>
-    		<pathelement location="${asm-attrs.jar}"/>
-    		<pathelement location="${jboss-commons.jar}"/>
-    		<pathelement location="${jnpserver.jar}"/>
-    		<pathelement location="${jboss-allclient.jar}"/>
+    	<pathelement location="${asm-attrs.jar}"/>
+    	<pathelement location="${jboss-commons.jar}"/>
+    	<pathelement location="${jnpserver.jar}"/>
+    	<pathelement location="${jboss-allclient.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">

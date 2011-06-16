@@ -1,7 +1,32 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
+
+    <!-- Override these in ../topcoder_global.properties -->
+    <property name="javadoc.locale" value="en_US"/>
+    <property name="javac.encoding" value="UTF-8"/>
+    <property name="libdir" value="../tcs/lib"/>
+    <property name="tcs_libdir" value="${libdir}/tcs"/>
+    <property name="ext_libdir" value="${libdir}/third_party"/>
+
+    <property name="cronos_libdir" value="${libdir}/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+    
+    <property name="debug" value="off"/>
+    <property name="verbose" value="no"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+
+    <!-- DIRECTORY SETUP -->
+    <property name="srcdir" value="src"/>
+    <property name="docsdir" value="docs"/>
+    <property name="configdir" value="conf"/>
+    <property name="testlogdir" value="log"/>
+    <property name="test_reflib" value="test_reflib"/>
+    <property name="testfiles" value="test_files"/>
+    <property name="javadocsdir" value="${docsdir}/javadocs"/>
+    <property name="reports" value="${testlogdir}/reports"/>
+
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
 
@@ -14,13 +39,6 @@
               value="${component.version.major}.${component.version.minor}.${component.version.micro}"/>
     <property name="component_path" value="${distfilename}/${component_version}"/>
 
-    <!-- Override these in ../topcoder_global.properties -->
-    <property name="javadoc.locale" value="en_US"/>
-	<property name="javac.encoding" value="UTF-8"/>
-    <property name="debug" value="off"/>
-    <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="E:\Dev_Lib\Java\cobertura-1.9.4.1"/>
-
     <!-- Change this for custom component build -->
     <!--
     <property name="greekgod_libdir" value="../lib/greekgod"/>
@@ -28,16 +46,7 @@
     -->
     <property name="target_libdir" value="${tcs_libdir}"/>
 
-    <!-- DIRECTORY SETUP -->
-    <property name="srcdir" value="src"/>
-    <property name="docsdir" value="docs"/>
-    <property name="configdir" value="conf"/>
-    <property name="testlogdir" value="log"/>
-    <property name="test_reflib" value="test_reflib"/>
-    <property name="testfiles" value="test_files"/>
-    <property name="javadocsdir" value="${docsdir}/javadocs"/>
-    <property name="reports" value="${testlogdir}/reports"/>
-
+    <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
     <property name="javamain" value="${javasrc}/main"/>
     <property name="javatests" value="${javasrc}/tests"/>
@@ -73,6 +82,9 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
+    <!-- include ant contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
@@ -81,15 +93,15 @@
 
     <!-- classes needed to compile the test code -->
     <path id="test.build.classpath">
-        <pathelement location="${build_classdir}"/>
-        <pathelement location="${configdir}"/>
-        <pathelement location="${testfiles}"/>
+        <path refid="component.test.3rdParty-dependencies"/>
         <fileset dir="${basedir}">
             <include name="${test_reflib}/**/*.jar"/>
             <include name="${test_reflib}/**/*.zip"/>
         </fileset>
         <path refid="buildlibs"/>
-        <path refid="component.test.3rdParty-dependencies"/>
+        <pathelement location="${build_classdir}"/>
+        <pathelement location="${testfiles}"/>
+        <pathelement location="${configdir}"/>
     </path>
 
     <!-- cobertura task definition -->
@@ -106,15 +118,15 @@
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
         <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
-               verbose="${verbose}" includeAntRuntime="yes" encoding="${javac.encoding}">
+               verbose="${verbose}" includeAntRuntime="no" encoding="${javac.encoding}">
             <classpath refid="buildlibs"/>
         </javac>
     </target>
 
     <target name="compile_tests" depends="compile">
         <mkdir dir="${build_testclassdir}"/>
-        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**" debug="true"
-        	verbose="${verbose}" includeAntRuntime="yes" encoding="${javac.encoding}">
+        <javac srcdir="${javatests}" destdir="${build_testclassdir}" includes="${packagedir}/**"
+               debug="true" verbose="${verbose}" includeAntRuntime="no" encoding="${javac.encoding}">
             <classpath refid="test.build.classpath"/>
         </javac>
     </target>
@@ -125,28 +137,16 @@
         <sequential>
             <mkdir dir="${build_targetclassdir}"/>
             <mkdir dir="${javatests}"/>
-            <javac srcdir="${javamain}"
-                   destdir="${build_targetclassdir}"
-                   includes="${packagedir}/**"
-                   debug="true"
-                   verbose="${verbose}"
-                   target="@{target}"
-                   bootclasspath="@{bootclasspath}"
-                   extdirs=""
-                >
+            <javac srcdir="${javamain}" destdir="${build_targetclassdir}" includes="${packagedir}/**"
+                   debug="true" verbose="${verbose}" target="@{target}"
+                   bootclasspath="@{bootclasspath}" extdirs="">
                 <classpath refid="buildlibs"/>
             </javac>
 
             <!-- compile test cases -->
-            <javac srcdir="${javatests}"
-                   destdir="${build_targetclassdir}"
-                   includes="${packagedir}/**"
-                   debug="true"
-                   verbose="${verbose}"
-                   target="@{target}"
-                   bootclasspath="@{bootclasspath}"
-                   extdirs=""
-                >
+            <javac srcdir="${javatests}" destdir="${build_targetclassdir}" includes="${packagedir}/**"
+                   debug="true" verbose="${verbose}" target="@{target}"
+                   bootclasspath="@{bootclasspath}" extdirs="">
                 <classpath refid="test.build.classpath"/>
             </javac>
             <delete dir="${build_targetclassdir}"/>
@@ -165,10 +165,9 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-            <junit fork="true" haltonerror="false" maxmemory="500m">
+            <junit fork="true" haltonerror="false">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
-                <classpath refid="cobertura.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
                     <formatter type="plain" usefile="true"/>
                     <formatter type="xml" usefile="true"/>
@@ -189,7 +188,7 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-            <junit fork="true" haltonerror="false" maxmemory="500m">
+            <junit fork="true" haltonerror="false">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
@@ -247,11 +246,28 @@
 
     <target name="manifest">
         <mkdir dir="${manifest_file_path}"/>
-        <manifest file="${manifest_file}">
-            <attribute name="Component-Vendor" value="TopCoder Inc."/>
-            <attribute name="Component-Name" value="${component}"/>
-            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-        </manifest>
+
+        <if>
+          <and>
+            <isset property="component.mainclass"/>
+            <length string="${component.mainclass}" when="greater" length="0" />
+          </and>
+          <then>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+              <attribute name="Main-Class" value="${component.mainclass}"/>
+            </manifest>
+          </then>
+          <else>
+            <manifest file="${manifest_file}">
+              <attribute name="Component-Vendor" value="TopCoder Inc."/>
+              <attribute name="Component-Name" value="${component}"/>
+              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+            </manifest>
+          </else>
+        </if>
     </target>
 
     <target name="dist" depends="compile, manifest">
@@ -364,20 +380,23 @@
         <copy file="${component.dist.jar}" todir="${target_libdir}/${component_path}/dist"/>
     </target>
 
-    <target name="dev_submission">
+    <target name="dev_submission" depends="test">
         <jar jarfile="${dev_submission.jar}"
              basedir="."
-        	includes="*.txt,
-        	          build-dependencies.xml,
-        	          build-override.xml,
-                      ${configdir}/**,
-                      ${srcdir}/**,
-                      ${javatests}/**,
-                      ${testlogdir}/**,
-                      ${testfiles}/**,
-                      ${docsdir}/*Component_Specification.rtf,
-        	          ${docsdir}/javadocs/**,
-                      ${test_reflib}/**"
+             includes="build-dependencies.xml,
+                       build.version,
+                       README,
+                       ${configdir}/**,
+                       ${javamain}/**/*.java,
+                       ${javatests}/${packagedir}/**,
+                       ${testlogdir}/**,
+                       ${testfiles}/**,
+                       ${docsdir}/**,
+                       ${test_reflib}/**"
+             excludes="${javatests}/${packagedir}/AllTests.java,
+                       ${javatests}/${packagedir}/stresstests/*,
+                       ${javatests}/${packagedir}/failuretests/*,
+                       ${javatests}/${packagedir}/accuracytests/*"
             />
     </target>
 
@@ -419,56 +438,6 @@
                        ${testfiles}/**"
             />
     </target>
-
-	<!-- +++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<!-- Start taskdefs for Ant Contribs & SVN ANT task  -->
-	<!-- +++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-	<!-- Ensure ant contribs are available -->
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath>
-			<pathelement location="E:\Dev_Lib\Java\ant-contrib\ant-contrib-1.0b3.jar" />
-		</classpath>
-	</taskdef>
-
-	<!-- Must add the checkstyle-all-5.3.jar to ant's globe library first -->
-	<taskdef resource="checkstyletask.properties" classpath="E:/Dev_Lib/Java/checkstyle-5.3/checkstyle-all-5.3.jar"/>
-	<!-- <taskdef resource="checkstyletask.properties">
-			<classpath>
-				<pathelement location="E:\Dev_Lib\Java\checkstyle\5.3\checkstyle-all-5.3.jar" />
-			</classpath>
-		</taskdef> -->
-
-	<target name="checkstyle" depends="compile">
-	        <mkdir dir="${testlogdir}"/>
-	        <checkstyle config="E:/Submissions_2011/tc_checks.xml" classpath="${build_classdir}">
-	            <fileset dir="src/java/main" includes="**/*.java" />
-	            <formatter type="plain" toFile="${testlogdir}/checkstyle.txt" />
-	        </checkstyle>
-	    </target>
-
-	    <target name="checkstyle_tests" depends="compile_tests">
-	        <mkdir dir="${testlogdir}"/>
-	        <checkstyle config="E:\Submissions_2011\tc_test_checks.xml" classpath="${test.build.classpath}">
-	            <fileset dir="${javatests}/${packagedir}/" includes="**/*.java"
-	                     excludes="UnitTests.java, AllTests.java, stresstests/*, failuretests/*, accuracytests/*" />
-	            <formatter type="plain" toFile="${testlogdir}/checkstyletest.txt" />
-	        </checkstyle>
-	    </target>
-
-	<taskdef resource="bspell.properties" classpath="E:\Dev_Lib\Java\bspell\bspell.jar"/>
-
-	    <target name="bspell" depends="compile_tests">
-	        <bspell>
-	            <spellconfiguration spellCheckConfig="E:\Dev_Lib\Java\bspell\spellCheck.config"
-	                format="console"
-	                dictionary="E:\Dev_Lib\Java\bspell\english.jar"
-	                reservedDict="E:\Dev_Lib\Java\bspell\reserved.txt"
-	                registry="E:\Dev_Lib\Java\bspell\registry.txt"/>
-	            <fileset dir="${javamain}" includes="**/*.java **/*.properties"/>
-	            <fileset dir="${javatests}" includes="**/*.java **/*.properties"/>
-	        </bspell>
-	    </target>
 
     <!-- ************************************************************************** -->
     <!-- ************ END DEPLOYMENT RELATED TARGETS  *************************** -->
