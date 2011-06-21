@@ -314,13 +314,20 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * <p>
+ * Version 1.4.7 (TCÑÑ-3270) Change notes:
+ * <ul>
+ * <li>Updated {@link #setNewPhasesProperties(Project, Project, boolean)} method</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv, TCSASSEMBER
- * @version 1.4.6
+ * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv, lmmortal
+ * @version 1.4.7
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -457,7 +464,7 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String SCORECARD_ID_PHASE_ATTRIBUTE_KEY = "Scorecard ID";
 
-	 /**
+     /**
      * <p>
      * Represents the resource reviewer property name
      * </p>
@@ -1802,7 +1809,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 if (multiRoundEndDate != null) {
                     adjustPhaseForMilestoneEndDate(newProjectPhases, multiRoundEndDate);
                 }
-                setNewPhasesProperties(projectHeader, newProjectPhases);
+                setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
                 newProjectPhases.setId(projectPhases.getId());
                 for (Phase phase : newProjectPhases.getAllPhases()) {
                     phase.setProject(newProjectPhases);
@@ -2477,7 +2484,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 adjustPhaseForMilestoneEndDate(newProjectPhases, multiRoundEndDate);
             }
 
-            setNewPhasesProperties(projectHeader, newProjectPhases);
+            setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
 
             return this.createProject(projectHeader, newProjectPhases, projectResources, operator);
 
@@ -4411,14 +4418,18 @@ public class ProjectServicesImpl implements ProjectServices {
      *
      * @param projectHeader the given project which the phases belong to.
      * @param projectPhases the given phases.
+     * @param multiRound flag representing where contest is multi-round contest.
      * @throws PersistenceException if any error occurs.
      * @since 1.4.5
      */
-    private void setNewPhasesProperties(Project projectHeader, com.topcoder.project.phases.Project projectPhases) throws PersistenceException {
+    private void setNewPhasesProperties(Project projectHeader, 
+            com.topcoder.project.phases.Project projectPhases, boolean multiRound) throws PersistenceException {
         long screenTemplateId = 0L;
         long reviewTemplateId = 0L;
         long approvalTemplateId = 0L;
         long specReviewTemplateId = 0L;
+        long milestoneScreenTemplateId = 0L;
+        long milestoneReviewTemplateId = 0L;
 
         try
         {
@@ -4426,6 +4437,11 @@ public class ProjectServicesImpl implements ProjectServices {
             reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
             approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
             specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
+            if (multiRound) 
+            {
+                milestoneScreenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 6);
+                milestoneReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 7);
+            }
         }
         catch (Exception e)
         {
@@ -4435,6 +4451,11 @@ public class ProjectServicesImpl implements ProjectServices {
             reviewTemplateId = projectManager.getScorecardId(6, 2);
             approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
             specReviewTemplateId = projectManager.getScorecardId(6, 5);
+            if (multiRound)
+            {
+	            milestoneScreenTemplateId = projectManager.getScorecardId(6, 6);
+	            milestoneReviewTemplateId = projectManager.getScorecardId(6, 7);
+            }
         }
 
         for (Phase p : projectPhases.getAllPhases()) {
@@ -4452,23 +4473,28 @@ public class ProjectServicesImpl implements ProjectServices {
             {
                 p.setAttribute("Registration Number", "0");
             }
-            else if (p.getPhaseType().getName().equals("Submission") || p.getPhaseType().getName().equals("Milestone Submission"))
-            {
-                p.setAttribute("Submission Number", "0");
-            }
-            else if (p.getPhaseType().getName().equals("Screening") || p.getPhaseType().getName().equals("Milestone Screening"))
+            else if (p.getPhaseType().getName().equals("Screening"))
             {
                 p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
             }
-            else if (p.getPhaseType().getName().equals("Review") || p.getPhaseType().getName().equals("Milestone Review"))
+            else if (p.getPhaseType().getName().equals("Milestone Screening")) 
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(milestoneScreenTemplateId));
+            }
+            else if (p.getPhaseType().getName().equals("Review"))
             {
                 p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
-                if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
-                    // copilot posting only requires one reviewer.
+                if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId() ||
+                        projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+                    // copilot and studio posting only requires one reviewer.
                     p.setAttribute("Reviewer Number", "1");
                 } else {
                     p.setAttribute("Reviewer Number", "3");
                 }
+            }
+            else if (p.getPhaseType().getName().equals("Milestone Review")) 
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(milestoneReviewTemplateId));
             }
             else if (p.getPhaseType().getName().equals("Appeals"))
             {
