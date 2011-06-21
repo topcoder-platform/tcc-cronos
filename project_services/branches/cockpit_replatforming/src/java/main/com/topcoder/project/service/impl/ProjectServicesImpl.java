@@ -314,7 +314,7 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * <p>
- * Version 1.4.7 (TCÑÑ-3270) Change notes:
+ * Version 1.4.7 (TCCC-3270) Change notes:
  * <ul>
  * <li>Updated {@link #setNewPhasesProperties(Project, Project, boolean)} method</li>
  * </ul>
