@@ -94,6 +94,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         map.put("ReviewId", "1");
         map.put("ItemId", "2");
         map.put("Text", "appeal text");
+        map.put("TextLength", "" + ((String)map.get("Text")).length());        
 
         AjaxRequest request = new AjaxRequest("PlaceAppeal", map);
 
@@ -118,6 +119,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         parameters.put("ReviewId", "1");
         parameters.put("ItemId", "1");
         parameters.put("Text", "appeal text");
+        parameters.put("TextLength", "" + "" + ((String)parameters.get("Text")).length());
 
         // create the request
         AjaxRequest request = new AjaxRequest("PlaceAppeal", parameters);
@@ -143,6 +145,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         parameters.put("ReviewId", "abc");
         parameters.put("ItemId", "1");
         parameters.put("Text", "appeal text");
+        parameters.put("TextLength", "" + ((String)parameters.get("Text")).length());
 
         // create the request
         AjaxRequest request = new AjaxRequest("PlaceAppeal", parameters);
@@ -169,6 +172,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         parameters.put("ReviewId", "1");
         parameters.put("ItemId", "abc");
         parameters.put("Text", "appeal text");
+        parameters.put("TextLength", "" + ((String)parameters.get("Text")).length());
 
         // create the request
         AjaxRequest request = new AjaxRequest("PlaceAppeal", parameters);
@@ -195,6 +199,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         parameters.put("ReviewId", "1");
         parameters.put("ItemId", "1");
         parameters.put("Text", "appeal text");
+        parameters.put("TextLength", "" + ((String)parameters.get("Text")).length());
 
         // create the request
         AjaxRequest request = new AjaxRequest("PlaceAppeal", parameters);
@@ -221,6 +226,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         parameters.put("ReviewId", "11");
         parameters.put("ItemId", "1");
         parameters.put("Text", "appeal text");
+        parameters.put("TextLength", "" + ((String)parameters.get("Text")).length());
 
         // create the request
         AjaxRequest request = new AjaxRequest("PlaceAppeal", parameters);
@@ -247,6 +253,7 @@ public class PlaceAppealHandlerTest extends TestCase {
         parameters.put("ReviewId", "1");
         parameters.put("ItemId", "3");
         parameters.put("Text", "appeal text");
+        parameters.put("TextLength", "" + ((String)parameters.get("Text")).length());
 
         // create the request
         AjaxRequest request = new AjaxRequest("PlaceAppeal", parameters);

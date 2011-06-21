@@ -36,7 +36,29 @@ public class MockReviewManager implements ReviewManager {
     }
 
     public CommentType[] getAllCommentTypes() {
-        return new CommentType[]{new MockCommentType(), new MockCommentType(1)};
+    	CommentType review = new MockCommentType();
+        review.setId(1);
+        review.setName("Appeal");
+
+        CommentType response = new MockCommentType();
+        response.setId(2);
+        response.setName("Appeal Response");
+        
+        CommentType comment = new MockCommentType();
+        comment.setId(3);
+        comment.setName("Comment");
+        
+        CommentType required = new MockCommentType();
+        required.setId(4);
+        required.setName("Required");
+        
+        
+        CommentType recommended = new MockCommentType();
+        recommended.setId(5);
+        recommended.setName("Recommended");
+                
+
+        return new CommentType[] {review, response,required, comment,recommended};
     }
 
     public void addReviewComment(long review, Comment comment, String operator) {

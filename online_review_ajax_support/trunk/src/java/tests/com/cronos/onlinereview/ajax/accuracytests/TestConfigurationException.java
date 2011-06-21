@@ -55,8 +55,7 @@ public class TestConfigurationException extends TestCase {
         ConfigurationException ce = new ConfigurationException("msg", e);
         assertNotNull("creting ConfigurationException fails.", ce);
         assertTrue("creting ConfigurationException fails.", ce instanceof BaseException);
-        assertEquals("creting ConfigurationException fails.", "msg" + ", caused by " + "msg2",
-            ce.getMessage());
+        assertEquals("creting ConfigurationException fails.", "msg", ce.getMessage());
         assertEquals("creting ConfigurationException fails.", e, ce.getCause());
     }
 }

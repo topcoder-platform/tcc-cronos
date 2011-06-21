@@ -16,7 +16,45 @@ import com.topcoder.management.review.data.CommentType;
  */
 public class MockComment extends Comment {
 
+	/**
+     * The id.
+     */
+    private long id;
+
+    /**
+     * The comment type.
+     */
+    private CommentType commentType;
+
+    /**
+     * Get the comment type.
+     * @return the comment type
+     */
     public CommentType getCommentType() {
-        return new MockCommentType(2);
+        return commentType;
+    }
+
+    /**
+     * Set the comment type.
+     * @param commentType the commentType
+     */
+    public void setCommentType(CommentType commentType) {
+        this.commentType = commentType;
+    }
+
+    /**
+     * Get id.
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Set id.
+     * @param id the id
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 }

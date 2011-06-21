@@ -55,8 +55,7 @@ public class TestRequestParsingException extends TestCase {
         RequestParsingException ce = new RequestParsingException("msg", e);
         assertNotNull("creting RequestParsingException fails.", ce);
         assertTrue("creting RequestParsingException fails.", ce instanceof BaseException);
-        assertEquals("creting RequestParsingException fails.", "msg" + ", caused by " + "msg2",
-            ce.getMessage());
+        assertEquals("creting RequestParsingException fails.", "msg", ce.getMessage());
         assertEquals("creting RequestParsingException fails.", e, ce.getCause());
     }
 }

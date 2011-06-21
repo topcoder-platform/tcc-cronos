@@ -55,8 +55,7 @@ public class TestRoleResolutionException extends TestCase {
         ResourceException ce = new ResourceException("msg", e);
         assertNotNull("creting RoleResolutionException fails.", ce);
         assertTrue("creting RoleResolutionException fails.", ce instanceof BaseException);
-        assertEquals("creting RoleResolutionException fails.", "msg" + ", caused by " + "msg2",
-            ce.getMessage());
+        assertEquals("creting RoleResolutionException fails.", "msg", ce.getMessage());
         assertEquals("creting RoleResolutionException fails.", e, ce.getCause());
     }
 }

@@ -51,7 +51,7 @@ public class ConfigurationExceptionTest extends TestCase {
      */
     public void testConfigurationExceptionStringThrowable() {
         ConfigurationException e = new ConfigurationException(MESSAGE, CAUSE);
-        assertEquals("The message is not right.", MESSAGE + ", caused by null", e.getMessage());
+        assertEquals("The message is not right.", MESSAGE , e.getMessage());
         assertEquals("The cause is not right.", CAUSE, e.getCause());
     }
 

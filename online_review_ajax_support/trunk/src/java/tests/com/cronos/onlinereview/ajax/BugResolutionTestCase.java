@@ -159,7 +159,7 @@ public class BugResolutionTestCase extends TestCase {
         AjaxRequest request = new AjaxRequest("PlaceAppeal", map);
         AjaxResponse ajaxResponse = this.placeAppealHandler.service(request, new Long(2));
         Assert.assertEquals("Should have responded with response of INVALID_PARAMETER_ERROR status if 'Text' parameter "
-                            + "is missing from request", "Invalid parameter error", ajaxResponse.getStatus());
+                            + "is missing from request", "The appeal text must be provided.", ajaxResponse.getStatus());
 
         // Test for handling valid request parameter name
         // prepare the ajax request
@@ -167,6 +167,7 @@ public class BugResolutionTestCase extends TestCase {
         map.put("ReviewId", "1");
         map.put("ItemId", "2");
         map.put("Text", "appeal text");
+        map.put("TextLength", "" + ((String)map.get("Text")).length());
 
         // Test for handling the valid request parameter name
         request = new AjaxRequest("PlaceAppeal", map);
@@ -200,7 +201,7 @@ public class BugResolutionTestCase extends TestCase {
         AjaxRequest request = new AjaxRequest("ResolveAppeal", map);
         AjaxResponse ajaxResponse = this.resolveAppealHandler.service(request, new Long(2));
         Assert.assertEquals("Should have responded with response of INVALID_PARAMETER_ERROR status if 'Text' parameter "
-                            + "is missing from request", "Invalid parameter error", ajaxResponse.getStatus());
+                            + "is missing from request", "The appeal response text must be provided.", ajaxResponse.getStatus());
 
         // Test for handling valid request parameter name
         // prepare the ajax request

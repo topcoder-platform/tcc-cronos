@@ -62,7 +62,7 @@ public class TestPlaceAppealHandler extends TestCase {
         assertTrue(
                 TestHelper.getVariable(PlaceAppealHandler.class,
                         "uploadManager", handler) instanceof MockUploadManager);
-        assertEquals(999990,
+        assertEquals(1,
             ((CommentType) TestHelper.getVariable(PlaceAppealHandler.class, "appealCommentType",
                 handler)).getId());
 
@@ -138,7 +138,7 @@ public class TestPlaceAppealHandler extends TestCase {
 
         AjaxResponse response = handler.service(request, new Long(777770));
 
-        assertEquals("service fails.", "Invalid review error", response.getStatus());
+        assertEquals("service fails.", "Invalid parameter error", response.getStatus());
         assertEquals("service fails.", "PlaceAppeal", response.getType());
     }
 
@@ -155,7 +155,7 @@ public class TestPlaceAppealHandler extends TestCase {
 
         AjaxResponse response = handler.service(request, new Long(777779));
 
-        assertEquals("service fails.", "Role error", response.getStatus());
+        assertEquals("service fails.", "Invalid parameter error", response.getStatus());
         assertEquals("service fails.", "PlaceAppeal", response.getType());
     }
 }

@@ -67,7 +67,7 @@ public class TestResolveAppealHandler extends TestCase {
         assertTrue(TestHelper.getVariable(ResolveAppealHandler.class,
                 "scorecardManager", handler) instanceof ScorecardManager);
 
-        assertEquals(666660,
+        assertEquals(2,
             ((CommentType) TestHelper.getVariable(ResolveAppealHandler.class,
                 "appealResponseCommentType", handler)).getId());
 
@@ -178,6 +178,6 @@ public class TestResolveAppealHandler extends TestCase {
 
         AjaxResponse response = handler.service(request, new Long(777771));
 
-        assertEquals("service fails.", "Business error", response.getStatus());
+        assertEquals("service fails.", "Role error", response.getStatus());
     }
 }
