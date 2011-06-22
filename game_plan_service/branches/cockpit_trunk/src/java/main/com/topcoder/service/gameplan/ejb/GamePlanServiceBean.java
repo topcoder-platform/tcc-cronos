@@ -442,8 +442,8 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             if (null != row[2]) {
                 studioProjectData.setContestId(((BigDecimal) row[2]).longValue());
             }
-            studioProjectData.setProjectName((String) row[3]);
-            studioProjectData.setContestName((String) row[4]);
+            studioProjectData.setProjectName(escapeName((String) row[3]));
+            studioProjectData.setContestName(escapeName((String) row[4]));
             studioProjectData.setStartDate((Date) row[5]);
             studioProjectData.setEndDate((Date) row[6]);
             // user_id can not be null.
@@ -532,7 +532,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             softwareProjectData.setTcDirectProjectId(tcDirectProjectId);
             // project_id is the primary key, so will never null.
             softwareProjectData.setProjectId((Integer) row[1]);
-            softwareProjectData.setProjectName((String) row[2]);
+            softwareProjectData.setProjectName(escapeName((String) row[2]));
             softwareProjectData.setStartDate((Date) row[3]);
             softwareProjectData.setEndDate((Date) row[4]);
             // user_id is not null in tc_direct_project table, so cast is safe.
@@ -627,5 +627,32 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
 
         return stringBuilder.toString();
     }
+    
+    /**
+     * Escape the special characters in project name and contest name.
+     *
+     * @param original the string needs to escape
+     * @return the escape characters.
+     */
+    private static String escapeName(String original) { 
+        if(original==null) return ""; 
+        StringBuffer out=new StringBuffer(""); 
+        char[] chars=original.toCharArray(); 
+        for(int i=0;i<chars.length;i++) 
+        { 
+          boolean found=true; 
+          switch(chars[i]) 
+          { 
+            case 60:out.append("&lt;"); break; //< 
+            case 62:out.append("&gt;"); break; //> 
+            case 34:out.append("&quot;"); break; //" 
+            case 38:out.append("&amp;"); break; // &
+            default:found=false;break; 
+          } 
+          if(!found) out.append(chars[i]); 
+           
+        } 
+        return out.toString();   
+  } 
 }
 
