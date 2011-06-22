@@ -219,7 +219,15 @@ import java.util.Map;
  * </ul>
  * </p>
  *
- * @author tuenm, bose_java, pulky, argolite, waits, FireIce, microsky
+ * <p>
+ * Version 1.6.1 changes note:
+ * <ul>
+ * <li>
+ * Added support for different templates for Studio and Software.
+ * </li>
+ * </ul>
+ * </p>
+ * @author tuenm, bose_java, pulky, argolite, waits, FireIce, microsky, lmmortal
  * @version 1.6.1
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
@@ -264,8 +272,17 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** Constant for end phase. */
     private static final String END = "End";
 
+    /** Constants for the Studio */
+    private static final String STUDIO = "Studio";
+
     /** format for the email timestamp. Will format as "Fri, Jul 28, 2006 01:34 PM EST". */
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
+
+    /**
+    * Represents the studio project id.
+    * @since 1.6
+    */
+    protected static final long STUDIO_PROJECT_ID = 3;
 
     /**
      * The factory instance used to create connection to the database. It is initialized in the constructor using
@@ -454,12 +471,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @param phase The current phase. must not be null.
      * @param values The values map. This is a map from String into Object. The key is the template field name and the
      *        value is the template field value.
+     * @param isStudio whether to send studio templates.
      *
      * @throws IllegalArgumentException if any argument is null or map contains empty/null key/value.
      * @throws PhaseHandlingException if there was a problem when sending email.
      * @since 1.2
      */
-    public void sendEmail(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
+    public void sendEmail(Phase phase, Map<String, Object> values, boolean isStudio) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkValuesMap(values);
 
@@ -481,9 +499,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         PhaseStatus status = phase.getPhaseStatus();
 
         if (PhasesHelper.isPhaseToStart(status)) {
-            sendEmail(phase, values, true);
+            sendEmail(phase, values, true, isStudio);
         } else if (PhasesHelper.isPhaseToEnd(status)) {
-            sendEmail(phase, values, false);
+            sendEmail(phase, values, false, isStudio);
         }
     }
 
@@ -517,6 +535,27 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      */
     protected void sendEmail(Phase phase) throws PhaseHandlingException {
         sendEmail(phase, new HashMap<String, Object>());
+    }
+
+    /**
+     * <p>
+     * Send email to the external users that are registered to be notified on the phase change.
+     * </p>
+     *
+     * <p>
+     * Now each role can have its own email options. If not set for that role, using the default setting.
+     * </p>
+     *
+     * @param phase The current phase. must not be null.
+     * @param values The values map. This is a map from String into Object. The key is the template field name and the
+     *        value is the template field value.
+     *
+     * @throws IllegalArgumentException if any argument is null or map contains empty/null key/value.
+     * @throws PhaseHandlingException if there was a problem when sending email.
+     * @since 1.6.1
+     */
+    public void sendEmail(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
+        sendEmail(phase, values, false);
     }
 
     /**
@@ -562,13 +601,18 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * default setting.
      * </p>
      *
+     * <p>
+     * Update in version 1.6.1: Added support for studio templates.
+     * </p>
+     *
      * @param phase phase instance.
      * @param values the values map to look up the fields in template
      * @param bStart true if phase is to start, false if phase is to end.
+     * @param isStudio whether to send studio tempaltes.
      *
      * @throws PhaseHandlingException if there was an error retrieving information or sending email.
      */
-    private void sendEmail(Phase phase, Map<String, Object> values, boolean bStart)
+    private void sendEmail(Phase phase, Map<String, Object> values, boolean bStart, boolean isStudio)
         throws PhaseHandlingException {
         Connection conn = createConnection();
 
@@ -656,8 +700,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 ResourceRole role = resource.getResourceRole();
                 String roleName = role.getName();
 
-                EmailOptions options = bStart ? startPhaseEmailOptions.get(roleName)
-                                              : endPhaseEmailOptions.get(roleName);
+                EmailOptions options = bStart ? getEmailOptions(startPhaseEmailOptions, roleName, isStudio)
+                                              : getEmailOptions(endPhaseEmailOptions, roleName, isStudio);
 
                 if (options == null || !options.isSend()) {
                     continue;
@@ -703,6 +747,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             throw new PhaseHandlingException("Problem with sending email", e);
         }
     }
+
     /**
      * <p>
      * Compares the two resources, the two resource have the same id, but with different role, choose which role to
@@ -1028,5 +1073,21 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         }
 
         return false;
+    }
+
+    /**
+     * Gets EmailOptions for given role
+     *
+     * @param availableOptions all available email options
+     * @param roleName the role name to get template
+     * @param isStudio whether to get studio template
+     * @return EmailOptions email options for passed role 
+     */
+    private static EmailOptions getEmailOptions( Map<String, EmailOptions> availableOptions, 
+            String roleName, boolean isStudio) {
+        if (isStudio && availableOptions.containsKey(roleName+ STUDIO)) {
+            return availableOptions.get(roleName + STUDIO);
+        }
+        return availableOptions.get(roleName);
     }
 }

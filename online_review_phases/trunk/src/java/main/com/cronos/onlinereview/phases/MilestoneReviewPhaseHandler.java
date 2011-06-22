@@ -15,6 +15,7 @@ import com.topcoder.management.deliverable.persistence.UploadPersistenceExceptio
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
+import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Review;
@@ -280,7 +281,11 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
                 updateSubmissionScores(conn, phase, operator, values);
             }
 
-            sendEmail(phase, values);
+            Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
+            boolean isStudio = project.getProjectCategory().getProjectType().getId() == STUDIO_PROJECT_ID;
+            sendEmail(phase, values, isStudio);
+        } catch (PersistenceException e) {
+            throw new PhaseHandlingException("Fail to retrieve the corresponding project.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

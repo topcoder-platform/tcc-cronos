@@ -129,12 +129,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
     private static final Log LOG = LogFactory.getLog(ReviewPhaseHandler.class.getName());
 
     /**
-     * Represents the studio project id.
-     * @since 1.6
-     */
-    private static final long STUDIO_PROJECT_ID = 3;
-
-    /**
      * Create a new instance of ReviewPhaseHandler using the default namespace for loading configuration settings.
      * @throws ConfigurationException
      *             if errors occurred while loading configuration settings.
