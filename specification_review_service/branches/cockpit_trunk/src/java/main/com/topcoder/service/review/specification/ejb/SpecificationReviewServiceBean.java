@@ -12,11 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -29,7 +27,6 @@ import java.sql.PreparedStatement;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJB;
@@ -460,8 +457,16 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      * The text content of the mock specification submission.
      * </p>
      */
-    @Resource(name = "mockSubmissionContent")
-    private String mockSubmissionContent;
+    @Resource(name = "mockSoftwareSubmissionContent")
+    private String mockSoftwareSubmissionContent;
+
+    /**
+     * <p>
+     * The text content of the mock specification submission.
+     * </p>
+     */
+    @Resource(name = "mockStudioSubmissionContent")
+    private String mockStudioSubmissionContent;
 
     /**
      * <p>
@@ -944,8 +949,16 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
                 specificationSubmissionPhase.setPhaseStatus(PhaseStatus.OPEN);
                 updatePhases(fullProjectData, operator);
 
+                long projectTypeId = fullProjectData.getProjectHeader().getProjectCategory().getProjectType().getId();
+
                 // upload a mock submission
-                submitSpecificationAsString(tcSubject, projectId, mockSubmissionContent.replace("[pj]", new Long(projectId).toString()));
+                if (projectTypeId == 3) {
+                    submitSpecificationAsString(tcSubject, projectId, mockStudioSubmissionContent.replace("[pj]", new Long(projectId).toString()));
+                } else {
+                    submitSpecificationAsString(tcSubject, projectId, mockSoftwareSubmissionContent.replace("[pj]", new Long(projectId).toString()));
+                }
+
+
 
                 // set to scheduled and update
                 specificationSubmissionPhase.setPhaseStatus(PhaseStatus.SCHEDULED);
@@ -1806,8 +1819,13 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
      */
     public long resubmitSpecification(TCSubject tcSubject, long projectId)
         throws SpecificationReviewServiceException {
+        FullProjectData fullProjectData = getFullProjectData(projectId);
         // upload a mock submission
-        return submitSpecificationAsString(tcSubject, projectId, mockSubmissionContent.replace("[pj]", new Long(projectId).toString()));
+        if ( fullProjectData.getProjectHeader().getProjectCategory().getProjectType().getId() == 3 ) {
+            return submitSpecificationAsString(tcSubject, projectId, mockStudioSubmissionContent.replace("[pj]", new Long(projectId).toString()));
+        } else {
+            return submitSpecificationAsString(tcSubject, projectId, mockSoftwareSubmissionContent.replace("[pj]", new Long(projectId).toString()));
+        }
     }
 
 
