@@ -42,6 +42,11 @@ public class VMInstanceData implements Serializable {
     private String vmImageTcName;
 
     /**
+     * Stores account name for readability.
+     */
+    private String accountName;
+
+    /**
      * Stores vm creation time for readability.
      */
     private String vmCreationTime;
@@ -149,6 +154,24 @@ public class VMInstanceData implements Serializable {
      */
     public void setVmImageTcName(String vmImageTcName) {
         this.vmImageTcName = vmImageTcName;
+    }
+
+    /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param accountName value to set
+     */
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     /**

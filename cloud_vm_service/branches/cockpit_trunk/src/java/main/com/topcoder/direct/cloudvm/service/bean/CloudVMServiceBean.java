@@ -66,6 +66,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * This class implements the CloudVMServiceLocal and CloudVMServiceRemote interfaces. And it's implemented as a
@@ -509,7 +511,20 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 }
             }
 
-            return new ArrayList<VMInstanceData>(results);
+            List list = new ArrayList<VMInstanceData>(results);
+            Collections.sort(list, new Comparator<VMInstanceData>() {
+                public int compare(VMInstanceData o1, VMInstanceData o2) {
+                    long delta = o1.getInstance().getContestId() - o2.getInstance().getContestId();
+                    if (delta > 0) {
+                        return 1;
+                    } else if (delta < 0) {
+                        return -1;
+                    }
+
+                    return 0;
+                }
+            });
+            return list;
         } catch (UserServiceException e) {
             throw logError(new CloudVMServiceException("Unable to fetch user handle.", e));
         } catch (Exception e) {
@@ -559,6 +574,7 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
             q.setParameter("vmImageId", instance.getVmImageId());
             VMImage img = (VMImage) q.getResultList().get(0);
             instanceData.setVmImageTcName(img.getTcName());
+            instanceData.setAccountName(img.getVmAccount().getAccountName());
             instanceData.setVmCreationTime(DATE_FORMATTER.format(instance.getCreationTime()));
             instanceData.setUsage(getVMUsage(instance.getUsageId()).getName());
             

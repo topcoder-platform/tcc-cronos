@@ -10,6 +10,7 @@
             </generator>
         </id>
 
+        <property name="accountName" column="account_name" />
         <property name="createDate" column="create_date" />
         <property name="modifyDate" column="modify_date" />
         <property name="awsAccessKeyId" column="aws_access_key_id" />

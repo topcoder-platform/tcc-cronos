@@ -9,6 +9,7 @@
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+            <property name="hibernate.query.substitutions" value="'true'='t', 'false'='f'" />
 
             <property name="jboss.entity.manager.jndi.name" value="java:/cloud_vm_service"/>
             <!--<property name="jboss.entity.manager.factory.jndi.name" value="java:/contestManagerFactory"/>           -->

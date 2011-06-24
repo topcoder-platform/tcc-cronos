@@ -39,6 +39,7 @@ CREATE TABLE vm_key_pair (
 
 CREATE TABLE vm_account (
   vm_account_id DECIMAL(10,0) NOT NULL  ,
+  account_name VARCHAR(50) NOT NULL,
   aws_access_key_id VARCHAR(50) NOT NULL ,
   aws_security_access_key VARCHAR(100) NOT NULL ,
   create_date DATETIME YEAR to FRACTION(3) NOT NULL ,

@@ -18,6 +18,11 @@ public class VMAccount extends AbstractIdEntity {
     private static final long serialVersionUID = 2742320281043253L;
 
     /**
+     * Represents the account name. It has getter & setter. It can be any value.
+     */
+    private String accountName;
+
+    /**
      * Represents the access key id. It has getter & setter. It can be any value.
      */
     private String awsAccessKeyId;
@@ -67,6 +72,24 @@ public class VMAccount extends AbstractIdEntity {
      */
     public void setAwsSecurityAccessKey(String awsSecurityAccessKey) {
         this.awsSecurityAccessKey = awsSecurityAccessKey;
+    }
+
+        /**
+     * Getter for the namesake instance variable. Simply return the namesake instance variable.
+     *
+     * @return field value
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Setter for the namesake instance variable. Simply set the value to the namesake instance variable.
+     *
+     * @param accountName
+     */
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 }
 

@@ -1,8 +1,8 @@
 -- Here you need to insert your VM Accounts for testing:
-insert into vm_account (vm_account_id, aws_access_key_id, aws_security_access_key, create_date, modify_date)
-  values (1, 'AKIAIAUCU32DF6IIQJVA', 'DND8RfLk3NBnF5o4RkhjPmUAKP0iq9yxG5iYDmaD', current, current);
-insert into vm_account (vm_account_id, aws_access_key_id, aws_security_access_key, create_date, modify_date)
-  values (2, 'AKIAIQZ3QVPQNDX3XFAQ', '0eSYnG6MDUkv9Q1pHXmnKyMINuxzIV3BInW7376e', current, current);
+insert into vm_account (vm_account_id, account_name, aws_access_key_id, aws_security_access_key, create_date, modify_date)
+  values (1, 'VM Account 1', 'AKIAIAUCU32DF6IIQJVA', 'DND8RfLk3NBnF5o4RkhjPmUAKP0iq9yxG5iYDmaD', current, current);
+insert into vm_account (vm_account_id, account_name, aws_access_key_id, aws_security_access_key, create_date, modify_date)
+  values (2, 'VM Account 2', 'AKIAIQZ3QVPQNDX3XFAQ', '0eSYnG6MDUkv9Q1pHXmnKyMINuxzIV3BInW7376e', current, current);
   
 insert into vm_account_user (vm_account_user_id, vm_account_id, user_id, create_date, modify_date) 
   values (1, 1, 132456, current, current);
