@@ -8998,7 +8998,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     public String getStudioSubmissionFeedback(TCSubject tcSubject, long projectId, long submissionId, PhaseType phaseType)
         throws ContestServiceException {
         
-        // gets the reviewer resoruce role id based on the phase type
+        // gets the reviewer resource role id based on the phase type
         long resourceRoleId;
         if (phaseType.getId() == PhaseType.MILESTONE_REVIEW_PHASE.getId()) {
             resourceRoleId = ResourceRole.RESOURCE_ROLE_MILESTONE_REVIEWER_ID;
@@ -9010,15 +9010,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         
         // gets the reviewer resource, the user of reviewer resource must be current user
         com.topcoder.management.resource.Resource reviewerResource = null;
-        for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
-            if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
-                reviewerResource = resource;
-                break;
-            }
-        }
-        if (reviewerResource == null) {
+
+        com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, resourceRoleId);
+
+        if (resources.length == 0) {
             return "";
+        } else if (resources.length == 1) {
+            reviewerResource = resources[0];
+        } else {
+            throw new ContestServiceException("There should be exactly one Milestone Reviewer or Reviewer.");
         }
+
         // gets the review data
         ScorecardReviewData reviewData;
         if (phaseType.getId() == PhaseType.MILESTONE_REVIEW_PHASE.getId()) {
@@ -9063,14 +9065,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             
             // gets the reviewer resource, the user of reviewer resource must be current user
             com.topcoder.management.resource.Resource reviewerResource = null;
-            for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
-                if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
-                    reviewerResource = resource;
-                    break;
-                }
-            }
-            if (reviewerResource == null) {
-                // userId is not a reviewer resource, add it as reviewer resource
+            com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, resourceRoleId);
+
+            if (resources.length == 0) {
+                // no reviewer resource, add the current user as reviewer resource
                 com.topcoder.project.phases.Phase targetPhase = null;
                 for (com.topcoder.project.phases.Phase phase : projectServices.getFullProjectData(projectId).getAllPhases()) {
                     if (phase.getPhaseType().getId() == phaseType.getId()) {
@@ -9079,16 +9077,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     }
                 }
                 assignRole(tcSubject, projectId, resourceRoleId, tcSubject.getUserId(), targetPhase, true, true, true);
+
                 for (com.topcoder.management.resource.Resource resource : projectServices.searchResources(projectId, resourceRoleId)) {
                     if (Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) == tcSubject.getUserId()) {
                         reviewerResource = resource;
                         break;
                     }
                 }
-            }
-            if (reviewerResource == null) {
+
+                if (reviewerResource == null) {
                 // failed to add the current user as reviwer resource
                 throw new ContestServiceException("Failed to add the current user as reviewer/milestone reviewer resource.");
+                }
+            } else if (resources.length == 1) {
+                reviewerResource = resources[0];
+            } else {
+                throw new ContestServiceException("There should be exactly one Milestone Reviewer or Reviewer.");
             }
 
             // gets the review data
