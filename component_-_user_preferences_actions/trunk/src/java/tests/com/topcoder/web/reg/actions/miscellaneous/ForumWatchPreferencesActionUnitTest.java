@@ -1,0 +1,256 @@
+/*
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ */
+package com.topcoder.web.reg.actions.miscellaneous;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.jivesoftware.base.User;
+import com.jivesoftware.forum.ForumFactory;
+import com.jivesoftware.forum.action.UserSettingsAction;
+import com.jivesoftware.util.CronTimer;
+import com.opensymphony.xwork2.ActionProxy;
+import com.opensymphony.xwork2.ActionSupport;
+import com.topcoder.web.common.model.AuditRecord;
+
+/**
+ * <p>
+ * This class contains Unit tests for ForumWatchPreferencesAction.
+ * </p>
+ * @author TCSDEVELOPER
+ * @version 1.0
+ */
+public class ForumWatchPreferencesActionUnitTest extends BaseUnitTest {
+
+    /**
+     * <p>
+     * Represents ForumWatchPreferencesAction action for testing.
+     * </p>
+     */
+    private ForumWatchPreferencesAction action;
+
+    /**
+     * <p>
+     * Represents ActionProxy instance for testing.
+     * </p>
+     */
+    private ActionProxy proxy;
+
+    /**
+     * <p>
+     * Represents logged in user for testing.
+     * </p>
+     */
+    private com.topcoder.web.common.model.User loggedInUser;
+
+    /**
+     * <p>
+     * Sets up the test environment.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void setUp() throws Exception {
+        super.setUp();
+        proxy = getActionProxy("/forumwatch");
+        action = (ForumWatchPreferencesAction) proxy.getAction();
+        setBasePreferencesActionDAOs(action);
+        // put valid class for basic authentication session key
+        putKeyValueToSession(action.getBasicAuthenticationSessionKey(), createAuthentication());
+        loggedInUser = createUser(1L, "First", "Second", "handle", true);
+        when(action.getUserDao().find(1L)).thenReturn(loggedInUser);
+        action.setEmailBodyTemplateFileName(EMAIL_BODY_TEMPLATE_NAME);
+        ForumFactory forumFactory = getForumFactory();
+        prepareForumFactory(forumFactory);
+        action.setForumFactory(forumFactory);
+    }
+
+    /**
+     * <p>
+     * Tears down the test environment.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void tearDown() throws Exception {
+        super.tearDown();
+        action = null;
+        proxy = null;
+        loggedInUser = null;
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction constructor.
+     * </p>
+     * <p>
+     * ForumWatchPreferencesAction instance should be created successfully. No exception is expected.
+     * </p>
+     */
+    public void testConstructor() {
+        assertNotNull("ForumWatchPreferencesAction instance should be created successfully.", action);
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#execute() method with valid attributes.
+     * </p>
+     * <p>
+     * Execute should be ended successfully. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testPrepare() throws Exception {
+        // prepare
+        action.prepare();
+        assertNotNull("Value should be set successfully.", action.getAutoWatchNewTopics());
+        assertNotNull("Value should be set successfully.", action.getAutoWatchNewTopics());
+        assertNotNull("Value should be set successfully.", action.getMarkWatchesRead());
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#execute() method with submit action, valid attributes and Cron timer frequency
+     * once a day.
+     * </p>
+     * <p>
+     * Execute should be ended successfully. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testExecute_Submit_OnceADayFrequency() throws Exception {
+        action.prepare();
+        action.setAction(SUBMIT_ACTION);
+        action.setWatchFrequency(UserSettingsAction.FREQUENCY_ONCE_A_DAY);
+        // execute
+        assertEquals("Execute should be ended successfully.", ActionSupport.SUCCESS, action.execute());
+        // 1 record should be updated and audited
+        verify(action.getAuditDao(), times(1)).audit(any(AuditRecord.class));
+        verify(action.getForumFactory().getWatchManager(), times(1)).setBatchTimer(any(User.class),
+                any(CronTimer.class));
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#execute() method with submit action, valid attributes and Cron timer frequency
+     * other day.
+     * </p>
+     * <p>
+     * Execute should be ended successfully. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testExecute_Submit_EveryOtherDay() throws Exception {
+        action.prepare();
+        action.setAction(SUBMIT_ACTION);
+        action.setWatchFrequency(UserSettingsAction.FREQUENCY_EVERY_OTHER_DAY);
+        // execute
+        assertEquals("Execute should be ended successfully.", ActionSupport.SUCCESS, action.execute());
+        // 1 record should be updated and audited
+        verify(action.getAuditDao(), times(1)).audit(any(AuditRecord.class));
+        verify(action.getForumFactory().getWatchManager(), times(1)).setBatchTimer(any(User.class),
+                any(CronTimer.class));
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#execute() method with submit action, valid attributes and Cron timer frequency
+     * once a week.
+     * </p>
+     * <p>
+     * Execute should be ended successfully. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testExecute_Submit_OnceAWeek() throws Exception {
+        action.prepare();
+        action.setAction(SUBMIT_ACTION);
+        action.setWatchFrequency(UserSettingsAction.FREQUENCY_ONCE_A_WEEK);
+        // execute
+        assertEquals("Execute should be ended successfully.", ActionSupport.SUCCESS, action.execute());
+        // 1 record should be updated and audited
+        verify(action.getAuditDao(), times(1)).audit(any(AuditRecord.class));
+        verify(action.getForumFactory().getWatchManager(), times(1)).setBatchTimer(any(User.class),
+                any(CronTimer.class));
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#execute() method with submit action, valid attributes and Cron timer no
+     * frequency
+     * </p>
+     * <p>
+     * Execute should be ended successfully. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testExecute_Submit_NoFrequency() throws Exception {
+        action.prepare();
+        action.setAction(SUBMIT_ACTION);
+        action.setWatchFrequency(-1);
+        // execute
+        assertEquals("Execute should be ended successfully.", ActionSupport.SUCCESS, action.execute());
+        // 1 record should be updated and audited
+        verify(action.getAuditDao(), times(1)).audit(any(AuditRecord.class));
+        verify(action.getForumFactory().getWatchManager(), times(1)).setBatchTimer(any(User.class),
+                any(CronTimer.class));
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#execute() method with discard action and valid attributes.
+     * </p>
+     * <p>
+     * Execute should be ended successfully. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testExecute_Discard() throws Exception {
+        // put backup session
+        User user = createForumUser();
+        putKeyValueToSession(action.getBackupSessionKey(), user);
+        action.setAction(DISCARD_ACTION);
+        // change user preference value
+        assertEquals("Execute should be ended successfully.", ActionSupport.SUCCESS, action.execute());
+        // no records should be audited
+        verify(action.getAuditDao(), times(0)).audit(any(AuditRecord.class));
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#execute() method with discard action, valid attributes and email true flag.
+     * </p>
+     * <p>
+     * Execute should be ended successfully and email should be sent. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testExecute_EmailSend() throws Exception {
+        // put backup session
+        User user = createForumUser();
+        putKeyValueToSession(action.getBackupSessionKey(), user);
+        action.setAction(DISCARD_ACTION);
+        action.setEmailSendFlag(true);
+        // change user preference value
+        assertEquals("Execute should be ended successfully.", ActionSupport.SUCCESS, action.execute());
+        // no records should be audited
+        verify(action.getAuditDao(), times(0)).audit(any(AuditRecord.class));
+        // check email sent manually
+    }
+
+    /**
+     * <p>
+     * Tests ForumWatchPreferencesAction#validate() method valid input argument passed.
+     * </p>
+     * <p>
+     * Validate should be ended successfully. No exception is expected.
+     * </p>
+     * @throws Exception if any error occurs
+     */
+    public void testValidate() throws Exception {
+        action.prepare();
+        // provide validation
+        action.validate();
+    }
+}

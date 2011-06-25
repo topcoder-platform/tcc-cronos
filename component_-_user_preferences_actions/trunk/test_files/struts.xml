@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE struts PUBLIC
+      "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+      "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+    <constant name="struts.devMode" value="true" />
+
+
+	
+	
+	<package name="default" extends="struts-default">
+	<interceptors>
+            <interceptor name="authorization" class="mockAuthorizationInterceptor"/> 
+			<interceptor-stack name="interceptors">
+				<interceptor-ref name="authorization"/>
+				<interceptor-ref name="prepare"/>
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>			
+        </interceptors>
+
+		<default-interceptor-ref name="interceptors"/>
+       
+		<action name="base" class="mockBasePreferencesAction">			
+			<result>/show.jsp</result>
+		</action>
+		<action name="privacy" class="configurePrivacyPreferencesAction">			
+			<result>/show.jsp</result>
+		</action>
+		
+		<action name="blacklist_*" method="{1}" class="blackListAction">			
+			<result name="input">/blackList.jsp</result>			
+			<result name="success">/blackListShow.jsp</result>
+		</action>
+		
+		<action name="email_*" method="{1}" class="emailNotificationAction">			
+			<result name="input">/emailNotification.jsp</result>			
+			<result name="success">/emailNotificationShow.jsp</result>
+		</action>
+		
+		<action name="payment_*" method="{1}" class="paymentPreferencesAction">			
+			<result name="input">/paymentPreferencesAction.jsp</result>			
+			<result name="error">/paymentPreferencesAction.jsp</result>
+			<result name="success">/paymentPreferencesActionShow.jsp</result>
+		</action>
+		
+		 <action name="forumrating_*" method="{1}" class="forumRatingPreferencesAction">			
+			<result name="input">/forumRatingPreferencesAction.jsp</result>			
+			<result name="success">/forumRatingPreferencesActionShow.jsp</result>
+		</action>
+		
+		<action name="forumwatch_*" method="{1}" class="forumWatchPreferencesAction">			
+			<result name="input">/forumWatchPreferencesAction.jsp</result>			
+			<result name="success">/forumWatchPreferencesActionShow.jsp</result>
+		</action>
+		
+		<action name="forumgeneral_*" method="{1}" class="forumGeneralPreferencesAction">			
+			<result name="input">/forumGeneralPreferencesAction.jsp</result>			
+			<result name="success">/forumGeneralPreferencesActionShow.jsp</result>
+		</action>
+		
+		<action name="forumhistory" method="{1}" class="myForumPostHistoryAction">			
+			<result name="input">/myForumPostHistoryAction.jsp</result>			
+			<result name="success">/myForumPostHistoryActionShow.jsp</result>
+		</action>
+		
+	</package>
+</struts>

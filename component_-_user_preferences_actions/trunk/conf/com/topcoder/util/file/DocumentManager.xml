@@ -1,0 +1,29 @@
+<CMConfig version="v2">
+    <Config name="com.topcoder.util.file">
+        <Property name="sources">
+            <Value>file</Value>
+            <Value>my_file</Value>
+        </Property>
+        <Property name="default_source">
+            <Value>file</Value>
+        </Property>
+
+        <!-- file template source properties -->
+        <Property name="file_class">
+            <Value>com.topcoder.util.file.templatesource.FileTemplateSource</Value>
+        </Property>
+
+        <!-- my_file template source properties -->
+        <Property name="my_file_class">
+            <Value>com.topcoder.util.file.templatesource.FileTemplateSource</Value>
+        </Property>
+        <Property name="my_file_dir">
+            <Value>test_files/my_files/</Value>
+        </Property>
+    </Config>
+    <Config name="end">
+        <Property name="data">
+            <Value>1</Value>
+        </Property>
+    </Config>
+</CMConfig>
