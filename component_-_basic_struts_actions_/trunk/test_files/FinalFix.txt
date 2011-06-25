@@ -1,0 +1,16 @@
+about demo for Jboss
+
+Please use ant deploy_to_jboss to do that.
+
+And copy test_files/mailBodyTemplate.txt to %Jboss%/bin, because action need read file in server.
+
+Do not forget run test_files/DevNullSmtp.jar!
+
+
+--------------------------------------------------------------------------------
+
+about 5.1.3
+
+It's not about FF.
+It's can not run without deploy dependency EJB.
+So I can not do tests for it.

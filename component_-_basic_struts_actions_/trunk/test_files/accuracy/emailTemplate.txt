@@ -1,0 +1,7 @@
+Hi,
+    Dear %handle%,
+
+    Please click link %link% to recovery password.
+
+Best Regards. 
+TopCoder member service.

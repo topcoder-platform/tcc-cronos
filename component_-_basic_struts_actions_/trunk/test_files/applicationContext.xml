@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userDAO" class="com.topcoder.web.common.dao.hibernate.UserDAOHibernate">
+    </bean>
+
+    <bean id="auditDAO" class="com.topcoder.web.common.dao.hibernate.AuditDAOHibernate">
+    </bean>
+
+    <bean id="passwordRecoveryDAO" class="com.topcoder.web.common.dao.hibernate.PasswordRecoveryDAOHibernate">
+    </bean>
+
+    <bean id="loginRemote" class="com.topcoder.web.reg.actions.basic.MockLoginRemote">
+    </bean>
+
+    <bean id="servletRequest" class="com.topcoder.web.reg.actions.basic.MockServletRequest">
+    </bean>
+
+    <bean id="servletResponse" class="com.topcoder.web.reg.actions.basic.MockServletResponse">
+    </bean>
+
+    <bean id="httpSession" class="com.topcoder.web.reg.actions.basic.MockHttpSession">
+    </bean>
+
+    <bean id="persistor" class="com.topcoder.web.common.security.SessionPersistor">
+        <constructor-arg ref="httpSession" />
+    </bean>
+
+    <bean id="principalMgrRemote" class="com.topcoder.web.reg.actions.basic.MockPrincipalMgrRemote">
+    </bean>
+
+    <bean id="webAuthentication" class="com.topcoder.web.reg.actions.basic.MockBasicAuthentication">
+        <constructor-arg ref="persistor" />
+        <constructor-arg ref="servletRequest" />
+        <constructor-arg ref="servletResponse" />
+    </bean>
+
+	<bean id="loginAction" class="com.topcoder.web.reg.actions.basic.MockLoginAction"
+		init-method="checkConfiguration">
+		<property name="lastRequestedURIParameterName" value="lastRequestedURI" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="loginRemote" ref="loginRemote" />
+		<property name="operationType" value="login" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="resetPasswordAction" class="com.topcoder.web.reg.actions.basic.MockResetPasswordAction"
+          init-method="checkConfiguration">
+        <!--This should be set to the same value as the existing website-->
+        <property name="userDAO" ref="userDAO"/>
+        <property name="principalMgrRemote" ref="principalMgrRemote"/>
+        <property name="operationType" value="resetPassword"/>
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="servletRequest" ref="servletRequest" />
+        <!--This should be set to the same value as the existing website-->
+        <property name="minimalPasswordLength" value="4"/>
+        <property name="maximalPasswordLength" value="8"/>
+        <property name="passwordRecoveryDAO" ref="passwordRecoveryDAO"/>
+
+        <property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+    </bean>
+
+    <bean id="logoutAction" class="com.topcoder.web.reg.actions.basic.LogoutAction"
+		init-method="checkConfiguration">
+		<property name="operationType" value="logout"/>
+        <property name="auditDAO" ref="auditDAO"/>
+		<property name="servletRequest" ref="servletRequest" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="recoverPasswordAction" class="com.topcoder.web.reg.actions.basic.MockRecoverPasswordAction"
+          init-method="checkConfiguration">
+        <property name="emailBodyTemplateFilePath" value="test_files/mailBodyTemplate.txt"/>
+        <property name="emailSubject" value="Reset password e-mail for your account on TopCoder web-site"/>
+        <property name="emailFromAddress" value="test@tc.com"/>
+        <property name="resetPasswordLinkTemplate">
+            <value><![CDATA[Id:%passwordRecoveryId%, hashCode:%hashCode%]]></value>
+        </property>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="servletRequest" ref="servletRequest" />
+        <property name="passwordRecoveryExpiration" value="5"/>
+        <property name="operationType" value="recoverPassword"/>
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="passwordRecoveryDAO" ref="passwordRecoveryDAO"/>
+    </bean>
+
+    <bean id="resendPasswordRecoveryEmailAction" class="com.topcoder.web.reg.actions.basic.ResendPasswordRecoveryEmailAction" init-method="checkConfiguration">
+        <property name="emailBodyTemplateFilePath" value="test_files/mailBodyTemplate.txt"/>
+        <property name="emailSubject" value="Reset password e-mail for your account on TopCoder web-site"/>
+        <property name="emailFromAddress" value="test@tc.com"/>
+        <property name="resetPasswordLinkTemplate">
+            <value><![CDATA[Id:%passwordRecoveryId%, hashCode:%hashCode%]]></value>
+        </property>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="servletRequest" ref="servletRequest" />
+        <property name="operationType" value="resendPasswordRecoveryEmail"/>
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="passwordRecoveryDAO" ref="passwordRecoveryDAO"/>
+    </bean>
+
+    <bean id="authorizationInterceptor" class="com.topcoder.web.reg.interceptors.AuthorizationInterceptor" init-method="checkConfiguration">
+    </bean>
+    <bean id="throttleInterceptor" class="com.topcoder.web.reg.interceptors.ThrottleInterceptor" init-method="checkConfiguration">
+    </bean>
+
+    <!--Note that the configuration of DAO and EJB are omitted in this sample configuration file.-->
+</beans>
