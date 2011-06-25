@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+  <package name="photo"  extends="struts-default">
+    <action name="removePhoto" class="removeMemberPhotoAction">
+      <result name="success">/removePhotoSuccess.jsp</result>
+      <result name="failure">/removePhotoFailed.jsp</result>
+    </action>
+
+    <action name="uploadPhoto" class="uploadMemberPhotoAction">
+      <interceptor-ref name="fileUpload">
+        <!-- Add uploaded file validation rules -->
+        <param name="maximumSize">20000000</param>
+        <param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg,image/pjpeg,image/x-png</param>
+      </interceptor-ref>
+      <interceptor-ref name="basicStack"/>
+      <interceptor-ref name="validation"/>
+      <interceptor-ref name="workflow"/>
+      <result name="success">/showPhoto.jsp</result>
+      <result name="previewSuccess" type="redirect">preview.jsp?param=value${previewSuccessUrlSuffix}</result>
+      <result name="input">/index.jsp</result>
+      <result name="failure">/uploadPhotoFailed.jsp</result>
+    </action>
+  </package>
+</struts>

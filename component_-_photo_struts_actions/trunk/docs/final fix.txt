@@ -1,0 +1,6 @@
+1.1.2 - 1) Added xxxParameterName for these and updated demo.
+1.1.2 - 3) Fixed.
+
+3.1.7) Fixed.
+
+4.1.2 - 3) Fixed.

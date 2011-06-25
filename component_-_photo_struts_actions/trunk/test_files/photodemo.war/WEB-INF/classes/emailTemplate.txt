@@ -1,0 +1,6 @@
+Dear %memberName% handle %memberHandle%, user ID %memberId%,
+
+Photo has been successfully removed from your profile due to the following reason %photoRemovalReason%
+
+Best regards. 
+TopCoder member service.

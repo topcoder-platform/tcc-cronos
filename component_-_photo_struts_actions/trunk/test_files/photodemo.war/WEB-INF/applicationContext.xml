@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+    "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+  <!-- Create document generator -->
+  <bean id="configurationFileManager" class="com.topcoder.configuration.persistence.ConfigurationFileManager">
+    <constructor-arg value="DocumentManager.xml"/>
+  </bean>
+  <bean id="documentGeneratorNamespaceConfiguration" class="com.topcoder.configuration.ConfigurationObject" factory-bean="configurationFileManager" factory-method="getConfiguration" >
+    <constructor-arg value="com.topcoder.util.file"/>
+  </bean>
+  <bean id="documentGeneratorConfiguration" class="com.topcoder.configuration.ConfigurationObject" factory-bean="documentGeneratorNamespaceConfiguration" factory-method="getChild" >
+    <constructor-arg value="com.topcoder.util.file"/>
+  </bean>
+  <bean id="documentGenerator" class="com.topcoder.util.file.DocumentGeneratorFactory" factory-method="getDocumentGenerator">
+    <constructor-arg ref="documentGeneratorConfiguration"/>
+  </bean>
+
+  <!-- Create logger -->
+  <bean id="logger" class="com.topcoder.util.log.LogManager" factory-method="getLog">
+    <constructor-arg value="com.topcoder.web.reg.actions.photo" type="java.lang.String"/>
+  </bean>
+
+  <!-- Create member photo manager -->
+  <bean id="memberPhotoManager" class="com.topcoder.web.reg.actions.photo.MockMemberPhotoManager"/>
+
+  <!-- Create user DAO -->
+  <bean id="userDAO" class="com.topcoder.web.reg.actions.photo.MockUserDAO"/>
+
+  <!-- Create audit DAO -->
+  <bean id="auditDAO" class="com.topcoder.web.reg.actions.photo.MockAuditDAO"/>
+
+  <!-- Create remove photo action -->
+  <bean id="removeMemberPhotoAction" class="com.topcoder.web.reg.actions.photo.RemoveMemberPhotoAction" scope="prototype">
+    <property name="authenticationSessionKey" value="authenticationkey"/>
+    <property name="userDAO" ref="userDAO"/>
+    <property name="auditDAO" ref="auditDAO"/>
+    <property name="memberPhotoManager" ref="memberPhotoManager"/>
+    <property name="log" ref="logger"/>
+    <property name="photoStoredDirectory" value="../server/default/deploy/photodemo.war/stored"/>
+    <property name="documentGenerator" ref="documentGenerator"/>
+    <property name="emailSendFlag" value="false"/>
+    <property name="photoRemovedDirectory" value="../server/default/deploy/photodemo.war/removed"/>
+    <property name="emailBodyTemplateFileName" value="emailTemplate.txt"/>
+    <property name="emailSubject" value="Photo removed"/>
+    <property name="fromEmailAddress" value ="from@topcoder.com"/>
+  </bean>
+
+  <!-- Create upload photo action -->
+  <bean id="uploadMemberPhotoAction" class="com.topcoder.web.reg.actions.photo.UploadMemberPhotoAction" scope="prototype">
+    <property name="authenticationSessionKey" value="authenticationkey"/>
+    <property name="userDAO" ref="userDAO"/>
+    <property name="auditDAO" ref="auditDAO"/>
+    <property name="memberPhotoManager" ref="memberPhotoManager"/>
+    <property name="log" ref="logger"/>
+    <property name="photoStoredDirectory" value="../server/default/deploy/photodemo.war/stored"/>
+    <property name="allowedContentTypesFileExtensions">
+      <map>
+        <entry key="image/png" value="png"/>
+        <entry key="image/x-png" value="png"/>
+        <entry key="image/pjpeg" value="jpg"/>
+        <entry key="image/jpeg" value="jpg"/>
+        <entry key="image/gif" value="gif"/>
+        <entry key="image/bmp" value="bmp"/>
+      </map>
+    </property>
+    <property name="photoPreviewDirectory" value="../server/default/deploy/photodemo.war/previewed"/>
+    <property name="targetImageWidth" value="50"/>
+    <property name="targetImageHeight" value="40"/>
+  </bean>
+
+</beans>

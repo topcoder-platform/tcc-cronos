@@ -1,0 +1,828 @@
+<html xmlns:lxslt="http://xml.apache.org/xslt" xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Unit Test Results: com.topcoder.web.reg.actions.photo.AllTests</title>
+<link rel="stylesheet" type="text/css" title="Style" href="../../../../../../stylesheet.css">
+<script type="text/javascript" language="JavaScript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.topcoder.web.reg.actions.photo.AllTests'] = new Array();
+    
+        cur['activation.jar'] = 'e:/tcs/lib/third_party/javamail/1.4.3/activation.jar';
+    
+        cur['ant.core.lib'] = 'E:\\eclipse-java-helios-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.1.v20100518-1145\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\build.xml';
+    
+        cur['ant.file.Dependency Import'] = 'E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\build-dependencies.xml';
+    
+        cur['ant.file.Override Import'] = 'E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\build-override.xml';
+    
+        cur['ant.file.TopCoder Java Generic Build'] = 'E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\build.xml';
+    
+        cur['ant.home'] = 'E:\\eclipse-java-helios-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.1.v20100518-1145';
+    
+        cur['ant.java.version'] = '1.6';
+    
+        cur['ant.library.dir'] = 'E:\\eclipse-java-helios-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.1.v20100518-1145\\lib';
+    
+        cur['ant.project.name'] = 'TopCoder Java Generic Build';
+    
+        cur['ant.version'] = 'Apache Ant version 1.7.1 compiled on June 27 2008';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['base_exception.jar'] = 'e:/tcs/lib/tcs/base_exception/2.0.0/base_exception.jar';
+    
+        cur['basedir'] = 'E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission';
+    
+        cur['build_classdir'] = 'build/classes';
+    
+        cur['build_distdir'] = 'build/dist';
+    
+        cur['build_docsdir'] = 'build/docs';
+    
+        cur['build_javadocsdir'] = 'build/docs/javadocs';
+    
+        cur['build_targetclassdir'] = 'build/targetclasses';
+    
+        cur['build_tcsdistdir'] = 'build/dist/Photo_Struts_Actions-1.0.0';
+    
+        cur['build_testclassdir'] = 'build/testClasses';
+    
+        cur['builddir'] = 'build';
+    
+        cur['cobertura.datafile'] = 'log/cobertura.ser';
+    
+        cur['cobertura.dir'] = 'e:/tcs/lib/third_party/cobertura/1.9';
+    
+        cur['cobertura.format'] = 'html';
+    
+        cur['commons-logging.jar'] = 'e:/tcs/lib/third_party/struts-2.2.3-all/struts-2.2.3/lib/commons-logging-1.1.1.jar';
+    
+        cur['component'] = 'Photo Struts Actions';
+    
+        cur['component_path'] = 'Photo_Struts_Actions/1.0.0';
+    
+        cur['component_version'] = '1.0.0';
+    
+        cur['component.bootclasspath'] = '${java_1_5_bootclasspath}';
+    
+        cur['component.dist.jar'] = 'build/dist/Photo_Struts_Actions-1.0.0.jar';
+    
+        cur['component.distfilename'] = 'Photo_Struts_Actions';
+    
+        cur['component.jar'] = 'build/dist/lib/tcs/Photo_Struts_Actions/1.0.0/Photo_Struts_Actions.jar';
+    
+        cur['component.mainclass'] = '';
+    
+        cur['component.name'] = 'Photo Struts Actions';
+    
+        cur['component.package'] = 'com.topcoder.web.reg.actions.photo';
+    
+        cur['component.packagedir'] = 'com/topcoder/web/reg/actions/photo';
+    
+        cur['component.target'] = '1.5';
+    
+        cur['component.tests.jar'] = 'build/dist/lib/tcs/Photo_Struts_Actions_tests.jar';
+    
+        cur['component.version.build'] = '1';
+    
+        cur['component.version.major'] = '1';
+    
+        cur['component.version.micro'] = '0';
+    
+        cur['component.version.minor'] = '0';
+    
+        cur['configdir'] = 'conf';
+    
+        cur['configuration_api.jar'] = 'e:/tcs/lib/tcs/configuration_api/1.0.0/configuration_api.jar';
+    
+        cur['configuration_manager.jar'] = 'e:/tcs/lib/tcs/configuration_manager/2.2.0/configuration_manager.jar';
+    
+        cur['configuration_persistence.jar'] = 'e:/tcs/lib/tcs/configuration_persistence/1.0.2/configuration_persistence.jar';
+    
+        cur['debug'] = 'off';
+    
+        cur['dependent.jar'] = 'libs/dependent.jar';
+    
+        cur['deploy.dir'] = 'D:/jboss-5.1.0.GA/server/default/deploy';
+    
+        cur['design_dist.jar'] = 'Photo_Struts_Actions_1.0.0_design_dist.jar';
+    
+        cur['design_submission.jar'] = 'Photo_Struts_Actions_1.0.0_design_submission.jar';
+    
+        cur['dev_dist.jar'] = 'Photo_Struts_Actions_1.0.0_dev_dist.jar';
+    
+        cur['dev_submission.jar'] = 'Photo_Struts_Actions_1.0.0_dev_submission.jar';
+    
+        cur['dist_coverage'] = 'build/dist/Photo_Struts_Actions-1.0.0/docs/coverage';
+    
+        cur['dist_docpackage'] = 'build/doc_package';
+    
+        cur['dist_docs'] = 'build/dist/Photo_Struts_Actions-1.0.0/docs';
+    
+        cur['dist_javadocs'] = 'build/dist/Photo_Struts_Actions-1.0.0/docs/javadocs';
+    
+        cur['dist_lib'] = 'build/dist/lib/tcs';
+    
+        cur['distfilename'] = 'Photo_Struts_Actions';
+    
+        cur['docpackage.jar'] = 'Photo_Struts_Actions_docs.jar';
+    
+        cur['docsdir'] = 'docs';
+    
+        cur['document_generator.jar'] = 'e:/tcs/lib/tcs/document_generator/3.1.1/document_generator.jar';
+    
+        cur['email_engine.jar'] = 'e:/tcs/lib/tcs/email_engine/3.2.0/email_engine.jar';
+    
+        cur['ext_libdir'] = 'e:/tcs/lib/third_party';
+    
+        cur['file.encoding'] = 'GBK';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['instrumented.dir'] = 'build/instrumented';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\build\\testClasses;e:\\tcs\\lib\\third_party\\junit\\3.8.2\\junit.jar;e:\\tcs\\lib\\third_party\\struts-2.2.3-all\\struts-2.2.3\\lib\\commons-logging-1.1.1.jar;e:\\tcs\\lib\\third_party\\javamail\\1.4.3\\activation.jar;e:\\tcs\\lib\\third_party\\log4j\\1.2.15\\log4j.jar;e:\\tcs\\lib\\tcs\\typesafe_enum\\1.1.0\\typesafe_enum.jar;e:\\tcs\\lib\\tcs\\object_formatter\\1.0.0\\object_formatter.jar;e:\\tcs\\lib\\tcs\\topcoder_commons_utility\\1.0.0\\topcoder_commons_utility.jar;e:\\tcs\\lib\\tcs\\configuration_api\\1.0.0\\configuration_api.jar;e:\\tcs\\lib\\tcs\\configuration_persistence\\1.0.2\\configuration_persistence.jar;e:\\tcs\\lib\\tcs\\shared\\1.0.0\\shared.jar;e:\\tcs\\lib\\tcs\\configuration_manager\\2.2.0\\configuration_manager.jar;e:\\tcs\\lib\\tcs\\email_engine\\3.2.0\\email_engine.jar;e:\\tcs\\lib\\tcs\\document_generator\\3.1.1\\document_generator.jar;e:\\tcs\\lib\\tcs\\base_exception\\2.0.0\\base_exception.jar;E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\libs\\member_photo_manager.jar;e:\\tcs\\lib\\tcs\\logging_wrapper\\2.0.0\\logging_wrapper.jar;e:\\tcs\\lib\\third_party\\javamail\\1.4.3\\mail.jar;e:\\tcs\\lib\\third_party\\javaee\\javaee.jar;e:\\tcs\\lib\\third_party\\struts-2.2.3-all\\struts-2.2.3\\lib\\spring-core-2.5.6.jar;e:\\tcs\\lib\\third_party\\struts-2.2.3-all\\struts-2.2.3\\lib\\spring-test-2.5.6.jar;e:\\tcs\\lib\\third_party\\struts-2.2.3-all\\struts-2.2.3\\lib\\xwork-core-2.2.3.jar;e:\\tcs\\lib\\third_party\\struts-2.2.3-all\\struts-2.2.3\\lib\\struts2-core-2.2.3.jar;E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\libs\\dependent.jar;E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\build\\classes;E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\test_files;E:\\eclipse-java-helios-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.1.v20100518-1145\\lib\\ant-launcher.jar;E:\\eclipse-java-helios-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.1.v20100518-1145\\lib\\ant.jar;E:\\eclipse-java-helios-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.1.v20100518-1145\\lib\\ant-junit.jar';
+    
+        cur['java.class.version'] = '50.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.6.0_25\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\DOCUME~1\\CHENGG~1\\LOCALS~1\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\bin;.;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;C:/Program Files/Java/jre6/lib/i386;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\Program Files\\ThinkPad Wireless LAN Adapter Software;C:\\Program Files\\Intel\\WiFi\\bin\\;D:\\Program Files\\TortoiseSVN\\bin;C:\\Program Files\\Common Files\\Thunder Network\\KanKan\\Codecs;C:\\strawberry\\c\\bin;C:\\strawberry\\perl\\site\\bin;C:\\strawberry\\perl\\bin;C:\\Program Files\\Microsoft SQL Server\\90\\Tools\\binn\\;C:\\Program Files\\IDM UltraEdit\\;F:\\TDDOWNLOAD\\wget-1.11.4b;E:\\eclipse-java-helios-SR2-win32\\eclipse;';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.6.0_25-b06';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.6';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.6.0_25';
+    
+        cur['java.vm.info'] = 'mixed mode, sharing';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) Client VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '20.0-b11';
+    
+        cur['javac.encoding'] = 'UTF-8';
+    
+        cur['javadoc.jar'] = 'javadocs.jar';
+    
+        cur['javadoc.locale'] = 'en_US';
+    
+        cur['javadocsdir'] = 'docs/javadocs';
+    
+        cur['javaee.jar'] = 'e:/tcs/lib/third_party/javaee/javaee.jar';
+    
+        cur['javamain'] = 'src/java/main';
+    
+        cur['javasrc'] = 'src/java';
+    
+        cur['javatests'] = 'src/java/tests';
+    
+        cur['junit.jar'] = 'e:/tcs/lib/third_party/junit/3.8.2/junit.jar';
+    
+        cur['junit4.jar'] = 'e:/tcs/lib/third_party/junit/4.8/junit.jar';
+    
+        cur['libdir'] = '../tcs/lib';
+    
+        cur['line.separator'] = ' ';
+    
+        cur['log4j.jar'] = 'e:/tcs/lib/third_party/log4j/1.2.15/log4j.jar';
+    
+        cur['logging_wrapper.jar'] = 'e:/tcs/lib/tcs/logging_wrapper/2.0.0/logging_wrapper.jar';
+    
+        cur['mail.jar'] = 'e:/tcs/lib/third_party/javamail/1.4.3/mail.jar';
+    
+        cur['manifest_file'] = 'build/dist/Photo_Struts_Actions-1.0.0/META-INF//MANIFEST.MF';
+    
+        cur['manifest_file_path'] = 'build/dist/Photo_Struts_Actions-1.0.0/META-INF/';
+    
+        cur['member_photo_manager.jar'] = 'libs/member_photo_manager.jar';
+    
+        cur['object_formatter.jar'] = 'e:/tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar';
+    
+        cur['os.arch'] = 'x86';
+    
+        cur['os.name'] = 'Windows XP';
+    
+        cur['os.version'] = '5.1';
+    
+        cur['package'] = 'com.topcoder.web.reg.actions.photo';
+    
+        cur['packagedir'] = 'com/topcoder/web/reg/actions/photo';
+    
+        cur['path.separator'] = ';';
+    
+        cur['reports'] = 'log/reports';
+    
+        cur['shared.jar'] = 'e:/tcs/lib/tcs/shared/1.0.0/shared.jar';
+    
+        cur['spring-core.jar'] = 'e:/tcs/lib/third_party/struts-2.2.3-all/struts-2.2.3/lib/spring-core-2.5.6.jar';
+    
+        cur['spring-mock.jar'] = 'e:/tcs/lib/third_party/struts-2.2.3-all/struts-2.2.3/lib/spring-test-2.5.6.jar';
+    
+        cur['spring-test.jar'] = 'e:/tcs/lib/third_party/e:/tcs/lib/third_party/struts-2.2.3-all/struts-2.2.3/lib/spring-test-2.5.6.jar';
+    
+        cur['srcdir'] = 'src';
+    
+        cur['struts2-core.jar'] = 'e:/tcs/lib/third_party/struts-2.2.3-all/struts-2.2.3/lib/struts2-core-2.2.3.jar';
+    
+        cur['sun.arch.data.model'] = '32';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\lib\\modules\\jdk.boot.jar;C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.6.0_25\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner com.topcoder.web.reg.actions.photo.AllTests filtertrace=true haltOnError=false haltOnFailure=false showoutput=false outputtoformatters=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter,E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\log\\TEST-com.topcoder.web.reg.actions.photo.AllTests.txt formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\log\\TEST-com.topcoder.web.reg.actions.photo.AllTests.xml crashfile=E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\junitvmwatcher1918220865238475282.properties propsfile=E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission\\junit6087328063959384546.properties';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'GBK';
+    
+        cur['sun.management.compiler'] = 'HotSpot Client Compiler';
+    
+        cur['sun.os.patch.level'] = 'Service Pack 3';
+    
+        cur['target_libdir'] = 'e:/tcs/lib/tcs';
+    
+        cur['tcs_libdir'] = 'e:/tcs/lib/tcs';
+    
+        cur['test_reflib'] = 'test_reflib';
+    
+        cur['testfiles'] = 'test_files';
+    
+        cur['testlogdir'] = 'log';
+    
+        cur['topcoder_commons_utility.jar'] = 'e:/tcs/lib/tcs/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar';
+    
+        cur['typesafe_enum.jar'] = 'e:/tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar';
+    
+        cur['user.country'] = 'CN';
+    
+        cur['user.dir'] = 'E:\\workspace\\Photo_Struts_Actions_1.0.0_dev_submission';
+    
+        cur['user.home'] = 'C:\\Documents and Settings\\chenggang01';
+    
+        cur['user.language'] = 'zh';
+    
+        cur['user.name'] = 'chenggang01';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+        cur['verbose'] = 'no';
+    
+        cur['war.dir'] = 'test_files/photodemo.war';
+    
+        cur['xwork-core.jar'] = 'e:/tcs/lib/third_party/struts-2.2.3-all/struts-2.2.3/lib/xwork-core-2.2.3.jar';
+    </script><script type="text/javascript" language="JavaScript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.topcoder.web.reg.actions.photo.AllTests</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Pass">
+<td><a title="Display all tests" href="0_AllTests.html">AllTests</a></td><td><a title="Display all tests" href="0_AllTests.html">146</a></td><td>0</td><td>0</td><td>2.593</td><td>2011-06-25T06:14:25</td><td>b00000016274</td>
+</tr>
+</table>
+<h2>Tests</h2>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoRemovalExceptionString"></a>testMemberPhotoRemovalExceptionString</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoRemovalExceptionStringThrowable"></a>testMemberPhotoRemovalExceptionStringThrowable</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoRemovalExceptionStringExceptionData"></a>testMemberPhotoRemovalExceptionStringExceptionData</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoRemovalExceptionStringCauseExceptionData"></a>testMemberPhotoRemovalExceptionStringCauseExceptionData</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoActionConfigurationExceptionString"></a>testMemberPhotoActionConfigurationExceptionString</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoActionConfigurationExceptionStringThrowable"></a>testMemberPhotoActionConfigurationExceptionStringThrowable</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoActionConfigurationExceptionStringExceptionData"></a>testMemberPhotoActionConfigurationExceptionStringExceptionData</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoActionConfigurationExceptionStringCauseExceptionData"></a>testMemberPhotoActionConfigurationExceptionStringCauseExceptionData</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoUploadExceptionString"></a>testMemberPhotoUploadExceptionString</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoUploadExceptionStringThrowable"></a>testMemberPhotoUploadExceptionStringThrowable</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoUploadExceptionStringExceptionData"></a>testMemberPhotoUploadExceptionStringExceptionData</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testMemberPhotoUploadExceptionStringCauseExceptionData"></a>testMemberPhotoUploadExceptionStringCauseExceptionData</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_RemoveMemberPhotoAction0"></a>test_RemoveMemberPhotoAction0</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.375</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute2"></a>test_execute2</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute3"></a>test_execute3</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute4"></a>test_execute4</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute5"></a>test_execute5</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters0"></a>test_checkParameters0</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters1"></a>test_checkParameters1</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters2"></a>test_checkParameters2</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters3"></a>test_checkParameters3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters4"></a>test_checkParameters4</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters5"></a>test_checkParameters5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters6"></a>test_checkParameters6</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters7"></a>test_checkParameters7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters11"></a>test_checkParameters11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters12"></a>test_checkParameters12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters8"></a>test_checkParameters8</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters9"></a>test_checkParameters9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetDocumentGenerator"></a>testGetDocumentGenerator</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetDocumentGenerator"></a>testSetDocumentGenerator</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetRemovalReasonParameterName"></a>testGetRemovalReasonParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetRemovalReasonParameterName"></a>testSetRemovalReasonParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEmailSendFlag"></a>testGetEmailSendFlag</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetEmailSendFlag"></a>testSetEmailSendFlag</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPhotoRemovedDirectory"></a>testGetPhotoRemovedDirectory</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPhotoRemovedDirectory"></a>testSetPhotoRemovedDirectory</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEmailBodyTemplateFileName"></a>testGetEmailBodyTemplateFileName</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetEmailBodyTemplateFileName"></a>testSetEmailBodyTemplateFileName</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetEmailSubject"></a>testGetEmailSubject</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetEmailSubject"></a>testSetEmailSubject</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetFromEmailAddress"></a>testGetFromEmailAddress</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetFromEmailAddress"></a>testSetFromEmailAddress</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setServletRequest"></a>test_setServletRequest</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute2"></a>test_execute2</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute4"></a>test_execute4</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute5"></a>test_execute5</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters0"></a>test_checkParameters0</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters3"></a>test_checkParameters3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters4"></a>test_checkParameters4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters5"></a>test_checkParameters5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters6"></a>test_checkParameters6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters7"></a>test_checkParameters7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters11"></a>test_checkParameters11</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters12"></a>test_checkParameters12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters8"></a>test_checkParameters8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters9"></a>test_checkParameters9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setServletRequest"></a>test_setServletRequest</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_UploadMemberPhotoAction0"></a>test_UploadMemberPhotoAction0</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute8"></a>test_execute8</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute9"></a>test_execute9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute10"></a>test_execute10</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute11"></a>test_execute11</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTargetImageHeight"></a>testGetTargetImageHeight</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTargetImageHeight"></a>testSetTargetImageHeight</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTargetImageWidth"></a>testGetTargetImageWidth</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTargetImageWidth"></a>testSetTargetImageWidth</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setUploadFileName"></a>test_setUploadFileName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setUploadContentType"></a>test_setUploadContentType</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setUpload"></a>test_setUpload</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTargetImageRightCornerYParameterName"></a>testGetTargetImageRightCornerYParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTargetImageRightCornerYParameterName"></a>testSetTargetImageRightCornerYParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTargetImageRightCornerXParameterName"></a>testGetTargetImageRightCornerXParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTargetImageRightCornerXParameterName"></a>testSetTargetImageRightCornerXParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTargetImageLeftCornerYParameterName"></a>testGetTargetImageLeftCornerYParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTargetImageLeftCornerYParameterName"></a>testSetTargetImageLeftCornerYParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetTargetImageLeftCornerXParameterName"></a>testGetTargetImageLeftCornerXParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetTargetImageLeftCornerXParameterName"></a>testSetTargetImageLeftCornerXParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetOriginalImageFileNameParameterName"></a>testGetOriginalImageFileNameParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetOriginalImageFileNameParameterName"></a>testSetOriginalImageFileNameParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPreviewImageFileNameParameterName"></a>testGetPreviewImageFileNameParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPreviewImageFileNameParameterName"></a>testSetPreviewImageFileNameParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPhotoPreviewDirectory"></a>testGetPhotoPreviewDirectory</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPhotoPreviewDirectory"></a>testSetPhotoPreviewDirectory</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetSubmittedActionParameterName"></a>testGetSubmittedActionParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetSubmittedActionParameterName"></a>testSetSubmittedActionParameterName</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetRreviewSuccessUrlSuffix"></a>testGetRreviewSuccessUrlSuffix</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetAllowedContentTypesFileExtensions"></a>testGetAllowedContentTypesFileExtensions</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetAllowedContentTypesFileExtensions"></a>testSetAllowedContentTypesFileExtensions</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters0"></a>test_checkParameters0</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters1"></a>test_checkParameters1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters2"></a>test_checkParameters2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters3"></a>test_checkParameters3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters4"></a>test_checkParameters4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters5"></a>test_checkParameters5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters6"></a>test_checkParameters6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters7"></a>test_checkParameters7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_BaseMemberPhotoAction0"></a>test_BaseMemberPhotoAction0</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetAuthenticationSessionKey"></a>testGetAuthenticationSessionKey</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetAuthenticationSessionKey"></a>testSetAuthenticationSessionKey</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetUserDAO"></a>testGetUserDAO</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetUserDAO"></a>testSetUserDAO</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetAuditDAO"></a>testGetAuditDAO</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetAuditDAO"></a>testSetAuditDAO</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetMemberPhotoManager"></a>testGetMemberPhotoManager</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetMemberPhotoManager"></a>testSetMemberPhotoManager</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetLog"></a>testGetLog</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetLog"></a>testSetLog</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetPhotoStoredDirectory"></a>testGetPhotoStoredDirectory</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPhotoStoredDirectory"></a>testSetPhotoStoredDirectory</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_move"></a>test_move</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_logRequestParameter"></a>test_logRequestParameter</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute_Acc"></a>test_execute_Acc</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute_Acc1"></a>test_execute_Acc1</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute_Acc2"></a>test_execute_Acc2</td><td>Success</td><td></td><td>0.156</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute_Acc3"></a>test_execute_Acc3</td><td>Success</td><td></td><td>0.250</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute2"></a>test_execute2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute3"></a>test_execute3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters2"></a>test_checkParameters2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters3"></a>test_checkParameters3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters4"></a>test_checkParameters4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters5"></a>test_checkParameters5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters6"></a>test_checkParameters6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters7"></a>test_checkParameters7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters"></a>test_checkParameters</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute"></a>test_execute</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute2"></a>test_execute2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute3"></a>test_execute3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters2"></a>test_checkParameters2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters3"></a>test_checkParameters3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters4"></a>test_checkParameters4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters5"></a>test_checkParameters5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters6"></a>test_checkParameters6</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters7"></a>test_checkParameters7</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters8"></a>test_checkParameters8</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters9"></a>test_checkParameters9</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters"></a>test_checkParameters</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkParameters10"></a>test_checkParameters10</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute12"></a>test_execute12</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute13"></a>test_execute13</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute14"></a>test_execute14</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute15"></a>test_execute15</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_execute16"></a>test_execute16</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.topcoder.web.reg.actions.photo.AllTests');">
+                    Properties &raquo;
+                </a>
+</div>
+<div class="Properties">
+<a href="./0_AllTests-out.txt">
+                        System.out &raquo;
+                    </a>
+</div>
+<div class="Properties">
+<a href="./0_AllTests-err.txt">
+                        System.err &raquo;
+                    </a>
+</div>
+</body>
+</html>
