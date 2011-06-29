@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.web.tc.impl.entity">
+	<class name="ContestEligibility" table="contest_eligibility">
+		<id access="field" column="contest_eligibility_id" name="contestEligibilityId"
+			type="long" />
+		<property access="field" column="contest_id" name="contestId"
+			type="long" />
+		<property access="field" column="is_studio" name="studio"
+			type="boolean" />
+	</class>
+</hibernate-mapping>

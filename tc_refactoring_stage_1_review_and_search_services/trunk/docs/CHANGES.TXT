@@ -1,0 +1,13 @@
+1. Resource. Added resourceRoleId.
+2. Submission. Added uploadId, submissionTypeId, submissionStatusId.
+3. ProjectPhase. Added scheduledStartTime, actualStartTime.
+4. Categories. Newly added.
+5. ProjectInfo. Removed projectInfoId. Changed to implement Serializable (required by Hibernate for entity having composite-id).
+6. ProjectResult. Changed to implement Serializable (required by Hibernate for entity having composite-id).
+7. ResourceInfo. Removed resourceInfoId. Changed to implement Serializable (required by Hibernate for entity having composite-id).
+8. ResourceSubmission. Changed to implement Serializable (required by Hibernate for entity having composite-id).
+9. Submission. Added uploadId.
+10. Project. Added projectCategoryId.
+11. ProjectGroupCategoryLookup. Renamed projectCategoryId to projectCatalogId (make it consistent with database).
+10. Database table project_category_lu. Renamed newly added column to project_group_category_id.
+11. Database table project_group_category_lu. Renamed newly added column to project_catalog_id.

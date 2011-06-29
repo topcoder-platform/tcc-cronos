@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:property-placeholder location="jdbc.properties" />
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mappingResources">
+			<list>
+				<value>CompCatalog.hbm.xml</value>
+				<value>CompVersionDates.hbm.xml</value>
+				<value>CompVersions.hbm.xml</value>
+				<value>ContestEligibility.hbm.xml</value>
+				<value>PhaseCriteria.hbm.xml</value>
+				<value>Project.hbm.xml</value>
+				<value>ProjectCatalogLookup.hbm.xml</value>
+				<value>ProjectCategoryLookup.hbm.xml</value>
+				<value>ProjectGroupCategoryLookup.hbm.xml</value>
+				<value>ProjectInfo.hbm.xml</value>
+				<value>ProjectPhase.hbm.xml</value>
+				<value>ProjectResult.hbm.xml</value>
+				<value>ProjectStatusLookup.hbm.xml</value>
+				<value>RBoardApplication.hbm.xml</value>
+				<value>RBoardPayment.hbm.xml</value>
+				<value>Resource.hbm.xml</value>
+				<value>ResourceInfo.hbm.xml</value>
+				<value>ResourceSubmission.hbm.xml</value>
+				<value>Submission.hbm.xml</value>
+				<value>Upload.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<value>hibernate.dialect=org.hibernate.dialect.InformixDialect
+			</value>
+		</property>
+	</bean>
+
+	<bean id="searchContestsManager" class="com.topcoder.web.tc.implement.SearchContestsManagerImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="loggerName" value="SearchContestsManagerImpl" />
+	</bean>
+	<bean id="upcomingContestsManager"
+		class="com.topcoder.web.tc.implement.UpcomingContestsManagerImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="loggerName" value="UpcomingContestsManagerImpl" />
+	</bean>
+	<bean id="reviewOpportunitiesManager"
+		class="com.topcoder.web.tc.implement.ReviewOpportunitiesManagerImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="loggerName" value="ReviewOpportunitiesManagerImpl" />
+	</bean>
+
+	<bean id="upcomingContestsManagerAction"
+		class="com.topcoder.web.tc.action.UpcomingContestsManagerAction"
+		scope="prototype" init-method="checkConfiguration">
+		<property name="upcomingContestsManager" ref="upcomingContestsManager" />
+	</bean>
+	<bean id="searchContestsManagerAction" class="com.topcoder.web.tc.action.SearchContestsManagerAction"
+		scope="prototype" init-method="checkConfiguration">
+		<property name="searchContestsManager" ref="searchContestsManager" />
+	</bean>
+	<bean id="reviewOpportunitiesManagerAction"
+		class="com.topcoder.web.tc.action.ReviewOpportunitiesManagerAction"
+		scope="prototype" init-method="checkConfiguration">
+		<property name="reviewOpportunitiesManager" ref="reviewOpportunitiesManager" />
+	</bean>
+	<bean id="parameterAction" class="com.topcoder.web.tc.action.ParameterAction"
+		scope="prototype">
+	</bean>
+</beans>

@@ -1,0 +1,13 @@
+1. Copy all jar files from test_reflib into the folder created in step 1.
+2. Download a tomcat. This demo is tested under tomcat 6.0.29. So I think you'd better use a tomcat no lower than this
+version.
+3. Copy docs/web-test to your tomcat's webapps folder.
+4. Configure jdbc.properties to use the correct value which can connect to your database.
+5. Start tomcat.
+6. Open a browser. Go to http://localhost:8080/web-test/index.jsp.
+7. There are 3 links, each of which is used to test one action. You can enter these link, input searching criteria, and
+after you click on the search button, you will see a table containing the searching result.
+
+NOTE: For simplicity (since this is just a demo), if you want to enter multiple value for catalog, type, or subtype,
+you need to enter the values delimited by comma. And for date and integer fields, you need to make sure the entered
+value is valid.

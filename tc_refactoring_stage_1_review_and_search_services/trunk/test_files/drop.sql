@@ -1,0 +1,24 @@
+DROP TABLE comp_catalog;
+DROP TABLE comp_technology;
+DROP TABLE comp_version_dates;
+DROP TABLE comp_versions;
+DROP TABLE contest_eligibility;
+DROP TABLE phase_criteria;
+DROP TABLE project;
+DROP TABLE project_catalog_lu;
+DROP TABLE project_category_lu;
+DROP TABLE project_group_category_lu;
+DROP TABLE project_info;
+DROP TABLE project_phase;
+DROP TABLE project_result;
+DROP TABLE project_status_lu;
+DROP TABLE rboard_application;
+DROP TABLE rboard_payment;
+DROP TABLE resource;
+DROP TABLE resource_info;
+DROP TABLE resource_submission;
+DROP TABLE technology_types;
+DROP TABLE submission;
+DROP TABLE upload;
+
+DROP PROCEDURE technology_list;
