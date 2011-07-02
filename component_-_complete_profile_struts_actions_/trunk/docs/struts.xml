@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>    
+    <package name="completeProfileActions" extends="struts-default">
+        <action name="getUserProfileForForum" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForForum.jsp
+            </result>
+        </action>
+        <action name="completeProfileForForum" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForForum.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForWiki" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForWiki.jsp
+            </result>
+        </action>
+        <action name="completeProfileForWiki" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForWiki.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForTCDirect" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForTCDirect.jsp
+            </result>
+        </action>
+        <action name="completeProfileForTCDirect" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForTCDirect.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForOnlineReviewForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForOnlineReviewForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeProfileForOnlineReviewForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForOnlineReviewForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForOnlineReviewForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForOnlineReviewForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeProfileForOnlineReviewForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForOnlineReviewForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForJiraForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForJiraForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeProfileForJiraForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForJiraForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForJiraForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForJiraForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeProfileForJiraForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForJiraForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForSVNAccessForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForSVNAccessForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeProfileForSVNAccessForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForSVNAccessForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForSVNAccessForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForSVNAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeProfileForSVNAccessForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForSVNAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForVMAccessForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForVMAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeProfileForVMAccessForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForVMAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForVMAccessForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForVMAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeProfileForVMAccessForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForVMAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForCompetitionParticipation" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForCompetitionParticipation.jsp
+            </result>
+        </action>
+        <action name="completeProfileForCompetitionParticipation" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForCompetitionParticipation.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForCopilotContest" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForCopilotContest.jsp
+            </result>
+        </action>
+        <action name="completeProfileForCopilotContest" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForCopilotContest.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForStudioForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForStudioForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeProfileForStudioForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForStudioForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForStudioForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeProfileForStudioForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeProfileForStudioForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeProfileForStudioForCustomer.jsp
+            </result>
+        </action>
+        <!--The following actions are the actions that can be called when the action behavior depends on whether the user is competitor or customer and the caller doesn't know the user role-->
+        <!--<action name="getProfileForOnlineReview" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">getUserProfileForOnlineReviewForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">getUserProfileForOnlineReviewForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="getProfileForJira" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">getUserProfileForJiraForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">getUserProfileForJiraForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="getProfileForSVNAccess" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">getUserProfileForSVNAccessForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">getUserProfileForSVNAccessForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="getProfileForVMAccess" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">getUserProfileForVMAccessForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">getUserProfileForVMAccessForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="getProfileForStudio" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">getUserProfileForStudioForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">getUserProfileForStudioForCustomer</result>-->
+        <!--</action>-->
+
+        <!--<action name="completeProfileForOnlineReview" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">completeUserProfileForOnlineReviewForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">completeUserProfileForOnlineReviewForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="completeProfileForJira" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">completeUserProfileForJiraForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">completeUserProfileForJiraForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="completeProfileForSVNAccess" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">completeUserProfileForSVNAccessForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">completeUserProfileForSVNAccessForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="completeProfileForVMAccess" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">completeUserProfileForVMAccessForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">completeUserProfileForVMAccessForCustomer</result>-->
+        <!--</action>-->
+        <!--<action name="completeProfileForStudio" class="userRoleCheckingAction">-->
+            <!--<result name="success" type="redirect">completeUserProfileForStudioForCompetitor</result>-->
+            <!--<result name="customer" type="redirect">completeUserProfileForStudioForCustomer</result>-->
+        <!--</action>-->
+    </package>
+</struts>

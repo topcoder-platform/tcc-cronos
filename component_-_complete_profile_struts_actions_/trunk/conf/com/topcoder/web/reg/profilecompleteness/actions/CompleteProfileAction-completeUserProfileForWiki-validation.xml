@@ -1,0 +1,171 @@
+<!-- 
+/*
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ */
+-->
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<!--
+/**
+ * <p>
+ * Validation file.
+ * </p>
+ *
+ * @author TCSDEVELOPER
+ * @version 1.0
+ */
+-->
+<validators>
+
+    <field name="firstName">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">64</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+
+    </field>
+	
+    <field name="lastName">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">64</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+	
+    
+	
+	<field name="currentAddress1">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">254</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+	
+	<field name="currentAddress2">
+       
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">254</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+	
+	<field name="currentAddress3">
+        
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">254</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>	
+	
+	<field name="city">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">64</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+	
+	<field name="state">
+        
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">2</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+
+	<field name="postalCode">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">15</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+		
+		<field-validator type="regex">
+          <param name="expression">[0-9]*</param>
+          <message>${getText("postalCode.invalid")}</message>
+        </field-validator>
+
+    </field>
+
+	<field name="province">
+       
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">64</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+
+	<field name="country">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">40</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+
+	
+
+	<field name="phoneNumber">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">64</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+    </field>
+
+	<field name="timezone">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>			
+            <message>${getText("field.missing")}</message>
+        </field-validator>
+		
+		<field-validator type="stringlength">
+            <param name="maxLength">100</param>
+            <message>${getText("field.length")}</message>
+        </field-validator>
+		
+		 <field-validator type="regex">
+          <param name="expression">GMT[+-][0-9][0-9]</param>
+          <message>${getText("timezone.invalid")}</message>
+        </field-validator>
+    </field>
+
+	
+</validators>
