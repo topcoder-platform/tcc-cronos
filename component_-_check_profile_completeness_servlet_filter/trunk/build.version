@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Check Profile Completeness Servlet Filter
+component.distfilename=check_profile_completeness_servlet_filter
+component.package=com.topcoder.reg.profilecompleteness.filter
+component.packagedir=com/topcoder/reg/profilecompleteness/filter
+component.version.major=1
+component.version.minor=0
+component.version.micro=0
+component.version.build=1
