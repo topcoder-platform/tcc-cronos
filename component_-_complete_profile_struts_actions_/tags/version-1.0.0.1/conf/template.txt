@@ -1,0 +1,5 @@
+Hello %memberName%,
+Your id is %memberId%.
+Your handle is %memberHandle%.
+%emailText%.
+Regards.

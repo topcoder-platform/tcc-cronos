@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE struts PUBLIC
+      "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+      "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+    <constant name="struts.devMode" value="true" />
+
+
+	
+	
+	<package name="completeProfileActions" extends="struts-default">
+	<interceptors>
+            <interceptor name="mockInterceptor" class="mockInterceptor"/> 
+			<interceptor-stack name="interceptors">
+				<interceptor-ref name="mockInterceptor"/>
+				<interceptor-ref name="defaultStack" />												
+			</interceptor-stack>			
+        </interceptors>
+
+		<default-interceptor-ref name="interceptors"/>
+       
+		
+		<!-- Profile that has all fields -->
+		<action name="getUserProfileAllFields" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileAllFields.jsp
+            </result>
+        </action>
+		
+		<action name="completeUserProfileAllFields" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileAllFields.jsp
+            </result>
+        </action>
+		<!-- Forum profile -->
+		<action name="getUserProfileForForum" class="completeProfileAction" method="getUserProfile">		
+            <result name="success">
+                /completeUserProfileForForum.jsp
+            </result>
+        </action>
+		
+		<action name="completeUserProfileForForum" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForForum.jsp
+            </result>
+        </action>
+		
+		 <action name="getUserProfileForWiki" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForWiki.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForWiki" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForWiki.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForTCDirect" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForTCDirect.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForTCDirect" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForTCDirect.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForOnlineReviewForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForOnlineReviewForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForOnlineReviewForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForOnlineReviewForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForOnlineReviewForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForOnlineReviewForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForOnlineReviewForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForOnlineReviewForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForJiraForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForJiraForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForJiraForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForJiraForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForJiraForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForJiraForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForJiraForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForJiraForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForSVNAccessForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForSVNAccessForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForSVNAccessForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForSVNAccessForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForSVNAccessForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForSVNAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForSVNAccessForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForSVNAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForVMAccessForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForVMAccessForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForVMAccessForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForVMAccessForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForVMAccessForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForVMAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForVMAccessForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForVMAccessForCustomer.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForCompetitionParticipation" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForCompetitionParticipation.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForCompetitionParticipation" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForCompetitionParticipation.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForCopilotContest" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForCopilotContest.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForCopilotContest" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForCopilotContest.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForStudioForCompetitor" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForStudioForCompetitor.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForStudioForCompetitor" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForStudioForCompetitor.jsp
+            </result>
+        </action>
+        <action name="getUserProfileForStudioForCustomer" class="completeProfileAction" method="getUserProfile">
+            <result name="success">
+                /completeUserProfileForStudioForCustomer.jsp
+            </result>
+        </action>
+        <action name="completeUserProfileForStudioForCustomer" class="completeProfileAction" method="saveUserProfile">
+            <result name="input">
+                /completeUserProfileForStudioForCustomer.jsp
+            </result>
+        </action>
+		
+	</package>
+</struts>

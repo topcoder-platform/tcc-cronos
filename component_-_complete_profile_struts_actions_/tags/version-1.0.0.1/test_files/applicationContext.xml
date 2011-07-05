@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+    "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+
+
+  <bean id="completeProfileAction" class="com.topcoder.web.reg.profilecompleteness.actions.CompleteProfileAction" init-method="checkConfiguration">
+
+	<property name="phoneTypeId" value="1" />
+	<property name="primary" value="true" />
+	<property name="securityKeyTypeId" value="1" />
+	<property name="getUserProfileOperationType" value="Get User Profile Operation" />
+	<property name="saveUserProfileOperationType" value="Save User Profile Operation" />
+	<property name="incomingRequestURIKey" value="incomingRequestURIKey" />
+	
+	<property name="genderQuestionId" value="1" />
+	<property name="ageQuestionId" value="2" />
+
+	<!-- DAOs -->
+	
+	<property name="userDAO" ref="userDAO" />
+
+	<property name="auditDAO" ref="auditDAO"/>
+	
+	<property name="userIdRetriever" ref="userIdRetriever" />
+	<property name="coderTypeDAO" ref="coderTypeDAO" />
+	<property name="timeZoneDAO" ref="timeZoneDAO" />
+	<property name="stateDAO" ref="stateDAO" />
+	<property name="demographicQuestionDAO" ref="demographicQuestionDAO" />
+	<property name="countryDAO" ref="countryDAO" /> 
+	
+	
+  </bean>
+  
+  <!-- mock DAOS -->
+  	<bean id="userDAO" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getUserDAO" />
+
+	<bean id="auditDAO" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getAuditDAO" />
+	
+	<bean id="userIdRetriever" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getUserIdRetriever" />
+	<bean id="coderTypeDAO" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getCoderTypeDAO" />
+	<bean id="timeZoneDAO" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getTimeZoneDAO" />
+	<bean id="stateDAO" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getStateDAO" />
+	<bean id="demographicQuestionDAO" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getDemographicQuestionDAO" />
+	<bean id="countryDAO" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockFactory" factory-method="getCountryDAO" /> 
+  
+  
+  <!-- Interceptor -->
+   <bean id="mockInterceptor" class="com.topcoder.web.reg.profilecompleteness.actions.mock.MockInterceptor">
+   
+  </bean>
+</beans>

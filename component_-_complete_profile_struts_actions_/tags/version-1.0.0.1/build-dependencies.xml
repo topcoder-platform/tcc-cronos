@@ -1,0 +1,173 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.6"/>
+    <property name="component.bootclasspath" value="${java_1_6_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="tc_lib.jar" value="${test_reflib}/tc_lib.jar"/>
+   	<property name="shared.jar" value="${test_reflib}/shared.jar"/>
+		<property name="check_profile_completeness.jar" value="${test_reflib}/check_profile_completeness.jar"/>
+		
+	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+	<property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+	<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+	<property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
+	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>	
+    
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar"/>
+    <property name="mockito.jar" value="${ext_libdir}/mockito/1.8.5/mockito-all-1.8.5.jar"/>	
+	  <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15.jar"/>
+
+
+    <!-- Struts jars -->
+    <property name="struts_dir" value="${ext_libdir}/struts/2.2.3/lib"/>
+    <property name="xwork-2.2.3.jar" value="${struts_dir}/xwork-core-2.2.3.jar"/>
+    <property name="struts2-core-2.2.3.jar" value="${struts_dir}/struts2-core-2.2.3.jar"/>
+    <property name="ognl-3.0.1.jar" value="${struts_dir}/ognl-3.0.1.jar"/>
+    <property name="freemarker-2.3.16.jar" value="${struts_dir}/freemarker-2.3.16.jar"/>
+    <property name="struts2-spring-plugin-2.2.3.jar" value="${struts_dir}/struts2-spring-plugin-2.2.3.jar"/>
+	  <property name="struts2-junit-plugin-2.2.3.jar" value="${struts_dir}/struts2-junit-plugin-2.2.3.jar"/>
+   	<property name="commons-fileupload-1.2.2.jar" value="${struts_dir}/commons-fileupload-1.2.2.jar" />
+	  <property name="commons-lang-2.5.jar" value="${struts_dir}/commons-lang-2.5.jar" />
+	  <property name="commons-io-2.0.1.jar" value="${struts_dir}/commons-io-2.0.1.jar" />
+	  <property name="commons-logging-1.1.1.jar" value="${struts_dir}/commons-logging-1.1.1.jar" />
+	  <property name="commons-logging-api-1.1.jar" value="${struts_dir}/commons-logging-api-1.1.jar" />
+	  <property name="javassist-3.11.0.GA.jar" value="${struts_dir}/javassist-3.11.0.GA.jar" />
+
+    <!-- Spring jars -->
+    <property name="spring_dir" value="${ext_libdir}/spring/2.5.6/dist"/>
+    <property name="spring.jar" value="${spring_dir}/spring.jar"/>
+    <property name="spring-test.jar" value="${spring_dir}/modules/spring-test.jar"/>
+	
+	<!-- Jive jars -->
+	<property name="jive_dir" value="${ext_libdir}/jive/4.2.5" />
+	<property name="jivebase.jar" value="${jive_dir}/jivebase.jar"/>
+	<property name="jiveforums.jar" value="${jive_dir}/jiveforums.jar"/>
+	<property name="xwork.jar" value="${jive_dir}/xwork.jar"/>
+	
+	  <!-- J2EE jars -->    
+    <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
+	
+    
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${tc_lib.jar}"/>
+    	  <pathelement location="${shared.jar}"/>
+		    <pathelement location="${check_profile_completeness.jar}"/>		    	
+		    <pathelement location="${base_exception.jar}"/>
+	    	<pathelement location="${logging_wrapper.jar}"/>
+	    	<pathelement location="${object_formatter.jar}"/>
+	    	<pathelement location="${topcoder_commons_utility.jar}"/>
+	    	<pathelement location="${typesafe_enum.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">        
+        <pathelement location="${javaee.jar}"/>
+      	<pathelement location="${log4j.jar}"/>  
+        <pathelement location="${xwork-2.2.3.jar}"/>    	
+        <pathelement location="${struts2-core-2.2.3.jar}"/>
+    	  <pathelement location="${jivebase.jar}"/>
+        <pathelement location="${jiveforums.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${mockito.jar}"/>
+    	  <pathelement location="${xwork.jar}"/>		
+        <pathelement location="${spring.jar}"/>
+        <pathelement location="${spring-test.jar}"/>
+	    	<pathelement location="${ognl-3.0.1.jar}"/>
+		    <pathelement location="${freemarker-2.3.16.jar}"/>
+    	  <pathelement location="${struts2-spring-plugin-2.2.3.jar}"/>
+		    <pathelement location="${struts2-junit-plugin-2.2.3.jar}"/>   	
+		    <pathelement location="${commons-lang-2.5.jar}"/>
+		    <pathelement location="${commons-fileupload-1.2.2.jar}"/>
+	    	<pathelement location="${commons-io-2.0.1.jar}"/>
+	    	<pathelement location="${commons-logging-1.1.1.jar}"/>
+    	  <pathelement location="${commons-logging-api-1.1.jar}"/>
+		    <pathelement location="${javassist-3.11.0.GA.jar}"/>	
+    </path>
+
+
+	<target name="demo_war" depends="compile_tests">
+		<delete file="demo.war" />
+
+		<war warfile="demo.war" webxml="${testfiles}/web/WEB-INF/web.xml">
+
+			<!-- Spring configuration file -->
+			<webinf dir="${testfiles}" includes="applicationContext.xml" />
+
+			<!-- Struts configuration xml files -->
+			<classes dir="${configdir}" includes="**/*" />
+
+
+			<classes dir="${build_classdir}" includes="**" />
+			<classes dir="${build_testclassdir}" includes="**" />
+
+			<!-- include all files in test_reflib -->
+			<lib dir="${test_reflib}">
+				<include name="**/*.jar" />
+			</lib>
+
+		<lib file="${base_exception.jar}"/>
+		<lib file="${logging_wrapper.jar}"/>
+		<lib file="${object_formatter.jar}"/>
+		<lib file="${topcoder_commons_utility.jar}"/>
+		<lib file="${typesafe_enum.jar}"/>
+
+
+		
+			<lib dir="${struts_dir}">
+				<include name="struts2-core-2.2.3.jar" />
+				<include name="xwork-core-2.2.3.jar" />
+				<include name="ognl-3.0.1.jar" />
+				<include name="freemarker-2.3.16.jar" />
+				<include name="struts2-spring-plugin-2.2.3.jar" />
+				<include name="struts2-junit-plugin-2.2.3.jar" />
+				<include name="commons-lang-2.5.jar" />
+				<include name="commons-fileupload-1.2.2.jar" />
+				<include name="commons-io-2.0.1.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+				<include name="commons-logging-api-1.1.jar" />
+				<include name="javassist-3.11.0.GA.jar" />
+			</lib>
+
+
+			<lib dir="${spring_dir}">
+				<include name="spring.jar" />				
+			</lib>
+			<lib dir="${spring_dir}/modules/">			                
+			    <include name="spring-test.jar" />
+			 </lib>
+
+
+
+			<lib dir="${ext_libdir}/mockito/1.8.5/">
+				<include name="mockito-all-1.8.5.jar" />
+			</lib>
+			
+			<lib dir="${ext_libdir}/junit/4.6/">
+			                <include name="junit.jar" />
+			 </lib>
+
+			<lib dir="${ext_libdir}/javaee/5.0">
+			     <include name="javaee.jar" />
+			</lib>
+			
+			<lib dir="${ext_libdir}/log4j/1.2.15/">
+			    <include name="log4j-1.2.15.jar" />			                 
+			</lib>
+
+			<fileset dir="${testfiles}/web">
+				<include name="**/*.jsp" />
+			</fileset>
+
+		</war>
+	</target>
+	
+
+</project>
