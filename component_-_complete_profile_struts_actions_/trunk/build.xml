@@ -165,7 +165,7 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-            <junit fork="true" haltonerror="false">
+            <junit maxmemory="1024m" fork="true" haltonerror="false">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
@@ -188,7 +188,7 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-            <junit fork="true" haltonerror="false">
+            <junit maxmemory="1024m" fork="true" haltonerror="false">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
