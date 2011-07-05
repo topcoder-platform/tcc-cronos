@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 
 
@@ -38,8 +38,8 @@ import javax.servlet.http.HttpSession;
  * <b> Thread Safety:</b> This class is immutable and thread safe. It uses thread safe DBConnectionFactory instance.
  * </p>
  *
- * @author saarixx, TCSDEVELOPER
- * @version 1.1
+ * @author saarixx, VolodymyrK
+ * @version 1.1.5
  * @since 1.1
  */
 public class AuthCookieManagerImpl implements AuthCookieManager {
@@ -394,9 +394,11 @@ public class AuthCookieManagerImpl implements AuthCookieManager {
         try {
             connection = createConnection();
 
-            // Prepare query for retrieving the password of the user from DB
-            // Prepare SQL statement
-            preparedStatement = prepareStatement(connection, "SELECT password FROM security_user WHERE login_id = ?");
+            // Prepare SQL statement for retrieving the password of the user from DB.
+            // The query also checks the status of the user, if it is not active it returns an empty result set.
+            preparedStatement = prepareStatement(connection,
+                "SELECT su.password FROM security_user su, user u WHERE " +
+                "su.login_id = ? and su.login_id=u.user_id and u.status='A'");
 
             // Set use ID to the statement
             preparedStatement.setLong(1, userId);
@@ -411,8 +413,7 @@ public class AuthCookieManagerImpl implements AuthCookieManager {
                 return null;
             }
 
-            // Get password from the result set
-            // Hash the real password
+            // Get password from the result set and hash it.
             String realHashedPassword = hashPassword(resultSet.getString(1));
 
             if (hashedPasswordInCookie.equals(realHashedPassword)) {
