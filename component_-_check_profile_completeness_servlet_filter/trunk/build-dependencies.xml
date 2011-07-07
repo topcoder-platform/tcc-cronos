@@ -11,7 +11,7 @@
 	<property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
 	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
 	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
-	<property name="topcoder-commons-utility.jar" value="test_reflib/topcoder-commons-utility.jar" />
+	<property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar" />
 	<property name="shared.jar" value="test_reflib/shared.jar" />
 	<property name="tcwebcommon.jar" value="test_reflib/tcwebcommon.jar" />
 	<property name="jivebase_modified.jar" value="test_reflib/jivebase_modified.jar" />
@@ -19,21 +19,21 @@
 	<property name="user_profile_models.jar" value="test_reflib/user_profile_models.jar" />
 
 	<!-- 3rd party dependencies -->
-	<property name="javaee.jar" value="test_reflib/javaee-1.5.jar" />
-	<property name="hibernate3.jar" value="test_reflib/hibernate3.jar" />
-	<property name="com.springsource.org.hibernate.annotations-3.3.1.ga.jar" value="test_reflib/com.springsource.org.hibernate.annotations-3.3.1.ga.jar" />
-	<property name="commons-logging-1.1.1.jar" value="${ext_libdir}/commons/commons-logging.jar" />
-	<property name="spring-test.jar" value="${ext_libdir}/spring/2.5.6/spring-test.jar" />
+	<property name="javaee.jar" value="${ext_libdir}/j2ee/1.5/javaee.jar" />
+	<property name="hibernate3.jar" value="${ext_libdir}/hibernate/3.2.5.GA/hibernate3.jar" />
+	<property name="com.springsource.org.hibernate.annotations-3.3.1.ga.jar" value="${ext_libdir}/hibernate-annotations/3.3.1/hibernate-annotations.jar" />
+	<property name="commons-logging-1.1.1.jar" value="${ext_libdir}/commons/logging/1.1.1/commons-logging-1.1.1.jar" />
+	<property name="spring-test.jar" value="${ext_libdir}/spring/2.5.6/dist/modules/spring-test.jar" />
 	<property name="mockito-all-1.8.2.jar" value="${ext_libdir}/mockito/1.8.2/mockito-all-1.8.2.jar" />
 	<property name="log4j-1.2.15.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15.jar" />
-	<property name="spring-2.5.6.jar" value="${ext_libdir}/spring/2.5.6/spring.jar" />
+	<property name="spring-2.5.6.jar" value="${ext_libdir}/spring/2.5.6/dist/spring.jar" />
 	<property name="junit-4.6.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
 
 	<path id="component.tcs-dependencies">
 		<pathelement location="${base_exception.jar}" />
 		<pathelement location="${logging_wrapper.jar}" />
 		<pathelement location="${object_formatter.jar}" />
-		<pathelement location="${topcoder-commons-utility.jar}" />
+		<pathelement location="${topcoder_commons_utility.jar}" />
 		<pathelement location="${jivebase_modified.jar}" />
 		<pathelement location="${shared.jar}" />
 		<pathelement location="${tcwebcommon.jar}" />
