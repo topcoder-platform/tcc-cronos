@@ -1,0 +1,9 @@
+3.1.5. 1) As in previous ff, the dependencies from filter.impl package are shown only to com.topcoder.web.common.model.User.
+2) com.topcoder.reg.profilecompleteness.filter.impl.retrievers now does not show package-to-package dependency.
+
+4.1.2. 1) This does not give any flexibility and developers then have to provide additional checks, whether this configurable name is not null/empty etc. 
+Consider also that if the configuration is done by Spring, then we hardcode the variable name with setter name, in this case, this flexibility is not needed. 
+
+If you state simply "not fixed", please add the comments from previous ff, this is really unnecessary.
+
+4.1.7. Fixed the name. I've also added BaseProfileCompletenessChecker class, which throws the configuration exception, it was missed.

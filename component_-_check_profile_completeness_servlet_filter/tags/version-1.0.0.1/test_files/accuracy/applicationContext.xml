@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+    "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<bean id="log" class="com.topcoder.util.log.LogManager"
+		factory-method="getLog">
+		<constructor-arg value=" com.topcoder.reg.profilecompleteness.filter" />
+	</bean>
+
+	<!-- Create user DAO -->
+	<bean id="userDAO" class="org.mockito.Mockito" factory-method="mock">
+		<constructor-arg value="com.topcoder.web.common.dao.UserDAO" />
+	</bean>
+
+	<bean id="checkProfileCompletenessProcessor"
+		class="com.topcoder.reg.profilecompleteness.filter.impl.DefaultCheckProfileCompletenessProcessor"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+		<property name="matchUriPatterns">
+			<list>
+				<value>.*register.*</value>
+			</list>
+		</property>
+		<property name="userIdRetriever" ref="onlineReviewUserIdRetriever" />
+		<property name="profileCompletenessCheckers">
+			<list>
+				<ref bean="wikiProfileCompletenessChecker" />
+			</list>
+		</property>
+		<property name="completeDataURIs">
+			<list>
+				<value>/fill</value>
+			</list>
+		</property>
+		<property name="userDAO" ref="userDAO" />
+		<property name="requestURISessionKey" value="myKey" />
+	</bean>
+
+	<!-- Create user id retrievers -->
+	<bean id="forumUserIdRetriever"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.retrievers.ForumUserIdRetriever"
+		init-method="checkInitialization">
+		<property name="userSessionKey" value="authToken" />
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="onlineReviewUserIdRetriever"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.retrievers.OnlineReviewUserIdRetriever"
+		init-method="checkInitialization">
+		<property name="userSessionKey" value="userId" />
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="studioUserIdRetriever"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.retrievers.StudioUserIdRetriever"
+		init-method="checkInitialization">
+		<property name="userSessionKey" value="userid" />
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="tcSiteUserIdRetriever"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.retrievers.TCSiteUserIdRetriever"
+		init-method="checkInitialization">
+		<property name="userSessionKey" value="userid" />
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="directUserIdRetriever"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.retrievers.DirectUserIdRetriever"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+		<property name="userSessionKey" value="userid" />
+	</bean>
+
+	<bean id="wikiUserIdRetriever"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.retrievers.WikiUserIdRetriever"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+		<property name="userSessionKey" value="userid" />
+	</bean>
+
+	<bean id="jiraIdRetriever"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.retrievers.JiraUserIdRetriever"
+		init-method="checkInitialization">
+		<property name="userSessionKey" value="user" />
+		<property name="log" ref="log" />
+	</bean>
+
+	<!-- Create profile completeness checkers -->
+	<bean id="forumProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.ForumProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+	<bean id="directProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.DirectProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="jiraProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.JiraProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="vmProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.VMProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="copilotProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.CopilotProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="wikiProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.WikiProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="onlineReviewProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.OnlineReviewProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="svnProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.SVNProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="competitionProfileCompletenessChecker"
+		class=" com.topcoder.reg.profilecompleteness.filter.impl.completenesscheckers.CompetitionProfileCompletenessChecker"
+		init-method="checkInitialization">
+		<property name="log" ref="log" />
+	</bean>
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>accuracy\messages</value>
+		</property>
+	</bean>
+</beans>
