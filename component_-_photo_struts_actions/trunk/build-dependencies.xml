@@ -28,8 +28,8 @@
     <property name="struts2-core.jar" value="${ext_libdir}/struts-2.2.3-all/struts-2.2.3/lib/struts2-core-2.2.3.jar"/>
     <property name="javaee.jar" value="${ext_libdir}/javaee/javaee.jar"/>
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
-    <property name="member_photo_manager.jar" value="libs/member_photo_manager.jar"/>
-    <property name="dependent.jar" value="libs/dependent.jar"/>
+    <property name="member_photo_manager.jar" value="${tcs_libdir}/member_photo_manager.jar"/>
+    <property name="web_module.jar" value="${tcs_libdir}/web_module.jar"/>
 	<property name="commons-logging.jar" value="${ext_libdir}/struts-2.2.3-all/struts-2.2.3/lib/commons-logging-1.1.1.jar"/>
 	
     <path id="component.tcs-dependencies">
@@ -45,6 +45,7 @@
         <pathelement location="${base_exception.jar}"/>
         <pathelement location="${member_photo_manager.jar}"/>
         <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${web_module.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">
@@ -55,7 +56,6 @@
         <pathelement location="${spring-mock.jar}"/>
         <pathelement location="${xwork-core.jar}"/>
         <pathelement location="${struts2-core.jar}"/>
-        <pathelement location="${dependent.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">
