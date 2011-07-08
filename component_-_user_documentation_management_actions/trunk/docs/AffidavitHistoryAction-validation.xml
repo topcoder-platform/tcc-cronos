@@ -1,0 +1,31 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="startRank">
+        <field-validator type="conversion">
+            <message>${getText("startRank.conversion")}</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">1</param>
+            <message>${getText("startRank.positive")}</message>
+        </field-validator>
+    </field>
+    <field name="endRank">
+        <field-validator type="conversion">
+            <message>${getText("endRank.conversion")}</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">1</param>
+            <message>${getText("endRank.positive")}</message>
+        </field-validator>
+    </field>
+    <field name="sortColumn">
+        <field-validator type="conversion">
+            <message>${getText("sortColumn.conversion")}</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">1</param>
+            <message>${getText("sortColumn.positive")}</message>
+        </field-validator>
+    </field>
+</validators>

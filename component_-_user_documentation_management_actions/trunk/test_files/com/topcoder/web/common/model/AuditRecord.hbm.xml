@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.web.common.model">
+  <class name="AuditRecord" table="audit_record">
+    <id name="id" column="id">
+      <generator class="native"/>
+    </id>
+    <property name="operationType" column="operation_type" access="field"/>
+    <property name="handle" access="field"/>
+    <property name="ipAddress" column="ip_address" access="field"/>
+    <property name="previousValue" column="previous_value" access="field"/>
+    <property name="newValue" column="new_value" access="field"/>
+    <property name="timestamp" access="field"/>
+  </class>
+</hibernate-mapping>
+        

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="affidavitHistoryAction" class="com.topcoder.web.reg.actions.miscellaneous.AffidavitHistoryAction"
+          init-method="checkConfiguration" scope="request">
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="operationType" value="affidavitHistory"/>
+        <property name="defaultSortColumn" value="3"/>
+    </bean>
+    <bean id="affirmAffidavitAction" class="com.topcoder.web.reg.actions.miscellaneous.AffirmAffidavitAction"
+          init-method="checkConfiguration" scope="request">
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="operationType" value="affirmAffidavit"/>
+    </bean>
+    <bean id="assignmentDocumentHistoryAction"
+          class="com.topcoder.web.reg.actions.miscellaneous.AssignmentDocumentHistoryAction"
+          init-method="checkConfiguration" scope="request">
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="operationType" value="assignmentDocumentHistory"/>
+        <property name="defaultSortColumn" value="2"/>
+    </bean>
+    <bean id="paymentHistoryAction" class="com.topcoder.web.reg.actions.miscellaneous.PaymentHistoryAction"
+          init-method="checkConfiguration" scope="request">
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="operationType" value="paymentHistory"/>
+        <property name="defaultSortColumn" value="3"/>
+    </bean>
+    <bean id="visaLetterStatusAction" class="com.topcoder.web.reg.actions.miscellaneous.VisaLetterStatusAction"
+          init-method="checkConfiguration" scope="request">
+        <property name="auditDAO" ref="auditDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="visaLetterEventDAO" ref="visaLetterEventDAO"/>
+        <property name="visaLetterRequestDAO" ref="visaLetterRequestDAO"/>        
+        <property name="operationType" value="visaLetterStatus"/>
+    </bean>
+    <!--Note that the configuration of DAO implementations are omitted in this sample configuration file.-->
+</beans>

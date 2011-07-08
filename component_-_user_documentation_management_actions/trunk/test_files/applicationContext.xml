@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userDAO" class="com.topcoder.web.common.dao.hibernate.UserDAOHibernate">
+    </bean>
+
+    <bean id="auditDAO" class="com.topcoder.web.common.dao.hibernate.AuditDAOHibernate">
+    </bean>
+    
+    <bean id="webAuthentication" class="com.topcoder.web.reg.actions.miscellaneous.mock.MockWebAuthentication">
+    </bean>
+
+    <bean id="servletRequest" class="com.topcoder.web.reg.actions.basic.MockServletRequest">
+    </bean>
+    
+    <bean id="mockVisaLetterEventDAO" class="com.topcoder.web.reg.actions.miscellaneous.mock.MockVisaLetterEventDAO">
+    </bean>
+    
+    <bean id="mockVisaLetterRequestDAO" class="com.topcoder.web.reg.actions.miscellaneous.mock.MockVisaLetterRequestDAO">
+    </bean>
+
+	<bean id="affidavitHistoryAction" class="com.topcoder.web.reg.actions.miscellaneous.AffidavitHistoryAction"
+		init-method="checkConfiguration">
+		<property name="userDAO" ref="userDAO" />
+		<property name="operationType" value="affidavitHistory" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="defaultSortColumn" value="1" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="affirmAffidavitAction" class="com.topcoder.web.reg.actions.miscellaneous.AffirmAffidavitAction"
+		init-method="checkConfiguration">
+		<property name="userDAO" ref="userDAO" />
+		<property name="operationType" value="affidavitHistory" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="birthday" value="2010/10/10" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="assignmentDocumentHistoryAction" class="com.topcoder.web.reg.actions.miscellaneous.AssignmentDocumentHistoryAction"
+		init-method="checkConfiguration">
+		<property name="userDAO" ref="userDAO" />
+		<property name="operationType" value="affidavitHistory" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="defaultSortColumn" value="1" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="paymentHistoryAction" class="com.topcoder.web.reg.actions.miscellaneous.PaymentHistoryAction"
+		init-method="checkConfiguration">
+		<property name="userDAO" ref="userDAO" />
+		<property name="operationType" value="affidavitHistory" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="defaultSortColumn" value="1" />
+		<property name="problemPaymentTypeId" value="1" />
+		<property name="charityPaymentTypeId" value="2" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="visaLetterStatusAction" class="com.topcoder.web.reg.actions.miscellaneous.VisaLetterStatusAction"
+		init-method="checkConfiguration">
+		<property name="userDAO" ref="userDAO" />
+		<property name="operationType" value="affidavitHistory" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="visaLetterEventDAO" ref="mockVisaLetterEventDAO" />
+		<property name="visaLetterRequestDAO" ref="mockVisaLetterRequestDAO" />
+		
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!--Note that some values in this file are yet to be configured during integration phase-->
+    <package name="userDocumentationManagement" extends="struts-default">
+        <global-results>
+            <result name="error">
+                /error.jsp
+            </result>            
+        </global-results>
+
+        <action name="affidavitHistory" class="affidavitHistoryAction">
+            <result name="success">
+                /affidavitHistory.jsp
+            </result>
+            <result name="input">
+                /error.jsp
+            </result>            
+        </action>
+        <action name="affirmAffidavit" class="AffirmAffidavitAction">
+            <result name="success">
+                /affirmAffidavitConfirmation.jsp
+            </result>
+            <result name="input">
+                /error.jsp
+            </result>
+        </action>
+        <action name="assignmentDocumentHistory" class="assignmentDocumentHistoryAction">
+            <result name="success">
+                /assignmentDocumentHistory.jsp
+            </result>
+            <result name="input">
+                /error.jsp
+            </result>
+        </action>
+        <action name="paymentHistory" class="paymentHistoryAction">
+            <result name="success">
+                /paymentHistory.jsp
+            </result>
+            <result name="input">
+                /error.jsp
+            </result>
+        </action>
+        <action name="visaLetterStatus" class="visaLetterStatusAction">
+            <result name="success">
+                /visaLetterStatus.jsp
+            </result>
+            <result name="input">
+                /error.jsp
+            </result>
+        </action>
+    </package>
+</struts>
