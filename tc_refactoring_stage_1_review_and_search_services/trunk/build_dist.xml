@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
@@ -9,13 +9,13 @@
     <property name="libdir" value="../tcs/lib"/>
     <property name="tcs_libdir" value="${libdir}/tcs"/>
     <property name="ext_libdir" value="${libdir}/third_party"/>
+
+    <property name="cronos_libdir" value="${libdir}/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+    
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
-	<property name="checkstyle.dir" value="${ext_libdir}/checkstyle/5.1"/>
-	<property name="checkstyle.tc" value="${checkstyle.dir}/tc_checks.xml"/>
-	<property name="checkstyle.tc.tests" value="${checkstyle.dir}/tc_checks.xml"/>
-    <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -23,7 +23,6 @@
     <property name="configdir" value="conf"/>
     <property name="testlogdir" value="log"/>
     <property name="test_reflib" value="test_reflib"/>
-    <property name="main_reflib" value="main_reflib"/>
     <property name="testfiles" value="test_files"/>
     <property name="javadocsdir" value="${docsdir}/javadocs"/>
     <property name="reports" value="${testlogdir}/reports"/>
@@ -50,7 +49,7 @@
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
     <property name="javamain" value="${javasrc}/main"/>
-    <property name="javatests" value="${srcdir}/java/tests"/>
+    <property name="javatests" value="${javasrc}/tests"/>
 
     <property name="builddir" value="build"/>
     <property name="build_classdir" value="${builddir}/classes"/>
@@ -118,7 +117,7 @@
 
     <target name="compile">
         <mkdir dir="${build_classdir}"/>
-        <javac target="${component.target}" srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
+        <javac srcdir="${javamain}" destdir="${build_classdir}" includes="${packagedir}/**" debug="true"
                verbose="${verbose}" includeAntRuntime="no" encoding="${javac.encoding}">
             <classpath refid="buildlibs"/>
         </javac>
@@ -134,20 +133,19 @@
 
     <macrodef name="compile_targets" description="Compiles the sources and test cases against target JDK">
         <attribute name="target"/>
-    	<attribute name="source"/>
         <attribute name="bootclasspath"/>
         <sequential>
             <mkdir dir="${build_targetclassdir}"/>
             <mkdir dir="${javatests}"/>
             <javac srcdir="${javamain}" destdir="${build_targetclassdir}" includes="${packagedir}/**"
-                   debug="true" verbose="${verbose}" target="@{target}" source="@{source}"
+                   debug="true" verbose="${verbose}" target="@{target}"
                    bootclasspath="@{bootclasspath}" extdirs="">
                 <classpath refid="buildlibs"/>
             </javac>
 
             <!-- compile test cases -->
             <javac srcdir="${javatests}" destdir="${build_targetclassdir}" includes="${packagedir}/**"
-                   debug="true" verbose="${verbose}" target="@{target}" source="@{source}"
+                   debug="true" verbose="${verbose}" target="@{target}"
                    bootclasspath="@{bootclasspath}" extdirs="">
                 <classpath refid="test.build.classpath"/>
             </javac>
@@ -156,7 +154,7 @@
     </macrodef>
 
     <target name="compile_targets">
-        <compile_targets target="${component.target}" source="${component.target}" bootclasspath="${component.bootclasspath}"/>
+        <compile_targets target="${component.target}" bootclasspath="${component.bootclasspath}"/>
     </target>
 
     <macrodef name="test.setup">
@@ -167,7 +165,7 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-            <junit fork="true" haltonerror="false" maxmemory="512m">
+            <junit fork="true" haltonerror="false">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
@@ -190,7 +188,7 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-            <junit fork="true" haltonerror="false" maxmemory="512m">
+            <junit fork="true" haltonerror="false">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
@@ -221,7 +219,7 @@
     </target>
 
     <target name="coveragereport" depends="coveragetest">
-        <cobertura-report format="${cobertura.format}" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
                           datafile="${cobertura.datafile}">
             <fileset dir="${javamain}">
                 <include name="**/*.java"/>
@@ -302,51 +300,7 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
-    	<delete dir="${testlogdir}"/>
     </target>
-	
-	<!-- checkstyle task definition-->
-    <path id="checkstyle.classpath">
-        <fileset dir="${checkstyle.dir}">
-            <include name="**/*.jar"/>
-        </fileset>
-    </path>
-	<taskdef resource="checkstyletask.properties" classpathref="checkstyle.classpath" />
-	
-	<target name="checkstyle" depends="compile">
-		<mkdir dir="${testlogdir}"/>
-		<checkstyle failonviolation="false" config="${checkstyle.tc}" >
-
-			<classpath>
-				<path refid="buildlibs"/>
-				<pathelement location="${build_classdir}"/>
-			</classpath>
-
-			<fileset dir="${javamain}" includes="**/*.java"/>
-			<formatter type="plain" toFile="${testlogdir}/checkstyle.txt"/>
-		</checkstyle>
-	</target>
-	
-	<target name="checkstyle_tests" depends="compile_tests">
-		<mkdir dir="${testlogdir}"/>
-		<checkstyle failonviolation="false" config="${checkstyle.tc.tests}" >
-
-			<classpath>
-				<path refid="buildlibs"/>
-				<pathelement location="${javatests}"/>
-				<pathelement location="${javamain}}"/>
-				<pathelement location="${build_classdir}"/>
-				<pathelement location="${build_testclassdir}"/>
-			</classpath>
-
-			<fileset dir="${javatests}" includes="**/*.java"/>
-			<formatter type="plain" toFile="${testlogdir}/checkstyletest.txt"/>
-		</checkstyle>
-	</target>
-
-    <!-- ************************************************************************** -->
-    <!-- ************ END DEPLOYMENT RELATED TARGETS  *************************** -->
-    <!-- ************************************************************************** -->
 
     <!-- Import the macro definitions used to override standard behaviour of
     some of the targets of this build file. -->

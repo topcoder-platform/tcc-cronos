@@ -1,6 +1,6 @@
 # Property file defining the component's information.
-component.name=TC Refactoring Review And Search Services
-component.distfilename=tc_review_and_search_services
+component.name=Review And Search Services
+component.distfilename=review_and_search_services
 component.package=com.topcoder.web.tc
 component.packagedir=com/topcoder/web/tc
 component.version.major=1

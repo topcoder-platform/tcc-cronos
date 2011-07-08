@@ -4,49 +4,45 @@
     <!-- Properties used in compile_targets ANT target for JDK version x -->
     <property name="component.target" value="1.6" />
     <property name="component.bootclasspath" value="${java_1_6_bootclasspath}" />
-    <property name="checkstyle.jar" value="${ext_libdir}/checkstyle/4.4/checkstyle-all-4.4.jar" />
 
     <!-- TCS dependencies -->
     <property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar" />
-    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
-	
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />	
     <property name="json_object.jar" value="${tcs_libdir}/json_object/1.0.0/json_object.jar" />
 
     <!-- 3rd party dependencies -->
-	<property name="antlr.jar" value="${ext_libdir}/antlr/3.2/antlr-3.2.jar" />
+	  <property name="antlr.jar" value="${ext_libdir}/antlr/3.2/antlr-3.2.jar" />
     <property name="commons-collections.jar" value="${ext_libdir}/commons-collections/3.2/commons-collections-3.1.jar" />
     <property name="commons-fileupload.jar" value="${ext_libdir}/commons-fileupload/1.2.2/commons-fileupload-1.2.2.jar" />
     <property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging-1.1.1.jar" />
-
     <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.16/log4j-1.2.16.jar" />
     <property name="dom4j.jar" value="${ext_libdir}/dom4j/1.6.1/dom4j-1.6.1.jar" />
-
     <property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar" />
 
-    <property name="spring.dir" value="${ext_libdir}/spring-framework-3.0.5.RELEASE" />
+    <property name="spring.dir" value="${ext_libdir}/spring/3.0.5" />
     <property name="struts.dir" value="${ext_libdir}/struts/2.1.8.1"/>
     <property name="hibernate.dir" value="${ext_libdir}/hibernate/3.6.5"/>
 
-    <property name="contest_service.jar" value="${test_reflib}/contest_service.jar" />
-
-    <property name="slf4j-api.jar" value="${test_reflib}/slf4j-api-1.6.1.jar" />
+    <property name="contest_service.jar" value="${test_reflib}/contest_service.jar"/>
 
     <property name="servlet.jar" value="${ext_libdir}/tomcat/6.0.26/lib/servlet-api.jar" />
     <property name="jsp.jar" value="${ext_libdir}/tomcat/6.0.26/lib/jsp-api.jar" />
-
-    <path id="component.tcs-dependencies" />
-
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
+    
+    <path id="component.tcs-dependencies" >
+    	    <pathelement location="${base_exception.jar}" />
+    	    <pathelement location="${json_object.jar}" />
+    	    <pathelement location="${topcoder_commons_utility.jar}" />  
+    </path>
+    
     <path id="component.3rdParty-dependencies">
         <pathelement location="${antlr.jar}" />
-        <pathelement location="${base_exception.jar}" />
         <pathelement location="${commons-collections.jar}" />
         <pathelement location="${commons-fileupload.jar}" />
         <pathelement location="${commons-logging.jar}" />
         <pathelement location="${contest_service.jar}" />
         <pathelement location="${ifxjdbc.jar}" />
-        <pathelement location="${json_object.jar}" />
         <pathelement location="${log4j.jar}" />
-        <pathelement location="${topcoder_commons_utility.jar}" />
         <pathelement location="${servlet.jar}" />
         <pathelement location="${jsp.jar}" />
 
@@ -59,13 +55,12 @@
         </fileset>
 
         <fileset dir="${hibernate.dir}">
-			<include name="**/*.jar" />
+			     <include name="**/*.jar" />
         </fileset>
     </path>
 
     <path id="component.test.3rdParty-dependencies">
-        <path refid="component.3rdParty-dependencies" />
-        <pathelement location="${ext_libdir}/junit/4.8.1/junit-4.8.1.jar" />
+        <pathelement location="${junit.jar}" />
     </path>
 
 </project>
