@@ -1005,7 +1005,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
             FullProjectData project = projectServices.getFullProjectData(projectId);
             project.setId(projectId);
             return project;
-        } catch (ProjectServicesException e) {
+        } catch (Exception e) {
             throw logException(new SpecificationReviewServiceException(
                 "Fails to retrieve the project with id[" + projectId
                     + "] along with all known associated information.", e));
