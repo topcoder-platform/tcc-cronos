@@ -1,0 +1,140 @@
+/*
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ */
+package com.topcoder.web.tc.failuretests.action;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+
+import com.topcoder.json.object.JSONObject;
+import com.topcoder.json.object.io.StandardJSONEncoder;
+import com.topcoder.web.tc.ContestServicesConfigurationException;
+import com.topcoder.web.tc.ReviewOpportunitiesManager;
+import com.topcoder.web.tc.action.ContestServicesActionException;
+import com.topcoder.web.tc.action.ReviewOpportunitiesManagerAction;
+import com.topcoder.web.tc.action.SearchContestsManagerAction;
+
+/**
+ * <p>
+ * Failure test for ReviewOpportunitiesManagerAction class.
+ * </p>
+ *
+ * @author TCSDEVELOPER
+ * @version 1.0
+ */
+@ContextConfiguration(locations = { "/failure.xml" })
+public class ReviewOpportunitiesManagerActionFailureTest extends AbstractJUnit4SpringContextTests {
+    /**
+     * Represents the instance of ReviewOpportunitiesManagerAction used in test.
+     */
+    private ReviewOpportunitiesManagerAction action;
+
+    /**
+     * Represents the instance of ReviewOpportunitiesManager used in test.
+     */
+    private ReviewOpportunitiesManager manager;
+
+    /**
+     * The http servlet request;
+     */
+    private MockHttpServletRequest request;
+
+    /**
+     * Set up for each test.
+     */
+    @Before
+    public void setUp() throws Exception {
+        manager = (ReviewOpportunitiesManager) applicationContext.getBean("reviewOpportunitiesManager");
+        action = new ReviewOpportunitiesManagerAction();
+        action.setReviewOpportunitiesManager(manager);
+
+        request = new MockHttpServletRequest();
+        action.setServletRequest(request);
+    }
+
+    /**
+     * Failure test execute(). When the request is invalid.
+     *
+     * @throws Exception
+     *             to jUnit.
+     */
+    @Test(expected = ContestServicesActionException.class)
+    public void testExecute_RequestIsInvalid1() throws Exception {
+        action.execute();
+    }
+
+    /**
+     * Failure test execute(). When the request is invalid.
+     *
+     * @throws Exception
+     *             to jUnit.
+     */
+    @Test(expected = ContestServicesActionException.class)
+    public void testExecute_RequestIsInvalid2() throws Exception {
+        StandardJSONEncoder encoder = new StandardJSONEncoder();
+        JSONObject json = new JSONObject();
+        json.setString("sortingOrder", "Invalid");
+        request.setParameter("parameter", encoder.encode(json));
+        action.execute();
+    }
+
+    /**
+     * Failure test execute(). When the request is invalid.
+     *
+     * @throws Exception
+     *             to jUnit.
+     */
+    @Test(expected = ContestServicesActionException.class)
+    public void testExecute_RequestIsInvalid3() throws Exception {
+        StandardJSONEncoder encoder = new StandardJSONEncoder();
+        JSONObject json = new JSONObject();
+        json.setInt("pageNumber", -2);
+        request.setParameter("parameter", encoder.encode(json));
+        action.execute();
+    }
+
+    /**
+     * Failure test execute(). When the request is invalid.
+     *
+     * @throws Exception
+     *             to jUnit.
+     */
+    @Test(expected = ContestServicesActionException.class)
+    public void testExecute_RequestIsInvalid4() throws Exception {
+        StandardJSONEncoder encoder = new StandardJSONEncoder();
+        JSONObject json = new JSONObject();
+        json.setInt("pageSize", -1);
+        request.setParameter("parameter", encoder.encode(json));
+        action.execute();
+    }
+
+    /**
+     * Failure test execute(). When the request is invalid.
+     *
+     * @throws Exception
+     *             to jUnit.
+     */
+    @Test(expected = ContestServicesActionException.class)
+    public void testExecute_RequestIsInvalid5() throws Exception {
+        StandardJSONEncoder encoder = new StandardJSONEncoder();
+        JSONObject json = new JSONObject();
+        JSONObject jsonFilter = new JSONObject();
+        JSONObject jsonContestFinalization = new JSONObject();
+        jsonFilter.setNestedObject("reviewEndDate", jsonContestFinalization);
+        jsonContestFinalization.setString("firstDate", "A");
+        json.setNestedObject("filter", jsonFilter);
+        request.setParameter("parameter", encoder.encode(json));
+        action.execute();
+    }
+
+    /**
+     * Failure test checkConfiguration(). When searchContestsManager is not set.
+     */
+    @Test(expected = ContestServicesConfigurationException.class)
+    public void testCheckConfiguration_searchContestsManagerIsNull() {
+        new SearchContestsManagerAction().checkConfiguration();
+    }
+}

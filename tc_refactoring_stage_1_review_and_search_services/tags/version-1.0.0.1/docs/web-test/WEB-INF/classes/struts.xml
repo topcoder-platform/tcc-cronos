@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+
+	<package name="default" extends="struts-default" namespace="/">
+		<action name="reviewOpportunitiesManagerAction" class="reviewOpportunitiesManagerAction">
+			<result>view_review_opportunities.jsp</result>
+		</action>
+		<action name="searchContestsManagerAction" class="searchContestsManagerAction">
+			<result>view_contests.jsp</result>
+		</action>
+		<action name="upcomingContestsManagerAction" class="upcomingContestsManagerAction">
+			<result>view_upcoming_contests.jsp</result>
+		</action>
+		<action name="parameterAction" class="parameterAction">
+			<result type="redirectAction">
+				<param name="actionName">${target}</param>
+                <param name="namespace">/</param>
+                <param name="parameter">${parameter}</param>
+			</result>
+		</action>
+	</package>
+</struts>

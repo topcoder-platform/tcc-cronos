@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.web.tc.impl.entity">
+	<class name="Resource" table="resource">
+		<id access="field" column="resource_id" name="resourceId" type="long" />
+		<property access="field" column="project_id" name="projectId"
+			type="long" />
+		<property access="field" column="resource_role_id" name="resourceRoleId"
+			type="long" />
+		<property access="field" column="project_phase_id" name="projectPhaseId"
+			type="long" />
+	</class>
+</hibernate-mapping>

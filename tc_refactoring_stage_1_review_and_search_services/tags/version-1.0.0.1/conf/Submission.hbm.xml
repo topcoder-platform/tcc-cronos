@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.web.tc.impl.entity">
+	<class name="Submission" table="submission">
+		<id access="field" column="submission_id" name="submissionId" type="long" />
+		<property access="field" column="upload_id" name="uploadId"
+			type="long" />
+		<property access="field" column="submission_type_id" name="submissionTypeId"
+			type="long" />
+		<property access="field" column="submission_status_id" name="submissionStatusId"
+			type="long" />
+		<property access="field" column="screening_score" name="screeningScore"
+			type="double" />
+	</class>
+</hibernate-mapping>

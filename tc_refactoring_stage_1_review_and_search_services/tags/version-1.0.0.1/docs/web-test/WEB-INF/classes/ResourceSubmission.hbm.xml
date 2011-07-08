@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.web.tc.impl.entity">
+	<class name="ResourceSubmission" table="resource_submission">
+		<composite-id>
+			<key-property access="field" column="resource_id" name="resourceId" />
+			<key-property access="field" column="submission_id"
+				name="submissionId" />
+		</composite-id>
+	</class>
+</hibernate-mapping>
