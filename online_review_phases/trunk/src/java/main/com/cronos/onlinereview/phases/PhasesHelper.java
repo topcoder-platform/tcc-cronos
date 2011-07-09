@@ -143,7 +143,7 @@ import com.topcoder.util.log.Log;
  * </ol>
  * </p>
  * <p>
- * Version 1.6.1 Change notes:
+ * Version 1.7.1 Change notes:
  * <ol>
  * <li>Remove method getScreeningTasks.</li>
  * <li>Remove method isScreeningManual.</li>
@@ -359,6 +359,12 @@ final class PhasesHelper {
      */
     private static final String[] REVIEWER_COMMENT_TYPES = new String[] {"Comment", "Required",
         "Recommended" };
+
+    /**
+    * Represents the studio project type id.
+    * @since 1.6.1
+    */
+    static final long STUDIO_PROJECT_TYPE_ID = 3;
 
     /**
      * private to prevent instantiation.
@@ -1441,7 +1447,7 @@ final class PhasesHelper {
                 "PostMortemPhaseDuration", true);
 
             createNewPhases(currentPrj, currentPhase, new PhaseType[] {postMortemPhaseType },
-                phaseStatus, new long[] {Long.parseLong(postMortemPhaseDuration) * HOUR }, false);
+                new Long[] {Long.parseLong(postMortemPhaseDuration) * HOUR }, phaseStatus, false);
 
             // Set the number of required reviewers for Post-Mortem phase to default value
             String postMortemPhaseDefaultReviewerNumber = getPropertyValue(PostMortemPhaseHandler.class
@@ -1492,8 +1498,8 @@ final class PhasesHelper {
             // Find lst Approval phase (if any)
             Phase lastApprovalPhase = locatePhase(currentPhase, "Approval", false, false);
 
-            createNewPhases(currentPrj, currentPhase, new PhaseType[] {approvalPhaseType }, phaseStatus,
-                new long[] {Long.parseLong(approvalPhaseDuration) * HOUR }, false);
+            createNewPhases(currentPrj, currentPhase, new PhaseType[] {approvalPhaseType },
+                new Long[] {Long.parseLong(approvalPhaseDuration) * HOUR }, phaseStatus, false);
 
             // Set the number of required reviewers for Approval phase to default value or
             // to value taken
@@ -1534,13 +1540,15 @@ final class PhasesHelper {
      *            the PhaseManager instance.
      * @param operator
      *            the operator name.
+     * @param finalFixDuration
+     *            the duration of final fix phase.
      * @return index of current phase.
      * @throws PhaseHandlingException
      *             if any error occurs.
      * @since 1.1
      */
     static int insertFinalFixAndFinalReview(Phase currentPhase, PhaseManager phaseManager,
-        String operator) throws PhaseHandlingException {
+        String operator, Long finalFixDuration) throws PhaseHandlingException {
         PhaseType finalFixPhaseType = PhasesHelper.getPhaseType(phaseManager, "Final Fix");
         PhaseType finalReviewPhaseType = PhasesHelper.getPhaseType(phaseManager, "Final Review");
         PhaseStatus phaseStatus = PhasesHelper.getPhaseStatus(phaseManager, "Scheduled");
@@ -1548,10 +1556,11 @@ final class PhasesHelper {
         // find current phase index and also the lengths of 'final fix'
         // and 'final review' phases.
         Project currentPrj = currentPhase.getProject();
-
+                
         // use helper method to create the new phases
         int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[] {
-            finalFixPhaseType, finalReviewPhaseType }, phaseStatus, phaseManager, operator, false);
+            finalFixPhaseType, finalReviewPhaseType }, new Long[] {finalFixDuration * HOUR, null},
+            phaseStatus, true);
 
         // save the phases
         try {
@@ -1619,7 +1628,17 @@ final class PhasesHelper {
 
         // use helper method to create the new phases
         int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[] {
-            specSubmissionPhaseType, specReviewPhaseType }, phaseStatus, phaseManager, operator, true);
+            specSubmissionPhaseType, specReviewPhaseType }, new Long[] {null, null}, phaseStatus, true);
+
+        // Copy phase attributes for the new spec review phase
+        Phase newSpecReview = currentPrj.getAllPhases()[currentPhaseIndex + 2];
+        if (newSpecReview.getPhaseType().getId() == currentPhase.getPhaseType().getId()) {
+            @SuppressWarnings("unchecked")
+            Set<Serializable> currentPhaseAttributeKeys = (Set<Serializable>) currentPhase.getAttributes().keySet();
+            for (Serializable attributeName : currentPhaseAttributeKeys) {
+                newSpecReview.setAttribute(attributeName, currentPhase.getAttribute(attributeName));
+            }
+        }
 
         // save the phases
         try {
@@ -1636,13 +1655,11 @@ final class PhasesHelper {
      * Helper method to add new phases of given type to the given project. This method does the following:
      * <ol>
      * <li>finds the index of given phase in the current phases array of the project.</li>
-     * <li>finds the lengths of current phases of the given types.</li>
+     * <li>finds the lengths of new phases (if not specified explicitly in the parameter).</li>
      * <li>creates new Phase instance with given type and status</li>
      * <li>creates a new Phases array with additional elements for new phase instances.</li>
      * <li>removes all phases of the project.</li>
      * <li>adds each Phase from the new Phases array to the project.</li>
-     * <li>if necessary the attributes of current phase are copied to newly created phase of same type if such a
-     * phase is created</li>
      * </ol>
      * </p>
      * @param currentPrj
@@ -1651,36 +1668,36 @@ final class PhasesHelper {
      *            current phase instance.
      * @param newPhaseTypes
      *            types of new phases to create.
+     * @param newPhaseLengths
+     *            the lengths for the new phases, elements can be null, in which case the lengths for the
+     *            corresponding phases will be copied from the existing phase of the same type
      * @param newPhaseStatus
      *            the status to set for all the phases.
-     * @param phaseManager
-     *            the manager
-     * @param operator
-     *            the operator
-     * @param copyCurrentPhaseAttributes <code>true</code> if attributes of current phase must be copied to created
-     *            new
-     *            phase of same type; <code>false</code> otherwise.
+     * @param adjustSubsequentPhaseDependencies
+     *            <code>true</code> if sub-sequent phases must be set depending on new
+     *            phase; <code>false</code> otherwise.
      * @return returns the index of the current phase in the phases array.
      */
-    static int createNewPhases(Project currentPrj, Phase currentPhase, PhaseType[] newPhaseTypes,
-                               PhaseStatus newPhaseStatus, PhaseManager phaseManager, String operator,
-                               boolean copyCurrentPhaseAttributes) {
-        // find current phase index and also the lengths of aggregation and
-        // aggregation review phases.
+    static int createNewPhases(Project currentPrj, Phase currentPhase, PhaseType[] newPhaseTypes, Long[] newPhaseLengths,
+                               PhaseStatus newPhaseStatus, boolean adjustSubsequentPhaseDependencies) {
+        // find current phase index and also the lengths of new phases
         Phase[] phases = currentPrj.getAllPhases();
-        int currentPhaseIndex = 0;
-        long[] newPhaseLengths = new long[newPhaseTypes.length];
+        
+        // find the lengths of corresponding phase types, if not specified explicitly in the method parameter
+        for (int p = 0; p < newPhaseLengths.length; p++) {
+            if (newPhaseLengths[p] == null) {
+                for (int i = 0; i < phases.length; i++) {
+                    if (phases[i].getPhaseType().getId() == newPhaseTypes[p].getId()) {
+                        newPhaseLengths[p] = phases[i].getLength();
+                    }
+                }
+            }
+        }          
 
+        int currentPhaseIndex = 0;
         for (int i = 0; i < phases.length; i++) {
             if (phases[i].getId() == currentPhase.getId()) {
                 currentPhaseIndex = i;
-            }
-
-            // find the lengths of corresponding phase types
-            for (int p = 0; p < newPhaseTypes.length; p++) {
-                if (phases[i].getPhaseType().getId() == newPhaseTypes[p].getId()) {
-                    newPhaseLengths[p] = phases[i].getLength();
-                }
             }
         }
 
@@ -1705,36 +1722,24 @@ final class PhasesHelper {
             newPhase.addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false,
                 true, 0));
 
-            // Copy current phase attributes if necessary
-            if (copyCurrentPhaseAttributes) {
-                if (newPhase.getPhaseType().getId() == currentPhase.getPhaseType().getId()) {
-                    @SuppressWarnings("unchecked")
-                    Set<Serializable> currentPhaseAttributeKeys = (Set<Serializable>) currentPhase.getAttributes()
-                        .keySet();
-                    for (Serializable attributeName : currentPhaseAttributeKeys) {
-                        newPhase.setAttribute(attributeName, currentPhase.getAttribute(attributeName));
-                    }
-                }
-            }
-
             newPhases[currentPhaseIndex + (p + 1)] = newPhase;
         }
 
-        // if there was a phase after the new phases, change the dependencies of
-        // that phase
-        // to move to last new phase.
-        if (newPhases.length > (currentPhaseIndex + newPhaseTypes.length + 1)) {
-            Phase afterPhase = newPhases[currentPhaseIndex + newPhaseTypes.length + 1];
-            Phase lastNewPhase = newPhases[currentPhaseIndex + newPhaseTypes.length];
+        // if there is a phase after the new phases change the dependencies of that phase
+        if (adjustSubsequentPhaseDependencies) {
+            if (newPhases.length > (currentPhaseIndex + newPhaseTypes.length + 1)) {
+                Phase afterPhase = newPhases[currentPhaseIndex + newPhaseTypes.length + 1];
+                Phase lastNewPhase = newPhases[currentPhaseIndex + newPhaseTypes.length];
 
-            Dependency[] dependencies = afterPhase.getAllDependencies();
+                Dependency[] dependencies = afterPhase.getAllDependencies();
 
-            for (int d = 0; d < dependencies.length; d++) {
-                Dependency dependency = dependencies[d];
-                dependency.getDependent().removeDependency(dependency);
-                dependency.getDependent().addDependency(
-                    new Dependency(lastNewPhase, dependency.getDependent(), dependency
-                        .isDependencyStart(), dependency.isDependentStart(), dependency.getLagTime()));
+                for (int d = 0; d < dependencies.length; d++) {
+                    Dependency dependency = dependencies[d];
+                    dependency.getDependent().removeDependency(dependency);
+                    dependency.getDependent().addDependency(
+                            new Dependency(lastNewPhase, dependency.getDependent(), dependency
+                                .isDependencyStart(), dependency.isDependentStart(), dependency.getLagTime()));
+                }
             }
         }
 
@@ -2493,106 +2498,6 @@ final class PhasesHelper {
         }
 
         return null;
-    }
-
-    /**
-     * <p>
-     * Helper method to add new phases of given type to the given project. This method does the following:
-     * <ol>
-     * <li>finds the index of given phase in the current phases array of the project.</li>
-     * <li>finds the lengths of current phases of the given types.</li>
-     * <li>creates new Phase instance with given type and status</li>
-     * <li>creates a new Phases array with additional elements for new phase instances.</li>
-     * <li>removes all phases of the project.</li>
-     * <li>adds each Phase from the new Phases array to the project.</li>
-     * </ol>
-     * </p>
-     * @param currentPrj
-     *            project to add/remove phases from.
-     * @param currentPhase
-     *            current phase instance.
-     * @param newPhaseTypes
-     *            types of new phases to create.
-     * @param newPhaseStatus
-     *            the status to set for all the phases.
-     * @param newPhaseLengths
-     *            the lengths for the new phases.
-     * @param adjustSubsequentPhaseDependencies
-     *            <code>true</code> if sub-sequent phases must be set depending on new
-     *            phase; <code>false</code> otherwise.
-     * @return returns the index of the current phase in the phases array.
-     * @since 1.3
-     */
-    private static int createNewPhases(Project currentPrj, Phase currentPhase,
-        PhaseType[] newPhaseTypes, PhaseStatus newPhaseStatus, long[] newPhaseLengths,
-        boolean adjustSubsequentPhaseDependencies) {
-        // find current phase index and also the lengths of aggregation and aggregation
-        // review phases.
-        Phase[] phases = currentPrj.getAllPhases();
-        int currentPhaseIndex = 0;
-
-        for (int i = 0; i < phases.length; i++) {
-            if (phases[i].getId() == currentPhase.getId()) {
-                currentPhaseIndex = i;
-            }
-        }
-
-        // create new phases array which will hold the new phase order
-        Phase[] newPhases = new Phase[phases.length + newPhaseTypes.length];
-
-        // set the old phases into the new phases array
-        for (int i = 0; i < phases.length; i++) {
-            if (i > currentPhaseIndex) {
-                newPhases[i + newPhaseTypes.length] = phases[i];
-            } else {
-                newPhases[i] = phases[i];
-            }
-        }
-
-        // create new phases for each phase type and make them depending on current phase
-        for (int p = 0; p < newPhaseTypes.length; p++) {
-            Phase newPhase = new Phase(currentPrj, newPhaseLengths[p]);
-            newPhase.setPhaseStatus(newPhaseStatus);
-            newPhase.setPhaseType(newPhaseTypes[p]);
-            newPhase.addDependency(new Dependency(newPhases[currentPhaseIndex + p], newPhase, false,
-                true, 0));
-            newPhases[currentPhaseIndex + (p + 1)] = newPhase;
-        }
-
-        // if there is a phase after the new phases change the dependencies of that phase
-        if (adjustSubsequentPhaseDependencies) {
-            if (newPhases.length > (currentPhaseIndex + newPhaseTypes.length + 1)) {
-                Phase afterPhase = newPhases[currentPhaseIndex + newPhaseTypes.length + 1];
-                Phase lastNewPhase = newPhases[currentPhaseIndex + newPhaseTypes.length];
-
-                Dependency[] dependencies = afterPhase.getAllDependencies();
-
-                for (int d = 0; d < dependencies.length; d++) {
-                    Dependency dependency = dependencies[d];
-                    dependency.getDependent().removeDependency(dependency);
-                    dependency.getDependent()
-                        .addDependency(
-                            new Dependency(lastNewPhase, dependency.getDependent(), dependency
-                                .isDependencyStart(), dependency.isDependentStart(), dependency
-                                .getLagTime()));
-                }
-            }
-        }
-
-        // add the new phases to the project
-        for (int p = 0; p < newPhaseTypes.length; p++) {
-            Phase newPhase = newPhases[currentPhaseIndex + (p + 1)];
-            currentPrj.addPhase(newPhase);
-        }
-
-        // set the scheduled start and end times after dependencies are changed
-        for (int p = 0; p < newPhases.length; p++) {
-            Phase phase = newPhases[p];
-            phase.setScheduledStartDate(phase.calcStartDate());
-            phase.setScheduledEndDate(phase.calcEndDate());
-        }
-
-        return currentPhaseIndex;
     }
 
     /**

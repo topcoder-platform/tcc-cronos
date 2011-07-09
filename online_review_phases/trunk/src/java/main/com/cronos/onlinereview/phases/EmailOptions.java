@@ -54,13 +54,6 @@ public class EmailOptions {
 
     /**
      * <p>
-     * Represents the priority of the email options. Default value is 0.It has getter/setter.
-     * </p>
-     */
-    private int priority = 0;
-
-    /**
-     * <p>
      * Default empty Constructor.
      * </p>
      */
@@ -119,24 +112,6 @@ public class EmailOptions {
      */
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
-    }
-
-    /**
-     * Returns the value of priority.
-     *
-     * @return the priority
-     */
-    public int getPriority() {
-        return priority;
-    }
-
-    /**
-     * Set the value to  priority field.
-     *
-     * @param priority the priority to set
-     */
-    public void setPriority(int priority) {
-        this.priority = priority;
     }
 
     /**

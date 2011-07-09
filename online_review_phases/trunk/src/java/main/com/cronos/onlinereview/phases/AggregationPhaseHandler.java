@@ -183,10 +183,10 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             // return true if all dependencies have stopped and start time has
             // been reached.
             result = PhasesHelper.checkPhaseCanStart(phase);
-			if (!result.isSuccess()) {
+            if (!result.isSuccess()) {
                 return result;
             }
-			
+            
             Connection conn = null;
             try {
                 conn = createConnection();

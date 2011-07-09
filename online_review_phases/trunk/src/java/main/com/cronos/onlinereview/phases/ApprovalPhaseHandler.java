@@ -71,8 +71,14 @@ import com.topcoder.project.phases.Project;
  * <li>The return changes from boolean to OperationCheckResult.</li>
  * </ul>
  * </p>
+ * <p>
+ * Version 1.6.2 change notes:
+ * <ul>
+ * <li>Insert final fix phase with configured duration.</li>
+ * </ul>
+ * </p>
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, microsky
- * @version 1.6.1
+ * @version 1.6.2
  */
 public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -82,13 +88,18 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.ApprovalPhaseHandler";
 
     /**
+    * Represents duration of final fix phase to insert.
+    */
+    private final Long finalFixDuration;
+    
+    /**
      * Create a new instance of ApprovalPhaseHandler using the default namespace
      * for loading configuration settings.
      * @throws ConfigurationException if errors occurred while loading
      *             configuration settings.
      */
     public ApprovalPhaseHandler() throws ConfigurationException {
-        super(DEFAULT_NAMESPACE);
+        this(DEFAULT_NAMESPACE);
     }
 
     /**
@@ -101,6 +112,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      */
     public ApprovalPhaseHandler(String namespace) throws ConfigurationException {
         super(namespace);
+        finalFixDuration = Long.parseLong(PhasesHelper.getPropertyValue(FinalFixPhaseHandler.class.getName(), "FinalFixPhaseDuration", true));
     }
 
     /**
@@ -268,17 +280,14 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                     Project currentPrj = phase.getProject();
 
                     // use helper method to insert final fix/final review phase
-                    int currentPhaseIndex = PhasesHelper.insertFinalFixAndFinalReview(phase, getManagerHelper()
-                        .getPhaseManager(),
-                                                                    operator);
+                    int currentPhaseIndex = PhasesHelper.insertFinalFixAndFinalReview(phase,
+                        getManagerHelper().getPhaseManager(), operator, finalFixDuration);
 
                     // get the id of the newly created final review phase
                     long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
                     Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", false, true);
                     PhasesHelper.createAggregatorOrFinalReviewer(previousFinalReviewPhase, getManagerHelper(),
-                        conn,
-                                                                 "Final Reviewer",
-                                                                 finalReviewPhaseId, operator);
+                        conn, "Final Reviewer", finalReviewPhaseId, operator);
                 } catch (PhaseManagementException e) {
                     throw new PhaseHandlingException("Problem when persisting phases", e);
                 } finally {

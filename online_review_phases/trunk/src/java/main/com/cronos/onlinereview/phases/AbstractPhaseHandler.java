@@ -14,6 +14,7 @@ import com.topcoder.management.phase.PhaseHandler;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
+import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
@@ -223,11 +224,11 @@ import java.util.Map;
  * Version 1.6.1 changes note:
  * <ul>
  * <li>
- * Added support for different templates for Studio and Software.
+ * Email templates now depend on the project category type.
  * </li>
  * </ul>
  * </p>
- * @author tuenm, bose_java, pulky, argolite, waits, FireIce, microsky, lmmortal
+ * @author tuenm, bose_java, pulky, argolite, waits, FireIce, microsky, lmmortal, VolodymyrK
  * @version 1.6.1
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
@@ -264,25 +265,14 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** Format for property name constant for "XXPhaseEmail.SendEmail", XX could be 'Start' or 'End'. */
     private static final String PROP_SEND_EMAIL = "{0}PhaseEmail.SendEmail";
 
-    /** Format for property name constant for "XXPhaseEmail.Priority", XX could be 'Start' or 'End'. */
-    private static final String PROP_PRIORITY = "{0}PhaseEmail.Priority";
     /** Constant for start phase. */
     private static final String START = "Start";
 
     /** Constant for end phase. */
     private static final String END = "End";
 
-    /** Constants for the Studio */
-    private static final String STUDIO = "Studio";
-
     /** format for the email timestamp. Will format as "Fri, Jul 28, 2006 01:34 PM EST". */
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
-
-    /**
-    * Represents the studio project id.
-    * @since 1.6
-    */
-    protected static final long STUDIO_PROJECT_ID = 3;
 
     /**
      * The factory instance used to create connection to the database. It is initialized in the constructor using
@@ -322,37 +312,12 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /**
      * <p>
-     * Represents the map between role name and the start phase email options for that particular role.
+     * The list of the configured email schemes.
      * </p>
      *
-     * <p>
-     * Key: a String, must not be null/empty Value: a EmailIOptions, must not be null.
-     * </p>
-     *
-     * <p>
-     * A special "default" key is used to specify the default values for all roles. The default value is used when the
-     * role does not specify the email option attribute. Initialized in constructor, will never be changed.
-     * </p>
-     * @since 1.2
+     * @since 1.6.1
      */
-    private final Map<String, EmailOptions> startPhaseEmailOptions = new HashMap<String, EmailOptions>();
-
-    /**
-     * <p>
-     * Represents the map between role name and the end phase email options for that particular role.
-     * </p>
-     *
-     * <p>
-     * Key: a String, must not be null/empty Value: a EmailIOptions, must not be null.
-     * </p>
-     *
-     * <p>
-     * A special "default" key is used to specify the default values for all roles. The default value is used when the
-     * role does not specify the email option attribute. Initialized in constructor, will never be changed.
-     * </p>
-     * @since 1.2
-     */
-    private final Map<String, EmailOptions> endPhaseEmailOptions = new HashMap<String, EmailOptions>();
+    private final List<EmailScheme> emailSchemes;
 
     /**
      * <p>
@@ -400,57 +365,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             this.connectionName = null;
         }
 
-        //load the 'Schemes' property
-        Map<String, List<String>> schemes = getSchemes(namespace);
-
-        // Retrieve names of all resource roles.
-        List<String> allRoles = new ArrayList<String>();
-        try {
-            ResourceRole[] roles = managerHelper.getResourceManager().getAllResourceRoles();
-            for (ResourceRole role : roles) {
-                allRoles.add(role.getName());
-            }
-        } catch (ResourcePersistenceException ex) {
-            // ignore
-        }
-
-        for (String scheme : schemes.keySet()) {
-            //look up 'Scheme/xxPhaseEmail/xx'
-            if (PhasesHelper.doesPropertyExist(namespace, scheme)) {
-                //if the configuration not exists, create not send email options
-                boolean exists = PhasesHelper.doesPropertyObjectExist(namespace,
-                        scheme + "." + format(PROP_PHASE_EMAIL, START));
-                EmailOptions startEmailOption =  exists ? createEmailOptions(namespace, scheme + "." + START)
-                                                        : createNotSendEmailOptions();
-
-                //if the configuration not exists, create not send email options
-                exists = PhasesHelper.doesPropertyObjectExist(namespace, scheme + "." + format(PROP_PHASE_EMAIL, END));
-                EmailOptions endEmailOption = exists ? createEmailOptions(namespace, scheme + "." + END)
-                                                      : createNotSendEmailOptions();
-
-                List<String> roles = schemes.get(scheme);
-
-                // If at least one of the role names is "*" we add the scheme for all roles.
-                if (roles.contains("*")) {
-                    roles = allRoles;
-                }
-
-                for (String role : roles) {
-                    // If the role is already associated with some scheme we pick the one with the higher priority.
-                    EmailOptions currentStartOptions = startPhaseEmailOptions.get(role);
-                    if (currentStartOptions == null
-                        || currentStartOptions.getPriority() < startEmailOption.getPriority()) {
-                        startPhaseEmailOptions.put(role, startEmailOption);
-                    }
-
-                    EmailOptions currentEndOptions = endPhaseEmailOptions.get(role);
-                    if (currentEndOptions == null
-                        || currentEndOptions.getPriority() < endEmailOption.getPriority()) {
-                        endPhaseEmailOptions.put(role, endEmailOption);
-                    }
-                }
-            }
-        }
+        // load the 'Schemes' property
+        emailSchemes = getEmailSchemes(namespace);
 
         // get project details base url
         projectDetailsBaseURL = managerHelper.getProjectDetailsBaseURL();
@@ -471,13 +387,12 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @param phase The current phase. must not be null.
      * @param values The values map. This is a map from String into Object. The key is the template field name and the
      *        value is the template field value.
-     * @param isStudio whether to send studio templates.
      *
      * @throws IllegalArgumentException if any argument is null or map contains empty/null key/value.
      * @throws PhaseHandlingException if there was a problem when sending email.
      * @since 1.2
      */
-    public void sendEmail(Phase phase, Map<String, Object> values, boolean isStudio) throws PhaseHandlingException {
+    public void sendEmail(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkValuesMap(values);
 
@@ -499,9 +414,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         PhaseStatus status = phase.getPhaseStatus();
 
         if (PhasesHelper.isPhaseToStart(status)) {
-            sendEmail(phase, values, true, isStudio);
+            sendEmail(phase, values, true);
         } else if (PhasesHelper.isPhaseToEnd(status)) {
-            sendEmail(phase, values, false, isStudio);
+            sendEmail(phase, values, false);
         }
     }
 
@@ -535,27 +450,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      */
     protected void sendEmail(Phase phase) throws PhaseHandlingException {
         sendEmail(phase, new HashMap<String, Object>());
-    }
-
-    /**
-     * <p>
-     * Send email to the external users that are registered to be notified on the phase change.
-     * </p>
-     *
-     * <p>
-     * Now each role can have its own email options. If not set for that role, using the default setting.
-     * </p>
-     *
-     * @param phase The current phase. must not be null.
-     * @param values The values map. This is a map from String into Object. The key is the template field name and the
-     *        value is the template field value.
-     *
-     * @throws IllegalArgumentException if any argument is null or map contains empty/null key/value.
-     * @throws PhaseHandlingException if there was a problem when sending email.
-     * @since 1.6.1
-     */
-    public void sendEmail(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
-        sendEmail(phase, values, false);
     }
 
     /**
@@ -601,25 +495,20 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * default setting.
      * </p>
      *
-     * <p>
-     * Update in version 1.6.1: Added support for studio templates.
-     * </p>
-     *
      * @param phase phase instance.
      * @param values the values map to look up the fields in template
      * @param bStart true if phase is to start, false if phase is to end.
-     * @param isStudio whether to send studio tempaltes.
      *
      * @throws PhaseHandlingException if there was an error retrieving information or sending email.
      */
-    private void sendEmail(Phase phase, Map<String, Object> values, boolean bStart, boolean isStudio)
+    private void sendEmail(Phase phase, Map<String, Object> values, boolean bStart)
         throws PhaseHandlingException {
         Connection conn = createConnection();
 
         Project project = null;
 
-        // the list of resource where the email is to be sent, the key is the externalId, value is Resource to send
-        Map<Long, List<Resource>> resourceInRoles = new HashMap<Long, List<Resource>>();
+        // maps user IDs to EmailScheme
+        Map<Long, EmailScheme> userEmailSchemes = new HashMap<Long, EmailScheme>();
         ResourceManager rm = managerHelper.getResourceManager();
 
         try {
@@ -632,36 +521,27 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             long[] externalIds = rm.getNotifications(projectId, notificationTypeId);
             // retrieve project information
             project = managerHelper.getProjectManager().getProject(projectId);
+            long projectTypeId = project.getProjectCategory().getProjectType().getId();
 
-            // get all the supported roles, for each role, find the resources
-            ResourceRole[] allRoles = rm.getAllResourceRoles();
+            Resource[] resources = rm.searchResources(ResourceFilterBuilder.createProjectIdFilter(projectId));
 
-            for (ResourceRole role : allRoles) {
-                Filter resourceRoleFilter = ResourceRoleFilterBuilder.createResourceRoleIdFilter(role.getId());
-                Filter projectIdFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
-                Resource[] resources = rm.searchResources(new AndFilter(resourceRoleFilter, projectIdFilter));
-
-                for (Resource resource : resources) {
-                    long externalId = PhasesHelper.getIntegerProp(resource, PhasesHelper.EXTERNAL_REFERENCE_ID);
-                    if (exist(externalIds, externalId)) {
-                        //since one resource could have more than one roles in project, we only need to set out
-                        //one email for all the roles of the same resource,
-                        //we need to find the role with largest priority here
-                        List<Resource> roles = resourceInRoles.get(externalId);
-                        if (roles == null) {
-                            roles = new ArrayList<Resource>();
-                            roles.add(resource);
-                            resourceInRoles.put(externalId, roles);
-                        } else {
-                            //do the compare
-                            Resource resultResource = compareEmailOptionsPriority(roles.get(0), resource, bStart);
-                            //if it is the current resource going to send, clear the previous one
-                            if (resultResource == resource) {
-                                roles.clear();
-                                roles.add(resource);
-                            }
-                        }
-                    }
+            for (Resource resource : resources) {
+                long externalId = PhasesHelper.getIntegerProp(resource, PhasesHelper.EXTERNAL_REFERENCE_ID);
+                if (!contains(externalIds, externalId)) {
+                    continue;
+                }
+                
+                EmailScheme emailScheme = getEmailSchemeForResource(resource, projectTypeId);
+                if (emailScheme == null) {
+                    continue;
+                }
+                
+                // since one user could have more than one role in project, we only need to set out
+                // one email for all the roles of the same user,
+                // we need to find the email scheme with largest priority here
+                EmailScheme oldScheme = userEmailSchemes.get(externalId);
+                if (oldScheme == null || oldScheme.getPriority() < emailScheme.getPriority()) {
+                    userEmailSchemes.put(externalId, emailScheme);
                 }
             }
         } catch (SQLException ex) {
@@ -681,27 +561,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             PhasesHelper.closeConnection(conn);
         }
 
-        //if there is no resource needs to send out the email, return here
-        if (resourceInRoles.isEmpty()) {
-            return;
-        }
-        //flat resource from map to list
-        List<Resource> resourcesToSendEmail = new ArrayList<Resource>();
-        for (List<Resource> resources : resourceInRoles.values()) {
-            resourcesToSendEmail.addAll(resources);
-        }
 
         try {
-            // prepare email content and send email to each user...
-            for (int i = 0; i < resourcesToSendEmail.size(); i++) {
-                Resource resource = resourcesToSendEmail.get(i);
-                resource = rm.getResource(resource.getId());
-
-                ResourceRole role = resource.getResourceRole();
-                String roleName = role.getName();
-
-                EmailOptions options = bStart ? getEmailOptions(startPhaseEmailOptions, roleName, isStudio)
-                                              : getEmailOptions(endPhaseEmailOptions, roleName, isStudio);
+            // prepare email content and send email each user
+            for (long userID : userEmailSchemes.keySet()) {
+                EmailScheme emailScheme = userEmailSchemes.get(userID);
+                EmailOptions options = bStart ? emailScheme.getStartEmailOptions()
+                                              : emailScheme.getEndEmailOptions();
 
                 if (options == null || !options.isSend()) {
                     continue;
@@ -712,8 +578,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 docGenerator.setDefaultTemplateSource(new FileTemplateSource());
 
                 Template template = docGenerator.getTemplate(options.getTemplateName());
-                long externalId = Long.parseLong((String) resource.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID));
-                ExternalUser user = managerHelper.getUserRetrieval().retrieveUser(externalId);
+                ExternalUser user = managerHelper.getUserRetrieval().retrieveUser(userID);
 
                 // for each external user, set field values
                 TemplateFields root = setTemplateFieldValues(docGenerator.getFields(template), user, project, phase,
@@ -747,49 +612,35 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             throw new PhaseHandlingException("Problem with sending email", e);
         }
     }
-
-    /**
-     * <p>
-     * Compares the two resources, the two resource have the same id, but with different role, choose which role to
-     * send out the email.
-     * </p>
-     * @param one one resource
-     * @param two another resource
-     * @param bStart start phase or not
-     * @return the resource with the prioritized role
-     */
-    private Resource compareEmailOptionsPriority(Resource one, Resource two, boolean bStart) {
-        EmailOptions oneOptions = bStart ? startPhaseEmailOptions.get(one.getResourceRole().getName())
-                                         : endPhaseEmailOptions.get(one.getResourceRole().getName());
-        EmailOptions twoOptions = bStart ? startPhaseEmailOptions.get(two.getResourceRole().getName())
-                                         : endPhaseEmailOptions.get(two.getResourceRole().getName());
-        if (oneOptions == null) {
-            //if one is null and two is null or not-send, choose one
-            if (twoOptions == null || (twoOptions != null && !twoOptions.isSend())) {
-                return one;
+    
+	/**
+	* Finds email scheme for passed resource.
+	*
+    * @param resource
+	*       the resource to get email shceme for
+	* @param projectTypeId
+	*       the project type id
+	* @return the email scheme for resource. null if not found.
+	* @since 1.6.1.
+	*/
+    private EmailScheme getEmailSchemeForResource(Resource resource, long projectTypeId) {
+        EmailScheme priorityEmailScheme = null;
+        for (EmailScheme emailScheme : emailSchemes) {
+            boolean containsProjectType = emailScheme.getProjectTypes().contains("*") ||
+                emailScheme.getProjectTypes().contains(""+projectTypeId);
+            boolean containsRole = emailScheme.getRoles().contains("*") ||
+                emailScheme.getRoles().contains(resource.getResourceRole().getName());
+                
+            if (containsProjectType && containsRole) {
+                if (priorityEmailScheme == null || priorityEmailScheme.getPriority() < emailScheme.getPriority()) {
+                    priorityEmailScheme = emailScheme;
+                }
             }
-            //two is not null and is going to send, choose two
-            return two;
         }
-        if (twoOptions != null) {
-            if (oneOptions.isSend() && twoOptions.isSend()) {
-                //if both options are not null and both are going to send, choose by priority
-                return oneOptions.getPriority() > twoOptions.getPriority() ? one : two;
-            } else if (!oneOptions.isSend() && twoOptions.isSend()) {
-                //if one is not going to send and two is going to send, choose two
-                return two;
-            } else if (!oneOptions.isSend() && !twoOptions.isSend()) {
-               //if both are not going to send, choose either one is acceptable
-                return one;
-            } else {
-                //if one is going to send and two is not going to send, choose one
-                return one;
-            }
-        } else {
-            //if one is not null while two is null, send one
-            return one;
-        }
+        
+        return priorityEmailScheme;
     }
+    
     /**
      * This method sets the values of the template fields with user, project information and lookup values
      * based on bStart variable which is true if phase is to start, false if phase is to end.
@@ -955,14 +806,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         options.setSend(parseSendEmailPropValue(PhasesHelper.getPropertyValue(namespace,
                     format(PROP_SEND_EMAIL, propertyPrefix), false)));
 
-        String priority = PhasesHelper.getPropertyValue(namespace, format(PROP_PRIORITY, propertyPrefix), false);
-        if (priority != null) {
-            try {
-                options.setPriority(Integer.parseInt(priority));
-            } catch (NumberFormatException nfe) {
-                throw new ConfigurationException("The value for priority should be integer.", nfe);
-            }
-        }
         return options;
     }
 
@@ -995,34 +838,66 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /**
      * <p>
-     * Gets the 'Schemes' property values from the given namespace. If there is no such property, empty map will
+     * Gets the 'Schemes' property values from the given namespace. If there is no such property, empty list will
      * be returned.
      * </p>
      * @param namespace the namespace to retrieve the values from
-     * @return Map object mapping scheme names to list of roles. Not null, can be empty.
+     * @return List of EmailScheme objects. Not null, can be empty.
      * @throws ConfigurationException if the namespace does not exist
      */
-    private static Map<String, List<String>> getSchemes(String namespace)
+    private static List<EmailScheme> getEmailSchemes(String namespace)
         throws ConfigurationException {
+        
         try {
             com.topcoder.util.config.Property schemesProperty =
                 ConfigManager.getInstance().getPropertyObject(namespace, "Schemes");
             if (schemesProperty == null) {
-                return new HashMap<String, List<String>>();
+                return new ArrayList<EmailScheme>();
             }
 
             java.util.Enumeration<?> schemeNames = schemesProperty.propertyNames();
-            Map<String, List<String>> schemes = new HashMap<String, List<String>>();
+            List<EmailScheme> schemes = new ArrayList<EmailScheme>();
 
             while (schemeNames.hasMoreElements()) {
                 String schemeName = (String) schemeNames.nextElement();
                 if (schemeName != null) {
-                    String[] roles = schemesProperty.getProperty(schemeName).getValues();
+                    EmailScheme emailScheme = new EmailScheme();
+                    
+                    String[] rolesArray = schemesProperty.getProperty(schemeName).getProperty("Roles").getValues();
+                    if (rolesArray != null && rolesArray.length > 0) {
+                        emailScheme.setRoles(java.util.Arrays.asList(rolesArray));
+                    }
+                    
+                    String[] projectTypesArray = schemesProperty.getProperty(schemeName).getProperty("ProjectTypes").getValues();
+                    if (projectTypesArray != null && projectTypesArray.length > 0) {
+                        emailScheme.setProjectTypeIDs(java.util.Arrays.asList(projectTypesArray));
+                    }
+                    
+                    String priority = schemesProperty.getProperty(schemeName).getProperty("Priority").getValue();
+                    if (priority != null) {
+                        try {
+                            emailScheme.setPriority(Integer.parseInt(priority));
+                        } catch (NumberFormatException nfe) {
+                            throw new ConfigurationException("Can't parse priority value : " + priority, nfe);
+                        }
+                    }
+                    
+                    //look up 'Scheme/xxPhaseEmail/xx'
+                    if (PhasesHelper.doesPropertyExist(namespace, schemeName)) {
+                        //if the configuration does not exist, create not send email options
+                        boolean exists = PhasesHelper.doesPropertyObjectExist(namespace,
+                                schemeName + "." + format(PROP_PHASE_EMAIL, START));
+                        EmailOptions startEmailOption =  exists ? createEmailOptions(namespace, schemeName + "." + START)
+                                                                : createNotSendEmailOptions();
 
-                    if (roles != null && roles.length > 0) {
-                        schemes.put(schemeName, java.util.Arrays.asList(roles));
-                    } else {
-                        schemes.put(schemeName, new ArrayList<String>());
+                        //if the configuration does not exist, create not send email options
+                        exists = PhasesHelper.doesPropertyObjectExist(namespace, schemeName + "." + format(PROP_PHASE_EMAIL, END));
+                        EmailOptions endEmailOption = exists ? createEmailOptions(namespace, schemeName + "." + END)
+                                                              : createNotSendEmailOptions();
+
+                        emailScheme.setStartEmailOptions(startEmailOption);
+                        emailScheme.setEndEmailOptions(endEmailOption);
+                        schemes.add(emailScheme);                                                              
                     }
                 }
             }
@@ -1065,7 +940,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      *
      * @return true if exists
      */
-    private static boolean exist(long[] ids, long id) {
+    private static boolean contains(long[] ids, long id) {
         for (int i = 0; i < ids.length; i++) {
             if (ids[i] == id) {
                 return true;
@@ -1073,21 +948,5 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         }
 
         return false;
-    }
-
-    /**
-     * Gets EmailOptions for given role
-     *
-     * @param availableOptions all available email options
-     * @param roleName the role name to get template
-     * @param isStudio whether to get studio template
-     * @return EmailOptions email options for passed role 
-     */
-    private static EmailOptions getEmailOptions( Map<String, EmailOptions> availableOptions, 
-            String roleName, boolean isStudio) {
-        if (isStudio && availableOptions.containsKey(roleName+ STUDIO)) {
-            return availableOptions.get(roleName + STUDIO);
-        }
-        return availableOptions.get(roleName);
     }
 }

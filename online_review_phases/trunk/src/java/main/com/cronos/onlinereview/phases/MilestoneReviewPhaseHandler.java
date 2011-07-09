@@ -281,11 +281,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
                 updateSubmissionScores(conn, phase, operator, values);
             }
 
-            Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
-            boolean isStudio = project.getProjectCategory().getProjectType().getId() == STUDIO_PROJECT_ID;
-            sendEmail(phase, values, isStudio);
-        } catch (PersistenceException e) {
-            throw new PhaseHandlingException("Fail to retrieve the corresponding project.", e);
+            sendEmail(phase, values);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

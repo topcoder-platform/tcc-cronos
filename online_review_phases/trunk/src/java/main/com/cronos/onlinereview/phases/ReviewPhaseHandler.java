@@ -368,7 +368,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
 
             // get the project id.
             Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
-            boolean isStudioProject = project.getProjectCategory().getProjectType().getId() == STUDIO_PROJECT_ID;
+            boolean isStudioProject = project.getProjectCategory().getProjectType().getId() == PhasesHelper.STUDIO_PROJECT_TYPE_ID;
 
             // change in version 1.4
             // Search all "Active" submissions with contest submission type for current project

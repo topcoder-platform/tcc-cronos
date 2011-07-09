@@ -68,8 +68,14 @@ import com.topcoder.project.phases.Project;
  * <li>The return changes from boolean to OperationCheckResult.</li>
  * </ul>
  * </p>
+ * <p>
+ * Version 1.6.2 change notes:
+ * <ul>
+ * <li>Insert final fix phase with configured duration.</li>
+ * </ul>
+ * </p>
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, isv, microsky
- * @version 1.6.1
+ * @version 1.6.2
  * @since 1.0
  */
 public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
@@ -83,13 +89,18 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     private static final String FINAL_REVIEW_COMMENT = "Final Review Comment";
 
     /**
+    * Represents duration of final fix phase to insert.
+    */
+    private final Long finalFixDuration;
+    
+    /**
      * Create a new instance of FinalReviewPhaseHandler using the default
      * namespace for loading configuration settings.
      * @throws ConfigurationException if errors occurred while loading
      *             configuration settings.
      */
     public FinalReviewPhaseHandler() throws ConfigurationException {
-        super(DEFAULT_NAMESPACE);
+        this(DEFAULT_NAMESPACE);
     }
 
     /**
@@ -102,6 +113,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     public FinalReviewPhaseHandler(String namespace) throws ConfigurationException {
         super(namespace);
+        finalFixDuration = Long.parseLong(PhasesHelper.getPropertyValue(FinalFixPhaseHandler.class.getName(), "FinalFixPhaseDuration", true));
     }
 
     /**
@@ -371,7 +383,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                                 .insertFinalFixAndFinalReview(
                                                 phase,
                                                 managerHelper.getPhaseManager(),
-                                                operator);
+                                                operator, finalFixDuration);
 
                 // get the id of the newly created final review phase
                 long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2]
