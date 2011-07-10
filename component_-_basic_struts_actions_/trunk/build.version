@@ -1,6 +1,6 @@
 # Property file defining the component's information.
-component.name=basic_struts_action
-component.distfilename=basic_struts_action
+component.name=Basic Struts Actions
+component.distfilename=basic_struts_actions
 component.package=com.topcoder.web.reg
 component.packagedir=com/topcoder/web/reg
 component.version.major=1
