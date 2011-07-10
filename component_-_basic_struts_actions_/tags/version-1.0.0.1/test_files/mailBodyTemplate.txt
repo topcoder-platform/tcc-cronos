@@ -1,0 +1,3 @@
+Your user handle on TopCoder web-site is %handle%
+
+You can reset the password for your account by following this hyperlink %link%
