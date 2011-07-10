@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <!--Note that some values in this file are yet to be configured during integration phase-->
+    <package name="basic" extends="struts-default">
+        <interceptors>
+            <interceptor name="authorization" class="authorizationInterceptor"/>
+            <interceptor name="throttle" class="throttleInterceptor"/>
+            <interceptor-stack name="basicStrutsStack">
+                <interceptor-ref name="defaultStack"/>
+                <!--ThrottleInterceptor should run before AuthorizationInterceptor-->
+                <interceptor-ref name="throttle"/>
+                <interceptor-ref name="authorization"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="basicStrutsStack"/>
+        <global-results>
+            <result name="error">
+                /error.jsp
+            </result>
+            <result name="authorizationError">
+                <!--This might be modified during integration phase. This global result might be moved to other places so that all struts configuration file have access to it-->
+                /authorizationError.jsp
+            </result>
+            <result name="login">
+                /login.jsp
+            </result>
+        </global-results>
+
+        <action name="showLogin">
+            <result>/login.jsp</result>
+        </action>
+        <action name="login" class="loginAction">
+            <result name="success">
+                <!--this is up to configuration. It's the page that the user is redirected to if the user visits login.jsp directly-->
+                /mainPage.jsp
+            </result>
+            <result name="input">
+                /login.jsp
+            </result>
+            <result name="emailActivation">
+                <!--this is up to configuration. It's the page that allows the user to activate the email-->
+                /emailActivation.jsp
+            </result>
+            <result name="firstTimeLogin">
+                <!--this is up to configuration. It's the page that the user will see if the user logins for the first time-->
+                /firstTimeLogin.jsp
+            </result>
+        </action>
+        <action name="logout" class="logoutAction">
+            <result name="success">
+                <!--this is up to configuration. It's the initial homepage on which the user can login again-->
+                /initialHomePage.jsp
+            </result>
+        </action>
+        <action name="showRecoverPassword">
+            <result>/recoverPassword.jsp</result>
+        </action>
+
+        <action name="recoverPassword" class="recoverPasswordAction">
+            <result name="success">
+                /recoverPasswordEmailSent.jsp
+            </result>
+            <result name="input">
+                /recoverPassword.jsp
+            </result>
+        </action>
+        <action name="resendPasswordRecoveryEmail" class="resendPasswordRecoveryEmailAction">
+            <result name="success">
+                /recoverPasswordEmailSent.jsp
+            </result>
+            <result name="input">
+                /error.jsp
+            </result>
+        </action>
+        <action name="resetPassword" class="resetPasswordAction">
+            <result name="success">
+                /resetPasswordConfirmation.jsp
+            </result>
+            <result name="input">
+                /error.jsp
+            </result>
+        </action>
+    </package>
+</struts>

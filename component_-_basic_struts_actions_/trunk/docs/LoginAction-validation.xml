@@ -1,0 +1,28 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+     <field name="username">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>
+            <message>${getText("username.missing")}</message>
+        </field-validator>
+        <field-validator type="stringlength">
+            <!--These lengths are up to configuration during the integration phase. They should be set to the values as in the existing application.-->
+            <param name="maxLength">20</param>
+            <param name="minLength">5</param>
+            <message>${getText("username.length")}</message>
+        </field-validator>
+    </field>
+    <field name="password">
+        <field-validator type="requiredstring">
+            <param name="trim">true</param>
+            <message>${getText("password.missing")}</message>
+        </field-validator>
+        <field-validator type="stringlength">
+            <!--These lengths are up to configuration during the integration phase. They should be set to the values as in the existing application.-->
+            <param name="maxLength">20</param>
+            <param name="minLength">5</param>
+            <message>${getText("password.length")}</message>
+        </field-validator>
+    </field>
+</validators>

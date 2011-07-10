@@ -8,7 +8,7 @@
 	<!-- TCS dependencies -->
 	<property name="web_module_part_lib.jar" value="test_files/web_module_part_lib.jar" />
 	<property name="lib_user_profile.jar" value="test_files/lib_user_profile.jar" />
-	<property name="mock.jar" value="test_files/mock.jar" />
+	<property name="mock.jar" value="test_files/test.jar" />
 	<property name="shared.jar" value="test_files/shared.jar" />
 	<property name="userprofile_and_audit_back_end.jar" value="test_files/userprofile_and_audit_back_end.jar" />
 	<property name="mock_For_deploy.jar" value="test_files/mock_For_deploy.jar" />
@@ -20,9 +20,9 @@
   <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.1.0/document_generator.jar"/>
 	<property name="random_string_generator.jar" value="${tcs_libdir}/random_string_generator/1.0/random_string_generator.jar"/>
 	<property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
-		<property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.2.0/configuration_manager.jar"/>
+	<property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.2.0/configuration_manager.jar"/>
 	
-		<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+	<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
 	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
 	<property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.0.2/id_generator.jar"/>
   <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1.0/db_connection_factory.jar"/>
