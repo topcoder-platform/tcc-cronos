@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE struts PUBLIC
+      "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+      "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+    <constant name="struts.devMode" value="true" />
+
+
+	
+	
+	<package name="default" extends="struts-default">
+	<interceptors>
+            <interceptor name="mockInterceptor" class="mockInterceptor"/> 
+			<interceptor-stack name="interceptors">				
+				<interceptor-ref name="defaultStack" />												
+				<interceptor-ref name="mockInterceptor"/>
+			</interceptor-stack>			
+        </interceptors>
+
+		<default-interceptor-ref name="interceptors"/>
+       
+
+	<action name="baseProfileAction" class="baseProfileAction">	
+		<result name="success">/mock.jsp</result>	
+	</action>
+
+		<action name="action" class="action">	
+		<result name="success">/success.jsp</result>	
+	</action>
+	
+	<action name="baseDisplayProfileAction" class="baseProfileAction">						
+		<result name="success">/mock.jsp</result>
+	</action>
+	
+	<action name="emailSendingProfileAction" class="emailSendingProfileAction">						
+		<result name="success">/mock.jsp</result>
+	</action>
+	
+	<action name="baseSaveProfileAction" class="emailSendingProfileAction">						
+		<result name="success">/mock.jsp</result>
+	</action>
+
+	<action name="saveNameAndContactAction" class="saveNameAndContactAction" method="execute">						
+		<result name="input">/error.jsp</result>
+		<result name="error">/error.jsp</result>
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	<action name="viewNameAndContactAction" class="viewNameAndContactAction">						
+		<result name="success">/viewNameAndContactAction.jsp</result>
+	</action>
+	
+	<action name="editNameAndContactAction" class="editNameAndContactAction">						
+		<result name="success">/editNameAndContactAction.jsp</result>
+	</action>
+	
+	<action name="saveDemographicInfoAction" class="saveDemographicInfoAction">						
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	<action name="viewDemographicInfoAction" class="viewDemographicInfoAction">						
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	<action name="editDemographicInfoAction" class="editDemographicInfoAction">						
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	<action name="saveAccountInfoAction" class="saveAccountInfoAction">						
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	<action name="viewProfileCompletenessAction" class="viewProfileCompletenessAction">						
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	<action name="completeProfileAction" class="completeProfileAction">						
+		<result name="Save Contact">/success.jsp</result>
+		<result name="Save Demographic">/success.jsp</result>
+		<result name="Save Demographic">/success.jsp</result>
+	</action>
+	
+	</package>
+</struts>

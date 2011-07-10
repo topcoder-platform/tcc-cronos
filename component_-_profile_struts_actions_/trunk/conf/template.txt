@@ -1,0 +1,4 @@
+Hello %HANDLE%,
+Your id is %ID%.
+Your handle is %HANDLE%.
+Regards.

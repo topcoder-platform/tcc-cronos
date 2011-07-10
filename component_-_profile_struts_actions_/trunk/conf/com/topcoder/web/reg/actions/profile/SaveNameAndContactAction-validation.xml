@@ -1,0 +1,121 @@
+<!-- 
+/*
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ */
+-->
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<!--
+/**
+ * <p>
+ * Validation file.
+ * </p>
+ *
+ * @author argolite, TCSDEVELOPER
+ * @version 1.0
+ */
+-->
+<validators>
+
+   <field name="savedUser.firstName">   
+   <field-validator type="requiredstring">
+        <message key="email.required" />
+    </field-validator>
+    <field-validator type="stringlength">
+        <param name="maxLength">15</param>
+        <message key="firstName.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.lastName">
+    <field-validator type="stringlength">
+        <param name="maxLength">15</param>
+        <message key="lastName.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.primaryAddress.address">
+    
+    <field-validator type="stringlength">
+        <param name="maxLength">100</param>
+        <message key="email.invalid.length" />
+    </field-validator>
+    <field-validator type="email">
+        <message key="email.invalid.format" />
+    </field-validator>
+</field>
+<field name="savedUser.contact.title">
+    <field-validator type="stringlength">
+        <param name="maxLength">100</param>
+        <message key="jobtitle.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.contact.company.name">
+    <field-validator type="stringlength">
+        <param name="maxLength">100</param>
+        <message key="companyname.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.homeAddress.address1">
+    <field-validator type="stringlength">
+        <param name="maxLength">100</param>
+        <message key="address1.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.homeAddress.address2">
+    <field-validator type="stringlength">
+        <param name="maxLength">100</param>
+        <message key="address2.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.homeAddress.address3">
+    <field-validator type="stringlength">
+        <param name="maxLength">100</param>
+        <message key="address3.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.homeAddress.city">
+    <field-validator type="stringlength">
+        <param name="maxLength">64</param>
+        <message key="city.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="state">
+    <field-validator type="stringlength">
+        <param name="maxLength">2</param>
+        <message key="state.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.homeAddress.postalCode">
+    <field-validator type="stringlength">
+        <param name="maxLength">15</param>
+        <message key="lastName.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.homeAddress.province">
+    <field-validator type="stringlength">
+        <param name="minLength">4</param>
+        <param name="maxLength">15</param>
+        <message key="lastName.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.primaryPhoneNumber.number">
+    <field-validator type="stringlength">
+        <param name="maxLength">64</param>
+        <message key="lastName.invalid.length" />
+    </field-validator>
+</field>
+
+	
+</validators>
