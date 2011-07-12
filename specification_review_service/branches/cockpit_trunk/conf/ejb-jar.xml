@@ -39,7 +39,9 @@ Submit the specification review scorecard when you are finished reviewing the co
     Be sure to use the guide found in the Wiki regarding spec review: http://apps.topcoder.com/wiki/display/tcstudio/Reviewer+Process+for+Studio+Spec+Reviews.
     If you need help, you can contact fellow spec reviewers and Studio Admin in this private forum: http://studio.topcoder.com/forums?module=ThreadList&amp;forumID=855
 
-If any elements of the contest are missing or confusing you should fail the spec and comment appropriately in the scorecard. Your comments should be detailed, helpful and contain links to appropriate help files or Wiki pages found within the Studio Guide for Contest Holders: http://apps.topcoder.com/wiki/display/tcstudio/Studio+Guide+for+Contest+Holders.</env-entry-value>
+If any elements of the contest are missing or confusing you should fail the spec and comment appropriately in the scorecard. 
+Your comments should be detailed, helpful and contain links to appropriate help files or Wiki pages found within 
+the Studio Guide for Contest Holders: http://apps.topcoder.com/wiki/display/tcstudio/Studio+Guide+for+Contest+Holders.</env-entry-value>
 				</env-entry>
 
 				<env-entry>
