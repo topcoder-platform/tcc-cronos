@@ -435,8 +435,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(
                 getManagerHelper().getUploadManager(),
                     "Failed Review");
-            SubmissionStatus noWinStatus = PhasesHelper.getSubmissionStatus(getManagerHelper().getUploadManager(),
-                    "Completed Without Win");
 
             Resource winningSubmitter = null;
             Resource runnerUpSubmitter = null;
@@ -469,7 +467,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                             if (placement == 2) {
                                 runnerUpSubmitter = submitter;
                             }
-                            submission.setSubmissionStatus(noWinStatus);
                         }
                     }
                     getManagerHelper().getUploadManager().updateSubmission(submission, operator);
