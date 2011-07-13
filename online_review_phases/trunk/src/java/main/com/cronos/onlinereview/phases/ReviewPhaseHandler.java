@@ -431,11 +431,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             // following for studio project.
             RankedSubmission[] placements = scoreAggregator.calcPlacements(aggregations);
 
-            // status objects
-            SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(
-                getManagerHelper().getUploadManager(),
-                    "Failed Review");
-
             Resource winningSubmitter = null;
             Resource runnerUpSubmitter = null;
 
@@ -456,9 +451,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                     submission.setFinalScore(Double.valueOf(aggScore + ""));
                     submission.setPlacement(new Long(placement));
 
-                    if (aggScore < minScore && submission.getSubmissionStatus().getDescription().equals("Active")) {
-                        submission.setSubmissionStatus(failedStatus);
-                    } else {
+                    if (aggScore >= minScore) {
                         // cache winning submitter.
                         if (placement == 1) {
                             winningSubmitter = submitter;
@@ -485,7 +478,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             // studio project type id is 3.
             if (isStudioProject) {
                 // set the contest prize.
-                PhasesHelper.setSubmissionPrize(getManagerHelper(), phase.getProject().getId(), subs, "Contest Prize");
+                PhasesHelper.setSubmissionPrize(project, subs, "Contest Prize", minScore);
                 for (int iSub = 0; iSub < subs.length; iSub++) {
                     getManagerHelper().getUploadManager().updateSubmission(subs[iSub], operator);
                 }

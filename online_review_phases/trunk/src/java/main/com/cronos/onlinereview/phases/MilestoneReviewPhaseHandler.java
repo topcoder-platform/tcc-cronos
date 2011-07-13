@@ -385,6 +385,9 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
             SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(
                 getManagerHelper().getUploadManager(), "Failed Milestone Review");
 
+            Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
+            boolean isStudioProject = project.getProjectCategory().getProjectType().getId() == PhasesHelper.STUDIO_PROJECT_TYPE_ID;
+            
             // Assign placements to submissions based on scores
             for (int iSub = 0; iSub < subs.length; iSub++) {
                 Submission submission = subs[iSub];
@@ -393,7 +396,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
                     if (rankedSubmission.getId() == submission.getId()) {
                         submission.setPlacement(rankedSubmission.getRank() * 1L);
                         float aggScore = rankedSubmission.getAggregatedScore();
-                        if (aggScore < minScore) {
+                        if (!isStudioProject && aggScore < minScore) {
                             submission.setSubmissionStatus(failedStatus);
                         }
                         break;
@@ -402,7 +405,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
             }
 
             // set the milestone prize.
-            PhasesHelper.setSubmissionPrize(getManagerHelper(), phase.getProject().getId(), subs, "Milestone Prize");
+            PhasesHelper.setSubmissionPrize(project, subs, "Milestone Prize", minScore);
 
             // update the submissions
             for (int iSub = 0; iSub < subs.length; iSub++) {

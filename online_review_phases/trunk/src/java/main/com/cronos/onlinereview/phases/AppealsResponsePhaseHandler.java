@@ -469,7 +469,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             } // end for
 
             // set the contest prize.
-            PhasesHelper.setSubmissionPrize(getManagerHelper(), phase.getProject().getId(), subs, "Contest Prize");
+            PhasesHelper.setSubmissionPrize(getManagerHelper(), phase.getProject().getId(), subs, "Contest Prize", minScore);
 
             // update the submissions
             for (int iSub = 0; iSub < subs.length; iSub++) {

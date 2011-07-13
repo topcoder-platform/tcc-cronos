@@ -158,7 +158,7 @@ import com.topcoder.util.log.Log;
  * <p>
  * Version 1.7.1 (BUGR-4779) Change notes:
  * <ol>
- * <li>Added {@link #setSubmissionPrize(ManagerHelper, long, Submission[], String)} method to populate prizes for submissions.</li>
+ * <li>Added {@link #setSubmissionPrize(com.topcoder.management.project.Project, Submission[], String, double)} method to populate prizes for submissions.</li>
  * </ol>
  * </p>
  *
@@ -2624,26 +2624,27 @@ final class PhasesHelper {
     /**
      * Populate the prize for the submissions.
      *
-     * @param managerHelper the <code>ManagerHelper</code>instance.
-     * @param projectId the project id
+     * @param project the project which the submissions belongs to
      * @param subs the submissions
      * @param prizeType the prize type needs to be populated
+     * @param minScore the minimum score the submission can receive prize
      * @throws com.topcoder.management.project.PersistenceException if any persistence error occurs
      * @since 1.7.1
      */
-    public static void setSubmissionPrize(ManagerHelper managerHelper, long projectId, Submission[] subs, String prizeType)
-        throws com.topcoder.management.project.PersistenceException {
-        com.topcoder.management.project.Project project = managerHelper.getProjectManager().getProject(projectId);
-
+    public static void setSubmissionPrize(com.topcoder.management.project.Project project, Submission[] subs, String prizeType, double minScore) {
         List<Prize> prizes = project.getPrizes();
 
         if (prizes != null && !prizes.isEmpty()) {
             prizes = new ArrayList<Prize>(prizes);
+            // the prize which has the smallest prize amount
+            Prize minPrize = null;
             for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
                 Prize prize = iter.next();
 
                 if (!prizeType.equals(prize.getPrizeType().getDescription())) {
                     iter.remove();
+                } else if (minPrize == null || minPrize.getPrizeAmount() > prize.getPrizeAmount()) {
+                    minPrize = prize;
                 }
             }
 
@@ -2672,9 +2673,14 @@ final class PhasesHelper {
                 int currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
                 for (int i = 0; i < subs.length; i++) {
                     Submission submission = subs[i];
-                    if (!(submission.getSubmissionStatus().getName().equals("Active")
+                    if (submission.getFinalScore().doubleValue() < minScore || 
+                            !(submission.getSubmissionStatus().getName().equals("Active")
                             || submission.getSubmissionStatus().getName().equals("Completed Without Win"))) {
                         continue;
+                    }
+				    if (submission.isExtra()) {
+                        submission.setPrize(minPrize);
+						continue;
                     }
                     if (currentPrizeNumLeft > 0) {
                         currentPrizeNumLeft--;
@@ -2691,5 +2697,21 @@ final class PhasesHelper {
                 }
             }
         }
+    }
+    
+    /**
+     * Populate the prize for the submissions.
+     *
+     * @param managerHelper the <code>ManagerHelper</code>instance.
+     * @param projectId the project id
+     * @param subs the submissions
+     * @param prizeType the prize type needs to be populated
+     * @param minScore the minimum score the submission can receive prize
+     * @throws com.topcoder.management.project.PersistenceException if any persistence error occurs
+     * @since 1.7.1
+     */
+    public static void setSubmissionPrize(ManagerHelper managerHelper, long projectId, Submission[] subs, String prizeType, double minScore)
+        throws com.topcoder.management.project.PersistenceException {
+        setSubmissionPrize(managerHelper.getProjectManager().getProject(projectId), subs, prizeType, minScore);
     }
 }
