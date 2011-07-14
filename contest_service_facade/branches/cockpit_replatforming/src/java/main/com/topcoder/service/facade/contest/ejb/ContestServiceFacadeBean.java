@@ -3018,7 +3018,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             SoftwareCompetition competition, CreditCardPaymentData paymentData) throws ContestServiceException, PermissionServiceException {
         logger.debug("processContestCreditCardSale");
 
-        return processContestSaleInternal(tcSubject, competition, paymentData, null);
+        return processContestSaleInternal(tcSubject, competition, paymentData, null, null);
     }
     
     /**
@@ -3032,16 +3032,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since Module Contest Service Software Contest Sales Assembly
      * @since 1.6.6
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
-            SoftwareCompetition competition, CreditCardPaymentData paymentData, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
+            SoftwareCompetition competition, CreditCardPaymentData paymentData, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException {
         logger.debug("processContestCreditCardSale");
 
-        return processContestSaleInternal(tcSubject, competition, paymentData, multiRoundEndDate);
+        return processContestSaleInternal(tcSubject, competition, paymentData, multiRoundEndDate, endDate);
     }
 
     /**
@@ -3063,7 +3064,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData) throws ContestServiceException, PermissionServiceException {
         logger.debug("processPurchaseOrderSale");
 
-        return processContestSaleInternal(tcSubject, competition, paymentData, null);
+        return processContestSaleInternal(tcSubject, competition, paymentData, null, null);
     }
     
     /**
@@ -3077,16 +3078,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since Module Contest Service Software Contest Sales Assembly
      * @since 1.6.6
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
-            SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
+            SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException {
         logger.debug("processPurchaseOrderSale");
 
-        return processContestSaleInternal(tcSubject, competition, paymentData, multiRoundEndDate);
+        return processContestSaleInternal(tcSubject, competition, paymentData, multiRoundEndDate, endDate);
     }
 
     /**
@@ -3108,13 +3110,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param competition data that recognizes a contest.
      * @param paymentData payment information (credit card/po details) that need to be processed.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return a <code>SoftwareContestPaymentResult</code> result of the payment processing.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since Module Contest Service Software Contest Sales Assembly
      * @since BUGR-1682 changed return value
      */
     private SoftwareContestPaymentResult processContestSaleInternal(TCSubject tcSubject,
-            SoftwareCompetition competition, PaymentData paymentData, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
+            SoftwareCompetition competition, PaymentData paymentData, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException {
         logger.info("SoftwareCompetition: " + competition);
         logger.info("PaymentData: " + paymentData);
         logger.info("tcSubject: " + tcSubject.getUserId());
@@ -3152,11 +3155,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (tobeUpdatedCompetition == null) {
                 tobeUpdatedCompetition =
-                    createSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId(), multiRoundEndDate);
+                    createSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId(), multiRoundEndDate, endDate);
             } else {
                 competition.setProjectHeaderReason("User Update");
                 tobeUpdatedCompetition =
-                    updateSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId(), multiRoundEndDate);
+                    updateSoftwareContest(tcSubject, competition, competition.getProjectHeader().getTcDirectProjectId(), multiRoundEndDate, endDate);
             }
 
             Project contest = tobeUpdatedCompetition.getProjectHeader();
@@ -4090,7 +4093,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
             long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
-        return createSoftwareContest(tcSubject, contest, tcDirectProjectId, null);
+        return createSoftwareContest(tcSubject, contest, tcDirectProjectId, null, null);
     }
     
     /**
@@ -4109,13 +4112,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param tcDirectProjectId the TC direct project id. a <code>long</code> providing the ID of a client the new
      *            competition belongs to.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return the created <code>SoftwareCompetition</code> as a contest
      * @throws IllegalArgumentException if the input argument is invalid.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since 1.6.6
      */
     public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
-            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
+            long tcDirectProjectId, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException {
         logger.debug("createSoftwareContest with information : [tcSubject = " + tcSubject.getUserId() + ", tcDirectProjectId ="
                 + tcDirectProjectId + ", multiRoundEndDate = " + multiRoundEndDate + "]");
 
@@ -4152,7 +4156,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             //create project now
             FullProjectData projectData = projectServices.createProjectWithTemplate(contest.getProjectHeader(),
-                        contest.getProjectPhases(), contest.getProjectResources(), multiRoundEndDate,
+                        contest.getProjectPhases(), contest.getProjectResources(), multiRoundEndDate, endDate,
                         String.valueOf(tcSubject.getUserId()));
 
             if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
@@ -4661,7 +4665,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
             long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
-        return updateSoftwareContest(tcSubject, contest, tcDirectProjectId, null);
+        return updateSoftwareContest(tcSubject, contest, tcDirectProjectId, null, null);
     }
     
     /**
@@ -4678,12 +4682,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param contest the <code>SoftwareCompetition</code> to update as a contest
      * @param tcDirectProjectId the TC direct project id.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @throws IllegalArgumentException if the input argument is invalid.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since 1.6.6
      */
     public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
-            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException {
+            long tcDirectProjectId, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException {
         logger.debug("updateSoftwareContest");
 
         try {
@@ -4767,6 +4772,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         contest.getProjectPhases(),
                         contest.getProjectResources(),
                         multiRoundEndDate,
+                        endDate,
                         String.valueOf(tcSubject.getUserId()));
 
                 // TCCC-1438 - it's better to refetch from backend.

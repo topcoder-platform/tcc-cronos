@@ -1360,6 +1360,7 @@ public interface ContestServiceFacade {
      *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return a <code>PaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException
@@ -1369,7 +1370,7 @@ public interface ContestServiceFacade {
      * @since 1.6.4
      */
     public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
-        SoftwareCompetition competition, CreditCardPaymentData paymentData, Date multiRoundEndDate)
+        SoftwareCompetition competition, CreditCardPaymentData paymentData, Date multiRoundEndDate, Date endDate)
         throws ContestServiceException, PermissionServiceException;
 
     /**
@@ -1413,6 +1414,7 @@ public interface ContestServiceFacade {
      *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return a <code>PaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException
@@ -1422,7 +1424,7 @@ public interface ContestServiceFacade {
      * @since 1.6.4
      */
     public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
-        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, Date multiRoundEndDate)
+        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, Date multiRoundEndDate, Date endDate)
         throws ContestServiceException, PermissionServiceException;
 
     /**
@@ -1631,13 +1633,14 @@ public interface ContestServiceFacade {
      * @param tcDirectProjectId the TC direct project id. a <code>long</code> providing the ID of a client the new
      *            competition belongs to.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return the created <code>SoftwareCompetition</code> as a contest
      * @throws IllegalArgumentException if the input argument is invalid.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since 1.6.4
      */
     public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
-            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException;
+            long tcDirectProjectId, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException;
     
     /**
      * <p>
@@ -1702,12 +1705,13 @@ public interface ContestServiceFacade {
      * @param contest the <code>SoftwareCompetition</code> to update as a contest
      * @param tcDirectProjectId the TC direct project id.
      * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @throws IllegalArgumentException if the input argument is invalid.
      * @throws ContestServiceException if an error occurs when interacting with the service layer.
      * @since 1.6.4
      */
     public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
-            long tcDirectProjectId, Date multiRoundEndDate) throws ContestServiceException, PermissionServiceException;
+            long tcDirectProjectId, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException;
     
     /**
      * <p>
