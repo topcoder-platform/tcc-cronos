@@ -1717,6 +1717,74 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
             com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, Date multiRoundEndDate, String operator) {
+        return updateProject(projectHeader, projectHeaderReason, projectPhases, projectResources, multiRoundEndDate, null, operator);
+    }
+    
+    /**
+     * <p>
+     * Update the project and all related data. First it updates the projectHeader a
+     * com.topcoder.management.project.Project instance. All related items will be updated. If items
+     * are removed from the project, they will be deleted from the persistence. Likewise, if new
+     * items are added, they will be created in the persistence. For the project, its properties and
+     * associating scorecards, the operator parameter is used as the modification user and the
+     * modification date will be the current date time when the project is updated. See the source
+     * code of Project Management component, ProjectManager: there is a 'reason' parameter in
+     * updateProject method.
+     * </p>
+     * <p>
+     * Then it updates the phases a com.topcoder.project.phases.Project instance. The id of
+     * projectHeader previous saved must be equal to projectPhases' id. The
+     * projectPhases.phases.project's id must be equal to projectHeader's id. The phases of the
+     * specified project are compared to the phases already in the database. If any new phases are
+     * encountered, they are added to the persistent store. If any phases are missing from the
+     * input, they are deleted. All other phases are updated.
+     * </p>
+     * <p>
+     * At last it updates the resources, they can be empty. Any resources in the array with UNSET_ID
+     * are assigned an id and updated in the persistence. Any resources with an id already assigned
+     * are updated in the persistence. Any resources associated with the project in the persistence
+     * store, but not appearing in the array are removed. The resource.project must be equal to
+     * projectHeader's id. The resources which have a phase id assigned ( a resource could not have
+     * the phase id assigned), must have the phase id contained in the projectPhases.phases' ids.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectHeaderReason
+     *            the reason of projectHeader updating.
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null or projectHeader.id is nonpositive;</li>
+     *             <li>if projectHeaderReason is null or empty;</li>
+     *             <li>if projectPhases is null, or if the phases of projectPhases are empty, or if
+     *             the projectPhases.id is not equal to projectHeader.id, or for each phase: if the
+     *             phase.object is not equal to projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>for each resource: if resource.getResourceRole() is null, or if the resource
+     *             role is associated with a phase type but the resource is not associated with a
+     *             phase, or if the resource.phase (id of phase) is set but it's not in
+     *             projectPhases.phases' ids, or if the resource.project (project's id) is not equal
+     *             to projectHeader's id;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectDoesNotExistException
+     *             if the project doesn't exist in persistent store.
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the update operation
+     * @since 1.4.7
+     */
+    public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
+            com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, Date multiRoundEndDate, Date endDate, String operator) {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#updateProject method.");
 
         // check projectHeader
@@ -1807,7 +1875,10 @@ public class ProjectServicesImpl implements ProjectServices {
                 com.topcoder.project.phases.Project newProjectPhases = template.applyTemplate(templateName, leftOutPhaseIds,
                         PhaseType.REGISTRATION_PHASE.getId(), PhaseType.REGISTRATION_PHASE.getId(), projectPhases.getStartDate(), projectPhases.getStartDate());
                 if (multiRoundEndDate != null) {
-                    adjustPhaseForMilestoneEndDate(newProjectPhases, multiRoundEndDate);
+                    adjustPhaseForEndDate(PhaseType.MILESTONE_SUBMISSION_PHASE, newProjectPhases, multiRoundEndDate);
+                }
+                if (endDate != null) {
+                    adjustPhaseForEndDate(PhaseType.SUBMISSION_PHASE, newProjectPhases, endDate);
                 }
                 setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
                 newProjectPhases.setId(projectPhases.getId());
@@ -1887,6 +1958,23 @@ public class ProjectServicesImpl implements ProjectServices {
                         diff = multiRoundEndDate.getTime() - scheduler.getTime();
                         Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
                         multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+                    }
+                }
+                if (endDate != null) {
+                    // submission phase duration
+                    Util.log(logger, Level.INFO, "set duration for submission phase");
+                    Phase submissionPhase = null;
+                    for (Phase phase : phases) {
+                        if (phase.getPhaseType().getId() == PhaseType.SUBMISSION_PHASE.getId()) {
+                            submissionPhase = phase;
+                            break;
+                        }
+                    }
+                    if (submissionPhase != null) {
+                        Date scheduler = submissionPhase.calcEndDate();
+                        diff = endDate.getTime() - scheduler.getTime();
+                        Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
+                        submissionPhase.setLength(submissionPhase.getLength() + diff);
                     }
                 }
     
@@ -2438,7 +2526,65 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, Date multiRoundEndDate, String operator) {
-
+        return createProjectWithTemplate(projectHeader, projectPhases, projectResources, multiRoundEndDate, null, operator);
+    }
+    
+    /**
+     * <p>
+     * Persist the project and all related data. All ids (of project header, project phases and
+     * resources) will be assigned as new, for this reason there is no exception like 'project
+     * already exists'.
+     * </p>
+     * <p>
+     * First it persist the projectHeader a com.topcoder.management.project.Project instance. Its
+     * properties and associating scorecards, the operator parameter is used as the
+     * creation/modification user and the creation date and modification date will be the current
+     * date time when the project is created. The id in Project will be ignored: a new id will be
+     * created using ID Generator (see Project Management CS). This id will be set to Project
+     * instance.
+     * </p>
+     * <p>
+     * Then it persist the phases a com.topcoder.project.phases.Project instance. The id of project
+     * header previous saved will be set to project Phases. The phases' ids will be set to 0 (id not
+     * set) and then new ids will be created for each phase after persist operation.
+     * </p>
+     * <p>
+     * At last it persist the resources, they can be empty.The id of project header previous saved
+     * will be set to resources. The ids of resources' phases ids must be null. See &quot;id problem
+     * with resources&quot; thread in design forum. The resources could be empty or null, null is
+     * treated like empty: no resources are saved. The resources' ids will be set to UNSET_ID of
+     * Resource class and therefore will be persisted as new resources's.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null;</li>
+     *             <li>if projectPhases is null;</li>
+     *             <li>if the project of phases (for each phase: phase.project) is not equal to
+     *             projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>if for each resources: a required field of the resource is not set : if
+     *             resource.getResourceRole() is null;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the create operation
+     * @since 1.4.7
+     */
+    public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+            Resource[] projectResources, Date multiRoundEndDate, Date endDate, String operator) {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createProjectWithTemplate method.");
 
         ExceptionUtils.checkNull(projectHeader, null, null, "The parameter[projectHeader] should not be null.");
@@ -2481,7 +2627,11 @@ public class ProjectServicesImpl implements ProjectServices {
 
             if (multiRoundEndDate != null) {
                 // multiround phase duration
-                adjustPhaseForMilestoneEndDate(newProjectPhases, multiRoundEndDate);
+                adjustPhaseForEndDate(PhaseType.MILESTONE_SUBMISSION_PHASE, newProjectPhases, multiRoundEndDate);
+            }
+            if (endDate != null) {
+                // submission phase duration
+                adjustPhaseForEndDate(PhaseType.SUBMISSION_PHASE, newProjectPhases, endDate);
             }
 
             setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
@@ -2512,6 +2662,7 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createProjectWithTemplate method.");
         }
     }
+    
     /**
      * <p>
      * Get SimpleProjectContestData for all projects.
@@ -4392,24 +4543,25 @@ public class ProjectServicesImpl implements ProjectServices {
     }
 
     /**
-     * Adjust the duration of the milestone submission phase to meet the milestone submission end date.
+     * Adjust the duration of the phase to meet the specified end date.
      *
+     * @param phaseType the phase type to adjust
      * @param project the project phases
-     * @param multiRoundEndDate the milestone submission end date. 
+     * @param endDate the specified end date. 
      * @since 1.4.5
      */
-    private static void adjustPhaseForMilestoneEndDate(com.topcoder.project.phases.Project project, Date multiRoundEndDate) {
-        Phase multiRoundPhase = null;
+    private static void adjustPhaseForEndDate(PhaseType phaseType, com.topcoder.project.phases.Project project, Date endDate) {
+        Phase targetPhase = null;
         for (Phase phase : project.getAllPhases()) {
-            if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
-                multiRoundPhase = phase;
+            if (phase.getPhaseType().getId() == phaseType.getId()) {
+                targetPhase = phase;
                 break;
             }
         }
-        if (multiRoundPhase != null) {
-            Date scheduler = multiRoundPhase.calcEndDate();
-            long diff = multiRoundEndDate.getTime() - scheduler.getTime();
-            multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+        if (targetPhase != null) {
+            Date scheduler = targetPhase.calcEndDate();
+            long diff = endDate.getTime() - scheduler.getTime();
+            targetPhase.setLength(targetPhase.getLength() + diff);
         }
     }
 
