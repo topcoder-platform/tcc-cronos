@@ -7,10 +7,7 @@
 
     <!-- TCS dependencies -->
     <property name="tc_lib.jar" value="${test_reflib}/tc_lib.jar"/>
-	<property name="shared.jar" value="${test_reflib}/shared.jar"/>
-	
-	
-	
+	  <property name="shared.jar" value="${test_reflib}/shared.jar"/>
 	
 	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
 	<property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
@@ -27,10 +24,8 @@
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar"/>
-    <property name="mockito.jar" value="${ext_libdir}/mockito/1.8.5/mockito-all-1.8.5.jar"/>
-	
-	<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15.jar"/>
-
+    <property name="mockito.jar" value="${ext_libdir}/mockito/1.8.5/mockito-all-1.8.5.jar"/>	
+	  <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15.jar"/>
 
     <!-- Struts jars -->
     <property name="struts_dir" value="${ext_libdir}/struts/2.2.3/lib"/>
@@ -39,75 +34,62 @@
     <property name="ognl-3.0.1.jar" value="${struts_dir}/ognl-3.0.1.jar"/>
     <property name="freemarker-2.3.16.jar" value="${struts_dir}/freemarker-2.3.16.jar"/>
     <property name="struts2-spring-plugin-2.2.3.jar" value="${struts_dir}/struts2-spring-plugin-2.2.3.jar"/>
-	<property name="struts2-junit-plugin-2.2.3.jar" value="${struts_dir}/struts2-junit-plugin-2.2.3.jar"/>
-	<property name="commons-fileupload-1.2.2.jar" value="${struts_dir}/commons-fileupload-1.2.2.jar" />
-	<property name="commons-lang-2.5.jar" value="${struts_dir}/commons-lang-2.5.jar" />
-	<property name="commons-io-2.0.1.jar" value="${struts_dir}/commons-io-2.0.1.jar" />
-	<property name="commons-logging-1.1.1.jar" value="${struts_dir}/commons-logging-1.1.1.jar" />
-	<property name="commons-logging-api-1.1.jar" value="${struts_dir}/commons-logging-api-1.1.jar" />
-	<property name="javassist-3.11.0.GA.jar" value="${struts_dir}/javassist-3.11.0.GA.jar" />
+	  <property name="struts2-junit-plugin-2.2.3.jar" value="${struts_dir}/struts2-junit-plugin-2.2.3.jar"/>
+	  <property name="commons-fileupload-1.2.2.jar" value="${struts_dir}/commons-fileupload-1.2.2.jar" />
+	  <property name="commons-lang-2.5.jar" value="${struts_dir}/commons-lang-2.5.jar" />
+	  <property name="commons-io-2.0.1.jar" value="${struts_dir}/commons-io-2.0.1.jar" />
+	  <property name="commons-logging-1.1.1.jar" value="${struts_dir}/commons-logging-1.1.1.jar" />
+	  <property name="commons-logging-api-1.1.jar" value="${struts_dir}/commons-logging-api-1.1.jar" />
+	  <property name="javassist-3.11.0.GA.jar" value="${struts_dir}/javassist-3.11.0.GA.jar" />
 
     <!-- Spring jars -->
     <property name="spring_dir" value="${ext_libdir}/spring/2.5.6/dist"/>
     <property name="spring.jar" value="${spring_dir}/spring.jar"/>
     <property name="spring-test.jar" value="${spring_dir}/modules/spring-test.jar"/>
 	
-
-	<!-- J2EE jars -->    
+	  <!-- J2EE jars -->    
     <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
-	<property name="mail.jar" value="${ext_libdir}/javamail/1.4.3/mail.jar"/>
-	
-    
+	  <property name="mail.jar" value="${ext_libdir}/javamail/1.4.3/mail.jar"/>	   
 
     <path id="component.tcs-dependencies">
-        <pathelement location="${tc_lib.jar}"/>
+      <pathelement location="${tc_lib.jar}"/>
     	<pathelement location="${shared.jar}"/>
-    	
-		
-		<pathelement location="${base_exception.jar}"/>
-		<pathelement location="${configuration_api.jar}"/>
-		<pathelement location="${configuration_manager.jar}"/>
-		<pathelement location="${configuration_persistence.jar}"/>
-		<pathelement location="${document_generator.jar}"/>
-		<pathelement location="${email_engine.jar}"/>
-		<pathelement location="${id_generator.jar}"/>
-		<pathelement location="${logging_wrapper.jar}"/>
-		<pathelement location="${object_formatter.jar}"/>
-		<pathelement location="${topcoder_commons_utility.jar}"/>
-		<pathelement location="${typesafe_enum.jar}"/>
+		  <pathelement location="${base_exception.jar}"/>
+		  <pathelement location="${configuration_api.jar}"/>
+	  	<pathelement location="${configuration_manager.jar}"/>
+	  	<pathelement location="${configuration_persistence.jar}"/>
+	  	<pathelement location="${document_generator.jar}"/>
+	  	<pathelement location="${email_engine.jar}"/>
+		  <pathelement location="${id_generator.jar}"/>
+		  <pathelement location="${logging_wrapper.jar}"/>
+		  <pathelement location="${object_formatter.jar}"/>
+		  <pathelement location="${topcoder_commons_utility.jar}"/>
+		  <pathelement location="${typesafe_enum.jar}"/>
     </path>
 
     <path id="component.3rdParty-dependencies">        
         <pathelement location="${javaee.jar}"/>
-    	<pathelement location="${log4j.jar}"/>  
+    	  <pathelement location="${log4j.jar}"/>  
         <pathelement location="${xwork-2.2.3.jar}"/>    	
         <pathelement location="${struts2-core-2.2.3.jar}"/>
     </path>
 
     <path id="component.test.3rdParty-dependencies">
         <pathelement location="${junit.jar}"/>
-        <pathelement location="${mockito.jar}"/>
-		
-		  	
-    	<pathelement location="${mail.jar}"/>
-    		    	
-		
+        <pathelement location="${mockito.jar}"/> 	
+    	  <pathelement location="${mail.jar}"/>
         <pathelement location="${spring.jar}"/>
         <pathelement location="${spring-test.jar}"/>
-		
-		<pathelement location="${ognl-3.0.1.jar}"/>
-		<pathelement location="${freemarker-2.3.16.jar}"/>
-    	<pathelement location="${struts2-spring-plugin-2.2.3.jar}"/>
-		<pathelement location="${struts2-junit-plugin-2.2.3.jar}"/>
-    	
-		<pathelement location="${commons-lang-2.5.jar}"/>
-		<pathelement location="${commons-fileupload-1.2.2.jar}"/>
-		<pathelement location="${commons-io-2.0.1.jar}"/>
-		<pathelement location="${commons-logging-1.1.1.jar}"/>
-    	<pathelement location="${commons-logging-api-1.1.jar}"/>
-		<pathelement location="${javassist-3.11.0.GA.jar}"/>
-
-		
+		    <pathelement location="${ognl-3.0.1.jar}"/>
+		    <pathelement location="${freemarker-2.3.16.jar}"/>
+      	<pathelement location="${struts2-spring-plugin-2.2.3.jar}"/>
+		    <pathelement location="${struts2-junit-plugin-2.2.3.jar}"/>   	
+	    	<pathelement location="${commons-lang-2.5.jar}"/>
+		    <pathelement location="${commons-fileupload-1.2.2.jar}"/>
+		    <pathelement location="${commons-io-2.0.1.jar}"/>
+		    <pathelement location="${commons-logging-1.1.1.jar}"/>
+       	<pathelement location="${commons-logging-api-1.1.jar}"/>
+		    <pathelement location="${javassist-3.11.0.GA.jar}"/>
     </path>
 
 	<target name="demo_war" depends="compile_tests">
@@ -129,7 +111,6 @@
 			<lib dir="${test_reflib}">
 				<include name="*.jar" />
 			</lib>
-
 
 		<lib file="${base_exception.jar}"/>
 		<lib file="${configuration_api.jar}"/>
@@ -159,14 +140,12 @@
 				<include name="javassist-3.11.0.GA.jar" />
 			</lib>
 
-
 			<lib dir="${spring_dir}">
 				<include name="spring.jar" />				
 			</lib>
 			<lib dir="${spring_dir}/modules/">			                
 			    <include name="spring-test.jar" />
 			</lib>
-
 
 
 			<lib dir="${ext_libdir}/mockito/1.8.5/">
