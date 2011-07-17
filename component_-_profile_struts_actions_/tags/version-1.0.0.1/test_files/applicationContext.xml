@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+    "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+  <!-- Create document generator -->
+  <bean id="configurationFileManager" class="com.topcoder.configuration.persistence.ConfigurationFileManager">
+    <constructor-arg value="com/topcoder/util/config/ConfigManager.properties"/>
+  </bean>
+  <bean id="documentGeneratorNamespaceConfiguration" class="com.topcoder.configuration.ConfigurationObject" factory-bean="configurationFileManager" factory-method="getConfiguration" >
+    <constructor-arg value="com.topcoder.util.file"/>
+  </bean>
+  <bean id="documentGeneratorConfiguration" class="com.topcoder.configuration.ConfigurationObject" factory-bean="documentGeneratorNamespaceConfiguration" factory-method="getChild" >
+    <constructor-arg value="com.topcoder.util.file"/>
+  </bean>
+  <bean id="documentGenerator" class="com.topcoder.util.file.DocumentGeneratorFactory" factory-method="getDocumentGenerator">
+    <constructor-arg ref="documentGeneratorConfiguration"/>
+  </bean>
+
+  <!-- Create logger -->
+  <bean id="logger" class="com.topcoder.util.log.LogManager" factory-method="getLog">
+    <constructor-arg value="com.topcoder.web.reg.actions.miscellaneous"/>
+  </bean>
+
+  <bean id="baseProfileAction" class="com.topcoder.web.reg.mock.MockBaseDisplayProfileAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="Base Display Operation" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+  </bean>
+  
+   <bean id="emailSendingProfileAction" class="com.topcoder.web.reg.mock.MockBaseSaveProfileAction">
+   <!-- base properties -->
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="Email Sending Operation" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />
+	<!-- email sending properties -->	
+	<property name="documentGenerator" ref="documentGenerator" />	
+	<property name="emailSubject" value="This is email subject" />	
+	<property name="emailSender" value="sender@example.com" />	
+	<property name="emailBodyTemplateSourceId" value="file" />	
+	<property name="emailBodyTemplateName" value="template.txt" />	
+	
+  </bean>
+  
+    <bean id="saveNameAndContactAction" class="com.topcoder.web.reg.actions.profile.SaveNameAndContactAction">
+   <!-- base properties -->
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="save profile contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />
+	<!-- email sending properties -->	
+	<property name="documentGenerator" ref="documentGenerator" />	
+	<property name="emailSubject" value="This is email subject" />	
+	<property name="emailSender" value="sender@example.com" />	
+	<property name="emailBodyTemplateSourceId" value="file" />	
+	<property name="emailBodyTemplateName" value="template.txt" />	
+	
+	<property name="countryDAO" ref="countryDAO" />
+	<property name="stateDAO" ref="stateDAO" />
+	<property name="timeZoneDAO" ref="timeZoneDAO" />
+  </bean>
+
+   <bean id="viewNameAndContactAction" class="com.topcoder.web.reg.actions.profile.ViewNameAndContactAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="view name and contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+  </bean>
+  
+   <bean id="editNameAndContactAction" class="com.topcoder.web.reg.actions.profile.EditNameAndContactAction" >
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="edit name and contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+	
+	<property name="countryDAO" ref="countryDAO" />
+	<property name="timeZoneDAO" ref="timeZoneDAO" />
+  </bean>
+  
+    <bean id="saveDemographicInfoAction" class="com.topcoder.web.reg.actions.profile.SaveDemographicInfoAction">
+   <!-- base properties -->
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="save profile contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />
+	<!-- email sending properties -->	
+	<property name="documentGenerator" ref="documentGenerator" />	
+	<property name="emailSubject" value="This is email subject" />	
+	<property name="emailSender" value="sender@example.com" />	
+	<property name="emailBodyTemplateSourceId" value="file" />	
+	<property name="emailBodyTemplateName" value="template.txt" />	
+	
+	<property name="demographicQuestionDAO" ref="demographicQuestionDAO" />
+  </bean>
+  
+  
+   <bean id="viewDemographicInfoAction" class="com.topcoder.web.reg.actions.profile.ViewDemographicInfoAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="view name and contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+	
+	<property name="demographicQuestionDAO" ref="demographicQuestionDAO" />
+  </bean>
+  
+   <bean id="editDemographicInfoAction" class="com.topcoder.web.reg.actions.profile.EditDemographicInfoAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="view name and contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+	
+	<property name="demographicQuestionDAO" ref="demographicQuestionDAO" />
+  </bean>
+  
+     <bean id="saveAccountInfoAction" class="com.topcoder.web.reg.actions.profile.SaveAccountInfoAction">
+   <!-- base properties -->
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="save profile contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />
+	<!-- email sending properties -->	
+	<property name="documentGenerator" ref="documentGenerator" />	
+	<property name="emailSubject" value="This is email subject" />	
+	<property name="emailSender" value="sender@example.com" />	
+	<property name="emailBodyTemplateSourceId" value="file" />	
+	<property name="emailBodyTemplateName" value="template.txt" />	
+	
+	<property name="principalMgr" ref="principalMgr" />
+	
+  </bean>
+  
+  <bean id="viewAccountInfoAction" class="com.topcoder.web.reg.actions.profile.ViewAccountInfoAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="view name and contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+	
+	<property name="principalMgr" ref="principalMgr" />
+	
+  </bean>
+  
+   <bean id="editAccountInfoAction" class="com.topcoder.web.reg.actions.profile.EditAccountInfoAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="view name and contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+	
+	<property name="coderTypeDAO" ref="coderTypeDAO" />
+	<property name="principalMgr" ref="principalMgr" />
+  </bean>
+  
+   <bean id="completeProfileAction" class="com.topcoder.web.reg.actions.profile.CompleteProfileAction">
+<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="Base Display Operation" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+  </bean>
+  
+   <bean id="viewProfileCompletenessAction" class="com.topcoder.web.reg.actions.profile.ViewProfileCompletenessAction" >
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="auditOperationType" value="edit name and contact info" />
+	<property name="profileCompletenessRetriever" ref="mockProfileCompletenessRetriever" />	
+	
+	<property name="countryDAO" ref="countryDAO" />
+	<property name="timeZoneDAO" ref="timeZoneDAO" />
+	<property name="coderTypeDAO" ref="coderTypeDAO" />
+	<property name="demographicQuestionDAO" ref="demographicQuestionDAO" />
+  </bean>
+  
+  
+   <bean id="profileCompletenessRetriever" class="com.topcoder.web.reg.actions.profile.DefaultProfileCompletenessRetriever" >
+	<property name="profileTaskCheckers">
+		<list>
+			<ref bean="profileTaskChecker" />
+		</list>
+	</property>
+  </bean>
+  
+  <bean id="baseProfileTaskChecker" class="com.topcoder.web.reg.mock.MockBaseProfileTaskChecker" >
+	<property name="taskName" value="task" />
+  </bean>
+  
+   <bean id="accountInfoTaskChecker" class="com.topcoder.web.reg.actions.profile.AccountInfoTaskChecker" >
+	<property name="taskName" value="task" />
+  </bean>
+  
+   <bean id="contactInfoTaskChecker" class="com.topcoder.web.reg.actions.profile.ContactInfoTaskChecker" >
+	<property name="taskName" value="task" />
+  </bean>
+    
+   <bean id="demographicInfoTaskChecker" class="com.topcoder.web.reg.actions.profile.DemographicInfoTaskChecker" >
+	<property name="taskName" value="task" />
+  </bean>
+  <!-- DAOs -->
+   <bean id="userDAO" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getUserDAO" />
+	<bean id="auditDAO" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getAuditDAO" />		
+	<bean id="coderTypeDAO" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getCoderTypeDAO" />
+	<bean id="timeZoneDAO" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getTimeZoneDAO" />
+	<bean id="stateDAO" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getStateDAO" />
+	<bean id="demographicQuestionDAO" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getDemographicQuestionDAO" />
+	<bean id="countryDAO" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getCountryDAO" /> 
+	
+	<bean id="principalMgr" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getPrincipalMgr" /> 
+	
+	<bean id="profileTaskChecker" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getProfileTaskChecker" /> 
+	
+	
+   
+  <!-- Profile completeness -->
+<bean id="mockProfileCompletenessRetriever" class="com.topcoder.web.reg.mock.MockFactory" factory-method="getProfileCompletenessRetriever" />	
+
+	
+  <!-- Interceptor -->
+   <bean id="mockInterceptor" class="com.topcoder.web.reg.mock.MockInterceptor">
+   
+  </bean>
+</beans>

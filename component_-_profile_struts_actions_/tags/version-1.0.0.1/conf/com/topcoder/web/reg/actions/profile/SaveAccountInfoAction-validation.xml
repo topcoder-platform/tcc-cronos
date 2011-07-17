@@ -1,0 +1,99 @@
+<!-- 
+/*
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ */
+-->
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<!--
+/**
+ * <p>
+ * Validation file.
+ * </p>
+ *
+ * @author argolite, TCSDEVELOPER
+ * @version 1.0
+ */
+-->
+<validators>
+
+   <field name="savedUser.handle">
+    <field-validator type="requiredstring">
+        <message key="handle.required" />
+    </field-validator>
+    <field-validator type="stringlength">
+        <param name="minLength">2</param>
+        <param name="maxLength">15</param>
+        <message key="handle.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.password">
+    <field-validator type="requiredstring">
+        <message key="password.required" />
+    </field-validator>
+    <field-validator type="stringlength">
+        <param name="minLength">7</param>
+        <param name="maxLength">30</param>
+        <message key="password.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="confirmPassword">
+    <field-validator type="requiredstring">
+        <message key="password.required" />
+    </field-validator>
+    <field-validator type="stringlength">
+        <param name="minLength">7</param>
+        <param name="maxLength">30</param>
+        <message key="password.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="password">
+    <field-validator type="requiredstring">
+        <message key="password.required" />
+    </field-validator>
+    <field-validator type="stringlength">
+        <param name="minLength">7</param>
+        <param name="maxLength">30</param>
+        <message key="password.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.secretQuestion.question">
+    <field-validator type="stringlength">
+        <param name="minLength">8</param>
+        <param name="maxLength">254</param>
+        <message key="secretquestion.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.secretQuestion.answer">
+    <field-validator type="stringlength">
+        <param name="minLength">2</param>
+        <param name="maxLength">254</param>
+        <message key="secretquestionresponse.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="savedUser.userSecurityKey.securityKey">
+    <field-validator type="stringlength">
+        <param name="maxLength">2000</param>
+        <message key="securitykey.invalid.length" />
+    </field-validator>
+</field>
+
+<field name="referrerHandle">
+    <field-validator type="stringlength">
+        <param name="minLength">2</param>
+        <param name="maxLength">15</param>
+        <message key="handle.invalid.length" />
+    </field-validator>
+</field>
+
+
+	
+</validators>
