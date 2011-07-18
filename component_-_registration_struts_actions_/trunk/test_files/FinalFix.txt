@@ -1,0 +1,13 @@
+OK, all fixed.
+
+Change the fake stmp server.
+I use stmp4dev now, you can download it from internat.
+
+---------------------------------------------------------------
+about log:
+http://apps.topcoder.com/forums/?module=Thread&threadID=714778&start=0
+
+I wait for designer about 24h, but no response.
+And I think it's not a problem.
+Anyone do not like mess log message, so only affect parameter be logged is more better.
+

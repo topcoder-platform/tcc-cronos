@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="userDAO" class="com.topcoder.web.common.dao.hibernate.UserDAOHibernate">
+    </bean>
+
+    <bean id="auditDAO" class="com.topcoder.web.common.dao.hibernate.AuditDAOHibernate">
+    </bean>
+	
+	<bean id="registrationTypeDAO" class="com.topcoder.web.common.dao.hibernate.RegistrationTypeDAOHibernate">
+    </bean>
+
+    <bean id="servletRequest" class="com.topcoder.web.reg.actions.registration.MockServletRequest">
+    </bean>
+
+    <bean id="servletResponse" class="com.topcoder.web.reg.actions.registration.MockServletResponse">
+    </bean>
+
+    <bean id="httpSession" class="com.topcoder.web.reg.actions.registration.MockHttpSession">
+    </bean>
+
+    <bean id="persistor" class="com.topcoder.web.common.security.SessionPersistor">
+        <constructor-arg ref="httpSession" />
+    </bean>
+
+    <bean id="principalMgrRemote" class="com.topcoder.web.reg.actions.registration.MockPrincipalMgrRemote">
+    </bean>
+	
+	<bean id="logger" class="com.topcoder.util.log.LogManager" factory-method="getLog">
+	    <constructor-arg value="test" />
+    </bean>
+	
+	<bean id="randomStringImage" class="com.topcoder.randomstringimg.RandomStringImage">
+	    <constructor-arg value="conf/com/topcoder/randomstringimg/RandomStringImage.xml" />
+    </bean>
+
+    <bean id="webAuthentication" class="com.topcoder.web.reg.actions.registration.MockBasicAuthentication">
+        <constructor-arg ref="persistor" />
+        <constructor-arg ref="servletRequest" />
+        <constructor-arg ref="servletResponse" />
+    </bean>
+	
+	<bean id="fileTemplateSource" class="com.topcoder.util.file.templatesource.FileTemplateSource">
+    </bean>
+	
+	<bean id="documentGenerator" class="com.topcoder.util.file.DocumentGenerator">
+	    <property name="defaultTemplateSource" ref="fileTemplateSource" />
+    </bean>
+
+	<bean id="viewRegistrationPreferenceAction" class="com.topcoder.web.reg.actions.registration.ViewRegistrationPreferenceAction"
+		init-method="checkInitialization">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="webAuthentication" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="preCreateAccountAction" class="com.topcoder.web.reg.actions.registration.PreCreateAccountAction"
+		init-method="checkInitialization">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="webAuthentication" />
+		<property name="captchaImageGenerator" ref="randomStringImage" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="activateAccountAction" class="com.topcoder.web.reg.actions.registration.ActivateAccountAction"
+		init-method="checkInitialization">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="webAuthentication" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="emailSubject" />
+		<property name="emailSender" value="sender@topcoder.com" />
+		<property name="emailBodyTemplateName" value="test_files\valid-simple-comment.txt" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="registrationType1" class="com.topcoder.web.common.model.RegistrationType">
+        <constructor-arg value="3" />
+    </bean>
+	
+	<bean id="registrationType2" class="com.topcoder.web.common.model.RegistrationType">
+        <constructor-arg value="4" />
+    </bean>
+	
+	<bean id="registrationType3" class="com.topcoder.web.common.model.RegistrationType">
+        <constructor-arg value="4" />
+    </bean>
+	
+	<bean id="selectRegistrationPreferenceAction" class="com.topcoder.web.reg.actions.registration.SelectRegistrationPreferenceAction"
+		init-method="checkInitialization">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="webAuthentication" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="emailSubject" />
+		<property name="emailSender" value="sender@topcoder.com" />
+		<property name="emailBodyTemplateName" value="test_files\valid-simple-comment.txt" />
+		<property name="securityGroupDAO" ref="securityGroupDAO" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+			</map>
+		</property>
+		
+		<property name="userRegistrationTypes">
+			<set>
+				<ref bean="registrationType1" />
+				<ref bean="registrationType2" />
+				<ref bean="registrationType3" />
+			</set>
+		</property>
+	</bean>
+	
+	<bean id="sessionInfo" class="com.topcoder.web.common.SessionInfo">
+    </bean>
+	
+	<bean id="resendAccountActivationEmailAction" class="com.topcoder.web.reg.actions.registration.ResendAccountActivationEmailAction"
+		init-method="checkInitialization">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="webAuthentication" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="emailSubject" />
+		<property name="emailSender" value="sender@topcoder.com" />
+		<property name="emailBodyTemplateName" value="test_files\valid-simple-comment.txt" />
+		<property name="sessionInfoSessionKey" value="sessionInfoSessionKey" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+				<entry key="sessionInfoSessionKey">
+					<ref bean="sessionInfo" />
+				</entry>
+			</map>
+		</property>
+		
+		<property name="userRoles">
+			<set>
+				<ref bean="registrationType1" />
+				<ref bean="registrationType2" />
+				<ref bean="registrationType3" />
+			</set>
+		</property>
+	</bean>
+	
+	<bean id="securityGroupDAO" class="com.topcoder.web.common.dao.hibernate.SecurityGroupDAOHibernate">
+    </bean>
+	
+	<bean id="createAccountAction" class="com.topcoder.web.reg.actions.registration.CreateAccountAction"
+		init-method="checkInitialization">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="webAuthentication" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="emailSubject" />
+		<property name="emailSender" value="sender@topcoder.com" />
+		<property name="emailBodyTemplateName" value="test_files\valid-simple-comment.txt" />
+		<property name="sessionInfoSessionKey" value="sessionInfoSessionKey" />
+		<property name="principalMgr" ref="principalMgrRemote" />
+		<property name="securityGroupDAO" ref="securityGroupDAO" />
+
+		<property name="session">
+			<map>
+				<entry key="webAuthentication">
+					<ref bean="webAuthentication" />
+				</entry>
+				<entry key="sessionInfoSessionKey">
+					<ref bean="sessionInfo" />
+				</entry>
+			</map>
+		</property>
+		
+		<property name="userRoles">
+			<set>
+				<ref bean="registrationType1" />
+				<ref bean="registrationType2" />
+				<ref bean="registrationType3" />
+			</set>
+		</property>
+	</bean>
+	
+	<bean id="mockInterceptor" class="com.topcoder.web.reg.actions.registration.MockInterceptor">
+    </bean>
+
+    <!--Note that the configuration of DAO and EJB are omitted in this sample configuration file.-->
+</beans>

@@ -1,0 +1,4 @@
+Hello,
+Your activation code %ACTIVATION_CODE%.
+To activate your account please follow %PATH%.
+Regards.

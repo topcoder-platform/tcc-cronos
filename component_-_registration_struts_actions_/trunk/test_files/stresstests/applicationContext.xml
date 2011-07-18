@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+    "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+  <!-- Create document generator -->
+  <bean id="configurationFileManager" class="com.topcoder.configuration.persistence.ConfigurationFileManager">
+    <constructor-arg value="stresstests/conf/ConfigManager.properties"/>
+  </bean>
+  <bean id="documentGeneratorNamespaceConfiguration" class="com.topcoder.configuration.ConfigurationObject" factory-bean="configurationFileManager" factory-method="getConfiguration" >
+    <constructor-arg value="com.topcoder.util.file"/>
+  </bean>
+  <bean id="documentGeneratorConfiguration" class="com.topcoder.configuration.ConfigurationObject" factory-bean="documentGeneratorNamespaceConfiguration" factory-method="getChild" >
+    <constructor-arg value="com.topcoder.util.file"/>
+  </bean>
+  <bean id="documentGenerator" class="com.topcoder.util.file.DocumentGeneratorFactory" factory-method="getDocumentGenerator">
+    <constructor-arg ref="documentGeneratorConfiguration"/>
+  </bean>
+
+  <!-- Create logger -->
+  <bean id="logger" class="com.topcoder.util.log.LogManager" factory-method="getLog">
+    <constructor-arg value="test"/>
+  </bean>
+
+    <bean id="randomStringImage" class="com.topcoder.randomstringimg.RandomStringImage">
+	    <constructor-arg value="C:\tc\review\dev\registration\ff3\test_files\stresstests\conf\RandomStringImage.xml" />
+    </bean>
+  
+  <bean id="preCreateAccountAction" class="com.topcoder.web.reg.actions.registration.PreCreateAccountAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="session" ref="session" />
+	<property name="registrationTypeDAO" ref="registrationTypeDAO" />				
+	<property name="captchaImageGenerator" ref="randomStringImage" />
+	<property name="servletRequest" ref="servletRequest" />
+  </bean>
+  
+    <bean id="viewRegistrationPreferenceAction" class="com.topcoder.web.reg.actions.registration.ViewRegistrationPreferenceAction">
+	<property name="logger" ref="logger" />
+	<property name="auditDAO" ref="auditDAO" />
+	<property name="authenticationSessionKey" value="authenticationSessionKey" />	
+	<property name="userDAO" ref="userDAO" />	
+	<property name="session" ref="session" />
+	<property name="registrationTypeDAO" ref="registrationTypeDAO" />				
+	
+	<property name="servletRequest" ref="servletRequest" />
+  </bean>
+
+  <bean id="createAccountAction" class="com.topcoder.web.reg.actions.registration.CreateAccountAction">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="authenticationSessionKey" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="This is email subject!" />
+		<property name="emailSender" value="sender@example.com" />
+		<property name="emailBodyTemplateName" value="test_files\stresstests\registration_template.txt" />
+		<property name="sessionInfoSessionKey" value="sessionInfoSessionKey" />
+		<property name="principalMgr" ref="principalMgr" />
+		<property name="securityGroupDAO" ref="securityGroupDAO" />
+
+		<property name="session" ref="session" />		
+		<property name="userRoles"  ref="userRoles" />					
+	</bean>
+	
+	  <bean id="selectRegistrationPreferenceAction" class="com.topcoder.web.reg.actions.registration.SelectRegistrationPreferenceAction">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="authenticationSessionKey" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="This is email subject!" />
+		<property name="emailSender" value="sender@example.com" />
+		<property name="emailBodyTemplateName" value="test_files\stresstests\registration_template.txt" />										
+	</bean>
+	
+	<bean id="activateAccountAction" class="com.topcoder.web.reg.actions.registration.ActivateAccountAction">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="authenticationSessionKey" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="This is email subject!" />
+		<property name="emailSender" value="sender@example.com" />
+		<property name="emailBodyTemplateName" value="test_files\stresstests\registration_template.txt" />										
+	</bean>
+	
+	<bean id="resendAccountActivationEmailAction" class="com.topcoder.web.reg.actions.registration.ResendAccountActivationEmailAction">
+		<property name="logger" ref="logger" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="auditDAO" ref="auditDAO" />
+		<property name="registrationTypeDAO" ref="registrationTypeDAO" />
+		<property name="servletRequest" ref="servletRequest" />
+		<property name="authenticationSessionKey" value="authenticationSessionKey" />
+		<property name="documentGenerator" ref="documentGenerator" />
+		<property name="emailSubject" value="This is email subject!" />
+		<property name="emailSender" value="sender@example.com" />
+		<property name="emailBodyTemplateName" value="test_files\stresstests\registration_template.txt" />										
+		
+		<property name="session" ref="session" />
+		<property name="userRoles" ref="userRoles" />										
+		<property name="sessionInfoSessionKey" value="sessionInfoSessionKey" />										
+	</bean>
+  
+  <!-- DAOs -->
+   <bean id="userDAO" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getUserDAO" />
+	<bean id="auditDAO" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getAuditDAO" />		
+	<bean id="registrationTypeDAO" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getRegistrationTypeDAO" />		
+	<bean id="securityGroupDAO" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getSecurityGroupDAO" />		
+	<bean id="session" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getSession" />
+	<bean id="servletRequest" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getServletRequest" />
+	
+	<bean id="principalMgr" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getPrincipalMgr" /> 
+	<bean id="userRoles" class="com.topcoder.web.reg.stresstests.MockFactory" factory-method="getUserRoles" />
+	
+	
+	
+   
+
+
+
+   
+ 
+</beans>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE struts PUBLIC
+      "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+      "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.objectFactory" value="spring" />
+
+
+
+	<package name="default" namespace="/" extends="struts-default">
+
+		<interceptors>
+            <interceptor name="mockInterceptor" class="mockInterceptor"/>
+            <interceptor-stack name="interceptors">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="mockInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="interceptors"/>
+
+		<global-results>
+            <result name="error">/error.jsp</result>
+            <result name="input">/error.jsp</result>
+        </global-results>
+
+        <action name="preCreateAccountAction" class="preCreateAccountAction" >
+			<result name="success">register.jsp</result>
+		</action>
+
+        <action name="createAccountAction" class="createAccountAction" >
+			<result name="success">registration-confirmation.jsp</result>
+		</action>
+
+		<action name="resendAccountActivationEmailAction" class="resendAccountActivationEmailAction" >
+			<result name="success">registration-confirmation.jsp</result>
+		</action>
+
+		<action name="activateAccountAction" class="activateAccountAction" >
+			<result name="success">activated.jsp</result>
+		</action>
+
+		<action name="viewRegistrationPreferenceAction" class="viewRegistrationPreferenceAction" >
+			<result name="success">registration-preferences.jsp</result>
+		</action>
+
+		<action name="selectRegistrationPreferenceAction" class="selectRegistrationPreferenceAction" >
+			<result name="success">registration-preferences-updated.jsp</result>
+		</action>
+
+	</package>
+</struts>

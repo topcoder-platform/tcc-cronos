@@ -1,0 +1,7 @@
+1. Please configure test_files/stresstests/applicationContext.xml:
+ <bean id="randomStringImage" class="com.topcoder.randomstringimg.RandomStringImage">
+	      <constructor-arg value="D:\tc\ftech_tc\submission-87600-registration_struts_actions_1.0.0_dev_submission\test_files\stresstests\conf\RandomStringImage.xml" />
+    </bean>
+	as  it uses absolute path (new File(path))
+
+2. Configure other beans if you don't follow forum or user your own approach.

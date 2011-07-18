@@ -1,0 +1,233 @@
+<project name="Dependency Import" default="dist" basedir=".">
+	<!-- property file defining the component's dependencies -->
+
+	<!-- Properties used in compile_targets ANT target for JDK version x -->
+	<property name="component.target" value="1.x" />
+	<property name="component.bootclasspath" value="${java_1_x_bootclasspath}" />
+
+	<!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar" />
+    <property name="document_generator.jar" value="${tcs_libdir}/document_generator/3.1.1/document_generator.jar" />
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
+    <property name="random_string_image.jar" value="${tcs_libdir}/random_string_image/1.0/random_string_image.jar" />
+    <property name="spell_check.jar" value="${tcs_libdir}/spell_check/1.0/spell_check.jar" />
+    <property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar" />
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar" />
+    <property name="command_line_utility.jar" value="${tcs_libdir}/command_line_utility/1.0/command_line_utility.jar" />
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.2.0/configuration_manager.jar" />
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar" />
+
+	<!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/4.8.2/junit-4.8.2.jar" />
+	<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15.jar" />
+	<property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar" />
+
+	<property name="lib_user_profile.jar" value="test_files/lib_user_profile.jar" />
+	<property name="shared.jar" value="test_files/shared.jar" />
+	<property name="userprofile_and_audit_back_end.jar" value="test_files/userprofile_and_audit_back_end.jar" />
+	<property name="web_module_part_lib.jar" value="test_files/web_module_part_lib.jar" />
+	<property name="mock.jar" value="test_files/mock.jar" />
+	<property name="jbossall-client.jar" value="E:\servers\jboss-4.2.2.GA\client\jbossall-client.jar" />
+	<property name="objenesis.jar" value="${ext_libdir}/objenesis/1.2/objenesis-1.2.jar" />
+
+	<property name="easymock.dir" value="${ext_libdir}/easymock/3.0" />
+	<property name="javaee.dir" value="${ext_libdir}/javaee" />
+	<property name="javamail.dir" value="${ext_libdir}/javamail/1.4.3" />
+	<!--<property name="regular_libs.dir" value="${ext_libdir}/regular_libs" />-->
+	<property name="apache-commons.dir" value="${ext_libdir}/apache-commons" />
+	<property name="hibernate.dir" value="${ext_libdir}/hibernate-3.2" />
+	<property name="spring.dir" value="${ext_libdir}/spring/2.5.6" />
+	<property name="struts.dir" value="${ext_libdir}/struts/2.2.3" />
+	<property name="jai.dir" value="${ext_libdir}/jai-1_1_3/lib" />
+
+	<path id="component.tcs-dependencies">
+		<pathelement location="${base_exception.jar}" />
+		<pathelement location="${document_generator.jar}" />
+		<pathelement location="${logging_wrapper.jar}" />
+		<pathelement location="${object_formatter.jar}" />
+		<pathelement location="${random_string_image.jar}" />
+		<pathelement location="${spell_check.jar}" />
+		<pathelement location="${topcoder_commons_utility.jar}" />
+		<pathelement location="${typesafe_enum.jar}" />
+		<pathelement location="${logging_wrapper.jar}" />
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+		<pathelement location="${log4j.jar}" />
+		<pathelement location="${lib_user_profile.jar}" />
+		<pathelement location="${shared.jar}" />
+		<pathelement location="${userprofile_and_audit_back_end.jar}" />
+		<pathelement location="${web_module_part_lib.jar}" />
+		<pathelement location="${mock.jar}" />
+		<pathelement location="${jbossall-client.jar}" />
+		<pathelement location="${objenesis.jar}" />
+		<fileset dir="test_reflib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${javaee.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${javamail.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${regular_libs.dir}">
+			<include name="antlr-2.7.6.jar" />
+			<include name="asm-3.1.jar" />
+			<include name="asm-commons-3.1.jar" />
+			<include name="asm-tree-3.1.jar" />
+			<include name="cglib-2.2.jar" />
+			<include name="cdom4j-1.6.1.jar" />
+			<include name="javassist-3.12.0.GA.jar" />
+			<include name="json-lib-2.1-jdk15.jar" />
+			<include name="slf4j-api-1.6.1.jar" />
+			<include name="xerces-2.6.2.jar" />
+			<include name="xml-apis.jar" />
+		</fileset>
+		<fileset dir="${apache-commons.dir}">
+			<include name="commons-beanutils.jar" />
+			<include name="commons-collections.jar" />
+			<include name="commons-io-1.4.jar" />
+			<include name="commons-lang-2.5.jar" />
+			<include name="commons-logging-1.1.1.jar" />
+			<!--<include name="commons-logging-api-1.1.jar" />-->
+			<include name="commons-pool.jar" />
+			<!--<include name="commons-validator-1.3.1.jar" />-->
+		</fileset>
+		<fileset dir="${hibernate.dir}">
+			<include name="**/*.jar" />
+			<exclude name="**/ant-*.jar" />
+		</fileset>
+		<fileset dir="${spring.dir}">
+			<include name="dist/spring.jar" />
+		</fileset>
+		<fileset dir="${struts.dir}">
+			<include name="**/*.jar" />
+			<exclude name="**/ant-*.jar" />
+		</fileset>
+		<fileset dir="${jai.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit.jar}" />
+		<pathelement location="${ifxjdbc.jar}" />
+		<fileset dir="${easymock.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<property name="jboss.dir" value="E:\servers\jboss-4.2.2.GA" />
+	<property name="deploy.dir" value="${jboss.dir}\server\default\deploy" />
+	<property name="demo" value="demo.war" />
+
+	<target name="demo_war" depends="compile_tests">
+		<delete file="${demo}" />
+
+		<war warfile="${demo}" webxml="${testfiles}/web/WEB-INF/web.xml">
+
+			<classes dir="${build_classdir}" includes="**" />
+
+			<!-- Spring configuration file -->
+			<webinf dir="${testfiles}/mock" includes="applicationContext.xml" />
+
+			<!-- Hibernate configuration file -->
+			<classes dir="${testfiles}" includes="hibernate.cfg.xml" />
+
+			<!-- Struts configuration file -->
+			<classes dir="${testfiles}" includes="struts.xml" />
+
+			<classes dir="${testfiles}" includes="ApplicationServer.properties" />
+			<classes dir="${testfiles}" includes="valid-simple-comment.txt" />
+			<classes dir="${testfiles}" includes="EmailEngineConfig.properties" />
+
+			<classes dir="${testfiles}" includes="com/topcoder/**" />
+			<classes dir="${testfiles}" includes="conf/com/topcoder/**" />
+
+			<lib file="${ifxjdbc.jar}" />
+			<lib file="${log4j.jar}" />
+
+			<lib file="${base_exception.jar}" />
+			<lib file="${configuration_api.jar}" />
+			<lib file="${command_line_utility.jar}" />
+			<lib file="${configuration_manager.jar}" />
+			<lib file="${document_generator.jar}" />
+			<lib file="${logging_wrapper.jar}" />
+			<lib file="${object_formatter.jar}" />
+			<lib file="${random_string_image.jar}" />
+			<lib file="${spell_check.jar}" />
+			<lib file="${topcoder_commons_utility.jar}" />
+			<lib file="${typesafe_enum.jar}" />
+
+			<lib dir="${testfiles}">
+				<include name="*.jar" />
+				<exclude name="DevNullSmtp.jar" />
+			</lib>
+
+			<lib dir="${test_reflib}">
+				<include name="ldap.jar" />
+				<include name="netscape_ldap_sdk.jar" />
+			</lib>
+
+			<!--
+			<lib dir="${javaee.dir}">
+				<include name="*.jar" />
+				<exclude name="servlet-api.jar" />
+			</lib>
+			-->
+
+			<lib dir="${javamail.dir}">
+				<include name="*.jar" />
+			</lib>
+
+			<!--<lib dir="${regular_libs.dir}">
+				<include name="*.jar" />
+
+				<exclude name="xerces-2.6.2.jar" />
+				<exclude name="xml-apis.jar" />
+				<exclude name="dom4j-1.6.1.jar" />
+				<exclude name="javassist-3.12.0.GA.jar" />
+			</lib>-->
+
+			<lib dir="${apache-commons.dir}">
+				<include name="*.jar" />
+			</lib>
+
+			<!--
+			<lib dir="${hibernate.dir}">
+				<include name="*.jar" />
+			</lib>
+			-->
+
+			<lib dir="${spring.dir}/dist">
+				<include name="spring.jar" />
+			</lib>
+
+			<lib dir="${struts.dir}/lib">
+				<include name="struts2-core-2.2.3.jar" />
+				<include name="struts2-spring-plugin-2.2.3.jar" />
+				<include name="xwork-core-2.2.3.jar" />
+				<include name="ognl-3.0.1.jar" />
+				<include name="commons-fileupload-1.2.2.jar" />
+				<include name="freemarker-2.3.16.jar" />
+			</lib>
+
+			<lib dir="${jai.dir}">
+				<include name="*.jar" />
+			</lib>
+
+			<fileset dir="${testfiles}/web">
+				<include name="**/*.*" />
+			</fileset>
+
+
+		</war>
+	</target>
+
+	<target name="deploy_to_jboss" depends="demo_war">
+		<copy file="${demo}" todir="${deploy.dir}" />
+	</target>
+
+
+</project>

@@ -1,0 +1,53 @@
+Final Fixes
+
+-------------------------------------------------------------------
+
+Section: 1.1.3 Use Cases
+
+Issue: Audit not shown.
+
+Response: Added use case "Audit action"
+
+-------------------------------------------------------------------
+
+Section: 2.1.2 Extensibility
+
+Issue: DocumentGenerator.getTemplate(sourceId, templateName) should be used to get template and both sourceId and templateName arguments should be configurable. Sticking to specific/default source is not flexible. 
+
+Response: Added. Also adjusted the Send email Sequence Diagram
+
+
+-------------------------------------------------------------------
+
+Section: 2.1.5 Thread safety
+
+Issue: thread safety section mentions interceptors but none were defined here.
+
+Response: removed reference to interceptors
+
+
+-------------------------------------------------------------------
+
+Section: 3.1.5 Relationships
+
+Issue: All struct actions that have execute methods throws TCWebException, but there are no relationships from these classes to this exception.
+
+Response: Added in bottom left corner in Main Class Diagram, just above the RegistrationActionConfigurationException.
+
+
+-------------------------------------------------------------------
+
+Section: 3.1.6 Naming
+
+Issue: emailBodyTemplate -> emailBodyTemplateName, because it's not really a template itself, only its name in Document Generator component's context. 
+
+Response: done. Also adjusted the Send email Sequence Diagram
+
+-------------------------------------------------------------------
+
+Section: 4.1.6 Spelling
+
+Issue: HTTP industry standards are used. 
+
+Response: Added
+

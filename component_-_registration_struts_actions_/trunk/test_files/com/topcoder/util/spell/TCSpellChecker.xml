@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<CMConfig>
+	<Property name="builtin_word_lists">
+		<Value>en</Value>
+	        <Value>en_US</Value>
+	</Property>
+	<Property name="word_list_files">
+	        <Value>conf/spell_check_wordlist.txt</Value>
+	</Property>
+	<Property name="zip_files">
+	        <Value></Value>
+ 	</Property>
+	<Property name="word_list_zip_entries">
+	        <Value></Value>
+ 	</Property>
+	<Property name="tokenizer_delimeters">
+	        <Value></Value>
+	</Property>
+	<Property name="alternative_word_distance">
+	        <Value></Value>
+ 	</Property>
+</CMConfig>

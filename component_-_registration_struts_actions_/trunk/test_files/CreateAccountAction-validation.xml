@@ -1,0 +1,78 @@
+<?xml version="1.0″ encoding="UTF-8″ ?>
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="user.userProfile.firstName">
+        <field-validator type="stringlength">
+            <param name="maxLength">64</param>
+            <message key="firstName.invalid.length" />
+        </field-validator>
+    </field>
+
+    <field name="user.userProfile.lastName">
+        <field-validator type="stringlength">
+            <param name="maxLength">64</param>
+            <message key="lastName.invalid.length" />
+        </field-validator>
+    </field>
+
+    <field name="user.handle">
+        <field-validator type="requiredstring">
+            <message key="handle.required" />
+        </field-validator>
+        <field-validator type="stringlength">
+            <param name="minLength">2</param>
+            <param name="maxLength">15</param>
+            <message key="handle.invalid.length" />
+        </field-validator>
+    </field>
+
+    <field name="user.emailAddresses[0].address">
+        <field-validator type="requiredstring">
+            <message key="email.required" />
+        </field-validator>
+        <field-validator type="stringlength">
+            <param name="maxLength">100</param>
+            <message key="email.invalid.length" />
+        </field-validator>
+        <field-validator type="email">
+            <message key="email.invalid.format" />
+        </field-validator>
+    </field>
+
+    <field name="password">
+        <field-validator type="requiredstring">
+            <message key="password.required" />
+        </field-validator>
+        <field-validator type="stringlength">
+            <param name="minLength">2</param>
+            <param name="maxLength">15</param>
+            <message key="password.invalid.length" />
+        </field-validator>
+    </field>
+
+    <field name="confirmPassword">
+        <field-validator type="requiredstring">
+            <message key="password.required" />
+        </field-validator>
+        <field-validator type="stringlength">
+            <param name="minLength">2</param>
+            <param name="maxLength">15</param>
+            <message key="password.invalid.length" />
+        </field-validator>
+    </field>
+
+    <field name="varificationCode">
+        <field-validator type="requiredstring">
+            <message key="varificationCode.required" />
+        </field-validator>
+    </field>
+
+    <field name="referrerHandle">
+        <field-validator type="stringlength">
+            <param name="minLength">2</param>
+            <param name="maxLength">15</param>
+            <message key="handle.invalid.length" />
+        </field-validator>
+    </field>
+</validators>

@@ -1,0 +1,5 @@
+Your user handle on TopCoder web-site is %handle%
+
+Best regards. 
+TopCoder member service.
+
