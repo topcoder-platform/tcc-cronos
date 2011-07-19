@@ -1,0 +1,9 @@
+Added ShowCardDescriptionAction.
+
+Mentioned MVC.
+
+Added relationship to RowNotFoundException.
+
+Fixed doc of BaseRatedUserCommunityManagementAction.isRated().
+
+Fixed doc of BaseDataAccessUserCommunityManagementAction.dataAccess.

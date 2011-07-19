@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <!-- put here configuration for all DAO beans -->
+
+  <bean id="viewReferralsAction" scope="prototype"
+        class="com.topcoder.web.reg.actions.miscellaneous.ViewReferralsAction">
+    <property name="authenticationSessionKey" value="authenticationkey" />
+    <property name="log" ref="actionsLog" />
+    <property name="dataAccess" ref="com.topcoder.web.reg.actions.miscellaneous.MockDataAccessInt" />
+  </bean>
+
+  <bean id="downloadBadgesAction" scope="prototype"
+        class="com.topcoder.web.reg.actions.miscellaneous.DownloadBadgesAction">
+    <property name="authenticationSessionKey" value="authenticationkey" />
+    <property name="log" ref="actionsLog" />
+    <property name="dataAccess" ref="dataAccess" />
+  </bean>
+
+  <bean id="showCardInstructionsAction" scope="prototype"
+        class="com.topcoder.web.reg.actions.miscellaneous.ShowCardInstructionsAction">
+    <property name="authenticationSessionKey" value="authenticationkey" />
+    <property name="log" ref="actionsLog" />
+  </bean>
+
+  <bean id="showCardDescriptionAction" scope="prototype"
+        class="com.topcoder.web.reg.actions.miscellaneous.ShowCardDescriptionAction">
+    <property name="authenticationSessionKey" value="authenticationkey" />
+    <property name="log" ref="actionsLog" />
+  </bean>
+
+  <bean id="retrieveCardDataAction" scope="prototype"
+        class="com.topcoder.web.reg.actions.miscellaneous.RetrieveCardDataAction">
+    <property name="authenticationSessionKey" value="authenticationkey" />
+    <property name="log" ref="actionsLog" />
+    <property name="dataAccess" ref="dataAccess" />
+  </bean>
+
+  <bean id="previewCardAction" scope="prototype"
+        class="com.topcoder.web.reg.actions.miscellaneous.PreviewCardAction">
+    <property name="authenticationSessionKey" value="authenticationkey" />
+    <property name="log" ref="actionsLog" />
+    <property name="dataAccess" ref="dataAccess" />
+  </bean>
+
+  <bean id="unlockCardAction" scope="prototype"
+        class="com.topcoder.web.reg.actions.miscellaneous.UnlockCardAction">
+    <property name="authenticationSessionKey" value="authenticationkey" />
+    <property name="log" ref="actionsLog" />
+    <property name="dataAccess" ref="dataAccess" />
+    <property name="auditDAO" ref="auditDAO" />
+  </bean>
+
+  <bean id="actionsLog" class="com.topcoder.util.log.LogManager" factory-method="getLog">
+    <constructor-arg value="com.topcoder.web.reg.actions.miscellaneous" type="java.lang.String"/>
+  </bean>
+  
+  <!-- Create audit DAO -->
+  <bean id="auditDAO" class="com.topcoder.web.reg.actions.miscellaneous.MockAuditDao"/>
+
+  <bean id="dataAccess" class="com.topcoder.web.reg.actions.miscellaneous.MockDataAccessInt"/>
+</beans>
