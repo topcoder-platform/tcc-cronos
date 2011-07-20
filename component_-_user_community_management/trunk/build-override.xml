@@ -1,7 +1,7 @@
 <project name="Override Import" basedir=".">	
 	
 	  <property name="war.dir" value="${testfiles}/usercommunity.war" />
-	  <property name="deploy.dir" value="E:/servers/jboss-5.1.0.GA/server/default/deploy" />
+	  <property name="deploy.dir" value="${ext_libdir}/jboss/5.1.0.GA/server/default/deploy" />
 
     <target name="deployWar" depends="compile, compile_tests">
         <copy todir="${war.dir}/WEB-INF/classes">
