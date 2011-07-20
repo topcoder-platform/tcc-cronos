@@ -1,0 +1,26 @@
+1. Existing JSPs can be reused with small changes. JSPs can be found here:
+https://coder.topcoder.com/internal/web_module/trunk/src/main/com/topcoder/web/tc/view/card
+https://coder.topcoder.com/internal/web_module/trunk/src/main/com/topcoder/web/tc/view/my_home/referrals.jsp
+
+The following Struts tag can be used in JSP to insert user ID:
+    <s:property value="userId" />
+
+The following Struts tag can be used in JSP to insert user handle:
+    <s:property value="userHandle" />
+
+2. ShowCardDescriptionAction corresponds to the following page:
+http://www.topcoder.com/tc?module=Static&d1=card&d2=description
+
+Additional required changes to JSPs:
+
+1) referrals.jsp should iterate over "referrals" property. Each element is a ReferralData instance with "coderId", "rating", "handle" and "memberSince" properties.
+
+2) additionally a referral link should be added to referrals.jsp. E.g.:
+
+       Please send the following link to invite friends to TopCoder:<br />
+       <a href="http://www.topcoder.com/reg/?ref=<s:property value="userHandle" />">
+         http://www.topcoder.com/reg/?ref=<s:property value="userHandle" />
+       </a>
+
+
+2. tc_card.swf also needs to be updated to use new data feed path and "coderId" as parameter. Otherwise TopCoder member cards won't be displayed.

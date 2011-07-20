@@ -1,0 +1,67 @@
+<project name="Dependency Import"  basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.6"/>
+    <property name="component.bootclasspath" value="${java_1_6_bootclasspath}"/>
+
+    <!-- TCS dependencies -->
+    <property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.0.0/configuration_api.jar"/>
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.2/configuration_persistence.jar"/>
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.2.0/configuration_manager.jar"/>   
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
+    <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j.jar"/>
+    <property name="commons-logging.jar" value="${ext_libdir}/struts/2.1.8.1/lib/commons-logging-1.0.4.jar"/>
+    <property name="spring-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-core-2.5.6.jar"/>
+    <property name="spring-test.jar" value="${ext_libdir}/struts/2.1.8.1/lib/spring-test-2.5.6.jar"/> 
+    <property name="xwork-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/xwork-core-2.1.6.jar"/>
+    <property name="struts2-core.jar" value="${ext_libdir}/struts/2.1.8.1/lib/struts2-core-2.1.8.1.jar"/>
+    <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
+    <property name="mockrunner-jdbc.jar" value="${ext_libdir}/mockrunner/0.4.2/lib/jdk1.5/jee5/mockrunner-jdbc.jar"/>
+	  <property name="mockrunner-servlet.jar" value="${ext_libdir}/mockrunner/0.4.2/lib/jdk1.5/jee5/mockrunner-servlet.jar"/>
+    <property name="mockrunner.jar" value="${ext_libdir}/mockrunner/0.4.2/lib/jdk1.5/jee5/mockrunner.jar"/>
+
+    <property name="dependent.jar" value="test_reflib/dependent.jar"/>
+    <property name="mock.jar" value="test_reflib/mock.jar"/>
+	  <property name="shared.jar" value="test_reflib/shared.jar"/>
+	    
+    <path id="component.tcs-dependencies">
+        <pathelement location="${typesafe_enum.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${topcoder_commons_utility.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+        <pathelement location="${shared.jar}"/>
+        <pathelement location="${configuration_manager.jar}"/>
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+    </path>
+
+    <path id="component.3rdParty-dependencies">
+        <pathelement location="${struts.jar}"/>
+        <pathelement location="${javaee.jar}"/>
+        <pathelement location="${spring-core.jar}"/>
+        <pathelement location="${xwork-core.jar}"/>
+        <pathelement location="${struts2-core.jar}"/>
+        <pathelement location="${dependent.jar}"/>
+        <pathelement location="${mock.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${mockrunner.jar}"/>
+        <pathelement location="${mockrunner-jdbc.jar}"/>
+        <pathelement location="${mockrunner-servlet.jar}"/>
+        <pathelement location="${spring-test.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${log4j.jar}"/>
+    </path>
+
+</project>

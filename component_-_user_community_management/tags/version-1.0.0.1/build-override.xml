@@ -1,0 +1,23 @@
+<project name="Override Import" basedir=".">	
+	
+	  <property name="war.dir" value="${testfiles}/usercommunity.war" />
+	  <property name="deploy.dir" value="${ext_libdir}/jboss/5.1.0.GA/server/default/deploy" />
+
+    <target name="deployWar" depends="compile, compile_tests">
+        <copy todir="${war.dir}/WEB-INF/classes">
+            <fileset dir="${build_classdir}"/>
+            <fileset dir="${build_testclassdir}"/>
+        </copy>
+    	<copy todir="${deploy.dir}" >
+           <fileset dir="${testfiles}">
+             <include name="${war.dir}" />
+             <include name="${war.dir}/**/*.*" />
+           </fileset>
+        </copy>
+
+    </target>
+
+    <target name="undeploy">
+    	<delete dir="${deploy.dir}/${war.dir}"/>
+    </target>
+</project>
