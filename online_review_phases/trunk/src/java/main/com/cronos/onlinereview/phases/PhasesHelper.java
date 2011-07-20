@@ -38,6 +38,7 @@ import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.project.Prize;
 import com.topcoder.management.project.ProjectManager;
+import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.project.link.ProjectLink;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
@@ -51,6 +52,9 @@ import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.review.scoreaggregator.RankedSubmission;
+import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
+import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
+import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
 import com.topcoder.management.scorecard.PersistenceException;
 import com.topcoder.management.scorecard.ScorecardManager;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -172,6 +176,13 @@ final class PhasesHelper {
      */
     static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer", "Accuracy Reviewer",
         "Failure Reviewer", "Stress Reviewer" };
+
+    /**
+     * <p>
+     * Represents the constant for milestone reviewer.
+     * </p>
+     */
+    static final String MILESTONE_REVIEWER = "Milestone Reviewer";
 
     /**
      * One The property name of resource.
@@ -578,8 +589,7 @@ final class PhasesHelper {
         } else if (isPhaseToEnd(phaseStatus)) {
             return false;
         } else {
-            throw new PhaseHandlingException("Phase status '" + phaseStatus.getName()
-                + "' is not valid.");
+            throw new PhaseHandlingException("Phase status '" + phaseStatus.getName() + "' is not valid.");
         }
     }
 
@@ -855,33 +865,36 @@ final class PhasesHelper {
      */
     static Review[] searchReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper,
         long phaseId, String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException {
-        Resource[] reviewers = searchResourcesForRoleNames(managerHelper, conn, resourceRoleNames,
-            phaseId);
-        if (reviewers.length == 0) {
-            return new Review[0];
-        }
 
-        try {
-            // create reviewer ids array
-            Long[] reviewerIds = new Long[reviewers.length];
+        Resource[] reviewers = searchResourcesForRoleNames(managerHelper, conn, resourceRoleNames, phaseId);
+        return searchReviewsForResources(conn, managerHelper, reviewers, submissionId);
+    }
 
-            for (int i = 0; i < reviewers.length; i++) {
-                reviewerIds[i] = new Long(reviewers[i].getId());
-            }
+    /**
+     * <p>
+     * Returns all the reviews for a project based on resource role names. This method is useful for finding
+     * reviews for resources which are not tied to specified phase.
+     * </p>
+     * @param conn
+     *            Connection to use to lookup resource role id.
+     * @param managerHelper
+     *            ManagerHelper instance.
+     * @param projectId
+     *            project id to be used as filter.
+     * @param resourceRoleNames
+     *            resource role names to be used as filter.
+     * @param submissionId
+     *            submission id to be used as filter when searching for reviews.
+     * @return Review[] which match filter conditions.
+     * @throws PhaseHandlingException
+     *             if there was an error during retrieval.
+     * @since 1.3
+     */
+    static Review[] searchProjectReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper,
+        long projectId, String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException {
 
-            Filter reviewFilter = new InFilter("reviewer", Arrays.asList(reviewerIds));
-            Filter fullReviewFilter = reviewFilter;
-
-            // if submission id filter is given, add it as filter condition
-            if (submissionId != null) {
-                Filter submissionFilter = new EqualToFilter("submission", submissionId);
-                fullReviewFilter = new AndFilter(reviewFilter, submissionFilter);
-            }
-
-            return managerHelper.getReviewManager().searchReviews(fullReviewFilter, true);
-        } catch (ReviewManagementException e) {
-            throw new PhaseHandlingException("Problem with review retrieval", e);
-        }
+        Resource[] reviewers = searchProjectResourcesForRoleNames(managerHelper, conn, resourceRoleNames, projectId);
+        return searchReviewsForResources(conn, managerHelper, reviewers, submissionId);
     }
 
     /**
@@ -909,7 +922,7 @@ final class PhasesHelper {
             Long[] reviewerIds = new Long[reviewers.length];
 
             for (int i = 0; i < reviewers.length; i++) {
-                reviewerIds[i] = new Long(reviewers[i].getId());
+                reviewerIds[i] = reviewers[i].getId();
             }
 
             Filter reviewFilter = new InFilter("reviewer", Arrays.asList(reviewerIds));
@@ -924,6 +937,89 @@ final class PhasesHelper {
             return managerHelper.getReviewManager().searchReviews(fullReviewFilter, true);
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem with review retrieval", e);
+        }
+    }
+
+    /**
+     * searches for resources based on resource role names and phase id filters.
+     * @param managerHelper
+     *            ManagerHelper instance.
+     * @param conn
+     *            connection to connect to db with.
+     * @param resourceRoleNames
+     *            array of resource role names.
+     * @param phaseId
+     *            phase id.
+     * @return Resource[] which match search criteria.
+     * @throws PhaseHandlingException
+     *             if an error occurs during retrieval.
+     */
+    static Resource[] searchResourcesForRoleNames(ManagerHelper managerHelper, Connection conn,
+        String[] resourceRoleNames, long phaseId) throws PhaseHandlingException {
+        List<Long> resourceRoleIds = new ArrayList<Long>();
+
+        try {
+            for (int i = 0; i < resourceRoleNames.length; i++) {
+                resourceRoleIds.add(ResourceRoleLookupUtility.lookUpId(conn, resourceRoleNames[i]));
+            }
+
+            Filter resourceRoleFilter = new InFilter(
+                ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME, resourceRoleIds);
+            Filter phaseIdFilter = ResourceFilterBuilder.createPhaseIdFilter(phaseId);
+            Filter fullFilter = new AndFilter(resourceRoleFilter, phaseIdFilter);
+
+            return managerHelper.getResourceManager().searchResources(fullFilter);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("There was a database connection error", e);
+        } catch (SearchBuilderConfigurationException e) {
+            throw new PhaseHandlingException("Problem with search builder configuration", e);
+        } catch (ResourcePersistenceException e) {
+            throw new PhaseHandlingException("There was a resource retrieval error", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem with search builder", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Searches for resources associated with specified project and the specified resource roles assigned.
+     * </p>
+     * @param managerHelper
+     *            ManagerHelper instance.
+     * @param conn
+     *            connection to connect to db with.
+     * @param resourceRoleNames
+     *            array of resource role names.
+     * @param projectId
+     *            ID for the project to find associated resources for.
+     * @return Resource[] which match search criteria.
+     * @throws PhaseHandlingException
+     *             if an error occurs during retrieval.
+     * @since 1.3
+     */
+    static Resource[] searchProjectResourcesForRoleNames(ManagerHelper managerHelper, Connection conn,
+        String[] resourceRoleNames, long projectId) throws PhaseHandlingException {
+        List<Long> resourceRoleIds = new ArrayList<Long>();
+
+        try {
+            for (int i = 0; i < resourceRoleNames.length; i++) {
+                resourceRoleIds.add(ResourceRoleLookupUtility.lookUpId(conn, resourceRoleNames[i]));
+            }
+
+            Filter resourceRoleFilter = new InFilter(
+                ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME, resourceRoleIds);
+            Filter projectIdFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
+            Filter fullFilter = new AndFilter(resourceRoleFilter, projectIdFilter);
+
+            return managerHelper.getResourceManager().searchResources(fullFilter);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("There was a database connection error", e);
+        } catch (SearchBuilderConfigurationException e) {
+            throw new PhaseHandlingException("Problem with search builder configuration", e);
+        } catch (ResourcePersistenceException e) {
+            throw new PhaseHandlingException("There was a resource retrieval error", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem with search builder", e);
         }
     }
 
@@ -957,80 +1053,6 @@ final class PhasesHelper {
     }
 
     /**
-     * Retrieves all the submissions for the given project id.
-     * <p>
-     * Change in version 1.4: add submissionTypeId to filter submissions by type.
-     * </p>
-     * @param uploadManager
-     *            UploadManager instance to use for searching.
-     * @param projectId
-     *            project id.
-     * @param submissionTypeId
-     *            the submission type id.
-     * @return submissions for the given project id.
-     * @throws PhaseHandlingException
-     *             if an error occurs during retrieval.
-     */
-    static Submission[] searchSubmissionsForProject(UploadManager uploadManager, long projectId,
-        long submissionTypeId) throws PhaseHandlingException {
-        Filter submissionFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
-
-        // changes in version 1.5, add a submission type filter
-        Filter submissionTypeFilter = SubmissionFilterBuilder
-            .createSubmissionTypeIdFilter(submissionTypeId);
-        Filter fullFilter = new AndFilter(submissionFilter, submissionTypeFilter);
-
-        try {
-            return uploadManager.searchSubmissions(fullFilter);
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("There was a submission retrieval error", e);
-        } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException("There was a search builder error", e);
-        }
-    }
-
-    /**
-     * searches for resources based on resource role names and phase id filters.
-     * @param managerHelper
-     *            ManagerHelper instance.
-     * @param conn
-     *            connection to connect to db with.
-     * @param resourceRoleNames
-     *            array of resource role names.
-     * @param phaseId
-     *            phase id.
-     * @return Resource[] which match search criteria.
-     * @throws PhaseHandlingException
-     *             if an error occurs during retrieval.
-     */
-    static Resource[] searchResourcesForRoleNames(ManagerHelper managerHelper, Connection conn,
-        String[] resourceRoleNames, long phaseId) throws PhaseHandlingException {
-        List<Long> resourceRoleIds = new ArrayList<Long>();
-
-        try {
-            for (int i = 0; i < resourceRoleNames.length; i++) {
-                resourceRoleIds.add(new Long(ResourceRoleLookupUtility.lookUpId(conn,
-                    resourceRoleNames[i])));
-            }
-
-            Filter resourceRoleFilter = new InFilter(
-                ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME, resourceRoleIds);
-            Filter phaseIdFilter = ResourceFilterBuilder.createPhaseIdFilter(phaseId);
-            Filter fullFilter = new AndFilter(resourceRoleFilter, phaseIdFilter);
-
-            return managerHelper.getResourceManager().searchResources(fullFilter);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("There was a database connection error", e);
-        } catch (SearchBuilderConfigurationException e) {
-            throw new PhaseHandlingException("Problem with search builder configuration", e);
-        } catch (ResourcePersistenceException e) {
-            throw new PhaseHandlingException("There was a resource retrieval error", e);
-        } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException("Problem with search builder", e);
-        }
-    }
-
-    /**
      * A utility method to get the integer value for the given phase attribute. This
      * method throws PhaseHandlingException if the attribute value is null or could not be
      * parsed into an integer.
@@ -1052,8 +1074,7 @@ final class PhasesHelper {
         try {
             return Integer.parseInt(sValue);
         } catch (NumberFormatException e) {
-            throw new PhaseHandlingException("Phase attribute '" + attrName + "' was non-integer:"
-                + sValue, e);
+            throw new PhaseHandlingException("Phase attribute '" + attrName + "' was non-integer:" + sValue, e);
         }
     }
 
@@ -1079,11 +1100,9 @@ final class PhasesHelper {
         try {
             return Long.parseLong((String) sValue);
         } catch (ClassCastException e) {
-            throw new PhaseHandlingException("Resource property '" + propName + "' was in string:"
-                + sValue, e);
+            throw new PhaseHandlingException("Resource property '" + propName + "' was in string:" + sValue, e);
         } catch (NumberFormatException e) {
-            throw new PhaseHandlingException("Resource property '" + propName + "' was non-integer:"
-                + sValue, e);
+            throw new PhaseHandlingException("Resource property '" + propName + "' was non-integer:" + sValue, e);
         }
     }
 
@@ -1104,8 +1123,7 @@ final class PhasesHelper {
         try {
             statuses = uploadManager.getAllSubmissionStatuses();
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Error finding submission status with name: " + statusName,
-                e);
+            throw new PhaseHandlingException("Error finding submission status with name: " + statusName, e);
         }
 
         for (int i = 0; i < statuses.length; i++) {
@@ -1118,7 +1136,7 @@ final class PhasesHelper {
     }
 
     /**
-     * retrieves all active submissions for the given project id.
+     * retrieves all submissions for the given project id, submission type and submission status.
      * <p>
      * Change in version 1.4: it will search active submissions with given type now.
      * </p>
@@ -1133,65 +1151,35 @@ final class PhasesHelper {
      * @return all active submissions for the given project id.
      * @throws PhaseHandlingException
      *             if an error occurs during retrieval.
-     * @throws SQLException
-     *             if an error occurred when looking up id.
      */
     static Submission[] searchActiveSubmissions(UploadManager uploadManager, Connection conn,
-        long projectId, String submissionTypeName) throws PhaseHandlingException, SQLException {
-        // first get submission status id for "Active" status
-        long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
-
-        // then get submission type id for given type
-        long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(conn, submissionTypeName);
-
-        // search for submissions
-        Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
-        Filter submissionActiveStatusFilter = SubmissionFilterBuilder
-            .createSubmissionStatusIdFilter(activeStatusId);
-
-        // change in version 1.4
-        // use a submission type filter
-        Filter submissionTypeFilter = SubmissionFilterBuilder
-            .createSubmissionTypeIdFilter(submissionTypeId);
-
-        Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {projectIdFilter,
-            submissionActiveStatusFilter, submissionTypeFilter }));
+        long projectId, String submissionTypeName) throws PhaseHandlingException {
 
         try {
+            // first get submission status id for "Active" status
+            long activeStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
+
+            // then get submission type id for given type
+            long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(conn, submissionTypeName);
+
+            // search for submissions
+            Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
+            Filter submissionActiveStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(activeStatusId);
+
+            // change in version 1.4
+            // use a submission type filter
+            Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
+
+            Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {projectIdFilter,
+                submissionActiveStatusFilter, submissionTypeFilter }));
+
             return uploadManager.searchSubmissions(fullFilter);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException("There was a submission retrieval error", e);
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException("There was a search builder error", e);
-        }
-    }
-
-    /**
-     * retrieves all active milestone submissions for the given project id.
-     * @param uploadManager
-     *            UploadManager instance to use for searching.
-     * @param conn
-     *            the connection.
-     * @param projectId
-     *            project id.
-     * @param phaseId
-     *            the phase id.
-     * @param logger
-     *            the logger
-     * @return all active milestone submissions for the given project id.
-     * @throws PhaseHandlingException
-     *             if an error occurs during retrieval.
-     * @since 1.6
-     */
-    static Submission[] searchActiveMilestoneSubmissions(UploadManager uploadManager, Connection conn,
-        long projectId,
-            long phaseId, Log logger) throws PhaseHandlingException {
-        try {
-            return searchActiveSubmissions(uploadManager, conn, projectId, MILESTONE_SUBMISSION_TYPE);
         } catch (SQLException e) {
-            logger.log(Level.ERROR,
-                    new LogMessage(new Long(phaseId), null, "Fail to search active milestone submissions", e));
-            throw new PhaseHandlingException("Fail to search active milestone submissions", e);
+            throw new PhaseHandlingException("There was an SQL error", e);
         }
     }
 
@@ -1213,8 +1201,7 @@ final class PhasesHelper {
     static Review getWorksheet(Connection conn, ManagerHelper managerHelper, String roleName, long phaseId)
         throws PhaseHandlingException {
         // Search the scorecard
-        Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, phaseId,
-            new String[] {roleName }, null);
+        Review[] reviews = searchReviewsForResourceRoles(conn, managerHelper, phaseId, new String[] {roleName }, null);
 
         if (reviews.length == 0) {
             return null;
@@ -1423,16 +1410,14 @@ final class PhasesHelper {
         ProjectManager projectManager = managerHelper.getProjectManager();
 
         try {
-            com.topcoder.management.project.Project project = projectManager.getProject(currentPrj
-                .getId());
+            com.topcoder.management.project.Project project = projectManager.getProject(currentPrj.getId());
             String postMortemRequired = (String) project.getProperty("Post-Mortem Required");
 
             if ((postMortemRequired == null) || !(postMortemRequired.equalsIgnoreCase("true"))) {
                 return;
             }
         } catch (com.topcoder.management.project.PersistenceException e) {
-            throw new PhaseHandlingException("Failed to retrieve details for project "
-                + currentPrj.getId(), e);
+            throw new PhaseHandlingException("Failed to retrieve details for project " + currentPrj.getId(), e);
         }
 
         PhaseManager phaseManager = managerHelper.getPhaseManager();
@@ -1514,10 +1499,8 @@ final class PhasesHelper {
                 approvalPhaseDefaultScorecardID = getPropertyValue(ApprovalPhaseHandler.class.getName(),
                     "ApprovalPhaseDefaultScorecardID", true);
             } else {
-                approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase
-                    .getAttribute("Reviewer Number");
-                approvalPhaseDefaultScorecardID = (String) lastApprovalPhase
-                    .getAttribute("Scorecard ID");
+                approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase.getAttribute("Reviewer Number");
+                approvalPhaseDefaultScorecardID = (String) lastApprovalPhase.getAttribute("Scorecard ID");
             }
 
             Phase approvalPhase = getApprovalPhase(currentPrj);
@@ -1559,8 +1542,7 @@ final class PhasesHelper {
                 
         // use helper method to create the new phases
         int currentPhaseIndex = PhasesHelper.createNewPhases(currentPrj, currentPhase, new PhaseType[] {
-            finalFixPhaseType, finalReviewPhaseType }, new Long[] {finalFixDuration * HOUR, null},
-            phaseStatus, true);
+            finalFixPhaseType, finalReviewPhaseType }, new Long[] {finalFixDuration * HOUR, null}, phaseStatus, true);
 
         // save the phases
         try {
@@ -1599,7 +1581,7 @@ final class PhasesHelper {
             phaseIndex--;
         }
 
-        return (phaseIndex == 0) ? true : false;
+        return phaseIndex == 0;
     }
 
     /**
@@ -1822,7 +1804,7 @@ final class PhasesHelper {
         newResource.setProperty(PAYMENT_STATUS_PROPERTY_KEY, "N/A");
 
         // set phase id
-        newResource.setPhase(new Long(newPhaseId));
+        newResource.setPhase(newPhaseId);
 
         // update resource into persistence.
         try {
@@ -2024,8 +2006,6 @@ final class PhasesHelper {
             // changes in version 1.4
             submissions = PhasesHelper.searchActiveSubmissions(helper.getUploadManager(), conn,
                 projectId, CONTEST_SUBMISSION_TYPE);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up submissions.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -2077,19 +2057,18 @@ final class PhasesHelper {
                 values.put("SUBMITTER_HANDLE", notNullValue(submitter.getProperty("Handle")));
 
                 if (!screeningEnd) {
-                    values.put("SUBMITTER_RELIABILITY", notNullValue(submitter
-                        .getProperty("Reliability")));
+                    values.put("SUBMITTER_RELIABILITY", notNullValue(submitter.getProperty("Reliability")));
                     values.put("SUBMITTER_RATING", notNullValue(submitter.getProperty("Rating")));
                 } else {
                     values.put("SUBMITTER_SCORE", notNullValue(submission.getScreeningScore()));
-                    values
-                            .put("SUBMITTER_RESULT",
-                                    ((submission.getSubmissionStatus() != null)
-                                            && submission.getSubmissionStatus().getName().equalsIgnoreCase(
-                                                    "Failed Screening") || submission.getSubmissionStatus()
-                                        .getName()
-                                            .equalsIgnoreCase("Failed Milestone Screening")) ? "Failed Screening"
-                                            : "Pass Screening");
+
+                    boolean failedScreening = false;
+                    if (submission.getSubmissionStatus() != null) {
+                        String statusName = submission.getSubmissionStatus().getName();
+                        failedScreening = statusName.equalsIgnoreCase("Failed Screening") ||
+                            statusName.equalsIgnoreCase("Failed Milestone Screening");
+                    }
+                    values.put("SUBMITTER_RESULT", failedScreening ? "Failed Screening": "Pass Screening");
                 }
 
                 result.add(values);
@@ -2208,8 +2187,7 @@ final class PhasesHelper {
             AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
                 ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
                 ResourceFilterBuilder.createProjectIdFilter(projectId),
-                ResourceFilterBuilder
-                    .createExtensionPropertyNameFilter(APPEALS_COMPLETED_EARLY_PROPERTY_KEY),
+                ResourceFilterBuilder.createExtensionPropertyNameFilter(APPEALS_COMPLETED_EARLY_PROPERTY_KEY),
                 ResourceFilterBuilder.createExtensionPropertyValueFilter(YES_VALUE) }));
 
             Resource[] earlyAppealCompletionsSubmitters = resourceManager.searchResources(fullFilter);
@@ -2221,14 +2199,13 @@ final class PhasesHelper {
                 earlyAppealResourceIds.add(r.getId());
             }
 
-            // check all submitters with active submission statuses (this will
-            // leave out failed screening and deleted)
+            // check all submitters with active submission statuses (this will leave out failed screening and deleted)
             // CHANGE in version 1.4
             Submission[] activeSubmissions = searchActiveSubmissions(uploadManager, conn, projectId,
                 CONTEST_SUBMISSION_TYPE);
 
             for (Submission s : activeSubmissions) {
-                if (!earlyAppealResourceIds.contains(new Long(s.getUpload().getOwner()))) {
+                if (!earlyAppealResourceIds.contains(s.getUpload().getOwner())) {
                     return false;
                 }
             }
@@ -2266,13 +2243,11 @@ final class PhasesHelper {
      *             store.
      * @throws com.topcoder.management.phase.PhaseManagementException
      *             if an error occurs while reading phases data.
-     * @throws java.sql.SQLException
-     *             if an SQL error occurs.
      * @since 1.3
      */
-    static boolean areParentProjectsCompleted(long projectId, ManagerHelper managerHelper,
-        Connection conn) throws com.topcoder.management.project.PersistenceException,
-        com.topcoder.management.phase.PhaseManagementException, SQLException {
+    static boolean areParentProjectsCompleted(long projectId, ManagerHelper managerHelper)
+        throws com.topcoder.management.project.PersistenceException,
+        com.topcoder.management.phase.PhaseManagementException {
         ProjectLink[] links = managerHelper.getProjectLinkManager().getDestProjectLinks(projectId);
 
         for (ProjectLink link : links) {
@@ -2288,8 +2263,7 @@ final class PhasesHelper {
                         return false;
                     }
 
-                    Project phasesProject = managerHelper.getPhaseManager().getPhases(
-                        parentProject.getId());
+                    Project phasesProject = managerHelper.getPhaseManager().getPhases(parentProject.getId());
 
                     // Check if all phases are closed.
                     Phase[] phases = phasesProject.getAllPhases();
@@ -2304,102 +2278,6 @@ final class PhasesHelper {
         }
 
         return true;
-    }
-
-    /**
-     * <p>
-     * Returns all the reviews for a project based on resource role names. This method is useful for finding
-     * reviews for resources which are not tied to specified phase.
-     * </p>
-     * @param conn
-     *            Connection to use to lookup resource role id.
-     * @param managerHelper
-     *            ManagerHelper instance.
-     * @param projectId
-     *            project id to be used as filter.
-     * @param resourceRoleNames
-     *            resource role names to be used as filter.
-     * @param submissionId
-     *            submission id to be used as filter when searching for reviews.
-     * @return Review[] which match filter conditions.
-     * @throws PhaseHandlingException
-     *             if there was an error during retrieval.
-     * @since 1.3
-     */
-    static Review[] searchProjectReviewsForResourceRoles(Connection conn, ManagerHelper managerHelper,
-        long projectId, String[] resourceRoleNames, Long submissionId) throws PhaseHandlingException {
-        Resource[] reviewers = searchProjectResourcesForRoleNames(managerHelper, conn,
-            resourceRoleNames, projectId);
-
-        if (reviewers.length == 0) {
-            return new Review[0];
-        }
-
-        try {
-            // create reviewer ids array
-            Long[] reviewerIds = new Long[reviewers.length];
-
-            for (int i = 0; i < reviewers.length; i++) {
-                reviewerIds[i] = new Long(reviewers[i].getId());
-            }
-
-            Filter reviewFilter = new InFilter("reviewer", Arrays.asList(reviewerIds));
-            Filter fullReviewFilter = reviewFilter;
-
-            // if submission id filter is given, add it as filter condition
-            if (submissionId != null) {
-                Filter submissionFilter = new EqualToFilter("submission", submissionId);
-                fullReviewFilter = new AndFilter(reviewFilter, submissionFilter);
-            }
-
-            return managerHelper.getReviewManager().searchReviews(fullReviewFilter, true);
-        } catch (ReviewManagementException e) {
-            throw new PhaseHandlingException("Problem with review retrieval", e);
-        }
-    }
-
-    /**
-     * <p>
-     * Searches for resources associated with specified project and the specified resource roles assigned.
-     * </p>
-     * @param managerHelper
-     *            ManagerHelper instance.
-     * @param conn
-     *            connection to connect to db with.
-     * @param resourceRoleNames
-     *            array of resource role names.
-     * @param projectId
-     *            ID for the project to find associated resources for.
-     * @return Resource[] which match search criteria.
-     * @throws PhaseHandlingException
-     *             if an error occurs during retrieval.
-     * @since 1.3
-     */
-    static Resource[] searchProjectResourcesForRoleNames(ManagerHelper managerHelper, Connection conn,
-        String[] resourceRoleNames, long projectId) throws PhaseHandlingException {
-        List<Long> resourceRoleIds = new ArrayList<Long>();
-
-        try {
-            for (int i = 0; i < resourceRoleNames.length; i++) {
-                resourceRoleIds.add(new Long(ResourceRoleLookupUtility.lookUpId(conn,
-                    resourceRoleNames[i])));
-            }
-
-            Filter resourceRoleFilter = new InFilter(
-                ResourceRoleFilterBuilder.RESOURCE_ROLE_ID_FIELD_NAME, resourceRoleIds);
-            Filter projectIdFilter = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter fullFilter = new AndFilter(resourceRoleFilter, projectIdFilter);
-
-            return managerHelper.getResourceManager().searchResources(fullFilter);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("There was a database connection error", e);
-        } catch (SearchBuilderConfigurationException e) {
-            throw new PhaseHandlingException("Problem with search builder configuration", e);
-        } catch (ResourcePersistenceException e) {
-            throw new PhaseHandlingException("There was a resource retrieval error", e);
-        } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException("Problem with search builder", e);
-        }
     }
 
     /**
@@ -2518,23 +2396,16 @@ final class PhasesHelper {
      */
     static Submission hasOneSpecificationSubmission(Phase phase, ManagerHelper managerHelper,
         Connection conn, Log log) throws PhaseHandlingException {
-        try {
-            // Check if one specification submission exists
-            Submission[] submissions = PhasesHelper.searchActiveSubmissions(managerHelper
-                .getUploadManager(), conn, phase.getProject().getId(), "Specification Submission");
+        // Check if one specification submission exists
+        Submission[] submissions = PhasesHelper.searchActiveSubmissions(
+            managerHelper.getUploadManager(), conn, phase.getProject().getId(), "Specification Submission");
 
-            if (submissions.length > 1) {
-                log.log(Level.ERROR, "Multiple specification submissions exist.");
-                throw new PhaseHandlingException("Multiple specification submissions exist.");
-            }
-
-            return (submissions.length == 0) ? null : submissions[0];
-        } catch (SQLException e) {
-            log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
-                "Fail to searching active specification submission.", e));
-            throw new PhaseHandlingException(
-                "SQL error when searching active specification submission.", e);
+        if (submissions.length > 1) {
+            log.log(Level.ERROR, "Multiple specification submissions exist.");
+            throw new PhaseHandlingException("Multiple specification submissions exist.");
         }
+
+        return (submissions.length == 0) ? null : submissions[0];
     }
 
     /**
@@ -2552,22 +2423,14 @@ final class PhasesHelper {
     static boolean areParentProjectsCompleted(Phase phase, Connection conn,
         ManagerHelper managerHelper, Log log) throws PhaseHandlingException {
         try {
-            return PhasesHelper.areParentProjectsCompleted(phase.getProject().getId(),
-                managerHelper, conn);
+            return PhasesHelper.areParentProjectsCompleted(phase.getProject().getId(), managerHelper);
         } catch (com.topcoder.management.project.PersistenceException e) {
-            log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+            log.log(Level.ERROR, new LogMessage(phase.getId(), null,
                 "PersistenceException when checking parent projects completed.", e));
-            throw new PhaseHandlingException(
-                "PersistenceException when checking parent projects completed.", e);
+            throw new PhaseHandlingException("PersistenceException when checking parent projects completed.", e);
         } catch (PhaseManagementException e) {
-            log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
-                "Fail to check parent projects completed.", e));
-            throw new PhaseHandlingException(
-                "PhaseManagementException when checking parent projects completed.", e);
-        } catch (SQLException e) {
-            log.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
-                "SQL error when checking parent projects completed.", e));
-            throw new PhaseHandlingException("SQL error when checking parent projects completed.", e);
+            log.log(Level.ERROR, new LogMessage(phase.getId(), null, "Fail to check parent projects completed.", e));
+            throw new PhaseHandlingException("PhaseManagementException when checking parent projects completed.", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -2589,9 +2452,9 @@ final class PhasesHelper {
             RankedSubmission[] placements) throws PhaseHandlingException {
         int rank = submission.getRank();
         Date timestamp1 = getSubmissionById(submissions, submission.getId()).getUpload().getCreationTimestamp();
-        for (int i = 0; i < placements.length; ++i) {
-            if (placements[i].getRank() == submission.getRank()) {
-                Submission tie = getSubmissionById(submissions, placements[i].getId());
+        for (RankedSubmission sub : placements) {
+            if (sub.getRank() == submission.getRank()) {
+                Submission tie = getSubmissionById(submissions, sub.getId());
                 Date timestamp2 = tie.getUpload().getCreationTimestamp();
 
                 if (timestamp1 != null && timestamp2 != null && timestamp2.before(timestamp1)) {
@@ -2613,9 +2476,9 @@ final class PhasesHelper {
      *             if no submission found
      */
     static Submission getSubmissionById(Submission[] submissions, long submissionId) throws PhaseHandlingException {
-        for (int i = 0; i < submissions.length; i++) {
-            if (submissions[i].getId() == submissionId) {
-                return submissions[i];
+        for (Submission sub : submissions) {
+            if (sub.getId() == submissionId) {
+                return sub;
             }
         }
         throw new PhaseHandlingException("submissions not found for submissionId: " + submissionId);
@@ -2628,10 +2491,9 @@ final class PhasesHelper {
      * @param subs the submissions
      * @param prizeType the prize type needs to be populated
      * @param minScore the minimum score the submission can receive prize
-     * @throws com.topcoder.management.project.PersistenceException if any persistence error occurs
      * @since 1.7.1
      */
-    public static void setSubmissionPrize(com.topcoder.management.project.Project project, Submission[] subs, String prizeType, double minScore) {
+    static void setSubmissionPrize(com.topcoder.management.project.Project project, Submission[] subs, String prizeType, double minScore) {
         List<Prize> prizes = project.getPrizes();
 
         if (prizes != null && !prizes.isEmpty()) {
@@ -2659,35 +2521,29 @@ final class PhasesHelper {
                 // sort the submissions.
                 Arrays.sort(subs, new Comparator<Submission>() {
                     public int compare(Submission o1, Submission o2) {
-                        int placementResult = o1.getPlacement().compareTo(o2.getPlacement());
-                        if (placementResult == 0) {
-                            return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
-                        } else {
-                            return placementResult;
-                        }
+                        return o1.getPlacement().compareTo(o2.getPlacement());
                     }
                 });
 
                 Prize currentPrize = prizes.get(0);
                 int currentPrizeIndex = 0;
                 int currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
-                for (int i = 0; i < subs.length; i++) {
-                    Submission submission = subs[i];
-                    if (submission.getFinalScore().doubleValue() < minScore || 
+                for (Submission submission : subs) {
+                    if (submission.getFinalScore() < minScore ||
                             !(submission.getSubmissionStatus().getName().equals("Active")
                             || submission.getSubmissionStatus().getName().equals("Completed Without Win"))) {
                         continue;
                     }
-				    if (submission.isExtra()) {
+                    if (submission.isExtra()) {
                         submission.setPrize(minPrize);
-						continue;
+                        continue;
                     }
                     if (currentPrizeNumLeft > 0) {
                         currentPrizeNumLeft--;
                     } else {
                         currentPrizeIndex++;
                         if (currentPrizeIndex >= prizes.size()) {
-                            break; // No more prizes left for awarding
+                            continue; // No more prizes left for awarding
                         } else {
                             currentPrize = prizes.get(currentPrizeIndex);
                             currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
@@ -2698,20 +2554,184 @@ final class PhasesHelper {
             }
         }
     }
-    
+
+
     /**
-     * Populate the prize for the submissions.
+     * Updates the scores and placements of the submissions by aggregation the scores from the reviews.
+     * Also updates the 1st place winner and the 2nd place winner in the project properties,
      *
-     * @param managerHelper the <code>ManagerHelper</code>instance.
-     * @param projectId the project id
-     * @param subs the submissions
-     * @param prizeType the prize type needs to be populated
-     * @param minScore the minimum score the submission can receive prize
-     * @throws com.topcoder.management.project.PersistenceException if any persistence error occurs
+     * @param managerHelper ManagerHelper instance.
+     * @param conn DB connection
+     * @param phase Review phase.
+     * @param operator The operator name.
+     * @param isMilestone True if the "milestone" submissions need to be updated, false for "contest" submissions.
+     * @param updateInitialScore True if the "initial" scores of the submissions should be updated.
+     * @param updateFinalResults True if the "final" scores and placements of the submissions should be updated.
      * @since 1.7.1
      */
-    public static void setSubmissionPrize(ManagerHelper managerHelper, long projectId, Submission[] subs, String prizeType, double minScore)
-        throws com.topcoder.management.project.PersistenceException {
-        setSubmissionPrize(managerHelper.getProjectManager().getProject(projectId), subs, prizeType, minScore);
+    static Submission[] updateSubmissionsResults(ManagerHelper managerHelper, Connection conn, Phase phase, String operator,
+        boolean isMilestone, boolean updateInitialScore, boolean updateFinalResults) throws PhaseHandlingException {
+
+        Submission[] subs;
+        try {
+            UploadManager uploadManager = managerHelper.getUploadManager();
+            com.topcoder.management.project.Project project =
+                managerHelper.getProjectManager().getProject(phase.getProject().getId());
+            boolean isStudioProject = project.getProjectCategory().getProjectType().getId() == STUDIO_PROJECT_TYPE_ID;
+
+            // Search all "Active" submissions with contest submission type for current project.
+            subs = searchActiveSubmissions(uploadManager, conn, phase.getProject().getId(),
+                isMilestone ? MILESTONE_SUBMISSION_TYPE : CONTEST_SUBMISSION_TYPE);
+
+            // Search the reviewIds.
+            Resource[] reviewers = searchResourcesForRoleNames(managerHelper, conn,
+                isMilestone ? new String[] {MILESTONE_REVIEWER} : REVIEWER_ROLE_NAMES, phase.getId());
+
+            // Search all review scorecard for the current phase.
+            Review[] reviews = searchReviewsForResources(conn, managerHelper, reviewers, null);
+
+            if (reviews.length == 0) {
+                throw new PhaseHandlingException("No reviews found for phase: " + phase.getId());
+            }
+
+            // Get minimum passing review score.
+            float minScore = getScorecardMinimumScore(managerHelper.getScorecardManager(), reviews[0]);
+
+            // create array to hold scores from all reviewers for all submissions.
+            com.topcoder.management.review.scoreaggregator.Submission[] submissionScores =
+                new com.topcoder.management.review.scoreaggregator.Submission[subs.length];
+
+            // for each submission, populate scores array to use with review score aggregator.
+            for (int iSub = 0; iSub < subs.length; iSub++) {
+                Submission submission = subs[iSub];
+                long subId = submission.getId();
+                int numberOfReviews = 0;
+                List<Float> scoresList = new ArrayList<Float>();
+
+                // Match the submission with its reviews.
+                for (Review review : reviews) {
+                    if (subId == review.getSubmission()) {
+                        numberOfReviews++;
+                        scoresList.add(review.getScore());
+                    }
+                }
+
+                // if number of reviews does not match number of reviewers throw exception.
+                if (numberOfReviews != reviewers.length) {
+                    throw new PhaseHandlingException("Number of reviews does not match number of reviewers");
+                }
+
+                float[] scores = new float[scoresList.size()];
+                for (int iScore = 0; iScore < scores.length; iScore++) {
+                    scores[iScore] = scoresList.get(iScore);
+                }
+
+                submissionScores[iSub] = new com.topcoder.management.review.scoreaggregator.Submission(subId, scores);
+            }
+
+            // now calculate the aggregated scores and placements.
+            ReviewScoreAggregator scoreAggregator = managerHelper.getScorecardAggregator();
+
+            // this will hold as many elements as submissions.
+            AggregatedSubmission[] aggregations = scoreAggregator.aggregateScores(submissionScores);
+            RankedSubmission[] placements = scoreAggregator.calcPlacements(aggregations);
+
+            // status objects.
+            SubmissionStatus activeStatus = getSubmissionStatus(uploadManager, "Active");
+            SubmissionStatus failedStatus = getSubmissionStatus(uploadManager, "Failed Review");
+            SubmissionStatus failedMilestoneStatus = getSubmissionStatus(uploadManager, "Failed Milestone Review");
+            SubmissionStatus noWinStatus = getSubmissionStatus(uploadManager, "Completed Without Win");
+
+            Resource winningSubmitter = null, runnerUpSubmitter = null;
+
+            // again iterate over submissions to set the initial score and placement.
+            for (RankedSubmission rankedSubmission : placements) {
+                rankedSubmission = breakTies(rankedSubmission, subs, placements);
+                Submission submission = getSubmissionById(subs, rankedSubmission.getId());
+                float aggScore = rankedSubmission.getAggregatedScore();
+                int placement = rankedSubmission.getRank();
+
+                if (updateInitialScore) {
+                    submission.setInitialScore(Double.valueOf(aggScore + ""));
+                }
+
+                if (updateFinalResults) {
+                    submission.setFinalScore(Double.valueOf(aggScore + ""));
+                    submission.setPlacement((long)placement);
+
+                    if (aggScore >= minScore) {
+                        long submitterId = submission.getUpload().getOwner();
+                        Resource submitter = managerHelper.getResourceManager().getResource(submitterId);
+
+                        // cache winning submitter.
+                        if (placement == 1) {
+                            winningSubmitter = submitter;
+                        } else {
+                            // cache runner up submitter.
+                            if (placement == 2) {
+                                runnerUpSubmitter = submitter;
+                            }
+                            submission.setSubmissionStatus(isMilestone ? activeStatus : noWinStatus);
+                        }
+                    } else {
+                        if (isStudioProject) {
+                            submission.setSubmissionStatus(noWinStatus);
+                        } else {
+                            submission.setSubmissionStatus(isMilestone ? failedMilestoneStatus : failedStatus);
+                        }
+                    }
+                }
+
+            } // loop end
+
+            // set the contest prize.
+            if (updateFinalResults) {
+                setSubmissionPrize(project, subs, isMilestone ? "Milestone Prize" : "Contest Prize", minScore);
+            }
+
+            // update 1st place winner and 2nd place winner in the project properties.
+            if (updateFinalResults && !isMilestone) {
+                // cannot be the case where there is a runner up but no winner.
+                if (runnerUpSubmitter != null && winningSubmitter == null) {
+                    throw new PhaseHandlingException("Runner up present, but no winner for project with id:" +
+                        phase.getProject().getId());
+                }
+
+                // if there is a winner.
+                if (winningSubmitter != null) {
+                    // Set project properties to store the winner and the runner up.
+
+                    Object winnerExtId = winningSubmitter.getProperty(EXTERNAL_REFERENCE_ID);
+                    project.setProperty("Winner External Reference ID", winnerExtId);
+
+                    // if there is a runner up.
+                    if (runnerUpSubmitter != null) {
+                        Object runnerExtId = runnerUpSubmitter.getProperty(EXTERNAL_REFERENCE_ID);
+                        project.setProperty("Runner-up External Reference ID", runnerExtId);
+                    }
+
+                    // update the project.
+                    managerHelper.getProjectManager().updateProject(project, "Update the winner and runner up.", operator);
+                }
+            }
+
+            // update the submissions.
+            for (Submission sub : subs) {
+                uploadManager.updateSubmission(sub, operator);
+            }
+        }  catch (com.topcoder.management.project.PersistenceException e) {
+            throw new PhaseHandlingException("Problem with project persistence", e);
+        } catch (InconsistentDataException e) {
+            throw new PhaseHandlingException("Problem when aggregating scores", e);
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Problem with upload persistence", e);
+        } catch (ValidationException e) {
+            throw new PhaseHandlingException("Problem with project validation", e);
+        } catch (ResourcePersistenceException e) {
+            throw new PhaseHandlingException("Problem with resource persistence", e);
+        }
+    
+        return subs;
     }
+
 }

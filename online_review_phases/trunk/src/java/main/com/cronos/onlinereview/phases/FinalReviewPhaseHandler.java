@@ -263,12 +263,10 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if any error occurs
      */
     private int getFinalReviewerNumber(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
             return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                                                           new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME },
-                                                           phase.getId()).length;
+                new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, phase.getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -282,15 +280,10 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      * @since 1.4
      */
     private int getApproverNumbers(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
-            return PhasesHelper
-                .searchProjectResourcesForRoleNames(
-                    getManagerHelper(),
-                    conn,
-                                                                   new String[] {PhasesHelper.APPROVER_ROLE_NAME },
-                                                                   phase.getProject().getId()).length;
+            return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
+                new String[] {PhasesHelper.APPROVER_ROLE_NAME }, phase.getProject().getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -305,9 +298,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      *             processing the phase.
      */
     private boolean isFinalWorksheetCommitted(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
             Review finalWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
                 PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
             return ((finalWorksheet != null) && finalWorksheet.isCommitted());
@@ -336,9 +328,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      *             data.
      */
     private boolean checkFinalReview(Phase phase, String operator) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
             ManagerHelper managerHelper = getManagerHelper();
             Review finalWorksheet = PhasesHelper.getWorksheet(conn, managerHelper,
                 PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
@@ -411,8 +402,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             return rejected;
 
         } catch (PhaseManagementException e) {
-            throw new PhaseHandlingException("Problem when persisting phases",
-                            e);
+            throw new PhaseHandlingException("Problem when persisting phases", e);
         } catch (PersistenceException e) {
             throw new PhaseHandlingException("Problem when reading phases", e);
         } finally {

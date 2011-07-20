@@ -279,7 +279,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             ResourceManager resourceManager = managerHelper.getResourceManager();
             DateFormat dateFormatter = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
 
-            Connection conn = null;
+            Connection conn = createConnection();
             try {
                 // Locate the role for Post-Mortem Reviewer
                 ResourceRole postMortemReviewerRole = null;
@@ -290,8 +290,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                         break;
                     }
                 }
-
-                conn = createConnection();
 
                 long projectId = phase.getProject().getId();
 
@@ -392,14 +390,12 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if there was an error retrieving data.
      */
     private boolean allPostMortemReviewsDone(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
             // Search all post-mortem review scorecards for the current phase
-            conn = createConnection();
             Review[] reviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
-                                                                    phase.getProject().getId(),
-                                                                    POST_MORTEM_REVIEWER_FILTER, null);
+                phase.getProject().getId(), POST_MORTEM_REVIEWER_FILTER, null);
 
             // Count number of committed reviews
             int committedReviewsCount = 0;

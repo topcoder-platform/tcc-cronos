@@ -187,9 +187,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 return result;
             }
             
-            Connection conn = null;
+            Connection conn = createConnection();
             try {
-                conn = createConnection();
                 Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
                     getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
 
@@ -289,11 +288,9 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         Phase previousAggregationPhase = PhasesHelper.locatePhase(phase,
                         "Aggregation", false, false);
 
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
-
             // Search for id of the Aggregator
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
@@ -318,8 +315,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 aggWorksheet.setAuthor(aggregators[0].getId());
 
                 // copy the comments from review scorecards
-                Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW,
-                                false, true);
+                Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, true);
                 Resource[] reviewers = PhasesHelper
                                 .searchResourcesForRoleNames(
                                                 getManagerHelper(),
@@ -338,14 +334,14 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 }
 
                 // find the winning submission
-                Filter filter = SubmissionFilterBuilder
-                                .createResourceIdFilter(winningSubmitter
-                                                .getId());
+                Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
+
                 // change in version 1.4
                 // AND submission type ID = "Contest Submission"
                 long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(conn,
                         PhasesHelper.CONTEST_SUBMISSION_TYPE);
                 Filter typeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
+
                 Submission[] submissions = getManagerHelper()
                                 .getUploadManager().searchSubmissions(new AndFilter(filter, typeFilter));
 
@@ -488,9 +484,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      */
     private boolean isAggregationWorksheetPresent(Phase phase)
         throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
             Review review = PhasesHelper.getWorksheet(conn, getManagerHelper(), "Aggregator", phase.getId());
             return (review != null && review.isCommitted());
         } finally {

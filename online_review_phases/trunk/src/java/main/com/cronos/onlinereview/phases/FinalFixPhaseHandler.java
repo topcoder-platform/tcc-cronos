@@ -162,11 +162,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             if (finalReviewPhase == null) {
                 return new OperationCheckResult("Final Review phase cannot be located");
             }
-            Connection conn = null;
+            Connection conn = createConnection();
 
             try {
-                conn = createConnection();
-
                 Resource[] finalReviewer = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
 
@@ -254,11 +252,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         Phase previousAprovalPhase = PhasesHelper.locatePhase(phase,
                 PhasesHelper.PHASE_APPROVAL, false, false);
 
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
-
             // Sometimes phase management framework fails to open the final fix phase (e.g. due to a DB error)
             // at a later stage after the final review worksheet is created. In those rare cases the final review
             // worksheet would be created again on the next iteration of the autopilot. To prevent the duplication
@@ -434,23 +430,19 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if error occurs when retrieving, or if multiple uploads exist.
      */
     private Upload getFinalFix(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
-
-            long uploadTypeId = UploadTypeLookupUtility.lookUpId(conn,
-                    PHASE_TYPE_FINAL_FIX);
-            long uploadStatusId = UploadStatusLookupUtility.lookUpId(conn,
-                            "Active");
+            long uploadTypeId = UploadTypeLookupUtility.lookUpId(conn, PHASE_TYPE_FINAL_FIX);
+            long uploadStatusId = UploadStatusLookupUtility.lookUpId(conn, "Active");
 
             // get final fix upload based on "Final Fix" type, "Active" status
             // and winning submitter resource id filters.
             Filter uploadTypeFilter = UploadFilterBuilder.createUploadTypeIdFilter(uploadTypeId);
             Filter uploadStatusFilter = UploadFilterBuilder.createUploadStatusIdFilter(uploadStatusId);
             Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
-                            getManagerHelper().getResourceManager(),
-                            getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
+                getManagerHelper().getResourceManager(),
+                getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
             Filter resourceIdFilter = UploadFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
             Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {uploadTypeFilter,
                 uploadStatusFilter, resourceIdFilter }));
@@ -462,14 +454,12 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             } else if (uploads.length == 1) {
                 return uploads[0];
             } else {
-                throw new PhaseHandlingException(
-                                "There cannot be multiple final fix uploads");
+                throw new PhaseHandlingException("There cannot be multiple final fix uploads");
             }
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Problem when retrieving upload",
-                            e);
+            throw new PhaseHandlingException("Problem when retrieving upload", e);
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException("Problem with search builder", e);
         } finally {

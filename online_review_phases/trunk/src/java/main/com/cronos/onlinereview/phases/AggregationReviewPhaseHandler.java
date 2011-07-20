@@ -337,12 +337,10 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
         Review aggregationWorksheet = getAggregationWorksheet(phase);
         Comment[] comments = aggregationWorksheet.getAllComments();
 
-        Connection conn = null;
+        Connection conn = createConnection();
 
         // Locate the winning submitter
         try {
-            conn = createConnection();
-
             // check for approved/rejected comments.
             boolean rejected = false;
 
@@ -411,8 +409,7 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
                                 newAggPhaseId, operator);
             }
         } catch (PhaseManagementException e) {
-            throw new PhaseHandlingException("Problem when persisting phases",
-                            e);
+            throw new PhaseHandlingException("Problem when persisting phases", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -437,11 +434,9 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
             LOG.log(Level.INFO, "Can't start phase: reviewPhase == null || aggregationPhase == null");
             return false;
         }
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
-
             // will hold all reviewers
             Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(
                             getManagerHelper(), conn,
@@ -508,12 +503,10 @@ public class AggregationReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private Review getAggregationWorksheet(Phase phase) throws PhaseHandlingException {
         // Locate the nearest backward Aggregation phase
-        Phase aggPhase = PhasesHelper.locatePhase(phase, AGGREGATION, false,
-                        true);
-        Connection conn = null;
+        Phase aggPhase = PhasesHelper.locatePhase(phase, AGGREGATION, false, true);
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
             // Search the aggregated review scorecard
             Review aggWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
                 AGGREGATOR, aggPhase.getId());

@@ -225,12 +225,8 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
 
-            subs = PhasesHelper.searchActiveSubmissions(
-                            getManagerHelper().getUploadManager(), conn, phase
-                                            .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException(
-                            "Error retrieving submission status id", e);
+            subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
