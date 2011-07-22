@@ -2487,70 +2487,68 @@ final class PhasesHelper {
     /**
      * Populate the prize for the submissions.
      *
-     * @param project the project which the submissions belongs to
+     * @param project the project which the submissions belong to
      * @param subs the submissions
      * @param prizeType the prize type needs to be populated
      * @param minScore the minimum score the submission can receive prize
      * @since 1.7.1
      */
-    static void setSubmissionPrize(com.topcoder.management.project.Project project, Submission[] subs, String prizeType, double minScore) {
-        List<Prize> prizes = project.getPrizes();
+    static void setSubmissionPrize(com.topcoder.management.project.Project project, Submission[] subs,
+        String prizeType, double minScore) {
 
-        if (prizes != null && !prizes.isEmpty()) {
-            prizes = new ArrayList<Prize>(prizes);
-            // the prize which has the smallest prize amount
-            Prize minPrize = null;
-            for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
-                Prize prize = iter.next();
+        List<Prize> originalPrizes = project.getPrizes();
+        if (originalPrizes == null || originalPrizes.isEmpty()) {
+            return;
+        }
 
-                if (!prizeType.equals(prize.getPrizeType().getDescription())) {
-                    iter.remove();
-                } else if (minPrize == null || minPrize.getPrizeAmount() > prize.getPrizeAmount()) {
-                    minPrize = prize;
-                }
+        Prize minPrize = null;
+        List<Prize> prizes = new ArrayList<Prize>();
+        for (Prize prize : originalPrizes) {
+            if (!prizeType.equals(prize.getPrizeType().getDescription())) {
+                continue;
             }
 
-            if (!prizes.isEmpty()) {
-                // sort the prizes
-                Collections.sort(prizes, new Comparator<Prize>() {
-                    public int compare(Prize o1, Prize o2) {
-                        return o1.getPlace() - o2.getPlace();
-                    }
-                });
+            // Repeat the prize times the value of prize.getNumberOfSubmissions()
+            for (int i=0;i<prize.getNumberOfSubmissions();i++) {
+                prizes.add(prize);
+            }
 
-                // sort the submissions.
-                Arrays.sort(subs, new Comparator<Submission>() {
-                    public int compare(Submission o1, Submission o2) {
-                        return o1.getPlacement().compareTo(o2.getPlacement());
-                    }
-                });
+            // Update minPrize variable.
+            if (minPrize == null || minPrize.getPrizeAmount() > prize.getPrizeAmount()) {
+                minPrize = prize;
+            }
+        }
 
-                Prize currentPrize = prizes.get(0);
-                int currentPrizeIndex = 0;
-                int currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
-                for (Submission submission : subs) {
-                    if (submission.getFinalScore() < minScore ||
-                            !(submission.getSubmissionStatus().getName().equals("Active")
-                            || submission.getSubmissionStatus().getName().equals("Completed Without Win"))) {
-                        continue;
-                    }
-                    if (submission.isExtra()) {
-                        submission.setPrize(minPrize);
-                        continue;
-                    }
-                    if (currentPrizeNumLeft > 0) {
-                        currentPrizeNumLeft--;
-                    } else {
-                        currentPrizeIndex++;
-                        if (currentPrizeIndex >= prizes.size()) {
-                            continue; // No more prizes left for awarding
-                        } else {
-                            currentPrize = prizes.get(currentPrizeIndex);
-                            currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
-                        }
-                    }
-                    submission.setPrize(currentPrize);
-                }
+        // Sort the prizes by placement.
+        Collections.sort(prizes, new Comparator<Prize>() {
+            public int compare(Prize o1, Prize o2) {
+                return o1.getPlace() - o2.getPlace();
+            }
+        });
+
+        // Sort the submissions by placement.
+        Arrays.sort(subs, new Comparator<Submission>() {
+            public int compare(Submission o1, Submission o2) {
+                // Should be no placement ties at this point.
+                return o1.getPlacement().compareTo(o2.getPlacement());
+            }
+        });
+
+        int currentPrizeIndex = 0;
+        for (Submission submission : subs) {
+            // Skip the failed submissions.
+            if (submission.getFinalScore() < minScore ||
+                    !(submission.getSubmissionStatus().getName().equals("Active")
+                    || submission.getSubmissionStatus().getName().equals("Completed Without Win"))) {
+                continue;
+            }
+            // Submissions with extra prize don't get the regular prize, just the extra one.
+            if (submission.isExtra()) {
+                submission.setPrize(minPrize);
+            } else if (currentPrizeIndex < prizes.size()) {
+                // Set the prize if there is any left.
+                submission.setPrize(prizes.get(currentPrizeIndex));
+                currentPrizeIndex++;
             }
         }
     }
