@@ -357,9 +357,16 @@ import com.topcoder.shared.util.DBMS;
  *     <li>Update {@link #getProjectData(TCSubject)}</li>
  *   </ol>
  * </p>
+ * <p>
+ * Version 1.7.0 Release Assembly - Direct Improvements Assembly Release 3 Change notes:
+ *   <ol>
+ *     <li>add the logic to judge whether a pay is activation or additional pay and send different emails</li>
+ *     <li>correct the direct project name in the payment email of software and studio competition.</li>
+ *   </ol>
+ * </p>
  *
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSDEVELOPER
- * @version 1.6.8
+ * @version 1.7.0
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -2753,11 +2760,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                                                                       .getPayments();
             double paymentAmount;
 
+            // whether the contest is paid before
+            boolean hasContestSaleData = false;
+
             // how much user already paid
             double paidFee = 0.0;
 
             for (ContestPaymentData cpd : payments) {
                 paidFee += cpd.getPrice();
+                // the contest is paid before
+                hasContestSaleData = true;
             }
 
             // calculate current contest fee
@@ -2860,8 +2872,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // Added for Cockpit Release Assembly for Receipts
             //
             String competitionType = tobeUpdatedCompetition.getType().toString();
-            String projectName = tobeUpdatedCompetition.getContestData()
-                                                       .getTcDirectProjectName();
+            String projectName = competition.getContestData().getTcDirectProjectName();
 
             if (projectName == null) {
                 projectName = Long.toString(tobeUpdatedCompetition.getContestData()
@@ -2889,7 +2900,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 paymentData, competitionType,
                 tobeUpdatedCompetition.getContestData().getName(), projectName,
                 competition.getStartTime().toGregorianCalendar().getTime(),
-                paymentAmount, paymentAmount, result.getReferenceNumber());
+                paymentAmount, paymentAmount, result.getReferenceNumber(), hasContestSaleData);
 
             return contestPaymentResult;
 
@@ -3067,6 +3078,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             double fee = totalFee - pastPayment;
 
+            if(!hasContestSaleData) {
+                // remove contest fee from it
+                fee = fee - Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY));
+            }
+
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
                 checkBillingProjectPermission(tcSubject, tobeUpdatedCompetition);
@@ -3155,8 +3171,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             String competitionType = tobeUpdatedCompetition.getProjectHeader()
                                                            .getProjectCategory()
                                                            .getName();
-            String projectName = competition.getProjectHeader()
-                                            .getTcDirectProjectName();
+
+            String projectName = competition.getProjectHeader().getTcDirectProjectName();
 
             String toAddr = "";
 
@@ -3188,7 +3204,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 projectName,
                 competition.getAssetDTO().getProductionDate()
                            .toGregorianCalendar().getTime(), fee, fee,
-                result.getReferenceNumber());
+                result.getReferenceNumber(), hasContestSaleData);
 
 
             return softwareContestPaymentResult;
@@ -5839,7 +5855,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private void sendActivateContestReceiptEmail(String toAddr,
         String purchasedBy, PaymentData paymentData, String competitionType,
         String competitionTitle, String projectName, Date launchTime,
-        Double price, Double totalCost, String orderNumber)
+        Double price, Double totalCost, String orderNumber, boolean hasContestSaleData)
         throws EmailMessageGenerationException, EmailSendingException {
         com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
 
@@ -5851,6 +5867,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         phase.setAttribute("TOTAL_COST", totalCost);
 
         phase.setAttribute("FROM_ADDRESS", activateContestReceiptEmailFromAddr);
+
+
+        if(hasContestSaleData) {
+            // if it's paid before, set "paid" to yes
+            phase.setAttribute("PAID", "YES");
+        } else {
+            // if it's not paid before, set "paid" to no
+            phase.setAttribute("PAID", "NO");
+        }
 
         String file = Thread.currentThread().getContextClassLoader().getResource(
                 activateContestReceiptEmailTemplatePath).getFile();
@@ -6016,11 +6041,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (po.getProjectName() != null)
             {
-                sb.append("Project Name:").append(po.getProjectName().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+                sb.append("Billing Project Name:").append(po.getProjectName().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
             }
             else
             {
-                sb.append("Project Name:").append(po.getProjectName());
+                sb.append("Billing Project Name:").append(po.getProjectName());
             }
             
             sb.append("\n    ");
