@@ -100,6 +100,6 @@ public class RetrievalExceptionUnitTest extends TestCase {
         assertTrue("RetrievalException should be accurately created with the same Exception message.", defaultException
                 .getMessage().indexOf(DEFAULT_EXCEPTION_MESSAGE) >= 0);
         assertTrue("RetrievalException should be accurately created with the same Throwable message.", defaultException
-                .getMessage().indexOf(DEFAULT_THROWABLE_MESSAGE) >= 0);
+                .getCause().toString().indexOf(DEFAULT_THROWABLE_MESSAGE) >= 0);
     }
 }

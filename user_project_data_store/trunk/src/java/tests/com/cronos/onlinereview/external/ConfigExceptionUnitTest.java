@@ -97,6 +97,6 @@ public class ConfigExceptionUnitTest extends TestCase {
         assertTrue("ConfigException should be accurately created with the same Exception message.", defaultException
                 .getMessage().indexOf(DEFUALT_EXCEPTION_MESSAGE) >= 0);
         assertTrue("ConfigException should be accurately created with the same Throwable message.", defaultException
-                .getMessage().indexOf(DEFAULT_THROWABLE_MESSAGE) >= 0);
+                .getCause().toString().indexOf(DEFAULT_THROWABLE_MESSAGE) >= 0);
     }
 }

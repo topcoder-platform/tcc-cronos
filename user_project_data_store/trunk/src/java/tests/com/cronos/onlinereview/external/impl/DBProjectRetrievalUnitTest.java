@@ -583,7 +583,7 @@ public class DBProjectRetrievalUnitTest extends TestCase {
      * @throws RetrievalException
      *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveProject_Long1() throws RetrievalException {
+     public void testRetrieveProject_Long1() throws RetrievalException {
 
         ExternalProject project = defaultDBProjectRetrieval.retrieveProject(2);
 
@@ -619,7 +619,7 @@ public class DBProjectRetrievalUnitTest extends TestCase {
      * @throws RetrievalException
      *             this exception would never be thrown in this test case.
      */
-    public void testRetrieveProject_Long2() throws RetrievalException {
+/*   public void testRetrieveProject_Long2() throws RetrievalException {
 
         ExternalProject project = defaultDBProjectRetrieval.retrieveProject(4);
 
@@ -642,7 +642,7 @@ public class DBProjectRetrievalUnitTest extends TestCase {
         // Notice here, as the outer join.
         assertEquals("The forum id should be the same.", -1, project.getForumId());
     }
-
+*/
     /**
      * <p>
      * Tests the failure of the retrieveProject(long).
@@ -913,7 +913,7 @@ public class DBProjectRetrievalUnitTest extends TestCase {
      * @throws SQLException
      *             this exception would never be thrown in this test case.
      */
-    public void testCreateObject_ResultSet() throws RetrievalException, SQLException {
+     public void testCreateObject_ResultSet() throws RetrievalException, SQLException {
 
         // Prepares the ps and rs.
         PreparedStatement ps = defaultConnection.prepareStatement("SELECT cv.comp_vers_id, cv.component_id, "
@@ -944,4 +944,5 @@ public class DBProjectRetrievalUnitTest extends TestCase {
         assertEquals("the short description should be empty.", "", project.getShortDescription());
         assertEquals("the functional description should be empty.", "", project.getFunctionalDescription());
     }
+
 }

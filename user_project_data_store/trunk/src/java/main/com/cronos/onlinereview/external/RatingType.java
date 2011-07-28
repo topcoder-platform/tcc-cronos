@@ -52,7 +52,28 @@ public class RatingType extends Enum implements Serializable {
      * </p>
      */
     public static final String NAMESPACE = "com.cronos.onlinereview.external.RatingType";
-
+    
+    /**
+     * <p>
+     * The name of the architecture rating type, and the property name that stores the architecture phase number.
+     * </p>
+     */
+    public static final String ARCHITECTURE_NAME = "Architecture";
+    
+    /**
+     * <p>
+     * The name of the assembly rating type, and the property name that stores the assembly phase number.
+     * </p>
+     */
+    public static final String ASSEMBLY_NAME = "Assembly";
+    
+    /**
+     * <p>
+     * The name of the conceptualization rating type, and the property name that stores the conceptualization
+     * phase number.
+     */
+    public static final String CONCEPTUALIZATION_NAME = "Conceptualization";
+    
     /**
      * <p>
      * The name of the design rating type, and the property name that stores the design phase number.
@@ -65,8 +86,64 @@ public class RatingType extends Enum implements Serializable {
      * The name of the development rating type, and the property name that stores the development phase number.
      * </p>
      */
-    public static final String DEVELOPMENT_NAME = "Development";
-
+    public static final String DEVELOPMENT_NAME = "Development"; 
+    
+    /**
+     * <p>
+     * The name of the RIA build rating type, and the property name that stores the RIA build phase number.
+     * </p>
+     */
+    public static final String RIA_BUILD_NAME = "RIA Build"; 
+    
+    /**
+     * <p>
+     * The name of the specification rating type, and the property name that stores the specification phase number.
+     * </p>
+     */
+    public static final String SPECIFICATION_NAME = "Specification";
+    
+    /**
+     * <p>
+     * The name of the test scenarios rating type, and the property name that stores the test scenarios phase number.
+     * </p>
+     */
+    public static final String TEST_SCENARIOS_NAME = "Test Scenarios";
+    
+    /**
+     * <p>
+     * The name of the test suites rating type, and the property name that stores the test suites phase number.
+     * </p>
+     */
+    public static final String TEST_SUITES_NAME = "Test Suites"; 
+    
+    /**
+     * <p>
+     * The name of the UI prototype rating type, and the property name that stores the UI prototype phase number.
+     * </p>
+     */
+    public static final String UI_PROTOTYPE_NAME = "UI Prototype";
+    
+    /**
+     * <p>
+     * The rating type that represents the architecture phase.
+     * </p>
+     */
+    public static final RatingType ARCHITECTURE = getRatingType(ARCHITECTURE_NAME);
+    
+    /**
+     * <p>
+     * The rating type that represents the assembly phase.
+     * </p>
+     */
+    public static final RatingType ASSEMBLY = getRatingType(ASSEMBLY_NAME);
+    
+    /**
+     * <p>
+     * The rating type that represents the conceptualization phase.
+     * </p>
+     */
+    public static final RatingType CONCEPTUALIZATION = getRatingType(CONCEPTUALIZATION_NAME);
+    
     /**
      * <p>
      * The rating type that represents the design phase.
@@ -80,20 +157,111 @@ public class RatingType extends Enum implements Serializable {
      * </p>
      */
     public static final RatingType DEVELOPMENT = getRatingType(DEVELOPMENT_NAME);
-
+    
     /**
      * <p>
-     * The default integer code of the development phase.
+     * The rating type that represents the RIA build phase.
      * </p>
      */
-    private static final int DEFAULT_DEV_CODE = 113;
-
+    public static final RatingType RIA_BUILD = getRatingType(RIA_BUILD_NAME);
+    
+    /**
+     * <p>
+     * The rating type that represents the specification phase.
+     * </p>
+     */
+    public static final RatingType SPECIFICATION = getRatingType(SPECIFICATION_NAME);
+    
+    /**
+     * <p>
+     * The rating type that represents the test scenarios phase.
+     * </p>
+     */
+    public static final RatingType TEST_SCENARIOS = getRatingType(TEST_SCENARIOS_NAME);
+    
+    /**
+     * <p>
+     * The rating type that represents the test suites phase.
+     * </p>
+     */
+    public static final RatingType TEST_SUITES = getRatingType(TEST_SUITES_NAME);
+    
+    /**
+     * <p>
+     * The rating type that represents the UI prototype phase.
+     * </p>
+     */
+    public static final RatingType UI_PROTOTYPE = getRatingType(UI_PROTOTYPE_NAME);
+    
+    /**
+     * <p>
+     * The default integer code of the architecture phase.
+     * </p>
+     */
+    private static final int DEFAULT_ARCHITECTURE_CODE = 118;  
+    
+    /**
+     * <p>
+     * The default integer code of the assembly phase.
+     * </p>
+     */
+    private static final int DEFAULT_ASSEMBLY_CODE = 125;
+    
+    /**
+     * <p>
+     * The default integer code of the conceptualization phase.
+     * </p>
+     */
+    private static final int DEFAULT_CONCEPTUALIZATION_CODE = 134;
+    
     /**
      * <p>
      * The default integer code of the design phase.
      * </p>
      */
     private static final int DEFAULT_DESIGN_CODE = 112;
+    
+    /**
+     * <p>
+     * The default integer code of the development phase.
+     * </p>
+     */
+    private static final int DEFAULT_DEV_CODE = 113;
+    
+    /**
+     * <p>
+     * The default integer code of the RIA build phase.
+     * </p>
+     */
+    private static final int DEFAULT_RIA_BUILD_CODE = 135;
+    
+    /**
+     * <p>
+     * The default integer code of the specification phase.
+     * </p>
+     */
+    private static final int DEFAULT_SPECIFICATION_CODE = 117;
+    
+    /**
+     * <p>
+     * The default integer code of the test scenarios phase.
+     * </p>
+     */
+    private static final int DEFAULT_TEST_SCENARIOS_CODE = 137;
+    
+    /**
+     * <p>
+     * The default integer code of the test suites phase.
+     * </p>
+     */
+    private static final int DEFAULT_TEST_SUITES_CODE = 124;       
+    
+    /**
+     * <p>
+     * The default integer code of the UI prototype phase.
+     * </p>
+     */
+    private static final int DEFAULT_UI_PROTOTYPE_CODE = 130;
 
     /**
      * <p>
@@ -152,6 +320,22 @@ public class RatingType extends Enum implements Serializable {
                 enumRatingType = new RatingType(DEFAULT_DESIGN_CODE, typeName);
             } else if (typeName.equals(DEVELOPMENT_NAME)) {
                 enumRatingType = new RatingType(DEFAULT_DEV_CODE, typeName);
+            } else if (typeName.equals(CONCEPTUALIZATION_NAME)) {
+                enumRatingType = new RatingType(DEFAULT_CONCEPTUALIZATION_CODE, typeName);
+            } else if (typeName.equals(SPECIFICATION_NAME)) {
+                enumRatingType = new RatingType(DEFAULT_SPECIFICATION_CODE, typeName);
+            } else if (typeName.equals(ARCHITECTURE_NAME)) {
+                enumRatingType = new RatingType(DEFAULT_ARCHITECTURE_CODE, typeName);
+            } else if (typeName.equals(ASSEMBLY_NAME)) {
+                enumRatingType = new RatingType(DEFAULT_ASSEMBLY_CODE, typeName);
+            } else if (typeName.equals(TEST_SUITES_NAME)) {
+                enumRatingType = new RatingType(DEFAULT_TEST_SUITES_CODE, typeName);
+            } else if (typeName.equals(TEST_SCENARIOS_NAME)) {
+                enumRatingType = new RatingType(DEFAULT_TEST_SCENARIOS_CODE, typeName);
+            } else if (typeName.equals(UI_PROTOTYPE_NAME)) {
+                enumRatingType = new RatingType(DEFAULT_UI_PROTOTYPE_CODE, typeName);
+            } else if (typeName.equals(RIA_BUILD_NAME)) {
+        	enumRatingType = new RatingType(DEFAULT_RIA_BUILD_CODE, typeName);
             } else {
                 enumRatingType = new RatingType(0, typeName);
             }

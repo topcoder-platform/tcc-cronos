@@ -115,6 +115,6 @@ public class UserProjectDataStoreExceptionUnitTest extends TestCase {
         assertTrue("UserProjectDataStoreException should be accurately created with the same Exception " + "message.",
                 defaultException.getMessage().indexOf(DEFAULT_EXCEPTION_MESSAGE) >= 0);
         assertTrue("UserProjectDataStoreException should be accurately created with the same Throwable " + "message.",
-                defaultException.getMessage().indexOf(DEFAUL_THROWABLE_MESSAGE) >= 0);
+                defaultException.getCause().toString().indexOf(DEFAUL_THROWABLE_MESSAGE) >= 0);
     }
 }

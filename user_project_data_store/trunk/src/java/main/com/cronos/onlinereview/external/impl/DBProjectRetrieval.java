@@ -102,7 +102,7 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
      * The string denotes the database column name of the forum id.
      * </p>
      */
-    private static final String FORUM_ID_STRING = "jive_category_id";
+    private static final String FORUM_ID_STRING = "forum_id";
 
     /**
      * <p>
@@ -452,9 +452,9 @@ public class DBProjectRetrieval extends BaseDBRetrieval implements ProjectRetrie
 
         // Constructs the query string.
         String query = "SELECT cv.comp_vers_id, cv.component_id, version, version_text, comments, "
-                + "component_name, description, cc.root_category_id category_id, jive_category_id, "
+                + "component_name, description, cc.root_category_id category_id, forum_id, "
                 + "cc.short_desc short_desc, cc.function_desc function_desc "
-                + "FROM comp_versions cv, comp_catalog cc, OUTER comp_jive_category_xref f "
+                + "FROM comp_versions cv, comp_catalog cc, OUTER comp_forum_xref f "
                 + "WHERE cv.component_id = cc.component_id AND cv.comp_vers_id = f.comp_vers_id ";
         query += queryAndClause + UserProjectDataStoreHelper.generateQuestionMarks(paramLength);
 
