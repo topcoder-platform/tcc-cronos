@@ -114,6 +114,7 @@ import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.search.builder.SearchBundle;
 import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.OrFilter;
 import com.topcoder.security.RolePrincipal;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.contest.eligibility.ContestEligibility;
@@ -679,6 +680,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.6
      */
     private static final long SUBMISSION_DELETE_STATUS_ID = 5;
+
+     /**
+     * COMPLETED WIHOUT A WIN submission status id
+     *
+     * @since 1.6
+     */
+    private static final long SUBMISSION_NO_WIN_STATUS_ID = 4;
 
     /**
      * Draft status list.
@@ -8458,8 +8466,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         throws SearchBuilderException, UploadPersistenceException {
         Filter filter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
         Filter filter2 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_ACTIVE_STATUS_ID);
-        Filter filter3 = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionType);
-        Filter andFilter = new AndFilter(Arrays.asList(new Filter[] {filter, filter2, filter3}));
+        Filter filter3 = SubmissionFilterBuilder.createSubmissionStatusIdFilter(SUBMISSION_NO_WIN_STATUS_ID);
+        Filter filter4 = new OrFilter(filter2, filter3);
+        Filter filter5 = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionType);
+        Filter andFilter = new AndFilter(Arrays.asList(new Filter[] {filter, filter4, filter5}));
         return uploadManager.searchSubmissions(andFilter);
     }
 
