@@ -103,7 +103,7 @@ public class DBProjectRetrievalStressTest extends TestCase {
      * <p>Stress test for DBProjectRetrieval#retrieveProject(long).</p>
      * @throws Exception to junit.
      */
-    public void testRetrieveProjectsByID() throws Exception {
+     public void testRetrieveProjectsByID() throws Exception {
         Random rand = new Random();
         for (int i = 0; i < RUN_TIMES; i++) {
             long id = Math.abs(rand.nextInt()) % DATA_COUNT;
@@ -126,7 +126,7 @@ public class DBProjectRetrievalStressTest extends TestCase {
      * <p>Stress test for DBProjectRetrieval#retrieveProjects(long[]).</p>
      * @throws Exception to junit.
      */
-    public void testRetrieveProjectsByIDs() throws Exception {
+     public void testRetrieveProjectsByIDs() throws Exception {
 
         Random rand = new Random();
         long[] ids = new long[RUN_TIMES];
