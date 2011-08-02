@@ -760,7 +760,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         } else if ("OR_LINK".equals(field.getName())) {
             field.setValue(projectDetailsBaseURL + project.getId());
         } else if ("STUDIO_LINK".equals(field.getName())) {
-            field.setValue("<![CDATA[" + studioProjectDetailsBaseURL + project.getId() + "]]>");
+            field.setValue(studioProjectDetailsBaseURL + project.getId());
         } else if (values.containsKey(field.getName())) {
             if (values.get(field.getName()) != null) {
                 field.setValue(values.get(field.getName()).toString());
