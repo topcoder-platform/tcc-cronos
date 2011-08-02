@@ -254,3 +254,9 @@ alter table 'informix'.comp_technology add constraint foreign key
 	constraint fk_comp_tech2;
 
 
+create table 'informix'.comp_jive_category_xref (
+    comp_vers_id DECIMAL(12,0) not null,
+    jive_category_id INT not null
+)
+extent size 250 next size 250
+lock mode page;
