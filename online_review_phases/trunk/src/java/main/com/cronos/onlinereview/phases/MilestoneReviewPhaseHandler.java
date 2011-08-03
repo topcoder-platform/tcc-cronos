@@ -366,7 +366,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
 
         if (reviewers.length != 1) {
             LOG.log(Level.ERROR, "There should be exactly one milestone reviewer.");
-            throw new PhaseHandlingException("There should be exactly one milestone reviewer.");
+            return new OperationCheckResult("There should be exactly one milestone reviewer.");
         }
 
         // Search all review scorecard for the current phase
