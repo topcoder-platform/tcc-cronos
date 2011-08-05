@@ -1964,17 +1964,33 @@ public class ProjectServicesImpl implements ProjectServices {
                     // submission phase duration
                     Util.log(logger, Level.INFO, "set duration for submission phase");
                     Phase submissionPhase = null;
+                    Phase registrationPhase = null;
                     for (Phase phase : phases) {
                         if (phase.getPhaseType().getId() == PhaseType.SUBMISSION_PHASE.getId()) {
                             submissionPhase = phase;
                             break;
                         }
                     }
+
+                    for (Phase phase : phases) {
+                        if (phase.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {
+                            registrationPhase = phase;
+                            break;
+                        }
+                    }
+
                     if (submissionPhase != null) {
                         Date scheduler = submissionPhase.calcEndDate();
                         diff = endDate.getTime() - scheduler.getTime();
-                        Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
+                        Util.log(logger, Level.INFO, "submissionPhase pase diff date:" + diff);
                         submissionPhase.setLength(submissionPhase.getLength() + diff);
+                    }
+
+                    if (registrationPhase != null) {
+                        Date scheduler = registrationPhase.calcEndDate();
+                        diff = endDate.getTime() - scheduler.getTime();
+                        Util.log(logger, Level.INFO, "registrationPhase pase diff date:" + diff);
+                        registrationPhase.setLength(submissionPhase.getLength() + diff);
                     }
                 }
     
@@ -2632,6 +2648,7 @@ public class ProjectServicesImpl implements ProjectServices {
             if (endDate != null) {
                 // submission phase duration
                 adjustPhaseForEndDate(PhaseType.SUBMISSION_PHASE, newProjectPhases, endDate);
+                adjustPhaseForEndDate(PhaseType.REGISTRATION_PHASE, newProjectPhases, endDate);
             }
 
             setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
