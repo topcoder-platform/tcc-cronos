@@ -1956,7 +1956,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     if (multiRoundPhase != null) {
                         Date scheduler = multiRoundPhase.calcEndDate();
                         diff = multiRoundEndDate.getTime() - scheduler.getTime();
-                        Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
+                        Util.log(logger, Level.INFO, "muilround pase diff date = " + multiRoundEndDate.getTime() + " - " + multiRoundPhase.calcEndDate());
                         multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
                     }
                 }
