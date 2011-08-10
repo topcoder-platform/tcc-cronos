@@ -63,6 +63,9 @@ import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectSpec;
 import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.management.project.FileType;
+import com.topcoder.management.project.Prize;
+import com.topcoder.management.project.PrizeType;
 import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.message.email.AddressException;
 import com.topcoder.message.email.EmailEngine;
@@ -761,28 +764,28 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             // HashMap<String,Integer> and add each key/value entry
             //studioContestTypes = getConfigurationMapValue("studioContestTypes", configObject);
 
-            studioContestTypes.put(CompetitionData.STUDIO_WEB_PAGE_DESIGN, ContestTypeData.WEB_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_WEB_DESIGN, ContestTypeData.WEB_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_PAGE_DESIGN, new Long(ProjectCategory.WEB_DESIGN.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_DESIGN, new Long(ProjectCategory.WEB_DESIGN.getId()));
 
-            studioContestTypes.put(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN, ContestTypeData.APPLICATION_FRONT_END_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN, new Long(ProjectCategory.APPLICATION_FRONT_END_DESIGN.getId()));
 
-            studioContestTypes.put(CompetitionData.STUDIO_WEB_ELEMENTS, ContestTypeData.BANNERS_ICONS_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN, ContestTypeData.BANNERS_ICONS_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_ICONS, ContestTypeData.BANNERS_ICONS_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_WEB_ELEMENTS, new Long(ProjectCategory.BANNERS_ICONS.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN, new Long(ProjectCategory.BANNERS_ICONS.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_ICONS, new Long(ProjectCategory.BANNERS_ICONS.getId()));
 
-            studioContestTypes.put(CompetitionData.STUDIO_LOGO_DESIGN, ContestTypeData.LOGO_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_LOGO_DESIGN, new Long(ProjectCategory.LOGO_DESIGN.getId()));
             
-            studioContestTypes.put(CompetitionData.STUDIO_PRINT_DESIGN, ContestTypeData.PRINT_PRESENTATION);
-            studioContestTypes.put(CompetitionData.STUDIO_POWERPOINT_PRESENTATION, ContestTypeData.PRINT_PRESENTATION);
-            studioContestTypes.put(CompetitionData.STUDIO_PRINT_PRESENTATION, ContestTypeData.PRINT_PRESENTATION);
+            studioContestTypes.put(CompetitionData.STUDIO_PRINT_DESIGN, new Long(ProjectCategory.PRINT_OR_PRESENTATION.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_POWERPOINT_PRESENTATION, new Long(ProjectCategory.PRINT_OR_PRESENTATION.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_PRINT_PRESENTATION, new Long(ProjectCategory.PRINT_OR_PRESENTATION.getId()));
 
-            studioContestTypes.put(CompetitionData.STUDIO_OTHER_STATIC_DESIGN, ContestTypeData.OTHER_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_OTHER_DESIGN, ContestTypeData.OTHER_DESIGN);
+            studioContestTypes.put(CompetitionData.STUDIO_OTHER_STATIC_DESIGN, new Long(ProjectCategory.OTHER.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_OTHER_DESIGN, new Long(ProjectCategory.OTHER.getId()));
 
-            studioContestTypes.put(CompetitionData.STUDIO_WIDGET_OR_MOBILE_SCREEN_DESIGN, ContestTypeData.WIDGET_OR_MOBILE_SCREEN_DESIGN);
-            studioContestTypes.put(CompetitionData.STUDIO_FRONT_END_FLASH, ContestTypeData.FRONT_END_FLASH);
-            studioContestTypes.put(CompetitionData.STUDIO_WIREFRAMES, ContestTypeData.WIREFRAMES);
-            studioContestTypes.put(CompetitionData.STUDIO_IDEA_GENERATION, ContestTypeData.IDEA_GENERATION);
+            studioContestTypes.put(CompetitionData.STUDIO_WIDGET_OR_MOBILE_SCREEN_DESIGN, new Long(ProjectCategory.WIDGET_OR_MOBILE_SCREEN_DESIGN.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_FRONT_END_FLASH, new Long(ProjectCategory.FRONT_END_FLASH.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_WIREFRAMES, new Long(ProjectCategory.WIREFRAMES.getId()));
+            studioContestTypes.put(CompetitionData.STUDIO_IDEA_GENERATION, new Long(ProjectCategory.IDEA_GENERATION.getId()));
 
             
 
@@ -1432,7 +1435,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             }
 
             CreateCompetitonResult result = new CreateCompetitonResult();
-            if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO)) {
+       /*     if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO)) {
                 
                 ContestData data = new ContestData();
                 boolean zeroContestFee = false;
@@ -1758,7 +1761,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
 				
 
-            } else {
+            } else { */
                 
                 
 
@@ -1834,7 +1837,45 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 else if (competitionData.getContestTypeName().equalsIgnoreCase(CompetitionData.TEST_SCENARIOS))
                 {
                     projectHeader.setProjectCategory(ProjectCategory.TEST_SCENARIOS);
+                } else if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO))
+                {
+                    if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_PAGE_DESIGN)
+                            || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_DESIGN))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.WEB_DESIGN);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.APPLICATION_FRONT_END_DESIGN);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_ELEMENTS)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.BANNERS_ICONS);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_LOGO_DESIGN))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.LOGO_DESIGN);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_PRESENTATION))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.PRINT_OR_PRESENTATION);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.PRINT_OR_PRESENTATION);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_STATIC_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_DESIGN))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.OTHER);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_FRONT_END_FLASH))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.FRONT_END_FLASH);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_IDEA_GENERATION))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.IDEA_GENERATION);
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WIREFRAMES))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.WIREFRAMES);
+                    }
                 }
+                
 
                 // get capacity full dates
                 List<CapacityData> capacityDatas = pipelineServiceFacade.getCapacityFullDates(tcSubject, new Long(projectHeader.getProjectCategory().getId()).intValue(), false);
@@ -2083,6 +2124,317 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
                     projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
+                }else if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO))
+                {
+                    projectHeader.getProperties().put(ProjectPropertyType.MAXIMUM_SUBMISSIONS_KEY, "5");
+                    projectHeader.getProperties().put(ProjectPropertyType.ALLOW_STOCK_ART_KEY, "false");
+                    projectHeader.getProperties().put(ProjectPropertyType.VIEWABLE_SUBMISSIONS_FLAG_KEY_STRING, "true");
+
+                    if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_PAGE_DESIGN)
+                            || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_DESIGN))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "3000");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "375");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1250");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1250");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(1250);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(250);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "3000");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "375");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1250");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1250");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(1250);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(250);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_ELEMENTS)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "375");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "105");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "350");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "70");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "350");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(350);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(70);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_LOGO_DESIGN))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "375");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "105");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "350");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "70");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "350");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(350);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(70);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_PRESENTATION))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "375");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "750");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "150");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "750");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(750);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(150);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "375");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "750");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "150");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "750");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(750);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(150);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_STATIC_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_DESIGN))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "3000");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "750");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "150");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "750");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(750);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(150);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_FRONT_END_FLASH))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "3000");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "375");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1250");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1250");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(1250);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(250);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_IDEA_GENERATION))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "3000");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "750");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "150");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "750");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(750);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(150);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WIREFRAMES))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "3000");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "375");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1250");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1250");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(1250);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(250);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                    }
                 }
 
 
@@ -2101,7 +2453,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 result.setMessage("Contest '" + competitionData.getContestName() + "' has been created with id " + comp.getProjectHeader().getId() + ".");
                 contestId = comp.getProjectHeader().getId();
 
-            }
+           // }
 
             for (UserInfo supportInfo : supportInfos) {
                 updatePermission(tcSubject, getPermission(supportInfo, proj, type), supportInfo, warnings);
@@ -2144,10 +2496,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
         } catch (ContestPipelineServiceException e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
-                    methodName);
-        } catch (PersistenceException e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
