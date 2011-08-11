@@ -559,7 +559,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * createCompetition method.
      * </p>
      */
-    private long liquidStudioContestsEmailBilling;
+    //private long liquidStudioContestsEmailBilling;
     
 	/************************* BUGR 4394 fix goes here ********************************/
 	/**
@@ -649,7 +649,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 	        liquidStudioContestsEmailTo = getConfigurationValue("liquidStudioContestsEmailTo", configObject);
             liquidStudioContestsEmailCC = getConfigurationValue("liquidStudioContestsEmailCC", configObject);
 	        liquidStudioContestsEmailTemplateName = getConfigurationValue("liquidStudioContestsEmailTemplateName", configObject);
-            liquidStudioContestsEmailBilling = getConfigurationLongValue("liquidStudioContestsEmailBilling", configObject);
+            //liquidStudioContestsEmailBilling = getConfigurationLongValue("liquidStudioContestsEmailBilling", configObject);
 
 
             /*********************************************  BUGR 4394 fix goes here ***************************************/
