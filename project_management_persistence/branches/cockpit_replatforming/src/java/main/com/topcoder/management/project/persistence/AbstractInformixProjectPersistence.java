@@ -299,6 +299,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @since 1.1.2
      */
     public static final long STANDARD_CCA_TERMS_ID = 20713;
+
+    /**
+     * <p>
+     * Represents the default value for government id terms_id. 
+     * </p>
+     * 
+     * @since 1.1.2
+     */
+    public static final long GOVERMENT_ID_TERMS_ID = 20963;
     
 
     /**
@@ -6646,24 +6655,70 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             if (standardCCA) {
                 preparedStatement = conn.prepareStatement(INSERT_PRIVATE_CONTEST_TERMS);
                 preparedStatement.setLong(1, projectId);
-                preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
-                for (int roleId : ALL_ROLES_ID) {
-                    // no manager or observer for cca, for spec review, no submitter
-                    if (roleId != MANAGER_ROLE_ID 
-                        && roleId != APPROVER_ROLE_ID
-                        && roleId != OBSERVER_ROLE_ID
-                        && roleId != CLIENT_MANAGER_ROLE_ID
-                        && roleId != COPILOT_ROLE_ID
-                        && !isSpecReviewSubmitter(roleId, projectCategoryId)) {
-                        preparedStatement.setInt(2, roleId);
-                        if (!added.contains(roleId+"-"+STANDARD_CCA_TERMS_ID))
-                        {
-                            preparedStatement.execute(); 
-                            added.add(roleId+"-"+STANDARD_CCA_TERMS_ID);
-                        }
-                        
+
+                if (projectCategoryId != ProjectCategory.COPILOT_POSTING.getId())
+                {
+                    for (int roleId : ALL_ROLES_ID) {
+                        // no manager or observer for cca, for spec review, no submitter
+                        if (roleId != MANAGER_ROLE_ID 
+                            && roleId != APPROVER_ROLE_ID
+                            && roleId != OBSERVER_ROLE_ID
+                            && roleId != CLIENT_MANAGER_ROLE_ID
+                            && roleId != COPILOT_ROLE_ID
+                            && !isSpecReviewSubmitter(roleId, projectCategoryId)) {
+                            preparedStatement.setInt(2, roleId);
+                            if (!added.contains(roleId+"-"+STANDARD_CCA_TERMS_ID))
+                            {
+                                preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
+                                preparedStatement.execute(); 
+                                added.add(roleId+"-"+STANDARD_CCA_TERMS_ID);
+                            }
+
+                            if (!added.contains(roleId+"-"+GOVERMENT_ID_TERMS_ID))
+                            {
+                                preparedStatement.setLong(3, GOVERMENT_ID_TERMS_ID);
+                                preparedStatement.execute(); 
+                                added.add(roleId+"-"+GOVERMENT_ID_TERMS_ID);
+                            }
+                            
+                        }        
                     }
                 }
+                else 
+                {
+                    for (int roleId : ALL_ROLES_ID) {
+                        // no manager or observer for cca, for spec review, no submitter
+                        if (roleId != MANAGER_ROLE_ID 
+                            && roleId != APPROVER_ROLE_ID
+                            && roleId != OBSERVER_ROLE_ID
+                            && roleId != CLIENT_MANAGER_ROLE_ID
+                            && roleId != COPILOT_ROLE_ID                 
+                            && roleId != REVIEWER_ROLE_ID
+                            && roleId != PRIMARY_SCREENER_ROLE_ID
+                            && roleId != FINAL_REVIEWER_ROLE_ID
+                            && roleId != AGGREGATOR_ROLE_ID
+                            && !isSpecReviewSubmitter(roleId, projectCategoryId)) {
+                            preparedStatement.setInt(2, roleId);
+                            if (!added.contains(roleId+"-"+STANDARD_CCA_TERMS_ID))
+                            {
+                                preparedStatement.setLong(3, STANDARD_CCA_TERMS_ID);
+                                preparedStatement.execute(); 
+                                added.add(roleId+"-"+STANDARD_CCA_TERMS_ID);
+                            }
+
+                            if (!added.contains(roleId+"-"+GOVERMENT_ID_TERMS_ID))
+                            {
+                                preparedStatement.setLong(3, GOVERMENT_ID_TERMS_ID);
+                                preparedStatement.execute(); 
+                                added.add(roleId+"-"+GOVERMENT_ID_TERMS_ID);
+                            }
+                            
+                        }        
+                    }
+
+                }
+                
+                
 
             } 
 
@@ -6673,11 +6728,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 preparedStatement.setLong(1, projectId);
 
                 for (int roleId : ALL_ROLES_ID) {
-                    if (roleId != MANAGER_ROLE_ID 
-                        && roleId != APPROVER_ROLE_ID
-                        && roleId != OBSERVER_ROLE_ID
-                        && roleId != CLIENT_MANAGER_ROLE_ID
-                        && roleId != COPILOT_ROLE_ID)
+                    if (roleId == SUBMITTER_ROLE_ID 
+                        || roleId == COPILOT_ROLE_ID)
                 {
                         preparedStatement.setInt(2, roleId);
 
@@ -6775,7 +6827,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                         REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
                 // if it's not development there is a single reviewer role
-                if (!hasClientTerm && !added.contains(reviewerRoleId+"-"+reviewerTermsId)) {
+                if (projectCategoryId != ProjectCategory.COPILOT_POSTING.getId() && !hasClientTerm && !added.contains(reviewerRoleId+"-"+reviewerTermsId)) {
                     createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
                     added.add(reviewerRoleId+"-"+reviewerTermsId);
                 }
@@ -6789,7 +6841,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             int finalReviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                     FINAL_REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(FINAL_REVIEWER_ROLE_ID)));
             
-            if (!hasClientTerm) {
+            if (projectCategoryId != ProjectCategory.COPILOT_POSTING.getId() && !hasClientTerm) {
                 if (!added.contains(primaryScreenerRoleId+"-"+reviewerTermsId))
                 {
                     createProjectRoleTermsOfUse(projectId, primaryScreenerRoleId, reviewerTermsId, conn);
