@@ -64,6 +64,7 @@ import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectSpec;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.FileType;
+import com.topcoder.management.project.ProjectStudioSpecification;
 import com.topcoder.management.project.Prize;
 import com.topcoder.management.project.PrizeType;
 import com.topcoder.management.resource.ResourceRole;
@@ -1847,17 +1848,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     {
                         projectHeader.setProjectCategory(ProjectCategory.APPLICATION_FRONT_END_DESIGN);
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_ELEMENTS)
-                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN))
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_ICONS))
+
                     {
                         projectHeader.setProjectCategory(ProjectCategory.BANNERS_ICONS);
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_LOGO_DESIGN))
                     {
                         projectHeader.setProjectCategory(ProjectCategory.LOGO_DESIGN);
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_DESIGN)
-                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_PRESENTATION))
-                    {
-                        projectHeader.setProjectCategory(ProjectCategory.PRINT_OR_PRESENTATION);
-                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION))
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_PRESENTATION)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION))
                     {
                         projectHeader.setProjectCategory(ProjectCategory.PRINT_OR_PRESENTATION);
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_STATIC_DESIGN)
@@ -1874,6 +1875,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     {
                         projectHeader.setProjectCategory(ProjectCategory.WIREFRAMES);
                     }
+                    else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WIDGET_OR_MOBILE_SCREEN_DESIGN))
+                    {
+                        projectHeader.setProjectCategory(ProjectCategory.WIDGET_OR_MOBILE_SCREEN_DESIGN);
+                    }
+
+
                 }
                 
 
@@ -1888,13 +1895,34 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
                 projectHeader.setProjectStatus(ProjectStatus.ACTIVE);
 
-                ProjectSpec spec = new ProjectSpec();
-                spec.setDetailedRequirements("NA");
-                spec.setSubmissionDeliverables("NA");
-                spec.setEnvironmentSetupInstructions("NA");
-                spec.setFinalSubmissionGuidelines("NA");
-                projectHeader.setProjectSpec(spec);
-                devHeader.setProjectSpec(spec);
+                if (!competitionData.getContestTypeName().equals(CompetitionData.STUDIO))
+                {
+                    ProjectSpec spec = new ProjectSpec();
+                    spec.setDetailedRequirements("NA");
+                    spec.setSubmissionDeliverables("NA");
+                    spec.setEnvironmentSetupInstructions("NA");
+                    spec.setFinalSubmissionGuidelines("NA");
+                    projectHeader.setProjectSpec(spec);
+                    devHeader.setProjectSpec(spec);
+                }
+                else
+                {
+                    ProjectStudioSpecification studiospec = new ProjectStudioSpecification();
+                    studiospec.setGoals("NA");
+                    studiospec.setTargetAudience("NA");
+                    studiospec.setBrandingGuidelines("NA");
+                    studiospec.setDislikedDesignWebSites("NA");
+                    studiospec.setOtherInstructions("NA");
+                    studiospec.setWinningCriteria("NA");
+                    studiospec.setSubmittersLockedBetweenRounds(false);
+                    studiospec.setRoundOneIntroduction("NA");
+                    studiospec.setColors("NA");
+                    studiospec.setFonts("NA");
+                    studiospec.setLayoutAndSize("NA");
+                    studiospec.setContestIntroduction("NA");
+                    studiospec.setContestDescription("NA");
+                    projectHeader.setProjectStudioSpecification(studiospec);
+                }
 
                 projectHeader.getProperties().put(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY, competitionData.getContestName());
                 projectHeader.getProperties().put(ProjectPropertyType.PROJECT_VERSION_PROJECT_PROPERTY_KEY, asset.getVersionText());
@@ -2124,7 +2152,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
                     projectHeader.getProperties().put(ProjectPropertyType.COST_LEVEL_PROJECT_PROPERTY_KEY, "B");
                     projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "500");
-                }else if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO))
+                } else if (competitionData.getContestTypeName().equals(CompetitionData.STUDIO))
                 {
                     projectHeader.getProperties().put(ProjectPropertyType.MAXIMUM_SUBMISSIONS_KEY, "5");
                     projectHeader.getProperties().put(ProjectPropertyType.ALLOW_STOCK_ART_KEY, "false");
@@ -2161,6 +2189,14 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
 
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.PPT);
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
+
+
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_APPLICATION_FRONT_END_DESIGN))
                     {
                         if (!zeroContestFee)
@@ -2190,9 +2226,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p1);
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
+                        
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.PPT);
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
 
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WEB_ELEMENTS)
-                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN))
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_BANNERS_ICONS_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_ICONS))
                     {
                         if (!zeroContestFee)
                         {
@@ -2221,6 +2265,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p1);
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
+
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
+
 
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_LOGO_DESIGN))
                     {
@@ -2252,8 +2303,16 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
 
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
+
+
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_DESIGN)
+                         || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION)
                          || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_PRINT_PRESENTATION))
+
                     {
                         if (!zeroContestFee)
                         {
@@ -2283,35 +2342,16 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
 
-                    } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_POWERPOINT_PRESENTATION))
-                    {
-                        if (!zeroContestFee)
-                        {
-                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "375");
-                        }
-                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
-                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
-                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
-                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "750");
-                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "150");
-                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "750");
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.EPS);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.INDD);
+                        filetypes.add(FileType.ICO);
+                        filetypes.add(FileType.PDF);
 
-                        Prize p1 = new Prize();
-                        p1.setPlace(1);
-                        p1.setPrizeAmount(750);
-                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
-                        p1.setNumberOfSubmissions(1);
+                        projectHeader.setProjectFileTypes(filetypes);
 
-                        Prize p2 = new Prize();
-                        p2.setPlace(1);
-                        p2.setPrizeAmount(150);
-                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
-                        p2.setNumberOfSubmissions(1);
-
-                        List<Prize> prizes = new ArrayList<Prize>();
-                        prizes.add(p1);
-                        prizes.add(p2);
-                        projectHeader.setPrizes(prizes);
 
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_STATIC_DESIGN)
                          || competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_OTHER_DESIGN))
@@ -2344,6 +2384,12 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
 
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
+
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_FRONT_END_FLASH))
                     {
                         if (!zeroContestFee)
@@ -2373,6 +2419,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p1);
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
+
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.PPT);
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
 
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_IDEA_GENERATION))
                     {
@@ -2404,6 +2457,13 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
 
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.PPT);
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
+
                     } else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WIREFRAMES))
                     {
                         if (!zeroContestFee)
@@ -2433,6 +2493,51 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         prizes.add(p1);
                         prizes.add(p2);
                         projectHeader.setPrizes(prizes);
+
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.ICO);
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
+
+                    }
+                    else if (competitionData.getSubContestTypeName().equalsIgnoreCase(CompetitionData.STUDIO_WIDGET_OR_MOBILE_SCREEN_DESIGN))
+                    {
+                        if (!zeroContestFee)
+                        {
+                            projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "3000");
+                        }
+                        projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "375");
+                        projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "75");
+                        projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
+                        projectHeader.getProperties().put(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY, "1250");
+                        projectHeader.getProperties().put(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY, "250");
+                        projectHeader.getProperties().put(ProjectPropertyType.PAYMENTS_PROJECT_PROPERTY_KEY, "1250");
+
+                        Prize p1 = new Prize();
+                        p1.setPlace(1);
+                        p1.setPrizeAmount(1250);
+                        p1.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p1.setNumberOfSubmissions(1);
+
+                        Prize p2 = new Prize();
+                        p2.setPlace(1);
+                        p2.setPrizeAmount(250);
+                        p2.setPrizeType(PrizeType.CONTEST_PRIZE);
+                        p2.setNumberOfSubmissions(1);
+
+                        List<Prize> prizes = new ArrayList<Prize>();
+                        prizes.add(p1);
+                        prizes.add(p2);
+                        projectHeader.setPrizes(prizes);
+
+                        List<FileType> filetypes = new ArrayList<FileType>();
+                        filetypes.add(FileType.ICO);
+                        filetypes.add(FileType.PSD);
+                        filetypes.add(FileType.AI);
+                        filetypes.add(FileType.EPS);
+                        projectHeader.setProjectFileTypes(filetypes);
 
                     }
                 }
