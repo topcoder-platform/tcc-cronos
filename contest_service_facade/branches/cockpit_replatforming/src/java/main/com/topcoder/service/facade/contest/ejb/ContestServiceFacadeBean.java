@@ -397,6 +397,13 @@ import com.topcoder.shared.util.DBMS;
  *     <li>Update {@link #getProjectData(TCSubject)}</li>
  *   </ol>
  * </p>
+ * <p>
+ * Version 1.7.0 Release Assembly - Direct Improvements Assembly Release 3 Change notes:
+ *   <ol>
+ *     <li>add the logic to judge whether a pay is activation or additional pay and send different emails</li>
+ *     <li>correct the direct project name in the payment email of software and studio competition.</li>
+ *   </ol>
+ * </p>
  *
  * <p>
  * Version 1.6.9 (TC Direct Replatforming Release 3) Change notes:
@@ -424,7 +431,7 @@ import com.topcoder.shared.util.DBMS;
  * </ul>
  * 
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSDEVELOPER
- * @version 1.6.11
+ * @version 1.7.0
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -2843,11 +2850,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                                                                       .getPayments();
             double paymentAmount;
 
+            // whether the contest is paid before
+            boolean hasContestSaleData = false;
+
             // how much user already paid
             double paidFee = 0.0;
 
             for (ContestPaymentData cpd : payments) {
                 paidFee += cpd.getPrice();
+                // the contest is paid before
+                hasContestSaleData = true;
             }
 
             // calculate current contest fee
@@ -2950,8 +2962,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // Added for Cockpit Release Assembly for Receipts
             //
             String competitionType = tobeUpdatedCompetition.getType().toString();
-            String projectName = tobeUpdatedCompetition.getContestData()
-                                                       .getTcDirectProjectName();
+            String projectName = competition.getContestData().getTcDirectProjectName();
 
             if (projectName == null) {
                 projectName = Long.toString(tobeUpdatedCompetition.getContestData()
@@ -2979,7 +2990,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 paymentData, competitionType,
                 tobeUpdatedCompetition.getContestData().getName(), projectName,
                 competition.getStartTime().toGregorianCalendar().getTime(),
-                paymentAmount, paymentAmount, result.getReferenceNumber());
+                paymentAmount, paymentAmount, result.getReferenceNumber(), hasContestSaleData);
 
             return contestPaymentResult;
 
@@ -3183,10 +3194,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
-            double fee = 0;
+//            double totalFee =  Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
+//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY))
+//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY))
+//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY))
+//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY))
+//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY))
+//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
+
+            double totalFee = 0;
             if (competition.getProjectHeader().getProjectCategory().getProjectType().getId() != ProjectType.STUDIO.getId()) {
                 // software competition
-                fee = Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
+                totalFee = Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY))
@@ -3197,27 +3216,41 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // milestone prizes
                 for (Prize prize : competition.getProjectHeader().getPrizes()) {
                     if (prize.getPrizeType().getId() == MILESTONE_PRIZE_TYPE_ID) {
-                        fee += prize.getPrizeAmount() * prize.getNumberOfSubmissions();
+                        totalFee += prize.getPrizeAmount() * prize.getNumberOfSubmissions();
                     }
                 }
             } else {
                 // studio competition
-                fee = Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
+                totalFee = Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
                 for (Prize prize : competition.getProjectHeader().getPrizes()) {
-                    fee = fee + prize.getPrizeAmount() * prize.getNumberOfSubmissions();
+                    totalFee = totalFee + prize.getPrizeAmount() * prize.getNumberOfSubmissions();
                 }
             }
 
             // add copilot payment if exists
             String copilotPayment = contest.getProperty(ProjectPropertyType.COPILOT_COST_PROJECT_PROPERTY_KEY);
 
+            String drPayment = contest.getProperty(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY);
+
             if (copilotPayment != null && copilotPayment.trim().length() != 0) {
 
-                fee += Double.parseDouble(copilotPayment);
+                totalFee += Double.parseDouble(copilotPayment);
             }
-            double totalCost = fee;
-            fee = fee - pastPayment;
+            double totalCost = totalFee;
+            totalFee = totalFee - pastPayment;
+
+            if (drPayment != null && drPayment.trim().length() != 0) {
+
+                totalFee += Double.parseDouble(drPayment);
+            }
+
+            double fee = totalFee - pastPayment;
+
+            if(!hasContestSaleData) {
+                // remove contest fee from it
+                fee = fee - Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY));
+            }
 
             if (paymentData instanceof TCPurhcaseOrderPaymentData) {
 
@@ -3307,8 +3340,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             String competitionType = tobeUpdatedCompetition.getProjectHeader()
                                                            .getProjectCategory()
                                                            .getName();
-            String projectName = competition.getProjectHeader()
-                                            .getTcDirectProjectName();
+
+            String projectName = competition.getProjectHeader().getTcDirectProjectName();
 
             String toAddr = "";
 
@@ -3340,7 +3373,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 projectName,
                 competition.getAssetDTO().getProductionDate()
                            .toGregorianCalendar().getTime(), fee, fee,
-                result.getReferenceNumber());
+                result.getReferenceNumber(), hasContestSaleData);
 
 
             return softwareContestPaymentResult;
@@ -3355,7 +3388,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch (Exception e) {
             voidPayment(paymentProcessor, result, paymentData);
             sessionContext.setRollbackOnly();
-            logger.error("Error processContestSaleInternal ", e);
+            logger.error("Error processContestSaleInternal " + e, e);
             throw new ContestServiceException(e.getMessage(), e);
         }
 
@@ -3500,8 +3533,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (paymentData.getType().equals(PaymentType.TCPurchaseOrder)) {
 
-                String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
-                this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
+                // String poNumber = ((TCPurhcaseOrderPaymentData) paymentData).getPoNumber();
+                // this.checkBillingProjectPoNumberPermission(tcSubject, poNumber);
+
+                long billingAccountId = ((TCPurhcaseOrderPaymentData) paymentData).getProjectId();
+
+                checkStudioBillingProjectPermission(tcSubject, completedContestData.getContestId(), billingAccountId);
+
+                // get PO number for the billing account
+                String poNumber = this.billingProjectDAO.getProjectById(billingAccountId).getPOBoxNumber();
 
                 result = new PaymentResult();
                 result.setReferenceNumber(poNumber);
@@ -3968,12 +4008,29 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     /**
      * Checks the billing project permission of the given contest for the current caller.
      *
-     * @param contest the contest to check
+     * @param tcSubject the TCSubject represents current user.
+     * @param contestData the contest to check
      * @throws ContestServiceException fail to retrieve user handle
      * @throws PersistenceException if user(not admin) does not have the permission
      * @throws DAOException fail to checking permission
      */
     private void checkStudioBillingProjectPermission(TCSubject tcSubject, ContestData contestData)
+            throws PermissionServiceException, DAOException, ContestNotFoundException, PersistenceException {
+        checkStudioBillingProjectPermission(tcSubject, contestData.getContestId(), contestData.getBillingProject());
+    }
+
+    /**
+     *  Checks the billing project permission of the given contest id and given billing account id for the current caller.
+     *
+     * @param tcSubject the TCSubject represents current user.
+     * @param contestId the id of the contest to check.
+     * @param billingAccountIdToCheck the billing account id to verify.
+     * @throws PermissionServiceException if user(not admin) does not have the permission
+     * @throws DAOException if any error related to DAO occurs.
+     * @throws ContestNotFoundException if the contest is not found
+     * @throws PersistenceException fail to retrieve user handle
+     */
+    private void checkStudioBillingProjectPermission(TCSubject tcSubject, long contestId, long billingAccountIdToCheck)
             throws PermissionServiceException, DAOException, ContestNotFoundException, PersistenceException {
         if (!isRole(tcSubject, ADMIN_ROLE)) {
             String userName;
@@ -3982,16 +4039,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             } catch (ContestServiceException e) {
                 throw new PermissionServiceException("Fail to get user-handle");
             }
-           if (contestData.getBillingProject() > 0 && contestData.getContestId() > 0) {
+           if (billingAccountIdToCheck > 0 && contestId > 0) {
 
-                ContestData cur = studioService.getContest(contestData.getContestId());
-                if (cur.getBillingProject() == contestData.getBillingProject())
+                ContestData cur = studioService.getContest(contestId);
+
+
+
+                if (cur.getBillingProject() == billingAccountIdToCheck)
                 {
                     return;
                 }
 
-                if (!billingProjectDAO.checkClientProjectPermission(userName, contestData.getBillingProject())) {
-                    throw new PermissionServiceException("No permission on billing project " + contestData.getBillingProject());
+                if (!billingProjectDAO.checkClientProjectPermission(userName, billingAccountIdToCheck)) {
+                    throw new PermissionServiceException("No permission on billing project " + billingAccountIdToCheck);
                 }
            }
         }
@@ -6127,7 +6187,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private void sendActivateContestReceiptEmail(String toAddr,
         String purchasedBy, PaymentData paymentData, String competitionType,
         String competitionTitle, String projectName, Date launchTime,
-        Double price, Double totalCost, String orderNumber)
+        Double price, Double totalCost, String orderNumber, boolean hasContestSaleData)
         throws EmailMessageGenerationException, EmailSendingException {
         com.topcoder.project.phases.Phase phase = new com.topcoder.project.phases.Phase();
 
@@ -6139,6 +6199,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         phase.setAttribute("TOTAL_COST", totalCost);
 
         phase.setAttribute("FROM_ADDRESS", activateContestReceiptEmailFromAddr);
+
+
+        if(hasContestSaleData) {
+            // if it's paid before, set "paid" to yes
+            phase.setAttribute("PAID", "YES");
+        } else {
+            // if it's not paid before, set "paid" to no
+            phase.setAttribute("PAID", "NO");
+        }
 
         String file = Thread.currentThread().getContextClassLoader().getResource(
                 activateContestReceiptEmailTemplatePath).getFile();
@@ -6304,11 +6373,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (po.getProjectName() != null)
             {
-                sb.append("Project Name:").append(po.getProjectName().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
+                sb.append("Billing Project Name:").append(po.getProjectName().replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
             }
             else
             {
-                sb.append("Project Name:").append(po.getProjectName());
+                sb.append("Billing Project Name:").append(po.getProjectName());
             }
             
             sb.append("\n    ");
