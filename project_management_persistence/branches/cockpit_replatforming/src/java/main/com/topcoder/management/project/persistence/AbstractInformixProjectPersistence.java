@@ -2375,7 +2375,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // set the prizes
             createOrUpdateProjectPrizes(newId, project.getPrizes(), conn, operator, false);
             // set the project studio specification
-            createOrUpdateProjectStudioSpecification(newId, project.getProjectStudioSpecification(), conn, operator);
+
+            if (project.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId())
+            {
+                createOrUpdateProjectStudioSpecification(newId, project.getProjectStudioSpecification(), conn, operator);
+            }
 
             closeConnection(conn);
         } catch (PersistenceException e) {
@@ -2465,9 +2469,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             // set the prizes
             createOrUpdateProjectPrizes(project.getId(), project.getPrizes(), conn, operator, true);
 
-            // set the project studio specification
-            createOrUpdateProjectStudioSpecification(project.getId(), project.getProjectStudioSpecification(), conn,
-                operator);
+            if (project.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId())
+            {
+                // set the project studio specification
+                createOrUpdateProjectStudioSpecification(project.getId(), project.getProjectStudioSpecification(), conn, operator);          
+            }
+
 
             closeConnection(conn);
         } catch (PersistenceException e) {
@@ -4005,6 +4012,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             }
 
             createOrUpdateProjectStudioSpecification(projectId, spec, conn, operator);
+            
 
             // create project audit record into project_audit table
             createProjectAudit(projectId, "Updates the project studion specification", operator, conn);
@@ -4193,7 +4201,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
         //
-        createProjectSpec(projectId, project.getProjectSpec(), operator, conn);
+        if (project.getProjectCategory().getProjectType().getId()  !=  ProjectType.STUDIO.getId())
+        {
+            createProjectSpec(projectId, project.getProjectSpec(), operator, conn);
+        }
+        
         
         Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));
         
@@ -4330,7 +4342,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
         //
-        updateProjectSpec(project.getId(), project.getProjectSpec(), operator, conn);
+        if (project.getProjectCategory().getProjectType().getId()  !=  ProjectType.STUDIO.getId())
+        {
+            updateProjectSpec(project.getId(), project.getProjectSpec(), operator, conn);
+        }
 
         Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));        
         // get the property id - property value map from the project.
