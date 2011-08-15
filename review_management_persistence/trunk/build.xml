@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.review.persistence" />
     <property name="packagedir" value="com/topcoder/management/review/persistence" />
     <property name="distfilename" value="review_management_persistence" />
-    <property name="component_version" value="1.0.1" />
+    <property name="component_version" value="1.0.2" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->

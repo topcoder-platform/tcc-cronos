@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2007 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence;
 
@@ -59,7 +59,7 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @author woodjhon
  * @author urtks
  * @author George1
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class InformixReviewPersistence implements ReviewPersistence {
     /**
@@ -244,10 +244,12 @@ public class InformixReviewPersistence implements ReviewPersistence {
      * Represents the sql statement to query review item comments.
      */
     private static final String QUERY_REVIEW_ITEM_COMMENTS_SQL = "SELECT "
-        + "review_item_comment_id, resource_id, review_item_id, comment_type_id, content, extra_info "
-        + "FROM " + REVIEW_ITEM_COMMENT_TABLE + " WHERE review_item_id IN ("
-        + "SELECT review_item_id FROM " + REVIEW_ITEM_TABLE + " WHERE review_id IN ("
-        + ID_ARRAY_PARAMETER_PLACEHOLDER + ")) ORDER BY review_item_id, sort";
+        + "ric.review_item_comment_id, ric.resource_id, ric.review_item_id, ric.comment_type_id, "
+        + "ric.content, ric.extra_info "
+        + "FROM " + REVIEW_ITEM_COMMENT_TABLE + " ric "
+        + "INNER JOIN " + REVIEW_ITEM_TABLE + " ri ON ric.review_item_id=ri.review_item_id AND "
+        + "ri.review_id IN ("+ID_ARRAY_PARAMETER_PLACEHOLDER+") "
+        + "ORDER BY ric.review_item_id, ric.sort";
 
     /**
      * Represents the sql statement to query review comment IDs.
@@ -335,6 +337,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
      * the constructor, not-null.
      */
     private final IDGenerator reviewItemCommentIDGenerator;
+
+    /**
+     * Cached comment types. Set and read in the getAllCommentTypes() method.
+     */
+    private static CommentType[] cachedCommentTypes = null;
 
     /**
      * <p>
@@ -2092,20 +2099,21 @@ public class InformixReviewPersistence implements ReviewPersistence {
      *             if any error occurs during the query
      */
     private CommentType[] getAllCommentTypes(Connection conn) throws ReviewPersistenceException {
+        if (cachedCommentTypes == null) {
+            // find all comment types in the table
+            Object[][] rows = Helper.doQuery(conn, QUERY_ALL_COMMENT_TYPES_SQL, new Object[] {},
+                new DataType[] {Helper.LONG_TYPE, Helper.STRING_TYPE});
 
-        // find all comment types in the table
-        Object[][] rows = Helper.doQuery(conn, QUERY_ALL_COMMENT_TYPES_SQL, new Object[] {},
-            new DataType[] {Helper.LONG_TYPE, Helper.STRING_TYPE});
-
-        // create the CommentType array.
-        CommentType[] commentTypes = new CommentType[rows.length];
-        for (int i = 0; i < rows.length; ++i) {
-            Object[] row = rows[i];
-
-            commentTypes[i] = new CommentType(((Long) row[0]).longValue(), (String) row[1]);
+            // create the CommentType array.
+            CommentType[] commentTypes = new CommentType[rows.length];
+            for (int i = 0; i < rows.length; ++i) {
+                Object[] row = rows[i];
+                commentTypes[i] = new CommentType(((Long) row[0]).longValue(), (String) row[1]);
+            }
+            cachedCommentTypes = commentTypes;
         }
 
-        return commentTypes;
+        return cachedCommentTypes;
     }
 
     /**
