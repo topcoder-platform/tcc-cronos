@@ -1908,17 +1908,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 else
                 {
                     ProjectStudioSpecification studiospec = new ProjectStudioSpecification();
-                    studiospec.setGoals("NA");
-                    studiospec.setTargetAudience("NA");
-                    studiospec.setBrandingGuidelines("NA");
-                    studiospec.setDislikedDesignWebSites("NA");
-                    studiospec.setOtherInstructions("NA");
-                    studiospec.setWinningCriteria("NA");
-                    studiospec.setSubmittersLockedBetweenRounds(false);
-                    studiospec.setRoundOneIntroduction("NA");
-                    studiospec.setColors("NA");
-                    studiospec.setFonts("NA");
-                    studiospec.setLayoutAndSize("NA");
+                    //studiospec.setGoals("NA");
+                    //studiospec.setTargetAudience("NA");
+                    //studiospec.setBrandingGuidelines("NA");
+                    //studiospec.setDislikedDesignWebSites("NA");
+                    //studiospec.setOtherInstructions("NA");
+                    //studiospec.setWinningCriteria("NA");
+                    //studiospec.setSubmittersLockedBetweenRounds(false);
+                    //studiospec.setRoundOneIntroduction("NA");
+                    //studiospec.setColors("NA");
+                    //studiospec.setFonts("NA");
+                    //studiospec.setLayoutAndSize("NA");
                     studiospec.setContestIntroduction("NA");
                     studiospec.setContestDescription("NA");
                     projectHeader.setProjectStudioSpecification(studiospec);
@@ -2179,7 +2179,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(250);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2217,7 +2217,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(250);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2256,7 +2256,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(70);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2293,7 +2293,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(70);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2332,7 +2332,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(150);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2374,7 +2374,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(150);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2410,7 +2410,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(250);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2447,7 +2447,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(150);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2484,7 +2484,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(250);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
@@ -2522,7 +2522,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                         p1.setNumberOfSubmissions(1);
 
                         Prize p2 = new Prize();
-                        p2.setPlace(1);
+                        p2.setPlace(2);
                         p2.setPrizeAmount(250);
                         p2.setPrizeType(PrizeType.CONTEST_PRIZE);
                         p2.setNumberOfSubmissions(1);
