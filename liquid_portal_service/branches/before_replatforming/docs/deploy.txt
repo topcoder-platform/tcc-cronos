@@ -1,0 +1,15 @@
+This document helps to deploy the component in JBoss
+
+1. Before deploying this component, please make sure that client_project_entities_dao and project_service_1.1.0 components are the newest(they are posted in the form, not int the vm).
+   http://forums.topcoder.com/?module=Thread&threadID=666532&start=0
+2. Use test_files/ProjectStatus.java to replace
+    com.topcoder.clients.model.ProjectStatus.java in client_project_entities_dao component
+   Reason: two ProjectStatus class have the some name and namespace, so they will be conflict when deploying to webservice.
+3. Make sure that all EJB dependencies are already ready.
+4. Edit liquidPortalService.xml(configuration file name) for your configuration.
+5. copy conf/liquidPortalService.xml, conf/liquidPortalService.properties to the vm directory: /home/cockpit/jboss-4.2.3.GA/server/default/deploy/cockpit2.1.ear/
+6. Edit ejb-jar.xml, you can config the configurationFileName and configurationNamespace parameters.
+7. Build this component, copy conf/ejb-jar.xml and conf/jboss.xml to META-INF directory, and package them with classes to a jar file, copy the jar to jboss's deploy directory
+   /home/cockpit/jboss-4.2.3.GA/server/default/deploy/cockpit2.1.ear/
+8. On VM: sudo killall java -> cd /home/cockpit/jboss-4.2.3.GA/bin -> ./run.sh
+
