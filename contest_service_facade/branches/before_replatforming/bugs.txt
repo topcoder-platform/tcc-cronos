@@ -1,0 +1,47 @@
+The  unit testing reveals following bugs with server side components:
+
+Submission Manager component
+
+1) SubmissionManagerBean.DELETED_STATUS constant has a value ("deleted") which does not match the value
+   from respective record from SUBMISSION_STATUS_LU table ("Deleted").
+sma: done
+
+Studio Service component
+
+1) StudioServiceBean.convertSubmissionData(SubmissionData) method does not convert all submission details.
+   For instance, converted Submission instance does not have a "contest" property set. As result
+   StudioService.updateSubmission method fails with error like:
+    
+   org.hibernate.PropertyValueException: not-null property references a null or transient value:
+       com.topcoder.service.studio.submission.Submission.contest
+sma: add Contest
+
+2) StudioServiceBean.convertContest(Contest, boolean) method computes the durationInHours incorrectly when
+   converting Contest objects to ContestData objects. The line:
+   
+   double durationInHours = (contest.getEndDate().getTime() - contest.getStartDate().getTime()) / (60 * 60 * 1000);
+
+   looses up to 1 hour due to issue with precision of division operation.
+
+3) SubmissionData, ContestData, ContestPaymentData, MediumData classes are not properly annotated with @XmlType
+   annotation causing the JAXB context to fail
+
+4) StudioServiceBean.convertSubmissionData(SubmissionData) method does not set the "contest" property of converted
+   Submission instance. This causes SubmissionManager to raise an error like below when updating submission: 
+
+   org.hibernate.PropertyValueException: not-null property references a null or transient value:
+       com.topcoder.service.studio.submission.Submission.contes
+
+Studio Contest Manager component
+
+1) ContestManagerBean.getContestsForProject(long) method does not filter out deleted contests.
+
+2) ContestManagerBean.addChangeHistory(List) method passes entire List to EntityManager for persisting which causes
+   an error like: "Unknown entity: java.util.ArrayList" to be raised by Hibernate
+
+Project Service component
+
+1) StudioCompetition class is not properly annotated with 11:06 AM 1/6/2009 annotation causing the JAXB context to fail
+sma:done
+
+
