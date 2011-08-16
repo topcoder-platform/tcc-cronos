@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.service.studio.contest">
+    <class name="ContestMultiRoundInformation"
+           table="contest_multi_round_information" lazy="false">
+        <id name="contestMultiRoundInformationId"
+            column="contest_multi_round_information_id" type="long"
+            unsaved-value="-1">
+            <generator class="sequence">
+                <param name="sequence">
+                    CONTEST_MULTI_ROUND_INFORMATION_SEQ
+                </param>
+            </generator>
+        </id>
+
+        <property name="milestoneDate" update="true" insert="true"
+                  column="milestone_date" not-null="false"/>
+
+        <property name="submittersLockedBetweenRounds" update="true"
+                  insert="true" column="submitters_locked_between_rounds"
+                  not-null="false"/>
+
+        <property name="roundOneIntroduction" update="true"
+                  insert="true" column="round_one_introduction" not-null="false"/>
+
+        <property name="roundTwoIntroduction" update="true"
+                  insert="true" column="round_two_introduction" not-null="false"/>
+
+        <property name="generalFeedbackText" update="true"
+                  insert="true" column="general_feedback_text" not-null="false"/>
+    </class>
+
+
+</hibernate-mapping>
+
