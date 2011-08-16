@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.resource.persistence.sql;
 
@@ -8,13 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
@@ -59,15 +53,19 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * the association multiplicity between Resource and Submission which used to be 1 to 1 and is not 1 to N
  * (i.e. a resource can be associated with multiple submissions)
  * </p>
- * <p>
  *
  * <p>
  * <i>Version 1.2.2 (Configurable Contest Terms Release Assembly v2.0) Changes:</i> Audit information was added to
  * when a resource is added, deleted or changes its user or role.
  * </p>
- * <p>
  *
- * <b>Thread Safety</b> : This class is immutable and thread-safe in the sense that multiple threads can not
+ * <p>
+ * <i>Version 1.2.3 Changes:</i> Performance improvements: added caching for the resource roles and
+ * refactored the way the submissions are loaded for resources.
+ * </p>
+ *
+ * <p>
+ * <b>Thread Safety</b> : This class is thread-safe in the sense that multiple threads can not
  * corrupt its internal data structures. However, the results if used from multiple threads can be
  * unpredictable as the database is changed from different threads. This can equally well occur when the
  * component is used on multiple machines or multiple instances are used, so this is not a thread-safety
@@ -81,7 +79,8 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * @author AleaActaEst
  * @author George1
  * @author pulky
- * @version 1.2.2
+ * @author VolodymyrK
+ * @version 1.2.3
  * @since 1.1
  */
 public abstract class AbstractResourcePersistence implements ResourcePersistence {
@@ -111,13 +110,13 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
-     * Represents the sql to get the resource roles.
+     * Represents the sql to get all resource roles.
      * </p>
      */
-    private static final String SQL_SELECT_RES_ROLES =
+    private static final String SQL_SELECT_RES_ALL_ROLES =
         "SELECT resource_role_id, phase_type_id, name, description,"
             + " create_user, create_date, modify_user, modify_date"
-            + " FROM resource_role_lu WHERE resource_role_id IN (";
+            + " FROM resource_role_lu";
 
     /**
      * <p>
@@ -137,15 +136,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         "SELECT resource.resource_id, resource_role_id, project_id,"
             + " project_phase_id, resource.create_user, resource.create_date, resource.modify_user, "
             + " resource.modify_date" + " FROM resource WHERE resource.resource_id IN (";
-
-    /**
-     * <p>
-     * Represents the sql for loading resource roles.
-     * </p>
-     */
-    private static final String SQL_SELECT_RES_ROLE =
-        "SELECT resource_role_id, phase_type_id, name, description,"
-            + " create_user, create_date, modify_user, modify_date FROM resource_role_lu WHERE resource_role_id = ?";
 
     /**
      * <p>
@@ -289,8 +279,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * Represents the sql for selecting resource submission.
      * </p>
      */
-    private static final String SQL_SELECT_SUBMISSION =
-        "SELECT submission_id FROM resource_submission " + "WHERE resource_id = ?";
+    private static final String SQL_SELECT_SUBMISSIONS =
+        "SELECT resource_id, submission_id FROM resource_submission " + "WHERE resource_id IN (";
 
     /**
      * <p>
@@ -433,6 +423,14 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
+     * Stores cached ResourceRoles mapped by their IDs.
+     * Used to avoid quering the DB each time for the performance reasons.
+     * </p>
+     */
+    private static Map<Long, ResourceRole> cachedResourceRoles = null;
+
+    /**
+     * <p>
      * Creates a new <code>AbstractResourcePersistence</code>. The connectionName field is set to
      * <code>null</code>, and the connectionFactory field is a set to the argument.
      * </p>
@@ -485,12 +483,12 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     public void addResource(Resource resource) throws ResourcePersistenceException {
         Util.checkResource(resource, false);
 
-        LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
+        LOGGER.log(Level.INFO, new LogMessage(resource.getId(), null,
                 "add new resource to the project [id=" + (resource.getProject() == null ?
-                    "null" : resource.getProject().longValue())
+                    "null" : resource.getProject())
                 + "] with role :" + resource.getResourceRole().getName()
                 + " in the [id=" + (resource.getPhase() == null ? null :
-                    resource.getPhase().longValue()) + "] phase."));
+                    resource.getPhase()) + "] phase."));
         Connection connection = openConnection();
 
         try {
@@ -498,8 +496,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
             // if the submissions are not empty, persist the submission.
             Long[] submissions = resource.getSubmissions();
-            for (int i = 0; i < submissions.length; i++) {
-                insertSubmission(connection, resource, submissions[i]);
+            for (Long submission : submissions) {
+                insertSubmission(connection, resource, submission);
             }
 
             // persist properties.
@@ -512,7 +510,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
                 // if resource_info_type_id is found
                 if (resourceInfoTypeId != null) {
-                    insertResourceInfo(connection, resource, resourceInfoTypeId.intValue(), entry.getValue()
+                    insertResourceInfo(connection, resource, resourceInfoTypeId, entry.getValue()
                         .toString());
                 }
             }
@@ -521,8 +519,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
-                    "Unable to add resource to the project [id=" + resource.getProject().longValue() + "] with role:"
+            LOGGER.log(Level.ERROR, new LogMessage(resource.getId(), null,
+                    "Unable to add resource to the project [id=" + resource.getProject() + "] with role:"
                     + resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Unable to insert resource.", e);
         } finally {
@@ -646,7 +644,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.setString(1, name);
             rs = statement.executeQuery();
             if (rs.next()) {
-                return new Integer(rs.getInt(1));
+                return rs.getInt(1);
             }
             return null;
         } finally {
@@ -677,11 +675,11 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     public void deleteResource(Resource resource) throws ResourcePersistenceException {
         Util.checkResource(resource, true);
 
-        LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
-                "delete resource in the project [id=" + resource.getProject().longValue()
+        LOGGER.log(Level.INFO, new LogMessage(resource.getId(), null,
+                "delete resource in the project [id=" + resource.getProject()
                 + "] with role :" + resource.getResourceRole().getName()
                 + " in the [id=" + (resource.getPhase() == null ? "null" :
-                    resource.getPhase().longValue()) + "] phase."));
+                    resource.getPhase()) + "] phase."));
 
         Connection connection = openConnection();
         try {
@@ -696,7 +694,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             auditProjectUser(connection, resource, PROJECT_USER_AUDIT_DELETE_TYPE, null, null); // delete
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
+            LOGGER.log(Level.ERROR, new LogMessage(resource.getId(), null,
                     "Unable to delete resource to the project [id=" + resource.getProject() + "] with role:"
                     + resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Fail to delete resource", e);
@@ -756,12 +754,12 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     public void updateResource(Resource resource) throws ResourcePersistenceException {
         Util.checkResource(resource, false);
 
-        LOGGER.log(Level.INFO, new LogMessage(new Long(resource.getId()), null,
+        LOGGER.log(Level.INFO, new LogMessage(resource.getId(), null,
                 "update resource in the project [id=" + (resource.getProject() == null ?
-                    "null" : resource.getProject().longValue())
+                    "null" : resource.getProject())
                 + "] with role :" + resource.getResourceRole().getName()
                 + " in the [id=" + (resource.getPhase() == null ? "null" :
-                    resource.getPhase().longValue()) + "] phase."));
+                    resource.getPhase()) + "] phase."));
 
         Connection connection = openConnection();
         try {
@@ -843,7 +841,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
                     // if resource_info_type_id is found
                     if (resourceInfoTypeId != null) {
-                        insertResourceInfo(connection, resource, resourceInfoTypeId.intValue(), value);
+                        insertResourceInfo(connection, resource, resourceInfoTypeId, value);
                     }
 
                 } else if (previousProperties.get(key) != null) {
@@ -862,7 +860,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
                     Integer resourceInfoTypeId = getResourceInfoTypeId(connection, key);
                     if (resourceInfoTypeId != null) {
-                        updateResourceInfo(connection, resource.getId(), resourceInfoTypeId.intValue(), value);
+                        updateResourceInfo(connection, resource.getId(), resourceInfoTypeId, value);
                     }
                     previousProperties.remove(key);
                 }
@@ -875,7 +873,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
                 Integer resourceInfoTypeId = getResourceInfoTypeId(connection, entry.getKey().toString());
                 if (resourceInfoTypeId != null) {
-                    removeResourceInfo(connection, resource.getId(), resourceInfoTypeId.intValue());
+                    removeResourceInfo(connection, resource.getId(), resourceInfoTypeId);
                 }
             }
 
@@ -888,8 +886,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(new Long(resource.getId()), null,
-                    "Unable to update resource to the project [id=" + resource.getProject().longValue() + "] with role:"
+            LOGGER.log(Level.ERROR, new LogMessage(resource.getId(), null,
+                    "Unable to update resource to the project [id=" + resource.getProject() + "] with role:"
                     + resource.getResourceRole().getName() + " in [id=" + resource.getPhase() + "] phase.", e));
             throw new ResourcePersistenceException("Fail to update resource", e);
         } finally {
@@ -963,19 +961,63 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     private Long[] getSubmissionEntry(Connection connection, Resource resource) throws SQLException {
         PreparedStatement statement = null;
         ResultSet rs = null;
-        List submissions = new ArrayList();
+        List<Long> submissions = new ArrayList<Long>();
 
         try {
-            statement = connection.prepareStatement(SQL_SELECT_SUBMISSION);
-            statement.setLong(1, resource.getId());
-
+            statement = connection.prepareStatement(
+                buildQueryWithIds(SQL_SELECT_SUBMISSIONS, new long[] {resource.getId()}));
             rs = statement.executeQuery();
 
             while (rs.next()) {
-                submissions.add(new Long(rs.getLong(1)));
+                submissions.add(rs.getLong(2));
             }
 
-            return (Long[]) submissions.toArray(new Long[submissions.size()]);
+            return submissions.toArray(new Long[submissions.size()]);
+        } finally {
+            Util.closeStatement(statement);
+            Util.closeResultSet(rs);
+        }
+    }
+
+    /**
+     * Loads all submissions for the specified resources and sets them in the resource's property.
+     *
+     * @param connection the connection to database.
+     * @param resources the list of Resource instances
+     * @throws SQLException if failed to get the submission entry for <code>Resource</code> instances.
+     */
+    private void loadResourceSubmissions(Connection connection, List<Resource> resources) throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+
+        long[] resourceIds = new long[resources.size()];
+        for(int i=0;i<resources.size();i++) {
+            resourceIds[i] = resources.get(i).getId();
+        }
+
+        Map<Long,List<Long>> submissionsMap = new HashMap<Long,List<Long>>();
+        try {
+            statement = connection.prepareStatement(buildQueryWithIds(SQL_SELECT_SUBMISSIONS, resourceIds));
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                long resourceId = rs.getLong(1);
+                long submissionId = rs.getLong(2);
+
+                List<Long> submissions = submissionsMap.get(resourceId);
+                if (submissions == null) {
+                    submissions = new ArrayList<Long>();
+                    submissionsMap.put(resourceId, submissions);
+                }
+                submissions.add(submissionId);
+            }
+
+            for(Resource resource : resources) {
+                List<Long> submissions = submissionsMap.get(resource.getId());
+                if (submissions != null) {
+                    resource.setSubmissions( submissions.toArray(new Long[submissions.size()]) );
+                }
+            }
         } finally {
             Util.closeStatement(statement);
             Util.closeResultSet(rs);
@@ -1111,7 +1153,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     public Resource loadResource(long resourceId) throws ResourcePersistenceException {
         Util.checkPositiveValue(resourceId, "resourceId");
 
-        LOGGER.log(Level.INFO, new LogMessage(new Long(resourceId), null,"load resource."));
+        LOGGER.log(Level.INFO, new LogMessage(resourceId, null,"load resource."));
 
         Connection connection = openConnection();
 
@@ -1125,14 +1167,18 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             rs = statement.executeQuery();
 
             if (rs.next()) {
-                Resource resource = constructResource(rs, connection);
+                Resource resource = constructResource(rs);
+
+                // add submissions into resource
+                resource.setSubmissions(getSubmissionEntry(connection, resource));
+
                 // select all external properties for the resource instance.
                 return selectExternalProperties(connection, resource);
             }
             return null;
         } catch (SQLException e) {
             closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(new Long(resourceId), null,"Failed to load resource instance.",e));
+            LOGGER.log(Level.ERROR, new LogMessage(resourceId, null,"Failed to load resource instance.",e));
             throw new ResourcePersistenceException("Failed to load resource instance.", e);
         } finally {
             Util.closeStatement(statement);
@@ -1145,11 +1191,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * Constructs a <code>Resource</code> instance from given <code>ResultSet</code> instance.
      *
      * @param rs the <code>ResultSet</code> instance
-     * @param connection the <code>Connection</code> instance
      * @return The Resource instance
      * @throws ResourcePersistenceException if failed to construct the <code>Resource</code> instance.
      */
-    private Resource constructResource(ResultSet rs, Connection connection)
+    private Resource constructResource(ResultSet rs)
         throws ResourcePersistenceException {
         try {
             Resource resource = new Resource();
@@ -1162,22 +1207,19 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             if (rs.getObject(3) == null) {
                 resource.setProject(null);
             } else {
-                resource.setProject(new Long(rs.getLong(3)));
+                resource.setProject(rs.getLong(3));
             }
 
             if (rs.getObject(4) == null) {
                 resource.setPhase(null);
             } else {
-                resource.setPhase(new Long(rs.getLong(4)));
+                resource.setPhase(rs.getLong(4));
             }
 
             resource.setCreationUser(rs.getString(5));
             resource.setCreationTimestamp(rs.getTimestamp(6));
             resource.setModificationUser(rs.getString(7));
             resource.setModificationTimestamp(rs.getTimestamp(8));
-
-            // add submissions into resource
-            resource.setSubmissions(getSubmissionEntry(connection, resource));
 
             return resource;
         } catch (SQLException e) {
@@ -1195,7 +1237,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @throws ResourcePersistenceException
      *             if failed to construct the Resource instance.
      */
-    private Resource constructResource(CustomResultSet rs, Connection connection) throws ResourcePersistenceException {
+    private Resource constructResource(CustomResultSet rs) throws ResourcePersistenceException {
         try {
             Resource resource = new Resource();
 
@@ -1205,13 +1247,13 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             resource.setResourceRole(role);
 
             if (rs.getObject("project_id") != null) {
-                resource.setProject(new Long(rs.getLong("project_id")));
+                resource.setProject(rs.getLong("project_id"));
             } else {
                 resource.setProject(null);
             }
 
             if (rs.getObject("project_phase_id") != null) {
-                resource.setPhase(new Long(rs.getLong("project_phase_id")));
+                resource.setPhase(rs.getLong("project_phase_id"));
             } else {
                 resource.setPhase(null);
             }
@@ -1221,14 +1263,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             resource.setModificationUser(rs.getString("modify_user"));
             resource.setModificationTimestamp(rs.getTimestamp("modify_date"));
 
-            // add submissions into resource
-            resource.setSubmissions(getSubmissionEntry(connection, resource));
-
             return resource;
         } catch (InvalidCursorStateException icse) {
             throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", icse);
-        } catch (SQLException e) {
-            throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", e);
         }
     }
 
@@ -1611,8 +1648,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.setString(index++, notificationType.getName());
             statement.setString(index++, notificationType.getDescription());
             statement.setString(index++, notificationType.getModificationUser());
-            statement
-                .setTimestamp(index++, Util.dateToTimestamp(notificationType.getModificationTimestamp()));
+            statement.setTimestamp(index++, Util.dateToTimestamp(notificationType.getModificationTimestamp()));
             statement.setLong(index, notificationType.getId());
 
             statement.executeUpdate();
@@ -1697,6 +1733,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.setTimestamp(index, Util.dateToTimestamp(resourceRole.getModificationTimestamp()));
 
             statement.executeUpdate();
+            if (cachedResourceRoles != null) {
+                cachedResourceRoles.put(resourceRole.getId(), resourceRole);
+            }
+
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(null, null,
@@ -1732,6 +1772,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.setLong(1, resourceRole.getId());
 
             statement.executeUpdate();
+            if (cachedResourceRoles != null) {
+                cachedResourceRoles.remove(resourceRole.getId());
+            }
+
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(null, null,
@@ -1776,6 +1820,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement.setLong(index, resourceRole.getId());
 
             statement.executeUpdate();
+            if (cachedResourceRoles != null) {
+                cachedResourceRoles.put(resourceRole.getId(), resourceRole);
+            }
+
         } catch (SQLException e) {
             closeConnectionOnError(connection);
             LOGGER.log(Level.ERROR, new LogMessage(null, null,
@@ -1804,32 +1852,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         LOGGER.log(Level.INFO, "load ResourceRole with id:" + resourceRoleId);
 
-        Connection connection = openConnection();
-        ResultSet rs = null;
-        PreparedStatement statement = null;
-
-        try {
-            statement = connection.prepareStatement(SQL_SELECT_RES_ROLE);
-            statement.setLong(1, resourceRoleId);
-
-            rs = statement.executeQuery();
-
-            if (rs.next()) {
-                return constructResourceRole(rs);
-            }
-
-        } catch (SQLException e) {
-            closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed load a resource role with id:" + resourceRoleId, e));
-            throw new ResourcePersistenceException("Failed to load ResourceRole instance.", e);
-        } finally {
-            Util.closeStatement(statement);
-            Util.closeResultSet(rs);
-            closeConnection(connection);
+        if (cachedResourceRoles == null) {
+            cacheAllResourceRoles();
         }
-
-        return null;
+        return cachedResourceRoles.get(resourceRoleId);
     }
 
     /**
@@ -1848,7 +1874,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         if (rs.getObject(2) == null) {
             role.setPhaseType(null);
         } else {
-            role.setPhaseType(new Long(rs.getLong(2)));
+            role.setPhaseType(rs.getLong(2));
         }
 
         role.setName(rs.getString(index++));
@@ -1878,7 +1904,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         if (rs.getObject("phase_type_id") == null) {
             role.setPhaseType(null);
         } else {
-            role.setPhaseType(new Long(rs.getLong("phase_type_id")));
+            role.setPhaseType(rs.getLong("phase_type_id"));
         }
 
         role.setName(rs.getString("name"));
@@ -1889,6 +1915,41 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         role.setModificationTimestamp(rs.getTimestamp("modify_date"));
 
         return role;
+    }
+
+    /**
+     * Loads all ResourceRoles from the persistence and caches them.
+     *
+     * @throws ResourcePersistenceException
+     *             If there is an error loading from persistence
+     */
+    private void cacheAllResourceRoles() throws ResourcePersistenceException {
+        LOGGER.log(Level.INFO, "Load and cache all resource roles.");
+
+        Connection connection = openConnection();
+
+        ResultSet rs = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_RES_ALL_ROLES);
+            rs = statement.executeQuery();
+
+            Map<Long, ResourceRole> resourceRoles = Collections.synchronizedMap(new HashMap<Long, ResourceRole>());
+            while (rs.next()) {
+                ResourceRole role = constructResourceRole(rs);
+                resourceRoles.put(role.getId(), role);
+            }
+            cachedResourceRoles = resourceRoles;
+        } catch (SQLException e) {
+            closeConnectionOnError(connection);
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed for getting all ResourceRoles.", e));
+            throw new ResourcePersistenceException("Failed to load ResourceRole instances.", e);
+        } finally {
+            Util.closeStatement(statement);
+            Util.closeResultSet(rs);
+            closeConnection(connection);
+        }
     }
 
     /**
@@ -1920,21 +1981,23 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             statement = connection.prepareStatement(buildQueryWithIds(SQL_SELECT_ALL_RES, resourceIds));
             rs = statement.executeQuery();
 
-            List list = new ArrayList();
+            List<Resource> list = new ArrayList<Resource>();
 
             while (rs.next()) {
-                list.add(constructResource(rs, connection));
+                list.add(constructResource(rs));
             }
 
-            Resource[] resources = (Resource[]) list.toArray(new Resource[list.size()]);
+            // load submissions for all resources
+            loadResourceSubmissions(connection, list);
 
-            // select all the external properties once and add the matching properties into resource
-            // instances.
-            Map map = getAllExternalProperties(connection, resourceIds);
+            Resource[] resources = list.toArray(new Resource[list.size()]);
+
+            // select all the external properties once and  add the matching properties into resource instances.
+            Map propertiesMap = getAllExternalProperties(connection, resourceIds);
 
             for (int i = 0; i < resources.length; i++) {
                 Resource resource = resources[i];
-                Map properties = (Map) map.get(new Long(resource.getId()));
+                Map properties = (Map) propertiesMap.get(resource.getId());
 
                 if (properties == null) {
                     continue;
@@ -1961,7 +2024,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-<<<<<<< .mine
      * Return the id string seperated by comma for the given long id array.
      *
      * @param ids the id array
@@ -1996,7 +2058,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
-=======
      * Loads the resources from the result of the SELECT operation. May return an empty array.
      *
      * @return The loaded resources
@@ -2017,13 +2078,16 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Connection connection = openConnection();
 
         try {
-            List list = new ArrayList();
+            List<Resource> list = new ArrayList<Resource>();
 
             while (resultSet.next()) {
-                list.add(constructResource(resultSet, connection));
+                list.add(constructResource(resultSet));
             }
 
-            Resource[] resources = (Resource[]) list.toArray(new Resource[list.size()]);
+            // load submissions for all resources
+            loadResourceSubmissions(connection, list);
+
+            Resource[] resources = list.toArray(new Resource[list.size()]);
             long[] resourceIds = new long[resources.length];
 
             for (int i = 0; i < resources.length; ++i) {
@@ -2031,11 +2095,11 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             }
 
             // select all the external properties once and add the matching properties into resource instances
-            Map map = getAllExternalProperties(connection, resourceIds);
+            Map propertiesMap = getAllExternalProperties(connection, resourceIds);
 
             for (int i = 0; i < resources.length; ++i) {
                 Resource resource = resources[i];
-                Map properties = (Map) map.get(new Long(resource.getId()));
+                Map properties = (Map) propertiesMap.get(resource.getId());
 
                 if (properties == null) {
                     continue;
@@ -2049,6 +2113,9 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             }
 
             return resources;
+        } catch (SQLException e) {
+            closeConnectionOnError(connection);
+            throw new ResourcePersistenceException("Failed to load the submissions for the resources.", e);
         } catch (ResourcePersistenceException rpe) {
             closeConnectionOnError(connection);
             throw rpe;
@@ -2058,7 +2125,6 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
     }
 
     /**
->>>>>>> .r72308
      * Builds a select sql query with an argument contains many long values. The structure of the result
      * string looks like this: ... in ( id, id, id, id...).
      *
@@ -2108,7 +2174,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
             while (rs.next()) {
                 index = 1;
-                Long resourceId = new Long(rs.getLong(index++));
+                Long resourceId = rs.getLong(index++);
 
                 String key = rs.getString(index++);
                 String value = rs.getString(index);
@@ -2160,18 +2226,17 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
         try {
             statement =
-                connection.prepareStatement(buildQueryWithIds(SQL_SELECT_NOTIFICATION_TYPES,
-                    notificationTypeIds));
+                connection.prepareStatement(buildQueryWithIds(SQL_SELECT_NOTIFICATION_TYPES, notificationTypeIds));
 
             rs = statement.executeQuery();
 
-            List list = new ArrayList();
+            List<NotificationType> list = new ArrayList<NotificationType>();
 
             while (rs.next()) {
                 list.add(constructNotificationType(rs));
             }
 
-            return (NotificationType[]) list.toArray(new NotificationType[list.size()]);
+            return list.toArray(new NotificationType[list.size()]);
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
@@ -2214,13 +2279,13 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         }
 
         try {
-            List list = new ArrayList();
+            List<NotificationType> list = new ArrayList<NotificationType>();
 
             while (resultSet.next()) {
                 list.add(constructNotificationType(resultSet));
             }
 
-            return (NotificationType[]) list.toArray(new NotificationType[list.size()]);
+            return list.toArray(new NotificationType[list.size()]);
         } catch (InvalidCursorStateException icse) {
             throw new ResourcePersistenceException("Failed to load NotificationType instances.", icse);
         }
@@ -2288,34 +2353,19 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         String idString = getIdString(resourceRoleIds);
         LOGGER.log(Level.INFO, "load Resource role with ids:" + idString);
 
-        Connection connection = openConnection();
-
-        ResultSet rs = null;
-        PreparedStatement statement = null;
-
-        try {
-            statement = connection.prepareStatement(buildQueryWithIds(SQL_SELECT_RES_ROLES, resourceRoleIds));
-
-            rs = statement.executeQuery();
-
-            List roles = new ArrayList();
-
-            while (rs.next()) {
-                roles.add(constructResourceRole(rs));
-            }
-
-            return (ResourceRole[]) roles.toArray(new ResourceRole[roles.size()]);
-
-        } catch (SQLException e) {
-            closeConnectionOnError(connection);
-            LOGGER.log(Level.ERROR, new LogMessage(null, null,
-                    "Failed for getting ResourceRoles ids:" + idString, e));
-            throw new ResourcePersistenceException("Failed to load nResourceRole instance.", e);
-        } finally {
-            Util.closeStatement(statement);
-            Util.closeResultSet(rs);
-            closeConnection(connection);
+        if (cachedResourceRoles == null) {
+            cacheAllResourceRoles();
         }
+
+        List<ResourceRole> roles = new ArrayList<ResourceRole>();
+        for (long roleId : resourceRoleIds) {
+            ResourceRole role = cachedResourceRoles.get(roleId);
+            if (role != null) {
+                roles.add(role);
+            }
+        }
+
+        return roles.toArray(new ResourceRole[roles.size()]);
     }
 
     /**
@@ -2337,13 +2387,13 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         }
 
         try {
-            List roles = new ArrayList();
+            List<ResourceRole> roles = new ArrayList<ResourceRole>();
 
             while (resultSet.next()) {
                 roles.add(constructResourceRole(resultSet));
             }
 
-            return (ResourceRole[]) roles.toArray(new ResourceRole[roles.size()]);
+            return roles.toArray(new ResourceRole[roles.size()]);
         } catch (InvalidCursorStateException icse) {
             throw new ResourcePersistenceException("Failed to load nResourceRole instance.", icse);
         }
@@ -2406,13 +2456,13 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
             rs = statement.executeQuery();
 
-            List list = new ArrayList();
+            List<Notification> list = new ArrayList<Notification>();
 
             while (rs.next()) {
                 list.add(constructNotification(connection, rs));
             }
 
-            return (Notification[]) list.toArray(new Notification[list.size()]);
+            return list.toArray(new Notification[list.size()]);
 
         } catch (SQLException e) {
             closeConnectionOnError(connection);
@@ -2448,13 +2498,13 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         Connection connection = openConnection();
 
         try {
-            List notifications = new ArrayList();
+            List<Notification> notifications = new ArrayList<Notification>();
 
             while (resultSet.next()) {
                 notifications.add(consructNotification(connection, resultSet));
             }
 
-            return (Notification[]) notifications.toArray(new Notification[notifications.size()]);
+            return notifications.toArray(new Notification[notifications.size()]);
         } catch (ResourcePersistenceException rpe) {
             closeConnectionOnError(connection);
             throw rpe;
