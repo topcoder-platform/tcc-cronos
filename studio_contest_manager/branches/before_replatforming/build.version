@@ -1,0 +1,9 @@
+#property file defining the components information
+component.name=Studio Contest Manager
+component.distfilename=studio_contest_manager
+component.package=com.topcoder.service.studio.contest
+component.packagedir=com/topcoder/service/studio/contest
+component.version.major=1
+component.version.minor=3
+component.version.micro=0
+component.version.build=1

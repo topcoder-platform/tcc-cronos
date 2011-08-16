@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<CMConfig>
+    <Config name="com.topcoder.service.studio.ejb.StudioServiceBean">
+        <Property name="documentBasePath">
+        	<Value>/nfs_shares/studiofiles/documents/</Value>
+        </Property>
+        <Property name="forumBeanProviderUrl">
+        	<Value>jnp://63.118.154.182:1099</Value>
+        </Property>
+        <Property name="pactsServiceLocation">
+        	<Value>63.118.154.181:1099</Value>
+        </Property>
+        <Property name="autoPaymentsEnabled">
+        	<Value>false</Value>
+        </Property>
+        <Property name="submissionSiteBaseUrl">
+        	<Value>http://174.129.126.198/studio/submissions</Value>
+        </Property>
+        <Property name="submissionSiteFilePath">
+        	<Value>/nfs_shares/studiofiles/documents/</Value>
+        </Property>
+    </Config>
+</CMConfig>

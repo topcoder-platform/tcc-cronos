@@ -1,0 +1,57 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+   version="1.0">
+   <persistence-unit name="contest_submission" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>java:/InformixDS</jta-data-source>
+
+        <mapping-file>mappings/ContestChangeHistory.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestStatus.hbm.xml</mapping-file>
+	    <mapping-file>mappings/StudioFileType.hbm.xml</mapping-file>
+	    <mapping-file>mappings/MimeType.hbm.xml</mapping-file>
+	    <mapping-file>mappings/FilePath.hbm.xml</mapping-file>
+	    <mapping-file>mappings/DocumentType.hbm.xml</mapping-file>
+	    <mapping-file>mappings/PrizeType.hbm.xml</mapping-file>
+	    <mapping-file>mappings/PaymentStatus.hbm.xml</mapping-file>
+	    <mapping-file>mappings/SubmissionStatus.hbm.xml</mapping-file>
+	    <mapping-file>mappings/SubmissionType.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestChannel.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestProperty.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ReviewStatus.hbm.xml</mapping-file>
+	    <mapping-file>mappings/Contest.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestConfig.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestType.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestTypeConfig.hbm.xml</mapping-file>
+	    <mapping-file>mappings/Document.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestResult.hbm.xml</mapping-file>
+	    <mapping-file>mappings/Submission.hbm.xml</mapping-file>
+	    <mapping-file>mappings/Prize.hbm.xml</mapping-file>
+	    <mapping-file>mappings/SubmissionReview.hbm.xml</mapping-file>
+	    <mapping-file>mappings/SubmissionPayment.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestRegistration.hbm.xml</mapping-file>
+	
+	    <mapping-file>mappings/ContestPayment.hbm.xml</mapping-file>
+	    <mapping-file>mappings/Medium.hbm.xml</mapping-file>
+	
+	    <mapping-file>mappings/PaymentType.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestMultiRoundInformation.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestSpecifications.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestResource.hbm.xml</mapping-file>
+	    <mapping-file>mappings/ContestGeneralInfo.hbm.xml</mapping-file>
+	    <mapping-file>mappings/MilestonePrize.hbm.xml</mapping-file>
+ 
+	    <mapping-file>mappings/Project.hbm.xml</mapping-file>
+
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+           <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
+           <property name="hibernate.show_sql" value="false" />
+           <property name="hibernate.transaction.factory_class" value="org.hibernate.ejb.transaction.JoinableCMTTransactionFactory" />
+           <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup" />
+		   <property name="jboss.entity.manager.jndi.name" value="java:/contest_submission"/>
+           <property name="jboss.entity.manager.factory.jndi.name" value="java:/contestManagerFactory"/>
+        </properties>
+   </persistence-unit>
+</persistence>

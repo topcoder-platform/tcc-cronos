@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" name="com.topcoder.service.studio.contest.AllTests" tests="546" time="53.172">
+  <properties>
+    <property name="component.version.major" value="1"></property>
+    <property name="file.encoding.pkg" value="sun.io"></property>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_19\jre"></property>
+    <property name="dist_javadocs" value="build/dist/studio_contest_manager-1.3.0/docs/javadocs"></property>
+    <property name="debug" value="off"></property>
+    <property name="build_distdir" value="build/dist"></property>
+    <property name="distfilename" value="studio_contest_manager"></property>
+    <property name="cglib.jar" value="E:\jboss-4.2.3.GA/server/default/lib/cglib.jar"></property>
+    <property name="component.version.micro" value="0"></property>
+    <property name="component.dist.jar" value="build/dist/studio_contest_manager-1.3.0.jar"></property>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_19\jre\lib\endorsed"></property>
+    <property name="object_factory.jar" value="D:/TopCoder/lib/tcs/object_factory/2.1.2/object_factory.jar"></property>
+    <property name="sun.os.patch.level" value="Service Pack 3"></property>
+    <property name="design_dist.jar" value="studio_contest_manager_1.3.0_design_dist.jar"></property>
+    <property name="javadocsdir" value="docs/javadocs"></property>
+    <property name="java.vendor.url" value="http://java.sun.com/"></property>
+    <property name="java.version" value="1.5.0_19"></property>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"></property>
+    <property name="ear_name" value="studiocontestmanager.ear"></property>
+    <property name="ifxjdbc.jar" value="D:/TopCoder/lib/third_party/ifxjdbc.jar"></property>
+    <property name="cobertura.datafile" value="log/cobertura.ser"></property>
+    <property name="user.name" value="liuliquan"></property>
+    <property name="packagedir" value="com/topcoder/service/studio/contest"></property>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"></property>
+    <property name="component_version" value="1.3.0"></property>
+    <property name="sun.jnu.encoding" value="GBK"></property>
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition"></property>
+    <property name="target_libdir" value="D:/TopCoder/lib/tcs"></property>
+    <property name="reports" value="log/reports"></property>
+    <property name="component.jar" value="build/dist/lib/tcs/studio_contest_manager/1.3.0/studio_contest_manager.jar"></property>
+    <property name="java.specification.name" value="Java Platform API Specification"></property>
+    <property name="javamain" value="src/java/main"></property>
+    <property name="user.timezone" value=""></property>
+    <property name="component.version.build" value="1"></property>
+    <property name="path.separator" value=";"></property>
+    <property name="srcdir" value="src"></property>
+    <property name="file.encoding" value="GBK"></property>
+    <property name="ejb_dir" value="build/studio_contest_manager.jar"></property>
+    <property name="project_service.jar" value="test_files/project_service.jar"></property>
+    <property name="commons-collections.jar" value="E:\jboss-4.2.3.GA/server/default/lib/commons-collections.jar"></property>
+    <property name="ant.file" value="D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\build.xml"></property>
+    <property name="javasrc" value="src/java"></property>
+    <property name="search_builder.jar" value="D:/TopCoder/lib/tcs/search_builder/1.4.1/search_builder.jar"></property>
+    <property name="instrumented.dir" value="build/instrumented"></property>
+    <property name="component.target" value="1.x"></property>
+    <property name="component.tests.jar" value="build/dist/lib/tcs/studio_contest_manager_tests.jar"></property>
+    <property name="server" value="default"></property>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\LIULIQ~1\LOCALS~1\Temp\"></property>
+    <property name="user.language" value="zh"></property>
+    <property name="manifest_file_path" value="build/dist/studio_contest_manager-1.3.0/META-INF/"></property>
+    <property name="line.separator" value="
+"></property>
+    <property name="component.name" value="Studio Contest Manager"></property>
+    <property name="verbose" value="no"></property>
+    <property name="manifest_file" value="build/dist/studio_contest_manager-1.3.0/META-INF//MANIFEST.MF"></property>
+    <property name="ant.file.TopCoder Java Generic Build" value="D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\build.xml"></property>
+    <property name="java.vm.info" value="mixed mode, sharing"></property>
+    <property name="component_path" value="studio_contest_manager/1.3.0"></property>
+    <property name="contest_and_submission_entities.jar" value="test_files/contest_and_submission_entities.jar"></property>
+    <property name="sun.desktop" value="windows"></property>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"></property>
+    <property name="jboss-ejb3x.jar" value="E:\jboss-4.2.3.GA/client/jboss-ejb3x.jar"></property>
+    <property name="dist_coverage" value="build/dist/studio_contest_manager-1.3.0/docs/coverage"></property>
+    <property name="builddir" value="build"></property>
+    <property name="class_associations.jar" value="D:/TopCoder/lib/tcs/class_associations/1.0.0/class_associations.jar"></property>
+    <property name="cobertura.dir" value="D:/TopCoder/lib/third_party/cobertura/1.8"></property>
+    <property name="ear_dir" value="build/studiocontestmanager.ear"></property>
+    <property name="configuration_manager.jar" value="D:/TopCoder/lib/tcs/configuration_manager/2.1.5/configuration_manager.jar"></property>
+    <property name="javac.encoding" value="UTF-8"></property>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"></property>
+    <property name="dist_lib" value="build/dist/lib/tcs"></property>
+    <property name="ejb3-persistence.jar" value="E:\jboss-4.2.3.GA/client/ejb3-persistence.jar"></property>
+    <property name="junit.jar" value="D:/TopCoder/lib/third_party/junit/3.8.2/junit.jar"></property>
+    <property name="configdir" value="conf"></property>
+    <property name="build_tcsdistdir" value="build/dist/studio_contest_manager-1.3.0"></property>
+    <property name="ant.version" value="Apache Ant version 1.6.5 compiled on June 2 2005"></property>
+    <property name="dist_docs" value="build/dist/studio_contest_manager-1.3.0/docs"></property>
+    <property name="test_reflib" value="test_reflib"></property>
+    <property name="testlogdir" value="log"></property>
+    <property name="configuration_api.jar" value="D:/TopCoder/lib/tcs/configuration_api/1.0.0/configuration_api.jar"></property>
+    <property name="os.name" value="Windows XP"></property>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"></property>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_19\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Java\jdk1.5.0_19\bin;C:\oraclexe\app\oracle\product\10.2.0\server\bin;D:\apache-ant-1.6.5-bin\bin;C:\Program Files\ThinkPad\Utilities;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\Intel\Wireless\Bin\;C:\Program Files\ATI Technologies\ATI.ACE\;C:\Program Files\Diskeeper Corporation\Diskeeper\;C:\Program Files\ThinkPad\ConnectUtilities;C:\Program Files\Common Files\Lenovo;C:\Program Files\Lenovo\Client Security Solution;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;C:\PROGRA~1\IBM\SQLLIB\BIN;C:\PROGRA~1\IBM\SQLLIB\FUNCTION;C:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL"></property>
+    <property name="docpackage.jar" value="studio_contest_manager_docs.jar"></property>
+    <property name="ant.java.version" value="1.5"></property>
+    <property name="basedir" value="D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager"></property>
+    <property name="java.class.version" value="49.0"></property>
+    <property name="antlr.jar" value="E:\jboss-4.2.3.GA/server/default/lib/antlr.jar"></property>
+    <property name="ant.home" value="D:\apache-ant-1.6.5-bin\bin\.."></property>
+    <property name="hibernate3.jar" value="E:\jboss-4.2.3.GA/server/default/lib/hibernate3.jar"></property>
+    <property name="net.sourceforge.cobertura.datafile" value="D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\log\cobertura.ser"></property>
+    <property name="jboss-j2ee.jar" value="E:\jboss-4.2.3.GA/client/jboss-j2ee.jar"></property>
+    <property name="object_factory_configuration_api_plugin.jar" value="D:/TopCoder/lib/tcs/object_factory_configuration_api_plugin/1.0.0/object_factory_configuration_api_plugin.jar"></property>
+    <property name="jbossall-client.jar" value="E:\jboss-4.2.3.GA/client/jbossall-client.jar"></property>
+    <property name="log4j.jar" value="E:\jboss-4.2.3.GA/server/default/lib/log4j.jar"></property>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_19\jre\bin"></property>
+    <property name="ext_libdir" value="D:/TopCoder/lib/third_party"></property>
+    <property name="hibernate-annotations.jar" value="E:\jboss-4.2.3.GA/server/default/lib/hibernate-annotations.jar"></property>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"></property>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"></property>
+    <property name="user.variant" value=""></property>
+    <property name="object_formatter.jar" value="D:/TopCoder/lib/tcs/object_formatter/1.0.0/object_formatter.jar"></property>
+    <property name="build_targetclassdir" value="build/targetclasses"></property>
+    <property name="docsdir" value="docs"></property>
+    <property name="hibernate-entitymanager.jar" value="E:\jboss-4.2.3.GA/server/default/lib/hibernate-entitymanager.jar"></property>
+    <property name="jboss-jaxws.jar" value="E:\jboss-4.2.3.GA/client/jboss-jaxws.jar"></property>
+    <property name="dev_dist.jar" value="studio_contest_manager_1.3.0_dev_dist.jar"></property>
+    <property name="ant.project.name" value="TopCoder Java Generic Build"></property>
+    <property name="component.version.minor" value="3"></property>
+    <property name="java.vm.specification.version" value="1.0"></property>
+    <property name="component.bootclasspath" value="${java_1_x_bootclasspath}"></property>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"></property>
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"></property>
+    <property name="build_javadocsdir" value="build/docs/javadocs"></property>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_19\jre\lib\ext"></property>
+    <property name="os.version" value="5.1"></property>
+    <property name="user.home" value="C:\Documents and Settings\liuliquan"></property>
+    <property name="javadoc.jar" value="javadocs.jar"></property>
+    <property name="libdir" value="../tcs/lib"></property>
+    <property name="build_classdir" value="build/classes"></property>
+    <property name="commons-logging.jar" value="E:\jboss-4.2.3.GA/server/default/lib/commons-logging.jar"></property>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."></property>
+    <property name="component.distfilename" value="studio_contest_manager"></property>
+    <property name="component.package" value="com.topcoder.service.studio.contest"></property>
+    <property name="build_testclassdir" value="build/testClasses"></property>
+    <property name="package" value="com.topcoder.service.studio.contest"></property>
+    <property name="typesafe_enum.jar" value="D:/TopCoder/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar"></property>
+    <property name="base_exception.jar" value="D:/TopCoder/lib/tcs/base_exception/2.0.0/base_exception.jar"></property>
+    <property name="user.dir" value="D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager"></property>
+    <property name="component.packagedir" value="com/topcoder/service/studio/contest"></property>
+    <property name="configuration_persistence.jar" value="D:/TopCoder/lib/tcs/configuration_persistence/1.0.0/configuration_persistence.jar"></property>
+    <property name="ejb_name" value="studio_contest_manager.jar"></property>
+    <property name="data_validation.jar" value="D:/TopCoder/lib/tcs/data_validation/1.1.1/data_validation.jar"></property>
+    <property name="sun.cpu.endian" value="little"></property>
+    <property name="ant.file.Dependency Import" value="D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\build-dependencies.xml"></property>
+    <property name="dist_docpackage" value="build/doc_package"></property>
+    <property name="java.vm.version" value="1.5.0_19-b02"></property>
+    <property name="java.class.path" value="D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\build\instrumented;D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\build\testClasses;D:\TopCoder\lib\third_party\ifxjdbc.jar;D:\TopCoder\lib\third_party\junit\3.8.2\junit.jar;E:\jboss-4.2.3.GA\server\default\lib\antlr.jar;E:\jboss-4.2.3.GA\server\default\lib\log4j.jar;E:\jboss-4.2.3.GA\server\default\lib\cglib.jar;E:\jboss-4.2.3.GA\server\default\lib\dom4j.jar;E:\jboss-4.2.3.GA\client\jboss-jaxws.jar;E:\jboss-4.2.3.GA\client\jbossall-client.jar;E:\jboss-4.2.3.GA\server\default\lib\commons-logging.jar;E:\jboss-4.2.3.GA\server\default\lib\commons-collections.jar;E:\jboss-4.2.3.GA\server\default\lib\hibernate3.jar;E:\jboss-4.2.3.GA\server\default\lib\hibernate-annotations.jar;E:\jboss-4.2.3.GA\server\default\lib\hibernate-entitymanager.jar;D:\TopCoder\lib\tcs\base_exception\2.0.0\base_exception.jar;D:\TopCoder\lib\tcs\class_associations\1.0.0\class_associations.jar;D:\TopCoder\lib\tcs\search_builder\1.4.1\search_builder.jar;D:\TopCoder\lib\tcs\configuration_api\1.0.0\configuration_api.jar;D:\TopCoder\lib\tcs\configuration_manager\2.1.5\configuration_manager.jar;D:\TopCoder\lib\tcs\configuration_persistence\1.0.0\configuration_persistence.jar;D:\TopCoder\lib\tcs\data_validation\1.1.1\data_validation.jar;D:\TopCoder\lib\tcs\logging_wrapper\2.0.0\logging_wrapper.jar;D:\TopCoder\lib\tcs\object_factory\2.1.2\object_factory.jar;D:\TopCoder\lib\tcs\object_factory_configuration_api_plugin\1.0.0\object_factory_configuration_api_plugin.jar;D:\TopCoder\lib\tcs\object_formatter\1.0.0\object_formatter.jar;D:\TopCoder\lib\tcs\typesafe_enum\1.1.0\typesafe_enum.jar;D:\TopCoder\lib\tcs\db_connection_factory\1.1.0\db_connection_factory.jar;D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\test_files\project_service.jar;D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\test_files\contest_and_submission_entities.jar;E:\jboss-4.2.3.GA\client\jboss-j2ee.jar;E:\jboss-4.2.3.GA\client\jboss-ejb3x.jar;E:\jboss-4.2.3.GA\client\ejb3-persistence.jar;D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\build\classes;D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\conf;D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\test_files;D:\TopCoder\lib\third_party\cobertura\1.8\cobertura.jar;D:\TopCoder\lib\third_party\cobertura\1.8\lib\asm-2.2.1.jar;D:\TopCoder\lib\third_party\cobertura\1.8\lib\jakarta-oro-2.0.8.jar;D:\TopCoder\lib\third_party\cobertura\1.8\lib\log4j-1.2.14.jar;D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager;C:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;C:\PROGRA~1\IBM\SQLLIB\java\db2jcc.jar;C:\PROGRA~1\IBM\SQLLIB\java\sqlj.zip;C:\PROGRA~1\IBM\SQLLIB\java\db2jcc_license_cu.jar;C:\PROGRA~1\IBM\SQLLIB\bin;C:\PROGRA~1\IBM\SQLLIB\java\common.jar;D:\apache-ant-1.6.5-bin\lib\junit.jar;D:\apache-ant-1.6.5-bin\lib\ant-launcher.jar;D:\apache-ant-1.6.5-bin\lib\ant.jar;D:\apache-ant-1.6.5-bin\lib\ant-junit.jar"></property>
+    <property name="dev_submission.jar" value="studio_contest_manager_1.3.0_dev_submission.jar"></property>
+    <property name="ant.library.dir" value="D:\apache-ant-1.6.5-bin\lib"></property>
+    <property name="os.arch" value="x86"></property>
+    <property name="sun.java.launcher" value="SUN_STANDARD"></property>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."></property>
+    <property name="file.separator" value="\"></property>
+    <property name="java.runtime.version" value="1.5.0_19-b02"></property>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_19\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_19\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_19\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_19\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_19\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_19\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_19\jre\classes"></property>
+    <property name="build_docsdir" value="build/docs"></property>
+    <property name="dom4j.jar" value="E:\jboss-4.2.3.GA/server/default/lib/dom4j.jar"></property>
+    <property name="javadoc.locale" value="en_US"></property>
+    <property name="design_submission.jar" value="studio_contest_manager_1.3.0_design_submission.jar"></property>
+    <property name="user.country" value="CN"></property>
+    <property name="tcs_libdir" value="D:/TopCoder/lib/tcs"></property>
+    <property name="component" value="Studio Contest Manager"></property>
+    <property name="logging_wrapper.jar" value="D:/TopCoder/lib/tcs/logging_wrapper/2.0.0/logging_wrapper.jar"></property>
+    <property name="java.vendor" value="Sun Microsystems Inc."></property>
+    <property name="jboss_home" value="E:\jboss-4.2.3.GA"></property>
+    <property name="db_connection_factory.jar" value="D:/TopCoder/lib/tcs/db_connection_factory/1.1.0/db_connection_factory.jar"></property>
+    <property name="java.specification.version" value="1.5"></property>
+    <property name="testfiles" value="test_files"></property>
+    <property name="sun.arch.data.model" value="32"></property>
+    <property name="javatests" value="src/java/tests"></property>
+  </properties>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetUserContests" time="10.719"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetUserContests1" time="0.437"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetUserContests_Failure1" time="0.141"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetUserContests_Failure2" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetUserContests_Failure3" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetUserContests_NullUsername" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetUserContests_EmptyUsername" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetAllContests_Accuracy" time="0.297"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetAllContests_Failure1" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetAllContests_Failure2" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetAllContests_Failure3" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetConfig" time="0.187"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetConfig_Failure1" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetConfig_Failure2" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest5" name="testGetConfig_Failure3" time="0.156"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestFileTypeIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioFileTypeExtensionFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioFileTypeExtensionFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioFileTypeExtensionFilter_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestChannelIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestChannelNameFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestChannelNameFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestChannelNameFilter_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestStatusIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestStatusNameFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestStatusNameFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestStatusNameFilter_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestNameFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestNameFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestNameFilter_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestProjectIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestDirectProjectIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestForumIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestEventIdFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestStartDateFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestStartDateFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestEndDateFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestEndDateFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestWinnerAnnouncementDeadlineDateFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateStudioContestWinnerAnnouncementDeadlineDateFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateAndFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateAndFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateAndFilter_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateAndFilterWithArray_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateAndFilterWithArray_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateAndFilterWithArray_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateAndFilterWithArray_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateOrFilter_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateOrFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateOrFilter_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateOrFilterWithArray_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateOrFilterWithArray_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateNotFilter_Accuracy" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testCreateNotFilter_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.ContestFilterFactoryTest" name="testPrivateCtor" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.FilterToSqlConverterTest" name="testPrivateCtor" time="0.031"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.FilterToSqlConverterTest" name="testConvert_Accuracy1" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.FilterToSqlConverterTest" name="testConvert_Accuracy2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.FilterToSqlConverterTest" name="testConvert_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.FilterToSqlConverterTest" name="testConvert_Failure2" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.utils.FilterToSqlConverterTest" name="testConvert_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckPort_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckPort_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckNull_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckNull_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckEmpty_Accuracy" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckEmpty_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckString_Accuracy" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckString_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.HelperTest" name="testCheckString_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStr_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStrExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStrExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStrThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestConfigurationExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStr_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStrExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStrExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStrThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestManagementExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStr_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStrExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStrExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStrThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.ContestStatusTransitionExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStr_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStrExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStrExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStrThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.DocumentContentManagementExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStr_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStrExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStrExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStrThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityAlreadyExistsExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStr_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStrExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStrExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStrThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.EntityNotFoundExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testCtor" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure2" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure7" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure8" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure9" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testInitialize_Failure10" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testCreateContest" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testCreateContest_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testCreateContest_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testCreateContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testCreateContest_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testCreateContest_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContest" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContest1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContest_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContest_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContestsForProject_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForContest" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForContest_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForContest_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForContest_Failure3" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForContest_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForProject" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForProject_Failure1" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForProject_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetClientForProject_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddContestStatus" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddContestStatus_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddContestStatus_Failure2" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddContestStatus_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddContestStatus_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateContestStatus" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateContestStatus_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateContestStatus_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateContestStatus_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateContestStatus_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveContestStatus" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveContestStatus1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveContestStatus_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveContestStatus_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveContestStatus_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContestStatus" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContestStatus_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetContestStatus_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocument" time="0.031"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocument_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocument_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocument_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocument_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateDocument" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateDocument_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateDocument_Failure2" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateDocument_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testUpdateDocument_Failure4" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetDocument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetDocument_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testGetDocument_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocument" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocument1" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocument_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocument_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocument_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocumentToContest_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocumentToContest_Failure2" time="0.032"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocumentToContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocumentToContest_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testAddDocumentToContest_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocumentFromContest1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocumentFromContest_Failure1" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testRemoveDocumentFromContest_Failure2" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testremoveDocumentFromContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testremoveDocumentFromContest_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1" name="testremoveDocumentFromContest_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testUpdateContestStatus_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testSaveDocumentContent_Failure2" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testSaveDocumentContent_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testSaveDocumentContent_Failure4" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testSaveDocumentContent_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testSaveDocumentContent_Failure6" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testGetAllContestStatuses_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testGetAllContestStatuses_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testGetAllContestStatuses_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testGetAllContestChannels_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testGetAllContestChannels_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testGetAllStudioFileTypes_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testGetAllStudioFileTypes_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testAddContestTypeConfig_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testAddContestTypeConfig_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testAddContestTypeConfig_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testUpdateContestTypeConfig_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testUpdateContestTypeConfig_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testUpdateContestTypeConfig_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testAddPrizeToContest_Failure2" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testAddPrizeToContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testAddPrizeToContest_Failure4" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testAddPrizeToContest_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testRemovePrizeFromContest_Failure2" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testRemovePrizeFromContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testRemovePrizeFromContest_Failure4" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest2" name="testRemovePrizeFromContest_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest3" name="testGetDocumentContent" time="0.703"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest3" name="testGetDocumentContent_Failure" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest3" name="testSearchContests_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStr" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStr_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStrExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStrExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStrThrowable" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStrThrowable_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStrThrowableExp" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestExceptionUnitTest" name="testCtorStrThrowableExp_Null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure7" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure8" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure9" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorMap_Failure10" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testCtorString" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testSaveDocumentContent" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testSaveDocumentContent_Failure" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testGetDocumentContent1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testGetDocumentContent2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testGetDocumentContent3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testExistDocumentContent1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testExistDocumentContent2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.FileSystemDocumentContentManagerUnitTest" name="testMoveDocumentToContestFolder" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure7" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure8" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure9" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorMap_Failure10" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContent" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContent_Failure" time="0.515"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContent1" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContent2" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContent3" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testExistDocumentContent1" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testExistDocumentContent2" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorStringInt" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorStringInt_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorStringInt_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorStringInt_Failure3" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testCtorStringInt_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure4" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure5" time="0.515"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure6" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testSaveDocumentContest_Failure7" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContest_Failure1" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContest_Failure2" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContest_Failure3" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContest_Failure4" time="0.562"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContest_Failure5" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testGetDocumentContest_Failure6" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testExistDocumentContest_Failure1" time="0.515"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testExistDocumentContest_Failure2" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentmanagers.SocketDocumentContentManagerUnitTest" name="testExistDocumentContest_Failure3" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor1_Failure" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor2_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor2_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor3_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor3_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor4_Failure1" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor4_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor4_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor5_Failure" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor6" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor6_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testCtor6_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testStart" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testStart_Failure1" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testStop" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testIsRunning" time="0.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testGetLastException" time="1.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_Failure1" time="0.515"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_Failure2" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_Failure3" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_SaveDocumentContent" time="0.515"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_SaveDocumentContent_Failure1" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_SaveDocumentContent_Failure2" time="0.5"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_GetDocumentContent" time="0.516"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest" name="testWorkerThread_GetDocumentContent_UnExist" time="0.515"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure1_miss_unitName" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure2_unitName_notString" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure3_empty_unitName" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure4_miss_activeContestStatusId" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure5_activeContestStatusId_notLong" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure6_miss_defaultDocumentPathId" time="0.079"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure7_defaultDocumentPathId_notLong" time="0.046"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure8_loggerName_empty" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure9_miss_documentManagerClassName" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure10_documentContentManagerClassName_type_wrong" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure11_documentContentManagerClassName_ctor_wrong" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_Initialize_Failure12_SocketDocumentContentManager_attr_miss" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_CreateContest_Failure1_null" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_CreateContest_Failure2_EntityAlreadyExistsException" time="0.156"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_CreateContest_Failure3_EntityManagerClosed" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_CreateContest_Failure4_PersistenceException" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_CreateContest_Failure5_TransactionException" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContest_Failure1_EntityManagerClosed" time="0.141"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContest_Failure2_PersistenceException" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContestsForProject_Failure1_EMClosed" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContestsForProject_Failure2_PersistenceException" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_updateContest_Failure1" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_updateContest_Failure2" time="0.093"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_updateContest_Failure3" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_updateContest_Failure4" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetClientForContest_Failure1" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetClientForContest_Failure2" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetClientForContest_Failure3" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetClientForContest_Failure4" time="0.093"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetClientForProject_Failure1" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetClientForProject_Failure2" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetClientForProject_Failure3" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestStatus_Failure1" time="0.156"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestStatus_Failure2" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestStatus_Failure3" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestStatus_Failure4" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestStatus_Failure1" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestStatus_Failure2" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestStatus_Failure3" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestStatus_Failure4" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveContestStatus_Failure1" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveContestStatus_Failure2" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveContestStatus_Failure3" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContestStatus_Failure1" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContestStatus_Failure2" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocument_Failure1" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocument_Failure2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocument_Failure3" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocument_Failure4" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateDocument_Failure1" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateDocument_Failure2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateDocument_Failure3" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateDocument_Failure4" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetDocument_Failure1" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetDocument_Failure2" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveDocument_Failure1" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveDocument_Failure2" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveDocument_Failure3" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocumentToContest_Failure1" time="0.093"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocumentToContest_Failure2" time="0.157"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocumentToContest_Failure3" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocumentToContest_Failure4" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddDocumentToContest_Failure5" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveDocumentFromContest_Failure1" time="0.079"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveDocumentFromContest_Failure2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_removeDocumentFromContest_Failure3" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_removeDocumentFromContest_Failure4" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_removeDocumentFromContest_Failure5" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestChannel_Failure1" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestChannel_Failure3" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestChannel_Failure4" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddContestChannel_Failure5" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestChannel_Failure1" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestChannel_Failure2" time="0.171"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestChannel_Failure3" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_UpdateContestChannel_Failure4" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContestChannel_Failure1" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContestChannel_Failure2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveContestChannel_Failure1" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveContestChannel_Failure2" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemoveContestChannel_Failure3" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_SaveDocumentContent_Failure1" time="1.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_SaveDocumentContent_Failure2" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_SaveDocumentContent_Failure3" time="0.093"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_SaveDocumentContent_Failure4" time="0.079"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_SaveDocumentContent_Failure5" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_SaveDocumentContent_Failure6" time="1.14"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetAllContestStatuses_Failure1" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetAllContestStatuses_Failure2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetAllContestStatuses_Failure3" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetAllContestChannels_Failure1" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetAllContestChannels_Failure2" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetAllStudioFileTypes_Failure1" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetAllStudioFileTypes_Failure2" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddPrizeToContest_Failure1" time="0.079"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddPrizeToContest_Failure2" time="0.078"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddPrizeToContest_Failure3" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddPrizeToContest_Failure4" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_AddPrizeToContest_Failure5" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemovePrizeFromContest_Failure1" time="0.171"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemovePrizeFromContest_Failure2" time="0.079"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemovePrizeFromContest_Failure3" time="0.093"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemovePrizeFromContest_Failure4" time="0.094"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_RemovePrizeFromContest_Failure5" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetContestPrizes_Failure" time="0.047"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_GetDocumentContent_Failure1" time="0.063"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBeanFailureTest" name="test_ExistDocumentContent_Failure" time="0.062"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBean2FailureTest" name="testGetAllContestsWithTRE" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBean2FailureTest" name="testGetAllContestsWithPE" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBean2FailureTest" name="testSearchContestsWithFilterNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBean2FailureTest" name="testSearchContestsWithEntityManagerClosed" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBean3FailureTest" name="testGetUserContests_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBean3FailureTest" name="testGetUserContests_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestManagerBean3FailureTest" name="testGetUserContests_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioFileTypeExtensionFilterWithNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioFileTypeExtensionFilterWithEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestChannelNameFilterWithNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestChannelNameFilterWithEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestStatusNameFilterWithNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestStatusNameFilterWithEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestNameFilterWithNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestNameFilterWithEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestStartDateFilterWithNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestEndDateFilterWithNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateStudioContestWinnerAnnouncementDeadlineDateFilterWithNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateAndFilter1WithFirstFilterNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateAndFilter1WithSecondFilterNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateAndFilter2WithFiltersNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateAndFilter2WithFiltersEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateAndFilter2WithFiltersContainsNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateOrFilter1WithFirstFilterNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateOrFilter1WithSecondFilterNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateOrFilter2WithFiltersNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateOrFilter2WithFiltersEmpty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateOrFilter2WithFiltersContainsNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.ContestFilterFactoryFailureTest" name="testCreateNotFilter2WithFilterNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.FilterToSqlConverterFailureTest" name="testConvertWithFilterNull" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.FilterToSqlConverterFailureTest" name="testConvertWithFitlerUnknown" time="0.032"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.FilterToSqlConverterFailureTest" name="testConvertWithFitlerUnsupported" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure5" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure6" time="0.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure7" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure8" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure9" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorMap_Failure10" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorStringInt_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorStringInt_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorStringInt_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_CtorStringInt_Failure4" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_SaveDocumentContest_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_SaveDocumentContest_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_SaveDocumentContest_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_GetDocumentContest_Failure_null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_GetDocumentContest_Failure_empty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_ExistDocumentContest_null" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentManagerFailureTest" name="test_ExistDocumentContest_empty" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor1_Failure" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor2_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor2_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor3_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor3_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor4_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor4_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor4_Failure3" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor5_Failure" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor6_Failure1" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Ctor6_Failure2" time="0.0"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest" name="test_Start_Failure1" time="1.031"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testCreateContest" time="0.25"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testAddContestStatus" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testAddDocument" time="0.297"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testUpdateDocument" time="0.141"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetDocumentContent" time="0.656"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testSaveDocumentContent" time="0.719"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testContestManagerBean" time="0.172"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContest_1" time="0.156"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContest_2" time="0.172"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContestsForProject_1" time="0.156"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContestsForProject_2" time="0.203"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testUpdateContest_1" time="0.157"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testUpdateContest_2" time="0.187"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testUpdateContest_3" time="0.172"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testUpdateContest_4" time="0.156"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testUpdateContestStatusContestStatus" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemoveContestStatus_1" time="0.203"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemoveContestStatus_2" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContestStatus_1" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContestStatus_2" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetDocument_1" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetDocument_2" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemoveDocument_1" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemoveDocument_2" time="0.172"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemoveDocumentFromContest" time="0.203"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testAddContestChannel" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testUpdateContestChannel" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemoveContestChannel_1" time="0.109"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemoveContestChannel_2" time="0.219"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContestChannel_1" time="0.156"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContestChannel_2" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testAddConfig" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testExistDocumentContent" time="0.656"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetAllContestStatuses_1" time="0.157"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetAllContestStatuses_2" time="0.14"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetAllContestChannels" time="0.125"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetAllStudioFileTypes" time="0.11"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testAddContestTypeConfig" time="0.218"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testRemovePrizeFromContest" time="0.172"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy" name="testGetContestPrizes" time="0.25"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy1" name="testGetUserContests" time="0.188"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy1" name="testGetUserContests1" time="0.187"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy1" name="testGetConfig" time="0.282"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy1" name="testGetUserContests2" time="0.187"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.stresstests.SocketDocumentContentManagerStressTests" name="testGetDocumentContent" time="1.016"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.stresstests.SocketDocumentContentManagerStressTests" name="testSaveDocumentContent" time="1.015"></testcase>
+  <testcase classname="com.topcoder.service.studio.contest.stresstests.SocketDocumentContentManagerStressTests" name="testExistDocumentContent" time="1.016"></testcase>
+  <system-out><![CDATA[[Enter method: ContestManagerBean.addDocument()]
+[param1: null]
+[Exit method: addDocument()]
+[Enter method: ContestManagerBean.updateDocument()]
+[param1: 725]
+[Exit method: updateDocument()]
+[Enter method: ContestManagerBean.getDocument()]
+[param1: 725]
+[Exit method: getDocument()]
+[Enter method: ContestManagerBean.addDocument()]
+[param1: null]
+[Exit method: addDocument()]
+[Enter method: ContestManagerBean.getDocument()]
+[param1: 726]
+[Exit method: getDocument()]
+[Enter method: ContestManagerBean.addDocument()]
+[param1: null]
+[Exit method: addDocument()]
+[Enter method: ContestManagerBean.removeDocument()]
+[param1: 727]
+[Exit method: removeDocument()]
+[Enter method: ContestManagerBean.addDocument()]
+[param1: null]
+[Exit method: addDocument()]
+[Enter method: ContestManagerBean.addDocumentToContest()]
+[param1: 728, param2: 1,000]
+The contest with id '1000' doesn't exist.
+com.topcoder.service.studio.contest.EntityNotFoundException: The contest with id '1000' doesn't exist.
+	at com.topcoder.service.studio.contest.bean.ContestManagerBean.wrapEntityNotFoundException(ContestManagerBean.java:3883)
+	at com.topcoder.service.studio.contest.bean.ContestManagerBean.addDocumentToContest(ContestManagerBean.java:1431)
+	at com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1.testAddDocumentToContest_Failure2(ContestManagerBeanUnitTest1.java:2289)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+INNER: The contest with id '1000' doesn't exist.
+[Exit method: addDocumentToContest()]
+[Enter method: ContestManagerBean.createContest()]
+[param1: null]
+[Exit method: createContest()]
+[Enter method: ContestManagerBean.addDocument()]
+[param1: null]
+[Exit method: addDocument()]
+[Enter method: ContestManagerBean.removeDocumentFromContest()]
+[param1: 729, param2: 1,313]
+[Exit method: removeDocumentFromContest()]
+[Enter method: ContestManagerBean.addDocument()]
+[param1: null]
+[Exit method: addDocument()]
+[Enter method: ContestManagerBean.removeDocumentFromContest()]
+[param1: 730, param2: 1,000]
+The contest with id '1000' doesn't exist.
+com.topcoder.service.studio.contest.EntityNotFoundException: The contest with id '1000' doesn't exist.
+	at com.topcoder.service.studio.contest.bean.ContestManagerBean.wrapEntityNotFoundException(ContestManagerBean.java:3883)
+	at com.topcoder.service.studio.contest.bean.ContestManagerBean.removeDocumentFromContest(ContestManagerBean.java:1513)
+	at com.topcoder.service.studio.contest.bean.ContestManagerBeanUnitTest1.testRemoveDocumentFromContest_Failure2(ContestManagerBeanUnitTest1.java:2565)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+INNER: The contest with id '1000' doesn't exist.
+[Exit method: removeDocumentFromContest()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+[Enter method: ContestManagerBean.addDocument()]
+[param1: null]
+[Exit method: addDocument()]
+[Enter method: ContestManagerBean.saveDocumentContent()]
+[param1: 731, param2: [B@18837f1]
+[Exit method: saveDocumentContent()]
+[Enter method: ContestManagerBean.getDocumentContent()]
+[param1: 731]
+[Exit method: getDocumentContent()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+There are errors in run().
+java.io.FileNotFoundException: D:\Review\Studio Contest Manager\submission-59174-studio_contest_manager\test_files (Access is denied)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:179)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:70)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.saveDocumentContent(SocketDocumentContentServer.java:617)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.processData(SocketDocumentContentServer.java:566)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.run(SocketDocumentContentServer.java:444)
+	at java.lang.Thread.run(Thread.java:595)
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method start()]
+[09-8-19 下午5:03: Exit method Start()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:03: Enter method stop()]
+[09-8-19 下午5:03: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method start()]
+There are errors in the start()
+java.net.BindException: Address already in use: bind
+	at sun.nio.ch.Net.bind(Native Method)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:119)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:59)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer.start(SocketDocumentContentServer.java:256)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServerUnitTest.testStart_Failure1(SocketDocumentContentServerUnitTest.java:483)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+There are errors in run().
+com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestException: Unrecognized request type: 0
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.processData(SocketDocumentContentServer.java:573)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.run(SocketDocumentContentServer.java:444)
+	at java.lang.Thread.run(Thread.java:595)
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+There are errors in run().
+com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestException: There should be 2 bytes to indicates the path's length in bytes.
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.processData(SocketDocumentContentServer.java:540)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.run(SocketDocumentContentServer.java:444)
+	at java.lang.Thread.run(Thread.java:595)
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+There are errors in run().
+com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestException: The path buffer length mismatch with the length flag.
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.processData(SocketDocumentContentServer.java:553)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.run(SocketDocumentContentServer.java:444)
+	at java.lang.Thread.run(Thread.java:595)
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+There are errors in run().
+com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestException: There are additional bytes in the end.
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.checkEndingBytes(SocketDocumentContentServer.java:728)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.saveDocumentContent(SocketDocumentContentServer.java:615)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.processData(SocketDocumentContentServer.java:566)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.run(SocketDocumentContentServer.java:444)
+	at java.lang.Thread.run(Thread.java:595)
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+There are errors in run().
+com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestException: There is no enough 4 bytes for indicating the content length.
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.saveDocumentContent(SocketDocumentContentServer.java:596)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.processData(SocketDocumentContentServer.java:566)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.run(SocketDocumentContentServer.java:444)
+	at java.lang.Thread.run(Thread.java:595)
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+There are errors in run().
+com.topcoder.service.studio.contest.documentcontentservers.InvalidRequestException: The content has less bytes than the length flag.
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.saveDocumentContent(SocketDocumentContentServer.java:610)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.processData(SocketDocumentContentServer.java:566)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer$SocketDocumentContentWorker.run(SocketDocumentContentServer.java:444)
+	at java.lang.Thread.run(Thread.java:595)
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method start()]
+There are errors in the start()
+java.net.BindException: Address already in use: bind
+	at sun.nio.ch.Net.bind(Native Method)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:119)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:59)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer.start(SocketDocumentContentServer.java:256)
+	at com.topcoder.service.studio.contest.failuretests.SocketDocumentContentServerFailureTest.test_Start_Failure1(SocketDocumentContentServerFailureTest.java:288)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+There are errors in the start()
+java.net.BindException: Address already in use: bind
+	at sun.nio.ch.Net.bind(Native Method)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:119)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:59)
+	at com.topcoder.service.studio.contest.documentcontentservers.SocketDocumentContentServer.start(SocketDocumentContentServer.java:256)
+	at com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy.startSocketDocumentContentServer(TestContestManagerBeanAccuracy.java:863)
+	at com.topcoder.service.studio.contest.accuracytests.TestContestManagerBeanAccuracy.testSaveDocumentContent(TestContestManagerBeanAccuracy.java:881)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:297)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:672)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:567)
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+Executing SocketDocumentContentManager's getDocumentContent(String) 10 times takes 16ms
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+Executing SocketDocumentContentManager's saveDocumentContent(String, byte[]) 10 times takes 0ms
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+[09-8-19 下午5:04: Enter method start()]
+[09-8-19 下午5:04: Exit method Start()]
+Executing SocketDocumentContentManager's existDocumentContent(String) 10 times takes 16ms
+[09-8-19 下午5:04: Enter method stop()]
+[09-8-19 下午5:04: Exit method stop()]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
