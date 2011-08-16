@@ -1,0 +1,806 @@
+Testsuite: com.topcoder.project.service.UnitTests
+Tests run: 153, Failures: 0, Errors: 0, Time elapsed: 2.547 sec
+------------- Standard Output ---------------
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Enters ProjectServicesImpl#findActiveProjects method.
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Enters ProjectServicesImpl#assembleFullProjectDatas method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Exits ProjectServicesImpl#assembleFullProjectDatas method.
+Exits ProjectServicesImpl#findActiveProjects method.
+Enters ProjectServicesImpl#findProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findProjectsHeaders method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#createProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updatePhases method.
+Finished calling ProjectManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#createProject method.
+Enters ProjectServicesImpl#updateProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updateProject method.
+Finished calling ProjectManager#updateProject method.
+Starts calling PhaseManager#updatePhases method.
+Finished calling PhaseManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findActiveProjects method.
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Enters ProjectServicesImpl#assembleFullProjectDatas method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Exits ProjectServicesImpl#assembleFullProjectDatas method.
+Exits ProjectServicesImpl#findActiveProjects method.
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#createProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updatePhases method.
+Finished calling ProjectManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#createProject method.
+Enters ProjectServicesImpl#updateProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updateProject method.
+Finished calling ProjectManager#updateProject method.
+Starts calling PhaseManager#updatePhases method.
+Finished calling PhaseManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#updateProject method.
+message
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findProjectsHeaders method.
+IllegalArgumentException occurred.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findProjectsHeaders method.
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#getFullProjectData method.
+IllegalArgumentException occurred.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+ProjectServicesException occurred in ProjectServicesImpl#getFullProjectData method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findFullProjects method.
+IllegalArgumentException occurred.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findFullProjects method.
+Enters ProjectServicesImpl#findProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findProjectsHeaders method.
+Enters ProjectServicesImpl#assembleFullProjectDatas method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Exits ProjectServicesImpl#assembleFullProjectDatas method.
+Exits ProjectServicesImpl#findFullProjects method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#findActiveProjects method.
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Enters ProjectServicesImpl#assembleFullProjectDatas method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Exits ProjectServicesImpl#assembleFullProjectDatas method.
+Exits ProjectServicesImpl#findActiveProjects method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updatePhases method.
+Finished calling ProjectManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#createProject method.
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updateProject method.
+Finished calling ProjectManager#updateProject method.
+Starts calling PhaseManager#updatePhases method.
+Finished calling PhaseManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Enters ProjectServicesImpl#updateProject method.
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Looking for activeCategoryIds
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Looking for activeCategoryIds
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Looking for activeCategoryIds
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Looking for activeCategoryIds
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of UnknownNamespace doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Looking for activeCategoryIds
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#findProjectsHeaders method.
+IllegalArgumentException occurred.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#findProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findProjectsHeaders method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#getFullProjectData method.
+IllegalArgumentException occurred.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#findFullProjects method.
+IllegalArgumentException occurred.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#findFullProjects method.
+Enters ProjectServicesImpl#findProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findProjectsHeaders method.
+Enters ProjectServicesImpl#assembleFullProjectDatas method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Exits ProjectServicesImpl#assembleFullProjectDatas method.
+Exits ProjectServicesImpl#findFullProjects method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#findActiveProjects method.
+Enters ProjectServicesImpl#findActiveProjectsHeaders method.
+Starts calling ProjectManager#searchProjects method.
+Finished calling ProjectManager#searchProjects method.
+Exits ProjectServicesImpl#findActiveProjectsHeaders method.
+Enters ProjectServicesImpl#assembleFullProjectDatas method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Enters ProjectServicesImpl#getFullProjectData method.
+Starts calling PhaseManager#getPhases method.
+Finished calling PhaseManager#getPhases method.
+Starts calling ProjectManager#getProject method.
+Finished calling ProjectManager#getProject method.
+Starts calling ResourceManager#searchResources method.
+Finished calling ResourceManager#searchResources method.
+Starts calling TeamManager#findTeams method.
+Finished calling TeamManager#findTeams method.
+Starts calling ProjectRetrieval#retrieveProject method.
+Finished calling ProjectRetrieval#retrieveProject method.
+Exits ProjectServicesImpl#getFullProjectData method.
+Exits ProjectServicesImpl#assembleFullProjectDatas method.
+Exits ProjectServicesImpl#findActiveProjects method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#createProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updatePhases method.
+Finished calling ProjectManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#createProject method.
+Enters ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Exits ProjectServicesFactory#getProjectServices() method.
+Enters ProjectServicesImpl#updateProject method.
+Starts calling ProjectManager#createProject method.
+Finished calling ProjectManager#createProject method.
+Starts calling ProjectManager#updateProject method.
+Finished calling ProjectManager#updateProject method.
+Starts calling PhaseManager#updatePhases method.
+Finished calling PhaseManager#updatePhases method.
+Starts calling ResourceManager#updateResources method.
+Finished calling ResourceManager#updateResources method.
+Exits ProjectServicesImpl#updateProject method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of unknown doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of unknown doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of unknown doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of unknown doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of unknown doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of unknown doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+Enters ProjectServicesFactory#getProjectServices(String namespace) method.
+ConfigurationException occurred in ProjectServicesFactory#getProjectServices(String namespace) method : The namespace with the name of unknown doesn't exist.
+Exits ProjectServicesFactory#getProjectServices(String namespace) method.
+------------- ---------------- ---------------
+
+Testcase: testDemo took 0.172 sec
+Testcase: testEJBUsageDemo took 0.297 sec
+Testcase: testCtorWithMsg took 0 sec
+Testcase: testCtorWithMsgAndCause took 0 sec
+Testcase: testCtor1WithNullStartDate took 0 sec
+Testcase: testCtor1WithNullWorkdays took 0.015 sec
+Testcase: testCtor1Accuracy took 0 sec
+Testcase: testCtor2WithNullProjectheader took 0 sec
+Testcase: testCtor2Accuracy1 took 0 sec
+Testcase: testCtor2Accuracy2 took 0 sec
+Testcase: testGetResources took 0 sec
+Testcase: testSetResourcesWithArrayHasNull took 0 sec
+Testcase: testSetResourcesWithNullArg took 0 sec
+Testcase: testSetResourcesWithRealArg took 0 sec
+Testcase: testGetProjectHeader took 0 sec
+Testcase: testSetProjectHeaderWithNullArg took 0 sec
+Testcase: testSetProjectHeaderAccuracy took 0 sec
+Testcase: testSetTeamsWithNullArg took 0 sec
+Testcase: testSetTeamsWithRealTeamsArray took 0 sec
+Testcase: testGetTechnologies took 0 sec
+Testcase: testSetTechnologiesWithNull took 0 sec
+Testcase: testSetTechnologiesWithRealArray took 0 sec
+Testcase: testCtorWithMsg took 0 sec
+Testcase: testCtorWithMsgAndCause took 0 sec
+Testcase: testCtorAccuracy took 0.015 sec
+Testcase: testCheckObjNotNullWithNullObj took 0.016 sec
+Testcase: testCheckObjNotNullWithNonNullObj took 0.016 sec
+Testcase: testCheckStrNotNullOrEmptyWithNullStr took 0.015 sec
+Testcase: testCheckStrNotNullOrEmptyWithEmptyStr took 0.016 sec
+Testcase: testCheckStrNotNullOrEmpty took 0.016 sec
+Testcase: testCheckArrayHasNullWithArrayHavingNull took 0.046 sec
+Testcase: testCheckStringArrayHasNullOrEmptyWithArrayHavingNull took 0.016 sec
+Testcase: testCheckStringArrayHasNullOrEmptyWithArrayHavingEmpty took 0.016 sec
+Testcase: testCheckIDNotNegativeWithNegID took 0.015 sec
+Testcase: testGetStringPropertyValueAccuracy1 took 0 sec
+Testcase: testGetStringPropertyValueAccuracy2 took 0.016 sec
+Testcase: testGetStringPropertyValueWithUnknownNamespace took 0.016 sec
+Testcase: testGetStringPropertyValueWithRequiredPropertyNotExist took 0.015 sec
+Testcase: testGetStringPropertyValueWithRequiredPropertyEmpty took 0 sec
+Testcase: testGetObjectFactoryAccuracy took 0.016 sec
+Testcase: testGetObjectFactoryWithSpecNamespaceInvalid took 0.015 sec
+Testcase: testGetObjectFactoryWithIRE took 0.016 sec
+Testcase: testCreateObjectAccuracy took 0.016 sec
+Testcase: testCreateObjectWithInvalidKey took 0 sec
+Testcase: testCreateObjectWithInvalidType took 0.016 sec
+Testcase: testLogAccuracy took 0 sec
+Testcase: testCtor1Accuracy took 0.015 sec
+Testcase: testDefaultConstructor took 0.016 sec
+Testcase: testCtor1WithNullArg took 0.015 sec
+Testcase: testCtor1WithEmptyArg took 0.032 sec
+Testcase: testCtor1WithUnknownNamespace took 0.015 sec
+Testcase: testCtor1WithActiveProjectStatusIdInvalidType took 0.016 sec
+Testcase: testCtor1WithActiveProjectStatusIdMissing took 0.062 sec
+Testcase: testCtor1WithActiveProjectStatusIdNegative took 0.016 sec
+Testcase: testCtor1WithActivePhaseManagerKeyMissing took 0.016 sec
+Testcase: testCtor1WithActiveProjectManagerKeyMissing took 0.031 sec
+Testcase: testCtor1WithActiveResourceManagerKeyMissing took 0.047 sec
+Testcase: testCtor1WithSpecNamespaceInvalid took 0.015 sec
+Testcase: testCtor1WithSpecNamespaceMissing took 0.016 sec
+Testcase: testCtor1WithTeamManagerMissing took 0.016 sec
+Testcase: testCtor1WithUserRetrievalInvalidType took 0.015 sec
+Testcase: testCtor1WithUserRetrievalInvalidKey took 0.047 sec
+Testcase: testCtor1WithUserRetrievalKeyMissing took 0.016 sec
+Testcase: testCtor1WithUserRetrievalKeyUnknownType took 0.015 sec
+Testcase: testCtor2WithNullProjectRetrieval took 0 sec
+Testcase: testCtor2WithNullResourceManager took 0.047 sec
+Testcase: testCtor2WithNullPhaseManager took 0 sec
+Testcase: testCtor2WithNullTeamManager took 0 sec
+Testcase: testCtor2WithNullProjectManager took 0.016 sec
+Testcase: testCtor2WithNegaitveActiveProjectStatusId took 0 sec
+Testcase: testCtor2Accuracy took 0.031 sec
+Testcase: testFindActiveProjectsHeadersWithPersistenceErrorOccuring took 0.016 sec
+Testcase: testFindActiveProjectsHeadersAccuracy took 0 sec
+Testcase: testFindProjectsHeadersWithNullFilter took 0.016 sec
+Testcase: testFindProjectsHeadersAccuracy took 0.015 sec
+Testcase: testFindProjectsHeadersWithPersistenceErrorOccuring took 0 sec
+Testcase: testGetFullProjectDataWithNegativeProjectId took 0.016 sec
+Testcase: testGetFullProjectDataWithErrorInPhaseManager took 0.031 sec
+Testcase: testGetFullProjectDataWithErrorInProjectManager took 0.016 sec
+Testcase: testGetFullProjectDataWithErrorInResourceManager took 0.015 sec
+Testcase: testGetFullProjectDataWithErrorInProjectRetrieval took 0 sec
+Testcase: testGetFullProjectDataAccuracy took 0.047 sec
+Testcase: testFindFullProjectsWithNullFilter took 0.016 sec
+Testcase: testFindFullProjectsAccuracy took 0 sec
+Testcase: testFindActiveProjectsAccuracy took 0.016 sec
+Testcase: testCreateProjectAccuracy took 0.015 sec
+Testcase: testCreateProjectWithProjectHeaderNull took 0.031 sec
+Testcase: testCreateProjectWithProjectPhasesNull took 0 sec
+Testcase: testCreateProjectWithProjectPhasesEmpty took 0.016 sec
+Testcase: testCreateProjectWithProjectPhasesInvalid took 0 sec
+Testcase: testCreateProjectWithProjectResourcesContainsNull took 0.015 sec
+Testcase: testCreateProjectWithProjectResourcesContainsInvalid1 took 0 sec
+Testcase: testCreateProjectWithProjectResourcesInvalid2 took 0.016 sec
+Testcase: testCreateProjectWithOperatorNull took 0.016 sec
+Testcase: testCreateProjectWithOperatorEmpty took 0.031 sec
+Testcase: testCreateProjectWithPE took 0.015 sec
+Testcase: testCreateProjectWithVE took 0 sec
+Testcase: testCreateProjectWithPME took 0 sec
+Testcase: testCreateProjectWithRPE took 0.016 sec
+Testcase: testUpdateProjectAccuracy took 0 sec
+Testcase: testUpdateProjectWithProjectHeaderNull took 0.015 sec
+Testcase: testUpdateProjectWithProjectHeaderIdNonpositive took 0.016 sec
+Testcase: testUpdateProjectWithProjectHeaderReasonNull took 0 sec
+Testcase: testUpdateProjectWithProjectHeaderReasonEmpty took 0.047 sec
+Testcase: testUpdateProjectWithProjectPhasesNull took 0 sec
+Testcase: testUpdateProjectWithProjectPhasesEmpty took 0.015 sec
+Testcase: testUpdateProjectWithProjectPhasesInvalidId took 0.016 sec
+Testcase: testUpdateProjectWithProjectPhasesInvalidPhase1 took 0 sec
+Testcase: testUpdateProjectWithProjectPhasesInvalidPhase2 took 0.016 sec
+Testcase: testUpdateProjectWithProjectResourcesContainsNull took 0 sec
+Testcase: testUpdateProjectWithProjectResourcesContainsInvalid1 took 0.047 sec
+Testcase: testUpdateProjectWithProjectResourcesContainsInvalid2 took 0 sec
+Testcase: testUpdateProjectWithProjectResourcesContainsInvalid4 took 0.015 sec
+Testcase: testUpdateProjectWithProjectResourcesContainsInvalid5 took 0.016 sec
+Testcase: testUpdateProjectWithProjectResourcesContainsInvalid6 took 0.015 sec
+Testcase: testUpdateProjectWithOperatorNull took 0 sec
+Testcase: testUpdateProjectWithOperatorEmpty took 0.047 sec
+Testcase: testUpdateProjectWithPDE took 0 sec
+Testcase: testUpdateProjectWithPE took 0.016 sec
+Testcase: testUpdateProjectWithVE took 0 sec
+Testcase: testUpdateProjectWithPME took 0.016 sec
+Testcase: testUpdateProjectWithRPE took 0.015 sec
+Testcase: testCtor1Accuracy took 0 sec
+Testcase: testCtor2Accuracy took 0 sec
+Testcase: testGetProjectIdAccuracy took 0 sec
+Testcase: testInheritance1 took 0 sec
+Testcase: testInheritance2 took 0 sec
+Testcase: testCtorAccuracy took 0.031 sec
+Testcase: testGetProjectServices1Accuracy took 0.016 sec
+Testcase: testGetProjectServices2Accuracy1 took 0.016 sec
+Testcase: testGetProjectServices2Accuracy2 took 0 sec
+Testcase: testGetProjectServices2WithNamespaceNull took 0.015 sec
+Testcase: testGetProjectServices2WithNamespaceEmpty took 0 sec
+Testcase: testGetProjectServices2WithCE took 0.016 sec
+Testcase: testCtorAccuracy took 0 sec
+Testcase: testFindActiveProjectsHeadersAccuracy took 0.016 sec
+Testcase: testFindProjectsHeadersWithNullFilter took 0.031 sec
+Testcase: testFindProjectsHeadersAccuracy took 0.015 sec
+Testcase: testGetFullProjectDataWithNegativeProjectId took 0 sec
+Testcase: testGetFullProjectDataAccuracy took 0.016 sec
+Testcase: testFindFullProjectsWithNullFilter took 0 sec
+Testcase: testFindFullProjectsAccuracy took 0.016 sec
+Testcase: testFindActiveProjectsAccuracy took 0.015 sec
+Testcase: testCreateProjectAccuracy took 0.047 sec
+Testcase: testUpdateProjectAccuracy took 0 sec
+Testcase: testFindActiveProjectsWithPSE took 0.016 sec
+Testcase: testFindActiveProjectsHeadersWithPSE took 0 sec
+Testcase: testFindFullProjectsWithPSE took 0.015 sec
+Testcase: testFindProjectsHeadersWithPSE took 0 sec
+Testcase: testGetFullProjectDataWithPSE took 0.016 sec
+Testcase: testCreateProjectWithPSE took 0.031 sec
+Testcase: testUpdateProjectWithPSE took 0.016 sec
+Testcase: testGetSessionContextAccuracy took 0 sec
