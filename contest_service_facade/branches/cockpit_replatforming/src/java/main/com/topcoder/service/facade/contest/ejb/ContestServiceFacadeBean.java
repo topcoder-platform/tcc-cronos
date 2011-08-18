@@ -1437,13 +1437,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkStudioContestPermission(TCSubject tcSubject, long contestId, boolean readonly)
             throws PermissionServiceException, PersistenceException {
-			return;
-        // if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE)) {
 
-            // if (!studioService.checkContestPermission(contestId, readonly, tcSubject.getUserId())) {
-                // throw new PermissionServiceException("No " + (readonly ? "Read" : "write") + "permission on contest");
-            // }
-        // }
+            if (!studioService.checkContestPermission(contestId, readonly, tcSubject.getUserId())) {
+                throw new PermissionServiceException("No " + (readonly ? "Read" : "write") + "permission on contest");
+            }
+        }
     }
     /**
      * <p>
@@ -3195,14 +3194,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             projectServices.updateProject(contest, "Set to Active", Long.toString(tcSubject.getUserId()));
 
 
-//            double totalFee =  Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
-//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.FIRST_PLACE_COST_PROJECT_PROPERTY_KEY))
-//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SECOND_PLACE_COST_PROJECT_PROPERTY_KEY))
-//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY))
-//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY))
-//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY))
-//                + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
-
             double totalFee = 0;
             if (competition.getProjectHeader().getProjectCategory().getProjectType().getId() != ProjectType.STUDIO.getId()) {
                 // software competition
@@ -3212,7 +3203,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.RELIABILITY_BONUS_COST_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.MILESTONE_BONUS_COST_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY))
-                    + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
                 // milestone prizes
                 for (Prize prize : competition.getProjectHeader().getPrizes()) {
