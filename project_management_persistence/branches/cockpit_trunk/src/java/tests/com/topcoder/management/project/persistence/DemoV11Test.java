@@ -21,17 +21,17 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * <p>
- * This is the demo showing how to use the added functionality of this
- * component. It demonstrates how to use the unmanaged persistence class with
- * EJB, where the transaction is managed by the container.
+ * This is the demo showing how to use the added functionality of this component. It demonstrates how to use the
+ * unmanaged persistence class with EJB, where the transaction is managed by the container.
  * </p>
  * <p>
- * Please refer to the <code>ProjectBean</code>, <code>ProjectHome</code>,
- * <code>ProjectObject</code> for more information about the EJB classes.
+ * Please refer to the <code>ProjectBean</code>, <code>ProjectHome</code>, <code>ProjectObject</code> for more
+ * information about the EJB classes.
  * </p>
  * <p>
  * Please deploy the EJB to the EBJ Container before running the test.
  * </p>
+ *
  * @author fuyun
  * @version 1.1
  */
@@ -44,7 +44,9 @@ public class DemoV11Test extends TestCase {
      * <p>
      * The necessary data is prepared in database.
      * </p>
-     * @throws Exception if there is any problem.
+     *
+     * @throws Exception
+     *             if there is any problem.
      */
     protected void setUp() throws Exception {
 
@@ -56,28 +58,20 @@ public class DemoV11Test extends TestCase {
         // create the connection
         Connection conn = null;
         try {
-            conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class
-                    .getName()).createConnection();
+            conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName()).createConnection();
             conn.setAutoCommit(false);
 
             // insert data into project_type_lu table
-            Helper.doDMLQuery(conn, "INSERT INTO project_type_lu "
-                    + "(project_type_id, name, description, "
-                    + "create_user, create_date, modify_user, modify_date) "
-                    + "VALUES (1, 'Topcoder', 'Topcoder Component', "
-                    + "'topcoder', CURRENT, 'topcoder', CURRENT)",
-                    new Object[] {});
+            Helper.doDMLQuery(conn, "INSERT INTO project_type_lu " + "(project_type_id, name, description, "
+                + "create_user, create_date, modify_user, modify_date) "
+                + "VALUES (1, 'Topcoder', 'Topcoder Component', " + "'topcoder', CURRENT, 'topcoder', CURRENT)",
+                new Object[]{});
 
             // insert data into project_category_lu table
-            Helper
-                    .doDMLQuery(
-                            conn,
-                            "INSERT INTO project_category_lu "
-                                    + "(project_category_id, project_type_id, name, description, "
-                                    + "create_user, create_date, modify_user, modify_date) "
-                                    + "VALUES (1, 1, '.Net', '.NET Component', "
-                                    + "'topcoder', CURRENT, 'topcoder', CURRENT)",
-                            new Object[] {});
+            Helper.doDMLQuery(conn, "INSERT INTO project_category_lu "
+                + "(project_category_id, project_type_id, name, description, "
+                + "create_user, create_date, modify_user, modify_date) " + "VALUES (1, 1, '.Net', '.NET Component', "
+                + "'topcoder', CURRENT, 'topcoder', CURRENT)", new Object[]{});
 
             conn.commit();
 
@@ -98,7 +92,9 @@ public class DemoV11Test extends TestCase {
      * <p>
      * The test data in database is cleaned.
      * </p>
-     * @throws Exception if there is any problem.
+     *
+     * @throws Exception
+     *             if there is any problem.
      */
     protected void tearDown() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
@@ -106,15 +102,12 @@ public class DemoV11Test extends TestCase {
         // create the connection
         Connection conn = null;
         try {
-            conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class
-                    .getName()).createConnection();
+            conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName()).createConnection();
             conn.setAutoCommit(false);
 
-            Helper.doDMLQuery(conn, "DELETE FROM project", new Object[] {});
-            Helper.doDMLQuery(conn, "DELETE FROM project_category_lu",
-                    new Object[] {});
-            Helper.doDMLQuery(conn, "DELETE FROM project_type_lu",
-                    new Object[] {});
+            Helper.doDMLQuery(conn, "DELETE FROM project", new Object[]{});
+            Helper.doDMLQuery(conn, "DELETE FROM project_category_lu", new Object[]{});
+            Helper.doDMLQuery(conn, "DELETE FROM project_type_lu", new Object[]{});
 
             conn.commit();
 
@@ -129,9 +122,8 @@ public class DemoV11Test extends TestCase {
 
     /**
      * <p>
-     * Demonstrates how to use the
-     * <code>UnmanagedTransactionInformixProjectPersistence</code> with EJB,
-     * where the transaction is managed by the EJB container.
+     * Demonstrates how to use the <code>UnmanagedTransactionInformixProjectPersistence</code> with EJB, where the
+     * transaction is managed by the EJB container.
      * </p>
      */
     public void testEJBDemo() {
@@ -139,8 +131,7 @@ public class DemoV11Test extends TestCase {
 
             // create the necessary properties.
             java.util.Properties p = new java.util.Properties();
-            p.put(Context.INITIAL_CONTEXT_FACTORY,
-                    "org.jnp.interfaces.NamingContextFactory");
+            p.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
             p.put(Context.URL_PKG_PREFIXES, "jboss.naming:org.jnp.interfaces");
             p.put(Context.PROVIDER_URL, "localhost:1099");
 
@@ -149,8 +140,7 @@ public class DemoV11Test extends TestCase {
             Object ref = jndiContext.lookup("ProjectHome");
 
             // create the home and object
-            ProjectHome home = (ProjectHome) PortableRemoteObject.narrow(ref,
-                    ProjectHome.class);
+            ProjectHome home = (ProjectHome) PortableRemoteObject.narrow(ref, ProjectHome.class);
             ProjectObject pb = home.create();
 
             // create the Project by EJB
@@ -162,8 +152,9 @@ public class DemoV11Test extends TestCase {
     }
 
     /**
-     * Get a sample Project object to test, with project id = 1, project
-     * category = .Net, project type = Topcoder, project status = Active.
+     * Get a sample Project object to test, with project id = 1, project category = .Net, project type = Topcoder,
+     * project status = Active.
+     *
      * @return a sample Project object
      */
     private Project getProject() {

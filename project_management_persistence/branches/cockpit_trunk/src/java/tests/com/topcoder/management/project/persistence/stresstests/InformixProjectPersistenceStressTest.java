@@ -34,7 +34,6 @@ public class InformixProjectPersistenceStressTest extends TestCase {
         StressTestHelper.clearAllTestRecords();
         StressTestHelper.insertTestRecords();
         persistence = new InformixProjectPersistence(StressTestHelper.NAMESPACE);
-        ((InformixProjectPersistence)persistence).setUserManualCommit(true);
     }
 
     /**

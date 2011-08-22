@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -29,15 +29,19 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.project.BillingProjectConfigType;
 import com.topcoder.management.project.BillingProjectConfiguration;
 import com.topcoder.management.project.ConfigurationException;
+import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.DesignComponents;
 import com.topcoder.management.project.PersistenceException;
+import com.topcoder.management.project.Prize;
+import com.topcoder.management.project.PrizeType;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPersistence;
 import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectSpec;
 import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.management.project.ProjectStudioSpecification;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.SaleStatus;
 import com.topcoder.management.project.SaleType;
@@ -163,14 +167,33 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *  Version 1.3.2 - Launch Copilot Selection Contest assembly 1.0
  *  - add private description support in project spec operation
  *  </p>
- *
- *
+ *  <p>
+ *  Version 1.3.3 - TC Direct Replatforming Release 1
+ *  - Add support for ProjectStudioSpecification.contestIntroduction and ProjectStudioSpecification.contestDescription fields.
+ *  - Update {@link #createOrUpdateProjectFileTypes(long, List, Connection, String, boolean)} to let fileTypes can be null.
+ *  - Update {@link #createOrUpdateProjectPrizes(long, List, Connection, String, boolean) to update the logic for updating prizes.
+ *  </p>
+ *  <p>
+ *  Version 1.3.4 - TC Direct Replatforming Release 3
+ *  - Update {@link #getProjectStudioSpecification(long)} and {@link #createProjectStudioSpecification(ProjectStudioSpecification, String)
+ *  and {@link #updateProjectStudioSpecification(ProjectStudioSpecification, String)} methods to support the new generalFeedback field.
+ *  </p>
+ * 
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
  *
- * @author tuenm, urtks, bendlund, fuyun, snow01, pulky, murphydog, waits, BeBetter, isv
- * @version 1.3.1
+ * <p>
+ * Version 1.2.2 (Online Review Replatforming Release 2) Change notes:
+ * <ol>
+ *   <li>Updated {@link #getProjects(long[], Connection)} method to handle the
+ *   situation that tc_direct_project_id is null.</li>
+ * </ol>
+ * </p>
+ * 
+ * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER
+ * @version 1.2.2
+ * @since 1.0
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
 
@@ -216,6 +239,15 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * <p>
+     * Represents the default value for file type id sequence name. It is used to create id generator for file type.
+     * This value will be overridden by 'FileTypeIdGeneratorSequenceName' configuration parameter if it exist.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String FILE_TYPE_ID_SEQUENCE_NAME = "file_type_id_seq";
+    /**
+     * <p>
      * Represents the default value for project spec id sequence name. It is
      * used to create id generator for project spec. This value will be
      * overridden by 'ProjectSpecIdSequenceName' configuration parameter if it
@@ -250,6 +282,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     public static final long PUBLIC_REVIEWER_TERMS_ID = 20704;
     
     /**
+     * <p>
+     * Represents the default value for prize id sequence name. It is used to create id generator for prize. This value
+     * will be overridden by 'PrizeIdGeneratorSequenceName' configuration parameter if it exist.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String PRIZE_ID_SEQUENCE_NAME = "prize_id_seq";
+    
+	/**
      * <p>
      * Represents the default value for standard cca confidentiality terms_id. 
      * </p>
@@ -377,7 +419,18 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * 
      */
     public static final int FINAL_REVIEWER_ROLE_ID = 9;
-    /**
+    
+	/**
+     * <p>
+     * Represents the default value for studio spec id sequence name. It is used to create id generator for studio spec.
+     * This value will be overridden by 'StudioSpecIdGeneratorSequenceName' configuration parameter if it exist.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private static final String STUDIO_SPEC_ID_SEQUENCE_NAME = "studio_spec_id_seq";
+    
+	/**
      * <p>
      * Represents the default value for screenner_role_id. 
      * </p>
@@ -555,6 +608,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final String PROJECT_AUDIT_ID_SEQUENCE_NAME_PARAMETER = "ProjectAuditIdSequenceName";
 
     /**
+     * Represents the name of file type id sequence name parameter in configuration.
+     *
+     * @since 1.2
+     */
+    private static final String FILE_TYPE_ID_SEQUENCE_NAME_PARAMETER = "FileTypeIdGeneratorSequenceName";
+    /**
      * Represents the name of project audit id sequence name parameter in
      * configuration.
      */
@@ -568,6 +627,20 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static final String PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY = "Confidentiality Type";
 
     /**
+     * Represents the name of prize id sequence name parameter in configuration.
+     *
+     * @since 1.2
+     */
+    private static final String PRIZE_ID_SEQUENCE_NAME_PARAMETER = "PrizeIdGeneratorSequenceName";
+
+    /**
+     * Represents the name of studio spec id sequence name parameter in configuration.
+     *
+     * @since 1.2
+     */
+    private static final String STUDIO_SPEC_ID_SEQUENCE_NAME_PARAMETER = "StudioSpecIdGeneratorSequenceName";
+    
+	/**
      * Represents the project info property for Billing Project.
      */
     private static final String PROJECT_INFO_BILLING_PROJECT_PROPERTY = "Billing Project";
@@ -1171,6 +1244,16 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "ON category.project_type_id=type.project_type_id "
             + "WHERE project.project_id IN ";
 
+    /**
+     * Represents the column types for the result set which is returned by executing the sql statement to query
+     * projects.
+     *
+     * @since 1.0
+     */
+    private static final DataType[] QUERY_PROJECTS_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE, Helper.LONG_TYPE,
+        Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE};
     private static final String QUERY_PROJECTS_BY_CREATE_DATE_SQL = "SELECT "
 
 			+ "  project.project_id, project_status_lu.project_status_id, project_status_lu.name, "
@@ -1190,20 +1273,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             + "               AND pi2.project_id = project.project_id AND pi2.project_info_type_id = 7 " 				 
             + "               AND (project.project_status_id != 3)"
 			+ "			      AND date(project.create_date) > date(current) - ";
-
-    
-   
-
-
-    /**
-     * Represents the column types for the result set which is returned by
-     * executing the sql statement to query projects.
-     */
-    private static final DataType[] QUERY_PROJECTS_COLUMN_TYPES = new DataType[] {
-        Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-        Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE,
-        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE,
-        Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE};
     
     /**
      * Represents the column types for the result set which is returned by
@@ -1658,6 +1727,269 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     	+ "VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
+     * Represents the sql statement to query file types.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_FILE_TYPES_SQL = "SELECT "
+        + "type.file_type_id, type.description, type.sort, type.image_file," + " type.extension, type.bundled_file "
+        + "FROM file_type_lu AS type " + "JOIN project_file_type_xref AS xref "
+        + "ON type.file_type_id=xref.file_type_id " + "WHERE xref.project_id=";
+
+    /**
+     * Represents the column types for the result set which is returned by executing the sql statement to query file
+     * types.
+     *
+     * @since 1.2
+     */
+    private static final DataType[] QUERY_FILE_TYPES_COLUMN_TYPES = {Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE, Helper.BOOLEAN_TYPE, Helper.STRING_TYPE, Helper.BOOLEAN_TYPE};
+
+    /**
+     * Represents the sql statement to query prizes.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_PRIZES_SQL = "SELECT "
+        + "prize.prize_id, prize.place, prize.prize_amount, prize.number_of_submissions, "
+        + "prize_type.prize_type_id, prize_type.prize_type_desc " + "FROM prize AS prize "
+        + "JOIN prize_type_lu AS prize_type ON prize.prize_type_id=prize_type.prize_type_id "
+        + "JOIN project_prize_xref AS xref ON prize.prize_id=xref.prize_id " + "WHERE xref.project_id=";
+
+    /**
+     * Represents the column types for the result set which is returned by executing the sql statement to query prizes.
+     *
+     * @since 1.2
+     */
+    private static final DataType[] QUERY_PRIZES_COLUMN_TYPES = {Helper.LONG_TYPE, Helper.LONG_TYPE,
+        Helper.DOUBLE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE};
+
+    /**
+     * Represents the sql statement to insert prize to the prize table.
+     *
+     * @since 1.2
+     */
+    private static final String CREATE_PRIZE_SQL = "INSERT INTO prize "
+        + "(prize_id, place, prize_amount, prize_type_id, number_of_submissions, "
+        + "create_user, create_date, modify_user, modify_date) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    /**
+     * Represents the sql statement to update prize to the prize table.
+     *
+     * @since 1.2
+     */
+    private static final String UPDATE_PRIZE_SQL = "UPDATE prize "
+        + "SET place=?, prize_amount=?, prize_type_id=?, number_of_submissions=?, modify_user=?, modify_date=? "
+        + "WHERE prize_id=";
+
+    /**
+     * Represents the sql statement to delete the project prize reference by the specified prize id.
+     *
+     * @since 1.2
+     */
+    private static final String DELETE_PROJECT_PRIZE_XREF_SQL = "DELETE FROM project_prize_xref WHERE prize_id=?";
+
+    /**
+     * Represents the sql statement to delete the prize by the specified prize id.
+     *
+     * @since 1.2
+     */
+    private static final String DELETE_PRIZE_SQL = "DELETE FROM prize WHERE prize_id=?";
+    /**
+     * Represents the sql statement to query prize types from the prize_type_lu table.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_ALL_PRIZE_TYPES_SQL = "SELECT " + "prize_type_id, description FROM prize_type_lu";
+    /**
+     * Represents the column types for the result set which is returned by querying prize types from the prize_type_lu
+     * table.
+     *
+     * @since 1.2
+     */
+    private static final DataType[] QUERY_ALL_PRIZE_TYPES_COLUMN_TYPES = {Helper.LONG_TYPE, Helper.STRING_TYPE};
+    /**
+     * Represents the sql statement to query file types from the file_type_lu table.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_ALL_FILE_TYPES_SQL = "SELECT file_type_id, description, sort, image_file, "
+        + "extension, bundled_file FROM file_type_lu";
+    /**
+     * Represents the column types for the result set which is returned by querying file types from the file_type_lu
+     * table.
+     *
+     * @since 1.2
+     */
+    private static final DataType[] QUERY_ALL_FILE_TYPES_COLUMN_TYPES = {Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.LONG_TYPE, Helper.BOOLEAN_TYPE, Helper.STRING_TYPE, Helper.BOOLEAN_TYPE};
+
+    /**
+     * Represents the sql statement to delete the project file types reference by the specified file type id.
+     *
+     * @since 1.2
+     */
+    private static final String DELETE_PROJECT_FILE_TYPE_XREF_SQL = "DELETE FROM project_file_type_xref "
+        + "WHERE file_type_id=?";
+    /**
+     * Represents the sql statement to delete the file types by the specified file type id.
+     *
+     * @since 1.2
+     */
+    private static final String DELETE_FILE_TYPE_SQL = "DELETE FROM file_type_lu WHERE file_type_id=?";
+    /**
+     * Represents the sql statement to update the file types by the specified file type id.
+     *
+     * @since 1.2
+     */
+    private static final String UPDATE_FILE_TYPE_SQL = "UPDATE file_type_lu "
+        + "SET description=?, sort=?, image_file=?, extension=?, bundled_file=?, modify_user=?, modify_date=? "
+        + "WHERE file_type_id=";
+    /**
+     * Represents the sql statement to create the file type.
+     *
+     * @since 1.2
+     */
+    private static final String CREATE_FILE_TYPE_SQL = "INSERT INTO file_type_lu "
+        + "(file_type_id, description, sort, image_file, extension, bundled_file, "
+        + "create_user, create_date, modify_user, modify_date) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    /**
+     * Represents the sql statement to delete the project prize reference with the provided project id.
+     *
+     * @since 1.2
+     */
+    private static final String DELETE_PROJECT_PRIZE_XREF__WITH_PROJECT_ID_SQL
+        = "DELETE FROM project_prize_xref WHERE project_id=?";
+    /**
+     * Represents the sql statement to insert the project prize reference data.
+     *
+     * @since 1.2
+     */
+    private static final String INSERT_PROJECT_PRIZE_XREF_SQL
+        = "INSERT INTO project_prize_xref (project_id, prize_id) VALUES (?, ?)";
+    /**
+     * Represents the sql statement to insert the project file types reference with the provided project id.
+     *
+     * @since 1.2
+     */
+    private static final String DELETE_PROJECT_FILE_TYPES_XREF__WITH_PROJECT_ID_SQL
+        = "DELETE FROM project_file_type_xref " + "WHERE project_id=?";
+    /**
+     * Represents the sql statement to insert the project file types reference data.
+     *
+     * @since 1.2
+     */
+    private static final String INSERT_PROJECT_FILE_TYPES_XREF_SQL
+        = "INSERT INTO project_file_type_xref (project_id, file_type_id) VALUES (?, ?)";
+
+    /**
+     * Represents the sql statement to create studio specification data.
+     *
+     * @since 1.2
+     */
+    private static final String CREATE_STUDIO_SPEC_SQL
+        = "INSERT INTO project_studio_specification (project_studio_spec_id, "
+            + "goals, target_audience, branding_guidelines, disliked_design_websites, other_instructions, "
+            + "winning_criteria, submitters_locked_between_rounds, round_one_introduction, round_two_introduction, "
+            + "colors, fonts, layout_and_size, contest_introduction, contest_description, general_feedback, create_user, create_date, modify_user, modify_date)"
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    /**
+     * Represents the sql statement to update studio specification data.
+     *
+     * @since 1.2
+     */
+    private static final String UPDATE_STUDIO_SPEC_SQL = "UPDATE project_studio_specification "
+        + "SET goals=?, target_audience=?, branding_guidelines=?, disliked_design_websites=?, "
+        + "other_instructions=?, winning_criteria=?, submitters_locked_between_rounds=?, "
+        + "round_one_introduction=?, round_two_introduction=?, colors=?, fonts=?, "
+        + "layout_and_size=?, contest_introduction=?, contest_description=?, general_feedback=?, modify_user=?, modify_date=? " + "WHERE project_studio_spec_id=";
+
+    /**
+     * Represents the sql statement to delete studio specification data with the specified project studio specification
+     * id.
+     *
+     * @since 1.2
+     */
+    private static final String DELETE_STUDIO_SPEC_SQL = "DELETE FROM project_studio_specification "
+        + "WHERE project_studio_spec_id=?";
+
+    /**
+     * Represents the sql statement to set studio specification id to null for project table with the specified project
+     * studio specification id.
+     *
+     * @since 1.2
+     */
+    private static final String SET_PROJECT_STUDIO_SPEC_SQL = "UPDATE project SET project_studio_spec_id="
+        + "NULL WHERE project_studio_spec_id=?";
+    /**
+     * Represents the sql statement to query studio specification data with the specified project id.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_STUDIO_SPEC_SQL = "SELECT "
+        + "spec.project_studio_spec_id, spec.goals, spec.target_audience, "
+        + "spec.branding_guidelines, spec.disliked_design_websites, spec.other_instructions, "
+        + "spec.winning_criteria, spec.submitters_locked_between_rounds, "
+        + "spec.round_one_introduction, spec.round_two_introduction, spec.colors, "
+        + "spec.fonts, spec.layout_and_size, spec.contest_introduction, spec.contest_description, spec.general_feedback " + "FROM project_studio_specification AS spec JOIN project AS project "
+        + "ON project.project_studio_spec_id=spec.project_studio_spec_id " + "WHERE project.project_id=";
+    /**
+     * Represents the data types for the result set by querying studio specification data with the specified project id.
+     *
+     * @since 1.2
+     */
+    private static final DataType[] QUERY_STUDIO_SPEC_COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+        Helper.STRING_TYPE, Helper.BOOLEAN_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
+        Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
+
+    /**
+     * Represents the sql statement to set studio specification id for project table with the specified project id.
+     *
+     * @since 1.2
+     */
+    private static final String SET_PROJECT_STUDIO_SPEC_WITH_PROJECT_SQL = "UPDATE project SET project_studio_spec_id="
+        + "? WHERE project.project_id=";
+
+    /**
+     * Represents the sql statement to query project id for project table with the specified tc direct project id.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_PROJECT_IDS_SQL
+        = "SELECT DISTINCT project_id FROM project WHERE tc_direct_project_id=";
+
+    /**
+     * Represents the data types for the result set by querying project id for project table.
+     *
+     * @since 1.2
+     */
+    private static final DataType[] QUERY_PROJECT_IDS__COLUMN_TYPES = new DataType[]{Helper.LONG_TYPE};
+
+    /**
+     * Represents the sql statement to query project id for project table with the specified studio specification id.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_PROJECT_IDS_WITH_STUDIO_SPEC_SQL
+        = "SELECT DISTINCT project_id FROM project WHERE project_studio_spec_id=";
+
+    /**
+     * Represents the sql statement to query project id for project table with the specified file type id.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_PROJECT_IDS_WITH_FILE_TYPE_SQL
+        = "SELECT DISTINCT project_id FROM project_file_type_xref WHERE file_type_id=";
+    /**
+     * Represents the sql statement to query project id for project table with the specified prize id.
+     *
+     * @since 1.2
+     */
+    private static final String QUERY_PROJECT_IDS_WITH_PRIZE_SQL
+        = "SELECT DISTINCT project_id FROM project_prize_xref WHERE prize_id=";
+
+    /**
      * <p>
      * The factory instance used to create connection to the database. It is
      * initialized in the constructor using DBConnectionFactory component and
@@ -1691,16 +2023,38 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private final IDGenerator projectIdGenerator;
 
+    
     /**
      * <p>
+     * Represents the IDGenerator for file_type table. This variable is initialized in the constructor and never change
+     * after that. It will be used in createFileType() method to generate new Id for project. It could not be null after
+     * initialized.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private final IDGenerator fileTypeIdGenerator;
+     
+	 /**
+     * <p>
      * Represents the IDGenerator for contest_sale table. This variable is
-     * initialized in the constructor and never change after that. It will be
+	 * initialized in the constructor and never change after that. It will be
      * used in createContestSale() method to generate new Id for contest_sale.
      * </p>
      *
      * @since Module Contest Service Software Contest Sales Assembly
      */
     private final IDGenerator contestSaleIdGenerator;
+    /**
+     * <p>
+     * Represents the IDGenerator for prize table. This variable is initialized in the constructor and never change
+     * after that. It will be used in createPrize() method to generate new Id for project. It could not be null after
+     * initialized.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private final IDGenerator prizeIdGenerator;
     
     /**
      * <p>
@@ -1713,6 +2067,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * <p>
+     * Represents the IDGenerator for project_studio_specification table. This variable is initialized in the
+     * constructor and never change after that. It will be used in createProjectStudioSpecification() method to generate
+     * new Id for project. It could not be null after initialized.
+     * </p>
+     *
+     * @since 1.2
+     */
+    private final IDGenerator studioSpecIdGenerator;
+    
+	/**
+     * <p>
      * Represents the IDGenerator for project spec table. This variable is
      * initialized in the constructor and never change after that.
      * </p>
@@ -1723,57 +2088,72 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
     /**
      * <p>
-     * Creates a new instance of <code>AbstractProjectPersistence</code> from
-     * the settings in configuration.
+     * Creates a new instance of <code>AbstractProjectPersistence</code> from the settings in configuration.
      * </p>
      * <p>
      * The following parameters are configured.
      * <ul>
-     * <li>ConnectionFactoryNS: The namespace that contains settings for DB
-     * Connection Factory. It is required.</li>
-     * <li>ConnectionName: The name of the connection that will be used by
-     * DBConnectionFactory to create connection. If missing, default connection
-     * will be created. It is optional.</li>
-     * <li>ProjectIdSequenceName: The sequence name used to create Id generator
-     * for project Id. If missing default value (project_id_seq) is used. It is
-     * optional.</li>
-     * <li>ProjectAuditIdSequenceName: The sequence name used to create Id
-     * generator for project audit Id. If missing, default value
-     * (project_audit_id_seq) is used. It is optional.</li>
+     * <li>ConnectionFactoryNS: The namespace that contains settings for DB Connection Factory. It is required.</li>
+     * <li>ConnectionName: The name of the connection that will be used by DBConnectionFactory to create connection. If
+     * missing, default connection will be created. It is optional.</li>
+     * <li>ProjectIdSequenceName: The sequence name used to create Id generator for project Id. If missing default value
+     * (project_id_seq) is used. It is optional.</li>
+     * <li>ProjectAuditIdSequenceName: The sequence name used to create Id generator for project audit Id. If missing,
+     * default value (project_audit_id_seq) is used. It is optional.</li>
      * </ul>
      * </p>
      * <p>
      * Configuration sample:
      *
      * <pre>
-     * &lt;Config name=&quot;AbstractInformixProjectPersistence&quot;&gt;
-     * &lt;!-- The DBConnectionFactory class name used to create DB Connection Factory, required --&gt;
-     * &lt;Property name=&quot;ConnectionFactoryNS&quot;&gt;
-     * &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
-     * &lt;/Property&gt;
-     * &lt;Property name=&quot;ConnectionName&quot;&gt;
-     * &lt;Value&gt;informix_connection&lt;/Value&gt;
-     * &lt;/Property&gt;
-     * &lt;Property name=&quot;ProjectIdSequenceName&quot;&gt;
-     * &lt;Value&gt;project_id_seq&lt;/Value&gt;
-     * &lt;/Property&gt;
-     * &lt;Property name=&quot;ProjectAuditIdSequenceName&quot;&gt;
-     * &lt;Value&gt;project_audit_id_seq&lt;/Value&gt;
-     * &lt;/Property&gt;
+     * &lt;Config name="InformixProjectPersistence.CustomNamespace"&gt;
+     *     &lt;!-- The DBConnectionFactory class name used to create DB Connection Factory, required --&gt;
+     *     &lt;Property name="ConnectionFactoryNS"&gt;
+     *         &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
+     *     &lt;/Property&gt;
+     *     &lt;!-- the connection name to retrieve connection in DB Connection Factory, required --&gt;
+     *     &lt;Property name="ConnectionName"&gt;
+     *         &lt;Value&gt;informix_connection&lt;/Value&gt;
+     *     &lt;/Property&gt;
+     *     &lt;Property name="ProjectIdSequenceName"&gt;
+     *         &lt;Value&gt;project_id_seq&lt;/Value&gt;
+     *     &lt;/Property&gt;
+     *     &lt;Property name="ProjectAuditIdSequenceName"&gt;
+     *         &lt;Value&gt;project_audit_id_seq&lt;/Value&gt;
+     *     &lt;/Property&gt;
+     *     &lt;Property name="FileTypeIdGeneratorSequenceName"&gt;
+     *         &lt;Value&gt;file_type_id_seq&lt;/Value&gt;
+     *     &lt;/Property&gt;
+     *     &lt;Property name="PrizeIdGeneratorSequenceName"&gt;
+     *         &lt;Value&gt;prize_id_seq&lt;/Value&gt;
+     *     &lt;/Property&gt;
+     *     &lt;Property name="StudioSpecIdGeneratorSequenceName"&gt;
+     *         &lt;Value&gt;studio_spec_id_seq&lt;/Value&gt;
+     *     &lt;/Property&gt;
      * &lt;/Config&gt;
      * </pre>
      *
      * </p>
-     * @param namespace The namespace to load configuration setting.
-     * @throws IllegalArgumentException if the input is null or empty string.
-     * @throws ConfigurationException if error occurs while loading
-     *             configuration settings, or required configuration parameter
-     *             is missing.
-     * @throws PersistenceException if cannot initialize the connection to the
-     *             database.
+     * <p>
+     * Updated in version 1.2: get sequence name and create following IdGenerators.
+     * <ul>
+     * <li>fileTypeIdGenerator</li>
+     * <li>prizeIdGenerator</li>
+     * <li>studioSpecIdGenerator</li>
+     * </ul>
+     * </p>
+     *
+     * @param namespace
+     *            The namespace to load configuration setting.
+     * @throws IllegalArgumentException
+     *             if the input is null or empty string.
+     * @throws ConfigurationException
+     *             if error occurs while loading configuration settings, or required configuration parameter is missing.
+     * @throws PersistenceException
+     *             if cannot initialize the connection to the database.
      */
-    protected AbstractInformixProjectPersistence(String namespace)
-        throws ConfigurationException, PersistenceException {
+    @SuppressWarnings("deprecation")
+    protected AbstractInformixProjectPersistence(String namespace) throws ConfigurationException, PersistenceException {
         Helper.assertStringNotNullNorEmpty(namespace, "namespace");
 
 		this.namespace = namespace;
@@ -1826,7 +2206,31 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
         
         //
-        // try to get project spec id sequence name
+        // try to get file type id sequence name
+        String fileTypeIdGeneratorSequenceName = Helper.getConfigurationParameterValue(cm, namespace,
+            FILE_TYPE_ID_SEQUENCE_NAME_PARAMETER, false, getLogger());
+        // use default name if file type id sequence name is not provided
+        if (fileTypeIdGeneratorSequenceName == null) {
+            fileTypeIdGeneratorSequenceName = FILE_TYPE_ID_SEQUENCE_NAME;
+        }
+
+        // try to get prize id sequence name
+        String prizeIdGeneratorSequenceName = Helper.getConfigurationParameterValue(cm, namespace,
+            PRIZE_ID_SEQUENCE_NAME_PARAMETER, false, getLogger());
+        // use default name if prize id sequence name is not provided
+        if (prizeIdGeneratorSequenceName == null) {
+            prizeIdGeneratorSequenceName = PRIZE_ID_SEQUENCE_NAME;
+        }
+
+        // try to get studio spec id sequence name
+        String studioSpecIdGeneratorSequenceName = Helper.getConfigurationParameterValue(cm, namespace,
+            STUDIO_SPEC_ID_SEQUENCE_NAME_PARAMETER, false, getLogger());
+        // use default name if studio spec id sequence name is not provided
+        if (studioSpecIdGeneratorSequenceName == null) {
+            studioSpecIdGeneratorSequenceName = STUDIO_SPEC_ID_SEQUENCE_NAME;
+        }
+        
+		// try to get project spec id sequence name
         // since Cockpit Launch Contest - Update for Spec Creation v1.0
         //
         String projectSpecIdSequenceName = Helper
@@ -1854,7 +2258,17 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw new PersistenceException("Unable to create IDGenerator for '"
                     + contestSaleIdSequenceName + "'.", e);
         }
-        try {
+        
+		try {
+            fileTypeIdGenerator = IDGeneratorFactory.getIDGenerator(fileTypeIdGeneratorSequenceName);
+        } catch (IDGenerationException e) {
+            getLogger().log(Level.ERROR,
+                "The fileTypeIdGeneratorSequence [" + fileTypeIdGeneratorSequenceName + "] is invalid.");
+            throw new PersistenceException("Unable to create IDGenerator for '" + fileTypeIdGeneratorSequenceName
+                + "'.", e);
+        }
+        
+		try {
             projectAuditIdGenerator = IDGeneratorFactory
                     .getIDGenerator(projectAuditIdSequenceName);
         } catch (IDGenerationException e) {
@@ -1863,11 +2277,29 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     + projectAuditIdSequenceName + "'.", e);
         }
         
-        //
+        
+        try {
+            prizeIdGenerator = IDGeneratorFactory.getIDGenerator(prizeIdGeneratorSequenceName);
+        } catch (IDGenerationException e) {
+            getLogger().log(Level.ERROR,
+                "The prizeIdGeneratorSequence [" + prizeIdGeneratorSequenceName + "] is invalid.");
+            throw new PersistenceException("Unable to create IDGenerator for '" + prizeIdGeneratorSequenceName + "'.",
+                e);
+        }
+        try {
+            studioSpecIdGenerator = IDGeneratorFactory.getIDGenerator(studioSpecIdGeneratorSequenceName);
+        } catch (IDGenerationException e) {
+            getLogger().log(Level.ERROR,
+                "The studioSpecIdGeneratorSequence [" + studioSpecIdGeneratorSequenceName + "] is invalid.");
+            throw new PersistenceException("Unable to create IDGenerator for '" + studioSpecIdGeneratorSequenceName
+                + "'.", e);
+        }
+        
+		//
         // create the instance of project spec id generator.
         // since Cockpit Launch Contest - Update for Spec Creation v1.0
         //
-        try {
+		try {
             projectSpecIdGenerator = IDGeneratorFactory
                     .getIDGenerator(projectSpecIdSequenceName);
         } catch (IDGenerationException e) {
@@ -1936,7 +2368,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
             // create the project
             createProject(newId, project, operator, conn);
-            
+
+            // set the file types
+            createOrUpdateProjectFileTypes(newId, project.getProjectFileTypes(), conn, operator, false);
+
+            // set the prizes
+            createOrUpdateProjectPrizes(newId, project.getPrizes(), conn, operator, false);
+            // set the project studio specification
+
+            if (project.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId())
+            {
+                createOrUpdateProjectStudioSpecification(newId, project.getProjectStudioSpecification(), conn, operator);
+            }
+
             closeConnection(conn);
         } catch (PersistenceException e) {
             /*project.setCreationUser(null);
@@ -2018,6 +2462,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     "SELECT modify_date " + "FROM project WHERE project_id=?",
                     new Object[] {new Long(project.getId())},
                     Helper.DATE_TYPE);
+			
+			// set the file types
+            createOrUpdateProjectFileTypes(project.getId(), project.getProjectFileTypes(), conn, operator, true);
+
+            // set the prizes
+            createOrUpdateProjectPrizes(project.getId(), project.getPrizes(), conn, operator, true);
+
+            if (project.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId())
+            {
+                // set the project studio specification
+                createOrUpdateProjectStudioSpecification(project.getId(), project.getProjectStudioSpecification(), conn, operator);          
+            }
+
 
             closeConnection(conn);
         } catch (PersistenceException e) {
@@ -2120,7 +2577,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 	 * create date is within current - days 
      * </p>
      * @param days last 'days' 
-     * @param conn the database connection
      * @return An array of project instances.
      * @throws PersistenceException if error occurred while accessing the
      *             database.
@@ -2261,6 +2717,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
     }
 
+    /**
+     * Gets Project entities by given directProjectId.
+     *
+     * @param directProjectId
+     *            the given directProjectId to find the Projects.
+     * @return the found Project entities, return empty if cannot find any.
+     * @throws IllegalArgumentException
+     *             if the argument is non-positive
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public Project[] getProjectsByDirectProjectId(long directProjectId) throws PersistenceException {
+        Helper.assertLongPositive(directProjectId, "directProjectId");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get projects with the direct project id: " + directProjectId);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // find all the project ids with the specified direct project id in the table
+            Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_IDS_SQL + directProjectId, new Object[]{},
+                QUERY_PROJECT_IDS__COLUMN_TYPES);
+
+            if (0 == rows.length) {
+                return new Project[0];
+            }
+
+            long[] ids = new long[rows.length];
+
+            for (int i = 0; i < rows.length; i++) {
+                ids[i] = (Long) rows[i][0];
+            }
+
+            // get the project objects
+            Project[] projects = getProjects(ids, conn);
+            closeConnection(conn);
+            return projects;
+        } catch (PersistenceException e) {
+            getLogger().log(
+                Level.ERROR,
+                new LogMessage(null, null, "Fails to retrieving projects with the direct project id: "
+                    + directProjectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        } catch (ParseException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null,
+                  "Fails to retrieving projects with the direct project id: "
+                    + directProjectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            
+            throw new PersistenceException("Fails to retrieve projects", e);
+        }
+    }
+	
 	/**
      * Retrieve scorecard id with given project type and scorecard type.
 	 *
@@ -2351,7 +2868,1167 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
 
 	}
+    /**
+     * Gets Project FileType entities by given projectId.
+     *
+     * @param projectId
+     *            the given projectId to find the entities.
+     * @return the found FileType entities, return empty if cannot find any.
+     * @throws IllegalArgumentException
+     *             if the argument is non-positive
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public FileType[] getProjectFileTypes(long projectId) throws PersistenceException {
+        Helper.assertLongPositive(projectId, "projectId");
 
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get Project file types with the project id: " + projectId);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            // find file types in the table
+            Object[][] rows = Helper.doQuery(conn, QUERY_FILE_TYPES_SQL + projectId, new Object[]{},
+                QUERY_FILE_TYPES_COLUMN_TYPES);
+
+            FileType[] fileTypes = new FileType[rows.length];
+
+            // enumerate each row
+            for (int i = 0; i < rows.length; ++i) {
+                Object[] row = rows[i];
+
+                FileType fileType = new FileType();
+                fileType.setId((Long) row[0]);
+                fileType.setDescription((String) row[1]);
+                fileType.setSort(((Long) row[2]).intValue());
+                fileType.setImageFile((Boolean) row[3]);
+                fileType.setExtension((String) row[4]);
+                fileType.setBundledFile((Boolean) row[5]);
+
+                fileTypes[i] = fileType;
+            }
+
+            closeConnection(conn);
+            return fileTypes;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR,
+                new LogMessage(null, null, "Fails to retrieving project file types with project id: " + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Updates FileType entities by given projectId, it also updates the relationship between project and FileType.
+     *
+     * @param projectId
+     *            the given projectId to update the fileTypes entities.
+     * @param fileTypes
+     *            the given fileTypes entities to update.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if projectId is non-positive or fileTypes contains null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void updateProjectFileTypes(long projectId, List<FileType> fileTypes, String operator)
+        throws PersistenceException {
+        Helper.assertLongPositive(projectId, "projectId");
+        Helper.assertObjectNotNull(fileTypes, "fileTypes");
+        for (int i = 0; i < fileTypes.size(); i++) {
+            Helper.assertObjectNotNull(fileTypes.get(i), "fileTypes[" + i + "]");
+        }
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "updating the file types for the project with id: " + projectId));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            createOrUpdateProjectFileTypes(projectId, fileTypes, conn, operator, true);
+
+            // create project audit record into project_audit table
+            createProjectAudit(projectId, "Updates the project file types", operator, conn);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger()
+                .log(
+                    Level.ERROR,
+                    new LogMessage(null, operator, "Fails to update the file types for the project with id "
+                        + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Creates or updates project file types.
+     *
+     * @param projectId
+     *            the project id
+     * @param fileTypes
+     *            the file types for the project
+     * @param conn
+     *            the database connection
+     * @param operator
+     *            the given audit user.
+     * @param update
+     *            true to update the project file types reference; otherwise, just create the project file types
+     *            reference
+     * @throws PersistenceException
+     *             if any error occurs
+     * @since 1.2
+     */
+    private void createOrUpdateProjectFileTypes(long projectId, List<FileType> fileTypes, Connection conn,
+        String operator, boolean update) throws PersistenceException {
+        if (fileTypes == null) {
+            return;
+        }
+        Object[] queryArgs = null;
+
+        if (update) {
+
+            getLogger().log(Level.INFO,
+                "delete the project file typs reference from database with the specified project id: " + projectId);
+            // delete the project file types reference from database with the specified project id
+            queryArgs = new Object[]{projectId};
+            Helper.doDMLQuery(conn, DELETE_PROJECT_FILE_TYPES_XREF__WITH_PROJECT_ID_SQL, queryArgs);
+        }
+
+        for (FileType fileType : fileTypes) {
+            // the file type with the specified file type id exists, just update it
+            if (fileType.getId() > 0
+                && Helper.checkEntityExists("file_type_lu", "file_type_id", fileType.getId(), conn)) {
+                updateFileType(fileType, operator);
+            } else { // the file type with the specified file types id does not exist, insert it to the database
+                createFileType(fileType, operator);
+            }
+
+            // insert projectId and file type id into project_prize_xref table
+            getLogger().log(
+                Level.INFO,
+                "insert projectId: " + projectId + " and file type id: " + fileType.getId()
+                    + " into project_prize_xref table");
+
+            queryArgs = new Object[]{projectId, fileType.getId()};
+            Helper.doDMLQuery(conn, INSERT_PROJECT_FILE_TYPES_XREF_SQL, queryArgs);
+        }
+    }
+
+    /**
+     * Gets Project Prize entities by given projectId.
+     *
+     * @param projectId
+     *            the given projectId to find the entities.
+     * @return the found Prize entities, return empty if cannot find any.
+     * @throws IllegalArgumentException
+     *             if projectId is non-positive
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public Prize[] getProjectPrizes(long projectId) throws PersistenceException {
+        Helper.assertLongPositive(projectId, "projectId");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get project prizes with the project id: " + projectId);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            // find prizes in the table
+            Object[][] rows = Helper.doQuery(conn, QUERY_PRIZES_SQL + projectId, new Object[]{},
+                QUERY_PRIZES_COLUMN_TYPES);
+
+            Prize[] prizes = new Prize[rows.length];
+            // enumerate each row
+            for (int i = 0; i < rows.length; ++i) {
+                Object[] row = rows[i];
+
+                Prize prize = new Prize();
+                prize.setId((Long) row[0]);
+                prize.setPlace(((Long) row[1]).intValue());
+                prize.setPrizeAmount((Double) row[2]);
+                prize.setNumberOfSubmissions(((Long) row[3]).intValue());
+                PrizeType prizeType = new PrizeType();
+                prizeType.setId((Long) row[4]);
+                prizeType.setDescription((String) row[5]);
+                prize.setPrizeType(prizeType);
+
+                prizes[i] = prize;
+            }
+
+            closeConnection(conn);
+            return prizes;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR,
+                new LogMessage(null, null, "Fails to retrieving project prizes with project id: " + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Updates Prize entities by given projectId, it also updates the relationship between project and Prize.
+     *
+     * @param projectId
+     *            the given projectId to update the prizes entities.
+     * @param prizes
+     *            the given prizes entities to update.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if projectId is non-positive, prizes contains null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void updateProjectPrizes(long projectId, List<Prize> prizes, String operator) throws PersistenceException {
+        Helper.assertLongPositive(projectId, "projectId");
+        Helper.assertObjectNotNull(prizes, "prizes");
+        for (int i = 0; i < prizes.size(); i++) {
+            Helper.assertObjectNotNull(prizes.get(i), "prizes[" + i + "]");
+        }
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "updating the prizes for the project with id: " + projectId));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            createOrUpdateProjectPrizes(projectId, prizes, conn, operator, true);
+
+            // create project audit record into project_audit table
+            createProjectAudit(projectId, "Updates the project prizes", operator, conn);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR,
+                new LogMessage(null, operator, "Fails to update the prizes for the project with id " + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Creates or updates project prizes.
+     *
+     * @param projectId
+     *            the project id
+     * @param prizes
+     *            the prizes for the project
+     * @param conn
+     *            the database connection
+     * @param operator
+     *            the given audit user.
+     * @param update
+     *            true to update the project prizes reference; otherwise, just create the project prizes reference
+     * @throws PersistenceException
+     *             if any error occurs
+     * @since 1.2
+     */
+    private void createOrUpdateProjectPrizes(long projectId, List<Prize> prizes, Connection conn, String operator,
+        boolean update) throws PersistenceException {
+        if (prizes == null) {
+            return;
+        }
+        Object[] queryArgs = null;
+        if (update) {
+            getLogger().log(Level.INFO,
+                "delete the project prize reference from database with the specified project id: " + projectId);
+            Prize[] oldPrizes = getProjectPrizes(projectId);
+            Set<Long> ids = new HashSet<Long>();
+            for (Prize prize : prizes) {
+                ids.add(prize.getId());
+            }
+            for (Prize oldPrize : oldPrizes) {
+                if (!ids.contains(oldPrize.getId())) {
+                    removePrize(oldPrize, operator);
+                }
+            }
+            // delete the project prize reference from database with the specified project id
+            queryArgs = new Object[]{projectId};
+            Helper.doDMLQuery(conn, DELETE_PROJECT_PRIZE_XREF__WITH_PROJECT_ID_SQL, queryArgs);
+        }
+
+        for (Prize prize : prizes) {
+            // the prize with the specified prize id exists, just update it
+            if (prize.getId() > 0 && Helper.checkEntityExists("prize", "prize_id", prize.getId(), conn)) {
+                updatePrize(prize, operator);
+            } else { // the prize with the specified prize id does not exist, insert it to the database
+                createPrize(prize, operator);
+            }
+
+            // insert projectId and prize.id into project_prize_xref table
+            getLogger()
+                .log(
+                    Level.INFO,
+                    "insert projectId: " + projectId + " and prize.id: " + prize.getId()
+                        + " into project_prize_xref table");
+
+            queryArgs = new Object[]{projectId, prize.getId()};
+            Helper.doDMLQuery(conn, INSERT_PROJECT_PRIZE_XREF_SQL, queryArgs);
+        }
+    }
+
+    /**
+     * Creates the given FileType entity.
+     *
+     * @param fileType
+     *            the given fileType entity to create.
+     * @param operator
+     *            the given audit user.
+     * @return the created fileType entity.
+     * @throws IllegalArgumentException
+     *             if fileType is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public FileType createFileType(FileType fileType, String operator) throws PersistenceException {
+        Helper.assertObjectNotNull(fileType, "fileType");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        // newId will contain the new generated Id for the file type
+        Long newId = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, operator, "creating new file type: " + fileType));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the file type id is already in the database
+            if (fileType.getId() > 0) {
+                if (Helper.checkEntityExists("file_type_lu", "file_type_id", fileType.getId(), conn)) {
+                    throw new PersistenceException("The file type with the same id [" + fileType.getId()
+                        + "] already exists.");
+                }
+            }
+
+            try {
+                // generate id for the file type
+                newId = new Long(fileTypeIdGenerator.getNextID());
+                getLogger().log(Level.INFO, new LogMessage(newId, operator, "generate id for new file type"));
+            } catch (IDGenerationException e) {
+                throw new PersistenceException("Unable to generate id for the file type.", e);
+            }
+
+            // create the file type
+            getLogger().log(Level.INFO, "insert record into file type with id:" + newId);
+
+            Timestamp createDate = new Timestamp(System.currentTimeMillis());
+
+            // insert the file type into database
+            Object[] queryArgs = new Object[]{newId, fileType.getDescription(), fileType.getSort(),
+                convertBooleanToString(fileType.isImageFile()), fileType.getExtension(),
+                convertBooleanToString(fileType.isBundledFile()), operator, createDate, operator, createDate};
+            Helper.doDMLQuery(conn, CREATE_FILE_TYPE_SQL, queryArgs);
+
+            closeConnection(conn);
+
+            fileType.setCreationUser(operator);
+            fileType.setCreationTimestamp(createDate);
+            fileType.setModificationUser(operator);
+            fileType.setModificationTimestamp(createDate);
+
+            // set the newId when no exception occurred
+            fileType.setId(newId.longValue());
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to create file type " + newId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+
+        return fileType;
+    }
+
+    /**
+     * Converts the boolean value to a string representation. For true, we use 't'; For false, we use 'f'.
+     *
+     * @param booleanVal
+     *            the boolean value to convert
+     * @return 't' if the paramter is true; otherwise, returns 'f'
+     * @since 1.2
+     */
+    private Object convertBooleanToString(boolean booleanVal) {
+        return booleanVal ? "t" : "f";
+    }
+
+    /**
+     * Updates the given FileType entity.
+     *
+     * @param fileType
+     *            the given fileType entity to update.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if fileType is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void updateFileType(FileType fileType, String operator) throws PersistenceException {
+        Helper.assertObjectNotNull(fileType, "fileType");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "updating the file type with id: " + fileType.getId()));
+
+        // modifyDate will contain the modify_date retrieved from database.
+        Timestamp modifyDate = new Timestamp(System.currentTimeMillis());
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the file type id is already in the database
+            if (!Helper.checkEntityExists("file_type_lu", "file_type_id", fileType.getId(), conn)) {
+                throw new PersistenceException("The file type id [" + fileType.getId()
+                    + "] does not exist in the database.");
+            }
+
+            // update the file type into database
+            Object[] queryArgs = new Object[]{fileType.getDescription(), fileType.getSort(),
+                convertBooleanToString(fileType.isImageFile()), fileType.getExtension(),
+                convertBooleanToString(fileType.isBundledFile()), operator, modifyDate};
+            Helper.doDMLQuery(conn, UPDATE_FILE_TYPE_SQL + fileType.getId(), queryArgs);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to update file type " + fileType, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+
+        fileType.setModificationUser(operator);
+        fileType.setModificationTimestamp(modifyDate);
+    }
+
+    /**
+     * Removes the given FileType entity.
+     *
+     * @param fileType
+     *            the given fileType entity to update.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if fileType is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void removeFileType(FileType fileType, String operator) throws PersistenceException {
+        Helper.assertObjectNotNull(fileType, "fileType");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "deleting the file type with id: " + fileType.getId()));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the file type id is already in the database
+            if (!Helper.checkEntityExists("file_type_lu", "file_type_id", fileType.getId(), conn)) {
+                throw new PersistenceException("The file type id [" + fileType.getId()
+                    + "] does not exist in the database.");
+            }
+
+            // delete the project file type reference from database
+            Object[] queryArgs = new Object[]{fileType.getId()};
+
+            Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_IDS_WITH_FILE_TYPE_SQL + fileType.getId(),
+                new Object[]{}, QUERY_PROJECT_IDS__COLUMN_TYPES);
+
+            // create project audit record into project_audit table
+            auditProjects(rows, conn, "Removes the project file type", operator);
+
+            Helper.doDMLQuery(conn, DELETE_PROJECT_FILE_TYPE_XREF_SQL, queryArgs);
+
+            // delete the file type from database
+            Helper.doDMLQuery(conn, DELETE_FILE_TYPE_SQL, queryArgs);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to delete file type " + fileType, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Gets all FileType entities.
+     *
+     * @return the found FileType entities, return empty if cannot find any.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public FileType[] getAllFileTypes() throws PersistenceException {
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, null, "Enter getAllFileTypes method."));
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get all the file types
+            Object[][] rows = Helper.doQuery(conn, QUERY_ALL_FILE_TYPES_SQL, new Object[]{},
+                QUERY_ALL_FILE_TYPES_COLUMN_TYPES);
+
+            closeConnection(conn);
+
+            // create the FileType array.
+            FileType[] fileTypes = new FileType[rows.length];
+
+            for (int i = 0; i < rows.length; ++i) {
+                Object[] row = rows[i];
+
+                // create a new instance of FileType class
+                fileTypes[i] = new FileType();
+                fileTypes[i].setId((Long) row[0]);
+                fileTypes[i].setDescription((String) row[1]);
+                fileTypes[i].setSort(((Long) row[2]).intValue());
+                fileTypes[i].setImageFile((Boolean) row[3]);
+                fileTypes[i].setExtension((String) row[4]);
+                fileTypes[i].setBundledFile((Boolean) row[5]);
+            }
+
+            return fileTypes;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to getAllFileTypes.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Gets all PrizeType entities.
+     *
+     * @return the found PrizeType entities, return empty if cannot find any.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public PrizeType[] getPrizeTypes() throws PersistenceException {
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, null, "Enter getPrizeTypes method."));
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // get all the prize types
+            Object[][] rows = Helper.doQuery(conn, QUERY_ALL_PRIZE_TYPES_SQL, new Object[]{},
+                QUERY_ALL_PRIZE_TYPES_COLUMN_TYPES);
+
+            // create the PrizeType array.
+            PrizeType[] prizeTypes = new PrizeType[rows.length];
+
+            for (int i = 0; i < rows.length; ++i) {
+                Object[] row = rows[i];
+
+                // create a new instance of PrizeType class
+                prizeTypes[i] = new PrizeType();
+                prizeTypes[i].setId((Long) row[0]);
+                prizeTypes[i].setDescription((String) row[1]);
+            }
+
+            closeConnection(conn);
+            return prizeTypes;
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, null, "Fail to getPrizeTypes.", e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Creates the given Prize entity.
+     *
+     * @param prize
+     *            the given prize entity to create.
+     * @param operator
+     *            the given audit user.
+     * @return the created prize entity.
+     * @throws IllegalArgumentException
+     *             if prize is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public Prize createPrize(Prize prize, String operator) throws PersistenceException {
+        Helper.assertObjectNotNull(prize, "prize");
+        Helper.assertObjectNotNull(prize.getPrizeType(), "prize.prizeType");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        // newId will contain the new generated Id for the prize
+        Long newId = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, operator, "creating new prize: " + prize));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the prize id is already in the database
+            if (prize.getId() > 0) {
+                if (Helper.checkEntityExists("prize", "prize_id", prize.getId(), conn)) {
+                    throw new PersistenceException(
+                        "The prize with the same id [" + prize.getId() + "] already exists.");
+                }
+            }
+
+            try {
+                // generate id for the prize
+                newId = new Long(prizeIdGenerator.getNextID());
+                getLogger().log(Level.INFO, new LogMessage(newId, operator, "generate id for new prize"));
+            } catch (IDGenerationException e) {
+                throw new PersistenceException("Unable to generate id for the prize.", e);
+            }
+
+            // create the prize
+            getLogger().log(Level.INFO, "insert record into prize with id:" + newId);
+
+            Timestamp createDate = new Timestamp(System.currentTimeMillis());
+
+            // insert the prize into database
+            Object[] queryArgs = new Object[]{newId, new Long(prize.getPlace()), new Double(prize.getPrizeAmount()),
+                new Long(prize.getPrizeType().getId()), prize.getNumberOfSubmissions(), operator, createDate, operator,
+                createDate};
+            Helper.doDMLQuery(conn, CREATE_PRIZE_SQL, queryArgs);
+
+            closeConnection(conn);
+
+            prize.setCreationUser(operator);
+            prize.setCreationTimestamp(createDate);
+            prize.setModificationUser(operator);
+            prize.setModificationTimestamp(createDate);
+
+            // set the newId when no exception occurred
+            prize.setId(newId.longValue());
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to create prize " + newId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+
+        return prize;
+    }
+
+    /**
+     * Updates the given prize entity.
+     *
+     * @param prize
+     *            the given prize entity to create.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if prize is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void updatePrize(Prize prize, String operator) throws PersistenceException {
+        Helper.assertObjectNotNull(prize, "prize");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, operator, "updating the prize with id: " + prize.getId()));
+
+        // modifyDate will contain the modify_date retrieved from database.
+        // modifyDate will contain the modify_date retrieved from database.
+        Timestamp modifyDate = new Timestamp(System.currentTimeMillis());
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the prize id is already in the database
+            if (!Helper.checkEntityExists("prize", "prize_id", prize.getId(), conn)) {
+                throw new PersistenceException("The prize id [" + prize.getId() + "] does not exist in the database.");
+            }
+
+            // insert the prize into database
+            Object[] queryArgs = new Object[]{new Long(prize.getPlace()), new Double(prize.getPrizeAmount()),
+                new Long(prize.getPrizeType().getId()), prize.getNumberOfSubmissions(), operator, modifyDate};
+            Helper.doDMLQuery(conn, UPDATE_PRIZE_SQL + prize.getId(), queryArgs);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to update prize " + prize, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+
+        prize.setModificationUser(operator);
+        prize.setModificationTimestamp(modifyDate);
+    }
+
+    /**
+     * Removes the given prize entity.
+     *
+     * @param prize
+     *            the given prize entity to create.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if prize is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void removePrize(Prize prize, String operator) throws PersistenceException {
+        Helper.assertObjectNotNull(prize, "prize");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, new LogMessage(null, operator, "deleting the prize with id: " + prize.getId()));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the prize id is already in the database
+            if (!Helper.checkEntityExists("prize", "prize_id", prize.getId(), conn)) {
+                throw new PersistenceException("The prize id [" + prize.getId() + "] does not exist in the database.");
+            }
+
+            // delete the project prize reference from database
+            Object[] queryArgs = new Object[]{prize.getId()};
+
+            Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_IDS_WITH_PRIZE_SQL + prize.getId(), new Object[]{},
+                QUERY_PROJECT_IDS__COLUMN_TYPES);
+
+            // create project audit record into project_audit table
+            auditProjects(rows, conn, "Removes the project prize", operator);
+
+            Helper.doDMLQuery(conn, DELETE_PROJECT_PRIZE_XREF_SQL, queryArgs);
+
+            // delete the prize from database
+            Helper.doDMLQuery(conn, DELETE_PRIZE_SQL, queryArgs);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR, new LogMessage(null, operator, "Fails to delete prize " + prize, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Creates the given ProjectStudioSpecification entity.
+     *
+     * @param spec
+     *            the given ProjectStudioSpecification entity to create.
+     * @param operator
+     *            the given audit user.
+     * @return the created spec entity
+     * @throws IllegalArgumentException
+     *             if spec is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public ProjectStudioSpecification createProjectStudioSpecification(ProjectStudioSpecification spec, String operator)
+        throws PersistenceException {
+        Helper.assertObjectNotNull(spec, "spec");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        // newId will contain the new generated Id for the project studio specification
+        Long newId = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "creating new project studio specification: " + spec));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project studio specification id is already in the database
+            if (spec.getId() > 0) {
+                if (Helper.checkEntityExists("project_studio_specification", "project_studio_spec_id", spec.getId(),
+                    conn)) {
+                    throw new PersistenceException("The project studio specification with the same id [" + spec.getId()
+                        + "] already exists.");
+                }
+            }
+
+            try {
+                // generate id for the project studio specification
+                newId = new Long(studioSpecIdGenerator.getNextID());
+                getLogger().log(Level.INFO,
+                    new LogMessage(newId, operator, "generate id for new project studio specification"));
+            } catch (IDGenerationException e) {
+                throw new PersistenceException("Unable to generate id for the project studio specification.", e);
+            }
+
+            // create the project studio specification
+            getLogger().log(Level.INFO, "insert record into project studio specification with id:" + newId);
+
+            Timestamp createDate = new Timestamp(System.currentTimeMillis());
+
+            // insert the project studio specification into database
+            Object[] queryArgs = new Object[]{newId, spec.getGoals(), spec.getTargetAudience(),
+                spec.getBrandingGuidelines(), spec.getDislikedDesignWebSites(), spec.getOtherInstructions(),
+                spec.getWinningCriteria(), spec.isSubmittersLockedBetweenRounds(), spec.getRoundOneIntroduction(),
+                spec.getRoundTwoIntroduction(), spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), spec.getGeneralFeedback(), operator,
+                createDate, operator, createDate};
+            Helper.doDMLQuery(conn, CREATE_STUDIO_SPEC_SQL, queryArgs);
+
+            closeConnection(conn);
+
+            spec.setCreationUser(operator);
+            spec.setCreationTimestamp(createDate);
+            spec.setModificationUser(operator);
+            spec.setModificationTimestamp(createDate);
+
+            // set the newId when no exception occurred
+            spec.setId(newId.longValue());
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR,
+                new LogMessage(null, operator, "Fails to create project studio specification " + newId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+
+        return spec;
+    }
+
+    /**
+     * Updates the given ProjectStudioSpecification entity.
+     *
+     * @param spec
+     *            the given ProjectStudioSpecification entity to create.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if spec is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void updateProjectStudioSpecification(ProjectStudioSpecification spec, String operator)
+        throws PersistenceException {
+        Helper.assertObjectNotNull(spec, "spec");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "updating the project studio specification with id: " + spec.getId()));
+
+        // modifyDate will contain the modify_date retrieved from database.
+        Timestamp modifyDate = new Timestamp(System.currentTimeMillis());
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project studio specification id is already in the database
+            if (!Helper.checkEntityExists("project_studio_specification",
+                "project_studio_spec_id", spec.getId(), conn)) {
+                    throw new PersistenceException("The project studio specification id [" + spec.getId()
+                        + "] does not exist in the database.");
+            }
+
+            // insert the project studio specification into database
+            Object[] queryArgs = new Object[]{spec.getGoals(), spec.getTargetAudience(), spec.getBrandingGuidelines(),
+                spec.getDislikedDesignWebSites(), spec.getOtherInstructions(), spec.getWinningCriteria(),
+                spec.isSubmittersLockedBetweenRounds(), spec.getRoundOneIntroduction(), spec.getRoundTwoIntroduction(),
+                spec.getColors(), spec.getFonts(), spec.getLayoutAndSize(), spec.getContestIntroduction(), spec.getContestDescription(), spec.getGeneralFeedback(), operator, modifyDate};
+            Helper.doDMLQuery(conn, UPDATE_STUDIO_SPEC_SQL + spec.getId(), queryArgs);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR,
+                new LogMessage(null, operator, "Fails to update project studio specification " + spec.getId(), e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+
+        spec.setModificationUser(operator);
+        spec.setModificationTimestamp(modifyDate);
+    }
+
+    /**
+     * Removes the given ProjectStudioSpecification entity.
+     *
+     * @param spec
+     *            the given ProjectStudioSpecification entity to create.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if spec is null, or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void removeProjectStudioSpecification(ProjectStudioSpecification spec, String operator)
+        throws PersistenceException {
+        Helper.assertObjectNotNull(spec, "spec");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "deleting the project studio specification with id: " + spec.getId()));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project studio specification id is already in the database
+            if (!Helper.checkEntityExists("project_studio_specification",
+                "project_studio_spec_id", spec.getId(), conn)) {
+                    throw new PersistenceException("The project studio specification id [" + spec.getId()
+                        + "] does not exist in the database.");
+            }
+
+            // delete the project project studio specification reference from database
+            Object[] queryArgs = new Object[]{spec.getId()};
+
+            Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_IDS_WITH_STUDIO_SPEC_SQL + spec.getId(),
+                new Object[]{}, QUERY_PROJECT_IDS__COLUMN_TYPES);
+
+            // create project audit record into project_audit table
+            auditProjects(rows, conn, "Removes the project studion specification", operator);
+
+            Helper.doDMLQuery(conn, SET_PROJECT_STUDIO_SPEC_SQL, queryArgs);
+
+            // delete the project studio specification from database
+            Helper.doDMLQuery(conn, DELETE_STUDIO_SPEC_SQL, queryArgs);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(Level.ERROR,
+                new LogMessage(null, operator, "Fails to delete project studio specification " + spec.getId(), e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Audits the projects.
+     *
+     * @param rows
+     *            the rows containing the projects ids
+     * @param conn
+     *            the database connection
+     * @param reason
+     *            the reason to audit
+     * @param operator the audit user
+     * @throws PersistenceException
+     *             if any error occurs
+     * @since 1.2
+     */
+    private void auditProjects(Object[][] rows, Connection conn, String reason, String operator)
+        throws PersistenceException {
+        if (0 != rows.length) {
+            for (int i = 0; i < rows.length; i++) {
+                createProjectAudit((Long) rows[i][0], reason, operator, conn);
+            }
+        }
+    }
+
+    /**
+     * Gets ProjectStudioSpecification entity by given projectId.
+     *
+     * @param projectId
+     *            the given projectId to find the entities.
+     * @return the found ProjectStudioSpecification entities, return null if cannot find any.
+     * @throws IllegalArgumentException
+     *             if projectId is non-positive
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public ProjectStudioSpecification getProjectStudioSpecification(long projectId) throws PersistenceException {
+        Helper.assertLongPositive(projectId, "projectId");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get project studio specification with the project id: " + projectId);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            // find project studio specification in the table
+            Object[][] rows = Helper.doQuery(conn, QUERY_STUDIO_SPEC_SQL + projectId, new Object[]{},
+                QUERY_STUDIO_SPEC_COLUMN_TYPES);
+
+            if (rows.length == 0) { // no project studio specification is found, return null
+                closeConnection(conn);
+                return null;
+            }
+
+            ProjectStudioSpecification studioSpec = new ProjectStudioSpecification();
+
+            // sets the properties for the studio specification
+            studioSpec.setId((Long) rows[0][0]);
+            studioSpec.setGoals((String) rows[0][1]);
+            studioSpec.setTargetAudience((String) rows[0][2]);
+            studioSpec.setBrandingGuidelines((String) rows[0][3]);
+            studioSpec.setDislikedDesignWebSites((String) rows[0][4]);
+            studioSpec.setOtherInstructions((String) rows[0][5]);
+            studioSpec.setWinningCriteria((String) rows[0][6]);
+            studioSpec.setSubmittersLockedBetweenRounds((Boolean) rows[0][7]);
+            studioSpec.setRoundOneIntroduction((String) rows[0][8]);
+            studioSpec.setRoundTwoIntroduction((String) rows[0][9]);
+            studioSpec.setColors((String) rows[0][10]);
+            studioSpec.setFonts((String) rows[0][11]);
+            studioSpec.setLayoutAndSize((String) rows[0][12]);
+            studioSpec.setContestIntroduction((String) rows[0][13]);
+            studioSpec.setContestDescription((String) rows[0][14]);
+            studioSpec.setGeneralFeedback((String) rows[0][15]);
+
+            closeConnection(conn);
+            return studioSpec;
+        } catch (PersistenceException e) {
+            getLogger().log(
+                Level.ERROR,
+                new LogMessage(null, null, "Fails to retrieving project studio specification with project id: "
+                    + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Updates the given ProjectStudioSpecification entity for specified project id.
+     *
+     * @param spec
+     *            the given ProjectStudioSpecification entity to update.
+     * @param projectId
+     *            the given project id to update.
+     * @param operator
+     *            the given audit user.
+     * @throws IllegalArgumentException
+     *             if spec is null, or projectId is non-positive or if operator is null or empty.
+     * @throws PersistenceException
+     *             if there are any exceptions.
+     * @since 1.2
+     */
+    public void updateStudioSpecificationForProject(ProjectStudioSpecification spec, long projectId, String operator)
+        throws PersistenceException {
+        Helper.assertObjectNotNull(spec, "spec");
+        Helper.assertLongPositive(projectId, "projectId");
+        Helper.assertStringNotNullNorEmpty(operator, "operator");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO,
+            new LogMessage(null, operator, "updating the studio specification for the project with id: " + projectId));
+
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            createOrUpdateProjectStudioSpecification(projectId, spec, conn, operator);
+            
+
+            // create project audit record into project_audit table
+            createProjectAudit(projectId, "Updates the project studion specification", operator, conn);
+
+            closeConnection(conn);
+        } catch (PersistenceException e) {
+            getLogger().log(
+                Level.ERROR,
+                new LogMessage(null, operator, "Fails to update the studio specification for the project with id "
+                    + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
     /**
      * Returns the database connection name that will be used by DB Connection
      * Factory.
@@ -2360,6 +4037,39 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     protected String getConnectionName() {
         return connectionName;
+    }
+    
+	/**
+     * Creates or updates project studio specification.
+     *
+     * @param projectId
+     *            the project id
+     * @param spec
+     *            the studio specification for the project
+     * @param conn
+     *            the database connection
+     * @param operator
+     *            the given audit user
+     * @throws PersistenceException
+     *             if any error occurs
+     * @since 1.2
+     */
+    private void createOrUpdateProjectStudioSpecification(long projectId, ProjectStudioSpecification spec,
+        Connection conn, String operator) throws PersistenceException {
+        if (spec == null) {
+            return;
+        }
+        // the studio specification with the specified id exists, just update it
+        if (spec.getId() > 0
+            && Helper.checkEntityExists("project_studio_specification", "project_studio_spec_id", spec.getId(), conn)) {
+            updateProjectStudioSpecification(spec, operator);
+        } else { // the studio specification with the specified id does not exist, insert it to the database
+            createProjectStudioSpecification(spec, operator);
+        }
+
+        // update the project studio specification reference for the project table
+        Object[] queryArgs = new Object[]{spec.getId()};
+        Helper.doDMLQuery(conn, SET_PROJECT_STUDIO_SPEC_WITH_PROJECT_SQL + projectId, queryArgs);
     }
 
     /**
@@ -2491,7 +4201,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
         //
-        createProjectSpec(projectId, project.getProjectSpec(), operator, conn);
+        if (project.getProjectCategory().getProjectType().getId()  !=  ProjectType.STUDIO.getId())
+        {
+            createProjectSpec(projectId, project.getProjectSpec(), operator, conn);
+        }
+        
         
         Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));
         
@@ -2616,10 +4330,9 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
 
          Timestamp modifyDate = new Timestamp(System.currentTimeMillis());
         // update the project type and project category
-        Object[] queryArgs = new Object[] {
-            new Long(project.getProjectStatus().getId()),
-            new Long(project.getProjectCategory().getId()), operator, modifyDate, tcDirectProjectId, 
-            projectId };
+        Object[] queryArgs = new Object[]{new Long(project.getProjectStatus().getId()),
+            new Long(project.getProjectCategory().getId()), operator, modifyDate, project.getTcDirectProjectId() == 0 ? null : project.getTcDirectProjectId(),
+            projectId};
         Helper.doDMLQuery(conn, UPDATE_PROJECT_SQL, queryArgs);
 
        // update the project object so this data's correct for audit purposes
@@ -2629,7 +4342,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         //
         // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
         //
-        updateProjectSpec(project.getId(), project.getProjectSpec(), operator, conn);
+        if (project.getProjectCategory().getProjectType().getId()  !=  ProjectType.STUDIO.getId())
+        {
+            updateProjectSpec(project.getId(), project.getProjectSpec(), operator, conn);
+        }
 
         Map nameIdMap = makePropertyNamePropertyIdMap(getAllProjectPropertyTypes(conn));        
         // get the property id - property value map from the project.
@@ -2804,7 +4520,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     /**
      * Build {@link Project} directly from the {@link CustomResultSet}
      * 
-     * @param resultSet a {@link CustomResultSet} containing the data for build the {@link Project} instances. 
+     * @param result a {@link CustomResultSet} containing the data for build the {@link Project} instances. 
      * @return an array of {@link Project}
      * @throws PersistenceException if error occurred while accessing the database.
      */
@@ -2892,11 +4608,122 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         String idList = idListBuffer.toString();
 
         // find projects in the table.
-        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_SQL + idList,
-                new Object[] {}, QUERY_PROJECTS_COLUMN_TYPES);
+        Object[][] rows = Helper
+            .doQuery(conn, QUERY_PROJECTS_SQL + idList, new Object[]{}, QUERY_PROJECTS_COLUMN_TYPES);
 
         // create the Project array.
-        Project[] projects = getProjects(rows, conn);
+        Project[] projects = new Project[rows.length];
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // create the ProjectStatus object
+            ProjectStatus status = new ProjectStatus(((Long) row[1]).longValue(), (String) row[2]);
+
+            // create the ProjectType object
+            ProjectType type = new ProjectType(((Long) row[5]).longValue(), (String) row[6]);
+
+            // create the ProjectCategory object
+            ProjectCategory category = new ProjectCategory(((Long) row[3]).longValue(), (String) row[4], type);
+            category.setDescription((String) row[11]);
+
+            long projectId = (Long) row[0];
+            // create a new instance of Project class
+            projects[i] = new Project(projectId, category, status);
+
+            // assign the audit information
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
+
+            // set the tc direct project id
+            projects[i].setTcDirectProjectId(row[12] == null ? 0 : ((Long) row[12]).intValue());
+            // set the file types
+            projects[i].setProjectFileTypes(Arrays.asList(getProjectFileTypes(projectId)));
+
+            // set the prizes
+            projects[i].setPrizes(Arrays.asList(getProjectPrizes(projectId)));
+
+            // set the studio specification
+            projects[i].setProjectStudioSpecification(getProjectStudioSpecification(projectId));
+            
+            //
+            // Added for Cockpit Launch Contest - Update for Spec Creation v1.0
+            //
+            ProjectSpec[] specs = getProjectSpecs(projects[i].getId(), conn);
+            if (specs != null && specs.length > 0) {
+                projects[i].setProjectSpec(specs[0]);
+            }
+        }
+
+        // get the Id-Project map
+        Map projectMap = makeIdProjectMap(projects);
+
+        // find project properties in the table.
+        rows = Helper.doQuery(conn, QUERY_PROJECT_PROPERTIES_SQL + idList, new Object[]{},
+            QUERY_PROJECT_PROPERTIES_COLUMN_TYPES);
+
+        // enumerate each row
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // get the corresponding Project object
+            Project project = (Project) projectMap.get(row[0]);
+
+            // set the property to project
+            project.setProperty((String) row[1], (String) row[2]);
+        }
+        return projects;
+    }
+    /**
+     * <p>
+     * Retrieves an array of project instance from the persistence whose create date is within current - days.
+     * </p>
+     *
+     * @param days
+     *            last 'days'
+     * @param conn
+     *            the database connection
+     * @return An array of project instances.
+     * @throws PersistenceException
+     *             if error occurred while accessing the database.
+     */
+    private Project[] getProjectsByCreateDate(int days, Connection conn) throws PersistenceException {
+
+        // find projects in the table.
+        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_BY_CREATE_DATE_SQL + days, new Object[]{},
+            QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES);
+
+        // create the Project array.
+        Project[] projects = new Project[rows.length];
+
+        for (int i = 0; i < rows.length; ++i) {
+            Object[] row = rows[i];
+
+            // create the ProjectStatus object
+            ProjectStatus status = new ProjectStatus(((Long) row[1]).longValue(), (String) row[2]);
+
+            // create the ProjectType object
+            ProjectType type = new ProjectType(((Long) row[5]).longValue(), (String) row[6]);
+
+            // create the ProjectCategory object
+            ProjectCategory category = new ProjectCategory(((Long) row[3]).longValue(), (String) row[4], type);
+            category.setDescription((String) row[11]);
+            // create a new instance of ProjectType class
+            projects[i] = new Project(((Long) row[0]).longValue(), category, status);
+
+            // assign the audit information
+            projects[i].setCreationUser((String) row[7]);
+            projects[i].setCreationTimestamp((Date) row[8]);
+            projects[i].setModificationUser((String) row[9]);
+            projects[i].setModificationTimestamp((Date) row[10]);
+
+            // here we only get project name and project version
+            projects[i].setProperty("Project Name", (String) row[12]);
+            projects[i].setProperty("Project Version", (String) row[13]);
+        }
+
         return projects;
     }
 
@@ -5610,62 +7437,6 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         }
     }
 
-   /**
-     * <p>
-     * Retrieves an array of project instance from the persistence whose
-	 * create date is within current - days 
-     * </p>
-     * @param days last 'days' 
-     * @param conn the database connection
-     * @return An array of project instances.
-     * @throws PersistenceException if error occurred while accessing the
-     *             database.
-     */
-    private Project[] getProjectsByCreateDate(int days, Connection conn)
-        throws PersistenceException {
-
-        // find projects in the table.
-        Object[][] rows = Helper.doQuery(conn, QUERY_PROJECTS_BY_CREATE_DATE_SQL + days,
-                new Object[] {}, QUERY_PROJECTS_BY_CREATE_DATE_COLUMN_TYPES);
-
-        // create the Project array.
-        Project[] projects = new Project[rows.length];
-
-        for (int i = 0; i < rows.length; ++i) {
-            Object[] row = rows[i];
-
-            // create the ProjectStatus object
-            ProjectStatus status = new ProjectStatus(((Long) row[1])
-                    .longValue(), (String) row[2]);
-
-            // create the ProjectType object
-            ProjectType type = new ProjectType(((Long) row[5]).longValue(),
-                    (String) row[6]);
-
-            // create the ProjectCategory object
-            ProjectCategory category = new ProjectCategory(((Long) row[3])
-                    .longValue(), (String) row[4], type);
-            category.setDescription((String) row[11]);
-            // create a new instance of ProjectType class
-            projects[i] = new Project(((Long) row[0]).longValue(), category,
-                    status);
-
-            // assign the audit information
-            projects[i].setCreationUser((String) row[7]);
-            projects[i].setCreationTimestamp((Date) row[8]);
-            projects[i].setModificationUser((String) row[9]);
-            projects[i].setModificationTimestamp((Date) row[10]);
-
-			// here we only get project name and project version
-			projects[i].setProperty("Project Name", (String) row[12]);
-			projects[i].setProperty("Project Version", (String) row[13]);
-        }
-
-       
-        return projects;
-    }
-
-
      /**
      * Get all design components.
      *
@@ -5879,7 +7650,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     /**
      * check contest permission, check if a user has permission (read or write) on a project
      *
-     * @param projectId the tc direct project id
+     * @param tcprojectId the tc direct project id
      * @param readonly check read or write permission
      * @param userId user id
      *
@@ -5940,7 +7711,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * get project ids by tc direct id
      * </p>
      *
-     * @tcDirectId tc direct project id
+     * @param tcprojectId tc direct project id
      *
      * @return list of project ids
      *
@@ -5985,7 +7756,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * get tc direct project id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return tc direct project id
      *
@@ -6031,7 +7802,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * get forum id by project id
      * </p>
      *
-     * @projectId project id
+     * @param projectId project id
      *
      * @return forum id
      *
@@ -6133,7 +7904,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * check if it is dev only 
      * </p>
      *
-     * @projectId  project id
+     * @param projectId  project id
      *
      * @return boolean
      *
