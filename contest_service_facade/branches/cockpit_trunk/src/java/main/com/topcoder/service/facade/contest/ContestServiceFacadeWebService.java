@@ -811,59 +811,6 @@ public interface ContestServiceFacadeWebService {
 
 	/**
 	 * <p>
-	 * Processes the submissions payment. It does following steps:
-	 * <ul>
-	 * <li>Checks submissionIds to see if is available, if not then it throws PaymentException.</li>
-	 * <li>It processes the payment through <code>PaymentProcessor</code></li>
-	 * <li>Right-now this method doesn't process PO payments.</li>
-	 * <li>On successful processing -
-	 * <ul>
-	 * <li>it calls <code>this.purchaseSubmission(...)</code></li>
-	 * </ul>
-	 * </li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param completedContestData data of completed contest.
-	 * @param paymentData a <code>PaymentData</code> payment information (credit card/po details) that need to be
-	 *            processed.
-	 * @return a <code>PaymentResult</code> result of the payment processing.
-	 * @throws PaymentException if any errors occurs in processing the payment or submission is not valid.
-	 * @throws PersistenceException if any error occurs when retrieving the submission.
-	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
-	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
-	 */
-	public PaymentResult processSubmissionCreditCardPayment(CompletedContestData completedContestData,
-			CreditCardPaymentData paymentData) throws PaymentException, PersistenceException;
-
-	/**
-	 * <p>
-	 * Processes the submission payment. It does following steps:
-	 * <ul>
-	 * <li>Checks submissionIds to see if is available, if not then it throws PaymentException.</li>
-	 * <li>Right-now this method doesn't process PO payments.</li>
-	 * <li>On successful processing -
-	 * <ul>
-	 * <li>it calls <code>this.purchaseSubmission(...)</code></li>
-	 * </ul>
-	 * </li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param completedContestData data of completed contest.
-	 * @param paymentData a <code>PaymentData</code> payment information (credit card/po details) that need to be
-	 *            processed.
-	 * @return a <code>PaymentResult</code> result of the payment processing.
-	 * @throws PaymentException if any errors occurs in processing the payment or submission is not valid.
-	 * @throws PersistenceException if any error occurs when retrieving the submission.
-	 * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
-	 * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
-	 */
-	public PaymentResult processSubmissionPurchaseOrderPayment(CompletedContestData completedContestData,
-			TCPurhcaseOrderPaymentData paymentData) throws PaymentException, PersistenceException;
-
-	/**
-	 * <p>
 	 * Ranks the submissions, given submission identifiers in the rank order.
 	 * </p>
 	 * 

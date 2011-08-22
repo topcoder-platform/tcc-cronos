@@ -1,27 +1,27 @@
 /*
- * Copyright (C) 2009-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.activation.DataHandler;
 
-import com.cronos.onlinereview.services.uploads.InvalidProjectException;
-import com.cronos.onlinereview.services.uploads.InvalidProjectPhaseException;
-import com.cronos.onlinereview.services.uploads.InvalidUserException;
-import com.cronos.onlinereview.services.uploads.UploadServicesException;
 import com.topcoder.catalog.entity.Category;
 import com.topcoder.catalog.entity.Phase;
 import com.topcoder.catalog.entity.Technology;
 import com.topcoder.clients.model.ProjectContestFee;
+import com.topcoder.direct.services.copilot.model.CopilotProject;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.project.FileType;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
+import com.topcoder.project.phases.PhaseType;
 import com.topcoder.project.service.FullProjectData;
 import com.topcoder.project.service.ScorecardReviewData;
 import com.topcoder.search.builder.SearchBuilderException;
@@ -62,7 +62,6 @@ import com.topcoder.service.studio.contest.SimpleProjectContestData;
 import com.topcoder.service.studio.contest.StudioFileType;
 import com.topcoder.service.studio.contest.User;
 import com.topcoder.service.user.Registrant;
-import com.topcoder.direct.services.copilot.model.CopilotProject;
 
 /**
  * <p>
@@ -165,8 +164,38 @@ import com.topcoder.direct.services.copilot.model.CopilotProject;
  * - Updated {@link #updateProjectPermissions(TCSubject, List<ProjectPermission>, long)} method, add a new input.
  * </p>
  *
- * @author pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx
- * @version 1.6.4
+ * <p>
+ * Version 1.6.4 (TC Direct Replatforming Release 1) Change notes:
+ * <ul>
+ * <li>Add {@link #processContestCreditCardSale(TCSubject, SoftwareCompetition, CreditCardPaymentData, Date)} method.</li>
+ * <li>Add {@link #processContestPurchaseOrderSale(TCSubject, SoftwareCompetition, TCPurhcaseOrderPaymentData, Date)} method.</li>
+ * <li>Add {@link #createSoftwareContest(TCSubject, SoftwareCompetition, long, Date)} method.</li>
+ * <li>Add {@link #updateSoftwareContest(TCSubject, SoftwareCompetition, long, Date)} method.</li>
+ * <li>Add {@link #getAllFileTypes()} method.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * Version 1.6.5 (TC Direct Replatforming Release 3) Change notes:
+ * <ul>
+ * <li>Add {@link #getMilestoneSubmissions(long)} method to get the milestone submissions in OR.</li>
+ * <li>Add {@link #getStudioSubmissionFeedback(TCSubject, long, long, PhaseType)} method to get client feedback for a specified submission.</li>
+ * <li>Add {@link #saveStudioSubmisionWithRankAndFeedback(TCSubject, long, long, int, String, Boolean, PhaseType)} method to save placement and
+ * client feedback for a specified submission.</li>
+ * <li>Add {@link #updateSoftwareSubmissions(TCSubject, List)} method to update the submissions in OR.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Version 1.6.6 (TC Direct Replatforming Release 5) Change notes:
+ * <ul>
+ * <li>Changed method name from <code>getMilestoneSubmissions</code> to {@link #getSoftwareActiveSubmissions(long, int)}. The new method
+ * support searching the active submissions for a specified submission type.</li>
+ * </ul>
+ * </p>
+ *
+ * @author pulky, murphydog, waits, BeBetter, hohosky, isv, TCSASSEMBER
+ * @version 1.6.6
  */
 public interface ContestServiceFacade {
     /**
@@ -1304,7 +1333,6 @@ public interface ContestServiceFacade {
      * @param paymentData
      *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
-     *
      * @return a <code>PaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException
@@ -1331,7 +1359,34 @@ public interface ContestServiceFacade {
      * @param paymentData
      *            payment information (TCSubject tcSubject,credit card/po details) that need to be
      *            processed.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
+     * @return a <code>PaymentResult</code> result of the payment processing.
      *
+     * @throws ContestServiceException
+     *             if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     * @since 1.6.4
+     */
+    public SoftwareContestPaymentResult processContestCreditCardSale(TCSubject tcSubject,
+        SoftwareCompetition competition, CreditCardPaymentData paymentData, Date multiRoundEndDate, Date endDate)
+        throws ContestServiceException, PermissionServiceException;
+
+    /**
+     * <p>
+     * Processes the contest sale.
+     * </p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     *
+     * @param competition
+     *            data that recognizes a contest.
+     * @param paymentData
+     *            payment information (TCSubject tcSubject,credit card/po details) that need to be
+     *            processed.
      * @return a <code>PaymentResult</code> result of the payment processing.
      *
      * @throws ContestServiceException
@@ -1346,76 +1401,31 @@ public interface ContestServiceFacade {
 
     /**
      * <p>
-     * Processes the submissions payment. It does following steps:
-     * <ul>
-     * <li>Checks submissionIds to see if is available, if not then it throws
-     * PaymentException.</li>
-     * <li>It processes the payment through <code>PaymentProcessor</code></li>
-     * <li>Right-now this method doesn't process PO payments.</li>
-     * <li>On successful processing -
-     * <ul>
-     * <li>it calls <code>this.purchaseSubmission(TCSubject tcSubject,...)</code></li>
-     * </ul>
-     * </li>
-     * </ul>
+     * Processes the contest sale.
      * </p>
      * <p>
      * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
      * </p>
      * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param completedContestData
-     *            data of completed contest.
+     * @param competition
+     *            data that recognizes a contest.
      * @param paymentData
-     *            a <code>PaymentData</code> payment information (TCSubject tcSubject,credit card/po
-     *            details) that need to be processed.
+     *            payment information (TCSubject tcSubject,credit card/po details) that need to be
+     *            processed.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
      * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PaymentException
-     *             if any errors occurs in processing the payment or submission
-     *             is not valid.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving the submission.
-     */
-    public PaymentResult processSubmissionCreditCardPayment(TCSubject tcSubject,
-        CompletedContestData completedContestData,
-        CreditCardPaymentData paymentData)
-        throws PaymentException, PersistenceException, PermissionServiceException;
-
-    /**
-     * <p>
-     * Processes the submission payment. It does following steps:
-     * <ul>
-     * <li>Checks submissionIds to see if is available, if not then it throws
-     * PaymentException.</li>
-     * <li>Right-now this method doesn't process PO payments.</li>
-     * <li>On successful processing -
-     * <ul>
-     * <li>it calls <code>this.purchaseSubmission(TCSubject tcSubject,...)</code></li>
-     * </ul>
-     * </li>
-     * </ul>
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
      *
-     * @param completedContestData
-     *            data of completed contest.
-     * @param paymentData
-     *            a <code>PaymentData</code> payment information (TCSubject tcSubject,credit card/po
-     *            details) that need to be processed.
-     * @return a <code>PaymentResult</code> result of the payment processing.
-     * @throws PaymentException
-     *             if any errors occurs in processing the payment or submission
-     *             is not valid.
-     * @throws PersistenceException
-     *             if any error occurs when retrieving the submission.
+     * @throws ContestServiceException
+     *             if an error occurs when interacting with the service layer.
+     *
+     * @since Module Contest Service Software Contest Sales Assembly
+     * @since 1.6.4
      */
-    public PaymentResult processSubmissionPurchaseOrderPayment(TCSubject tcSubject,
-        CompletedContestData completedContestData,
-        TCPurhcaseOrderPaymentData paymentData)
-        throws PaymentException, PersistenceException, PermissionServiceException;
+    public SoftwareContestPaymentResult processContestPurchaseOrderSale(TCSubject tcSubject,
+        SoftwareCompetition competition, TCPurhcaseOrderPaymentData paymentData, Date multiRoundEndDate, Date endDate)
+        throws ContestServiceException, PermissionServiceException;
 
     /**
      * <p>
@@ -1536,6 +1546,31 @@ public interface ContestServiceFacade {
 
     /**
      * <p>
+     * Creates a new <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     * Updated for Version 1.0.1 - BUGR-2185: For development contests, if asset (or component) exists from design
+     * contests then that is used to create a new contest. Otherwise a new asset is also created. Updated for Version1.5
+     * the code is refactored by the logic: 1. check the permission 2. update or create the asset 3. set default
+     * resources 4. create project 5. prepare the return value 6. persist the eligility
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest the <code>SoftwareCompetition</code> to create as a contest
+     * @param tcDirectProjectId the TC direct project id. a <code>long</code> providing the ID of a client the new
+     *            competition belongs to.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
+     * @return the created <code>SoftwareCompetition</code> as a contest
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since 1.6.4
+     */
+    public SoftwareCompetition createSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException;
+    
+    /**
+     * <p>
      * BURG-1716: We need to add a method to get software contest by project id,
      * the method wil get all OR project related data, then from project
      * property to get comp version id then to call getAssetByVersionId to get
@@ -1583,6 +1618,28 @@ public interface ContestServiceFacade {
         SoftwareCompetition contest, long tcDirectProjectId)
         throws ContestServiceException, PermissionServiceException;
 
+    /**
+     * <p>
+     * Updates a <code>SoftwareCompetition</code> in the persistence.
+     * </p>
+     * <p>
+     * Update in version 1.5, reduce the code redundancy in permission checking.
+     * <p>
+     * <p>
+     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param contest the <code>SoftwareCompetition</code> to update as a contest
+     * @param tcDirectProjectId the TC direct project id.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase. Can be null if to use default.
+     * @throws IllegalArgumentException if the input argument is invalid.
+     * @throws ContestServiceException if an error occurs when interacting with the service layer.
+     * @since 1.6.4
+     */
+    public SoftwareCompetition updateSoftwareContest(TCSubject tcSubject, SoftwareCompetition contest,
+            long tcDirectProjectId, Date multiRoundEndDate, Date endDate) throws ContestServiceException, PermissionServiceException;
+    
     /**
      * <p>
      * Assigns a specified user to a specified <code>assetDTO</code>.
@@ -2500,6 +2557,18 @@ public interface ContestServiceFacade {
      */
     Submission[] getSoftwareProjectSubmissions(TCSubject currentUser, long projectId) throws SearchBuilderException, 
                                                                       UploadPersistenceException, PermissionServiceException;
+    /**
+     * <p>Gets the active submissions for specified project with the specified submission type.</p>.
+     * 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionType a <code>int</code> providing the id of the submission type.
+     * @return a <code>List</code> listing the milestone submissions for project.
+     * @throws SearchBuilderException if an unexpected error occurs.
+     * @throws UploadPersistenceException if an unexpected error occurs.
+     * @since 1.6.5
+     */
+    public Submission[] getSoftwareActiveSubmissions(long projectId, int submissionType) throws SearchBuilderException,
+                                                                       UploadPersistenceException;
 
     /**
      * <p>Creates specified review for software project.</p>
@@ -2509,6 +2578,16 @@ public interface ContestServiceFacade {
      * @since 1.6.3 
      */
     void createReview(Review review) throws ReviewManagementException;
+    
+    /**
+     * Gets all FileType entities.
+     *
+     * @return the found FileType entities, return empty if cannot find any.
+     * @throws ContestServiceException
+     *             if there are any exceptions.
+     * @since 1.6.4
+     */
+    public FileType[] getAllFileTypes() throws ContestServiceException;
     
     /**
      * <p>Selects copilot for specified TC Direct project.</p>
@@ -2545,4 +2624,46 @@ public interface ContestServiceFacade {
     public List<CopilotProject> updateCopilotProjects(TCSubject currentUser,
             List<CopilotProject> copilotProjects, List<Boolean> removeFlags)
             throws PermissionServiceException, ContestServiceException;
+    
+    /**
+     * <p>Gets the client feedback of the specified studio submission. The client feedback is the comment in the review board
+     * of the submission.</p>
+     *
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionId a <code>long</code> providing the ID of the submission.
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @return a <code>String</code> providing the client feedback of the submission.
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.5
+     */
+    public String getStudioSubmissionFeedback(TCSubject currentUser, long projectId, long submissionId, PhaseType phaseType) throws ContestServiceException ;
+    
+    /**
+     * <p>save the rank and client feedback for a specified submission. The reviewer is the current user. And the review board is assumed only have one
+     * question rating from 1 to 10. The client feedback is the comment in the review board.</p>
+     *
+     * @param tcSubject a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of a project.
+     * @param submissionId a <code>long</code> providing the ID of the submission.
+     * @param placement a <code>int</code> providing the placement of the submission.
+     * @param feedback a <code>String</code> providing the client feedback of the submission. Feedback will not changed if it is null.
+     * @param committed a <code>boolean</code> representing whether to commit the review board.
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.5
+     */
+    public void saveStudioSubmisionWithRankAndFeedback(TCSubject tcSubject, long projectId, long submissionId,
+            int placement, String feedback, Boolean committed, PhaseType phaseType)
+        throws ContestServiceException;
+    
+    /**
+     * <p>Update the software submissions.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param submissions a <code>List</code> providing the submissions to be updated.
+     * @throws ContestServiceException if any error occurs.
+     * @since 1.6.5
+     */
+    public void updateSoftwareSubmissions(TCSubject currentUser, List<Submission> submissions) throws ContestServiceException;
 }

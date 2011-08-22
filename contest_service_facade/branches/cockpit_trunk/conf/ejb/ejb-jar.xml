@@ -33,6 +33,42 @@
                 <env-entry-type>java.lang.String</env-entry-type>
                 <env-entry-value>uploadManagerKey</env-entry-value>
             </env-entry> 
+            
+            <env-entry>
+                <env-entry-name>payFlowUser</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payFlowUser@</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>payFlowPartner</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payFlowPartner@</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>payFlowVendor</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payFlowVendor@</env-entry-value>
+            </env-entry> 
+            <env-entry>
+                <env-entry-name>payFlowPassword</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.payFlowPassword@</env-entry-value>
+            </env-entry>
+			<env-entry>
+                <env-entry-name>forumBeanProviderUrl</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.forumBeanProviderUrl@</env-entry-value>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>studioForumBeanProviderUrl</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.studioForumBeanProviderUrl@</env-entry-value>
+            </env-entry>  
+            <env-entry>
+                <env-entry-name>createForum</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>@build-rep.contest_service_facade.createForum@</env-entry-value>
+            </env-entry> 
 			
 			<!-- Cockpit Release Assembly for Receipts -->
 			<env-entry>
