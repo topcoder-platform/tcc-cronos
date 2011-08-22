@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.project.service.impl;
 
@@ -26,6 +26,7 @@ import com.topcoder.management.project.ContestSale;
 import com.topcoder.management.project.BillingProjectConfigType;
 import com.topcoder.management.project.BillingProjectConfiguration;
 import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectPropertyType;
@@ -279,13 +280,54 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  * 
  * <p>
+ * Version 1.4.4 (TC Direct Replatforming Release 1) Change notes:
+ * <ul>
+ * <li>Add {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], Date, String)} method.</li>
+ * <li>Add {@link #createProjectWithTemplate(Project, com.topcoder.project.phases.Project, Resource[], Date, String)} method.</li>
+ * <li>Update {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], String)} method.</li>
+ * <li>Update {@link #createProjectWithTemplate(Project, com.topcoder.project.phases.Project, Resource[], String)} method.</li>
+ * <li>Add {@link #getAllFileTypes()} method.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * Version 1.4.5 (TC Direct Replatforming Release 2) Change notes:
+ * <ul>
+ * <li>Added {@link #getPhaseTemplateName(Project)} method.</li>
+ * <li>Added {@link #getLeftOutPhaseIds(Project, boolean, boolean, boolean)} method.</li>
+ * <li>Added {@link #adjustPhaseForMilestoneEndDate(com.topcoder.project.phases.Project, Date)} method.</li>
+ * <li>Added {@link #setNewPhasesProperties(Project, com.topcoder.project.phases.Project)} method.</li>
+ * <li>Updated {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], Date, String)} method to allow
+ * change the number of project rounds. When the number of rounds changes, the project phases need to reset.</li>
+ * <li>Updated {@link #createProjectWithTemplate(Project, com.topcoder.project.phases.Project, Resource[], Date, String) method to remove
+ * the duplicated code with {@link #updateProject(Project, String, com.topcoder.project.phases.Project, Resource[], Date, String)} method.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Version 1.4.6 (TC Direct Replatforming Release 2) Change notes:
+ * <ul>
+ * <li>Added {@link #getScorecardAndMilestoneReviews(long, long)} method.</li>
+ * <li>Added {@link #updateReview(Review)} method.</li>
+ * <li>Updated {@link #getScorecardAndReviews(long, long)} method.</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Version 1.4.7 (TCCC-3270) Change notes:
+ * <ul>
+ * <li>Updated {@link #setNewPhasesProperties(Project, Project, boolean)} method</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
  * <strong>Thread Safety:</strong> This class is immutable but operates on non thread safe objects,
  * thus making it potentially non thread safe.
  * </p>
  *
  * @author argolite, moonli, pulky
- * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv
- * @version 1.4.3
+ * @author fabrizyo, znyyddf, murphydog, waits, hohosky, isv, lmmortal
+ * @version 1.4.7
  * @since 1.0
  */
 public class ProjectServicesImpl implements ProjectServices {
@@ -422,7 +464,7 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     private static final String SCORECARD_ID_PHASE_ATTRIBUTE_KEY = "Scorecard ID";
 
-	 /**
+     /**
      * <p>
      * Represents the resource reviewer property name
      * </p>
@@ -1608,6 +1650,141 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
             com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, String operator) {
+        return updateProject(projectHeader, projectHeaderReason, projectPhases, projectResources, null, operator);
+    }
+
+    /**
+     * <p>
+     * Update the project and all related data. First it updates the projectHeader a
+     * com.topcoder.management.project.Project instance. All related items will be updated. If items
+     * are removed from the project, they will be deleted from the persistence. Likewise, if new
+     * items are added, they will be created in the persistence. For the project, its properties and
+     * associating scorecards, the operator parameter is used as the modification user and the
+     * modification date will be the current date time when the project is updated. See the source
+     * code of Project Management component, ProjectManager: there is a 'reason' parameter in
+     * updateProject method.
+     * </p>
+     * <p>
+     * Then it updates the phases a com.topcoder.project.phases.Project instance. The id of
+     * projectHeader previous saved must be equal to projectPhases' id. The
+     * projectPhases.phases.project's id must be equal to projectHeader's id. The phases of the
+     * specified project are compared to the phases already in the database. If any new phases are
+     * encountered, they are added to the persistent store. If any phases are missing from the
+     * input, they are deleted. All other phases are updated.
+     * </p>
+     * <p>
+     * At last it updates the resources, they can be empty. Any resources in the array with UNSET_ID
+     * are assigned an id and updated in the persistence. Any resources with an id already assigned
+     * are updated in the persistence. Any resources associated with the project in the persistence
+     * store, but not appearing in the array are removed. The resource.project must be equal to
+     * projectHeader's id. The resources which have a phase id assigned ( a resource could not have
+     * the phase id assigned), must have the phase id contained in the projectPhases.phases' ids.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectHeaderReason
+     *            the reason of projectHeader updating.
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null or projectHeader.id is nonpositive;</li>
+     *             <li>if projectHeaderReason is null or empty;</li>
+     *             <li>if projectPhases is null, or if the phases of projectPhases are empty, or if
+     *             the projectPhases.id is not equal to projectHeader.id, or for each phase: if the
+     *             phase.object is not equal to projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>for each resource: if resource.getResourceRole() is null, or if the resource
+     *             role is associated with a phase type but the resource is not associated with a
+     *             phase, or if the resource.phase (id of phase) is set but it's not in
+     *             projectPhases.phases' ids, or if the resource.project (project's id) is not equal
+     *             to projectHeader's id;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectDoesNotExistException
+     *             if the project doesn't exist in persistent store.
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the update operation
+     * @since 1.4.4
+     */
+    public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
+            com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, Date multiRoundEndDate, String operator) {
+        return updateProject(projectHeader, projectHeaderReason, projectPhases, projectResources, multiRoundEndDate, null, operator);
+    }
+    
+    /**
+     * <p>
+     * Update the project and all related data. First it updates the projectHeader a
+     * com.topcoder.management.project.Project instance. All related items will be updated. If items
+     * are removed from the project, they will be deleted from the persistence. Likewise, if new
+     * items are added, they will be created in the persistence. For the project, its properties and
+     * associating scorecards, the operator parameter is used as the modification user and the
+     * modification date will be the current date time when the project is updated. See the source
+     * code of Project Management component, ProjectManager: there is a 'reason' parameter in
+     * updateProject method.
+     * </p>
+     * <p>
+     * Then it updates the phases a com.topcoder.project.phases.Project instance. The id of
+     * projectHeader previous saved must be equal to projectPhases' id. The
+     * projectPhases.phases.project's id must be equal to projectHeader's id. The phases of the
+     * specified project are compared to the phases already in the database. If any new phases are
+     * encountered, they are added to the persistent store. If any phases are missing from the
+     * input, they are deleted. All other phases are updated.
+     * </p>
+     * <p>
+     * At last it updates the resources, they can be empty. Any resources in the array with UNSET_ID
+     * are assigned an id and updated in the persistence. Any resources with an id already assigned
+     * are updated in the persistence. Any resources associated with the project in the persistence
+     * store, but not appearing in the array are removed. The resource.project must be equal to
+     * projectHeader's id. The resources which have a phase id assigned ( a resource could not have
+     * the phase id assigned), must have the phase id contained in the projectPhases.phases' ids.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectHeaderReason
+     *            the reason of projectHeader updating.
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null or projectHeader.id is nonpositive;</li>
+     *             <li>if projectHeaderReason is null or empty;</li>
+     *             <li>if projectPhases is null, or if the phases of projectPhases are empty, or if
+     *             the projectPhases.id is not equal to projectHeader.id, or for each phase: if the
+     *             phase.object is not equal to projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>for each resource: if resource.getResourceRole() is null, or if the resource
+     *             role is associated with a phase type but the resource is not associated with a
+     *             phase, or if the resource.phase (id of phase) is set but it's not in
+     *             projectPhases.phases' ids, or if the resource.project (project's id) is not equal
+     *             to projectHeader's id;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectDoesNotExistException
+     *             if the project doesn't exist in persistent store.
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the update operation
+     * @since 1.4.7
+     */
+    public FullProjectData updateProject(Project projectHeader, String projectHeaderReason,
+            com.topcoder.project.phases.Project projectPhases, Resource[] projectResources, Date multiRoundEndDate, Date endDate, String operator) {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#updateProject method.");
 
         // check projectHeader
@@ -1633,6 +1810,13 @@ public class ProjectServicesImpl implements ProjectServices {
         ExceptionUtils.checkNullOrEmpty(operator, null, null, "The parameter[operator] should not be null or empty.");
 
         try {
+            boolean hasMultiRoundBefore = false;
+            for (Phase phase : projectPhases.getAllPhases()) {
+                if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
+                    hasMultiRoundBefore = true;
+                    break;
+                }
+            }
             // get the project calling projectManager.getProject(projectHeader.getId())
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#createProject method.");
             Project project = projectManager.getProject(projectHeader.getId());
@@ -1670,73 +1854,156 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
+            if (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+                // Studio contest has no approval phase
+                requireApproval = false;
+            }
             projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
                     .valueOf(requireApproval));
 
-
+            boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
+            
+            boolean needResetPhases = hasMultiRoundBefore != (multiRoundEndDate != null); 
+            if (needResetPhases) {
+                // need to reset the project phases
+                long[] leftOutPhaseIds = getLeftOutPhaseIds(projectHeader, requireApproval, requireSpecReview, multiRoundEndDate != null);
+                String templateName = getPhaseTemplateName(projectHeader);
+                if (templateName == null) {
+                    throw new PhaseTemplateException("No template found for type " + projectHeader.getProjectCategory().getProjectType().getName()
+                            + " or category " + projectHeader.getProjectCategory().getName());
+                }
+                com.topcoder.project.phases.Project newProjectPhases = template.applyTemplate(templateName, leftOutPhaseIds,
+                        PhaseType.REGISTRATION_PHASE.getId(), PhaseType.REGISTRATION_PHASE.getId(), projectPhases.getStartDate(), projectPhases.getStartDate());
+                if (multiRoundEndDate != null) {
+                    adjustPhaseForEndDate(PhaseType.MILESTONE_SUBMISSION_PHASE, newProjectPhases, multiRoundEndDate);
+                }
+                if (endDate != null) {
+                    adjustPhaseForEndDate(PhaseType.SUBMISSION_PHASE, newProjectPhases, endDate);
+                }
+                setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
+                newProjectPhases.setId(projectPhases.getId());
+                for (Phase phase : newProjectPhases.getAllPhases()) {
+                    phase.setProject(newProjectPhases);
+                    phase.setId(0);
+                }
+                projectPhases = newProjectPhases;
+            }
+            
             // call projectManager.updateProject(projectHeader,projectHeaderReason,operator)
             Util.log(logger, Level.DEBUG, "Starts calling ProjectManager#updateProject method.");
             projectManager.updateProject(projectHeader, projectHeaderReason, operator);
             Util.log(logger, Level.DEBUG, "Finished calling ProjectManager#updateProject method.");
 
-
-            // recalcuate phase dates in case project start date changes
-            Phase[] phases = projectPhases.getAllPhases();
-            Map phasesMap = new HashMap();
-            
-             for (Phase p : phases) {
-                        phasesMap.put(new Long(p.getId()), p);
-                        p.setScheduledStartDate(null);
-                        p.setScheduledEndDate(null);
-                        p.setFixedStartDate(null);
-             }
-             phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
-            
-
-            for (Phase p : phases) {
-                        p.setScheduledStartDate(p.calcStartDate());
-                        p.setScheduledEndDate(p.calcEndDate());
-                        // only set Reg with fixed dates
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
-                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
-                        {
-                            p.setFixedStartDate(p.calcStartDate());
+            if (!needResetPhases) {
+                // recalcuate phase dates in case project start date changes
+                Phase[] phases = projectPhases.getAllPhases();
+                Map phasesMap = new HashMap();
+                
+                 for (Phase p : phases) {
+                            phasesMap.put(new Long(p.getId()), p);
+                            p.setScheduledStartDate(null);
+                            p.setScheduledEndDate(null);
+                            p.setFixedStartDate(null);
+                 }
+                 phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+                
+    
+                for (Phase p : phases) {
+                            p.setScheduledStartDate(p.calcStartDate());
+                            p.setScheduledEndDate(p.calcEndDate());
+                            // only set Reg with fixed dates
+                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                                  || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+                            {
+                                p.setFixedStartDate(p.calcStartDate());
+                            }
+                }
+    
+               
+    
+                long diff = 0;
+                for (Phase p : phases) {
+                            phasesMap.put(new Long(p.getId()), p);
+                            // check the diff between project start date and reg phase start date
+                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
+                                    diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
+                            }
+                 }
+    
+    
+                
+                // adjust project start date so reg start date is the passed project start date
+                projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
+    
+                for (Phase p : phases) {
+                            phasesMap.put(new Long(p.getId()), p);
+                            p.setScheduledStartDate(null);
+                            p.setScheduledEndDate(null);
+                            p.setFixedStartDate(null);
+                }
+                phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
+                
+                if (multiRoundEndDate != null) {
+                    // multiround phase duration
+                    Util.log(logger, Level.INFO, "set duration for multi round phase");
+                    Phase multiRoundPhase = null;
+                    for (Phase phase : phases) {
+                        if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
+                            multiRoundPhase = phase;
+                            break;
                         }
-            }
-
-           
-
-            long diff = 0;
-            for (Phase p : phases) {
-                        phasesMap.put(new Long(p.getId()), p);
-                        // check the diff between project start date and reg phase start date
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
-                                diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
+                    }
+                    if (multiRoundPhase != null) {
+                        Date scheduler = multiRoundPhase.calcEndDate();
+                        diff = multiRoundEndDate.getTime() - scheduler.getTime();
+                        Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
+                        multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+                    }
+                }
+                if (endDate != null) {
+                    // submission phase duration
+                    Util.log(logger, Level.INFO, "set duration for submission phase");
+                    Phase submissionPhase = null;
+                    Phase registrationPhase = null;
+                    for (Phase phase : phases) {
+                        if (phase.getPhaseType().getId() == PhaseType.SUBMISSION_PHASE.getId()) {
+                            submissionPhase = phase;
+                            break;
                         }
-             }
+                    }
 
-
-            
-            // adjust project start date so reg start date is the passed project start date
-            projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
-
-            for (Phase p : phases) {
-                        phasesMap.put(new Long(p.getId()), p);
-                        p.setScheduledStartDate(null);
-                        p.setScheduledEndDate(null);
-                        p.setFixedStartDate(null);
-            }
-            phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
-
-            for (Phase p : phases) {
-                        p.setScheduledStartDate(p.calcStartDate());
-                        p.setScheduledEndDate(p.calcEndDate());
-                        // only set Reg with fixed dates
-                        if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
-                              || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
-                        {
-                            p.setFixedStartDate(p.calcStartDate());
+                    for (Phase phase : phases) {
+                        if (phase.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {
+                            registrationPhase = phase;
+                            break;
                         }
+                    }
+
+                    if (submissionPhase != null) {
+                        Date scheduler = submissionPhase.calcEndDate();
+                        diff = endDate.getTime() - scheduler.getTime();
+                        Util.log(logger, Level.INFO, "submissionPhase pase diff date:" + diff);
+                        submissionPhase.setLength(submissionPhase.getLength() + diff);
+                    }
+
+                    if (registrationPhase != null) {
+                        Date scheduler = registrationPhase.calcEndDate();
+                        diff = endDate.getTime() - scheduler.getTime();
+                        Util.log(logger, Level.INFO, "registrationPhase pase diff date:" + diff);
+                        registrationPhase.setLength(submissionPhase.getLength() + diff);
+                    }
+                }
+    
+                for (Phase p : phases) {
+                            p.setScheduledStartDate(p.calcStartDate());
+                            p.setScheduledEndDate(p.calcEndDate());
+                            // only set Reg with fixed dates
+                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
+                                  || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+                            {
+                                p.setFixedStartDate(p.calcStartDate());
+                            }
+                }
             }
 
           
@@ -2217,7 +2484,123 @@ public class ProjectServicesImpl implements ProjectServices {
      */
     public FullProjectData createProjectWithTemplate( Project projectHeader, com.topcoder.project.phases.Project projectPhases,
             Resource[] projectResources, String operator) {
-
+        return createProjectWithTemplate(projectHeader, projectPhases, projectResources, null, operator);
+    }
+    
+    /**
+     * <p>
+     * Persist the project and all related data. All ids (of project header, project phases and
+     * resources) will be assigned as new, for this reason there is no exception like 'project
+     * already exists'.
+     * </p>
+     * <p>
+     * First it persist the projectHeader a com.topcoder.management.project.Project instance. Its
+     * properties and associating scorecards, the operator parameter is used as the
+     * creation/modification user and the creation date and modification date will be the current
+     * date time when the project is created. The id in Project will be ignored: a new id will be
+     * created using ID Generator (see Project Management CS). This id will be set to Project
+     * instance.
+     * </p>
+     * <p>
+     * Then it persist the phases a com.topcoder.project.phases.Project instance. The id of project
+     * header previous saved will be set to project Phases. The phases' ids will be set to 0 (id not
+     * set) and then new ids will be created for each phase after persist operation.
+     * </p>
+     * <p>
+     * At last it persist the resources, they can be empty.The id of project header previous saved
+     * will be set to resources. The ids of resources' phases ids must be null. See &quot;id problem
+     * with resources&quot; thread in design forum. The resources could be empty or null, null is
+     * treated like empty: no resources are saved. The resources' ids will be set to UNSET_ID of
+     * Resource class and therefore will be persisted as new resources's.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null;</li>
+     *             <li>if projectPhases is null;</li>
+     *             <li>if the project of phases (for each phase: phase.project) is not equal to
+     *             projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>if for each resources: a required field of the resource is not set : if
+     *             resource.getResourceRole() is null;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the create operation
+     * @since 1.4.4
+     */
+    public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+            Resource[] projectResources, Date multiRoundEndDate, String operator) {
+        return createProjectWithTemplate(projectHeader, projectPhases, projectResources, multiRoundEndDate, null, operator);
+    }
+    
+    /**
+     * <p>
+     * Persist the project and all related data. All ids (of project header, project phases and
+     * resources) will be assigned as new, for this reason there is no exception like 'project
+     * already exists'.
+     * </p>
+     * <p>
+     * First it persist the projectHeader a com.topcoder.management.project.Project instance. Its
+     * properties and associating scorecards, the operator parameter is used as the
+     * creation/modification user and the creation date and modification date will be the current
+     * date time when the project is created. The id in Project will be ignored: a new id will be
+     * created using ID Generator (see Project Management CS). This id will be set to Project
+     * instance.
+     * </p>
+     * <p>
+     * Then it persist the phases a com.topcoder.project.phases.Project instance. The id of project
+     * header previous saved will be set to project Phases. The phases' ids will be set to 0 (id not
+     * set) and then new ids will be created for each phase after persist operation.
+     * </p>
+     * <p>
+     * At last it persist the resources, they can be empty.The id of project header previous saved
+     * will be set to resources. The ids of resources' phases ids must be null. See &quot;id problem
+     * with resources&quot; thread in design forum. The resources could be empty or null, null is
+     * treated like empty: no resources are saved. The resources' ids will be set to UNSET_ID of
+     * Resource class and therefore will be persisted as new resources's.
+     * </p>
+     *
+     * @param projectHeader
+     *            the project's header, the main project's data
+     * @param projectPhases
+     *            the project's phases
+     * @param projectResources
+     *            the project's resources, can be null or empty, can't contain null values. Null is
+     *            treated like empty.
+     * @param multiRoundEndDate the end date for the multiround phase. No multiround if it's null.
+     * @param endDate the end date for submission phase.
+     * @param operator
+     *            the operator used to audit the operation, can be null but not empty
+     * @throws IllegalArgumentException
+     *             if any case in the following occurs:
+     *             <ul>
+     *             <li>if projectHeader is null;</li>
+     *             <li>if projectPhases is null;</li>
+     *             <li>if the project of phases (for each phase: phase.project) is not equal to
+     *             projectPhases;</li>
+     *             <li>if projectResources contains null entries;</li>
+     *             <li>if for each resources: a required field of the resource is not set : if
+     *             resource.getResourceRole() is null;</li>
+     *             <li>if operator is null or empty;</li>
+     *             </ul>
+     * @throws ProjectServicesException
+     *             if there is a system error while performing the create operation
+     * @since 1.4.7
+     */
+    public FullProjectData createProjectWithTemplate(Project projectHeader, com.topcoder.project.phases.Project projectPhases,
+            Resource[] projectResources, Date multiRoundEndDate, Date endDate, String operator) {
         Util.log(logger, Level.INFO, "Enters ProjectServicesImpl#createProjectWithTemplate method.");
 
         ExceptionUtils.checkNull(projectHeader, null, null, "The parameter[projectHeader] should not be null.");
@@ -2225,36 +2608,7 @@ public class ProjectServicesImpl implements ProjectServices {
         // check projectPhases
         ExceptionUtils.checkNull(projectPhases, null, null, "The parameter[projectPhases] should not be null.");
         try {
-            String category = projectHeader.getProjectCategory().getName();
-            String type = projectHeader.getProjectCategory().getProjectType().getName();
-
-            String[] templates = template.getAllTemplateNames();
-
-            String templateName = null;
-            boolean categoryMatch = false;
-            for (String t : templates )
-            {
-                if (category.equalsIgnoreCase(t))
-                {
-                    templateName = t;
-                    categoryMatch = true;
-                    break;
-                }
-            }
-
-            if (!categoryMatch)
-            {
-                for (String t : templates )
-                {
-                    if (type.equalsIgnoreCase(t))
-                    {
-                        templateName = t;
-                        break;
-                    }
-                }
-
-            }
-
+            String templateName = getPhaseTemplateName(projectHeader);
 
              // Start BUGR-3616
             // get billing project id from the project information
@@ -2268,131 +2622,36 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
+            if (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+                // Studio contest has no approval phase
+                requireApproval = false;
+            }
 
 
             boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
 
-            List<Long> leftoutphases = new ArrayList<Long>();
-
-            if (!requireApproval)
-            {
-                leftoutphases.add(new Long(PhaseType.APPROVAL_PHASE.getId()));
-            }
-
-            if (!requireSpecReview || (projectHeader.getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID && !projectHeader.isDevOnly()))
-            {
-                leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
-                leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
-            }
-
-            long[] leftOutPhaseIds = new long[leftoutphases.size()];
-
-            if (leftoutphases.size() > 0)
-            {
-                int i = 0;
-                for (Long phaseId : leftoutphases )
-                {
-                    leftOutPhaseIds[i++] = phaseId.longValue();
-                }
-            }
+            long[] leftOutPhaseIds = getLeftOutPhaseIds(projectHeader, requireApproval, requireSpecReview, multiRoundEndDate != null);
 
             if (templateName == null)
             {
-                throw new PhaseTemplateException("No template found for type "+ type+" or category "+category);
+                throw new PhaseTemplateException("No template found for type " + projectHeader.getProjectCategory().getProjectType().getName()
+                        + " or category " + projectHeader.getProjectCategory().getName());
             }
             // apply a template with name category with a given start date
             com.topcoder.project.phases.Project newProjectPhases = template
                     .applyTemplate(templateName, leftOutPhaseIds, PhaseType.REGISTRATION_PHASE.getId(), PhaseType.REGISTRATION_PHASE.getId(), projectPhases.getStartDate(), projectPhases.getStartDate());
 
-            long screenTemplateId = 0L;
-            long reviewTemplateId = 0L;
-            long approvalTemplateId = 0L;
-            long specReviewTemplateId = 0L;
-            long projectTypeId = projectHeader.getProjectCategory().getId();
-
-            try
-            {
-                screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
-                reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
-                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
-                specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
+            if (multiRoundEndDate != null) {
+                // multiround phase duration
+                adjustPhaseForEndDate(PhaseType.MILESTONE_SUBMISSION_PHASE, newProjectPhases, multiRoundEndDate);
             }
-            catch (Exception e)
-            {
-                //TODO default to user spec (6) for now
-                Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
-                screenTemplateId = projectManager.getScorecardId(6, 1);
-                reviewTemplateId = projectManager.getScorecardId(6, 2);
-                approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
-                specReviewTemplateId = projectManager.getScorecardId(6, 5);
+            if (endDate != null) {
+                // submission phase duration
+                adjustPhaseForEndDate(PhaseType.SUBMISSION_PHASE, newProjectPhases, endDate);
+                adjustPhaseForEndDate(PhaseType.REGISTRATION_PHASE, newProjectPhases, endDate);
             }
 
-           
-            // set the project info of type "Approval Required"
-            projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
-                    .valueOf(requireApproval));
-            // End BUGR-3616
-            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
-
-            projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.RELIABILITY_BONUS_ELIGIBLE)));
-
-            projectHeader.setProperty(ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.MEMBER_PAYMENT_ELIGIBLE)));
-
-            projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
-
-            projectHeader.setProperty(ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.TRACK_LATE_DELIVERABLES)));
-
-
-            for (Phase p : newProjectPhases.getAllPhases()) {
-                    p.setPhaseStatus(PhaseStatus.SCHEDULED);
-                    p.setScheduledStartDate(p.calcStartDate());
-                    p.setScheduledEndDate(p.calcEndDate());
-                    if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId() 
-                        || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
-                    {
-                        p.setFixedStartDate(p.calcStartDate());
-                    }
-                    
-
-                    if (p.getPhaseType().getName().equals(PhaseType.REGISTRATION_PHASE.getName()))
-                    {
-                        p.setAttribute("Registration Number", "0");
-                    }
-                    else if (p.getPhaseType().getName().equals(PhaseType.SCREENING_PHASE.getName()))
-                    {
-                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
-                    }
-                    else if (p.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName()))
-                    {
-                        p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
-                        if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
-                            // copilot posting only requires one reviewer.
-                            p.setAttribute("Reviewer Number", "1");
-                        } else {
-                            p.setAttribute("Reviewer Number", "3");
-                        }
-                    }
-                    else if (p.getPhaseType().getName().equals("Appeals"))
-                    {
-                        p.setAttribute("View Response During Appeals", "No");
-                    }
-                    else if (p.getPhaseType().getName().equals("Approval"))
-                    {
-                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
-                       p.setAttribute("Reviewer Number", "1");
-                    }
-                    else if (p.getPhaseType().getName().equals("Specification Review"))
-                    {
-                       p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(specReviewTemplateId));
-                       p.setAttribute("Reviewer Number", "1");
-                    }
-            }
-
+            setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
 
             return this.createProject(projectHeader, newProjectPhases, projectResources, operator);
 
@@ -2420,6 +2679,7 @@ public class ProjectServicesImpl implements ProjectServices {
             Util.log(logger, Level.INFO, "Exits ProjectServicesImpl#createProjectWithTemplate method.");
         }
     }
+    
     /**
      * <p>
      * Get SimpleProjectContestData for all projects.
@@ -3689,35 +3949,30 @@ public class ProjectServicesImpl implements ProjectServices {
 
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.
-     * Note: a single reviewer / review is assumed.
      *
      * @param projectId the project id to search for.
-     * @param reviewerId the reviewer ID.
+     * @param reviewerResourceId the reviewer resource ID.
+     * @param phaseType the phase type of the review to search for.
      * @return the aggregated scorecard and review data.
-     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
-     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
-     * @since 1.4.3
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @since 1.4.6
      */
-    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerId) 
+    private List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerResourceId, PhaseType phaseType)
         throws ProjectServicesException {
-        String method = "ProjectServicesImpl#getScorecardAndReviews(" + projectId + ") method.";
-
+        String method = "ProjectServicesImpl#getScorecardAndReviews method.";
+        
         List<ScorecardReviewData> scorecardReviewData = new ArrayList<ScorecardReviewData>();
 
         log(Level.INFO, "Enters " + method);
         try {
-            // Build resources filter
-            Filter filterProject = ResourceFilterBuilder.createProjectIdFilter(projectId);
-            Filter filterRole = ResourceFilterBuilder.createResourceRoleIdFilter(ResourceRole.RESOURCE_ROLE_REVIEWER_ID);
-            Filter filterRoles = new AndFilter(Arrays.asList(filterProject, filterRole));
-
-            // Search for the reviewers
-            Resource[] reviewers = resourceManager.searchResources(filterRoles);
-            if (reviewers.length > 1) {
-                throw new ProjectServicesException("Invalid number of reviewers found: " + reviewers.length);
+            // Search for the milestone reviewers
+            Resource reviewer = resourceManager.getResource(reviewerResourceId);
+            if (reviewer == null) {
+                throw new ProjectServicesException("Can not find the reviewer.");
             }
-
-            Filter filterReviewer = new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewers[0].getId());
+            Filter filterReviewer = new AndFilter(
+                    new EqualToFilter(RESOURCE_REVIEWER_PROPERTY, reviewer.getId()),
+                    new EqualToFilter("project", String.valueOf(projectId)));
             Review[] reviews = reviewManager.searchReviews(filterReviewer, true);
             for (int i = 0; i < reviews.length; i++) {
                 Review review = reviews[i];
@@ -3735,7 +3990,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     Iterator<Phase> iter = phases.iterator();
                     while (iter.hasNext() && scorecardId < 0) {
                         Phase phase = iter.next();
-                        if (phase.getPhaseType().getName().equals(PhaseType.REVIEW_PHASE.getName())) {
+                        if (phase.getPhaseType().getName().equals(phaseType.getName())) {
                             scorecardId = Long.parseLong(phase.getAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY).toString());
                         }
                     }
@@ -3748,7 +4003,6 @@ public class ProjectServicesImpl implements ProjectServices {
                 data.setScorecard(scorecardManager.getScorecard(scorecardId));
                 scorecardReviewData.add(data);
             }
-
         } catch (ReviewManagementException ex) {
             log(Level.ERROR, "ReviewManagementException occurred in " + method);
             throw new ProjectServicesException("ReviewManagementException occurred when operating Review Manager.", ex);
@@ -3762,9 +4016,6 @@ public class ProjectServicesImpl implements ProjectServices {
         } catch (PhaseManagementException ex) {
             log(Level.ERROR, "PhaseManagementException occurred in " + method);
             throw new ProjectServicesException("PhaseManagementException occurred when operating Phase Manager.", ex);
-        } catch (SearchBuilderException ex) {
-            log(Level.ERROR, "SearchBuilderException occurred in " + method);
-            throw new ProjectServicesException("SearchBuilderException occurred when operating Search Builder.", ex);
         } finally {
             Util.log(logger, Level.INFO, "Exits " + method);
         }
@@ -3772,6 +4023,35 @@ public class ProjectServicesImpl implements ProjectServices {
         return scorecardReviewData;
     }
 
+    /**
+     * This method retrieves milestone scorecard and milestone review information associated to a project determined by parameter.
+     *
+     * @param projectId the project id to search for.
+     * @param reviewerResourceId the reviewer resource ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services.
+     * @since 1.4.6
+     */
+    public List<ScorecardReviewData> getScorecardAndMilestoneReviews(long projectId, long reviewerResourceId)
+        throws ProjectServicesException {
+        return getScorecardAndReviews(projectId, reviewerResourceId, PhaseType.MILESTONE_REVIEW_PHASE);
+    }
+    
+    /**
+     * This method retrieves scorecard and review information associated to a project determined by parameter.
+     * Note: a single reviewer / review is assumed.
+     *
+     * @param projectId the project id to search for.
+     * @param reviewerResourceId the reviewer ID.
+     * @return the aggregated scorecard and review data.
+     * @throws ProjectServicesException if any unexpected error occurs in the underlying services, if an invalid
+     * number of reviewers or reviews are found or if the code fails to retrieve scorecard id.
+     * @since 1.4.3
+     */
+    public List<ScorecardReviewData> getScorecardAndReviews(long projectId, long reviewerResourceId) 
+        throws ProjectServicesException {
+        return getScorecardAndReviews(projectId, reviewerResourceId, PhaseType.REVIEW_PHASE);
+    }
 
     /**
      * This method retrieves scorecard and review information associated to a project determined by parameter.
@@ -3873,6 +4153,20 @@ public class ProjectServicesImpl implements ProjectServices {
     }
 
     /**
+     * <p>Updates specified review for software project.</p>
+     *
+     * @param review a <code>Review</code> providing the details for review to be updated.
+     * @throws ReviewManagementException if an unexpected error occurs.
+     * @since 1.4.6
+     */
+    public void updateReview(Review review) throws ReviewManagementException {
+        if (review == null) {
+            throw new IllegalArgumentException("The parameter [review] is NULL");
+        }
+        reviewManager.updateReview(review, review.getCreationUser());
+    }
+
+    /**
      * <p>
      * Converts specified <code>XMLGregorianCalendar</code> instance into
      * <code>Date</code> instance.
@@ -3950,22 +4244,22 @@ public class ProjectServicesImpl implements ProjectServices {
     {
 
         log(Level.INFO,
-				"Enters ProjectServicesImpl#getProject method.");
+                "Enters ProjectServicesImpl#getProject method.");
 
-		Project project = null;
-		try {
-			project = projectManager.getProject(projectId);
-		} catch (PersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ProjectServicesException occurred in ProjectServicesImpl#getProject method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating getProject.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getProject method.");
-		return project;
+        Project project = null;
+        try {
+            project = projectManager.getProject(projectId);
+        } catch (PersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ProjectServicesException occurred in ProjectServicesImpl#getProject method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating getProject.",
+                    ex);
+        } 
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getProject method.");
+        return project;
     }
 
 
@@ -3980,22 +4274,22 @@ public class ProjectServicesImpl implements ProjectServices {
     public ResourceRole[] getAllResourceRoles() throws ProjectServicesException
     {
         log(Level.INFO,
-				"Enters ProjectServicesImpl#getAllResourceRoles method.");
+                "Enters ProjectServicesImpl#getAllResourceRoles method.");
 
-		ResourceRole[] allroles = null;
-		try {
-			allroles = resourceManager.getAllResourceRoles();
-		} catch (ResourcePersistenceException ex) {
-			log(
-					Level.ERROR,
-					"ResourcePersistenceException occurred in ProjectServicesImpl#getAllResourceRoles method.");
-			throw new ProjectServicesException(
-					"PersistenceException occurred when operating getAllResourceRoles.",
-					ex);
-		} 
-		log(Level.INFO,
-				"Exits ProjectServicesImpl#getAllResourceRoles method.");
-		return allroles;
+        ResourceRole[] allroles = null;
+        try {
+            allroles = resourceManager.getAllResourceRoles();
+        } catch (ResourcePersistenceException ex) {
+            log(
+                    Level.ERROR,
+                    "ResourcePersistenceException occurred in ProjectServicesImpl#getAllResourceRoles method.");
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when operating getAllResourceRoles.",
+                    ex);
+        } 
+        log(Level.INFO,
+                "Exits ProjectServicesImpl#getAllResourceRoles method.");
+        return allroles;
 
     }
 
@@ -4176,4 +4470,215 @@ public class ProjectServicesImpl implements ProjectServices {
         }
     }
 
+    /**
+     * Gets all FileType entities.
+     *
+     * @return the found FileType entities, return empty if cannot find any.
+     * @throws ProjectServicesException
+     *             if there are any exceptions.
+     * @since 1.4.4
+     */
+    public FileType[] getAllFileTypes() throws ProjectServicesException {
+        log(Level.INFO, "Enters ProjectServicesImpl#getAllFileTypes method.");
+
+
+        try {
+            return projectManager.getAllFileTypes();
+        } catch (PersistenceException ex) {
+            log(Level.ERROR,
+                    "PersistenceException occurred in ProjectServicesImpl#getAllFileTypes method." + ex);
+            throw new ProjectServicesException(
+                    "PersistenceException occurred when getAllFileTypes",
+                    ex);
+        }
+    }
+
+    /**
+     * Gets the phase template name which should be applied to the given project.
+     *
+     * @param projectHeader the given project.
+     * @return the phase template name which should be applied to the project.
+     * @since 1.4.5
+     */
+    private String getPhaseTemplateName(Project projectHeader) {
+        String category = projectHeader.getProjectCategory().getName();
+        String type = projectHeader.getProjectCategory().getProjectType().getName();
+        
+        String[] templates = template.getAllTemplateNames();
+        for (String t : templates) {
+            if (category.equalsIgnoreCase(t)) {
+                return t;
+            }
+        }
+        for (String t : templates) {
+            if (type.equalsIgnoreCase(t)) {
+                return t;
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * Gets the phase ids which should be removed from the given project.
+     * 
+     * @param projectHeader the given project.
+     * @param requireApproval is approval phase required.
+     * @param requireSpecReview is specification review phase required.
+     * @param requireMultiRound is milestone phases required.
+     * @return the phase ids which should be removed from the given project.
+     * @since 1.4.5
+     */
+    private static long[] getLeftOutPhaseIds(Project projectHeader, boolean requireApproval, boolean requireSpecReview, boolean requireMultiRound) {
+        List<Long> leftoutphases = new ArrayList<Long>();
+
+        if (!requireApproval) {
+            leftoutphases.add(new Long(PhaseType.APPROVAL_PHASE.getId()));
+        }
+
+        if (!requireSpecReview || (projectHeader.getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID && !projectHeader.isDevOnly())) {
+            leftoutphases.add(new Long(PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId()));
+            leftoutphases.add(new Long(PhaseType.SPECIFICATION_REVIEW_PHASE.getId()));
+        }
+        
+        if (!requireMultiRound) {
+            // no multiround phases
+            leftoutphases.add(PhaseType.MILESTONE_SUBMISSION_PHASE.getId());
+            leftoutphases.add(PhaseType.MILESTONE_SCREENING_PHASE.getId());
+            leftoutphases.add(PhaseType.MILESTONE_REVIEW_PHASE.getId());
+        }
+
+        long[] leftOutPhaseIds = new long[leftoutphases.size()];
+
+        if (leftoutphases.size() > 0) {
+            int i = 0;
+            for (Long phaseId : leftoutphases ) {
+                leftOutPhaseIds[i++] = phaseId.longValue();
+            }
+        }
+        return leftOutPhaseIds;
+    }
+
+    /**
+     * Adjust the duration of the phase to meet the specified end date.
+     *
+     * @param phaseType the phase type to adjust
+     * @param project the project phases
+     * @param endDate the specified end date. 
+     * @since 1.4.5
+     */
+    private static void adjustPhaseForEndDate(PhaseType phaseType, com.topcoder.project.phases.Project project, Date endDate) {
+        Phase targetPhase = null;
+        for (Phase phase : project.getAllPhases()) {
+            if (phase.getPhaseType().getId() == phaseType.getId()) {
+                targetPhase = phase;
+                break;
+            }
+        }
+        if (targetPhase != null) {
+            Date scheduler = targetPhase.calcEndDate();
+            long diff = endDate.getTime() - scheduler.getTime();
+            targetPhase.setLength(targetPhase.getLength() + diff);
+        }
+    }
+
+    /**
+     * Set the default properties for the given phases.
+     *
+     * @param projectHeader the given project which the phases belong to.
+     * @param projectPhases the given phases.
+     * @param multiRound flag representing where contest is multi-round contest.
+     * @throws PersistenceException if any error occurs.
+     * @since 1.4.5
+     */
+    private void setNewPhasesProperties(Project projectHeader, 
+            com.topcoder.project.phases.Project projectPhases, boolean multiRound) throws PersistenceException {
+        long screenTemplateId = 0L;
+        long reviewTemplateId = 0L;
+        long approvalTemplateId = 0L;
+        long specReviewTemplateId = 0L;
+        long milestoneScreenTemplateId = 0L;
+        long milestoneReviewTemplateId = 0L;
+
+        try
+        {
+            screenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 1);
+            reviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 2);
+            approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+            specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
+            if (multiRound) 
+            {
+                milestoneScreenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 6);
+                milestoneReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 7);
+            }
+        }
+        catch (Exception e)
+        {
+            //TODO default to user spec (6) for now
+            Util.log(logger, Level.INFO, "Default scorecard not found for project type " + projectHeader.getProjectCategory().getId() + ", used project type 6 as default");
+            screenTemplateId = projectManager.getScorecardId(6, 1);
+            reviewTemplateId = projectManager.getScorecardId(6, 2);
+            approvalTemplateId = projectManager.getScorecardId(ProjectCategory.GENERIC_SCORECARDS.getId(), 3);
+            specReviewTemplateId = projectManager.getScorecardId(6, 5);
+            if (multiRound)
+            {
+	            milestoneScreenTemplateId = projectManager.getScorecardId(6, 6);
+	            milestoneReviewTemplateId = projectManager.getScorecardId(6, 7);
+            }
+        }
+
+        for (Phase p : projectPhases.getAllPhases()) {
+            p.setPhaseStatus(PhaseStatus.SCHEDULED);
+            p.setScheduledStartDate(p.calcStartDate());
+            p.setScheduledEndDate(p.calcEndDate());
+            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId() 
+                || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+            {
+                p.setFixedStartDate(p.calcStartDate());
+            }
+            
+
+            if (p.getPhaseType().getName().equals(PhaseType.REGISTRATION_PHASE.getName()))
+            {
+                p.setAttribute("Registration Number", "0");
+            }
+            else if (p.getPhaseType().getName().equals("Screening"))
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(screenTemplateId));
+            }
+            else if (p.getPhaseType().getName().equals("Milestone Screening")) 
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(milestoneScreenTemplateId));
+            }
+            else if (p.getPhaseType().getName().equals("Review"))
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
+                if (projectHeader.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId() ||
+                        projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+                    // copilot and studio posting only requires one reviewer.
+                    p.setAttribute("Reviewer Number", "1");
+                } else {
+                    p.setAttribute("Reviewer Number", "3");
+                }
+            }
+            else if (p.getPhaseType().getName().equals("Milestone Review")) 
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(milestoneReviewTemplateId));
+            }
+            else if (p.getPhaseType().getName().equals("Appeals"))
+            {
+                p.setAttribute("View Response During Appeals", "No");
+            }
+            else if (p.getPhaseType().getName().equals("Approval"))
+            {
+               p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(approvalTemplateId));
+               p.setAttribute("Reviewer Number", "1");
+            }
+            else if (p.getPhaseType().getName().equals("Specification Review"))
+            {
+               p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(specReviewTemplateId));
+               p.setAttribute("Reviewer Number", "1");
+            }
+        }
+    }
 }
