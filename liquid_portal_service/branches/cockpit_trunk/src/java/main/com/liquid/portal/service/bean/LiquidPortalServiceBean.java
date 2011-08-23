@@ -1972,7 +1972,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     {
                         projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
                     }
-                    devHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    devHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
                     devHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     devHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
                     devHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
@@ -1989,7 +1989,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     {
                         projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
                     }
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "30");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
                     projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
@@ -2023,7 +2023,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     {
                         projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
                     }
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
                     projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "325");
@@ -2040,7 +2040,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     {
                         projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "1500");
                     }
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
                     projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "525");
@@ -2142,7 +2142,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                     {
                         projectHeader.getProperties().put(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY, "2000");
                     }
-                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "263");
+                    projectHeader.getProperties().put(ProjectPropertyType.DR_POINTS_PROJECT_PROPERTY_KEY, "225");
                     projectHeader.getProperties().put(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY, "50");
                     projectHeader.getProperties().put(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY, String.valueOf(competitionData.getBillingProjectId()));
                     projectHeader.getProperties().put(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY, "325");
