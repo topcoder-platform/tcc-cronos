@@ -448,21 +448,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private static final long CONTEST_STATUS_UNACTIVE_NOT_YET_PUBLISHED = 1;
 
     /**
-     * Private constant specifying draft status id.
-     */
-    private static final long CONTEST_DETAILED_STATUS_DRAFT = 15;
-
-    /**
-     * Private constant specifying active & public status id.
-     */
-    private static final long CONTEST_STATUS_ACTIVE_PUBLIC = 2;
-
-    /**
-     * Private constant specifying active & public status id.
-     */
-    private static final long CONTEST_DETAILED_STATUS_ACTIVE_PUBLIC = 2;
-
-    /**
      * Private constant specifying active & public status id.
      */
     private static final long CONTEST_DETAILED_STATUS_SCHEDULED = 9;
@@ -483,7 +468,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since Module Contest Service Software Contest Sales Assembly
      */
     private static final long CONTEST_SALE_STATUS_PAID = 1;
-    private static final long CONTEST_COMPLETED_STATUS = 8;
 
     /**
      * Private constant specifying active & public status id.
@@ -969,38 +953,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     @Resource(name = "activateContestReceiptEmailSubject")
     private String activateContestReceiptEmailSubject;
-
-    /**
-     * Email template file path for Purchase Submission Receipt Email.
-     *
-     * @since Cockpit Release Assembly for Receipts
-     */
-    @Resource(name = "purchaseSubmissionReceiptEmailTemplatePath")
-    private String purchaseSubmissionReceiptEmailTemplatePath;
-
-    /**
-     * BCC Address for Purchase Submission Receipt Email
-     *
-     * @since Cockpit Release Assembly for Receipts
-     */
-    @Resource(name = "purchaseSubmissionReceiptEmailBCCAddr")
-    private String purchaseSubmissionReceiptEmailBCCAddr;
-
-    /**
-     * From Address for Purchase Submission Receipt Email
-     *
-     * @since Cockpit Release Assembly for Receipts
-     */
-    @Resource(name = "purchaseSubmissionReceiptEmailFromAddr")
-    private String purchaseSubmissionReceiptEmailFromAddr;
-
-    /**
-     * Subject line for Purchase Submission Receipt Email
-     *
-     * @since Cockpit Release Assembly for Receipts
-     */
-    @Resource(name = "purchaseSubmissionReceiptEmailSubject")
-    private String purchaseSubmissionReceiptEmailSubject;
 
     /**
      * Email template file path for Spec Review Notification Email
@@ -2138,27 +2090,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         this.checkStudioContestPermission(tcSubject, contestId, true);
 
         return this.studioService.getContestPayments(contestId);
-    }
-
-    /**
-     * <p>
-     * Updates specified contest payment data.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param contestPayment a <code>ContestPaymentData</code> providing the details for the contest payment to be
-     *            updated.
-     * @throws PersistenceException if any error occurs when updating contest.
-     * @throws IllegalArgumentException if the specified argument is <code>null</code>.
-     */
-    private void editContestPayment(TCSubject tcSubject, ContestPaymentData contestPayment) throws PersistenceException, PermissionServiceException {
-        logger.debug("editContestPayments");
-
-        this.checkStudioContestPermission(tcSubject, contestPayment.getContestId(), false);
-
-        this.studioService.editContestPayment(contestPayment);
     }
 
     /**
@@ -3713,21 +3644,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
     }
 
-
-    /**
-     * Checks the permission for the given tc-direct-project-id for the current caller.
-     *
-     * @param tcDirectProjectId the project id
-     * @throws PersistenceException if user(not admin) does not have the permission
-     */
-    private void checkStudioProjectPermission(TCSubject tcSubject, long tcDirectProjectId) throws PermissionServiceException, PersistenceException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
-            if (!studioService.checkProjectPermission(tcDirectProjectId, true, tcSubject.getUserId())) {
-                throw new PermissionServiceException("No read permission on project");
-            }
-        }
-    }
-
     /**
      * Checks the permission for the given contestId for the current caller.
      *
@@ -4939,25 +4855,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private Forums getStudioForums() throws RemoteException, NamingException, CreateException {
     	return getForumsEJBFromJNDI(studioForumBeanProviderUrl);
-    }
-    
-    /**
-     * Get the Forum EJB service handler.
-     * 
-     * @param isStudio flag indicating which type of Forum EJB to return.
-     * 
-     * @throws NamingException if a naming exception is encountered.
-     * @throws RemoteException if remote error occurs.
-     * @throws CreateException if error occurs when creating EJB handler
-     * 
-     * @since 1.6.11
-     */
-    private Forums getForums(boolean isStudio)throws RemoteException, NamingException, CreateException {
-    	if (isStudio) {
-    		return getStudioForums();
-    	} else {
-    		return getSoftwareForums();
-    	}
     }
 
     /**
@@ -7682,129 +7579,76 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *
      * @since BUGR-3738
      */
-    public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long projectId, boolean isStudio)
+    public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long projectId)
             throws ContestServiceException {
 
         logger.debug("getRegistrantsForProject with parameter [TCSubject " + tcSubject.getUserId() + ", projectId ="
-                + projectId + ", isStudio =" + isStudio + "].");
+                + projectId + "].");
 
         // create an empty list first to store the result
         List<Registrant> result = new ArrayList<Registrant>();
 
         try {
+            // user 1 for resource role ID which is the ID of role 'submitter'
+            com.topcoder.management.resource.Resource[] regs = this.projectServices.searchResources(projectId, 1);
 
-            if (isStudio) {
+            for (com.topcoder.management.resource.Resource r : regs) {
+                // Create a Registrant instance for every resource in regs
+                Registrant item = new Registrant();
 
-                ContestData contest = this.studioService.getContest(projectId);
+                String userId = r.getProperty("External Reference ID");
+                String handle = r.getProperty("Handle");
+                String regDate = r.getProperty("Registration Date");
 
-                // Get all the registrants of this studio contest
-                Set<ContestRegistrationData> regs = contest.getContestRegistrations();
+                // rating and reliability may be null
+                String rating = r.getProperty("Rating");
+                String reliability = r.getProperty("Reliability");
 
-                // Get all the submissions of this studio contest
-                List<SubmissionData> finalSubs = this.studioService.retrieveSubmissionsForContest(tcSubject, projectId);
+                item.setHandle(handle);
+                item.setUserId(Long.valueOf(userId));
 
-                // Create a map to store the mapping between submitter ID and Submission Data
-                Map<Long, SubmissionData> map = new HashMap<Long, SubmissionData>();
-
-                for(SubmissionData sub : finalSubs) {
-                    map.put(sub.getSubmitterId(), sub);
-                }
-
-                for (ContestRegistrationData r : regs) {
-
-                    // for each Registrantion date, create a Registrant instance
-                    Registrant item = new Registrant();
-
-                    item.setUserId(r.getUserId());
-                    item.setRegistrationDate(r.getCreateDate());
-
-                    // Get handle using User Service
-                    String handle = this.userService.getUserHandle(r.getUserId());
-
-                    if (handle != null) {
-                        item.setHandle(handle);
-                    }
-
-                    // set rating and reliablity to null
+                try {
+                    item.setRating(Double.valueOf(rating));
+                } catch (Exception ex) {
+                    // if any exception occurs, set rating to null
                     item.setRating(null);
+                }
+
+                try {
+                    item.setReliability(Double.valueOf(reliability));
+                } catch (Exception ex) {
+                    // if any exception occurs, set reliability to null
                     item.setReliability(null);
-
-                    // check the submission
-                    if (map.containsKey(r.getUserId())) {
-                        item.setSubmissionDate(map.get(r.getUserId()).getSubmittedDate().toGregorianCalendar().getTime());
-                    } else {
-                        // no submission, set submission date to null
-                        item.setSubmissionDate(null);
-                    }
-
-                    // add item into result
-                    result.add(item);
                 }
 
-            } else {
+                DateFormat format = new SimpleDateFormat("MM.dd.yyyy hh:mm a");
 
-                // user 1 for resource role ID which is the ID of role 'submitter'
-                com.topcoder.management.resource.Resource[] regs = this.projectServices.searchResources(projectId, 1);
+                item.setRegistrationDate((Date) format.parse(regDate));
 
-                for (com.topcoder.management.resource.Resource r : regs) {
-                    // Create a Registrant instance for every resource in regs
-                    Registrant item = new Registrant();
+                Long[] submissionIds = r.getSubmissions();
 
-                    String userId = r.getProperty("External Reference ID");
-                    String handle = r.getProperty("Handle");
-                    String regDate = r.getProperty("Registration Date");
+                // set the property submission date if there is at least one submission
+                if (submissionIds.length > 0) {
 
-                    // rating and reliability may be null
-                    String rating = r.getProperty("Rating");
-                    String reliability = r.getProperty("Reliability");
+                    Long max = Long.MIN_VALUE;
 
-                    item.setHandle(handle);
-                    item.setUserId(Long.valueOf(userId));
-
-                    try {
-                        item.setRating(Double.valueOf(rating));
-                    } catch (Exception ex) {
-                        // if any exception occurs, set rating to null
-                        item.setRating(null);
-                    }
-
-                    try {
-                        item.setReliability(Double.valueOf(reliability));
-                    } catch (Exception ex) {
-                        // if any exception occurs, set reliability to null
-                        item.setReliability(null);
-                    }
-
-                    DateFormat format = new SimpleDateFormat("MM.dd.yyyy hh:mm a");
-
-                    item.setRegistrationDate((Date) format.parse(regDate));
-
-                    Long[] submissionIds = r.getSubmissions();
-
-                    // set the property submission date if there is at least one submission
-                    if (submissionIds.length > 0) {
-
-                        Long max = Long.MIN_VALUE;
-
-                        // pick up the largest submission ID
-                        for (Long id : submissionIds) {
-                            if (id.compareTo(max) > 0) {
-                                max = id;
-                            }
+                    // pick up the largest submission ID
+                    for (Long id : submissionIds) {
+                        if (id.compareTo(max) > 0) {
+                            max = id;
                         }
-
-                        // Get the submission instance with UploadManager
-                        Submission submission = this.uploadManager.getSubmission(max.longValue());
-
-                        // Set the submission date
-                        item.setSubmissionDate(submission.getCreationTimestamp());
-
                     }
 
-                    // finally add the Registrant into the result list
-                    result.add(item);
+                    // Get the submission instance with UploadManager
+                    Submission submission = this.uploadManager.getSubmission(max.longValue());
+
+                    // Set the submission date
+                    item.setSubmissionDate(submission.getCreationTimestamp());
+
                 }
 
+                // finally add the Registrant into the result list
+                result.add(item);
             }
 
             return result;
@@ -7816,7 +7660,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } finally {
             // log the exit of method
             logger.debug("Exits getRegistrantsForProject with parameter [TCSubject " + tcSubject.getUserId() + ", projectId ="
-                    + projectId + ", isStudio =" + isStudio + "].");
+                    + projectId + " ].");
         }
     }
 

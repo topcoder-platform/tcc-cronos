@@ -2478,7 +2478,7 @@ public interface ContestServiceFacade {
      * 
      * @since BUGR-3738
      */
-    public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long ProjectId, boolean isStudio)
+    public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long ProjectId)
             throws ContestServiceException;
 
     /**
