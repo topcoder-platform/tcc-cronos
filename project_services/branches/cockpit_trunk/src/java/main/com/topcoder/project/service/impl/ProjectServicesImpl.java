@@ -1854,7 +1854,8 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
-            if (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+            boolean isStudio = (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId());
+            if (isStudio) {
                 // Studio contest has no approval phase
                 requireApproval = false;
             }
@@ -1880,7 +1881,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 if (endDate != null) {
                     adjustPhaseForEndDate(PhaseType.SUBMISSION_PHASE, newProjectPhases, endDate);
                 }
-                setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
+                setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null), isStudio);
                 newProjectPhases.setId(projectPhases.getId());
                 for (Phase phase : newProjectPhases.getAllPhases()) {
                     phase.setProject(newProjectPhases);
@@ -2609,6 +2610,7 @@ public class ProjectServicesImpl implements ProjectServices {
         ExceptionUtils.checkNull(projectPhases, null, null, "The parameter[projectPhases] should not be null.");
         try {
             String templateName = getPhaseTemplateName(projectHeader);
+            boolean isStudio = (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId());
 
              // Start BUGR-3616
             // get billing project id from the project information
@@ -2622,7 +2624,7 @@ public class ProjectServicesImpl implements ProjectServices {
 
             // check whether billing project id requires approval phase
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
-            if (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId()) {
+            if (isStudio) {
                 // Studio contest has no approval phase
                 requireApproval = false;
             }
@@ -2651,7 +2653,7 @@ public class ProjectServicesImpl implements ProjectServices {
                 adjustPhaseForEndDate(PhaseType.REGISTRATION_PHASE, newProjectPhases, endDate);
             }
 
-            setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null));
+            setNewPhasesProperties(projectHeader, newProjectPhases, (multiRoundEndDate != null), isStudio);
 
             return this.createProject(projectHeader, newProjectPhases, projectResources, operator);
 
@@ -4592,7 +4594,7 @@ public class ProjectServicesImpl implements ProjectServices {
      * @since 1.4.5
      */
     private void setNewPhasesProperties(Project projectHeader, 
-            com.topcoder.project.phases.Project projectPhases, boolean multiRound) throws PersistenceException {
+            com.topcoder.project.phases.Project projectPhases, boolean multiRound, boolean isStudio) throws PersistenceException {
         long screenTemplateId = 0L;
         long reviewTemplateId = 0L;
         long approvalTemplateId = 0L;
@@ -4608,7 +4610,9 @@ public class ProjectServicesImpl implements ProjectServices {
             specReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 5);
             if (multiRound) 
             {
-                milestoneScreenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 6);
+                if (isStudio) {
+                    milestoneScreenTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 6);
+                }
                 milestoneReviewTemplateId = projectManager.getScorecardId(projectHeader.getProjectCategory().getId(), 7);
             }
         }
@@ -4622,8 +4626,8 @@ public class ProjectServicesImpl implements ProjectServices {
             specReviewTemplateId = projectManager.getScorecardId(6, 5);
             if (multiRound)
             {
-	            milestoneScreenTemplateId = projectManager.getScorecardId(6, 6);
-	            milestoneReviewTemplateId = projectManager.getScorecardId(6, 7);
+                milestoneScreenTemplateId = projectManager.getScorecardId(6, 6);
+                milestoneReviewTemplateId = projectManager.getScorecardId(6, 7);
             }
         }
 
