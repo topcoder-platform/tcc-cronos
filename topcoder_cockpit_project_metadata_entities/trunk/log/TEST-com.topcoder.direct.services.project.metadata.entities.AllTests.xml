@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="pc001" name="com.topcoder.direct.services.project.metadata.entities.AllTests" tests="266" time="3.156" timestamp="2011-08-28T04:01:55">
+  <properties>
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="package" value="com.topcoder.direct.services.project.metadata.entities" />
+    <property name="docpackage.jar" value="topcoder_cockpit_project_metadata_entities_docs.jar" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="eclipse.pdebuild.templates" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="manifest_file_path" value="build/dist/topcoder_cockpit_project_metadata_entities-1.0.0/META-INF/" />
+    <property name="verbose" value="no" />
+    <property name="os.name" value="Windows XP" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\i18n.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.5.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.5.0_21\jre\classes" />
+    <property name="docsdir" value="docs" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="design_submission.jar" value="topcoder_cockpit_project_metadata_entities_1.0.0_design_submission.jar" />
+    <property name="sun.desktop" value="windows" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/topcoder_cockpit_project_metadata_entities_tests.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.home" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910" />
+    <property name="java.runtime.version" value="1.5.0_21-b01" />
+    <property name="component_path" value="topcoder_cockpit_project_metadata_entities/1.0.0" />
+    <property name="cobertura.dir" value="e:/tcs/lib/third_party/cobertura/1.8" />
+    <property name="component.version.micro" value="0" />
+    <property name="user.name" value="Administrator" />
+    <property name="manifest_file" value="build/dist/topcoder_cockpit_project_metadata_entities-1.0.0/META-INF//MANIFEST.MF" />
+    <property name="debug" value="off" />
+    <property name="reports" value="log/reports" />
+    <property name="testfiles" value="test_files" />
+    <property name="component.version.major" value="1" />
+    <property name="component_version" value="1.0.0" />
+    <property name="dist_coverage" value="build/dist/topcoder_cockpit_project_metadata_entities-1.0.0/docs/coverage" />
+    <property name="component.packagedir" value="com/topcoder/direct/services/project/metadata/entities" />
+    <property name="user.language" value="en" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="javadoc.locale" value="en_US" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin" />
+    <property name="tcs_libdir" value="e:/tcs/lib/tcs" />
+    <property name="srcdir" value="src" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+    <property name="component.version.minor" value="0" />
+    <property name="java.version" value="1.5.0_21" />
+    <property name="user.timezone" value="" />
+    <property name="ant.file.Checkstyle" value="E:\myreview\build-checkstyle.xml" />
+    <property name="dev_dist.jar" value="topcoder_cockpit_project_metadata_entities_1.0.0_dev_dist.jar" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="packagedir" value="com/topcoder/direct/services/project/metadata/entities" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="javassist.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/lib/required/javassist-3.12.0.GA.jar" />
+    <property name="file.separator" value="\" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="dev_submission.jar" value="topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission.jar" />
+    <property name="java.class.version" value="49.0" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="user.country" value="US" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.5.0_21\jre" />
+    <property name="component.distfilename" value="topcoder_cockpit_project_metadata_entities" />
+    <property name="component.version.build" value="1" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="ant.file" value="E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission\build.xml" />
+    <property name="os.version" value="5.1" />
+    <property name="jta.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/lib/required/jta-1.1.jar" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="ifxjdbc.jar" value="e:/tcs/lib/third_party/informix/1.4.1/ifxjdbc.jar" />
+    <property name="hibernate3.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/hibernate3.jar" />
+    <property name="build_tcsdistdir" value="build/dist/topcoder_cockpit_project_metadata_entities-1.0.0" />
+    <property name="path.separator" value=";" />
+    <property name="testlogdir" value="log" />
+    <property name="java.vm.version" value="1.5.0_21-b01" />
+    <property name="junit3.jar" value="e:/tcs/lib/third_party/junit/3.8.2/junit.jar" />
+    <property name="user.variant" value="" />
+    <property name="ant.library.dir" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib" />
+    <property name="component.name" value="TopCoder Cockpit Project Metadata Entities" />
+    <property name="base_exception.jar" value="e:/tcs/lib/tcs/base_exception/2.0/base_exception.jar" />
+    <property name="javamain" value="src/java/main" />
+    <property name="dist_javadocs" value="build/dist/topcoder_cockpit_project_metadata_entities-1.0.0/docs/javadocs" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="component" value="TopCoder Cockpit Project Metadata Entities" />
+    <property name="commons-collections.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/lib/required/commons-collections-3.1.jar" />
+    <property name="eclipse.pdebuild.scripts" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/" />
+    <property name="user.home" value="D:" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.5.0_21\jre\bin;.;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jdk1.6.0_13/bin/../jre/bin/client;C:/Program Files/Java/jdk1.6.0_13/bin/../jre/bin;D:\Maven\apache-maven-2.2.1\bin;D:\apache-ant-1.7.1\bin;C:\Program Files\Java\jdk1.6.0_13\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\system32\wbem;c:\program files\ati technologies\ati.ace\core-static;c:\program files\intel\dmix;c:\program files\thinkpad wireless lan adapter software;c:\program files\ibm\gsk8\lib;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs;D:\Program Files\TortoiseSVN\bin;D:\PROGRA~1\IBM\SQLLIB\BIN;D:\PROGRA~1\IBM\SQLLIB\FUNCTION;D:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;d:\oracle\product\10.1.0\Db_1\bin;d:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin\client;d:\oracle\product\10.1.0\Db_1\jre\1.4.2\bin;;d:\PROGRA~1\F-Secure\SSHTRI~1;" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="configdir" value="conf" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="ant.file.TopCoder Java Generic Build" value="E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission\build.xml" />
+    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="java.class.path" value="E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission\build\testClasses;e:\tcs\lib\third_party\junit\4.5\junit.jar;e:\tcs\lib\tcs\json_object\1.0\json_object.jar;e:\tcs\lib\tcs\base_exception\2.0\base_exception.jar;e:\tcs\lib\third_party\informix\1.4.1\ifxjdbc.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\lib\required\commons-collections-3.1.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\lib\required\javassist-3.12.0.GA.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\lib\required\dom4j-1.6.1.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\lib\required\jta-1.1.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\lib\required\antlr-2.7.6.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\hibernate3.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\lib\jpa\hibernate-jpa-2.0-api-1.0.0.Final.jar;e:\tcs\lib\third_party\hibernate-distribution-3.6.0.Final\lib\required\slf4j-api-1.6.1.jar;E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission\build\classes;E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission\test_files;E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission\conf;E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission;D:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;D:\PROGRA~1\IBM\SQLLIB\java\db2jcc.jar;D:\PROGRA~1\IBM\SQLLIB\java\sqlj.zip;D:\PROGRA~1\IBM\SQLLIB\java\db2jcc_license_cu.jar;D:\PROGRA~1\IBM\SQLLIB\bin;D:\PROGRA~1\IBM\SQLLIB\java\common.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-launcher.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar;D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant-junit.jar" />
+    <property name="ext_libdir" value="e:/tcs/lib/third_party" />
+    <property name="builddir" value="build" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="hibernate-jpa.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="junit.jar" value="e:/tcs/lib/third_party/junit/4.5/junit.jar" />
+    <property name="component.dist.jar" value="build/dist/topcoder_cockpit_project_metadata_entities-1.0.0.jar" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="sun.os.patch.level" value="Service Pack 3" />
+    <property name="component.mainclass" value="" />
+    <property name="json_object.jar" value="e:/tcs/lib/tcs/json_object/1.0/json_object.jar" />
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\" />
+    <property name="eclipse.pdebuild.home" value="/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./" />
+    <property name="component.target" value="1.5" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="slf4j-api.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/lib/required/slf4j-api-1.6.1.jar" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="javatests" value="src/java/tests" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="os.arch" value="x86" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.5.0_21\jre\lib\ext" />
+    <property name="user.dir" value="E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission" />
+    <property name="design_dist.jar" value="topcoder_cockpit_project_metadata_entities_1.0.0_design_dist.jar" />
+    <property name="libdir" value="../tcs/lib" />
+    <property name="javasrc" value="src/java" />
+    <property name="line.separator" value="
+" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="distfilename" value="topcoder_cockpit_project_metadata_entities" />
+    <property name="org.apache.tools.ant.taskdefs.optional.junit.AggregateTransformer0" value="C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\null202051158" />
+    <property name="basedir" value="E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission" />
+    <property name="ant.java.version" value="1.5" />
+    <property name="ant.core.lib" value="D:\eclipse-jee-ganymede-SR2-win32\eclipse\plugins\org.apache.ant_1.7.0.v200803061910\lib\ant.jar" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="dom4j.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/lib/required/dom4j-1.6.1.jar" />
+    <property name="antlr.jar" value="e:/tcs/lib/third_party/hibernate-distribution-3.6.0.Final/lib/required/antlr-2.7.6.jar" />
+    <property name="dist_docs" value="build/dist/topcoder_cockpit_project_metadata_entities-1.0.0/docs" />
+    <property name="component.jar" value="build/dist/lib/tcs/topcoder_cockpit_project_metadata_entities/1.0.0/topcoder_cockpit_project_metadata_entities.jar" />
+    <property name="java.specification.version" value="1.5" />
+    <property name="target_libdir" value="e:/tcs/lib/tcs" />
+    <property name="component.package" value="com.topcoder.direct.services.project.metadata.entities" />
+    <property name="ant.file.Dependency Import" value="E:\myreview\topcoder_cockpit_project_metadata_entities_1.0.0_dev_submission\build-dependencies.xml" />
+  </properties>
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testAuditActionTypeId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testActionDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testActionUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testToJSONString" time="0.015" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.AuditEntityAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeFilterAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeFilterAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeFilterAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeFilterAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeFilterAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeFilterAccuracyTests" name="testProjectFilters" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeOperatorAccuracyTests" name="testEnum" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeOperatorAccuracyTests" name="testAND" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.CompositeOperatorAccuracyTests" name="testOR" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testTcDirectProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testProjectMetadataKey" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAccuracyTests" name="testMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testAuditActionTypeId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testActionDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testActionUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testTcDirectProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testProjectMetadataId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataAuditAccuracyTests" name="testProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataDTOAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataDTOAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataDTOAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataDTOAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataDTOAccuracyTests" name="testMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataDTOAccuracyTests" name="testProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testGrouping" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testClientId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testPredefinedValues" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAccuracyTests" name="testSingle" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testAuditActionTypeId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testActionDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testActionUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testToJSONString" time="0.016" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testGrouping" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testClientId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataKeyAuditAccuracyTests" name="testSingle" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testToJSONStringEmpty" time="0.015" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testProjectMetadataKey" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testPredefinedMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAccuracyTests" name="testPosition" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testAuditActionTypeId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testActionDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testActionUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testPredefinedMetadataValue" time="0.016" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testPosition" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.DirectProjectMetadataPredefinedValueAuditAccuracyTests" name="testProjectMetadataPredefinedValueId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyIdValueFilterAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyIdValueFilterAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyIdValueFilterAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyIdValueFilterAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyIdValueFilterAccuracyTests" name="testMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyIdValueFilterAccuracyTests" name="testProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyIdValueFilterAccuracyTests" name="testMetadataValueOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyNameValueFilterAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyNameValueFilterAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyNameValueFilterAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyNameValueFilterAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyNameValueFilterAccuracyTests" name="testMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyNameValueFilterAccuracyTests" name="testMetadataValueOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataKeyNameValueFilterAccuracyTests" name="testProjectMetadataKeyName" time="0.016" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataValueOperatorAccuracyTests" name="testEnum" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataValueOperatorAccuracyTests" name="testEQUALS" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.MetadataValueOperatorAccuracyTests" name="testLIKE" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testSerializable" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testCtor" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testToJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testToJSONStringEmpty" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testProjectStatusId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testCreateDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.accuracytests.TcDirectProjectAccuracyTests" name="testModifyDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="testAuditEntity" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="test_getActionDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="test_setActionDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="test_getActionUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="test_setActionUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="test_getAuditActionTypeId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="test_setAuditActionTypeId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.AuditEntityTest" name="test_toJSONObject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="test_toJSONObject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="testDirectProjectMetadata" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="test_getMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="test_setMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="test_getProjectMetadataKey" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="test_setProjectMetadataKey" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="test_getTcDirectProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataTest" name="test_setTcDirectProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_toJSONObject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_getMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_setMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_getTcDirectProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_setTcDirectProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="testDirectProjectMetadataAudit" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_getProjectMetadataId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_setProjectMetadataId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_getProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataAuditTest" name="test_setProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_toJSONObject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="testDirectProjectMetadataKey" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_getClientId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_setClientId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_getDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_setDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_getGrouping" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_setGrouping" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_getName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_setName" time="0.016" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_getPredefinedValues" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_setPredefinedValues" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_isSingle" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyTest" name="test_setSingle" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_toJSONObject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_getProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_setProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_getClientId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_setClientId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_getDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_setDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_getGrouping" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_setGrouping" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_getName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_setName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_isSingle" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="test_setSingle" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAuditTest" name="testDirectProjectMetadataKeyAudit" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="test_toJSONObject" time="0.016" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="test_getProjectMetadataKey" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="test_setProjectMetadataKey" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="testDirectProjectMetadataPredefinedValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="test_getPosition" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="test_setPosition" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="test_getPredefinedMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueTest" name="test_setPredefinedMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="testInheritance" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_toJSONObject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_getProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_setProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_getPosition" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_setPosition" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_getPredefinedMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_setPredefinedMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="testDirectProjectMetadataPredefinedValueAudit" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_getProjectMetadataPredefinedValueId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValueAuditTest" name="test_setProjectMetadataPredefinedValueId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.IdentifiableEntityTest" name="test_toJSONObject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.IdentifiableEntityTest" name="testIdentifiableEntity" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.IdentifiableEntityTest" name="test_getId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.IdentifiableEntityTest" name="test_setId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.IdentifiableEntityTest" name="test_toJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_getDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_setDescription" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_getName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_setName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_toJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="testTcDirectProject" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_getCreateDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_setCreateDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_getModifyDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_setModifyDate" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_getProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_setProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_getProjectStatusId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_setProjectStatusId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_getUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dao.TcDirectProjectTest" name="test_setUserId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.CompositeFilterTest" name="test_toJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.CompositeFilterTest" name="testCompositeFilter" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.CompositeFilterTest" name="test_getCompositeOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.CompositeFilterTest" name="test_setCompositeOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.CompositeFilterTest" name="test_getProjectFilters" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.CompositeFilterTest" name="test_setProjectFilters" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.DirectProjectMetadataDTOTest" name="test_getMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.DirectProjectMetadataDTOTest" name="test_setMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.DirectProjectMetadataDTOTest" name="test_getProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.DirectProjectMetadataDTOTest" name="test_setProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.DirectProjectMetadataDTOTest" name="test_toJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.DirectProjectMetadataDTOTest" name="testDirectProjectMetadataDTO" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="test_getMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="test_setMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="test_getProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="test_setProjectMetadataKeyId" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="test_toJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="testMetadataKeyIdValueFilter" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="test_getMetadataValueOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyIdValueFilterTest" name="test_setMetadataValueOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="test_getMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="test_setMetadataValue" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="test_toJSONString" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="test_getMetadataValueOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="test_setMetadataValueOperator" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="testMetadataKeyNameValueFilter" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="test_getProjectMetadataKeyName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.dto.MetadataKeyNameValueFilterTest" name="test_setProjectMetadataKeyName" time="0.0" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testTcDirectProject_Create" time="1.75" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testTcDirectProject_Update" time="0.109" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testTcDirectProject_Delete" time="0.031" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataAudit_Create" time="0.031" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataAudit_Update" time="0.063" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataAudit_Delete" time="0.015" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataKeyAudit_Create" time="0.031" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataKeyAudit_Update" time="0.079" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataKeyAudit_Delete" time="0.015" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataPredefinedValueAudit_Create" time="0.031" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataPredefinedValueAudit_Update" time="0.079" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataPredefinedValueAudit_Delete" time="0.015" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataKey_Create" time="0.047" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataKey_Update" time="0.094" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataKey_Delete" time="0.047" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataPredefinedValue_Create" time="0.016" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataPredefinedValue_Update" time="0.094" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadataPredefinedValue_Delete" time="0.031" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadata_Create" time="0.078" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadata_Update" time="0.047" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testDirectProjectMetadata_Delete" time="0.031" />
+  <testcase classname="com.topcoder.direct.services.project.metadata.entities.PersistenceTest" name="testCloseConnection" time="0.016" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+</testsuite>
