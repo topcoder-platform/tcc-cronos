@@ -1603,7 +1603,7 @@ public class SpecificationReviewServiceBean implements SpecificationReviewServic
                 resource.setPhase(specReviewPhaseId);
                 resource.setProperty("Handle", handle);
                 resource.setProperty("Payment", "0");
-                resource.setProperty("Payment Status", "Not Paid");
+                resource.setProperty("Payment Status", "No");
                 resource.setProperty("External Reference ID", Long.toString(specReviewerId));
                 resource.setProperty("Registration Date", DATE_FORMAT.format(new Date()));
                 resourceManager.updateResource(resource, Long.toString(specReviewerId));
