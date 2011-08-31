@@ -1811,6 +1811,8 @@ public class ProjectServicesImpl implements ProjectServices {
 
         try {
             boolean hasMultiRoundBefore = false;
+            long fixedStart = projectPhases.getStartDate().getTime();
+            
             for (Phase phase : projectPhases.getAllPhases()) {
                 if (phase.getPhaseType().getId() == PhaseType.MILESTONE_SUBMISSION_PHASE.getId()) {
                     hasMultiRoundBefore = true;
@@ -1955,10 +1957,7 @@ public class ProjectServicesImpl implements ProjectServices {
                         }
                     }
                     if (multiRoundPhase != null) {
-                        Date scheduler = multiRoundPhase.calcEndDate();
-                        diff = multiRoundEndDate.getTime() - scheduler.getTime();
-                        Util.log(logger, Level.INFO, "muilround pase diff date:" + diff);
-                        multiRoundPhase.setLength(multiRoundPhase.getLength() + diff);
+                        multiRoundPhase.setLength(multiRoundEndDate.getTime() - fixedStart);
                     }
                 }
                 if (endDate != null) {
@@ -1981,28 +1980,24 @@ public class ProjectServicesImpl implements ProjectServices {
                     }
 
                     if (submissionPhase != null) {
-                        Date scheduler = submissionPhase.calcEndDate();
-                        diff = endDate.getTime() - scheduler.getTime();
-                        Util.log(logger, Level.INFO, "submissionPhase pase diff date:" + diff);
-                        submissionPhase.setLength(submissionPhase.getLength() + diff);
+                        submissionPhase.setLength(endDate.getTime() - fixedStart);
                     }
 
                     if (registrationPhase != null) {
-                        Date scheduler = registrationPhase.calcEndDate();
-                        diff = endDate.getTime() - scheduler.getTime();
-                        Util.log(logger, Level.INFO, "registrationPhase pase diff date:" + diff);
-                        registrationPhase.setLength(submissionPhase.getLength() + diff);
+                        registrationPhase.setLength(endDate.getTime() - fixedStart);
                     }
                 }
     
                 for (Phase p : phases) {
                             p.setScheduledStartDate(p.calcStartDate());
                             p.setScheduledEndDate(p.calcEndDate());
-                            // only set Reg with fixed dates
-                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()
-                                  || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
+                            // only set Reg amd Spec Sub with fixed dates
+                            if (p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
                             {
                                 p.setFixedStartDate(p.calcStartDate());
+                            }
+                            if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {
+                            	p.setFixedStartDate(new Date(fixedStart));
                             }
                 }
             }
