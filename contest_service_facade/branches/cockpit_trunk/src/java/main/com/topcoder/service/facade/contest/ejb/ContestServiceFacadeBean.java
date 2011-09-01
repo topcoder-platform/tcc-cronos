@@ -5029,36 +5029,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         List<CommonProjectContestData> ret = new ArrayList<CommonProjectContestData>();
 
-        for (SimpleProjectContestData data : studioService.getSimpleProjectContestData(
-                pid)) {
-            if (data != null) {
-                CommonProjectContestData newData = new CommonProjectContestData();
-                newData.setCname(data.getCname());
-                newData.setContestId(data.getContestId());
-                newData.setProjectId(data.getProjectId());
-                newData.setPname(data.getPname());
-                newData.setDescription(data.getDescription());
-                newData.setEndDate(data.getEndDate());
-                newData.setForumId(data.getForumId());
-                newData.setNum_for(data.getNum_for());
-                newData.setNum_reg(data.getNum_reg());
-                newData.setNum_sub(data.getNum_sub());
-                newData.setProjectId(data.getProjectId());
-                newData.setSname(data.getSname());
-                newData.setStartDate(data.getStartDate());
-                // studio set 'Studio' for now
-                newData.setType("Studio");
-                newData.setCreateUser(data.getCreateUser());
-                newData.setPperm(data.getPperm());
-                newData.setCperm(data.getCperm());
-                newData.setSpecReviewStatus(data.getSpecReviewStatus());
-                newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
-                newData.setMilestoneDate(data.getMilestoneDate());
-                newData.setContestFee(data.getContestPayment());
-                ret.add(newData);
-            }
-        }
-
+       
         for (com.topcoder.management.project.SimpleProjectContestData data : projectServices.getSimpleProjectContestData(
                 pid)) {
             CommonProjectContestData newData = new CommonProjectContestData();
@@ -5122,35 +5093,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.debug("getCommonProjectContestDataByContestData(tcSubject = " + tcSubject.getUserId() + ")");
 
         List<CommonProjectContestData> ret = new ArrayList<CommonProjectContestData>();
-
-        for (SimpleProjectContestData data : studioService.getSimpleProjectContestData(tcSubject)) {
-            if (data != null) {
-                CommonProjectContestData newData = new CommonProjectContestData();
-                newData.setCname(data.getCname());
-                newData.setContestId(data.getContestId());
-                newData.setProjectId(data.getProjectId());
-                newData.setPname(data.getPname());
-                newData.setDescription(data.getDescription());
-                newData.setEndDate(data.getEndDate());
-                newData.setForumId(data.getForumId());
-                newData.setNum_for(data.getNum_for());
-                newData.setNum_reg(data.getNum_reg());
-                newData.setNum_sub(data.getNum_sub());
-                newData.setProjectId(data.getProjectId());
-                newData.setSname(data.getSname());
-                newData.setStartDate(data.getStartDate());
-                // studio set 'Studio' for now
-                newData.setType("Studio");
-                newData.setCreateUser(data.getCreateUser());
-                newData.setPperm(data.getPperm());
-                newData.setCperm(data.getCperm());
-                newData.setSpecReviewStatus(data.getSpecReviewStatus());
-                newData.setSpecReviewProjectId(data.getSpecReviewProjectId());
-                newData.setMilestoneDate(data.getMilestoneDate());
-                newData.setContestFee(data.getContestPayment());
-                ret.add(newData);
-            }
-        }
 
         for (com.topcoder.management.project.SimpleProjectContestData data :
                 projectServices.getSimpleProjectContestData(tcSubject)) {
