@@ -1307,41 +1307,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
         try {
 
-            List<com.topcoder.service.studio.contest.SimplePipelineData> studioPipelineDatas = this.studioService.getSimplePipelineData(tcSubject,startDate, endDate, overdueContests);
-            if (studioPipelineDatas != null) {
-
-                for (com.topcoder.service.studio.contest.SimplePipelineData p : studioPipelineDatas) {
-                    CommonPipelineData cp = new CommonPipelineData();
-                    cp.setCpname(p.getCpname());
-                    cp.setCname(p.getCname());
-                    cp.setContestId(p.getContestId());
-                    cp.setPname(p.getPname());
-                    cp.setSname(p.getSname());
-                    cp.setContestType(p.getContestType());
-                    cp.setProjectId(p.getProjectId());
-                    cp.setCversion(p.getCversion());
-                    cp.setContestCategory(p.getContestCategory());
-                    cp.setCreateTime(getXMLGregorianCalendar(p.getCreateTime()));
-                    cp.setModifyTime(getXMLGregorianCalendar(p.getModifyTime()));
-                    cp.setClientName(p.getClientName());
-                    cp.setTotalPrize(p.getTotalPrize());
-                    cp.setContestFee(p.getContestFee());
-                    cp.setManager(p.getManager());
-                    cp.setCperm(p.getCperm());
-                    cp.setPperm(p.getPperm());
-                    cp.setDurationInHrs((p.getDurationEndTime().getTime() - p.getDurationStartTime().getTime())
-                            / MILLIS_PER_HOUR);
-                    cp.setStartDate(getXMLGregorianCalendar(p.getStartDate()));
-                    cp.setEndDate(getXMLGregorianCalendar(p.getEndDate()));
-                    cp.setDurationStartTime(getXMLGregorianCalendar(p.getDurationStartTime()));
-                    cp.setDurationEndTime(getXMLGregorianCalendar(p.getDurationEndTime()));
-                    cp.setIsStudio(true);
-                    cp.setContestTypeId(p.getContestTypeId());
-
-                    ret.add(cp);
-                }
-            }
-
             List<com.topcoder.management.project.SimplePipelineData> swPipelineDatas =
                 this.projectServices.getSimplePipelineData(tcSubject, startDate, endDate, overdueContests);
             if (swPipelineDatas != null) {
@@ -1388,10 +1353,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             logger.log(Level.DEBUG, "Executed " + (endTime - startTime) + " m-seconds and get results:");
 
             return ret;
-        } catch (com.topcoder.service.studio.PersistenceException e) {
-            throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data.");
-        }
-          catch (Exception e) {
+        } catch (Exception e) {
             throw wrapContestPipelineServiceException(e, "Fail to retrieve the pipeline data.");
         }
         finally {
