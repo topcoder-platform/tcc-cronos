@@ -1839,6 +1839,10 @@ public class ProjectServicesImpl implements ProjectServices {
                 billingProjectId = Long.parseLong(billingProject);
             }
 
+            // check whether billing project id requires approval phase
+            boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
+            boolean isStudio = (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId());
+
             projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
                     .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
 
@@ -1851,12 +1855,11 @@ public class ProjectServicesImpl implements ProjectServices {
             projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
                     .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
 
-            projectHeader.setProperty(ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY, String
+            if (!isStudio) {
+            	projectHeader.setProperty(ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY, String
                     .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.TRACK_LATE_DELIVERABLES)));
+            }
 
-            // check whether billing project id requires approval phase
-            boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
-            boolean isStudio = (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId());
             if (isStudio) {
                 // Studio contest has no approval phase
                 requireApproval = false;
