@@ -1913,8 +1913,9 @@ public class ProjectServicesImpl implements ProjectServices {
                  }
                  phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
                 
+    
                 Phase subPhase = null;
-                for (Phase p : phases) {
+                 for (Phase p : phases) {
                             p.setScheduledStartDate(p.calcStartDate());
                             p.setScheduledEndDate(p.calcEndDate());
                             // only set Reg with fixed dates
@@ -1931,18 +1932,20 @@ public class ProjectServicesImpl implements ProjectServices {
                
     
                 long diff = 0;
+                long subRegDiff = 0;
                 for (Phase p : phases) {
                             phasesMap.put(new Long(p.getId()), p);
                             // check the diff between project start date and reg phase start date
                             if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
-                                    diff = subPhase.calcStartDate().getTime() - p.calcStartDate().getTime();
+                                    diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
+                                    subRegDiff = subPhase.calcStartDate().getTime() - p.calcStartDate().getTime(); 
                             }
                  }
     
     
                 
                 // adjust project start date so reg start date is the passed project start date
-                projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
+                projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + subRegDiff));
     
                 for (Phase p : phases) {
                             phasesMap.put(new Long(p.getId()), p);
@@ -1963,7 +1966,7 @@ public class ProjectServicesImpl implements ProjectServices {
                         }
                     }
                     if (multiRoundPhase != null) {
-                        multiRoundPhase.setLength(multiRoundEndDate.getTime() - fixedStart + diff);
+                        multiRoundPhase.setLength(multiRoundEndDate.getTime() - fixedStart + subRegDiff);
                     }
                 }
                 if (endDate != null) {
@@ -1990,7 +1993,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     }
 
                     if (registrationPhase != null) {
-                        registrationPhase.setLength(endDate.getTime() - fixedStart + diff);
+                        registrationPhase.setLength(endDate.getTime() - fixedStart + subRegDiff);
                     }
                 }
     
