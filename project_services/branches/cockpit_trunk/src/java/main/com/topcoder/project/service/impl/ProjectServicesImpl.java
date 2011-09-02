@@ -1987,7 +1987,7 @@ public class ProjectServicesImpl implements ProjectServices {
                     }
 
                     if (registrationPhase != null) {
-                        registrationPhase.setLength(endDate.getTime() - fixedStart);
+                        registrationPhase.setLength(endDate.getTime() - fixedStart + diff);
                     }
                 }
     
