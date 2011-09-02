@@ -1,0 +1,7 @@
+Configure ID generator name in accuracyConfig.xml before running tests:
+    <Config name="termsOfUseDao">
+	...
+		<Property name="idGeneratorName">
+			<Value>idGenerator</Value>
+		</Property>
+    </Config>
