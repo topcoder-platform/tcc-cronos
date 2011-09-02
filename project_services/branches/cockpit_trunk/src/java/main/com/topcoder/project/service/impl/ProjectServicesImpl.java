@@ -1960,7 +1960,7 @@ public class ProjectServicesImpl implements ProjectServices {
                         }
                     }
                     if (multiRoundPhase != null) {
-                        multiRoundPhase.setLength(multiRoundEndDate.getTime() - fixedStart);
+                        multiRoundPhase.setLength(multiRoundEndDate.getTime() - fixedStart + diff);
                     }
                 }
                 if (endDate != null) {
