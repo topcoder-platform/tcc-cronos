@@ -1913,7 +1913,7 @@ public class ProjectServicesImpl implements ProjectServices {
                  }
                  phaseManager.fillDependencies(phasesMap, new long[]{projectPhases.getId()});
                 
-    
+                Phase subPhase = null;
                 for (Phase p : phases) {
                             p.setScheduledStartDate(p.calcStartDate());
                             p.setScheduledEndDate(p.calcEndDate());
@@ -1922,6 +1922,9 @@ public class ProjectServicesImpl implements ProjectServices {
                                   || p.getPhaseType().getId() == PhaseType.SPECIFICATION_SUBMISSION_PHASE.getId())
                             {
                                 p.setFixedStartDate(p.calcStartDate());
+                            }
+                            if (p.getPhaseType().getId() == PhaseType.SUBMISSION_PHASE.getId()) {
+                            	subPhase = p;
                             }
                 }
     
@@ -1932,7 +1935,7 @@ public class ProjectServicesImpl implements ProjectServices {
                             phasesMap.put(new Long(p.getId()), p);
                             // check the diff between project start date and reg phase start date
                             if (p.getPhaseType().getId() == PhaseType.REGISTRATION_PHASE.getId()) {  
-                                    diff = projectPhases.getStartDate().getTime() - p.calcStartDate().getTime();
+                                    diff = subPhase.calcStartDate().getTime() - p.calcStartDate().getTime();
                             }
                  }
     
