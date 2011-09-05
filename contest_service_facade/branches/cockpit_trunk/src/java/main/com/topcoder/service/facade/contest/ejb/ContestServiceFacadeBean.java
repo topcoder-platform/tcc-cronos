@@ -8640,6 +8640,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 review.setScore(10.0f * rate);
                 projectServices.createReview(review);
             } else {
+                if (reviewData.getReview().isCommitted()) {
+                    throw new ContestServiceException("Results are already saved.");
+                }
                 // update the exists review board
                 Review review = reviewData.getReview();
                 review.setCommitted(committed);
