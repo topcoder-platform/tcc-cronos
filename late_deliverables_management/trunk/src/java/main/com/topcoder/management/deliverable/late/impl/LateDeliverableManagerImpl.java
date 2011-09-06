@@ -34,6 +34,7 @@ import com.topcoder.util.objectfactory.SpecificationFactoryException;
 import com.topcoder.util.objectfactory.impl.ConfigurationObjectSpecificationFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
 
 /**
  * <p>
@@ -680,6 +681,8 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
             }
 
             return result;
+        } catch (NullColumnValueException e) {
+            throw new LateDeliverablePersistenceException("Failed to retrieve the late deliverables.", e);
         } catch (InvalidCursorStateException e) {
             throw new LateDeliverablePersistenceException("Failed to retrieve the late deliverables.", e);
         } catch (PersistenceOperationException e) {
