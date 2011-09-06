@@ -24,6 +24,7 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
 
 
 /**
@@ -1264,6 +1265,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             resource.setModificationTimestamp(rs.getTimestamp("modify_date"));
 
             return resource;
+        } catch (NullColumnValueException ncve) {
+            throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", ncve);
         } catch (InvalidCursorStateException icse) {
             throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", icse);
         }
@@ -1488,6 +1491,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             return notification;
         } catch (SQLException e) {
             throw new ResourcePersistenceException("Failed to construct Notification instance.", e);
+        } catch (NullColumnValueException ncve) {
+            throw new ResourcePersistenceException("Failed to construct Notification instance.", ncve);
         } catch (InvalidCursorStateException icse) {
             throw new ResourcePersistenceException("Failed to construct Notification instance.", icse);
         }
@@ -1895,8 +1900,11 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @return the ResourceRole instance
      * @throws InvalidCursorStateException
      *             if failed to get the ResourceRole instance from the ResultSet.
+     * @throws NullColumnValueException
+     *             if a retrieved value is null.
      */
-    private ResourceRole constructResourceRole(CustomResultSet rs) throws InvalidCursorStateException {
+    private ResourceRole constructResourceRole(CustomResultSet rs)
+        throws InvalidCursorStateException, NullColumnValueException {
         ResourceRole role = new ResourceRole();
 
         role.setId(rs.getLong("resource_role_id"));
@@ -2286,6 +2294,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             }
 
             return list.toArray(new NotificationType[list.size()]);
+        } catch (NullColumnValueException ncve) {
+            throw new ResourcePersistenceException("Failed to load NotificationType instances.", ncve);
         } catch (InvalidCursorStateException icse) {
             throw new ResourcePersistenceException("Failed to load NotificationType instances.", icse);
         }
@@ -2319,8 +2329,10 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      * @param rs the <code>CustomResultSet</code> instance
      * @return NotifcationType instance.
      * @throws InvalidCursorStateException if failed to load the notificationType instance from the database.
+     * @throws NullColumnValueException if a retrieved value is null.
      */
-    private NotificationType constructNotificationType(CustomResultSet rs) throws InvalidCursorStateException {
+    private NotificationType constructNotificationType(CustomResultSet rs)
+        throws InvalidCursorStateException, NullColumnValueException {
         NotificationType type = new NotificationType();
         type.setId(rs.getLong("notification_type_id"));
         type.setName(rs.getString("name"));
@@ -2394,6 +2406,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             }
 
             return roles.toArray(new ResourceRole[roles.size()]);
+        } catch (NullColumnValueException ncve) {
+            throw new ResourcePersistenceException("Failed to load nResourceRole instance.", ncve);
         } catch (InvalidCursorStateException icse) {
             throw new ResourcePersistenceException("Failed to load nResourceRole instance.", icse);
         }
