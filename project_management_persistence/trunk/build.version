@@ -5,5 +5,5 @@ component.package=com.topcoder.management.project.persistence
 component.packagedir=com/topcoder/management/project/persistence
 component.version.major=1
 component.version.minor=2
-component.version.micro=0
+component.version.micro=1
 component.version.build=1

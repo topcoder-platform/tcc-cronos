@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.project.persistence;
 
@@ -42,6 +42,7 @@ import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
 
 /**
  * <p>
@@ -2956,8 +2957,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 }
             }
             return projects;
+        } catch (NullColumnValueException ncve) {
+            throw new PersistenceException("Null value retrieved.", ncve);
         } catch (InvalidCursorStateException icse) {
-            throw new PersistenceException("cursor state is invalid.", icse);
+            throw new PersistenceException("Cursor state is invalid.", icse);
         } catch (SQLException e) {
             throw new PersistenceException(e.getMessage(), e);
         } finally {
