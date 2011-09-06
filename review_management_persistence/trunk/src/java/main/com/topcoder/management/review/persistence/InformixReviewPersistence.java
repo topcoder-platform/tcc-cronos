@@ -45,6 +45,7 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
 
 /**
  * <p>
@@ -1721,6 +1722,8 @@ public class InformixReviewPersistence implements ReviewPersistence {
             while (resultSet.next()) {
                 reviewsList.add(getReview(resultSet));
             }
+        } catch (NullColumnValueException ncve) {
+            throw new ReviewPersistenceException("Error retrieving review from the result set.", ncve);
         } catch (InvalidCursorStateException icse) {
             throw new ReviewPersistenceException("Error retrieving review from the result set.", icse);
         } catch (SearchBuilderException sbe) {
@@ -1863,8 +1866,11 @@ public class InformixReviewPersistence implements ReviewPersistence {
      *            a result set pointing to the row describing new review to create
      * @throws InvalidCursorStateException
      *             if any error occurs reading the result set.
+     * @throws NullColumnValueException
+     *             if a retrieved value is null.
      */
-    private Review getReview(CustomResultSet resultSet) throws InvalidCursorStateException {
+    private Review getReview(CustomResultSet resultSet)
+        throws InvalidCursorStateException, NullColumnValueException {
         Review review = new Review();
 
         review.setId(resultSet.getLong("review_id"));

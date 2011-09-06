@@ -9,7 +9,7 @@
     <property name="package" value="com.topcoder.management.review.persistence" />
     <property name="packagedir" value="com/topcoder/management/review/persistence" />
     <property name="distfilename" value="review_management_persistence" />
-    <property name="component_version" value="1.0.2" />
+    <property name="component_version" value="1.0.3" />
     <property name="component_path" value="${distfilename}/${component_version}" />
 
     <!-- DIRECTORY SETUP -->
@@ -104,7 +104,7 @@
     <property name="data_validation.path" value="data_validation/${data_validation.version}"/>
     <property name="data_validation.jar" value="${tcs_libdir}/${data_validation.path}/${data_validation.jar.name}"/>
 
-    <property name="database_abstraction.version" value="1.1"/>
+    <property name="database_abstraction.version" value="2.0.0"/>
     <property name="database_abstraction.jar.name" value="database_abstraction.jar"/>
     <property name="database_abstraction.path" value="database_abstraction/${database_abstraction.version}"/>
     <property name="database_abstraction.jar" value="${tcs_libdir}/${database_abstraction.path}/${database_abstraction.jar.name}"/>
