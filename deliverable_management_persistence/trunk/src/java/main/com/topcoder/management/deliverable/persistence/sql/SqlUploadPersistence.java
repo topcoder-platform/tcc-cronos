@@ -38,6 +38,7 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
 
 /**
  * <p>
@@ -2317,14 +2318,14 @@ public class SqlUploadPersistence implements UploadPersistence {
                 submission.setPlacement(resultSet.getLong("placement"));
             }
 
-			if (resultSet.getObject("mark_for_purchase") != null) {
+            if (resultSet.getObject("mark_for_purchase") != null) {
                 submission.setExtra(resultSet.getBoolean("mark_for_purchase"));
             }
 			
             submission.setId(resultSet.getLong("submission_id"));
-			if(resultSet.getObject("user_rank")!=null) {
-			    submission.setUserRank(resultSet.getInt("user_rank"));
-			}
+            if(resultSet.getObject("user_rank")!=null) {
+                submission.setUserRank(resultSet.getInt("user_rank"));
+            }
             
             submission.setCreationUser(resultSet.getString("submission_create_user"));
             submission.setCreationTimestamp(resultSet.getDate("submission_create_date"));
@@ -2379,6 +2380,8 @@ public class SqlUploadPersistence implements UploadPersistence {
             submission.setUpload(loadUpload(resultSet));
 
             return submission;
+        } catch (NullColumnValueException e) {
+            throw new UploadPersistenceException("Error loading submission.", e);
         } catch (InvalidCursorStateException e) {
             throw new UploadPersistenceException("Error loading submission.", e);
         }
@@ -2437,6 +2440,8 @@ public class SqlUploadPersistence implements UploadPersistence {
             upload.setUploadStatus(uploadStatus);
 
             return upload;
+        } catch (NullColumnValueException ncve) {
+            throw new UploadPersistenceException("Error loading upload.", ncve);
         } catch (InvalidCursorStateException icse) {
             throw new UploadPersistenceException("Error loading upload.", icse);
         }
