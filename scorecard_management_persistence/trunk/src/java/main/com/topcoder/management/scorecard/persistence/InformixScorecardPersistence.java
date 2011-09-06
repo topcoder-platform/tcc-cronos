@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2007, TopCoder, Inc. All rights reserved.
+ * Copyright (c) 2006-2011, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.management.scorecard.persistence;
 
@@ -27,6 +27,7 @@ import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -798,9 +799,10 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
             }
 
             return (Scorecard[]) scorecards.toArray(new Scorecard[scorecards.size()]);
+        } catch (NullColumnValueException ncve) {
+            throw new PersistenceException("Error occured fetching scorecards from the database.", ncve);
         } catch (InvalidCursorStateException icse) {
-            throw new PersistenceException("Error occured fetching scorecards from the database.",
-                icse);
+            throw new PersistenceException("Error occured fetching scorecards from the database.", icse);
         } finally {
             DBUtils.close(conn);
         }
@@ -871,9 +873,10 @@ public class InformixScorecardPersistence implements ScorecardPersistence {
      * @param rs the source result set.
      * @return the Scorecard instance.
      * @throws InvalidCursorStateException if any database error occurs.
+     * @throws NullColumnValueException if a null value is retrieved.
      */
     private static Scorecard populateScorecard(CustomResultSet rs)
-        throws InvalidCursorStateException {
+        throws InvalidCursorStateException, NullColumnValueException {
         Scorecard card = new Scorecard(rs.getLong("scorecard_id"));
         card.setCategory(rs.getLong("project_category_id"));
         card.setVersion(rs.getString("version"));
