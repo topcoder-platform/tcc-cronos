@@ -1877,7 +1877,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
         review.setAuthor(resultSet.getLong("resource_id"));
         try {
             review.setSubmission(resultSet.getLong("submission_id"));
-        } catch (NullPointerException e) {
+        } catch (NullColumnValueException e) {
             // Submission ID may be NULL
         }
         review.setScorecard(resultSet.getLong("scorecard_id"));
