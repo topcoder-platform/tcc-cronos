@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
@@ -12,6 +12,7 @@
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -25,11 +26,6 @@
 
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
-    <!-- Import the dependencies of this build file -->
-    <import file="${basedir}/../build-checkstyle.xml"/>
-	
-	<!-- include ant contrib tasks -->
-    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="${component.name}"/>
@@ -41,11 +37,8 @@
     <property name="component_path" value="${distfilename}/${component_version}"/>
 
     <!-- Change this for custom component build -->
-    <!--
-    <property name="greekgod_libdir" value="../lib/greekgod"/>
-    <property name="target_libdir" value="${greekgod_libdir}"/>
-    -->
-    <property name="target_libdir" value="${tcs_libdir}"/>
+    <property name="cronos_libdir" value="../lib/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
@@ -82,6 +75,9 @@
     <!-- DOCUMENT PACKAGE -->
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
+
+    <!-- include ant contrib tasks -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
@@ -163,7 +159,7 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-            <junit fork="true" haltonerror="false" maxmemory="1200M">
+            <junit fork="true" haltonerror="false" maxmemory="1024M">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
@@ -174,7 +170,6 @@
         </sequential>
     </macrodef>
 
-    
     <macrodef name="coveragetest.execute">
         <!-- standard test task -->
         <sequential>
@@ -187,7 +182,7 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-            <junit fork="true" haltonerror="false" maxmemory="1200M">
+            <junit fork="true" haltonerror="false" maxmemory="1024M">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
@@ -211,7 +206,6 @@
         <test.teardown/>
     </target>
 
-
     <target name="coveragetest" depends="compile_tests">
         <test.setup/>
         <coveragetest.execute/>
@@ -219,7 +213,7 @@
     </target>
 
     <target name="coveragereport" depends="coveragetest">
-        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
+        <cobertura-report format="${cobertura.format}" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
                           datafile="${cobertura.datafile}">
             <fileset dir="${javamain}">
                 <include name="**/*.java"/>
@@ -230,7 +224,7 @@
         </cobertura-report>
     </target>
 
-    <target name="reports">
+    <target name="reports" depends="test">
         <mkdir dir="${reports}"/>
         <junitreport todir="${reports}">
             <fileset dir="${testlogdir}">
