@@ -1945,7 +1945,7 @@ public class ProjectServicesImpl implements ProjectServices {
     
                 
                 // adjust project start date so reg start date is the passed project start date
-                projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + subRegDiff));
+                projectPhases.setStartDate(new Date(projectPhases.getStartDate().getTime() + diff));
     
                 for (Phase p : phases) {
                             phasesMap.put(new Long(p.getId()), p);
