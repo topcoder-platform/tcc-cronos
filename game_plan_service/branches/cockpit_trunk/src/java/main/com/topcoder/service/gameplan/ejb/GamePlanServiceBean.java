@@ -383,7 +383,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         try {
             retrieveSoftwareProjectData(userId, directProjectId, now, tcDirectProjectsMap);
 
-            retrieveStudioProjectData(userId, directProjectId, now, tcDirectProjectsMap);
+            //retrieveStudioProjectData(userId, directProjectId, now, tcDirectProjectsMap);
 
             return new ArrayList<TCDirectProjectGamePlanData>(tcDirectProjectsMap.values());
         } catch (ClassCastException e) {
