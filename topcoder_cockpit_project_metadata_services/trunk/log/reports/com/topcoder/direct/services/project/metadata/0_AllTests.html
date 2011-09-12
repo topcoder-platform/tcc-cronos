@@ -1,0 +1,1180 @@
+<html xmlns:lxslt="http://xml.apache.org/xslt" xmlns:stringutils="xalan://org.apache.tools.ant.util.StringUtils">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Unit Test Results: com.topcoder.direct.services.project.metadata.AllTests</title>
+<link rel="stylesheet" type="text/css" title="Style" href="../../../../../../stylesheet.css">
+<script type="text/javascript" language="JavaScript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['com.topcoder.direct.services.project.metadata.AllTests'] = new Array();
+    
+        cur['ant.core.lib'] = 'D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\build.xml';
+    
+        cur['ant.file.Checkstyle'] = 'E:\\myreview\\build-checkstyle.xml';
+    
+        cur['ant.file.Dependency Import'] = 'E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\build-dependencies.xml';
+    
+        cur['ant.file.TopCoder Java Generic Build'] = 'E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\build.xml';
+    
+        cur['ant.home'] = 'D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910';
+    
+        cur['ant.java.version'] = '1.5';
+    
+        cur['ant.library.dir'] = 'D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib';
+    
+        cur['ant.project.name'] = 'TopCoder Java Generic Build';
+    
+        cur['ant.version'] = 'Apache Ant version 1.7.0 compiled on December 13 2006';
+    
+        cur['antlr.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/lib/required/antlr-2.7.6.jar';
+    
+        cur['aopalliance.jar'] = 'e:/tcs/lib/third_party/spring-framework-2.5.6.SEC01/lib/aopalliance/aopalliance.jar';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['backport-util-concurrent.jar'] = 'e:/tcs/lib/third_party/spring-framework-2.5.6.SEC01/lib/concurrent/backport-util-concurrent.jar';
+    
+        cur['base_exception.jar'] = 'e:/tcs/lib/tcs/base_exception/2.0/base_exception.jar';
+    
+        cur['basedir'] = 'E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission';
+    
+        cur['build_classdir'] = 'build/classes';
+    
+        cur['build_distdir'] = 'build/dist';
+    
+        cur['build_docsdir'] = 'build/docs';
+    
+        cur['build_javadocsdir'] = 'build/docs/javadocs';
+    
+        cur['build_targetclassdir'] = 'build/targetclasses';
+    
+        cur['build_tcsdistdir'] = 'build/dist/topcoder_cockpit_project_metadata_services-1.0.0';
+    
+        cur['build_testclassdir'] = 'build/testClasses';
+    
+        cur['builddir'] = 'build';
+    
+        cur['cobertura.datafile'] = 'log/cobertura.ser';
+    
+        cur['cobertura.dir'] = 'e:/tcs/lib/third_party/cobertura/1.8';
+    
+        cur['commons-collections.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/lib/required/commons-collections-3.1.jar';
+    
+        cur['commons-dbcp.jar'] = 'e:/tcs/lib/third_party/spring-framework-2.5.6.SEC01/lib/jakarta-commons/commons-dbcp.jar';
+    
+        cur['commons-logging.jar'] = 'e:/tcs/lib/third_party/commons-logging.jar';
+    
+        cur['commons-pool.jar'] = 'e:/tcs/lib/third_party/commons-pool.jar';
+    
+        cur['component'] = 'TopCoder Cockpit Project Metadata Services';
+    
+        cur['component_path'] = 'topcoder_cockpit_project_metadata_services/1.0.0';
+    
+        cur['component_version'] = '1.0.0';
+    
+        cur['component.bootclasspath'] = '${java_1_5_bootclasspath}';
+    
+        cur['component.dist.jar'] = 'build/dist/topcoder_cockpit_project_metadata_services-1.0.0.jar';
+    
+        cur['component.distfilename'] = 'topcoder_cockpit_project_metadata_services';
+    
+        cur['component.jar'] = 'build/dist/lib/tcs/topcoder_cockpit_project_metadata_services/1.0.0/topcoder_cockpit_project_metadata_services.jar';
+    
+        cur['component.mainclass'] = '';
+    
+        cur['component.name'] = 'TopCoder Cockpit Project Metadata Services';
+    
+        cur['component.package'] = 'com.topcoder.direct.services.project.metadata';
+    
+        cur['component.packagedir'] = 'com/topcoder/direct/services/project/metadata';
+    
+        cur['component.target'] = '1.5';
+    
+        cur['component.tests.jar'] = 'build/dist/lib/tcs/topcoder_cockpit_project_metadata_services_tests.jar';
+    
+        cur['component.version.build'] = '1';
+    
+        cur['component.version.major'] = '1';
+    
+        cur['component.version.micro'] = '0';
+    
+        cur['component.version.minor'] = '0';
+    
+        cur['configdir'] = 'conf';
+    
+        cur['debug'] = 'off';
+    
+        cur['design_dist.jar'] = 'topcoder_cockpit_project_metadata_services_1.0.0_design_dist.jar';
+    
+        cur['design_submission.jar'] = 'topcoder_cockpit_project_metadata_services_1.0.0_design_submission.jar';
+    
+        cur['dev_dist.jar'] = 'topcoder_cockpit_project_metadata_services_1.0.0_dev_dist.jar';
+    
+        cur['dev_submission.jar'] = 'topcoder_cockpit_project_metadata_services_1.0.0_dev_submission.jar';
+    
+        cur['dist_coverage'] = 'build/dist/topcoder_cockpit_project_metadata_services-1.0.0/docs/coverage';
+    
+        cur['dist_docpackage'] = 'build/doc_package';
+    
+        cur['dist_docs'] = 'build/dist/topcoder_cockpit_project_metadata_services-1.0.0/docs';
+    
+        cur['dist_javadocs'] = 'build/dist/topcoder_cockpit_project_metadata_services-1.0.0/docs/javadocs';
+    
+        cur['dist_lib'] = 'build/dist/lib/tcs';
+    
+        cur['distfilename'] = 'topcoder_cockpit_project_metadata_services';
+    
+        cur['docpackage.jar'] = 'topcoder_cockpit_project_metadata_services_docs.jar';
+    
+        cur['docsdir'] = 'docs';
+    
+        cur['dom4j.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/lib/required/dom4j-1.6.1.jar';
+    
+        cur['eclipse.pdebuild.home'] = '/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/./';
+    
+        cur['eclipse.pdebuild.scripts'] = '/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/scripts/';
+    
+        cur['eclipse.pdebuild.templates'] = '/D:/eclipse-jee-ganymede-SR2-win32/eclipse/plugins/org.eclipse.pde.build_3.4.1.R34x_v20081217/templates/';
+    
+        cur['ehcache.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/lib/optional/ehcache/ehcache-1.5.0.jar';
+    
+        cur['entities.jar'] = 'test_files/entities.jar';
+    
+        cur['ext_libdir'] = 'e:/tcs/lib/third_party';
+    
+        cur['file.encoding'] = 'Cp1252';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['hibernate3.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/hibernate3.jar';
+    
+        cur['hibernate-jpa.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar';
+    
+        cur['ifxjdbc.jar'] = 'e:/tcs/lib/third_party/informix/1.4.1/ifxjdbc.jar';
+    
+        cur['instrumented.dir'] = 'build/instrumented';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\build\\instrumented;E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\build\\testClasses;e:\\tcs\\lib\\third_party\\junit\\4.5\\junit.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\lib\\required\\slf4j-api-1.5.8.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.aop-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.aspects-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.instrument-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.asm-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.expression-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.jdbc-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.orm-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-2.5.6.SEC01\\lib\\aopalliance\\aopalliance.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\lib\\optional\\ehcache\\ehcache-1.5.0.jar;e:\\tcs\\lib\\third_party\\spring-framework-2.5.6.SEC01\\lib\\concurrent\\backport-util-concurrent.jar;e:\\tcs\\lib\\third_party\\spring-framework-2.5.6.SEC01\\lib\\jakarta-commons\\commons-dbcp.jar;e:\\tcs\\lib\\third_party\\commons-logging.jar;e:\\tcs\\lib\\third_party\\commons-pool.jar;e:\\tcs\\lib\\third_party\\informix\\1.4.1\\ifxjdbc.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\lib\\required\\commons-collections-3.1.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\lib\\required\\javassist-3.9.0.GA.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\lib\\required\\dom4j-1.6.1.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\lib\\required\\antlr-2.7.6.jar;e:\\tcs\\lib\\tcs\\typesafe_enum\\1.1.0\\typesafe_enum.jar;e:\\tcs\\lib\\tcs\\object_formatter\\1.0.0\\object_formatter.jar;e:\\tcs\\lib\\tcs\\json_object\\1.0\\json_object.jar;e:\\tcs\\lib\\tcs\\topcoder_commons_utility\\1.0.0\\topcoder_commons_utility.jar;e:\\tcs\\lib\\tcs\\logging_wrapper\\2.0.0\\logging_wrapper.jar;E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\test_files\\entities.jar;e:\\tcs\\lib\\tcs\\base_exception\\2.0\\base_exception.jar;e:\\tcs\\lib\\third_party\\spring-framework-2.5.6.SEC01\\lib\\log4j\\log4j-1.2.15.jar;e:\\tcs\\lib\\third_party\\spring-framework-2.5.6.SEC01\\lib\\slf4j\\slf4j-log4j12-1.5.0.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.beans-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.context-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.core-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\hibernate3.jar;e:\\tcs\\lib\\third_party\\hibernate-distribution-3.5.4-Final\\lib\\jpa\\hibernate-jpa-2.0-api-1.0.0.Final.jar;e:\\tcs\\lib\\third_party\\spring-framework-3.0.3.RELEASE\\dist\\org.springframework.transaction-3.0.3.RELEASE.jar;e:\\tcs\\lib\\third_party\\javaee\\1.5\\javaee.jar;E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\build\\classes;E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\test_files;E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\conf;e:\\tcs\\lib\\third_party\\cobertura\\1.8\\cobertura.jar;e:\\tcs\\lib\\third_party\\cobertura\\1.8\\lib\\asm-2.2.1.jar;e:\\tcs\\lib\\third_party\\cobertura\\1.8\\lib\\jakarta-oro-2.0.8.jar;e:\\tcs\\lib\\third_party\\cobertura\\1.8\\lib\\log4j-1.2.9.jar;e:\\tcs\\lib\\third_party\\cobertura\\1.8\\lib\\log4j.jar;E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission;D:\\PROGRA~1\\IBM\\SQLLIB\\java\\db2java.zip;D:\\PROGRA~1\\IBM\\SQLLIB\\java\\db2jcc.jar;D:\\PROGRA~1\\IBM\\SQLLIB\\java\\sqlj.zip;D:\\PROGRA~1\\IBM\\SQLLIB\\java\\db2jcc_license_cu.jar;D:\\PROGRA~1\\IBM\\SQLLIB\\bin;D:\\PROGRA~1\\IBM\\SQLLIB\\java\\common.jar;D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant-launcher.jar;D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant.jar;D:\\eclipse-jee-ganymede-SR2-win32\\eclipse\\plugins\\org.apache.ant_1.7.0.v200803061910\\lib\\ant-junit.jar';
+    
+        cur['java.class.version'] = '49.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\DOCUME~1\\ADMINI~1\\LOCALS~1\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\bin;.;C:\\WINDOWS\\system32;C:\\WINDOWS;C:/Program Files/Java/jre6/bin/client;C:/Program Files/Java/jre6/bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\system32\\wbem;c:\\program files\\common files\\thunder network\\kankan\\codecs;c:\\program files\\ibm\\gsk8\\lib;D:\\PROGRA~1\\IBM\\SQLLIB\\BIN;D:\\PROGRA~1\\IBM\\SQLLIB\\FUNCTION;D:\\PROGRA~1\\IBM\\SQLLIB\\SAMPLES\\REPL;C:\\PROGRA~1\\ibm\\gsk7\\bin;C:\\PROGRA~1\\ibm\\gsk7\\lib';
+    
+        cur['java.runtime.name'] = 'Java(TM) 2 Runtime Environment, Standard Edition';
+    
+        cur['java.runtime.version'] = '1.5.0_21-b01';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.specification.version'] = '1.5';
+    
+        cur['java.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vendor.url'] = 'http://java.sun.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://java.sun.com/cgi-bin/bugreport.cgi';
+    
+        cur['java.version'] = '1.5.0_21';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) Client VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.specification.version'] = '1.0';
+    
+        cur['java.vm.vendor'] = 'Sun Microsystems Inc.';
+    
+        cur['java.vm.version'] = '1.5.0_21-b01';
+    
+        cur['javac.encoding'] = 'UTF-8';
+    
+        cur['javadoc.jar'] = 'javadocs.jar';
+    
+        cur['javadoc.locale'] = 'en_US';
+    
+        cur['javadocsdir'] = 'docs/javadocs';
+    
+        cur['javaee.jar'] = 'e:/tcs/lib/third_party/javaee/1.5/javaee.jar';
+    
+        cur['javamain'] = 'src/java/main';
+    
+        cur['javasrc'] = 'src/java';
+    
+        cur['javassist.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/lib/required/javassist-3.9.0.GA.jar';
+    
+        cur['javatests'] = 'src/java/tests';
+    
+        cur['json_object.jar'] = 'e:/tcs/lib/tcs/json_object/1.0/json_object.jar';
+    
+        cur['junit.jar'] = 'e:/tcs/lib/third_party/junit/4.5/junit.jar';
+    
+        cur['junit3.jar'] = 'e:/tcs/lib/third_party/junit/3.8.2/junit.jar';
+    
+        cur['libdir'] = '../tcs/lib';
+    
+        cur['line.separator'] = ' ';
+    
+        cur['log4j.jar'] = 'e:/tcs/lib/third_party/spring-framework-2.5.6.SEC01/lib/log4j/log4j-1.2.15.jar';
+    
+        cur['logging_wrapper.jar'] = 'e:/tcs/lib/tcs/logging_wrapper/2.0.0/logging_wrapper.jar';
+    
+        cur['manifest_file'] = 'build/dist/topcoder_cockpit_project_metadata_services-1.0.0/META-INF//MANIFEST.MF';
+    
+        cur['manifest_file_path'] = 'build/dist/topcoder_cockpit_project_metadata_services-1.0.0/META-INF/';
+    
+        cur['net.sourceforge.cobertura.datafile'] = 'E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission\\log\\cobertura.ser';
+    
+        cur['object_formatter.jar'] = 'e:/tcs/lib/tcs/object_formatter/1.0.0/object_formatter.jar';
+    
+        cur['org.springframework.aop.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.aop-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.asm.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.asm-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.aspects.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.aspects-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.beans.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.beans-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.context.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.context-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.core.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.core-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.expression.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.expression-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.instrument.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.instrument-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.jdbc.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.jdbc-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.orm.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.orm-3.0.3.RELEASE.jar';
+    
+        cur['org.springframework.transaction.jar'] = 'e:/tcs/lib/third_party/spring-framework-3.0.3.RELEASE/dist/org.springframework.transaction-3.0.3.RELEASE.jar';
+    
+        cur['os.arch'] = 'x86';
+    
+        cur['os.name'] = 'Windows XP';
+    
+        cur['os.version'] = '5.1';
+    
+        cur['package'] = 'com.topcoder.direct.services.project.metadata';
+    
+        cur['packagedir'] = 'com/topcoder/direct/services/project/metadata';
+    
+        cur['path.separator'] = ';';
+    
+        cur['reports'] = 'log/reports';
+    
+        cur['slf4j-api.jar'] = 'e:/tcs/lib/third_party/hibernate-distribution-3.5.4-Final/lib/required/slf4j-api-1.5.8.jar';
+    
+        cur['slf4j-log4j.jar'] = 'e:/tcs/lib/third_party/spring-framework-2.5.6.SEC01/lib/slf4j/slf4j-log4j12-1.5.0.jar';
+    
+        cur['srcdir'] = 'src';
+    
+        cur['sun.arch.data.model'] = '32';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\i18n.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.5.0_21\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'GBK';
+    
+        cur['sun.management.compiler'] = 'HotSpot Client Compiler';
+    
+        cur['sun.os.patch.level'] = 'Service Pack 3';
+    
+        cur['target_libdir'] = 'e:/tcs/lib/tcs';
+    
+        cur['tcs_libdir'] = 'e:/tcs/lib/tcs';
+    
+        cur['test_reflib'] = 'test_reflib';
+    
+        cur['testfiles'] = 'test_files';
+    
+        cur['testlogdir'] = 'log';
+    
+        cur['topcoder_commons_utility.jar'] = 'e:/tcs/lib/tcs/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar';
+    
+        cur['typesafe_enum.jar'] = 'e:/tcs/lib/tcs/typesafe_enum/1.1.0/typesafe_enum.jar';
+    
+        cur['user.country'] = 'US';
+    
+        cur['user.dir'] = 'E:\\myreview\\topcoder_cockpit_project_metadata_services_1.0.0_dev_submission';
+    
+        cur['user.home'] = 'D:';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'Administrator';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+        cur['verbose'] = 'no';
+    </script><script type="text/javascript" language="JavaScript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style type=\"text/css\">");
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<h1>Unit Test Results</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org/">JUnit</a> and <a href="http://ant.apache.org/">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h3>Class com.topcoder.direct.services.project.metadata.AllTests</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th nowrap="nowrap">Time(s)</th><th nowrap="nowrap">Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="Pass">
+<td><a title="Display all tests" href="0_AllTests.html">AllTests</a></td><td><a title="Display all tests" href="0_AllTests.html">257</a></td><td>0</td><td>0</td><td>43.515</td><td>2011-09-12T11:20:15</td><td>20110912BOA</td>
+</tr>
+</table>
+<h2>Tests</h2>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap="nowrap">Time(s)</th>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDemo"></a>testDemo</td><td>Success</td><td></td><td>2.515</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_toString_1"></a>test_toString_1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_toString_2"></a>test_toString_2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkMap"></a>test_checkMap</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkMap_mapNull"></a>test_checkMap_mapNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkMap_mapContainsNullKey"></a>test_checkMap_mapContainsNullKey</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkMap_mapContainsEmptyKey"></a>test_checkMap_mapContainsEmptyKey</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkMap_mapContainsNullValue"></a>test_checkMap_mapContainsNullValue</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadataKey_1"></a>test_createProjectMetadataKey_1</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadataKey_2"></a>test_createProjectMetadataKey_2</td><td>Success</td><td></td><td>0.062</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadataKey_projectMetadataKeyNull"></a>test_createProjectMetadataKey_projectMetadataKeyNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadataKey_ValidationError"></a>test_createProjectMetadataKey_ValidationError</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadataKey_Error"></a>test_createProjectMetadataKey_Error</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadataKey"></a>test_updateProjectMetadataKey</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadataKey_projectMetadataKeyNull"></a>test_updateProjectMetadataKey_projectMetadataKeyNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadataKey_ValidationError"></a>test_updateProjectMetadataKey_ValidationError</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadataKey_EntityNotFoundError"></a>test_updateProjectMetadataKey_EntityNotFoundError</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadataKey_Error"></a>test_updateProjectMetadataKey_Error</td><td>Success</td><td></td><td>0.046</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadataKey_1"></a>test_saveProjectMetadataKey_1</td><td>Success</td><td></td><td>0.266</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadataKey_2"></a>test_saveProjectMetadataKey_2</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadataKey_projectMetadataKeyNull"></a>test_saveProjectMetadataKey_projectMetadataKeyNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadataKey_ValidationError"></a>test_saveProjectMetadataKey_ValidationError</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadataKey_Error"></a>test_saveProjectMetadataKey_Error</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_deleteProjectMetadataKey"></a>test_deleteProjectMetadataKey</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_deleteProjectMetadataKey_EntityNotFoundError"></a>test_deleteProjectMetadataKey_EntityNotFoundError</td><td>Success</td><td></td><td>0.046</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectMetadataKey_1"></a>test_getProjectMetadataKey_1</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectMetadataKey_2"></a>test_getProjectMetadataKey_2</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getCommonProjectMetadataKeys_1"></a>test_getCommonProjectMetadataKeys_1</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getCommonProjectMetadataKeys_2"></a>test_getCommonProjectMetadataKeys_2</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getClientProjectMetadataKeys_1"></a>test_getClientProjectMetadataKeys_1</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getClientProjectMetadataKeys_2"></a>test_getClientProjectMetadataKeys_2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getClientProjectMetadataKeys_3"></a>test_getClientProjectMetadataKeys_3</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setDirectProjectMetadataKeyValidator"></a>test_setDirectProjectMetadataKeyValidator</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization"></a>test_checkInitialization</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_entityManagerNull"></a>test_checkInitialization_entityManagerNull</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_directProjectMetadataKeyValidatorNull"></a>test_checkInitialization_directProjectMetadataKeyValidatorNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapNull"></a>test_checkInitialization_auditActionTypeIdMapNull</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsNullKey"></a>test_checkInitialization_auditActionTypeIdMapContainsNullKey</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsEmptyKey"></a>test_checkInitialization_auditActionTypeIdMapContainsEmptyKey</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsNullValue"></a>test_checkInitialization_auditActionTypeIdMapContainsNullValue</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapRequiredMissing"></a>test_checkInitialization_auditActionTypeIdMapRequiredMissing</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization"></a>test_checkInitialization</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_entityManagerNull"></a>test_checkInitialization_entityManagerNull</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapNull"></a>test_checkInitialization_auditActionTypeIdMapNull</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsNullKey"></a>test_checkInitialization_auditActionTypeIdMapContainsNullKey</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsEmptyKey"></a>test_checkInitialization_auditActionTypeIdMapContainsEmptyKey</td><td>Success</td><td></td><td>0.046</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsNullValue"></a>test_checkInitialization_auditActionTypeIdMapContainsNullValue</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapRequiredMissing"></a>test_checkInitialization_auditActionTypeIdMapRequiredMissing</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadata"></a>test_createProjectMetadata</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadata_projectMetadataNull"></a>test_createProjectMetadata_projectMetadataNull</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadata_ValidationError"></a>test_createProjectMetadata_ValidationError</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadata"></a>test_updateProjectMetadata</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadata_projectMetadataNull"></a>test_updateProjectMetadata_projectMetadataNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadata_ValidationError"></a>test_updateProjectMetadata_ValidationError</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadata_EntityNotFoundError"></a>test_updateProjectMetadata_EntityNotFoundError</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadata_1"></a>test_saveProjectMetadata_1</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadata_2"></a>test_saveProjectMetadata_2</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadata_projectMetadataNull"></a>test_saveProjectMetadata_projectMetadataNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadata_ValidationError"></a>test_saveProjectMetadata_ValidationError</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_deleteProjectMetadata"></a>test_deleteProjectMetadata</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_deleteProjectMetadata_EntityNotFoundError"></a>test_deleteProjectMetadata_EntityNotFoundError</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectMetadata_1"></a>test_getProjectMetadata_1</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectMetadata_2"></a>test_getProjectMetadata_2</td><td>Success</td><td></td><td>0.204</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectMetadataByProject_1"></a>test_getProjectMetadataByProject_1</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getProjectMetadataByProject_2"></a>test_getProjectMetadataByProject_2</td><td>Success</td><td></td><td>0.140</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata1"></a>test_addProjectMetadata1</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata1_projectMetadataListNull"></a>test_addProjectMetadata1_projectMetadataListNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata1_projectMetadataListContainsNull"></a>test_addProjectMetadata1_projectMetadataListContainsNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata1_ValidationError"></a>test_addProjectMetadata1_ValidationError</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata2"></a>test_addProjectMetadata2</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata2_tcDirectProjectIdsNull"></a>test_addProjectMetadata2_tcDirectProjectIdsNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata2_projectMetadataListNull"></a>test_addProjectMetadata2_projectMetadataListNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata2_ValidationError"></a>test_addProjectMetadata2_ValidationError</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_1"></a>test_searchProjects_1</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_2"></a>test_searchProjects_2</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_3"></a>test_searchProjects_3</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_4"></a>test_searchProjects_4</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_5"></a>test_searchProjects_5</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_6"></a>test_searchProjects_6</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_filterNull"></a>test_searchProjects_filterNull</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_filterInvalid1"></a>test_searchProjects_filterInvalid1</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_filterInvalid2"></a>test_searchProjects_filterInvalid2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_filterInvalid3"></a>test_searchProjects_filterInvalid3</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_filterInvalid4"></a>test_searchProjects_filterInvalid4</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_directProjectMetadataValidatorNull"></a>test_checkInitialization_directProjectMetadataValidatorNull</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_1"></a>test_validate_1</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_2"></a>test_validate_2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_3"></a>test_validate_3</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyNull"></a>test_validate_projectMetadataKeyNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyNameNull"></a>test_validate_projectMetadataKeyNameNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyNameEmpty"></a>test_validate_projectMetadataKeyNameEmpty</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyNameExist"></a>test_validate_projectMetadataKeyNameExist</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyGroupingNotNull"></a>test_validate_projectMetadataKeyGroupingNotNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyNameTooLong"></a>test_validate_projectMetadataKeyNameTooLong</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyGroupingNull"></a>test_validate_projectMetadataKeyGroupingNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyPredefinedValuesInvalid"></a>test_validate_projectMetadataKeyPredefinedValuesInvalid</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization"></a>test_checkInitialization</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_entityManagerNull"></a>test_checkInitialization_entityManagerNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_1"></a>test_validate_1</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_2"></a>test_validate_2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_3"></a>test_validate_3</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyNull"></a>test_validate_projectMetadataKeyNull</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_4"></a>test_validate_4</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataNull"></a>test_validate_projectMetadataNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataKeyExist"></a>test_validate_projectMetadataKeyExist</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataValueNull"></a>test_validate_projectMetadataValueNull</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataValueInvalid1"></a>test_validate_projectMetadataValueInvalid1</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_projectMetadataValueInvalid2"></a>test_validate_projectMetadataValueInvalid2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setValidatorMapping"></a>test_setValidatorMapping</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setPredefinedKeys"></a>test_setPredefinedKeys</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_validatorMappingNull"></a>test_checkInitialization_validatorMappingNull</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_validatorMappingContainsNullKey"></a>test_checkInitialization_validatorMappingContainsNullKey</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_validatorMappingContainsNullValue"></a>test_checkInitialization_validatorMappingContainsNullValue</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_validatorMappingContainsEmptyValue"></a>test_checkInitialization_validatorMappingContainsEmptyValue</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_validatorMappingContainsInvalidValue"></a>test_checkInitialization_validatorMappingContainsInvalidValue</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_predefinedKeysContainsNullKey"></a>test_checkInitialization_predefinedKeysContainsNullKey</td><td>Success</td><td></td><td>0.093</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_predefinedKeysContainsNullValue"></a>test_checkInitialization_predefinedKeysContainsNullValue</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization"></a>test_checkInitialization</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_entityManagerNull"></a>test_checkInitialization_entityManagerNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapNull"></a>test_checkInitialization_auditActionTypeIdMapNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsNullKey"></a>test_checkInitialization_auditActionTypeIdMapContainsNullKey</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsEmptyKey"></a>test_checkInitialization_auditActionTypeIdMapContainsEmptyKey</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapContainsNullValue"></a>test_checkInitialization_auditActionTypeIdMapContainsNullValue</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_auditActionTypeIdMapRequiredMissing"></a>test_checkInitialization_auditActionTypeIdMapRequiredMissing</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getEntityManager"></a>test_getEntityManager</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setEntityManager"></a>test_setEntityManager</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getLogger"></a>test_getLogger</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLoggerName_1"></a>test_setLoggerName_1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLoggerName_2"></a>test_setLoggerName_2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization"></a>test_checkInitialization</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization_entityManagerNull"></a>test_checkInitialization_entityManagerNull</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getEntityManager"></a>test_getEntityManager</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setEntityManager"></a>test_setEntityManager</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_getLogger"></a>test_getLogger</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLoggerName_1"></a>test_setLoggerName_1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_setLoggerName_2"></a>test_setLoggerName_2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor1"></a>testCtor1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor2"></a>testCtor2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor3"></a>testCtor3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor4"></a>testCtor4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor1"></a>testCtor1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor2"></a>testCtor2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor3"></a>testCtor3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor4"></a>testCtor4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor1"></a>testCtor1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor2"></a>testCtor2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor3"></a>testCtor3</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor4"></a>testCtor4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor1"></a>testCtor1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor2"></a>testCtor2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor3"></a>testCtor3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor4"></a>testCtor4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testInheritance"></a>testInheritance</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor1"></a>testCtor1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor2"></a>testCtor2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor3"></a>testCtor3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor4"></a>testCtor4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.672</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate1"></a>testValidate1</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate2"></a>testValidate2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate3"></a>testValidate3</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate1"></a>testValidate1</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate2"></a>testValidate2</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate3"></a>testValidate3</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetValidatorMapping"></a>testSetValidatorMapping</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPredefinedKeys"></a>testSetPredefinedKeys</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCheckInitialization"></a>testCheckInitialization</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCheckInitialization"></a>testCheckInitialization</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateProjectMetadataKey1"></a>testCreateProjectMetadataKey1</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCreateProjectMetadataKey2"></a>testCreateProjectMetadataKey2</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUpdateProjectMetadataKey1"></a>testUpdateProjectMetadataKey1</td><td>Success</td><td></td><td>0.063</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUpdateProjectMetadataKey2"></a>testUpdateProjectMetadataKey2</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testUpdateProjectMetadataKey3"></a>testUpdateProjectMetadataKey3</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveProjectMetadataKey1"></a>testSaveProjectMetadataKey1</td><td>Success</td><td></td><td>0.078</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSaveProjectMetadataKey2"></a>testSaveProjectMetadataKey2</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testDeleteProjectMetadataKey"></a>testDeleteProjectMetadataKey</td><td>Success</td><td></td><td>0.141</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetProjectMetadataKey1"></a>testGetProjectMetadataKey1</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetProjectMetadataKey2"></a>testGetProjectMetadataKey2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetCommonProjectMetadataKeys1"></a>testGetCommonProjectMetadataKeys1</td><td>Success</td><td></td><td>0.125</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetCommonProjectMetadataKeys2"></a>testGetCommonProjectMetadataKeys2</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetClientProjectMetadataKeys1"></a>testGetClientProjectMetadataKeys1</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetClientProjectMetadataKeys2"></a>testGetClientProjectMetadataKeys2</td><td>Success</td><td></td><td>0.047</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testGetClientProjectMetadataKeys3"></a>testGetClientProjectMetadataKeys3</td><td>Success</td><td></td><td>0.109</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetDirectProjectMetadataKeyValidator"></a>testSetDirectProjectMetadataKeyValidator</td><td>Success</td><td></td><td>0.032</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCtor"></a>testCtor</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate1"></a>testValidate1</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate2"></a>testValidate2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testValidate3"></a>testValidate3</td><td>Success</td><td></td><td>0.110</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetValidatorMapping"></a>testSetValidatorMapping</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testSetPredefinedKeys"></a>testSetPredefinedKeys</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testCheckInitialization"></a>testCheckInitialization</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAPI"></a>testAPI</td><td>Success</td><td></td><td>17.812</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="testAPI"></a>testAPI</td><td>Success</td><td></td><td>12.516</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_2"></a>test_validate_2</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_3"></a>test_validate_3</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_4"></a>test_validate_4</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization5"></a>test_checkInitialization5</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_Null"></a>test_validate_Null</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_5"></a>test_validate_5</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_6"></a>test_validate_6</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_2"></a>test_validate_2</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_3"></a>test_validate_3</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_4"></a>test_validate_4</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization5"></a>test_checkInitialization5</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_Null"></a>test_validate_Null</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_5"></a>test_validate_5</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization0"></a>test_checkInitialization0</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization1"></a>test_checkInitialization1</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization2"></a>test_checkInitialization2</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization3"></a>test_checkInitialization3</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization4"></a>test_checkInitialization4</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization6"></a>test_checkInitialization6</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_validate_0"></a>test_validate_0</td><td>Success</td><td></td><td>0.016</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization5"></a>test_checkInitialization5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization1"></a>test_checkInitialization1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization2"></a>test_checkInitialization2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization3"></a>test_checkInitialization3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization4"></a>test_checkInitialization4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadataKey_Null"></a>test_createProjectMetadataKey_Null</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadataKey_ValidationException"></a>test_createProjectMetadataKey_ValidationException</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadataKey_Null"></a>test_updateProjectMetadataKey_Null</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadataKey_entitynotfound"></a>test_updateProjectMetadataKey_entitynotfound</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadataKey_Null"></a>test_saveProjectMetadataKey_Null</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadataKey_ValidationException"></a>test_saveProjectMetadataKey_ValidationException</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_deleteProjectMetadataKey_Null"></a>test_deleteProjectMetadataKey_Null</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_1"></a>test_searchProjects_1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_2"></a>test_searchProjects_2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_3"></a>test_searchProjects_3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_searchProjects_4"></a>test_searchProjects_4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization5"></a>test_checkInitialization5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization1"></a>test_checkInitialization1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization2"></a>test_checkInitialization2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization3"></a>test_checkInitialization3</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_checkInitialization4"></a>test_checkInitialization4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadata_Null"></a>test_createProjectMetadata_Null</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_createProjectMetadata_ValidationException"></a>test_createProjectMetadata_ValidationException</td><td>Success</td><td></td><td>0.015</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadata_Null"></a>test_updateProjectMetadata_Null</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_updateProjectMetadata_ValidationException"></a>test_updateProjectMetadata_ValidationException</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadata_Null"></a>test_saveProjectMetadata_Null</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_saveProjectMetadata_ValidationException"></a>test_saveProjectMetadata_ValidationException</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_deleteProjectMetadata_EntityNotFoundException"></a>test_deleteProjectMetadata_EntityNotFoundException</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata_1"></a>test_addProjectMetadata_1</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata_2"></a>test_addProjectMetadata_2</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata_4"></a>test_addProjectMetadata_4</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="test_addProjectMetadata_5"></a>test_addProjectMetadata_5</td><td>Success</td><td></td><td>0.000</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('com.topcoder.direct.services.project.metadata.AllTests');">
+                    Properties &raquo;
+                </a>
+</div>
+<div class="Properties">
+<a href="./0_AllTests-out.txt">
+                        System.out &raquo;
+                    </a>
+</div>
+</body>
+</html>
