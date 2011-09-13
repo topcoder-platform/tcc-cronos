@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 
@@ -8,8 +8,12 @@ import java.io.Serializable;
 /**
  * Project summary data object to hold project data for each status.
  *
+ * <p>
+ *     Version 1.1 changes: add the property directProjectStatusId into the ProjectSummaryData.
+ * </p>
+ *
  * @author BeBetter
- * @version 1.0
+ * @version 1.1
  */
 public class ProjectSummaryData implements Serializable {
     /**
@@ -30,6 +34,12 @@ public class ProjectSummaryData implements Serializable {
      * </p>
      */
     private String projectName;
+
+    /**
+     * The direct project status id
+     * @since 1.1
+     */
+    private Long directProjectStatusId;
 
     /**
      * <p>
@@ -218,5 +228,25 @@ public class ProjectSummaryData implements Serializable {
      */
     public ProjectStatusData getCancelled() {
         return this.cancelled;
+    }
+
+    /**
+     * Gets the direct project status id.
+     *
+     * @return the direct project status id.
+     * @since 1.1
+     */
+    public Long getDirectProjectStatusId() {
+        return directProjectStatusId;
+    }
+
+    /**
+     * Sets the direct project status id.
+     *
+     * @param directProjectStatusId the direct project status id.
+     * @since 1.1
+     */
+    public void setDirectProjectStatusId(Long directProjectStatusId) {
+        this.directProjectStatusId = directProjectStatusId;
     }
 }

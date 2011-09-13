@@ -429,9 +429,15 @@ import com.topcoder.shared.util.DBMS;
  * <ul>
  * <li>Fixed forums management logic to update Studio and Software forums correctly.</li>
  * </ul>
+ *
+ * <p>
+ * Version 1.7.1 Release Assembly - TopCoder Cockpit Project Status Management Change notes:
+ * <ul>
+ * <li>Set cockpit project status id in {@link #getProjectData(com.topcoder.security.TCSubject)}</li>
+ * </ul>
  * 
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, TCSDEVELOPER
- * @version 1.7.0
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, GreatKevin
+ * @version 1.7.1
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -5140,6 +5146,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     /**
      * Gets all project data with aggregated statistics data for each type of contest status.
      *
+     * <p>Version 1.7.1 - set project status id into the ProjectSummaryData returned</p>
+     *
      * @param tcSubject <code>TCSubject</code> object
      * @return a list of <code>ProjectSummaryData</code> objects
      *
@@ -5168,6 +5176,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 ProjectSummaryData data = new ProjectSummaryData();
                 data.setProjectId(project.getProjectId());
                 data.setProjectName(project.getName());
+                data.setDirectProjectStatusId(project.getProjectStatusId());
                 result.add(data);
                 projectDataMap.put(data.getProjectId(), data);
             }
