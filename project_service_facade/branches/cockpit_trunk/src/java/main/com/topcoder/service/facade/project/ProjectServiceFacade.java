@@ -30,8 +30,14 @@ import com.topcoder.service.project.UserNotFoundFault;
  *  - Please use the new ProjectServiceFacadeWebService as the facade now. That interface will delegates all the methods
  *    to this interface.
  * </p>
- * @author isv
- * @version 1.0.2
+ *
+ * <p>
+ *     Version 1.0.3 changes:
+ *     - add method {@link #updateProject(com.topcoder.security.TCSubject, ProjectData)}
+ * </p>
+ *
+ * @author isv, GreatKevin
+ * @version 1.0.3
  */
 public interface ProjectServiceFacade {
 
@@ -90,6 +96,21 @@ public interface ProjectServiceFacade {
      */
     List< ProjectData > getProjectsForUser(TCSubject tcSubject, long userId) throws PersistenceFault, UserNotFoundFault,
                                                                AuthorizationFailedFault;
+
+    /**
+     * <p>
+     * Updates the project data.
+     * </p>
+     * @param tcSubject TCSubject instance contains the login security info for the current user
+     * @param projectData The project data to be updated. Must not be null.
+     * @throws PersistenceFault if a generic persistence error occurs.
+     * @throws ProjectNotFoundFault if no project with the given ID exists.
+     * @throws AuthorizationFailedFault if the calling principal is not authorized to retrieve the project.
+     * @throws IllegalArgumentFault if the arguments are invalid.
+     * @since 1.0.3
+     */
+    void updateProject(TCSubject tcSubject, ProjectData projectData) throws  PersistenceFault, ProjectNotFoundFault,
+                                                                        AuthorizationFailedFault, IllegalArgumentFault;
 
     /**
      * <p>Gets the project data for all projects viewable from the calling principal.</p>
