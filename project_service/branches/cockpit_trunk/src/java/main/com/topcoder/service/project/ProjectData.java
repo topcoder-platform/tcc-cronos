@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.project;
 
@@ -20,19 +20,27 @@ import javax.persistence.SqlResultSetMapping;
  * We simply define three properties and getter/setters for these properties. Note that this is a dumb DTO - no
  * validation is done.
  * </p>
+ *
+ * <p>
+ *     Version 1.1 - Release Assembly - TopCoder Cockpit Project Status Management changes:
+ *     <li>Add property <code>projectStatusId</code> and sql result set mapping for it.</li>
+ * </p>
+ *
  * <p>
  * <b>Thread Safety</b>: This class is not thread safe as it has mutable state.
  * </p>
  *
- * @author humblefool, FireIce
- * @version 1.0
+ * @author humblefool, FireIce, GreatKevin
+ * @version 1.1
  */
 @SqlResultSetMapping(
 		name="GetProjectsResult",
 		entities={@EntityResult(entityClass=ProjectData.class,
 				fields={@FieldResult(name="projectId",      column="project_id"),
 			            @FieldResult(name="name", column="name"),
-			            @FieldResult(name="description",           column="description")}
+			            @FieldResult(name="description", column="description"),
+                        @FieldResult(name="projectStatusId", column="project_status_id")
+                }
 		)})
 @Entity
 public class ProjectData implements Serializable {
@@ -79,7 +87,41 @@ public class ProjectData implements Serializable {
      */
     private String description;
 
+     /**
+     * <p>
+     * Represents project status id
+     * </p>
+     * <p>
+     * It uses <code>Long</code> type instead of <code>long</code> type to allow for null values to be set before
+     * entity creation in persistence.
+     * </p>
+      *@since 1.1
+     */
+    private Long projectStatusId;
 
+    /**
+     * <p>
+     * Gets the project status id
+     * </p>
+     *
+     * @return The status id of the project.
+     * @since 1.1
+     */
+    public Long getProjectStatusId() {
+        return projectStatusId;
+    }
+
+    /**
+     * <p>
+     * Sets the project status id
+     * </p>
+     *
+     * @param projectStatusId The project status ID of this project.
+     * @since 1.1
+     */
+    public void setProjectStatusId(Long projectStatusId) {
+        this.projectStatusId = projectStatusId;
+    }
 
     /**
      * <p>

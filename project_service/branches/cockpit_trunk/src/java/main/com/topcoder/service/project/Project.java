@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.project;
 
@@ -17,13 +17,18 @@ import javax.xml.bind.annotation.XmlType;
  * We simply define 4 new properties and getter/setters for these properties. Note that this is a dumb DTO - no
  * validation is done.
  * </p>
+ *
+ * <p>Version 1.1 - Release Assembly - TopCoder Cockpit Project Status Management changes
+ * <li>Refactor the projectStatusId property from this class to the parent class {@link ProjectData}</li>
+ * </p>
+ *
  * <p>
  * <b>Thread Safety</b>: This class is not thread safe as it has mutable state. Another reason is that its base class
  * is also not thread safe.
  * </p>
  *
- * @author humblefool, FireIce
- * @version 1.0
+ * @author humblefool, FireIce, GreatKevin
+ * @version 1.1
  */
 @XmlType(name = "project", namespace = "com.topcoder.service.project")
 public class Project extends ProjectData {
@@ -67,18 +72,6 @@ public class Project extends ProjectData {
      */
     private Date modifyDate;
 
-
-    /**
-     * <p>
-     * Represents project status id
-     * </p>
-     * <p>
-     * It uses <code>Long</code> type instead of <code>long</code> type to allow for null values to be set before
-     * entity creation in persistence. This variable is mutable and is retrieved by the {@link #getProjectId()} method
-     * and set by the {@link #setProjectId(Long)} method. It is initialized to null, and may be set to ANY value.
-     * </p>
-     */
-    private Long projectStatusId;
 
     /**
      * <p>
@@ -193,26 +186,5 @@ public class Project extends ProjectData {
     }
 
 
-    /**
-     * <p>
-     * Gets the project status id
-     * </p>
-     *
-     * @return The ID of the project.
-     */
-    public Long getProjectStatusId() {
-        return projectStatusId;
-    }
 
-    /**
-     * <p>
-     * Sets the project status id
-     * </p>
-     *
-     * @param projectId
-     *            The desired ID of this project. ANY value.
-     */
-    public void setProjectStatusId(Long projectStatusId) {
-        this.projectStatusId = projectStatusId;
-    }
 }

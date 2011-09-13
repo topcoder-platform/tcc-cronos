@@ -231,9 +231,8 @@ import com.topcoder.util.log.LogManager;
  * </p>
  *
  * @author humblefool, FireIce
- * @author ThinMan, TCSDEVELOPER
- * @author woodjhon, ernestobf
- * @version 1.1.2
+ * @author ThinMan, woodjhon, ernestobf, GreatKevin
+ * @version 1.1.3
  * @since 1.0
  */
 @Stateless
@@ -246,9 +245,13 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * The query used to retrieve <code>Project</code> entities.
      * </p>
      *
+     * <p>
+     *     Updates in v1.1.3: return the constraint - p.project_status_id = 1
+     * </p>
+     *
      * @since 1.1
      */
-    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description, project_status_id FROM tc_direct_project p where  p.project_status_id = 1";
+    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description, project_status_id FROM tc_direct_project p";
 
     /**
      * <p>
@@ -260,10 +263,14 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *      - also need to fetch users who has read, write, full permissions on the project other than the creator.
      * </p>
      *
+     * <p>
+     *     Updates in v1.1.3: return the constraint - p.project_status_id = 1
+     * </p>
+     *
      * @since 1.1
      */
     private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description, project_status_id FROM tc_direct_project p, user_permission_grant per "
-                                    + " where p.project_id = per.resource_id and p.project_status_id = 1 and per.user_id = ";
+                                    + " where p.project_id = per.resource_id and per.user_id = ";
 
     /**
      * <p>
@@ -288,9 +295,30 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         "SELECT p FROM Project p WHERE p.name = :projectName";
     
     /**
-     * constant for active project id
+     * constant for active project status id
      */
     private static final long PROJECT_STATUS_ACTIVE = 1;
+
+    /**
+     * constant for archived project status id.
+     *
+     * @since version 1.3
+     */
+    private static final long PROJECT_STATUS_ARCHIVED = 2;
+
+    /**
+     * constant for deleted project status id.
+     *
+     * @since version 1.3
+     */
+    private static final long PROJECT_STATUS_DELETED = 3;
+
+    /**
+     * constant for completed project status id.
+     *
+     * @since version 1.3
+     */
+    private static final long PROJECT_STATUS_COMPLETED = 4;
 
     /**
      * <p>
@@ -916,9 +944,15 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *             </ul>
      *     </ul>
      * </p>
+     *
      * <p>
      * Update in v1.1.1: add parameter TCSubject which contains the security info for current user.
      * </p>
+     *
+     * <p>
+     * Update in v1.1.3: set the project status id before updating, so the project status id can be updated.
+     * </p>
+     *
      * @param tcSubject TCSubject instance contains the login security info for the current user
      *
      * @param projectData
@@ -957,6 +991,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             // Update the data into managed project entity.
             managedProject.setName(projectData.getName());
             managedProject.setDescription(projectData.getDescription());
+            managedProject.setProjectStatusId(projectData.getProjectStatusId());
 
             // Update the modify date.
             managedProject.setModifyDate(new Date());
@@ -1301,6 +1336,10 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * Version 1.1 renames the <code>createProjectData()</code> method to <code>copyProjectData()</code>.
      * </p>
      *
+     * <p>
+     *     Updates in v1.1.3: copy the project status id when copying project data.
+     * </p>
+     *
      * @param project The <code>ProjectData</code> instance to be copied.
      *
      * @return The newly created <code>ProjectData</code> instance with data copied.
@@ -1313,6 +1352,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         projectData.setName(project.getName());
         projectData.setDescription(project.getDescription());
         projectData.setProjectId(project.getProjectId());
+        projectData.setProjectStatusId(project.getProjectStatusId());
 
         return projectData;
     }
@@ -1508,6 +1548,10 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *     </ul>
      * </p>
      *
+     * <p>
+     *     Updates in v1.1.3: add project status id information into string representation.
+     * </p>
+     *
      * @param projectData
      *            The <code>ProjectData</code> instance to format.
      * @return The string representation of the <code>ProjectData</code> instance.
@@ -1526,6 +1570,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         builder.append("project id: ").append(projectData.getProjectId());
         builder.append(", name: ").append(projectData.getName());
         builder.append(", description: ").append(projectData.getDescription());
+        builder.append(", statusId: ").append(projectData.getProjectStatusId());
         builder.append(">");
 
         return builder.toString();
@@ -1621,7 +1666,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * </p>
      *
      * @return the EntityManager looked up from the session context
-     * @throws ContestManagementException
+     * @throws PersistenceFault
      *             if fail to get the EntityManager from the sessionContext.
      */
     private EntityManager getEntityManager() throws PersistenceFault {
