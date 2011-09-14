@@ -7274,31 +7274,62 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // Get all the active contests information belongs to this user
             contests = this.projectServices.getActiveContestsForUser(subject, userId);
 
+            List<Long> swForumIdsList = new ArrayList<Long>();
+            List<Long> stForumIdsList = new ArrayList<Long>();
+
             long[] forumIds = new long[contests.size()];
 
             long[] contestIds = new long[contests.size()];
 
             for (int i = 0; i < contests.size(); ++i) {
                 if (contests.get(i).getForumId() != null) {
-                    forumIds[i] = contests.get(i).getForumId();
+                    if (contests.get(i).isStudio())
+                    {
+                        stForumIdsList.add(new Long(contests.get(i).getForumId().intValue()));
+                    }
+                    else
+                    {
+                        swForumIdsList.add(new Long(contests.get(i).getForumId().intValue()));
+                    }
                 }
                 contestIds[i] = contests.get(i).getContestId();
             }
 
-            long[] watchedForumIds = new long[0];
+            long[] swForumIds = new long[swForumIdsList.size()];
+            long[] stForumIds = new long[stForumIdsList.size()];
+
+            for (int i = 0; i < swForumIdsList.size(); i++)
+            {
+                swForumIds[i] = (Long)swForumIdsList.get(i);
+            }
+
+            for (int i = 0; i < stForumIdsList.size(); i++)
+            {
+                stForumIds[i] = (Long)stForumIdsList.get(i);
+            }
+
+            long[] watchedSwForumIds = new long[0];
+            long[] watchedStForumIds = new long[0];
 
             if (this.createForum) {
-                Forums forums = getForumEJB();
+                Forums stForums = getStudioForums();
+                Forums swForums = getSoftwareForums();
 
                 // get the watched forums Ids of the user
-                watchedForumIds = forums.areCategoriesWatched(userId, forumIds);
+                watchedSwForumIds = swForums.areCategoriesWatched(userId, swForumIds);
+                watchedStForumIds = stForums.areForumsWatched(userId, stForumIds);
             }
 
 
             // Use a hash set to store watched forum IDs
-            Set<Long> watchedForumsSet = new HashSet<Long>();
-            for (long id : watchedForumIds)
-                watchedForumsSet.add(id);
+            Set<Long> watchedSwForumsSet = new HashSet<Long>();
+            Set<Long> watchedStForumsSet = new HashSet<Long>();
+
+            for (long id : watchedSwForumIds)
+                watchedSwForumsSet.add(id);
+
+            for (long id : watchedStForumIds)
+                watchedStForumsSet.add(id);
 
             // get the IDs of contests of which notifications are on
             long[] notifiedContestIds = this.projectServices.getNotificationsForUser(userId,
@@ -7341,8 +7372,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 cn.setName(c.getCname());
                 // added in Direct Notification assembly
                 cn.setType(c.getType());
-                cn.setForumNotification(watchedForumsSet.contains(cn.getForumId()));
+                if (c.isStudio())
+                {
+                    cn.setForumNotification(watchedStForumsSet.contains(cn.getForumId()));
+                }
+                else
+                {
+                    cn.setForumNotification(watchedSwForumsSet.contains(cn.getForumId()));
+                }
+                
                 cn.setProjectNotification(notifiedContestsSet.contains(cn.getContestId()));
+
+                cn.setIsStudio(c.isStudio());
 
                 // add new ContestNotification into coressponding ProjectNotification
                 pn.getContestNotifications().add(cn);
@@ -7401,8 +7442,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         try {
 
-            List<Long> watchForumIdList = new ArrayList<Long>();
-            List<Long> unwatchForumIdList = new ArrayList<Long>();
+            List<Long> watchSwForumIdList = new ArrayList<Long>();
+            List<Long> watchStForumIdList = new ArrayList<Long>();
+            List<Long> unwatchSwForumIdList = new ArrayList<Long>();
+            List<Long> unwatchStForumIdList = new ArrayList<Long>();
+
             List<Long> allContestIdList = new ArrayList<Long>();
             List<Long> notifyContestIdList = new ArrayList<Long>();
 
@@ -7410,9 +7454,23 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 for (ContestNotification cn : pn.getContestNotifications()) {
 
                     if (cn.isForumNotification()) {
-                        watchForumIdList.add(cn.getForumId());
+                        if (cn.isStudio())
+                        {
+                            watchStForumIdList.add(cn.getForumId());
+                        }
+                        else
+                        {
+                            watchSwForumIdList.add(cn.getForumId());
+                        }
                     } else {
-                        unwatchForumIdList.add(cn.getForumId());
+                        if (cn.isStudio())
+                        {
+                            unwatchStForumIdList.add(cn.getForumId());
+                        }
+                        else
+                        {
+                            unwatchSwForumIdList.add(cn.getForumId());
+                        }
                     }
 
                     allContestIdList.add(cn.getContestId());
@@ -7426,11 +7484,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (this.createForum) {
 
-                Forums forums = getForumEJB();
+                Forums stForums = getStudioForums();
+                Forums swForums = getSoftwareForums();
 
                 // sets the forum watches using Forum EJB service
-                forums.deleteCategoryWatches(subject.getUserId(), getPrimitiveArray(unwatchForumIdList));
-                forums.createCategoryWatches(subject.getUserId(), getPrimitiveArray(watchForumIdList));
+                swForums.deleteCategoryWatches(subject.getUserId(), getPrimitiveArray(unwatchSwForumIdList));
+                swForums.createCategoryWatches(subject.getUserId(), getPrimitiveArray(watchSwForumIdList));
+
+                stForums.deleteForumWatches(subject.getUserId(), getPrimitiveArray(unwatchStForumIdList));
+                stForums.createForumWatches(subject.getUserId(), getPrimitiveArray(watchStForumIdList));
             }
 
             // remove notifications of all contests of this user first

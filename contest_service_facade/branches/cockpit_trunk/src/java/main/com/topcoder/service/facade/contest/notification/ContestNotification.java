@@ -51,6 +51,11 @@ public class ContestNotification implements Serializable {
     private long forumId;
 
     /**
+     * is studio type
+     */
+    private boolean isStudio;
+
+    /**
      * Gets the contest id.
      * 
      * @return the id of the contest.
@@ -158,5 +163,24 @@ public class ContestNotification implements Serializable {
      */
     public void setType(String type) {
         this.type = type;
+    }
+
+
+    /**
+     * Gets isStudio
+     *
+     * @return isStudio.
+     */
+    public boolean isStudio() {
+        return isStudio;
+    }
+
+    /**
+     * Sets isStudio
+     *
+     * @param isStudio isStudio
+     */
+    public void setIsStudio(boolean isStudio) {
+        this.isStudio = isStudio;
     }
 }
