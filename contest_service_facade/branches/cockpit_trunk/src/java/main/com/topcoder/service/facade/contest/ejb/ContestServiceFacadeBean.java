@@ -3151,6 +3151,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // studio competition
                 totalFee = Double.parseDouble((String) contest.getProperty(ProjectPropertyType.ADMIN_FEE_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
+                    + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY));
                 for (Prize prize : competition.getProjectHeader().getPrizes()) {
                     totalFee = totalFee + prize.getPrizeAmount() * prize.getNumberOfSubmissions();
                 }
