@@ -1540,7 +1540,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      */
     private static final DataType[] QUERY_SIMPLE_PROJECT_INFO_BY_USER_COLUMN_TYPES = new DataType[] {
             Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
-            Helper.LONG_TYPE, Helper.STRING_TYPE};
+            Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE};
     
     /**
      * Represents the sql statement to create project spec.
@@ -8047,7 +8047,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                     + " tc_direct_project_id as project_id, "
                     + "  tcd.name as project_name, "
                     + " ( select pi.value from project_info pi where c.project_id = pi.project_id and pi.project_info_type_id = 4 ) as forum_id, "
-                    + " pcl.name as contest_type "
+                    + " pcl.name as contest_type, pcl.project_type_id  "
                     + " from project c, tc_direct_project tcd, project_category_lu pcl  "
                     + " where c.tc_direct_project_id = tcd.project_id and c.project_status_id = 1 "
                     + " and pcl.project_category_id = c.project_category_id "
@@ -8092,6 +8092,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 if (os[5] != null)
                     // set the contest type
                     c.setType(os[5].toString());
+
+                 if (os[6] != null) {
+                    // set the contest type
+                    c.setIsStudio(((Long) os[6]) == ProjectType.STUDIO.getId());
+                 }
 
 
                 result.add(c);
