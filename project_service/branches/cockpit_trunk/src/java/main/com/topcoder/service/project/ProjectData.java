@@ -25,13 +25,16 @@ import javax.persistence.SqlResultSetMapping;
  *     Version 1.1 - Release Assembly - TopCoder Cockpit Project Status Management changes:
  *     <li>Add property <code>projectStatusId</code> and sql result set mapping for it.</li>
  * </p>
+ * <p>
+ *     Version 1.2 - add the property project forum category id.
+ * </p>
  *
  * <p>
  * <b>Thread Safety</b>: This class is not thread safe as it has mutable state.
  * </p>
  *
  * @author humblefool, FireIce, GreatKevin
- * @version 1.1
+ * @version 1.2
  */
 @SqlResultSetMapping(
 		name="GetProjectsResult",
@@ -39,8 +42,8 @@ import javax.persistence.SqlResultSetMapping;
 				fields={@FieldResult(name="projectId",      column="project_id"),
 			            @FieldResult(name="name", column="name"),
 			            @FieldResult(name="description", column="description"),
-                        @FieldResult(name="projectStatusId", column="project_status_id")
-                }
+                        @FieldResult(name="projectStatusId", column="project_status_id"),
+                        @FieldResult(name="forumCategoryId", column="project_forum_id")}
 		)})
 @Entity
 public class ProjectData implements Serializable {
@@ -99,6 +102,13 @@ public class ProjectData implements Serializable {
      */
     private Long projectStatusId;
 
+
+    /**
+     * The project forum category id.
+     * @since 1.2
+     */
+    private String forumCategoryId;
+
     /**
      * <p>
      * Gets the project status id
@@ -122,6 +132,7 @@ public class ProjectData implements Serializable {
     public void setProjectStatusId(Long projectStatusId) {
         this.projectStatusId = projectStatusId;
     }
+  
 
     /**
      * <p>
@@ -200,4 +211,23 @@ public class ProjectData implements Serializable {
         this.description = description;
     }
 
+    /**
+     * Gets the project forum category id.
+     *
+     * @return the project forum category id.
+     * @since 1.2
+     */
+    public String getForumCategoryId() {
+        return forumCategoryId;
+    }
+
+    /**
+     * Sets the project forum category id
+     *
+     * @param forumCategoryId the project forum category id
+     * @since 1.2
+     */
+    public void setForumCategoryId(String forumCategoryId) {
+        this.forumCategoryId = forumCategoryId;
+    }
 }

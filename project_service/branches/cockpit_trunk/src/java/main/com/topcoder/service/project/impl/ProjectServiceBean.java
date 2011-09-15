@@ -224,6 +224,15 @@ import com.topcoder.util.log.LogManager;
  *               method instead of verifying the authorization itself</li>
  *            </ul>
  * </p>
+ *
+ * <p>
+ *
+ * </p>
+ *  Version 1.2 (Release Assembly - TopCoder Cockpit Project Overview Update 1) changes note:
+ *  <uL>
+ *      <li>Add the support of the new column project_forum_id which is used to store the project forum category id.</li>
+ *  </uL>
+ *
  * <p>
  * <b>Thread Safety</b>: This class is thread safe as it is immutable except for the session context. The
  * sessionContext resource, despite being mutable, does not compromise thread safety as it is injected by the EJB
@@ -232,7 +241,7 @@ import com.topcoder.util.log.LogManager;
  *
  * @author humblefool, FireIce
  * @author ThinMan, woodjhon, ernestobf, GreatKevin
- * @version 1.1.3
+ * @version 1.2
  * @since 1.0
  */
 @Stateless
@@ -251,7 +260,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description, project_status_id FROM tc_direct_project p";
+    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description, project_status_id, , project_forum_id FROM tc_direct_project p";
 
     /**
      * <p>
@@ -269,7 +278,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description, project_status_id FROM tc_direct_project p, user_permission_grant per "
+    private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description, project_status_id, project_forum_id FROM tc_direct_project p, user_permission_grant per "
                                     + " where p.project_id = per.resource_id and per.user_id = ";
 
     /**
@@ -992,6 +1001,10 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
             managedProject.setName(projectData.getName());
             managedProject.setDescription(projectData.getDescription());
             managedProject.setProjectStatusId(projectData.getProjectStatusId());
+			// sets the project forum category for update if not null and empty
+            if (projectData.getForumCategoryId() != null && projectData.getForumCategoryId().trim().length() != 0) {
+                managedProject.setForumCategoryId(projectData.getForumCategoryId());
+            }
 
             // Update the modify date.
             managedProject.setModifyDate(new Date());
@@ -1353,6 +1366,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         projectData.setDescription(project.getDescription());
         projectData.setProjectId(project.getProjectId());
         projectData.setProjectStatusId(project.getProjectStatusId());
+		projectData.setForumCategoryId(project.getForumCategoryId());
 
         return projectData;
     }
@@ -1571,6 +1585,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         builder.append(", name: ").append(projectData.getName());
         builder.append(", description: ").append(projectData.getDescription());
         builder.append(", statusId: ").append(projectData.getProjectStatusId());
+		builder.append(", forum category id: ").append(projectData.getForumCategoryId());
         builder.append(">");
 
         return builder.toString();
@@ -1666,7 +1681,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      * </p>
      *
      * @return the EntityManager looked up from the session context
-     * @throws PersistenceFault
+     * @throws ContestManagementException
      *             if fail to get the EntityManager from the sessionContext.
      */
     private EntityManager getEntityManager() throws PersistenceFault {
