@@ -101,6 +101,7 @@ public class DirectProjectMetadataValidatorImpl extends AbstractDirectProjectMet
      * @throws ValidationException
      *             if metadata fails validation.
      */
+    @SuppressWarnings("unchecked")
     public void validate(DirectProjectMetadata projectMetadata) throws ValidationException {
         String signature = CLASS_NAME + ".validate(DirectProjectMetadata projectMetadata)";
         Log logger = getLogger();
@@ -132,7 +133,7 @@ public class DirectProjectMetadataValidatorImpl extends AbstractDirectProjectMet
                 if (resultNum > 1) {
                     throw new ValidationException("The key is not single.");
                 }
-                if ((resultNum == 1) && (resultList.get(0) != projectMetadata.getId())) {
+                if ((resultNum == 1) && (!resultList.get(0).equals(projectMetadata.getId()))) {
                     throw new ValidationException("A record with the project id and the key id already exists.");
                 }
             }

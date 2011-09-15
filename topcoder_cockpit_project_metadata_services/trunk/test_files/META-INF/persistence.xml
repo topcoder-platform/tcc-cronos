@@ -13,6 +13,7 @@
   </properties>
  </persistence-unit>
  
+ 
  <persistence-unit name="failurePersistence" transaction-type="RESOURCE_LOCAL">
   <provider>org.hibernate.ejb.HibernatePersistence</provider>
   <mapping-file>META-INF/mapping/TcDirectProject.hbm.xml</mapping-file>
@@ -33,5 +34,4 @@
    <property name="hibernate.connection.password" value="123456" />
   </properties>
  </persistence-unit>
- 
 </persistence>

@@ -10,7 +10,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ import org.junit.Test;
 
 import com.topcoder.direct.services.project.metadata.ConfigurationException;
 import com.topcoder.direct.services.project.metadata.EntityNotFoundException;
-import com.topcoder.direct.services.project.metadata.PersistenceException;
 import com.topcoder.direct.services.project.metadata.TestsHelper;
 import com.topcoder.direct.services.project.metadata.ValidationException;
 import com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKey;
@@ -272,23 +270,6 @@ public class DirectProjectMetadataKeyServiceImplUnitTests {
 
     /**
      * <p>
-     * Failure test for the method <code>createProjectMetadataKey(DirectProjectMetadataKey projectMetadataKey,
-     * long userId)</code> with an error has occurred.<br>
-     * <code>PersistenceException</code> is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
-     */
-    @Test(expected = PersistenceException.class)
-    public void test_createProjectMetadataKey_Error() throws Exception {
-        projectMetadataKey.setPredefinedValues(Arrays.asList(new DirectProjectMetadataPredefinedValue()));
-
-        instance.createProjectMetadataKey(projectMetadataKey, userId);
-    }
-
-    /**
-     * <p>
      * Accuracy test for the method <code>updateProjectMetadataKey(DirectProjectMetadataKey projectMetadataKey,
      * long userId)</code>.<br>
      * The result should be correct.
@@ -372,26 +353,6 @@ public class DirectProjectMetadataKeyServiceImplUnitTests {
     public void test_updateProjectMetadataKey_EntityNotFoundError() throws Exception {
         projectMetadataKey.setId(Long.MAX_VALUE);
 
-        instance.updateProjectMetadataKey(projectMetadataKey, userId);
-    }
-
-    /**
-     * <p>
-     * Failure test for the method <code>updateProjectMetadataKey(DirectProjectMetadataKey projectMetadataKey,
-     * long userId)</code> with an error has occurred.<br>
-     * <code>PersistenceException</code> is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
-     */
-    @Test(expected = PersistenceException.class)
-    public void test_updateProjectMetadataKey_Error() throws Exception {
-        instance.createProjectMetadataKey(projectMetadataKey, userId);
-
-        projectMetadataKey.setPredefinedValues(Arrays.asList(new DirectProjectMetadataPredefinedValue()));
-
-        projectMetadataKey.setDescription("new description");
         instance.updateProjectMetadataKey(projectMetadataKey, userId);
     }
 
@@ -497,25 +458,6 @@ public class DirectProjectMetadataKeyServiceImplUnitTests {
     @Test(expected = ValidationException.class)
     public void test_saveProjectMetadataKey_ValidationError() throws Exception {
         projectMetadataKey.setClientId(1L);
-
-        instance.saveProjectMetadataKey(projectMetadataKey, userId);
-    }
-
-    /**
-     * <p>
-     * Failure test for the method <code>saveProjectMetadataKey(DirectProjectMetadataKey projectMetadataKey,
-     * long userId)</code> with an error has occurred.<br>
-     * <code>PersistenceException</code> is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
-     */
-    @Test(expected = PersistenceException.class)
-    public void test_saveProjectMetadataKey_Error() throws Exception {
-        instance.createProjectMetadataKey(projectMetadataKey, userId);
-
-        projectMetadataKey.setPredefinedValues(Arrays.asList(new DirectProjectMetadataPredefinedValue()));
 
         instance.saveProjectMetadataKey(projectMetadataKey, userId);
     }

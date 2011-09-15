@@ -22,7 +22,6 @@ import com.topcoder.direct.services.project.metadata.DirectProjectServiceExcepti
 import com.topcoder.direct.services.project.metadata.EntityNotFoundException;
 import com.topcoder.direct.services.project.metadata.PersistenceException;
 import com.topcoder.direct.services.project.metadata.ValidationException;
-import com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadata;
 import com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKey;
 import com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataKeyAudit;
 import com.topcoder.direct.services.project.metadata.entities.dao.DirectProjectMetadataPredefinedValue;

@@ -51,7 +51,7 @@ public class UnitTests extends TestCase {
         suite.addTest(ConfigurationExceptionUnitTests.suite());
         suite.addTest(DirectProjectServiceExceptionUnitTests.suite());
         suite.addTest(EntityNotFoundExceptionUnitTests.suite());
-        suite.addTest(EntityNotFoundExceptionUnitTests.suite());
+        suite.addTest(PersistenceExceptionUnitTests.suite());
         suite.addTest(ValidationExceptionUnitTests.suite());
 
         return suite;

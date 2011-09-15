@@ -39,9 +39,8 @@ import com.topcoder.util.log.Log;
 /**
  * <p>
  * This class is the default implementation of DirectProjectMetadataService. It extends
- * AbstractDirectProjectMetadataService to use entityManager and log. It is injected with additional entity manager to
- * manage TcDirectProject from corporate_otlp database. It is injected with directProjectMetadataValidator to validate
- * metadata before insert/update.
+ * AbstractDirectProjectMetadataService to use entityManager and log. It is injected with
+ * directProjectMetadataValidator to validate metadata before insert/update.
  * </p>
  *
  * <p>
@@ -54,9 +53,7 @@ import com.topcoder.util.log.Log;
  *      xsi:schemaLocation=&quot;
  *      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
  *      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd&quot;&gt;
- *
  *     &lt;bean class=&quot;org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor&quot; /&gt;
- *
  *     &lt;!--  Configuration for entityManager --&gt;
  *     &lt;bean id=&quot;entityManagerFactory&quot;
  *         class=&quot;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&quot;&gt;
@@ -74,7 +71,6 @@ import com.topcoder.util.log.Log;
  *             &lt;/map&gt;
  *         &lt;/property&gt;
  *     &lt;/bean&gt;
- *
  *     &lt;!-- Data Source --&gt;
  *     &lt;bean id=&quot;dataSource&quot; class=&quot;org.apache.commons.dbcp.BasicDataSource&quot;
  *         destroy-method=&quot;close&quot;&gt;
@@ -85,7 +81,6 @@ import com.topcoder.util.log.Log;
  *         &lt;property name=&quot;password&quot; value=&quot;123456&quot; /&gt;
  *         &lt;property name=&quot;minIdle&quot; value=&quot;2&quot; /&gt;
  *     &lt;/bean&gt;
- *
  *     &lt;!--  Configuration for persistence unit manager --&gt;
  *     &lt;bean id=&quot;persistenceUnitManager&quot;
  *         class=&quot;org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager&quot;&gt;
@@ -101,24 +96,19 @@ import com.topcoder.util.log.Log;
  *         &lt;/property&gt;
  *         &lt;property name=&quot;defaultDataSource&quot; ref=&quot;dataSource&quot; /&gt;
  *     &lt;/bean&gt;
- *
  *     &lt;!-- Configuration for transaction managers and annotation driven manager enable --&gt;
  *     &lt;bean id=&quot;transactionManager&quot;
  *              class=&quot;org.springframework.orm.jpa.JpaTransactionManager&quot;&gt;
  *         &lt;property name=&quot;entityManagerFactory&quot; ref=&quot;entityManagerFactory&quot; /&gt;
  *     &lt;/bean&gt;
- *
  *     &lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot; /&gt;
- *
  *     &lt;!-- Validators configuration --&gt;
  *     &lt;bean id=&quot;directProjectMetadataKeyValidator&quot;
  *       class=&quot;com.topcoder.direct.services.project.metadata.impl.DirectProjectMetadataKeyValidatorImpl&quot; &gt;
  *         &lt;property name=&quot;loggerName&quot; value=&quot;loggerName&quot; /&gt;
  *     &lt;/bean&gt;
- *
  *     &lt;bean id=&quot;directProjectMetadataValidator&quot;
  *         class=&quot;com.topcoder.direct.services.project.metadata.impl.DirectProjectMetadataValidatorImpl&quot; &gt;
- *
  *         &lt;property name=&quot;loggerName&quot; value=&quot;loggerName&quot; /&gt;
  *         &lt;property name=&quot;validatorMapping&quot;&gt;
  *             &lt;map&gt;
@@ -128,7 +118,6 @@ import com.topcoder.util.log.Log;
  *                 &lt;entry key=&quot;2&quot; value=&quot;&circ;xx$&quot;/&gt;
  *             &lt;/map&gt;
  *         &lt;/property&gt;
- *
  *         &lt;property name=&quot;predefinedKeys&quot;&gt;
  *             &lt;map&gt;
  *                 &lt;!-- Example for choose from predefined list --&gt;
@@ -136,11 +125,9 @@ import com.topcoder.util.log.Log;
  *             &lt;/map&gt;
  *         &lt;/property&gt;
  *     &lt;/bean&gt;
- *
  *     &lt;!-- Services configuration --&gt;
  *     &lt;bean id=&quot;directProjectMetadataService&quot;
  *         class=&quot;com.topcoder.direct.services.project.metadata.impl.DirectProjectMetadataServiceImpl&quot; &gt;
- *
  *         &lt;property name=&quot;loggerName&quot; value=&quot;loggerName&quot; /&gt;
  *         &lt;property name=&quot;directProjectMetadataValidator&quot;
  *                      ref=&quot;directProjectMetadataValidator&quot; /&gt;
@@ -152,10 +139,8 @@ import com.topcoder.util.log.Log;
  *             &lt;/map&gt;
  *         &lt;/property&gt;
  *     &lt;/bean&gt;
- *
  *     &lt;bean id=&quot;directProjectMetadataKeyService&quot;
  *         class=&quot;com.topcoder.direct.services.project.metadata.impl.DirectProjectMetadataKeyServiceImpl&quot; &gt;
- *
  *         &lt;property name=&quot;loggerName&quot; value=&quot;loggerName&quot; /&gt;
  *         &lt;property name=&quot;directProjectMetadataKeyValidator&quot;
  *                      ref=&quot;directProjectMetadataKeyValidator&quot; /&gt;
