@@ -58,13 +58,9 @@ public class Demo {
      */
     @Before
     public void setUp() throws Exception {
-    	try {
         em = TestsHelper.getEntityManager();
         TestsHelper.clearDB(em);
         TestsHelper.loadDB(em);
-    	} catch (Throwable e) {
-    		e.printStackTrace();
-		}
     }
 
     /**
