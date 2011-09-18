@@ -21,6 +21,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.management.review.ConfigurationException;
 import com.topcoder.management.review.DuplicateReviewEntityException;
 import com.topcoder.management.review.ReviewEntityNotFoundException;
+import com.topcoder.management.review.ReviewManagementException;
 import com.topcoder.management.review.ReviewPersistence;
 import com.topcoder.management.review.ReviewPersistenceException;
 import com.topcoder.management.review.data.Comment;
@@ -57,10 +58,19 @@ import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
  * <p>
  * Thread Safety: This class is not thread safe.
  * </p>
+ * 
+ * <p>
+ * Version 1.2 (Online Review Miscellaneous Improvements ) change notes:
+ *   <ol>
+ *     <li>Added {@link #deleteReview(long)} method to delete a review.</li>
+ *   </ol>
+ * </p>
+ *
  * @author woodjhon
  * @author urtks
  * @author George1
- * @version 1.0.2
+ * @author flexme
+ * @version 1.2
  */
 public class InformixReviewPersistence implements ReviewPersistence {
     /**
@@ -141,6 +151,13 @@ public class InformixReviewPersistence implements ReviewPersistence {
      * Represents the comment type lookup table.
      */
     private static final String COMMENT_TYPE_LOOKUP_TABLE = "comment_type_lu";
+
+    /**
+     * Represents the upload table.
+     * 
+     * @since 1.2
+     */
+    private static final String UPLOAD_TABLE = "upload";
 
     /**
      * Represents the placeholder string in a sql statement to be replaced by a
@@ -276,6 +293,49 @@ public class InformixReviewPersistence implements ReviewPersistence {
     private static final String QUERY_ALL_COMMENT_TYPES_SQL = "SELECT comment_type_id, name FROM "
         + COMMENT_TYPE_LOOKUP_TABLE;
 
+    /**
+     * Represents the sql statement to delete the review comments belongs to a specified review.
+     * 
+     * @since 1.2
+     */
+    private static final String DELETE_REVIEW_COMMENT_SQL = "DELETE FROM " + REVIEW_COMMENT_TABLE + " WHERE review_id=?";
+    
+    /**
+     * Represents the sql statement to delete the review item comments belongs to a specified review.
+     * 
+     * @since 1.2
+     */
+    private static final String DELETE_REVIEW_ITEM_COMMENT_SQL = "DELETE FROM " + REVIEW_ITEM_COMMENT_TABLE + " WHERE review_item_id IN "
+        + "(SELECT review_item_id FROM " + REVIEW_ITEM_TABLE + " WHERE review_id=?)";
+    
+    /**
+     * Represents the sql statement to delete the review item uploads belongs to a specified review.
+     * 
+     * @since 1.2
+     */
+    private static final String DELETE_REVIEW_ITEM_UPLOAD_SQL = "DELETE FROM " + UPLOAD_TABLE + " WHERE upload_id IN (" + ID_ARRAY_PARAMETER_PLACEHOLDER + ")";
+    
+    /**
+     * Represents the sql statment to query the upload IDs belongs to a specified review.
+     * 
+     * @since 1.2
+     */
+    private static final String QUERY_REVIEW_UPLOADS_SQL = "SELECT upload_id FROM " + REVIEW_ITEM_TABLE + " WHERE review_id = ? AND upload_id is not null";
+    
+    /**
+     * Represents the sql statement to delete the review items belongs to a specified review.
+     * 
+     * @since 1.2
+     */
+    private static final String DELETE_REVIEW_ITEM_SQL = "DELETE FROM " + REVIEW_ITEM_TABLE + " WHERE review_id=?";
+    
+    /**
+     * Represents the sql statement to delete the review.
+     * 
+     * @since 1.2
+     */
+    private static final String DELETE_REVIEW_SQL = "DELETE FROM " + REVIEW_TABLE + " WHERE review_id=?";
+    
     /**
      * The DBConnectionFactory is used by all the methods that perform the
      * database queried to get the named connection. It's initialized in the
@@ -2263,5 +2323,55 @@ public class InformixReviewPersistence implements ReviewPersistence {
 
         // set the comment id when no exception occurred.
         setEntityIds(changeTable);
+    }
+    
+    /**
+     * <p>
+     * This method will delete the review with given review id.
+     * </p>
+     *
+     * @param reviewId the review id.
+     * @throws ReviewManagementException if failed to delete the review.
+     * @since 1.2
+     */
+    public void deleteReview(long reviewId) throws ReviewManagementException {
+        Connection conn = null;
+        
+        LOGGER.log(Level.INFO, new LogMessage(null, "", "Delete Review " + reviewId));
+        
+        try {
+            // create the transaction connection
+            conn = createTransactionalConnection();
+            
+            Object[] queryArgs = new Object[] {new Long(reviewId)};
+            
+            // Get the upload IDs
+            Object[][] rows = Helper.doQuery(conn, QUERY_REVIEW_UPLOADS_SQL,
+                    queryArgs, new DataType[] {Helper.LONG_TYPE});
+            StringBuffer uploadIdsList = new StringBuffer();
+            for (int i = 0; i < rows.length; i++) {
+                if (uploadIdsList.length() > 0) {
+                    uploadIdsList.append(",");
+                }
+                uploadIdsList.append(rows[i][0]);
+            }
+            
+            Helper.doDMLQuery(conn, DELETE_REVIEW_COMMENT_SQL, queryArgs);
+            Helper.doDMLQuery(conn, DELETE_REVIEW_ITEM_COMMENT_SQL, queryArgs);
+            Helper.doDMLQuery(conn, DELETE_REVIEW_ITEM_SQL, queryArgs);
+            Helper.doDMLQuery(conn, DELETE_REVIEW_SQL, queryArgs);
+            
+            if (uploadIdsList.length() > 0) {
+                // delete the uploads
+                Helper.doDMLQuery(conn, DELETE_REVIEW_ITEM_UPLOAD_SQL.replaceFirst(
+                        ID_ARRAY_PARAMETER_REGULAR_EXP, uploadIdsList.toString()), new Object[0]);
+            }
+        } catch (ReviewPersistenceException e) {
+            LOGGER.log(Level.ERROR, new LogMessage(null, "", "Error occurs during delete the Review.", e));
+            Helper.rollBackTransaction(conn, LOGGER);
+            throw e;
+        } finally {
+            Helper.closeConnection(conn , LOGGER);
+        }
     }
 }
