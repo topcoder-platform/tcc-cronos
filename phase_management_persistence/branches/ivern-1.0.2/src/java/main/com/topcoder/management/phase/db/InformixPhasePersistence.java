@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved.
+ * Copyright (c) 2006-2011, TopCoder, Inc. All rights reserved.
  */
 package com.topcoder.management.phase.db;
 
@@ -66,9 +66,19 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * This class is thread-safe.
  * </p>
  *
+ * <p>
+ *   Version 1.0.3 (Online Review Miscellaneous Improvements ) change notes:
+ *     <ol>
+ *       <li>Remove <code>AUDIT_DELETE_TYPEM</code> field.</li>
+ *       <li>Updated {@link #deletePhase(Phase)} method to fix the bug of phase audit. Phase audit can't exist
+ *       for the phases that has been deleted because of the foreign key constraints.</li>
+ *     </ol>   
+ * </p>
+ * 
  * @author AleaActaEst
  * @author kr00tki
- * @version 1.0.2
+ * @author flexme
+ * @version 1.0.3
  */
 public class InformixPhasePersistence implements PhasePersistence {
 
@@ -234,15 +244,6 @@ public class InformixPhasePersistence implements PhasePersistence {
      * @since 1.0.2
      */
     private static final int AUDIT_CREATE_TYPE = 1;
-
-    /**
-     * <p>
-     * Represents the audit deletion type.
-     * </p>
-     *
-     * @since 1.0.2
-     */
-    private static final int AUDIT_DELETE_TYPE = 2;
     
     /**
      * <p>
@@ -261,6 +262,13 @@ public class InformixPhasePersistence implements PhasePersistence {
     private static final String PROJECT_PHASE_AUDIT_INSERT_SQL = "INSERT INTO project_phase_audit "
     	+ "(project_phase_id, scheduled_start_time, scheduled_end_time, audit_action_type_id, action_date, action_user_id) "
     	+ "VALUES (?, ?, ?, ?, ?, ?)";
+
+    /**
+     * Represents the SQL statement to delete the audio info.
+     * 
+     * @since 1.0.3
+     */
+    private static final String PROJECT_PHASE_AUDIT_DELETE_SQL = "DELETE FROM project_phase_audit WHERE project_phase_id IN ";
 
     /**
      * DBConnectionFactory constructor parameters.
@@ -1667,8 +1675,8 @@ public class InformixPhasePersistence implements PhasePersistence {
 
     /**
      * <p>
-     * Deletes the provided phases from the persistence. All phases depedencies will be removed as well. If any
-     * phase is not in the persistence, nothing will happen.
+     * Deletes the provided phases from the persistence. All phases depedencies and phase audit records
+     *  will be removed as well. If any phase is not in the persistence, nothing will happen.
      * </p>
      *
      * @param phases an array of phases to delete
@@ -1687,6 +1695,7 @@ public class InformixPhasePersistence implements PhasePersistence {
         PreparedStatement pstmt = null;
         PreparedStatement pstmt2 = null;
         PreparedStatement pstmt3 = null;
+        PreparedStatement pstmt4 = null;
 
         try {
             // create the staments for all 3 tables (phase, dependecies and criteria)
@@ -1694,6 +1703,7 @@ public class InformixPhasePersistence implements PhasePersistence {
                     + inSet);
             pstmt2 = conn.prepareStatement(DELETE_PROJECT_PHASE + inSet);
             pstmt3 = conn.prepareStatement(DELETE_PHASE_CRITERIA_FOR_PHASES + inSet);
+            pstmt4 = conn.prepareStatement(PROJECT_PHASE_AUDIT_DELETE_SQL + inSet);
 
             // set the id values
             for (int i = 0; i < phases.length; i++) {
@@ -1701,19 +1711,17 @@ public class InformixPhasePersistence implements PhasePersistence {
                 pstmt.setLong(i + 1 + phases.length, phases[i].getId());
                 pstmt2.setLong(i + 1, phases[i].getId());
                 pstmt3.setLong(i + 1, phases[i].getId());
+                pstmt4.setLong(i + 1, phases[i].getId());
             }
 
             // delete depedencies
             pstmt.executeUpdate();
             // delete criteria
             pstmt3.executeUpdate();
+            // delete audit
+            pstmt4.executeUpdate();
             // delete phases
             pstmt2.executeUpdate();
-            
-            for (int i = 0; i < phases.length; i++) {
-            	auditProjectPhase(conn, phases[i], AUDIT_DELETE_TYPE, null, null, 0L,
-            			new Timestamp(System.currentTimeMillis()));
-            }
             
             conn.commit();
         } catch (SQLException ex) {

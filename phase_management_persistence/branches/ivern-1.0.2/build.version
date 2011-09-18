@@ -5,5 +5,5 @@ component.package=com.topcoder.management.phase.db
 component.packagedir=com/topcoder/management/phase/db
 component.version.major=1
 component.version.minor=0
-component.version.micro=2
+component.version.micro=3
 component.version.build=1
