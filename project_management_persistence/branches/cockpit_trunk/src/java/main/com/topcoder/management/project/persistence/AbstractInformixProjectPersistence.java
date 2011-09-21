@@ -4222,8 +4222,10 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         // get the billing project id
         long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));
 
+        boolean isStudio = isStudio(project);
+
         //insert the term of use for the project
-        createRoleTermOfUse(projectId, billingProjectId, project.getProjectCategory().getId(), standardCCA, conn);
+        createRoleTermOfUse(projectId, billingProjectId, project.getProjectCategory().getId(), standardCCA, isStudio, conn);
         
         // create the project properties
         createProjectProperties(projectId, project, idValueMap, operator, conn);
@@ -4357,9 +4359,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         String value = (String) idValueMap.get(nameIdMap.get(PROJECT_INFO_CONFIDENTIALITY_TYPE_PROPERTY));
         boolean standardCCA = (value != null && !value.equalsIgnoreCase(CONFIDENTIALITY_TYPE_PUBLIC));
         // get the standard cca value from project property.         
-        long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));        
+        long billingProjectId = new Long((String) idValueMap.get(nameIdMap.get(PROJECT_INFO_BILLING_PROJECT_PROPERTY)));
+        
+        boolean isStudio = isStudio(project);
         //insert the term of use for the project
-        createRoleTermOfUse(projectId, billingProjectId, project.getProjectCategory().getId(), standardCCA, conn);
+        createRoleTermOfUse(projectId, billingProjectId, project.getProjectCategory().getId(), standardCCA, isStudio, conn);
         
         // update the project properties
         updateProjectProperties(project, idValueMap, operator, conn);
@@ -6609,6 +6613,19 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
     private static boolean isSpecReviewSubmitter(int roleId, long projectCategoryId) {
         return roleId == SUBMITTER_ROLE_ID && projectCategoryId == ProjectCategory.PROJECT_CATEGORY_SPEC_REVIEW;
     }
+
+
+     /**
+     * Checks if the contest is studio contest.
+     *
+     * @param contest the conetst to check
+     * @return true if the contest is studio contest, false otherwise
+     * @since 1.6.6
+     */
+    private boolean isStudio(Project project) {
+        return project.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId();
+    }
+
     /**
      * 1. if there are client terms defined, insert these terms.
      * 2. if CCA, insert CCA terms
@@ -6620,7 +6637,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @param standardCCA true for cca
      * @throws PersistenceException if any error occurs
      */
-    private void createRoleTermOfUse(long projectId, long billingProjectId, long projectCategoryId, boolean standardCCA,
+    private void createRoleTermOfUse(long projectId, long billingProjectId, long projectCategoryId, boolean standardCCA, boolean isStudio,
             Connection conn) throws PersistenceException {        
         PreparedStatement preparedStatement = null;
         try {
@@ -6842,7 +6859,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 int reviewerRoleId = Integer.parseInt(Helper.getConfigurationParameterValue(cm, namespace,
                         REVIEWER_ROLE_ID_PARAMETER, getLogger(), Integer.toString(REVIEWER_ROLE_ID)));
                 // if it's not development there is a single reviewer role
-                if (projectCategoryId != ProjectCategory.COPILOT_POSTING.getId() && !hasClientTerm && !added.contains(reviewerRoleId+"-"+reviewerTermsId)) {
+                if (projectCategoryId != ProjectCategory.COPILOT_POSTING.getId() 
+                        // no reviewer term for studio reviewer
+                        && !isStudio
+                        && !hasClientTerm 
+                        && !added.contains(reviewerRoleId+"-"+reviewerTermsId)) {
                     createProjectRoleTermsOfUse(projectId, reviewerRoleId, reviewerTermsId, conn);
                     added.add(reviewerRoleId+"-"+reviewerTermsId);
                 }
