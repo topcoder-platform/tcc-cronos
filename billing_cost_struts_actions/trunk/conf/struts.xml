@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+    <constant name="struts.devMode" value="true" />
+
+    <package name="default" namespace="/" extends="struts-default">
+
+        <default-action-ref name="getAuditHistory" />
+
+        <global-results>
+            <result name="error">/error.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+
+        <action name="getAuditHistory" class="auditHistoryAction">
+        	<result name="input">/auditHistory.jsp</result>
+          	<result>/success.jsp</result>
+        </action>
+        <action name="getBillingCostExportHistory" class="billingCostExportHistoryAction">
+        	<result name="input">/billingCostExportHistory.jsp</result>
+          	<result>/success.jsp</result>
+        </action>
+        <action name="getBillingCostExportDetails" class="billingCostExportDetailsAction">
+        	<result name="input">/billingCostExportDetails.jsp</result>
+          	<result>/success.jsp</result>
+        </action>
+        <action name="getBillingCostReport" class="billingCostReportAction">
+        	<result name="input">/billingCostReport.jsp</result>
+          	<result>/success.jsp</result>
+        </action>
+        <action name="exportToQuickBooks" class="billingCostReportQuickBooksExportAction">
+        	<result name="input">/billingCostReport.jsp</result>
+          	<result>/success.jsp</result>
+        </action>
+    </package>
+
+</struts>

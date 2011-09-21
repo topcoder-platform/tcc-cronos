@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="auditHistoryAction" class="com.topcoder.accounting.action.AuditHistoryAction" scope="request"
+          init-method="checkConfiguration">
+        <property name="billingCostAuditService" ref="billingCostAuditService"/>
+        <property name="action" value="getAuditHistory"/>
+    </bean>
+    <bean id="billingCostExportDetailsAction" class="com.topcoder.accounting.action.BillingCostExportDetailsAction" scope="request"
+          init-method="checkConfiguration">
+        <property name="billingCostAuditService" ref="billingCostAuditService"/>
+        <property name="action" value="getBillingCostExportDetails"/>
+    </bean>
+    <bean id="billingCostExportHistoryAction" class="com.topcoder.accounting.action.BillingCostExportHistoryAction" scope="request"
+          init-method="checkConfiguration">
+        <property name="billingCostAuditService" ref="billingCostAuditService"/>
+        <property name="action" value="getBillingCostExportHistory"/>
+    </bean>
+    <bean id="billingCostReportAction" class="com.topcoder.accounting.action.BillingCostReportAction" scope="request"
+          init-method="checkConfiguration">
+        <!--default to 1 day-->
+        <property name="defaultDuration" value="86400000"/>
+        <property name="billingCostAuditService" ref="billingCostAuditService"/>
+        <property name="action" value="getBillingCostReport"/>
+        <property name="billingCostDataService" ref="billingCostDataService"/>
+    </bean>
+    <bean id="billingCostReportQuickBooksExportAction"
+          class="com.topcoder.accounting.action.BillingCostReportQuickBooksExportAction" scope="request"
+          init-method="checkConfiguration">
+        <property name="billingCostAuditService" ref="billingCostAuditService"/>
+        <property name="action" value="exportToQuickBooks"/>
+        <property name="billingCostDataService" ref="billingCostDataService"/>
+    </bean>
+    
+    
+    <!--This file assumes that billingCostAuditService and billingCostDataService is properly configured-->
+    <bean id="billingCostAuditService" class="com.topcoder.accounting.action.MockBillingCostAuditService">
+    </bean>
+    
+    <bean id="billingCostDataService" class="com.topcoder.accounting.action.MockBillingCostDataService">
+    </bean>
+</beans>
