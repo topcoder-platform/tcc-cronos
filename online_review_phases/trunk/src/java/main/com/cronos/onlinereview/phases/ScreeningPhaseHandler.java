@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.phases;
 
+import com.cronos.onlinereview.actions.ActionsHelper;
 import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
@@ -10,6 +11,7 @@ import com.topcoder.management.deliverable.persistence.UploadPersistenceExceptio
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 
@@ -80,8 +82,16 @@ import java.util.Map;
  * in case if operation cannot be performed.</li>
  * </ul>
  * </p>
- * @author tuenm, bose_java, argolite, waits, saarixx, microsky
- * @version 1.6.1
+ * 
+ * <p>
+ * Version 1.6.2 (TCCC-3631) Change notes:
+ * <ol>
+ * <li>Updated {@link #canPerform(Phase)} method to delete studio submission 
+ * if they have user rank more than configured for the project.</li>
+ * </ol>
+ * </p>
+ * @author tuenm, bose_java, argolite, waits, saarixx, microsky, lmmortal
+ * @version 1.6.2
  */
 public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -266,15 +276,28 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
 
+        // Database connection
+        Connection conn = createConnection();            
+
+        
         if (toStart) {
+            try {
+                com.topcoder.management.project.Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
+                
+                if (PhasesHelper.isStudio(project)) {
+                    PhasesHelper.autoScreenStudioSubmissions(project, getManagerHelper(), PhasesHelper.CONTEST_SUBMISSION_TYPE, conn, operator);
+                }
+            } catch (PersistenceException e) {
+                throw new PhaseHandlingException("There was an error with project persistence", e);
+            } finally {
+                PhasesHelper.closeConnection(conn);
+            }
+            
             // for start, put the submission information with need_primary_screener or not
             putPhaseStartInfos(phase, values);
         } else {
             // flag to indicate whether all submissions do not pass screening
             boolean noScreeningPass = false;
-
-            // Database connection
-            Connection conn = createConnection();
 
             try {
                 // Search all submissions for current project

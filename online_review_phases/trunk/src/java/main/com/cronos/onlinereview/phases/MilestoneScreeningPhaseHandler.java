@@ -12,6 +12,7 @@ import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
+import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
@@ -57,8 +58,17 @@ import com.topcoder.util.log.LogFactory;
  * <li>The return changes from boolean to OperationCheckResult.</li>
  * </ul>
  * </p>
- * @author FireIce, saarixx, TCSDEVELOPER, microsky
- * @version 1.6.1
+ * 
+ * <p>
+ * Version 1.6.2 (TCCC-3631) Change notes:
+ * <ol>
+ * <li>Updated {@link #canPerform(Phase)} method to delete studio submission 
+ * if they have user rank more than configured for the project.</li>
+ * </ol>
+ * </p>
+
+ * @author FireIce, saarixx, microsky, lmmortal
+ * @version 1.6.2
  * @since 1.6
  */
 public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
@@ -252,6 +262,17 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
 
         try {
             if (toStart) {
+                try {
+                    com.topcoder.management.project.Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
+                    if (PhasesHelper.isStudio(project)) {
+                        PhasesHelper.autoScreenStudioSubmissions(project, getManagerHelper(), PhasesHelper.MILESTONE_SUBMISSION_TYPE, conn, operator);
+                    }
+                } catch (PersistenceException e) {
+                    throw new PhaseHandlingException("There was an error with project persistence", e);
+                } finally {
+                    PhasesHelper.closeConnection(conn);
+                }
+            
                 // for start, put the submission information with need_milestone_screener or not
                 putPhaseStartInfos(conn, phase, values);
             } else {

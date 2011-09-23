@@ -28,6 +28,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
+import com.topcoder.management.deliverable.SubmissionType;
 import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.UploadStatus;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
@@ -165,9 +166,17 @@ import com.topcoder.util.log.Log;
  * <li>Added {@link #setSubmissionPrize(com.topcoder.management.project.Project, Submission[], String, double)} method to populate prizes for submissions.</li>
  * </ol>
  * </p>
+ * 
+ * <p>
+ * Version 1.7.2 (TCCC-3631) Change notes:
+ * <ol>
+ * <li>Added {@link #autoScreenStudioSubmissions(com.topcoder.management.project.Project, ManagerHelper, String, Connection, String) method to delete studio submission 
+ * if they have user rank more than configured for the project.</li>
+ * </ol>
+ * </p>
  *
- * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, microsky, flexme
- * @version 1.7.1
+ * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, microsky, flexme, lmmortal
+ * @version 1.7.2
  */
 final class PhasesHelper {
     /**
@@ -377,6 +386,24 @@ final class PhasesHelper {
     */
     static final long STUDIO_PROJECT_TYPE_ID = 3;
 
+    /**
+     * Represents the maximum submissions property key.
+     * @since 1.7.2
+     */
+    static final String MAXIMUM_SUBMISSIONS = "Maximum Submissions";
+    
+    /**
+     * Represents the deleted upload status.
+     * @since 1.7.2
+     */
+    static final String UPLOAD_DELETED_STATUS = "Deleted";
+    
+    /**
+     * Represents the deleted submission status.
+     * @since 1.7.2
+     */
+    static final String SUBMISSION_DELETED_STATUS = "Deleted";
+    
     /**
      * private to prevent instantiation.
      */
@@ -2731,5 +2758,53 @@ final class PhasesHelper {
     
         return subs;
     }
-
+    
+    /**
+     * Checks whether passed project is studio project.
+     * @param project to check.
+     * @return true if passed studio project, false otherwise.
+     */
+    static boolean isStudio(com.topcoder.management.project.Project project) {
+            return project.getProjectCategory().getProjectType().getId() == STUDIO_PROJECT_TYPE_ID;
+    }
+    
+    /**
+     * Delete submissions which have user rank more than configured number of the project.
+     *  
+     * @param project the project to upload submissions
+     * @param helper the manager helper to use
+     * @param submissionsType the submission type to use
+     * @param conn the connection to use
+     * @param operator the operator to use 
+     * @throws PhaseHandlingException if any error occurred
+     */
+    static void autoScreenStudioSubmissions(com.topcoder.management.project.Project project, ManagerHelper helper, String submissionsType, Connection conn, String operator) 
+            throws PhaseHandlingException 
+    {
+        try {
+            Object maxSubmissions = project.getProperty(MAXIMUM_SUBMISSIONS);
+            if (maxSubmissions == null || Integer.parseInt(maxSubmissions.toString()) > 1) {
+                return;
+            }
+            
+            int maxAllowedSubs = Integer.parseInt(maxSubmissions.toString());
+            Submission[] subs = searchActiveSubmissions(helper.getUploadManager(), conn, project.getId(), submissionsType);
+            
+            UploadStatus deletedUploadStatus = getUploadStatus(helper.getUploadManager(), UPLOAD_DELETED_STATUS);
+            SubmissionStatus deletedSubmissionStatus = getSubmissionStatus(helper.getUploadManager(), SUBMISSION_DELETED_STATUS);
+            
+            for (Submission s : subs) {
+                if (s.getUserRank() > maxAllowedSubs) {
+                    s.setSubmissionStatus(deletedSubmissionStatus);
+                    s.getUpload().setUploadStatus(deletedUploadStatus);
+                    helper.getUploadManager().updateSubmission(s, operator);
+                }
+            }
+        } catch (NumberFormatException e) {
+            throw new PhaseHandlingException("Error when reading maximum submissions property", e);
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Error in submission persistence", e);
+        }
+    }
+    
 }
