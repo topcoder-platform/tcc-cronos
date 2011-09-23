@@ -2783,20 +2783,24 @@ final class PhasesHelper {
     {
         try {
             Object maxSubmissions = project.getProperty(MAXIMUM_SUBMISSIONS);
-            if (maxSubmissions == null || Integer.parseInt(maxSubmissions.toString()) > 1) {
+            if (maxSubmissions == null || Integer.parseInt(maxSubmissions.toString()) <= 1) {
                 return;
             }
             
             int maxAllowedSubs = Integer.parseInt(maxSubmissions.toString());
+
             Submission[] subs = searchActiveSubmissions(helper.getUploadManager(), conn, project.getId(), submissionsType);
-            
+
             UploadStatus deletedUploadStatus = getUploadStatus(helper.getUploadManager(), UPLOAD_DELETED_STATUS);
             SubmissionStatus deletedSubmissionStatus = getSubmissionStatus(helper.getUploadManager(), SUBMISSION_DELETED_STATUS);
             
+
             for (Submission s : subs) {
                 if (s.getUserRank() > maxAllowedSubs) {
+
                     s.setSubmissionStatus(deletedSubmissionStatus);
                     s.getUpload().setUploadStatus(deletedUploadStatus);
+                    helper.getUploadManager().updateUpload(s.getUpload(), operator);
                     helper.getUploadManager().updateSubmission(s, operator);
                 }
             }

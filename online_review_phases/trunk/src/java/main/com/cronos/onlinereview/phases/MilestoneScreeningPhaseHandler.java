@@ -262,19 +262,12 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
 
         try {
             if (toStart) {
-                try {
-                    com.topcoder.management.project.Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
-                    if (PhasesHelper.isStudio(project)) {
-                        PhasesHelper.autoScreenStudioSubmissions(project, getManagerHelper(), PhasesHelper.MILESTONE_SUBMISSION_TYPE, conn, operator);
-                    }
-                } catch (PersistenceException e) {
-                    throw new PhaseHandlingException("There was an error with project persistence", e);
-                } finally {
-                    PhasesHelper.closeConnection(conn);
+                com.topcoder.management.project.Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
+                if (PhasesHelper.isStudio(project)) {
+                    PhasesHelper.autoScreenStudioSubmissions(project, getManagerHelper(), PhasesHelper.MILESTONE_SUBMISSION_TYPE, conn, operator);
                 }
-            
-                // for start, put the submission information with need_milestone_screener or not
-                putPhaseStartInfos(conn, phase, values);
+                    // for start, put the submission information with need_milestone_screener or not
+                    putPhaseStartInfos(conn, phase, values);
             } else {
                 // flag to indicate whether all submissions do not pass screening
                 boolean noScreeningPass = false;
@@ -317,6 +310,8 @@ public class MilestoneScreeningPhaseHandler extends AbstractPhaseHandler {
                     getManagerHelper().getResourceManager(), true));
                 values.put("NO_SCREENING_PASS", noScreeningPass ? 1 : 0);
             }
+        } catch (PersistenceException e) {
+            throw new PhaseHandlingException("There was problem with project persistence.", e);
         } finally {
             // close the connection after get the submissions
             PhasesHelper.closeConnection(conn);
