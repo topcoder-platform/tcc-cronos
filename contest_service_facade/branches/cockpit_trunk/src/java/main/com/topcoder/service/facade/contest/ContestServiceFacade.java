@@ -194,8 +194,15 @@ import com.topcoder.service.user.Registrant;
  * </ul>
  * </p>
  *
- * @author pulky, murphydog, waits, BeBetter, hohosky, isv, TCSASSEMBER
- * @version 1.6.6
+ * <p>
+ * Version 1.6.7 (TopCoder Cockpit Project Overview R2 Project Forum Backend Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #createTopCoderDirectProjectForum(TCSubject, long, Long)} method.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author pulky, murphydog, waits, BeBetter, hohosky, isv
+ * @version 1.6.7
  */
 public interface ContestServiceFacade {
     /**
@@ -2666,4 +2673,19 @@ public interface ContestServiceFacade {
      * @since 1.6.5
      */
     public void updateSoftwareSubmissions(TCSubject currentUser, List<Submission> submissions) throws ContestServiceException;
+
+    /**
+     * <p>Creates the forum for the specified <code>TC Direct</code> project.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of <code>TC Direct</code> project to create forum 
+     *        for. 
+     * @param tcDirectProjectTypeId a <code>Long</code> referencing the type of <code>TC Direct</code> project. 
+     *        May be <code>null</code>.   
+     * @return a <code>long</code> providing the ID of created forum.
+     * @throws ContestServiceException if an unexpected error occurs.
+     * @since 1.6.7
+     */
+    public long createTopCoderDirectProjectForum(TCSubject currentUser, long projectId, 
+                                                 Long tcDirectProjectTypeId) throws ContestServiceException;
 }

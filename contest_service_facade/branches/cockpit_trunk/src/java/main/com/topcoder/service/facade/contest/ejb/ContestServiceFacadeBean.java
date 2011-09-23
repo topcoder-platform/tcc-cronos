@@ -435,9 +435,17 @@ import com.topcoder.shared.util.DBMS;
  * <ul>
  * <li>Set cockpit project status id in {@link #getProjectData(com.topcoder.security.TCSubject)}</li>
  * </ul>
+ *
+ * <p>
+ * Version 1.7.2 (TopCoder Cockpit Project Overview R2 Project Forum Backend Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #createTopCoderDirectProjectForum(TCSubject, long, Long)} method.</li>
+ *     <li>Added {@link #createProjectForums} property.</li>
+ *   </ol>
+ * </p>
  * 
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, GreatKevin
- * @version 1.7.1
+ * @version 1.7.2
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -4848,6 +4856,61 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch (RemoteException e) {
             logger.error("Operation failed in the uploadExternalServices.", e);
             throw new ContestServiceException("Operation failed in the uploadExternalServices.", e);
+        }
+    }
+
+    /**
+     * <p>Creates the forum for the specified <code>TC Direct</code> project.</p>
+     * 
+     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param projectId a <code>long</code> providing the ID of <code>TC Direct</code> project to create forum for. 
+     * @param tcDirectProjectTypeId a <code>Long</code> referencing the type of <code>TC Direct</code> project. 
+     *        May be <code>null</code>.   
+     * @return a <code>long</code> providing the ID of created forum.
+     * @throws ContestServiceException if an unexpected error occurs.
+     * @since 1.7.2
+     */
+    public long createTopCoderDirectProjectForum(TCSubject currentUser, long projectId, Long tcDirectProjectTypeId) 
+        throws ContestServiceException {
+        long userId = currentUser.getUserId();
+        logger.debug("createTopCoderDirectProjectForum (projectId = " + projectId + ", userId = " + userId 
+                     + ", createProjectForum = )" + createForum);
+        if (!createForum) {
+            return System.currentTimeMillis();
+        } else {
+            try {
+                String projectName = projectService.getProject(currentUser, projectId).getName();
+                Forums forums = getSoftwareForums();
+                long forumId = forums.createTopCoderDirectProjectForums(projectName, tcDirectProjectTypeId);
+                if (forumId < 0) {
+                    throw new Exception("createTopCoderDirectProjectForum returned negative forum ID: " + forumId);
+                }
+
+                // All project users must have permission for accessing the project's forum
+                List<Permission> projectPermissions = permissionService.getPermissionsByProject(projectId);
+                for (Permission permission : projectPermissions) {
+                    forums.assignRole(permission.getUserId(), "Software_Users_" + forumId);
+                }
+                
+                // All project co-pilots must have forum moderation permission and forum watches added
+                com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, 14);
+                if (resources != null) {
+                    for (com.topcoder.management.resource.Resource resource : resources) {
+                        if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) {
+                            long resourceUserId 
+                                = Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID));
+                            forums.assignRole(resourceUserId, "Software_Moderators_" + forumId);
+                            forums.createForumWatch(resourceUserId, forumId);
+                        }
+                    }
+                }
+
+                return forumId;
+            } catch (Exception e) {
+                logger.error("*** Could not create a TC Direct project forum for project " + projectId);
+                logger.error(e);
+            }
+            return -1;
         }
     }
 
