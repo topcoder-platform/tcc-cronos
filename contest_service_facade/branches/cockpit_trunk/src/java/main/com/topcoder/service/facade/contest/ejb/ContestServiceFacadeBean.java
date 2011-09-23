@@ -7391,7 +7391,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     public void assginRole(TCSubject tcSubject, long projectId, long roleId, long userId)
             throws ContestServiceException {
-        assignRole(tcSubject, projectId, roleId, userId, null, true, true, false, true);
+        assignRole(tcSubject, projectId, roleId, userId, null, true, true, false, false);
     }
 
      /* Assigns the role for the given tc project and user, it will assign all projects
@@ -7414,7 +7414,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             for (Long pid : projectIds)
             {
                 // delegate to new method added in BUGR-3731
-                this.assginRole(tcSubject, pid, roleId, userId);
+                this.assginRole(tcSubject, pid, roleId, userId, null, true, true, false, false);
 
             }
 
