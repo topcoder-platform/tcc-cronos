@@ -11,6 +11,7 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.management.review.ReviewEntityNotFoundException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.CommentType;
 import com.topcoder.management.review.data.Item;
@@ -22,8 +23,16 @@ import com.topcoder.util.config.ConfigManager;
 
 /**
  * Accuracy test fixture for InformixReviewPersistence class.
- * @author Thinfox
- * @version 1.0
+ * <p>
+ * 
+ * <em>Changes in 1.2<em>
+ * <ul>
+ * <li>Add test for removeReview()</li>
+ * <li>Add test for updateReview()</li>
+ * <ul>
+ * 
+ * @author Thinfox, Beijing2008
+ * @version 1.2
  */
 public class InformixReviewPersistenceTests extends TestCase {
     /**
@@ -37,40 +46,29 @@ public class InformixReviewPersistenceTests extends TestCase {
     private InformixReviewPersistence persistence;
 
     /**
-     * Prepares a Review instance used for tests.
-     * @return the created Review instance
+     * Sets up the test environment.
+     * @throws Exception to JUnit
      */
-    private Review createReview() {
-        Review review = new Review();
-        review.setAuthor(1);
-        review.setScorecard(1);
-        review.setSubmission(1);
-        review.setCommitted(true);
-        review.setScore(new Float(90.0));
+    protected void setUp() throws Exception {
+        AccuracyTestHelper.clearConfiguration();
+        ConfigManager cm = ConfigManager.getInstance();
+        cm.add("accuracy/DBConnectionFactory.xml");
+        cm.add("accuracy/SearchBundleManager.xml");
+        cm.add("accuracy/InformixPersistence.xml");
+        cm.add("logging.xml");
 
-        CommentType commentType = new CommentType(1, "name1");
+        AccuracyTestHelper.initTables();
+        persistence = new InformixReviewPersistence();
+        id = 1;
+    }
 
-        Comment comment = new Comment();
-        comment.setAuthor(2);
-        comment.setExtraInfo("extraInfo");
-        comment.setCommentType(commentType);
-        comment.setComment("comment");
-        review.addComment(comment);
-
-        Item item = new Item();
-        item.setQuestion(1);
-        item.setAnswer("answer");
-
-        comment = new Comment();
-        comment.setAuthor(3);
-        comment.setExtraInfo("extraInfo");
-        comment.setCommentType(commentType);
-        comment.setComment("comment");
-        review.addComment(comment);
-        item.addComment(comment);
-        review.addItem(item);
-
-        return review;
+    /**
+     * Cleans up the test environment.
+     * @throws Exception to JUnit
+     */
+    protected void tearDown() throws Exception {
+        AccuracyTestHelper.clearTables();
+        AccuracyTestHelper.clearConfiguration();
     }
 
     /**
@@ -88,7 +86,7 @@ public class InformixReviewPersistenceTests extends TestCase {
         assertEquals("Incorrect count of comments.", expected.getNumberOfComments(), actual
             .getNumberOfComments());
         assertEquals("Incorrect count of items.", expected.getNumberOfItems(), actual.getNumberOfItems());
-        Map commentMap = new HashMap();
+        Map<Long, Comment> commentMap = new HashMap<Long, Comment>();
         for (int i = 0; i < expected.getNumberOfComments(); i++) {
             Comment comment = expected.getComment(i);
             commentMap.put(new Long(comment.getId()), comment);
@@ -99,7 +97,7 @@ public class InformixReviewPersistenceTests extends TestCase {
             assertNotNull("Unexpected comment.", expectedComment);
             validateComment(expectedComment, comment);
         }
-        Map itemMap = new HashMap();
+        Map<Long, Item> itemMap = new HashMap<Long, Item>();
         for (int i = 0; i < expected.getNumberOfItems(); i++) {
             Item item = expected.getItem(i);
             itemMap.put(new Long(item.getId()), item);
@@ -124,7 +122,7 @@ public class InformixReviewPersistenceTests extends TestCase {
         assertEquals("Incorrect document.", expected.getDocument(), actual.getDocument());
         assertEquals("Incorrect count of comments.", expected.getNumberOfComments(), actual
             .getNumberOfComments());
-        Map commentMap = new HashMap();
+        Map<Long, Comment> commentMap = new HashMap<Long, Comment>();
         for (int i = 0; i < expected.getNumberOfComments(); i++) {
             Comment comment = expected.getComment(i);
             commentMap.put(new Long(comment.getId()), comment);
@@ -197,7 +195,6 @@ public class InformixReviewPersistenceTests extends TestCase {
         Item item = new Item(itemId);
         item.setQuestion(itemId);
         item.setAnswer("answer" + itemId);
-
         item.addComment(getComment());
 
         return item;
@@ -215,31 +212,6 @@ public class InformixReviewPersistenceTests extends TestCase {
         comment.setCommentType(new CommentType(1, "name1"));
         comment.setComment("content" + commentId);
         return comment;
-    }
-
-    /**
-     * Sets up the test environment.
-     * @throws Exception to JUnit
-     */
-    protected void setUp() throws Exception {
-        AccuracyTestHelper.clearConfiguration();
-        ConfigManager cm = ConfigManager.getInstance();
-        cm.add("accuracy/DBConnectionFactory.xml");
-        cm.add("accuracy/SearchBundleManager.xml");
-        cm.add("accuracy/InformixPersistence.xml");
-
-        AccuracyTestHelper.initTables();
-        persistence = new InformixReviewPersistence();
-        id = 1;
-    }
-
-    /**
-     * Cleans up the test environment.
-     * @throws Exception to JUnit
-     */
-    protected void tearDown() throws Exception {
-        AccuracyTestHelper.clearTables();
-        AccuracyTestHelper.clearConfiguration();
     }
 
     /**
@@ -264,6 +236,7 @@ public class InformixReviewPersistenceTests extends TestCase {
      * searchBundle) constructor.
      * @throws Exception to JUnit
      */
+    @SuppressWarnings("unchecked")
     public void testCtor3() throws Exception {
         assertNotNull("Creation failed.", new InformixReviewPersistence(new DBConnectionFactoryImpl(),
             "InformixConnection", new SearchBundle("bundle", new HashMap(), "context")));
@@ -332,29 +305,133 @@ public class InformixReviewPersistenceTests extends TestCase {
 
         validateReview(review, retrieved);
     }
+    /**
+     * Tests the removeReview(long id, String operator) method.
+     * <p>
+     * It verifies the review is deleted.
+     * 
+     * @throws Exception to JUnit
+     * @since 1.2
+     */
+    public void test_removeReview() throws Exception {
+
+        Review review = getReview(2, 2, 2);
+        //prepare the upload
+        for (int i = 0; i < review.getAllItems().length; i++) {
+            Item item = review.getItem(i);
+            item.setDocument(i+10000L);
+            AccuracyTestHelper.execute("INSERT INTO upload (upload_id) values (?)", new Object[] {item.getDocument()});
+        }
+        persistence.createReview(review, "user1");
+
+        persistence.removeReview(review.getId(), "operator");
+        
+        try {
+            persistence.getReview(review.getId());
+            fail("Expects an ReviewEntityNotFoundException");
+        } catch (ReviewEntityNotFoundException e) {
+            //ok
+        }
+        assertEquals("The entities should be deleted.", 0, 
+                AccuracyTestHelper.queryCount("select count(*) from review"));
+
+        //the comments should be cleared
+        assertEquals("The related entities should be deleted.", 0, 
+                AccuracyTestHelper.queryCount("select count(*) from review_comment"));
+        assertEquals("The related entities should be deleted.", 0, 
+                AccuracyTestHelper.queryCount("select count(*) from review_item_comment"));
+        assertEquals("The related entities should be deleted.", 0, 
+                AccuracyTestHelper.queryCount("select count(*) from review_item"));
+        assertEquals("The related entities should be deleted.", 0, 
+                AccuracyTestHelper.queryCount("select count(*) from upload"));
+    }
+    
 
     /**
-     * Tests the getAllCommentTypes() method.
+     * Tests the updateReview(Review review, String operator) method.
+     * <p>
+     * It verifies the review (as well as its upload) is correctly updated.
+     * 
      * @throws Exception to JUnit
+     * @since 1.2
+     */
+    public void test_updateReview() throws Exception {
+        Review review = getReview(2, 5, 2);
+        //prepare the upload
+        for (int i = 0; i < review.getAllItems().length; i++) {
+            Item item = review.getItem(i);
+            item.setDocument(i+10000L);
+            AccuracyTestHelper.execute("INSERT INTO upload (upload_id) values (?)", new Object[] {item.getDocument()});
+        }
+        persistence.createReview(review, "user1");
+        review.addComment(getComment());
+        //remove the first two item
+        review.removeItem(review.getItem(1));
+        review.removeItem(review.getItem(0));
+        //and add another item
+        long itemId = 1000000;
+        Item item = new Item(itemId);
+        item.setQuestion(itemId);
+        item.setAnswer("answer" + itemId);
+        item.addComment(getComment());
+        item.setDocument(20000L);
+        //prepare the upload
+        AccuracyTestHelper.execute("INSERT INTO upload (upload_id) values (?)", new Object[] {item.getDocument()});
+        
+        //update the review
+        persistence.updateReview(review, "user2");
+        Review retrieved = persistence.getReview(review.getId());
+
+        assertEquals("Incorrect creation user.", "user1", review.getCreationUser());
+        assertTrue("Incorrect creation date.", (new Date().getTime() - review.getCreationTimestamp()
+            .getTime()) <= 10 * 60 * 1000);
+        assertEquals("Incorrect modification user.", "user2", review.getModificationUser());
+        assertTrue("Incorrect modification date.", (new Date().getTime() - review.getModificationTimestamp()
+            .getTime()) <= 10 * 60 * 1000);
+
+        validateReview(review, retrieved);
+        //the uploads should be updated.
+        assertEquals("The upload table should be updated.", 4, 
+                AccuracyTestHelper.queryCount("select count(*) from upload"));
+        //the deleted upload should be removed
+        assertEquals("The upload table should be updated.", 0, 
+                AccuracyTestHelper.queryCount("select count(*) from upload where upload_id = " + 10000L));
+        //the deleted upload should be removed
+        assertEquals("The upload table should be updated.", 0, 
+                AccuracyTestHelper.queryCount("select count(*) from upload where upload_id = " + 10001L));
+        //the original upload should be kept
+        assertEquals("The upload table should be updated.", 1, 
+                AccuracyTestHelper.queryCount("select count(*) from upload where upload_id = " + 10002L));
+        assertEquals("The upload table should be updated.", 1, 
+                AccuracyTestHelper.queryCount("select count(*) from upload where upload_id = " + 10003L));
+        assertEquals("The upload table should be updated.", 1, 
+                AccuracyTestHelper.queryCount("select count(*) from upload where upload_id = " + 10004L));
+        //the added upload should be kept
+        assertEquals("The upload table should be updated.", 1, 
+                AccuracyTestHelper.queryCount("select count(*) from upload where upload_id = " + 20000L));
+    }
+    /**
+     * Tests the getAllCommentTypes() method.
+     * 
+     * @throws Exception to JUnit
+     * @version 1.2
      */
     public void testAccuracyGetAllCommentTypes1() throws Exception {
         CommentType[] types = persistence.getAllCommentTypes();
 
-        assertEquals("Incorrect count of types.", 10, types.length);
+        assertEquals("Incorrect count of types.", 3, types.length);
         for (int i = 0; i < types.length; i++) {
             assertEquals("Incorrect type id.", i + 1, types[i].getId());
-            assertEquals("Incorrect type name.", "type" + (i + 1), types[i].getName());
+            assertEquals("Incorrect type name.", "type " + (i + 1), types[i].getName());
         }
-    }
+        //call the function the second time, the result should be the same
+        types = persistence.getAllCommentTypes();
 
-    /**
-     * Tests the getAllCommentTypes() method.
-     * @throws Exception to JUnit
-     */
-    public void testAccuracyGetAllCommentTypes2() throws Exception {
-        AccuracyTestHelper.clearTables();
-        CommentType[] types = persistence.getAllCommentTypes();
-        assertEquals("Incorrect count of types.", 0, types.length);
+        assertEquals("Incorrect count of types.", 3, types.length);
+        for (int i = 0; i < types.length; i++) {
+            assertEquals("Incorrect type id.", i + 1, types[i].getId());
+            assertEquals("Incorrect type name.", "type " + (i + 1), types[i].getName());
+        }
     }
 
     /**

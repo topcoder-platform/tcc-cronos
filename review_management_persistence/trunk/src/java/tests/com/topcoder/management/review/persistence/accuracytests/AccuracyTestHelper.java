@@ -5,7 +5,9 @@ package com.topcoder.management.review.persistence.accuracytests;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Iterator;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
@@ -15,7 +17,7 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * A helper class for accuracy tests.
  * </p>
- * @author Thinfox
+ * @author Thinfox, Beijing2008
  * @version 1.0
  */
 final class AccuracyTestHelper {
@@ -26,7 +28,7 @@ final class AccuracyTestHelper {
     static void clearConfiguration() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
 
-        for (Iterator it = cm.getAllNamespaces(); it.hasNext();) {
+        for (Iterator<String> it = cm.getAllNamespaces(); it.hasNext();) {
             cm.removeNamespace((String) it.next());
         }
     }
@@ -37,7 +39,7 @@ final class AccuracyTestHelper {
      * </p>
      * @param statement the statement to be closed.
      */
-    private static void close(PreparedStatement statement) {
+    private static void close(Statement statement) {
         if (statement != null) {
             try {
                 statement.close();
@@ -72,7 +74,7 @@ final class AccuracyTestHelper {
      * @param args the sql argument objects
      * @throws SQLException when error occurs during execution.
      */
-    private static void execute(Connection conn, String sql, Object[] args) throws SQLException {
+    public static void execute(Connection conn, String sql, Object[] args) throws SQLException {
         PreparedStatement stmt = null;
 
         try {
@@ -104,10 +106,10 @@ final class AccuracyTestHelper {
      * </p>
      * @throws Exception if fails
      */
+    @SuppressWarnings("deprecation")
     static void clearTables() throws Exception {
         Connection conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
             .createConnection();
-
         try {
             execute(conn, "DELETE FROM review_item_comment", new Object[0]);
             execute(conn, "DELETE FROM review_item", new Object[0]);
@@ -132,13 +134,13 @@ final class AccuracyTestHelper {
      * </p>
      * @throws Exception if fails
      */
+    @SuppressWarnings("deprecation")
     public static void initTables() throws Exception {
         clearTables();
 
         Connection conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
             .createConnection();
-        PreparedStatement sqlState = null;
-
+        conn.setAutoCommit(true);
         try {
             // insert data into id_sequences table
             execute(conn, "INSERT INTO id_sequences(name, next_block_start, "
@@ -151,8 +153,8 @@ final class AccuracyTestHelper {
                 + "block_size, exhausted) VALUES('review_item_comment_id_seq', 1, 1, 0); ", new Object[0]);
 
             // insert data into scorecard_question table
-            for (int i = 1; i <= 10; i++) {
-                execute(conn, "INSERT INTO upload (upload_id) values (?)", new Object[] {new Long(i)});
+            for (int i = 1; i <= 30; i++) {
+                //execute(conn, "INSERT INTO upload (upload_id) values (?)", new Object[] {new Long(i)});
                 execute(conn, "INSERT INTO submission (submission_id) values (?)", new Object[] {new Long(i)});
                 execute(conn, "INSERT INTO scorecard_question (scorecard_question_id) values (?)",
                     new Object[] {new Long(i)});
@@ -169,6 +171,83 @@ final class AccuracyTestHelper {
 
         } finally {
             close(conn);
+        }
+    }
+    /**
+     * <p>
+     * Executes the given sql string and returns the result count.
+     * </p>
+     * @param sql the sql string to execute
+     * @return the count
+     * @throws Exception when error occurs during execution.
+     */
+    @SuppressWarnings("deprecation")
+    public static int queryCount(String sql) throws Exception {
+        Connection conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
+        .createConnection();
+        try {
+            Statement stmt = null;
+            ResultSet rs = null;
+            try {
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
+                rs.next();
+                return rs.getInt(1);
+            } finally {
+                close(stmt);
+                close(rs);
+            }
+
+        } finally {
+            close(conn);
+        }
+        
+    }
+    /**
+     * <p>
+     * Closes the rs.
+     * </p>
+     * @param rs the rs to be closed.
+     */
+    private static void close(ResultSet rs) throws SQLException {
+        if (rs != null) {
+            rs.close();
+        }
+    }
+    /**
+     * <p>
+     * Executes the given sql string.
+     * </p>
+     * @param sql the sql string to execute
+     * @param args the sql argument objects
+     * @throws Exception when error occurs during execution.
+     */
+    @SuppressWarnings("deprecation")
+    public static void execute(String sql, Object[] args) throws Exception {
+        PreparedStatement stmt = null;
+        Connection conn = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName())
+        .createConnection();
+
+        try {
+            stmt = conn.prepareStatement(sql);
+
+            for (int i = 0; i < args.length;) {
+                Object obj = args[i++];
+
+                if (obj instanceof Long) {
+                    stmt.setLong(i, ((Long) obj).longValue());
+                } else if (obj instanceof Double) {
+                    stmt.setDouble(i, ((Double) obj).doubleValue());
+                } else if (obj instanceof Boolean) {
+                    stmt.setBoolean(i, ((Boolean) obj).booleanValue());
+                } else if (obj instanceof String) {
+                    stmt.setString(i, (String) obj);
+                }
+            }
+
+            stmt.executeUpdate();
+        } finally {
+            close(stmt);
         }
     }
 }

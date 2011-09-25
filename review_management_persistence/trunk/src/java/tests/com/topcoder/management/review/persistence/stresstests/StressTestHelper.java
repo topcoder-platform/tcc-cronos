@@ -36,14 +36,21 @@ final class StressTestHelper {
     }
 
     /**
+     * The load of the stress test.
+     */
+    public static Connection conn;
+    /**
      * Get the database connection.
      *
      * @return the connection created.
      * @throws Exception to JUnit
      */
-    private static Connection getConnection() throws Exception {
-        return new DBConnectionFactoryImpl(
-            "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl").createConnection();
+    static Connection getConnection() throws Exception {
+        if (conn == null) {
+            conn = new DBConnectionFactoryImpl(
+                "com.topcoder.db.connectionfactory.DBConnectionFactoryImpl").createConnection();
+        } 
+        return conn;
     }
 
     /**
@@ -86,7 +93,6 @@ final class StressTestHelper {
             }
         } finally {
             stmt.close();
-            conn.close();
         }
     }
 }

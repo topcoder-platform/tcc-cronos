@@ -1,4 +1,4 @@
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_id_seq', 1, 20, 0);
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_id_seq', 10, 20, 0);
 INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_item_id_seq', 1, 20, 0);
 INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_comment_id_seq', 1, 20, 0);
 INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_item_comment_id_seq', 1, 20, 0); 
