@@ -30,8 +30,6 @@
 	  <property name="commons-logging-1.1.1.jar" value="${struts_dir}/commons-logging-1.1.1.jar" />
 	  <property name="commons-logging-api-1.1.jar" value="${struts_dir}/commons-logging-api-1.1.jar" />
 	  <property name="javassist-3.11.0.GA.jar" value="${struts_dir}/javassist-3.11.0.GA.jar" />
-
-
         
 	  <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
 	  <property name="spring.jar" value="${ext_libdir}/Spring/2.5.6.SEC01/dist/spring.jar"/>
@@ -45,18 +43,18 @@
     </path>
 
     <path id="component.3rdParty-dependencies">
-		<pathelement location="${javaee.jar}"/>
-		<pathelement location="${spring.jar}"/>
+		    <pathelement location="${javaee.jar}"/>
+		    <pathelement location="${spring.jar}"/>
 				<pathelement location="${service.jar}"/>
         <pathelement location="${xwork-2.2.3.jar}"/>    	
         <pathelement location="${struts2-core-2.2.3.jar}"/>
-	</path>
+	  </path>
 	
     <path id="component.test.3rdParty-dependencies">
-      <pathelement location="${junit.jar}"/>
-      <pathelement location="${mockito.jar}"/>
-		  <pathelement location="${spring-test.jar}"/>
-		  <pathelement location="${ognl-3.0.1.jar}"/>
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${mockito.jar}"/>
+		    <pathelement location="${spring-test.jar}"/>
+		    <pathelement location="${ognl-3.0.1.jar}"/>
 		    <pathelement location="${freemarker-2.3.16.jar}"/>
       	<pathelement location="${struts2-spring-plugin-2.2.3.jar}"/>
 		    <pathelement location="${struts2-junit-plugin-2.2.3.jar}"/>   	

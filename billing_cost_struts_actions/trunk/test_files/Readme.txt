@@ -1,8 +1,4 @@
-Hi,reviewer
-
-1.for issue 1.1.3, since it is OK not to fix, I change it to the original look to keep the impl clean.
-
-2.for Demo:
+for Demo:
 1)update the 3rd party dependencies in build-dependencies.xml 
 2)update jboss path in build-override.xml
 3)run "ant deploy_war" to deploy the war to jboss
