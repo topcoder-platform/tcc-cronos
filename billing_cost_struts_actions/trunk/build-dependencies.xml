@@ -32,8 +32,8 @@
 	  <property name="javassist-3.11.0.GA.jar" value="${struts_dir}/javassist-3.11.0.GA.jar" />
         
 	  <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
-	  <property name="spring.jar" value="${ext_libdir}/Spring/2.5.6.SEC01/dist/spring.jar"/>
-		<property name="spring-test.jar" value="${ext_libdir}/Spring/2.5.6.SEC01/dist/modules/spring-test.jar"/>
+	  <property name="spring.jar" value="${ext_libdir}/Spring/2.5.6/dist/spring.jar"/>
+		<property name="spring-test.jar" value="${ext_libdir}/Spring/2.5.6/dist/modules/spring-test.jar"/>
     
     <path id="component.tcs-dependencies">
 		  <pathelement location="${base_exception.jar}"/>
