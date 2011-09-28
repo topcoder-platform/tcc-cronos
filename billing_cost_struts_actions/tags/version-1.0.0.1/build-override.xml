@@ -1,0 +1,67 @@
+<project name="Override Macrodef Standard Behaviour Import" basedir=".">
+    <!-- macrodef override definition in order to change the standard behaviour -->
+    <property name="billing_cost.war" value="${builddir}/billing_cost.war"/>   
+	<property name="test_reflibs_temp_dir" value="test_reflibs_temp_dir"/>
+	<!-- Update the property.-->
+	<property name="jboss_deploy_dir" value="${ext_libdir}/jboss/4.2.3.GA/server/default/deploy"/>
+		
+    <!-- Creates a war used for demo -->
+    <target name="war" depends="compile,compile_tests">
+   
+        <mkdir dir="${test_reflibs_temp_dir}"/>
+		
+        <!-- Copy needed jars to the web lib. -->
+     <copy todir="${test_reflibs_temp_dir}" flatten="true">
+
+			<fileset dir="${struts_dir}">
+				<include name="struts2-core-2.2.3.jar" />
+				<include name="xwork-core-2.2.3.jar" />
+				<include name="ognl-3.0.1.jar" />
+				<include name="freemarker-2.3.16.jar" />
+				<include name="struts2-spring-plugin-2.2.3.jar" />
+				<include name="struts2-junit-plugin-2.2.3.jar" />
+				<include name="commons-lang-2.5.jar" />
+				<include name="commons-fileupload-1.2.2.jar" />
+				<include name="commons-io-2.0.1.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+				<include name="commons-logging-api-1.1.jar" />
+				<include name="javassist-3.11.0.GA.jar" />
+      </fileset>
+            
+			<resources>
+				<file file="${base_exception.jar}"/>
+			  <file file="${logging_wrapper.jar}"/>
+			  <file file="${object_formatter.jar}"/>
+			  <file file="${typesafe_enum.jar}"/>
+			  <file file="${service.jar}"/>			  
+			  <file file="${spring.jar}"/>
+			  <file file="${javaee.jar}"/>
+			</resources>
+      </copy>
+		
+        <!-- package everything into war -->
+        <war destfile="${billing_cost.war}" basedir="${testfiles}/web" >
+            <!-- include all classes used by this component -->
+            <classes dir="${build_classdir}"/>
+			<classes dir="${build_testclassdir}"/>
+			<classes dir="${configdir}" includes="**/*.properties"/>
+			<classes dir="${configdir}" includes="**/*.xml"/>
+			
+            <!-- add all required libraries into build war -->
+            <lib dir="${test_reflibs_temp_dir}"/>
+        </war>
+		<!-- Remove temporary directory holding the libs from test_reflibs directory. -->
+        <delete dir="${test_reflibs_temp_dir}"/>
+    </target>
+	
+	<!-- Deploy the war file. -->
+    <target name="deploy_war" depends="undeploy_war,war">
+		<copy file="${billing_cost.war}" todir="${jboss_deploy_dir}" overwrite="true">
+		</copy>
+	</target>
+	
+	<!-- Undeploy the war file. -->
+    <target name="undeploy_war">
+		<delete file="${jboss_deploy_dir}/${billing_cost.war}"/>
+	</target>
+</project>

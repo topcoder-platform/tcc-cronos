@@ -1,0 +1,20 @@
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+
+	<!-- validation for pageNumber and pageSize. -->
+	<field name="pageNumber">
+		<field-validator type="int">
+			<param name="min">0</param>
+			<message><![CDATA[ page number must be non-negative]]></message>
+		</field-validator>
+	</field>
+	<field name="pageSize">
+		<field-validator type="int">
+			<param name="min">0</param>
+			<message><![CDATA[ page size must be non-negative]]></message>
+		</field-validator>
+	</field>
+</validators>

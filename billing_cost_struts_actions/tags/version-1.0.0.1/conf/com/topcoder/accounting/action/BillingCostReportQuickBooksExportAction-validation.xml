@@ -1,0 +1,13 @@
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+	<!-- validation for pageNumber and pageSize. -->
+	<field name="paymentAreaId">
+		<field-validator type="int">
+			<param name="min">1</param>
+			<message><![CDATA[ page area must be positive]]></message>
+		</field-validator>
+	</field>
+</validators>
