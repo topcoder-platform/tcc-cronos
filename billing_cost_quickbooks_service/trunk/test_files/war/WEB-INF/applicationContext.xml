@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="billingCostAuditService" class="com.topcoder.accounting.service.mock.BillingCostAuditServiceMockImpl">
+  </bean>
+
+   <bean id="qbwcImportInvoicesService" class="com.topcoder.accounting.QBWCImportInvoicesServiceSkeleton">
+		<property name="billingCostAuditService" ref="billingCostAuditService"/>
+		<property name="hashAlgorithmName" value="md5" />
+		<property name="userName" value="user" />
+		<property name="hashedPassword" value="password" />
+		<property name="lastInvoiceNumber" value="511-112" />
+  </bean>
+
+</beans>
