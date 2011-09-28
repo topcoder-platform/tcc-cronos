@@ -4151,6 +4151,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 hasEligibility = true;
             }
 
+            if (hasEligibility)
+            {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "false");
+            }
+            else
+            {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "true");
+            }
+            
+
             if (isDevContest && !hasEligibility && billingProjectId > 0)
             {
                 String codename = billingProjectDAO.getProjectById(billingProjectId).getClient().getCodeName();
