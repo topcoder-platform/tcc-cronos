@@ -587,7 +587,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
      * Check if the given review is valid. A Review object is considered valid if:
      * <ol>
      * <li>author is positive;</li>
-     * <li>submission is positive;</li>
      * <li>scorecard is positive;</li>
      * <li>all the review comments it contains are valid;</li>
      * <li>all the review items it contains are valid;</li>
@@ -599,7 +598,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
     private static void assertReviewValid(Review review) {
         Helper.assertLongPositive(review.getAuthor(), "author of review");
         Helper.assertLongPositive(review.getScorecard(), "scorecard of review");
-        Helper.assertLongPositive(review.getSubmission(), "submission of review");
         Comment[] comments = review.getAllComments();
         for (int i = 0; i < comments.length; ++i) {
             // comments[i] is never null.
@@ -730,7 +728,6 @@ public class InformixReviewPersistence implements ReviewPersistence {
      * A Review object is considered valid if:
      * <ol>
      * <li>author is positive;</li>
-     * <li>submission is positive;</li>
      * <li>scorecard is positive;</li>
      * <li>all the review comments it contains are valid;</li>
      * <li>all the review items it contains are valid;</li>
@@ -1531,7 +1528,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             }
             index++;
             review.setScorecard(((Long) row[index++]));
-            review.setCommitted(((Long) row[index++]) != 0);
+            review.setCommitted(((Long) row[index++]).longValue() != 0);
             review.setScore((Float) row[index++]);
             review.setInitialScore((Float) row[index++]);
             review.setCreationUser((String) row[index++]);
@@ -1580,7 +1577,7 @@ public class InformixReviewPersistence implements ReviewPersistence {
             review.setAuthor(resultSet.getLong("resource_id"));
             try {
                 review.setSubmission(resultSet.getLong("submission_id"));
-            } catch (NullPointerException e) {
+            } catch (NullColumnValueException e) {
                 // Submission ID may be NULL
             }
             review.setScorecard(resultSet.getLong("scorecard_id"));
