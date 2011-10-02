@@ -2633,6 +2633,30 @@ public class ProjectServicesImpl implements ProjectServices {
                 requireApproval = false;
             }
 
+            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
+
+            projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.RELIABILITY_BONUS_ELIGIBLE)));
+
+            projectHeader.setProperty(ProjectPropertyType.MEMBER_PAYMENT_ELIGIBLE_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.MEMBER_PAYMENT_ELIGIBLE)));
+
+            projectHeader.setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SEND_WINNER_EMAILS)));
+
+            if (!isStudio) {
+            	projectHeader.setProperty(ProjectPropertyType.TRACK_LATE_DELIVERABLES_PROJECT_PROPERTY_KEY, String
+                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.TRACK_LATE_DELIVERABLES)));
+            }
+
+            if (isStudio) {
+                // Studio contest has no approval phase
+                requireApproval = false;
+            }
+            projectHeader.setProperty(ProjectPropertyType.APPROVAL_REQUIRED_PROJECT_PROPERTY_KEY, String
+                    .valueOf(requireApproval));
+
 
             boolean requireSpecReview = getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.SPEC_REVIEW_REQUIRED);
 
