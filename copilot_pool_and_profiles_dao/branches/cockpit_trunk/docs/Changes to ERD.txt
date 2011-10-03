@@ -1,0 +1,7 @@
+Changes to ERD:
+1) Made copilot_profile#show_copilot_earnings NOT NULL.
+2) Added auditing fields to copilot_profile_status.
+3) Removed field copilot_project_plan#planned_contests.
+4) Made planned_contest#project_category_id NOT NULL.
+5) Renamed copilot_project_plan#planned_bugraces to planned_bug_races.
+6) Renamed status_copilot_profile_status_id in copilt_profile table to copilot_profile_status_id.
