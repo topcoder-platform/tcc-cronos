@@ -12,22 +12,22 @@
 		<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
 
     <!-- 3rd party dependencies -->
-    <property name="hibernate.jar" value="${ext_libdir}/hibernate/3.5.4/hibernate3.jar"/>
-    <property name="antlr.jar" value="${ext_libdir}/hibernate/3.5.4/lib/required/antlr-2.7.6.jar"/>
+    <property name="hibernate.jar" value="${ext_libdir}/hibernate/hibernate3.jar"/>
+    <property name="antlr.jar" value="${ext_libdir}/hibernate/antlr-2.7.6.jar"/>
 
-    <property name="commons-collections.jar" value="${ext_libdir}/hibernate/3.5.4/lib/required/commons-collections-3.1.jar"/>
-    <property name="dom4j.jar" value="${ext_libdir}/hibernate/3.5.4/lib/required/dom4j-1.6.1.jar"/>
-    <property name="javassist.jar" value="${ext_libdir}/hibernate/3.5.4/lib/required/javassist-3.9.0.GA.jar"/>
-    <property name="jta.jar" value="${ext_libdir}/hibernate/3.5.4/lib/required/jta-1.1.jar"/>
-    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate/3.5.4/lib/required/slf4j-api-1.5.8.jar"/>
+    <property name="commons-collections.jar" value="${ext_libdir}/hibernate/commons-collections-3.1.jar"/>
+    <property name="dom4j.jar" value="${ext_libdir}/hibernate/dom4j-1.6.1.jar"/>
+    <property name="javassist.jar" value="${ext_libdir}/hibernate/javassist-3.9.0.GA.jar"/>
+    <property name="jta.jar" value="${ext_libdir}/hibernate/jta-1.1.jar"/>
+    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate/slf4j-api-1.5.8.jar"/>
     
     <property name="cglib-nodep.jar" value="${ext_libdir}/spring/2.5.6.SEC01/lib/cglib/cglib-nodep-2.1_3.jar"/>
     <property name="slf4j-log4j.jar" value="${ext_libdir}/spring/2.5.6.SEC01/lib/slf4j/slf4j-log4j12-1.5.0.jar"/>    
-    <property name="spring-tx.jar" value="${ext_libdir}/spring/2.5.6.SEC01/dist/modules/spring-tx.jar"/>
-    <property name="spring-context-support.jar" value="${ext_libdir}/spring/2.5.6.SEC01/dist/modules/spring-context-support.jar"/>
-    <property name="spring-context.jar" value="${ext_libdir}/spring/2.5.6.SEC01/dist/modules/spring-context.jar"/>
-    <property name="spring-test.jar" value="${ext_libdir}/spring/2.5.6.SEC01/dist/modules/spring-test.jar"/>
-    <property name="spring.jar" value="${ext_libdir}/spring/2.5.6.SEC01/dist/spring.jar"/>
+    <property name="spring-tx.jar" value="${ext_libdir}/spring/spring-tx.jar"/>
+    <property name="spring-context-support.jar" value="${ext_libdir}/spring/spring-context-support.jar"/>
+    <property name="spring-context.jar" value="${ext_libdir}/spring/spring-context.jar"/>
+    <property name="spring-test.jar" value="${ext_libdir}/spring/spring-test.jar"/>
+    <property name="spring.jar" value="${ext_libdir}/spring/spring.jar"/>
     <property name="common-annotations.jar" value="${ext_libdir}/spring/2.5.6.SEC01/lib/j2ee/common-annotations.jar"/>
         
     <property name="commons-dbcp.jar" value="${ext_libdir}/commons-dbcp/1.2.2/commons-dbcp.jar"/>
@@ -36,9 +36,12 @@
     
     <property name="informix.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
     <property name="mysql.jar" value="${ext_libdir}/mysql/5.1.5/mysql-connector-java-5.1.5-bin.jar"/>
-		<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15"/>
+	<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.15/log4j-1.2.15"/>
 		
-		<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
+	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
+
+    <property name="jboss-ejb3x.jar" value="${jboss_home}/client/jboss-ejb3x.jar" />
+    <property name="ejb3-persistence.jar" value="${jboss_home}/client/ejb3-persistence.jar" />
 		
     <path id="component.tcs-dependencies">
 		    <pathelement location="${logging_wrapper.jar}" />
@@ -70,6 +73,8 @@
 		    <pathelement location="${informix.jar}" />
 		    <pathelement location="${mysql.jar}" />
 		    <pathelement location="${log4j.jar}" />
+            <pathelement location="${jboss-ejb3x.jar}" />
+            <pathelement location="${ejb3-persistence.jar}" />
     </path>
 
     <path id="component.test.3rdParty-dependencies">
