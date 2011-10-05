@@ -285,7 +285,9 @@
 
     <target name="dist" depends="compile, manifest">
         <mkdir dir="${dist_lib}/${component_path}"/>
-        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}"/>
+        <jar jarfile="${component.jar}" manifest="${manifest_file}" basedir="${build_classdir}">
+            <metainf dir="${configdir}/META-INF/" includes="*" />  
+        </jar>
     </target>
 
     <target name="dist_tests" depends="compile_tests">
