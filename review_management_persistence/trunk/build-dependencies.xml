@@ -6,7 +6,7 @@
     <property name="component.bootclasspath" value="${java_1_5_bootclasspath}"/>
     <!--TCS dependencies-->
     <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
-	<property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.3.3/search_builder.jar"/>	
+	<property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.4.1/search_builder.jar"/>	
 	<property name="review_data_structure.jar" value="${test_reflib}/review_data_structure/1.0.0/review_data_structure.jar"/>
 	<property name="review_management.jar" value="${test_reflib}/review_management/1.2.0/review_management.jar"/>	
     <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.2.1/configuration_manager.jar"/>
@@ -23,7 +23,7 @@
 	<property name="object_factory_config_manager_plugin.jar" value="${tcs_libdir}/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar"/>
 	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
 	
-	<property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.5/ifxjdbc.jar"/>
+	<property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.0/ifxjdbc.jar"/>
     
     
     <!--3rd party dependencies-->
