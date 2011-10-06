@@ -1403,7 +1403,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkStudioContestPermission(TCSubject tcSubject, long contestId, boolean readonly)
             throws PermissionServiceException, PersistenceException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, TC_STAFF_ROLE)) {
 
             if (!studioService.checkContestPermission(contestId, readonly, tcSubject.getUserId())) {
                 throw new PermissionServiceException("No " + (readonly ? "Read" : "write") + "permission on contest");
@@ -1714,7 +1714,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkStudioSubmissionPermission(TCSubject tcSubject, long submissionId, boolean readonly)
             throws PermissionServiceException, PersistenceException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, TC_STAFF_ROLE)) {
 
             if (!studioService.checkSubmissionPermission(submissionId, readonly, tcSubject.getUserId())) {
                 throw new PermissionServiceException("No " + (readonly ? "Read" : "write") + "permission on contest");
@@ -2723,7 +2723,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkBillingProjectPoNumberPermission(TCSubject tcSubject, String poNumber)
             throws PermissionServiceException, ContestServiceException, DAOException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, TC_STAFF_ROLE)) {
             if (!billingProjectDAO.checkPoNumberPermission(getUserName(tcSubject), poNumber)) {
                 throw new PermissionServiceException("No permission on poNumber " + poNumber);
             }
@@ -3652,7 +3652,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkSoftwareProjectPermission(TCSubject tcSubject, long tcDirectProjectId, boolean readOnly)
             throws PermissionServiceException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, TC_STAFF_ROLE)) {
             if (!projectServices.checkProjectPermission(tcDirectProjectId, readOnly, tcSubject.getUserId())) {
                 throw new PermissionServiceException("No " + (readOnly ? "read" : "write") + " permission on project");
             }
@@ -3667,7 +3667,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkSoftwareContestPermission(TCSubject tcSubject, long contestId, boolean readOnly)
             throws PermissionServiceException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, TC_STAFF_ROLE)) {
             if (!projectServices.checkContestPermission(contestId, readOnly, tcSubject.getUserId())) {
                 if (readOnly) {
                     throw new PermissionServiceException("No read permission on project");
@@ -3705,7 +3705,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkStudioBillingProjectPermission(TCSubject tcSubject, long contestId, long billingAccountIdToCheck)
             throws PermissionServiceException, DAOException, ContestNotFoundException, PersistenceException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, TC_STAFF_ROLE)) {
             String userName;
             try {
                 userName = getUserName(tcSubject);
@@ -3739,7 +3739,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private void checkBillingProjectPermission(TCSubject tcSubject, SoftwareCompetition contest)
             throws PermissionServiceException, DAOException, ContestServiceException {
-        if (!isRole(tcSubject, ADMIN_ROLE)) {
+        if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, TC_STAFF_ROLE)) {
             String billingProject = contest.getProjectHeader().getProperty(ProjectPropertyType.BILLING_PROJECT_PROJECT_PROPERTY_KEY);
 
             Project cur = projectServices.getProject(contest.getProjectHeader().getId());
