@@ -112,20 +112,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             + "WHERE p.project_status_id != 3 AND p.project_category_id != 27  "
             + " and tcd.project_id = upg.resource_id  and upg.permission_type_id in (1,2,3 ) ";
 
-    /**
-     * Represents the sql for retrieving studio project data. Any contest with 'Deleted' status will be excluded.
-     */
-    private static final String RETRIEVE_STUDIO_PROJECT_DATA_SQL = "SELECT p.project_id as tc_direct_project_id, "
-            + "c.project_id, c.contest_id, p.name as project_name, c.name as contest_name, c.start_time, c.end_time, "
-            + "p.user_id, cds.name as contest_status, "
-            + "(select contest_type_desc from contest_type_lu where contest_type_id = c.contest_type_id) "
-            + "FROM user_permission_grant upg, tc_direct_project p"
-            + "  LEFT OUTER JOIN contest c ON c.tc_direct_project_id = p.project_id"
-            + "  LEFT OUTER JOIN contest_detailed_status_lu cds"
-            + "    on c.contest_detailed_status_id = cds.contest_detailed_status_id "
-            + "WHERE (c.deleted IS NULL OR c.deleted = 0) AND"
-            + "  (c.contest_detailed_status_id IS NULL OR c.contest_detailed_status_id != 3) AND (c.contest_id IS NOT NULL) "
-            + " and  p.project_id = upg.resource_id and upg.permission_type_id in (1,2,3) ";
+  
 
     /**
      * Represents the sql for retrieving IDs of dependency projects.
@@ -135,7 +122,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
 			" WHERE lp.source_project_id = :projectId " + 
 			" AND lp.source_project_id = p.project_id AND lp.link_type_id in (1, 4) " + 
 			" AND p.tc_direct_project_id = (SELECT tc_direct_project_id FROM project WHERE project_id = lp.dest_project_id) " +
-			" AND p.tc_direct_project_id IS NOT NULL";
+			" AND p.tc_direct_project_id IS NOT NULL and p.project_status_id != 3 ";
                     
     /**
      * Represents the sql for retrieving tc direct project.
@@ -152,6 +139,11 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
      * Represents the cockpit administrator role name.
      */
     private static final String COCKPIT_ADMINISTRATOR_ROLE = "Cockpit Administrator";
+
+    /**
+     * Represents the tc staff role name.
+     */
+    private static final String TC_STAFF_ROLE = "TC Staff";
 
     /**
      * Represents the <b>EntityManager</b> instance to be used by this class for accessing software contests specific
@@ -306,7 +298,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             for (TCPrincipal role : roles) {
                 String roleName = role.getName();
 
-                if (COCKPIT_ADMINISTRATOR_ROLE.equalsIgnoreCase(roleName)) {
+                if (COCKPIT_ADMINISTRATOR_ROLE.equalsIgnoreCase(roleName) || TC_STAFF_ROLE.equalsIgnoreCase(roleName)) {
                     isAdmin = true;
                     break;
                 }
@@ -393,78 +385,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         }
     }
 
-    /**
-     * Retrieves the studio project data.
-     *
-     * @param userId              the user id that the project associated with.
-     * @param now                 the current retrieval time.
-     * @param tcDirectProjectsMap the map to hold the <b>TCDirectProjectGamePlanData</b> instance.
-     * @throws ClassCastException If fail to convert the retrieved data.
-     * @throws PersistenceException If any problem to access the persistence.
-     */
-    private void retrieveStudioProjectData(Long userId, Long directProjectId, Date now,
-                                           Map<Long, TCDirectProjectGamePlanData> tcDirectProjectsMap) {
-        String queryStr = RETRIEVE_STUDIO_PROJECT_DATA_SQL;
-        if (userId != null) {
-            queryStr += " AND upg.user_id = :userId";
-        }
-
-        if (directProjectId != null) {
-            queryStr += " AND p.project_id = :directProjectId";
-        }
-
-        // Create query for retrieving studio projects data
-        Query query = studioEntityManager.createNativeQuery(queryStr);
-
-        // set the parameter value if present
-        if (userId != null) {
-            query.setParameter("userId", userId);
-        }
-
-        if (directProjectId != null) {
-            query.setParameter("directProjectId", directProjectId);
-        }
-
-        List<Object[]> resultList = query.getResultList();
-
-        // extract the studio project data
-        for (Object[] row : resultList) {
-            StudioProjectData studioProjectData = new StudioProjectData();
-            // primary key, never null.
-            long tcDirectProjectId = (Integer) row[0];
-            studioProjectData.setTcDirectProjectId(tcDirectProjectId);
-            // project_id can be null since LEFT JOIN is used.
-            if (null != row[1]) {
-                studioProjectData.setProjectId(new Long((Integer) row[1]));
-            }
-
-            // possible null since LEFT JOIN is used.
-            if (null != row[2]) {
-                studioProjectData.setContestId(((BigDecimal) row[2]).longValue());
-            }
-            studioProjectData.setProjectName(escapeName((String) row[3]));
-            studioProjectData.setContestName(escapeName((String) row[4]));
-            studioProjectData.setStartDate((Date) row[5]);
-            studioProjectData.setEndDate((Date) row[6]);
-            // user_id can not be null.
-            studioProjectData.setCreateUserId(new Long((Integer) row[7]));
-            studioProjectData.setContestStatus((String) row[8]);
-            studioProjectData.setContestType((String) row[9]);
-            if (studioProjectData.getStartDate() != null && studioProjectData.getStartDate().before(now) &&
-                    studioProjectData.getContestStatus() != null &&
-                    studioProjectData.getContestStatus().startsWith(ACTIVE_STATUS)) {
-                studioProjectData.setStarted(true);
-            }
-            if (studioProjectData.getEndDate() != null && studioProjectData.getEndDate().before(now)) {
-                studioProjectData.setFinished(true);
-            }
-
-            // save the studio project data into the corresponding game plan data.
-            TCDirectProjectGamePlanData tcDirectProjectData =
-                    getTCDirectProjectGamePlanData(tcDirectProjectsMap, tcDirectProjectId);
-            tcDirectProjectData.getStudioProjects().add(studioProjectData);
-        }
-    }
+   
 
     /**
      * Updates the IDs of dependency projects for the given list of <b>SoftwareProjectData</b>.
