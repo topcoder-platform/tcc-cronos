@@ -621,31 +621,6 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         }
     }
 
-    /**
-     * <p>
-     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             Exception to JUnit.
-     */
-    public void testCreateReview_ReviewInvalid3() throws Exception {
-        Review review = new Review();
-        review.setAuthor(1);
-        review.setScorecard(1);
-        // review.setSubmission(1);
-        review.setCommitted(true);
-        review.setScore(new Float(89.1f));
-
-        review.addComment(createComment(100));
-        review.addItem(createReviewItem(300));
-        try {
-            persistence.createReview(review, "operator");
-            fail("IllegalArgumentException is expected, when review is invalid.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
 
     /**
      * <p>
@@ -1064,31 +1039,6 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         }
     }
 
-    /**
-     * <p>
-     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception
-     *             Exception to JUnit.
-     */
-    public void testUpdateReview_ReviewInvalid3() throws Exception {
-        Review review = new Review(1);
-        review.setAuthor(1);
-        review.setScorecard(1);
-        // review.setSubmission(1);
-        review.setCommitted(true);
-        review.setScore(new Float(89.1f));
-
-        review.addComment(createComment(100));
-        review.addItem(createReviewItem(300));
-        try {
-            persistence.updateReview(review, "operator");
-            fail("IllegalArgumentException is expected, when review is invalid.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
 
     /**
      * <p>
