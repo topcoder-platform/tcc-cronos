@@ -2783,7 +2783,7 @@ final class PhasesHelper {
     {
         try {
             Object maxSubmissions = project.getProperty(MAXIMUM_SUBMISSIONS);
-            if (maxSubmissions == null || maxSubmissions.toString().trim().isEmpty() || Integer.parseInt(maxSubmissions.toString()) <= 1) {
+            if (maxSubmissions == null || maxSubmissions.toString().trim().length() == 0 || Integer.parseInt(maxSubmissions.toString()) < 1) {
                 return;
             }
             
