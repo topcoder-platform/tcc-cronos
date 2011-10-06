@@ -1,0 +1,88 @@
+<project name="Dependency Import" default="dist" basedir=".">
+	<!-- property file defining the component's dependencies -->
+
+	<!-- Property used to deploy demo -->
+	<property name="archieve_name" value="archieve" />
+	<property name="deploy_target" value="D:/libs/ThirdParty/apache/tomcat/6.0.33/webapps/axis2" />
+
+	<!-- Properties used in compile_targets ANT target for JDK version x -->
+	<property name="component.target" value="1.5" />
+	<property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+	<!-- Dependency property -->
+	<property name="dependency_libs.dir" value="test_reflib" />
+
+	<!-- TCS dependencies -->
+
+	<!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/4.8.2/junit-4.8.2.jar" />
+	<property name="easymock.jar" value="${ext_libdir}/easymock/3.0/easymock-3.0.jar" />
+	<property name="cglib.jar" value="${ext_libdir}/cglib/2.2.2/cglib-nodep-2.2.2.jar" />
+	<property name="objenesis.jar" value="${ext_libdir}/objenesis/1.2/objenesis-1.2.jar" />
+	<property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging-1.1.1.jar" />
+	<property name="javaee.jar" value="${ext_libdir}/j2ee/5.0/javaee.jar" />
+	
+
+
+	<path id="component.tcs-dependencies">
+		<fileset dir="${dependency_libs.dir}">
+			<include name="tcs/base_exception/2.0.0/base_exception.jar" />
+			<include name="tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+			<include name="tcs/hashing_utility/1.0/hashing_utility.jar" />
+			<include name="tcs/json_object/1.0/json_object.jar" />
+			<include name="tcs/logging_wrapper/2.0.0/logging_wrapper.jar" />
+			<include name="tcs/object_formatter/1.0.0/object_formatter.jar" />
+			<include name="tcs/typesafe_enum/1.1/typesafe_enum.jar" />
+			<include name="third_party/axis2/*" />		
+			<include name="third_party/spring/spring.jar" />
+			<include name="mock.jar" />
+		</fileset>
+	</path>
+
+	<path id="component.3rdParty-dependencies" />
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit.jar}" />
+		<pathelement location="${easymock.jar}" />
+		<pathelement location="${cglib.jar}" />
+		<pathelement location="${objenesis.jar}" />
+		<pathelement location="${commons-logging.jar}" />
+		<pathelement location="${javaee.jar}" />
+	</path>
+
+	<!-- Targets used to package and deploy demo to Axis2 war distribution -->
+	<target name="package" depends="compile">
+		<copy todir="${archieve_name}">
+			<fileset dir="${testfiles}/war">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<copy todir="${archieve_name}/WEB-INF/lib" flatten="true">
+			<fileset dir="${dependency_libs.dir}/tcs">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${dependency_libs.dir}">
+				<include name="**/spring.jar" />
+				<include name="mock.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${archieve_name}/WEB-INF/classes">
+			<fileset dir="${build_classdir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<copy todir="${archieve_name}/WEB-INF/classes/com">
+			<fileset dir="${testfiles}/com">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deploy_demo" depends="package">
+		<copy todir="${deploy_target}">
+			<fileset dir="${archieve_name}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+	</target>
+</project>

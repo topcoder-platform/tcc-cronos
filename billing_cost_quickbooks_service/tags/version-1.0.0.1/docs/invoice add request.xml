@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?qbxml version="5.0"?>
+<QBXML>
+	<QBXMLMsgsRq onError="continueOnError">
+		<InvoiceAddRq requestID="SW52b2ljZUFkZHw1NA==">
+			<InvoiceAdd>
+				<CustomerRef>
+					<ListID>90001-1263558758</ListID>
+					<FullName>Testy McTesterson</FullName>
+				</CustomerRef>
+				<TxnDate>2010-01-15</TxnDate>
+				<RefNumber>21011</RefNumber>
+				<BillAddress>
+					<Addr1>ConsoliBYTE, LLC</Addr1>
+					<Addr2>134 Stonemill Road</Addr2>
+					<Addr3 />
+					<City>Mansfield</City>
+					<State>CT</State>
+					<PostalCode>06268</PostalCode>
+					<Country>United States</Country>
+				</BillAddress>
+				<ShipAddress>
+					<Addr1>ConsoliBYTE, LLC</Addr1>
+					<Addr2>Attn: Keith Palmer</Addr2>
+					<Addr3>56 Cowles Road</Addr3>
+					<City>Willington</City>
+					<State>CT</State>
+					<PostalCode>06279</PostalCode>
+					<Country>United States</Country>
+				</ShipAddress>
+				<TermsRef>
+					<FullName>Net 30</FullName>
+				</TermsRef>
+				<SalesRepRef>
+					<FullName>KRP</FullName>
+				</SalesRepRef>
+				<Memo>Test memo goes here.</Memo>
+				<InvoiceLineAdd>
+					<ItemRef>
+						<FullName>test</FullName>
+					</ItemRef>
+					<Desc>Test item description</Desc>
+					<Quantity>1.00000</Quantity>
+					<Rate>15.00000</Rate>
+				</InvoiceLineAdd>
+			</InvoiceAdd>
+		</InvoiceAddRq>
+	</QBXMLMsgsRq>
+</QBXML>
