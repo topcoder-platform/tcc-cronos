@@ -15,16 +15,27 @@
 	<!-- TCS dependencies -->
 
 	<!-- 3rd party dependencies -->
-	<property name="junit.jar" value="${ext_libdir}/github/junit/4.7/junit-4.7.jar" />
-	<property name="easymock.jar" value="${ext_libdir}/sourceforge/easymock/3.0/easymock-3.0.jar" />
-	<property name="cglib.jar" value="${ext_libdir}/sourceforge/cglib/2.2.2/cglib-nodep-2.2.2.jar" />
-	<property name="objenesis.jar" value="${ext_libdir}/google/objenesis/1.2/objenesis-1.2.jar" />
+	<property name="junit.jar" value="${ext_libdir}/junit/4.8.2/junit-4.8.2.jar" />
+	<property name="easymock.jar" value="${ext_libdir}/easymock/3.0/easymock-3.0.jar" />
+	<property name="cglib.jar" value="${ext_libdir}/cglib/2.2.2/cglib-nodep-2.2.2.jar" />
+	<property name="objenesis.jar" value="${ext_libdir}/objenesis/1.2/objenesis-1.2.jar" />
+	<property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging-1.1.1.jar" />
+	<property name="javaee.jar" value="${ext_libdir}/j2ee/5.0/javaee.jar" />
 	
 
 
 	<path id="component.tcs-dependencies">
 		<fileset dir="${dependency_libs.dir}">
-			<include name="**/*.jar" />
+			<include name="tcs/base_exception/2.0.0/base_exception.jar" />
+			<include name="tcs/configuration_manager/2.1.5/configuration_manager.jar" />
+			<include name="tcs/hashing_utility/1.0/hashing_utility.jar" />
+			<include name="tcs/json_object/1.0/json_object.jar" />
+			<include name="tcs/logging_wrapper/2.0.0/logging_wrapper.jar" />
+			<include name="tcs/object_formatter/1.0.0/object_formatter.jar" />
+			<include name="tcs/typesafe_enum/1.1/typesafe_enum.jar" />
+			<include name="third_party/axis2/*" />		
+			<include name="third_party/spring/spring.jar" />
+			<include name="mock.jar" />
 		</fileset>
 	</path>
 
@@ -35,6 +46,8 @@
 		<pathelement location="${easymock.jar}" />
 		<pathelement location="${cglib.jar}" />
 		<pathelement location="${objenesis.jar}" />
+		<pathelement location="${commons-logging.jar}" />
+		<pathelement location="${javaee.jar}" />
 	</path>
 
 	<!-- Targets used to package and deploy demo to Axis2 war distribution -->
