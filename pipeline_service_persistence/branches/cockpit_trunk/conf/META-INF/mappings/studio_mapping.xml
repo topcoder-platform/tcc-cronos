@@ -24,45 +24,4 @@
 
 		<property name="name" column="name" />
 	</class>
-	
-	<class name="com.topcoder.service.studio.contest.Contest" table="contest" lazy="true">
-        <comment>
-            This table describes contest. It contains foreign keys for
-            different tables like category, status etc. Also it contain
-            name of content, short summary, start, end and winner
-            announcement dates.
-        </comment>
-
-        <id name="contestId" column="contest_id" unsaved-value="-1">
-            <generator class="sequence">
-                <param name="sequence">STUDIO_CONTEST_SEQ</param>
-            </generator>
-        </id>
-
-        <property name="name" length="254" not-null="true" />
-
-        <property name="projectId" column="project_id" />
-
-        <property name="tcDirectProjectId" column="tc_direct_project_id" />
-
-        <property name="forumId" column="forum_id" />
-
-        <property name="statusId" column="contest_status_id" not-null="true"/>
-
-        <property name="eventId" column="event_id" />
-
-        <property name="startDate" column="start_time" not-null="true" />
-
-        <property name="endDate" column="end_time" not-null="true" />
-        
-        <property name="launchImmediately" column="launch_immediately" not-null="false" />
-        
-        <property name="deleted" column="deleted" not-null="false" />
-
-        <property name="winnerAnnoucementDeadline"
-            column="winner_announcement_time" not-null="true" />
-
-        <property name="createdUser" column="create_user_id"
-            not-null="true" />
-    </class>
 </hibernate-mapping>

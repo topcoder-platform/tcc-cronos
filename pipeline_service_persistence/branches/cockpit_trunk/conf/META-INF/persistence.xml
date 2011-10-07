@@ -33,37 +33,4 @@
 
 		</properties>
 	</persistence-unit>
-	
-	<persistence-unit name="studioPipelinePersistenceUnit"
-		transaction-type="JTA">
-
-		<!-- Hibernate persistence provider -->
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-
-		<!-- The JTA data source -->
-		<jta-data-source>java:StudioDS</jta-data-source>
-		
-		<!-- The xml mapping file -->
-    	<mapping-file>META-INF/mappings/studio_mapping.xml</mapping-file>
-
-		<class>com.topcoder.service.pipeline.entities.StudioCompetitionChangeHistory</class>
-		<class>com.topcoder.service.pipeline.entities.StudioCompetitionPipelineInfo</class>
-		<class>com.topcoder.service.pipeline.entities.CompetitionChangeType</class>
-
-		<properties>
-
-			<!-- Informix Dialect -->
-			<property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" />
-
-			<property name="hibernate.transaction.factory_class"
-                      value="org.hibernate.ejb.transaction.JoinableCMTTransactionFactory"/>
-			<!-- JBoss transction manager -->
-			<property name="hibernate.transaction.manager_lookup_class"
-				value="org.hibernate.transaction.JBossTransactionManagerLookup" />
-
-			<!-- Show SQL for dev purpose -->
-			<property name="hibernate.show_sql" value="true" />
-
-		</properties>
-	</persistence-unit>
 </persistence>
