@@ -97,7 +97,6 @@
             <copy file="${configuration_manager.jar}" todir="${component.ear.dir}" overwrite="true"/>
             <copy file="${db_connection_factory.jar}" todir="${component.ear.dir}" overwrite="true"/>
             
-        	<copy file="${studio_service.jar}" todir="${component.ear.dir}" overwrite="true"/>
         	<copy file="${catalog_entities.jar}" todir="${component.ear.dir}" overwrite="true"/>
         	<copy file="${catalog_services.jar}" todir="${component.ear.dir}" overwrite="true"/>
         	<copy file="${project_management.jar}" todir="${component.ear.dir}" overwrite="true"/>

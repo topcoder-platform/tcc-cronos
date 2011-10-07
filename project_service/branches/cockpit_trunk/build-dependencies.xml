@@ -13,7 +13,6 @@
     <property name="jboss_login_module.jar" value="${tcs_libdir}/jboss_login_module/2.1.0/jboss_login_module.jar" />
     <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar" />
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar" />
-    <property name="studio_service.jar" value="${tcs_libdir}/studio_service/1.3.0/studio_service.jar" />
     <property name="catalog_entities.jar" value="${tcs_libdir}/catalog_entities/1.2.0/catalog_entities.jar" />
     <property name="catalog_services.jar" value="${tcs_libdir}/catalog_services/1.1/catalog_services.jar" />
     <property name="project_management.jar" value="${tcs_libdir}/project_management/1.0.1/project_management.jar" />
@@ -57,7 +56,6 @@
         <pathelement location="${logging_wrapper.jar}" />
         <pathelement location="${object_formatter.jar}" />
         <pathelement location="${jboss_login_module.jar}" />
-        <pathelement location="${studio_service.jar}" />
         <pathelement location="${catalog_entities.jar}" />
         <pathelement location="${catalog_services.jar}" />
         <pathelement location="${project_management.jar}" />

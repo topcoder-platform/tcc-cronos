@@ -31,7 +31,7 @@ import com.topcoder.management.resource.Resource;
  * @author humblefool, FireIce
  * @version 1.0
  */
-@XmlSeeAlso ({StudioCompetition.class, SoftwareCompetition.class})
+@XmlSeeAlso ({SoftwareCompetition.class})
 public abstract class Competition implements Cloneable, Serializable {
     /**
      * <p>
