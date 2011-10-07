@@ -9,7 +9,6 @@ import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
 import com.topcoder.service.project.Competition;
-import com.topcoder.service.studio.contest.ContestManagementException;
 
 import java.util.Date;
 import java.util.List;
@@ -91,12 +90,10 @@ public interface PipelineServiceFacade {
      *
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
      * @return List of CompetitionChangeHistory
      * @throws ContestPipelineServiceException fail to do the query
      */
-    List<CompetitionChangeHistory> getContestDateChangeHistory(TCSubject tcSubject, long contestId,
-            CompetitionType competitionType) throws ContestPipelineServiceException;
+    List<CompetitionChangeHistory> getContestDateChangeHistory(TCSubject tcSubject, long contestId) throws ContestPipelineServiceException;
 
     /**
      * <p>
@@ -109,12 +106,10 @@ public interface PipelineServiceFacade {
      *
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
      * @return List of CompetitionChangeHistory
      * @throws ContestPipelineServiceException fail to do the query
      */
-    List<CompetitionChangeHistory> getContestPrizeChangeHistory(TCSubject tcSubject, long contestId,
-            CompetitionType competitionType) throws ContestPipelineServiceException;
+    List<CompetitionChangeHistory> getContestPrizeChangeHistory(TCSubject tcSubject, long contestId) throws ContestPipelineServiceException;
 
     /**
      * <p>

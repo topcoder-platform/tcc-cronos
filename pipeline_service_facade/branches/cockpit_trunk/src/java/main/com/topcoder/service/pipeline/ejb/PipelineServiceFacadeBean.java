@@ -17,7 +17,6 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 
 import com.topcoder.security.TCSubject;
-import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineService;
 import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
@@ -202,8 +201,6 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the contest id
-     * @param competitionType
-     *            competition type, could be studio or software
      *
      * @return List of CompetitionChangeHistory
      *
@@ -212,15 +209,14 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestDateChangeHistory(TCSubject tcSubject,
-            long contestId, CompetitionType competitionType)
+            long contestId)
             throws ContestPipelineServiceException {
         logger.log(Level.DEBUG,
                 "Enter getContestDateChangeHistory(TCSubject tcSubject,long contestId, CompetitionType competitionType) method");
-        logger.log(Level.DEBUG, "The parameters[tcSubject = " + tcSubject + ", contestId =" + contestId + ", competitionType = " + competitionType
-                + "].");
+        logger.log(Level.DEBUG, "The parameters[tcSubject = " + tcSubject + ", contestId =" + contestId + " ].");
 
         try {
-            return this.pipelineService.getContestDateChangeHistory(contestId, competitionType);
+            return this.pipelineService.getContestDateChangeHistory(contestId);
         } finally {
             this.logExit("getContestDateChangeHistory");
         }
@@ -237,8 +233,6 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      * @param tcSubject TCSubject instance contains the login security info for the current user
      * @param contestId
      *            the contest id
-     * @param competitionType
-     *            competition type, could be studio or software
      *
      * @return List of CompetitionChangeHistory
      *
@@ -247,14 +241,13 @@ public class PipelineServiceFacadeBean implements PipelineServiceFacadeRemote, P
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<CompetitionChangeHistory> getContestPrizeChangeHistory(TCSubject tcSubject,
-            long contestId, CompetitionType competitionType) throws ContestPipelineServiceException {
+            long contestId) throws ContestPipelineServiceException {
         logger.log(Level.DEBUG,
                 "Enter getContestPrizeChangeHistory(TCSubject tcSubject,long contestId, CompetitionType competitionType) method");
-        logger.log(Level.DEBUG, "The parameters[tcSubject = " + tcSubject + ", contestId =" + contestId + ", competitionType = " + competitionType
-                + "].");
+        logger.log(Level.DEBUG, "The parameters[tcSubject = " + tcSubject + ", contestId =" + contestId + " ].");
 
         try {
-            return this.pipelineService.getContestPrizeChangeHistory(contestId, competitionType);
+            return this.pipelineService.getContestPrizeChangeHistory(contestId);
         } finally {
             this.logExit("getContestPrizeChangeHistory");
         }

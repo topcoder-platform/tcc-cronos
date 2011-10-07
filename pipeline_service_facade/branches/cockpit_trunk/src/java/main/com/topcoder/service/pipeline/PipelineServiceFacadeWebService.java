@@ -13,7 +13,7 @@ import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
 import com.topcoder.service.project.Competition;
-import com.topcoder.service.studio.contest.ContestManagementException;
+
 /**
  * <p>
  * An interface for the web service for contest pipeline services. It contains methods to find the contests pipeline
@@ -72,13 +72,12 @@ public interface PipelineServiceFacadeWebService {
      * </p>
      *
      * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
      * @return List of CompetitionChangeHistory
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestPipelineServiceException fail to do the query
      */
-    List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId, CompetitionType competitionType)
+    List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId)
             throws ContestPipelineServiceException;
 
     /**
@@ -87,13 +86,12 @@ public interface PipelineServiceFacadeWebService {
      * </p>
      *
      * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
      * @return List of CompetitionChangeHistory
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestPipelineServiceException fail to do the query
      */
-    List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
+    List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId)
             throws ContestPipelineServiceException;
 
     /**

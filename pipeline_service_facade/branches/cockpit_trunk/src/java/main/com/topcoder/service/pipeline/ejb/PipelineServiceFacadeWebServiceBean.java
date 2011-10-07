@@ -25,14 +25,12 @@ import com.topcoder.security.GeneralSecurityException;
 import com.topcoder.security.login.AuthenticationException;
 import com.topcoder.service.pipeline.CapacityData;
 import com.topcoder.service.pipeline.CommonPipelineData;
-import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.PipelineServiceFacade;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
 import com.topcoder.service.project.Competition;
-import com.topcoder.service.studio.contest.ContestManagementException;
 import com.topcoder.service.util.LoginUtil;
 /**
  * <p>
@@ -206,17 +204,16 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      * </p>
      *
      * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
      * @return List of CompetitionChangeHistory
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestPipelineServiceException fail to do the query
      */
-    public List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId, CompetitionType competitionType)
+    public List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId)
             throws ContestPipelineServiceException {
         try
         {
-            return facade.getContestDateChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, competitionType);
+            return facade.getContestDateChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
         }
         catch (AuthenticationException e)
         {
@@ -234,18 +231,17 @@ public class PipelineServiceFacadeWebServiceBean implements PipelineServiceFacad
      * Search the prize competition change history for the given contest and competition type.
      * </p>
      *
-     * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
+     * @param contestId the contest id 
      * @return List of CompetitionChangeHistory
      * @throws AuthenticationException Thrown when username/password combination does not exist in the db.
      * @throws GeneralSecurityException Thrown when SQLExcpetion or any other error occurs when login.
      * @throws ContestPipelineServiceException fail to do the query
      */
-    public List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
+    public List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId)
             throws ContestPipelineServiceException {
         try
         {
-            return facade.getContestPrizeChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId, competitionType);
+            return facade.getContestPrizeChangeHistory(LoginUtil.login(loginBeanURL, loginBeanDSJndiName, sessionContext), contestId);
         }
         catch (AuthenticationException e)
         {
