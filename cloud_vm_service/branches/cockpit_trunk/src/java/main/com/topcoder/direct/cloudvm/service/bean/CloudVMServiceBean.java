@@ -174,10 +174,8 @@ public class CloudVMServiceBean implements CloudVMServiceRemote, CloudVMServiceL
                 vmInstance.setCreationTime(new Date());
                 
                 String contestName = "";
-                if (vmInstanceMain.getContestTypeId() == SOFTWARE_CONTEST_TYPE_ID) {
+                if (vmInstanceMain.getContestTypeId() == SOFTWARE_CONTEST_TYPE_ID || vmInstanceMain.getContestTypeId() == STUDIO_CONTEST_TYPE_ID ) {
                     contestName = contestServiceFacade.getSoftwareContestByProjectId(tcSubject, vmInstanceMain.getContestId()).getAssetDTO().getName();
-                } else if (vmInstanceMain.getContestTypeId() == STUDIO_CONTEST_TYPE_ID) {
-                    contestName = contestServiceFacade.getContest(tcSubject, vmInstanceMain.getContestId()).getContestData().getName();
                 } else if (vmInstanceMain.getContestTypeId() == BUG_RACE_TYPE_ID) {
                     contestName = "Bug Race";
                     // no check for bug races
