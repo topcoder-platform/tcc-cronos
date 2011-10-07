@@ -20,7 +20,7 @@ import com.topcoder.confluence.client.ConfluenceUserService;
 import com.topcoder.jira.client.JiraClientServiceException;
 import com.topcoder.jira.client.JiraUserService;
 import com.topcoder.security.TCSubject;
-import com.topcoder.service.Helper;
+import com.topcoder.service.facade.Helper;
 import com.topcoder.service.user.UserService;
 import com.topcoder.service.user.UserServiceException;
 import com.topcoder.service.facade.user.UserServiceFacadeException;

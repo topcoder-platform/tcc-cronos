@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.service;
+package com.topcoder.service.facade;
 
 import com.topcoder.configuration.ConfigurationException;
 import com.topcoder.util.config.ConfigManager;
