@@ -41,9 +41,6 @@
         <java>configuration_manager.jar</java>
     </module>
     <module>
-        <java>contest_and_submission_entities.jar</java>
-    </module>
-    <module>
         <java>data_entitlement.jar</java>
     </module>
     <module>
@@ -83,15 +80,6 @@
     <!-- EJBs and demo web application -->
     <module>
         <ejb>project_service.jar</ejb>
-    </module>
-    <module>
-        <ejb>studio_contest_manager.jar</ejb>
-    </module>
-    <module>
-        <ejb>submission_manager.jar</ejb>
-    </module>
-    <module>
-        <ejb>studio_service.jar</ejb>
     </module>
     <module>
         <ejb>specification_review_comment_service.jar</ejb>
