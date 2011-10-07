@@ -3,6 +3,7 @@
  */
 package com.topcoder.service.user.ejb;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -1588,6 +1589,61 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
             throw wrapUserServiceException(e, "There are errors in getUserHandle.");
         } finally {
             logExit("getUser(" + userId + ")");
+        }
+    }
+    
+    /**
+     * Searches User by given search string.
+     * 
+     * @param key the search string to use.
+     * @return the List of User instances that match passed string.
+     * @throws UserServiceException if any error occurs during operation.
+     */
+    public List<User> searchUser(String key) throws UserServiceException {
+        List<User> users = new ArrayList<User>();
+                
+        try {
+            
+            logEnter("searchUser("+key+")");
+            logOneParameter(key);
+
+            EntityManager em = getEntityManager();
+
+            // Query the basic information
+            Query basicInfoquery = em.createNativeQuery(
+                    "select "
+                    + "user.user_id, user.handle, user.first_name, user.last_name, email.address "
+                    + "from user "
+                    + "left outer join email on user.user_id = email.user_id "
+                    + "where UPPER(user.handle) like(UPPER(:userHandle)) ");
+
+            basicInfoquery.setParameter("userHandle", key);
+
+            // There could be more than one result if the user has more than one
+            // email address, so just pick the first result
+            List basicResult = basicInfoquery.getResultList();
+
+            for (Object obj : basicResult) {
+            	Object[] values = (Object[]) obj;
+            	User user = new User();
+            	user.setUserId(Long.parseLong(values[0].toString()));
+                user.setHandle(values[1].toString());
+                user.setFirstName(values[2].toString());
+                user.setLastName(values[3].toString());
+                user.setEmailAddress(values[4].toString());
+                users.add(user);
+            }
+            
+            return users;
+
+        } catch (IllegalStateException e) {
+            throw wrapUserServiceException(e, "The EntityManager is closed.");
+        } catch (NoResultException e) {
+            throw wrapUserServiceException(e, "No such user");
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e, "There are errors in getUserHandle.");
+        } finally {
+            logExit("searchUser(" + key + ")");
         }
     }
 }

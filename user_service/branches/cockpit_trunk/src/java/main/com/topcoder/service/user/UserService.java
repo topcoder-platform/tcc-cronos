@@ -4,6 +4,7 @@
 package com.topcoder.service.user;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Remote;
 
@@ -267,5 +268,14 @@ public interface UserService {
      * @since BUGR-3739
      */
     public User getUser(long userId) throws UserServiceException;
+    
+    /**
+     * Searches User by given search string.
+     * 
+     * @param key the search string to use.
+     * @return the List of User instances that match passed string.
+     * @throws UserServiceException if any error occurs during operation.
+     */
+    public List<User> searchUser(String key) throws UserServiceException;
 
 }
