@@ -9,7 +9,6 @@ import com.topcoder.security.TCSubject;
 import com.topcoder.service.gameplan.GamePlanPersistenceException;
 import com.topcoder.service.gameplan.GamePlanServiceConfigurationException;
 import com.topcoder.service.util.gameplan.SoftwareProjectData;
-import com.topcoder.service.util.gameplan.StudioProjectData;
 import com.topcoder.service.util.gameplan.TCDirectProjectGamePlanData;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -83,8 +82,15 @@ import java.util.Set;
  *   </ol>
  * </p>
  *
- * @author saarixx, FireIce, isv
- * @version 1.0.1
+ * <p>
+ * Version 1.0.2 (TCCC-3658) Change notes:
+ *   <ol>
+ *     <li>Removed dependencies to studio components</li>
+ *   </ol>
+ * </p>
+ *
+ * @author saarixx, FireIce, isv, lmmortal
+ * @version 1.0.2
  */
 @Stateless
 public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServiceRemote {
@@ -111,8 +117,6 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             + "  LEFT OUTER JOIN project_category_lu pcl ON pcl.project_category_id = p.project_category_id "
             + "WHERE p.project_status_id != 3 AND p.project_category_id != 27  "
             + " and tcd.project_id = upg.resource_id  and upg.permission_type_id in (1,2,3 ) ";
-
-  
 
     /**
      * Represents the sql for retrieving IDs of dependency projects.
@@ -154,16 +158,6 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
      */
     @PersistenceContext(name = "softwarePersistence")
     private EntityManager softwareEntityManager;
-
-    /**
-     * Represents the <b>EntityManager</b> instance to be used by this class for accessing studio contests specific
-     * data.
-     *
-     * Cannot be null and is not modified after initialization. Initialized by EJB container injection. Is used in
-     * retrieveGamePlanData().
-     */
-    @PersistenceContext(name = "studioPersistence")
-    private EntityManager studioEntityManager;
 
     /**
      * The name of the logger to be used by this class.
@@ -329,8 +323,6 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             throws GamePlanPersistenceException {
         if (null == softwareEntityManager) {
             throw logException(new IllegalStateException("The softwareEntityManager is not properly initialized."));
-        } else if (null == studioEntityManager) {
-            throw logException(new IllegalStateException("The studioEntityManager is not properly initialized."));
         }
 
         Date now = new Date();
@@ -348,7 +340,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         }
         
         // Create query for retrieving direct projects data
-        Query query = studioEntityManager.createNativeQuery(directProjectQuery);
+        Query query = softwareEntityManager.createNativeQuery(directProjectQuery);
         
         // set the parameter value if present
         if (userId != null) {
@@ -375,8 +367,6 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         try {
             retrieveSoftwareProjectData(userId, directProjectId, now, tcDirectProjectsMap);
 
-            //retrieveStudioProjectData(userId, directProjectId, now, tcDirectProjectsMap);
-
             return new ArrayList<TCDirectProjectGamePlanData>(tcDirectProjectsMap.values());
         } catch (ClassCastException e) {
             throw new GamePlanPersistenceException("Fail to convert the retrieved data.", e);
@@ -384,8 +374,6 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             throw new GamePlanPersistenceException("Error occurred when accessing the persistence", e);
         }
     }
-
-   
 
     /**
      * Updates the IDs of dependency projects for the given list of <b>SoftwareProjectData</b>.

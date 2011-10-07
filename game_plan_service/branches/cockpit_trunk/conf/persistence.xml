@@ -16,18 +16,4 @@
           <property name="hibernate.show_sql" value="false" /> 
       </properties>
   </persistence-unit>
-  <persistence-unit name="studioPersistence" transaction-type="JTA">
-      <!--  Hibernate persistence provider --> 
-      <provider>org.hibernate.ejb.HibernatePersistence</provider> 
-      <!--  The JTA data source --> 
-      <jta-data-source>java:StudioDS</jta-data-source> 
-      <properties>
-          <!--  Informix Dialect  --> 
-          <property name="hibernate.dialect" value="org.hibernate.dialect.InformixDialect" /> 
-          <property name="hibernate.transaction.factory_class" value="org.hibernate.ejb.transaction.JoinableCMTTransactionFactory" /> 
-          <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup" /> 
-          <!--  Show SQL for dev purpose  --> 
-          <property name="hibernate.show_sql" value="false" /> 
-      </properties>
-  </persistence-unit>
 </persistence>

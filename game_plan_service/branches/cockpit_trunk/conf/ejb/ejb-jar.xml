@@ -30,17 +30,6 @@
 				</persistence-context-type>
 			</persistence-context-ref>
 			
-			<persistence-context-ref>
-				<persistence-context-ref-name>
-					studioPersistence
-				</persistence-context-ref-name>
-				<persistence-unit-name>
-					studioPersistence
-				</persistence-unit-name>
-				<persistence-context-type>
-					Transaction
-				</persistence-context-type>
-			</persistence-context-ref>
 		</session>
 	</enterprise-beans>
 </ejb-jar>
