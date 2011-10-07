@@ -10,8 +10,8 @@
         </id>
         <property name="createDate" column="create_date" type="timestamp" update="false"/>
         <property name="createUser" column="create_user" type="string" update="false"/>
-        <property name="modifyDate" column="modify_date" type="timestamp"/>
-        <property name="modifyUser" column="modify_user" type="string"/>
+        <property name="modifyDate" column="update_date" type="timestamp"/>
+        <property name="modifyUser" column="update_user" type="string"/>
         <property name="userId" column="user_id" type="long"/>
         <many-to-one name="status" class="CopilotProfileStatus" column=" copilot_profile_status_id" cascade="none"/>
         <property name="suspensionCount" column="suspension_count" type="integer"/>
@@ -30,8 +30,8 @@
         </id>
         <property name="createDate" column="create_date" type="timestamp" update="false"/>
         <property name="createUser" column="create_user" type="string" update="false"/>
-        <property name="modifyDate" column="modify_date" type="timestamp"/>
-        <property name="modifyUser" column="modify_user" type="string"/>
+        <property name="modifyDate" column="update_date" type="timestamp"/>
+        <property name="modifyUser" column="update_user" type="string"/>
         <property name="name" column="name" type="string"/>
     </class>
 
@@ -41,8 +41,8 @@
         </id>
         <property name="createDate" column="create_date" type="timestamp" update="false"/>
         <property name="createUser" column="create_user" type="string" update="false"/>
-        <property name="modifyDate" column="modify_date" type="timestamp"/>
-        <property name="modifyUser" column="modify_user" type="string"/>
+        <property name="modifyDate" column="update_date" type="timestamp"/>
+        <property name="modifyUser" column="update_user" type="string"/>
         <many-to-one name="infoType" class="CopilotProfileInfoType" column="copilot_profile_info_type_id"
                      cascade="none"/>
         <property name="copilotProfileId" column="copilot_profile_id" type="long" insert="false" update="false"/>
@@ -55,8 +55,8 @@
         </id>
         <property name="createDate" column="create_date" type="timestamp" update="false"/>
         <property name="createUser" column="create_user" type="string" update="false"/>
-        <property name="modifyDate" column="modify_date" type="timestamp"/>
-        <property name="modifyUser" column="modify_user" type="string"/>
+        <property name="modifyDate" column="update_date" type="timestamp"/>
+        <property name="modifyUser" column="update_user" type="string"/>
         <property name="name" column="name" type="string"/>
     </class>
 
