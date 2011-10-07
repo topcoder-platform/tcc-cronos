@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -45,7 +43,7 @@ public class DurationSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, could be empty, not null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if (contestDurationLowerBound > contestDurationUpperBound) {
             return "";
         }

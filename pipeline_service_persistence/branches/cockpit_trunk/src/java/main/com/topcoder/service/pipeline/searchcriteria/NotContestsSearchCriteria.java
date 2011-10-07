@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 
 /**
@@ -51,12 +49,12 @@ public class NotContestsSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, could be empty, not null
      */
-    public String getWhereClause(CompetitionType type) {
-        if ((searchCriteria == null) || (searchCriteria.getWhereClause(type).trim().length() == 0)) {
+    public String getWhereClause() {
+        if ((searchCriteria == null) || (searchCriteria.getWhereClause().trim().length() == 0)) {
             return "";
         }
 
-        return new StringBuffer(" NOT (").append(searchCriteria.getWhereClause(type)).append(")").toString();
+        return new StringBuffer(" NOT (").append(searchCriteria.getWhereClause()).append(")").toString();
     }
 
     /**

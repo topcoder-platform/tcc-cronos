@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -41,7 +39,7 @@ public class PricingApprovalSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, not empty or null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         return new StringBuffer("pinfo.pricingApproval = ").append(priceApproved).toString();
     }
 

@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -39,5 +37,5 @@ public abstract class ContestsSearchCriteria implements Serializable {
 	 *
 	 * @return where clause, could be empty, not null
 	 */
-	public abstract String getWhereClause(CompetitionType competitionType);
+	public abstract String getWhereClause();
 }

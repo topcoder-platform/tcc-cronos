@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -47,7 +45,7 @@ public class ManagerContestsSearchCriteria extends ContestsSearchCriteria {
      *
      * @return the where clause will be empty if the query value is empty or null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if ((manager == null) || (manager.trim().length() == 0)) {
             return "";
         }

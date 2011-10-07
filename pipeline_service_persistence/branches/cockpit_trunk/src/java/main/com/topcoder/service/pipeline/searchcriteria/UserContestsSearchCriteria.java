@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -41,7 +39,7 @@ public class UserContestsSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, could be empty, not null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if ((username == null) || (username.trim().length() == 0)) {
             return "";
         }

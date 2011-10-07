@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * @since Pipeline Conversion Service Layer Assembly v1.0
  */
 @MappedSuperclass
-@XmlSeeAlso ({StudioCompetitionChangeHistory.class, SoftwareCompetitionChangeHistory.class})
+@XmlSeeAlso ({SoftwareCompetitionChangeHistory.class})
 public abstract class CompetitionChangeHistory implements Serializable {
     /** serial version UID. */
     private static final long serialVersionUID = -569637477874600887L;

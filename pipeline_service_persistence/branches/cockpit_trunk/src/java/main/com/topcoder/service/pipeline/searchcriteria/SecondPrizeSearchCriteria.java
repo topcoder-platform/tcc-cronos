@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 
 /**
@@ -47,17 +45,11 @@ public class SecondPrizeSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, could be empty, not null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if (lowerBoundPrize > upperBoundPrize) {
             return "";
         }
 
-        if (type.equals(CompetitionType.STUDIO)) {
-			return new StringBuffer("prize.place = 2 AND prize.amount BETWEEN ")
-					.append(lowerBoundPrize).append(" AND upperBoundPrize ")
-					.append(" AND prize_contests.contestId = pinfo.contestId")
-					.toString();
-		}
 		return "";
     }
 

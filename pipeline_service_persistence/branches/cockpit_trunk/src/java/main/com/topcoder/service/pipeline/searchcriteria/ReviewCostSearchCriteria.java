@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -44,7 +42,7 @@ public class ReviewCostSearchCriteria extends ContestsSearchCriteria {
     /**
      * Constructs the where clause.
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if (reviewCostLowerBound > reviewCostUpperBound) {
             return "";
         }

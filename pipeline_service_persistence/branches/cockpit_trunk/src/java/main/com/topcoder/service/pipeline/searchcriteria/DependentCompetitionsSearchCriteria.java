@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -38,7 +36,7 @@ public class DependentCompetitionsSearchCriteria extends ContestsSearchCriteria 
      *
      * @return where clause, not empty or null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         return new StringBuffer("pinfo.hasDependentCompetitions = ").append(hasDependentCompetitions).toString();
     }
 

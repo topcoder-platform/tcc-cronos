@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 import java.util.List;
 
 
@@ -40,7 +38,7 @@ public class AndContestsSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, could be empty, not null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if ((searchCriterias == null) || searchCriterias.isEmpty()) {
             return "";
         }
@@ -49,11 +47,11 @@ public class AndContestsSearchCriteria extends ContestsSearchCriteria {
 
         for (int i = 0; i < searchCriterias.size(); i++) {
             //skip the invalid ones
-            if ((searchCriterias.get(i) == null) || (searchCriterias.get(i).getWhereClause(type).trim().length() == 0)) {
+            if ((searchCriterias.get(i) == null) || (searchCriterias.get(i).getWhereClause().trim().length() == 0)) {
                 continue;
             }
 
-            sb.append("(").append(searchCriterias.get(i).getWhereClause(type));
+            sb.append("(").append(searchCriterias.get(i).getWhereClause());
 
             if (i != (searchCriterias.size() - 1)) {
                 sb.append(") AND ");

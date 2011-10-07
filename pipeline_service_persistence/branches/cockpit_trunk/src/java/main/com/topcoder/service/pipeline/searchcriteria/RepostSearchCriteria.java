@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -42,7 +40,7 @@ public class RepostSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, not empty or null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         return new StringBuffer("pinfo.rePost = ").append(repost).toString();
     }
 

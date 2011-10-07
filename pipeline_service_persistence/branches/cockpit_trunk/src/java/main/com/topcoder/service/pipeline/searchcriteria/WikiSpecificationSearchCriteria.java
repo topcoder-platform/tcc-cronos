@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -44,7 +42,7 @@ public class WikiSpecificationSearchCriteria extends ContestsSearchCriteria {
      *
      * @return the where clause
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         return new StringBuffer("pinfo.hasWikiSpecification=").append(wikiSpecificationExists).toString();
     }
 

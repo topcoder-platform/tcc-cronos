@@ -6,8 +6,6 @@ package com.topcoder.service.pipeline.searchcriteria;
 
 import java.util.List;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * <p>
@@ -45,7 +43,7 @@ public class ExcludeClientsSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, could be empty, not null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if ((clientsToExclude == null) || clientsToExclude.isEmpty()) {
             return "";
         }

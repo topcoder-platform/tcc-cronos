@@ -3,9 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
-
 
 /**
  * <p>
@@ -39,7 +36,7 @@ public class ClientContestsSearchCriteria extends ContestsSearchCriteria {
      *
      * @return where clause, could be empty if the client is empty or null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if ((client == null) || (client.trim().length() == 0)) {
             return "";
         }

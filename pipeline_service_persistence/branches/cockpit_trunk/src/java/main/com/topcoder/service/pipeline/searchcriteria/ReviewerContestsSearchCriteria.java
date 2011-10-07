@@ -3,8 +3,6 @@
  */
 package com.topcoder.service.pipeline.searchcriteria;
 
-import com.topcoder.service.pipeline.CompetitionType;
-
 
 /**
  * The criteria instance with the name for the role 'reviewer'.
@@ -46,7 +44,7 @@ public class ReviewerContestsSearchCriteria extends ContestsSearchCriteria {
      *
      * @return the where clause will be empty if the query value is empty or null
      */
-    public String getWhereClause(CompetitionType type) {
+    public String getWhereClause() {
         if ((reviewer == null) || (reviewer.trim().length() == 0)) {
             return "";
         }
