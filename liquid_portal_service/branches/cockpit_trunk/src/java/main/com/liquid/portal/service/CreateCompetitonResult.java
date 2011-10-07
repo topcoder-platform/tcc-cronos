@@ -4,7 +4,6 @@
 package com.liquid.portal.service;
 
 import com.topcoder.service.project.Competition;
-import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.SoftwareCompetition;
 
 /**
@@ -36,17 +35,6 @@ public class CreateCompetitonResult extends Result {
      * </p>
      */
     private Competition competition;
-
-    /**
-     * <p>
-     * Represents the created StudioCompetition.
-     * </p>
-     * <p>
-     * It is set in the setter. It can be retrieved in the getter
-     * </p>
-     */
-    private StudioCompetition studioCompetition;
-
 
     /**
      * <p>
@@ -88,30 +76,6 @@ public class CreateCompetitonResult extends Result {
      */
     public void setCompetition(Competition competition) {
         this.competition = competition;
-    }
-
-
-    /**
-     * <p>
-     * Gets the created competition.
-     * </p>
-     *
-     * @return the created competition
-     */
-    public StudioCompetition getSutdioCompetition() {
-        return studioCompetition;
-    }
-
-    /**
-     * <p>
-     * Sets the created competition.
-     * </p>
-     *
-     * @param competition
-     *            the created competition
-     */
-    public void setStudioCompetition(StudioCompetition studioCompetition) {
-        this.studioCompetition = studioCompetition;
     }
 
 

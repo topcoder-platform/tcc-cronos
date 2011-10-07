@@ -96,17 +96,7 @@ import com.topcoder.service.project.ProjectData;
 import com.topcoder.service.project.ProjectNotFoundFault;
 import com.topcoder.service.project.ProjectService;
 import com.topcoder.service.project.SoftwareCompetition;
-import com.topcoder.service.project.StudioCompetition;
 import com.topcoder.service.project.UserNotFoundFault;
-import com.topcoder.service.studio.ContestData;
-import com.topcoder.service.studio.ContestNotFoundException;
-import com.topcoder.service.studio.ContestStatusData;
-import com.topcoder.service.studio.ContestTypeData;
-import com.topcoder.service.studio.IllegalArgumentWSException;
-import com.topcoder.service.studio.MediumData;
-import com.topcoder.service.studio.PersistenceException;
-import com.topcoder.service.studio.PrizeData;
-import com.topcoder.service.studio.UserNotAuthorizedException;
 import com.topcoder.service.user.User;
 import com.topcoder.service.user.UserInfo;
 import com.topcoder.service.user.UserService;
@@ -2598,10 +2588,6 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
                     methodName);
-        } catch (IllegalArgumentWSException e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
-                    methodName);
         } catch (PersistenceFault e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when creating competition", e),
@@ -2868,69 +2854,23 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
         TCSubject tcSubject = getTCSubject(false);
 
-        try {
-            if (isStudio) {
-                StudioCompetition comp = contestServiceFacade.getContest(tcSubject, contestId);
-                if (comp == null) {
-                    sessionContext.setRollbackOnly();
-                    throw logError(new LiquidPortalServiceException("can not find contest with contestId:"
-                            + contestId, 5010), methodName);
-                }
-                // check billing account permission for requester
-                if (!billingProjectDAO.checkClientProjectPermission(requestorHandle, comp.getContestData()
-                        .getBillingProject())) {
-                    sessionContext.setRollbackOnly();
-                    throw logError(new LiquidPortalServiceException(
-                            "the user has no permissions for the billing account associated to the competition", 5003),
-                            methodName);
-                }
-                if (!checkPermission(contestServiceFacade.getPermissions(tcSubject, requestorInfo.getUserId(), comp.getProject()
-                        .getProjectId()))) {
-                    sessionContext.setRollbackOnly();
-                    throw logError(new LiquidPortalServiceException(String.format(
-                            "User {0} does not has permission to project {1}", requestorHandle, comp.getProject()
-                                    .getName()), LiquidPortalServiceException.EC_ACTION_NOT_PERMITTED), methodName);
-                }
-                contestServiceFacade.deleteContest(tcSubject, contestId);
-            } else {
-                // get software competition
-                SoftwareCompetition comp = contestServiceFacade.getSoftwareContestByProjectId(tcSubject, contestId);
-                // check permission
-                if (!checkPermission(contestServiceFacade.getPermissions(tcSubject, requestorInfo.getUserId(), comp.getProject()
-                        .getProjectId()))) {
-                    sessionContext.setRollbackOnly();
-                    throw logError(new LiquidPortalServiceException(String.format(
-                            "User {0} does not has permission to project {1}", requestorHandle, comp.getProject()
-                                    .getName()), LiquidPortalServiceException.EC_ACTION_NOT_PERMITTED), methodName);
-                }
-                // mark software contest as deleted
-                comp.setStatus(Status.DELETED);
-                // use <Requestor Handle>: <Reason> as the explanation
-                comp.setProjectHeaderReason(requestorHandle + ": " + reason);
-                contestServiceFacade.updateSoftwareContest(tcSubject, comp, comp.getProject().getProjectId());
+        try {            
+            // get software competition
+            SoftwareCompetition comp = contestServiceFacade.getSoftwareContestByProjectId(tcSubject, contestId);
+            // check permission
+            if (!checkPermission(contestServiceFacade.getPermissions(tcSubject, requestorInfo.getUserId(), comp.getProject()
+                    .getProjectId()))) {
+                sessionContext.setRollbackOnly();
+                throw logError(new LiquidPortalServiceException(String.format(
+                        "User {0} does not has permission to project {1}", requestorHandle, comp.getProject()
+                                .getName()), LiquidPortalServiceException.EC_ACTION_NOT_PERMITTED), methodName);
             }
+            // mark software contest as deleted
+            comp.setStatus(Status.DELETED);
+            // use <Requestor Handle>: <Reason> as the explanation
+            comp.setProjectHeaderReason(requestorHandle + ": " + reason);
+            contestServiceFacade.updateSoftwareContest(tcSubject, comp, comp.getProject().getProjectId());           
             logExit(methodName);
-        } catch (com.topcoder.service.studio.ContestNotFoundException e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("can not find contest with contestId:" + contestId, 5010,
-                    e), methodName);
-        } catch (PersistenceException e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
-                    methodName);
-        } catch (IllegalArgumentWSException e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
-                    methodName);
-        } catch (UserNotAuthorizedException e) {
-            // have no permissions
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException(
-                    requestorHandle + " has no permission to perform the action", 5003, e), methodName);
-        } catch (DAOException e) {
-            sessionContext.setRollbackOnly();
-            throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),
-                    methodName);
         } catch (ContestServiceException e) {
             sessionContext.setRollbackOnly();
             throw logError(new LiquidPortalServiceException("Error occurs when deleting competition", e),

@@ -54,11 +54,6 @@
     <property name="client_project_entities_dao.path" value="client_project_entities_dao/${client_project_entities_dao.version}"/>
     <property name="client_project_entities_dao.jar" value="${tcs_libdir}/${client_project_entities_dao.path}/${client_project_entities_dao.jar.name}"/>
 
-    <property name="studio_service.version" value="1.3.0"/>
-    <property name="studio_service.jar.name" value="studio_service.jar"/>
-    <property name="studio_service.path" value="studio_service/${studio_service.version}"/>
-    <property name="studio_service.jar" value="${tcs_libdir}/${studio_service.path}/${studio_service.jar.name}"/>
-
     <property name="pipeline_service.version" value="1.0.0"/>
     <property name="pipeline_service.jar.name" value="pipeline_service.jar"/>
     <property name="pipeline_service.path" value="pipeline_service/${pipeline_service.version}"/>
@@ -147,7 +142,6 @@
 
         <pathelement location="${typesafe_enum.jar}"/>
         <pathelement location="${project_service.jar}"/>
-        <pathelement location="${studio_service.jar}"/>
         <pathelement location="${catalog_entities.jar}"/>
         <pathelement location="${catalog_services.jar}"/>
         <pathelement location="${project_phases.jar}"/>
