@@ -229,6 +229,7 @@ public abstract class GenericDAOImpl<T extends IdentifiableEntity> extends BaseD
      * @throws CopilotDAOException      if some other error occurred
      */
     @SuppressWarnings("unchecked")
+    @Transactional
     public T retrieve(long entityId) throws CopilotDAOException {
         final String methodName = "retrieve";
         final long executionStart = System.currentTimeMillis();
@@ -269,6 +270,7 @@ public abstract class GenericDAOImpl<T extends IdentifiableEntity> extends BaseD
      *
      * @throws CopilotDAOException if any error occurred
      */
+    @Transactional
     public List<T> retrieveAll() throws CopilotDAOException {
         final String methodName = "retrieveAll";
         final long executionStart = System.currentTimeMillis();
