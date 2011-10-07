@@ -223,23 +223,4 @@ public class PayPalPaymentProcessor implements PaymentProcessor {
                 response.getErrors()[0].getLongMessage());
         }
     }
-
-    /**
-     * <p>
-     * Void a previous payment. On success it should
-     * return <code>PaymentResult</code> On failure it throws
-     * <code>PaymentException</code>
-     * </p>
-     *
-     * @param referenceNumber
-     *            the referenceNumber of the to be voided payment
-     * @return a <code>PaymentResult</code> the payment result.
-     * @throws PaymentException
-     *             on payment failure. It captures Error message and Error code
-     *             for the failure case.
-     */
-    public PaymentResult voidPayment(String referenceNumber) throws PaymentException
-    {
-        throw new NotSupportedException();
-    }
 }

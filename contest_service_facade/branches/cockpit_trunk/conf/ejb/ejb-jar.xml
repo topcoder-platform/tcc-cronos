@@ -174,11 +174,6 @@
             </env-entry>
 
             <ejb-ref>
-                <ejb-ref-name>ejb/StudioService</ejb-ref-name>
-                <ejb-ref-type>Session</ejb-ref-type>
-                <remote>com.topcoder.service.studio.StudioService</remote>
-            </ejb-ref>
-            <ejb-ref>
                 <ejb-ref-name>ejb/ContestEligibilityValidation</ejb-ref-name>
                 <ejb-ref-type>Session</ejb-ref-type>
                 <remote>com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManagerRemote</remote>

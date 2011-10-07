@@ -5,10 +5,6 @@
             <ejb-name>ContestServiceFacadeBean</ejb-name>
             <jndi-name>remote/ContestServiceFacadeBean</jndi-name>
             <ejb-ref>
-                <ejb-ref-name>ejb/StudioService</ejb-ref-name>
-                <jndi-name>StudioServiceBean/remote</jndi-name>
-            </ejb-ref>
-            <ejb-ref>
                 <ejb-ref-name>ejb/contest_eligibility_validation</ejb-ref-name>
                 <jndi-name>ContestEligibilityValidationBean/remote</jndi-name>
             </ejb-ref>

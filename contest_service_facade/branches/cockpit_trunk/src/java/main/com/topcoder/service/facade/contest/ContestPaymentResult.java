@@ -1,7 +1,6 @@
 package com.topcoder.service.facade.contest;
 
 import com.topcoder.service.payment.PaymentResult;
-import com.topcoder.service.studio.ContestData;
 
 import java.io.Serializable;
 
@@ -14,8 +13,14 @@ import javax.xml.bind.annotation.XmlType;
  * This class contains payment result and contest data. Its instances are
  * created in reply to processing contest payment.
  *
- * @author Margarita
- * @version 1.0
+ * <p>
+ * Version 1.0.1 (TCCC-3658) Change notes:
+ *   <ol>
+ *     <li>Removed dependencies to studio components</li>
+ *   </ol>
+ * </p>
+ * @author Margarita, lmmortal
+ * @version 1.0.1
  * @since BUGR-1494
  *
  */
@@ -33,11 +38,6 @@ public class ContestPaymentResult implements Serializable {
      * Payment result instance.
      */
     private PaymentResult paymentResult;
-
-    /**
-     * Contest data for particular contest.
-     */
-    private ContestData contestData;
 
     /**
      * Empty constructor.
@@ -62,23 +62,5 @@ public class ContestPaymentResult implements Serializable {
      */
     public void setPaymentResult(PaymentResult paymentResult) {
         this.paymentResult = paymentResult;
-    }
-
-    /**
-     * Returns the contest data.
-     *
-     * @return the contest data
-     */
-    public ContestData getContestData() {
-        return contestData;
-    }
-
-    /**
-     * Sets the new value of contest data
-     *
-     * @param contestData
-     */
-    public void setContestData(ContestData contestData) {
-        this.contestData = contestData;
     }
 }
