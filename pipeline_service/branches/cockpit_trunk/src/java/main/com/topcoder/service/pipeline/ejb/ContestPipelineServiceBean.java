@@ -41,25 +41,15 @@ import com.topcoder.project.service.ProjectServicesException;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.pipeline.CommonPipelineData;
 import com.topcoder.service.pipeline.CapacityData;
-import com.topcoder.service.pipeline.CompetitionType;
 import com.topcoder.service.pipeline.ContestPipelineServiceException;
 import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.entities.CompetitionChangeType;
 import com.topcoder.service.pipeline.entities.CompetitionPipelineInfo;
 import com.topcoder.service.pipeline.entities.SoftwareCompetitionPipelineInfo;
-import com.topcoder.service.pipeline.entities.StudioCompetitionPipelineInfo;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
-import com.topcoder.service.project.CompetionType;
 import com.topcoder.service.project.Competition;
 import com.topcoder.service.project.SoftwareCompetition;
-import com.topcoder.service.project.StudioCompetition;
-import com.topcoder.service.studio.ContestData;
-import com.topcoder.service.studio.ContestPaymentData;
-import com.topcoder.service.studio.IllegalArgumentWSException;
-import com.topcoder.service.studio.StudioService;
-import com.topcoder.service.studio.contest.ContestManagementException;
-import com.topcoder.service.studio.contest.StudioCapacityData;
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.Property;
 import com.topcoder.util.errorhandling.ExceptionUtils;
@@ -193,15 +183,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * <p>
-     * A <code>StudioService</code> providing access to available <code>Studio Service EJB</code>. This bean is
-     * delegated to process the calls to the methods inherited from <code>Studio Service</code> component.
-     * </p>
-     */
-    @EJB(name = "ejb/StudioService")
-    private StudioService studioService = null;
-
-    /**
-     * <p>
      * A <code>CatalogService</code> providing access to available <code>Category Services EJB</code>. This bean is
      * delegated to process the calls to the methods inherited from <code>Category Services</code> component.
      * </p>
@@ -235,16 +216,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      */
     @Resource(name = "softwareUnitName")
     private String softwareUnitName;
-
-    /**
-     * <p>
-     * This field represents the persistence unit name to lookup the <code>EntityManager</code> from the
-     * <code>SessionContext</code>. It is initialized in the <code>initialize</code> method, and never changed
-     * afterwards. It must be non-null, non-empty string.
-     * </p>
-     */
-    @Resource(name = "studioUnitName")
-    private String studioUnitName;
 
     /**
      * <p>
@@ -408,7 +379,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             List<CompetitionChangeHistory> results = new LinkedList<CompetitionChangeHistory>();
             long startTime = System.currentTimeMillis();
             for (int i = 0; i < contestIds.length; i++) {
-                results.addAll(getHistory(contestIds[i], competitionTypes[i].equals("STUDIO") ? CompetitionType.STUDIO : CompetitionType.SOFTWARE, changeType));
+                results.addAll(getHistory(contestIds[i], changeType));
             }
 
             long endTime = System.currentTimeMillis();
@@ -436,16 +407,15 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      *             fail to do the query
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId, CompetitionType competitionType)
+    public List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId)
             throws ContestPipelineServiceException {
         logger.log(Level.DEBUG,
                 "Enter getContestDateChangeHistory(long contestId, CompetitionType competitionType) method");
-        logger.log(Level.DEBUG, "The parameters[contestId =" + contestId + ", competitionType = " + competitionType
-                + "].");
+        logger.log(Level.DEBUG, "The parameters[contestId =" + contestId + " ].");
 
         try {
             long startTime = System.currentTimeMillis();
-            List<CompetitionChangeHistory> results = getHistory(contestId, competitionType, CompetitionChangeType.DATE);
+            List<CompetitionChangeHistory> results = getHistory(contestId, CompetitionChangeType.DATE);
             long endTime = System.currentTimeMillis();
             logger.log(Level.DEBUG, "Executed " + (endTime - startTime) + " m-seconds and get results:");
 
@@ -471,16 +441,15 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      *             fail to do the query
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
+    public List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId)
             throws ContestPipelineServiceException {
         logger.log(Level.DEBUG,
                 "Enter getContestPrizeChangeHistory(long contestId, CompetitionType competitionType) method");
-        logger.log(Level.DEBUG, "The parameters[contestId =" + contestId + ", competitionType = " + competitionType
-                + "].");
+        logger.log(Level.DEBUG, "The parameters[contestId =" + contestId + " ].");
 
         try {
             long startTime = System.currentTimeMillis();
-            List<CompetitionChangeHistory> results = getHistory(contestId, competitionType, CompetitionChangeType.PRIZE);
+            List<CompetitionChangeHistory> results = getHistory(contestId, CompetitionChangeType.PRIZE);
             long endTime = System.currentTimeMillis();
             logger.log(Level.DEBUG, "Executed " + (endTime - startTime) + " m-seconds and get results:");
 
@@ -508,20 +477,13 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      *             if any error occurs during persistence retrieval.
      */
     @SuppressWarnings("unchecked")
-    private List<CompetitionChangeHistory> getHistory(long contestId, CompetitionType competitionType,
-            CompetitionChangeType changeType) throws ContestPipelineServiceException {
-        ExceptionUtils.checkNull(competitionType, null, null, "CompetitionType is null");
+    private List<CompetitionChangeHistory> getHistory(long contestId, CompetitionChangeType changeType) throws ContestPipelineServiceException {
 
         try {
             Query query = null;
 
-            if (competitionType == CompetitionType.STUDIO) {
-                EntityManager em = getStudioEntityManager();
-                query = em.createQuery(GET_STUDIO_CHANGE_HISTORY_QUERY);
-            } else {
-                EntityManager em = getSoftwareEntityManager();
-                query = em.createQuery(GET_SOFTWARE_CHANGE_HISTORY_QUERY);
-            }
+            EntityManager em = getSoftwareEntityManager();
+            query = em.createQuery(GET_SOFTWARE_CHANGE_HISTORY_QUERY);
 
             query.setParameter("contestId", contestId);
             query.setParameter("changeType", changeType);
@@ -583,8 +545,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         List<Competition> ret = new ArrayList<Competition>();
 
         try {
-            ret.addAll(getSoftwareContests(criteria.getWhereClause(CompetitionType.SOFTWARE)));
-            ret.addAll(getStudioContests(criteria.getWhereClause(CompetitionType.STUDIO)));
+            ret.addAll(getSoftwareContests(criteria.getWhereClause()));
             logDebug("The results are:" + ret.size());
 
             long endTime = System.currentTimeMillis();
@@ -630,11 +591,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
             // get capacity data from underlying services
             List<CapacityData> capacityDataList;
-            if (isStudio) {
-                capacityDataList = convertStudioCapacityDataToCapacityData(studioService.getCapacity(contestType));
-            } else {
-                capacityDataList = convertSoftwareCapacityDataToCapacityData(projectServices.getCapacity(contestType));
-            }
+            capacityDataList = convertSoftwareCapacityDataToCapacityData(projectServices.getCapacity(contestType));
 
             // use configuration to check full capacity
             for (CapacityData capacityData : capacityDataList) {
@@ -668,7 +625,7 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
     private List<Competition> getSoftwareContests(String whereClause) throws ContestPipelineServiceException {
         List<Competition> competitions = new ArrayList<Competition>();
 
-        String queryStr = constructQuery(whereClause, CompetitionType.SOFTWARE);
+        String queryStr = constructQuery(whereClause);
 
         logDebug("Query: " + queryStr);
 
@@ -820,25 +777,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
 
     /**
      * <p>
-     * This methods sets the StudioCompetitionPipelineInfo to the StudioCompetition
-     * </p>
-     *
-     * @param competition
-     *            the StudioCompetition
-     * @param pipelineInfo
-     *            the StudioCompetitionPipelineInfo
-     */
-    private void setStudioPipelineInfo(StudioCompetition competition, StudioCompetitionPipelineInfo pipelineInfo) {
-        setPipelineInfo(competition, pipelineInfo);
-
-        if (pipelineInfo.getResources() != null) {
-            competition.setResources(pipelineInfo.getResources().toArray(
-                    new com.topcoder.management.resource.Resource[0]));
-        }
-    }
-
-    /**
-     * <p>
      * This methods sets the SoftwareCompetitionPipelineInfo to the SoftwareCompetition
      * </p>
      *
@@ -874,125 +812,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         competition.setHasDependentCompetitions(pipelineInfo.getHasDependentCompetitions());
         competition.setWasReposted(pipelineInfo.getWasReposted());
         competition.setNotes(pipelineInfo.getNotes());
-    }
-
-    /**
-     * Gets the list of studio competition for the specified where clause.
-     *
-     * @param whereClause
-     *            the search criteria as where clause
-     *
-     * @return the list of studio competition for the specified where clause.
-     *
-     * @throws ContestPipelineServiceException
-     *             if any error occurs during retrieval of competitions.
-     */
-    @SuppressWarnings("unchecked")
-    private List<Competition> getStudioContests(String whereClause) throws ContestPipelineServiceException {
-        String queryStr = constructQuery(whereClause, CompetitionType.STUDIO);
-
-        logDebug("Query: " + queryStr);
-
-        EntityManager em = getStudioEntityManager();
-        Query query = em.createQuery(queryStr);
-
-        List<Competition> competitions = new ArrayList<Competition>();
-
-        //
-        // changed to retrieve from mock, as in current state persistence layer to retrieve pipeline info was not
-        // working.
-        // since: Pipeline Conversion Cockpit Integration Assembly 1 v1.0
-        //
-        //List<StudioCompetitionPipelineInfo> pipelineInfos = getMockStudioCompetitionPipelineInfo();
-        List<StudioCompetitionPipelineInfo> pipelineInfos = (List<StudioCompetitionPipelineInfo>) query.getResultList();
-
-        for (StudioCompetitionPipelineInfo pipelineInfo : pipelineInfos) {
-            StudioCompetition c = getContest(pipelineInfo.getContestId());
-
-            if (c == null) {
-                throw wrapContestPipelineServiceException("No studio competition found for pipeline info id: "
-                        + pipelineInfo.getPipelineInfoId());
-            }
-
-            setStudioPipelineInfo(c, pipelineInfo);
-            competitions.add(c);
-        }
-
-        return competitions;
-    }
-
-    /**
-     * <p>
-     * Gets the contest referenced by the specified ID.
-     * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to get details for.
-     *
-     * @return a <code>StudioCompetition</code> providing the data for the requested contest.
-     *
-     * @throws ContestPipelineServiceException
-     *             if some persistence errors occur.
-     */
-    private StudioCompetition getContest(long contestId) throws ContestPipelineServiceException {
-        try {
-            ContestData studioContest = this.studioService.getContest(contestId);
-            StudioCompetition competition = (StudioCompetition) convertToCompetition(CompetionType.STUDIO,
-                    studioContest);
-            competition.getContestData().setPayments(getContestPayments(contestId));
-
-            return competition;
-        } catch (Exception e) {
-            throw wrapContestPipelineServiceException(e, "Error in getting studio competition");
-        }
-    }
-
-    /**
-     * <p>
-     * Converts the specified <code>ContestData</code> instance to <code>ContestData</code> instance which could be
-     * passed from <code>Studio Service</code> to <code>Contest Service Facade</code>.
-     * </p>
-     *
-     * @param type
-     *            a <code>CompetionType</code> specifying the type of the contest.
-     * @param contestData
-     *            a <code>ContestData</code> instance to be converted.
-     *
-     * @return a <code>Competition</code> providing the converted data.
-     */
-    private Competition convertToCompetition(CompetionType type, ContestData contestData) {
-        if (type == CompetionType.STUDIO) {
-            StudioCompetition data = new StudioCompetition(contestData);
-            data.setAdminFee(contestData.getContestAdministrationFee());
-            data.setCompetitionId(contestData.getContestId());
-            data.setId(contestData.getContestId());
-            data.setStartTime(contestData.getLaunchDateAndTime());
-            data.setEndTime(calculateEndTime(contestData));
-            data.setProject(null); // Projects are not retrieved as for now
-            data.setType(type);
-
-            return data;
-        } else {
-            throw new IllegalArgumentWSException("Unsupported contest type", "Contest type is not supported: " + type);
-        }
-    }
-
-    /**
-     * <p>
-     * Calculates the end time for the specified contest.
-     * </p>
-     *
-     * @param contest
-     *            a <code>ContestData</code> representing the contest to calculate the end time for.
-     *
-     * @return an <code>XMLGregorianCalendar</code> providing the end time for the specified contest.
-     */
-    private XMLGregorianCalendar calculateEndTime(ContestData contest) {
-        Date startTime = getDate(contest.getLaunchDateAndTime());
-        double durationInHours = contest.getDurationInHours();
-        Date endTime = new Date(startTime.getTime() + (long) (durationInHours * 1000 * 60 * 60));
-
-        return getXMLGregorianCalendar(endTime);
     }
 
     /**
@@ -1041,24 +860,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
     }
 
     /**
-     * <p>
-     * Gets the contest payment referenced by specified contest ID.
-     * </p>
-     *
-     * @param contestId
-     *            a <code>long</code> providing the ID of a contest to get payment details for.
-     *
-     * @return a <code>ContestPaymentData</code> representing the contest payment matching the specified ID; or
-     *         <code>null</code> if there is no such contest.
-     *
-     * @throws PersistenceException
-     *             if any error occurs when getting contest.
-     */
-    private List<ContestPaymentData> getContestPayments(long contestId) throws Exception {
-        return this.studioService.getContestPayments(contestId);
-    }
-
-    /**
      * Constructs the SQL clause for searching contests.
      *
      * @param whereClause
@@ -1066,25 +867,17 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
      *
      * @return type CompetitionType instance
      */
-    private String constructQuery(String whereClause, CompetitionType type) {
+    private String constructQuery(String whereClause) {
         StringBuffer sb = new StringBuffer("SELECT ");
 
-        if (type.equals(CompetitionType.SOFTWARE)) {
-            sb.append("pinfo FROM SoftwareCompetitionPipelineInfo pinfo ");
-        } else if (type.equals(CompetitionType.STUDIO)) {
-            sb.append("pinfo FROM StudioCompetitionPipelineInfo pinfo ");
-        }
+        sb.append("pinfo FROM SoftwareCompetitionPipelineInfo pinfo ");
 
         if ((whereClause == null) || (whereClause.trim().length() == 0)) {
             return sb.toString();
         }
 
-        if (type.equals(CompetitionType.STUDIO)) {
-            sb.append(getStudioFromClause(whereClause));
-        } else if (type.equals(CompetitionType.SOFTWARE)) {
-            sb.append(getSoftwareFromClause(whereClause));
-        }
-
+        sb.append(getSoftwareFromClause(whereClause));
+        
         if (sb.indexOf("DateSearchCriteria") == -1) {
             sb.append(" WHERE ");
 
@@ -1108,32 +901,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
         }
 
         return "";
-    }
-
-    /**
-     * Format from clause.
-     *
-     * @param whereClause
-     *            the where clause from the criteria.
-     *
-     * @return the from clause
-     */
-    private String getStudioFromClause(String whereClause) {
-        StringBuffer sb = new StringBuffer();
-
-        if (whereClause.indexOf("resource.name") != -1) {
-            sb.append(", IN (pinfo.resources) AS resource ");
-        }
-
-        if (whereClause.indexOf("prize_contests") != -1) {
-            sb.append(", Prize prize, IN (prize.contests) AS prize_contests ");
-        }
-
-        if (whereClause.indexOf("contest.contestId") != -1) {
-            sb.append(", Contest contest ");
-        }
-
-        return sb.toString();
     }
 
     /**
@@ -1198,32 +965,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             return (EntityManager) obj;
         } catch (ClassCastException e) {
             throw wrapContestPipelineServiceException(e, "The jndi name for '" + softwareUnitName
-                    + "' should be EntityManager instance.");
-        }
-    }
-
-    /**
-     * <p>
-     * Returns the <code>EntityManager</code> looked up from the session context.
-     * </p>
-     *
-     * @return the EntityManager looked up from the session context
-     *
-     * @throws ContestManagementException
-     *             if fail to get the EntityManager from the sessionContext.
-     */
-    private EntityManager getStudioEntityManager() throws ContestPipelineServiceException {
-        try {
-            Object obj = sessionContext.lookup(studioUnitName);
-
-            if (obj == null) {
-                throw wrapContestPipelineServiceException("The object for jndi name '" + studioUnitName
-                        + "' doesn't exist.");
-            }
-
-            return (EntityManager) obj;
-        } catch (ClassCastException e) {
-            throw wrapContestPipelineServiceException(e, "The jndi name for '" + studioUnitName
                     + "' should be EntityManager instance.");
         }
     }
@@ -1414,27 +1155,6 @@ public class ContestPipelineServiceBean implements ContestPipelineServiceRemote,
             for (SoftwareCapacityData softwareCapacitydata : capacity) {
                 capacityData.add(new CapacityData(getXMLGregorianCalendar(softwareCapacitydata.getDate()),
                         softwareCapacitydata.getNumScheduledContests(), new ArrayList(softwareCapacitydata.getContests())));
-            }
-        }
-
-        return capacityData;
-    }
-
-    /**
-     * Private helper method that converts a list of studio capacity data objects into a list of capacity data objects.
-     *
-     * @param capacity the list of studio capacity data objects
-     * @return the converted list of capacity data objects or an empty list if the argument is null
-     *
-     * @since 1.1
-     */
-    private List<CapacityData> convertStudioCapacityDataToCapacityData(List<StudioCapacityData> capacity) {
-        List<CapacityData> capacityData = new ArrayList<CapacityData>();
-
-        if (capacity != null) {
-            for (StudioCapacityData studioCapacitydata : capacity) {
-                capacityData.add(new CapacityData(getXMLGregorianCalendar(studioCapacitydata.getDate()),
-                    studioCapacitydata.getNumScheduledContests(), new ArrayList(studioCapacitydata.getContests())));
             }
         }
 

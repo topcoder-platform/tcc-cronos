@@ -23,27 +23,9 @@
 				<env-entry-type>java.lang.String</env-entry-type>
 				<env-entry-value>persistence/softwarePipelinePersistenceUnit</env-entry-value>
 			</env-entry>
-			<env-entry>
-				<env-entry-name>studioUnitName</env-entry-name>
-				<env-entry-type>java.lang.String</env-entry-type>
-				<env-entry-value>persistence/studioPipelinePersistenceUnit</env-entry-value>
-			</env-entry>
-			
-
-			<ejb-ref>
-				<ejb-ref-name>ejb/StudioService</ejb-ref-name>
-				<ejb-ref-type>Session</ejb-ref-type>
-				<remote>com.topcoder.service.studio.StudioService</remote>
-			</ejb-ref>
-			
 			<persistence-context-ref>
 				<persistence-context-ref-name>persistence/softwarePipelinePersistenceUnit</persistence-context-ref-name>
 				<persistence-unit-name>softwarePipelinePersistenceUnit</persistence-unit-name>
-			</persistence-context-ref>
-			
-			<persistence-context-ref>
-				<persistence-context-ref-name>persistence/studioPipelinePersistenceUnit</persistence-context-ref-name>
-				<persistence-unit-name>studioPipelinePersistenceUnit</persistence-unit-name>
 			</persistence-context-ref>
 		</session>
 	</enterprise-beans>

@@ -8,7 +8,6 @@ import com.topcoder.service.pipeline.entities.CompetitionChangeHistory;
 import com.topcoder.service.pipeline.searchcriteria.ContestsSearchCriteria;
 import com.topcoder.service.pipeline.searchcriteria.DateSearchCriteria;
 import com.topcoder.service.project.Competition;
-import com.topcoder.service.studio.contest.ContestManagementException;
 
 import java.util.Date;
 import java.util.List;
@@ -76,22 +75,20 @@ public interface ContestPipelineService {
      * Search the date competition change history for the given contest and competition type.
      * </p>
      * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
      * @return List of CompetitionChangeHistory
      * @throws ContestPipelineServiceException fail to do the query
      */
-    List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId, CompetitionType competitionType)
+    List<CompetitionChangeHistory> getContestDateChangeHistory(long contestId)
         throws ContestPipelineServiceException;
     /**
      * <p>
      * Search the prize competition change history for the given contest and competition type.
      * </p>
      * @param contestId the contest id
-     * @param competitionType competition type, could be studio or software
      * @return List of CompetitionChangeHistory
      * @throws ContestPipelineServiceException fail to do the query
      */
-    List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId, CompetitionType competitionType)
+    List<CompetitionChangeHistory> getContestPrizeChangeHistory(long contestId)
         throws ContestPipelineServiceException;
 
     /**
