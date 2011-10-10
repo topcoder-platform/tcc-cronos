@@ -1,0 +1,25 @@
+step to run tests:
+
+0. Before running the test, please make sure the database you are using is clean; You can run "test_files/ClearDB.sql" to clear the database;
+
+1. Start informix and create a database (with option "WITH LOG"), then initialize the database with "test_files/project_management.sql".
+
+2. Modify connection setting in "test_files/config.xml" and "test_files/dbfactory.xml". Needn't to correct connection in "badPersistence.DBConnectionFactoryImpl" in "test_files/config.xml".
+
+3. Ant test.
+
+
+Changes Note:
+1. The following files are changed in version 1.2.1
+link/Helper.java
+AbstractInformixProjectPersistenceUnitTests.java
+InformixProjectPersistenceTest.java
+TestHelper.java
+
+2. The content of the following files are merged in version 1.2.1, base on these two projects.
+AbstractInformixProjectPersistence.java
+Helper.java
+DemoTest.java
+InformixProjectPersistenceTest.java
+InformixProjectPersistenceV11Test.java
+UnitTests.java
