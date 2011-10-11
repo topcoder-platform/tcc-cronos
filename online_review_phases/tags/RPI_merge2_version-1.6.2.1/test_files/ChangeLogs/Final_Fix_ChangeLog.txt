@@ -1,0 +1,307 @@
+Hi Reviewer,
+
+Here are the list of files that was changed and some details on what was changed.
+
+updated ./test_files/sqls/merge-all.sql
+	added the missing 'review.review_evaluation_id', fix error in "AggregationReviewPhaseHandler.java:319"
+	removed not null declaration in 'review_comment.evaluation_type_id'
+
+most of these configuration files in ./test_files/*.xml modified to fix some test error.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockProjectRoleTermsOfUse.java
+	class added as refer in ./test_files/failure/config.xml
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockUserTermsOfUse.java
+	class added as refer in ./test_files/failure/config.xml
+
+./test_files/failure/Failure.xml
+	add property 'EmailTemplateSource' from 1.6
+	it fix the error in com.cronos.onlinereview.phases.failuretests.AbstractPhaseHandlerFailureTest
+
+./test_files/failure/Phase_Handler.xml
+	add property 'EmailTemplateSource' from 1.6
+	it fix the error in com.cronos.onlinereview.phases.failuretests.AbstractPhaseHandlerFailureTest
+
+./test_files/failure/Post_Mortem_[1,2,3,4].xml
+	add property 'EmailTemplateSource' from 1.6
+
+./test_files/workdays_unittest.properties
+	this is a combination of property fields as used in Workday 1.0 and 1.1.0
+	used in com.cronos.onlinereview.phases.failuretests.AbstractPhaseHandlerFailureTest
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockConnection.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkAndThrowException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockPhaseManager.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockProjectManager.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockProjectRetrieval.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkGlobalException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockResourceManager.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkGlobalException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockResourcePersistence.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkGlobalException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockReviewManager.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkGlobalException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockScorecardManager.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkAndThrowException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockScreeningManager.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkAndThrowScreeningException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockUploadManager.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkAndThrowException.
+	add common codes into method checkAndThrowBuilderException.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockUploadPersistence.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkAndThrowException
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/mock/MockUserRetrieval.java
+	change Map into HashMap<T,T>
+	method that uses Map, now using HashMap<T,T>
+	add common codes into method checkAndThrowException
+
+src/java/main/com/cronos/onlinereview/phases/EmailOptions.java
+	merge the templateSource definition from 1.6.1.
+
+src/java/main/com/cronos/onlinereview/phases/AbstractPhaseHandler.java
+	merge the PROP_EMAIL_TEMPLATE_SOURCE definition from 1.6.1.
+	merge the JavaDoc sample Configuration to include property 'EmailTemplateSource' from 1.6.1
+	update method createEmailOptions() to use PROP_EMAIL_TEMPLATE_SOURCE
+
+src/java/main/com/cronos/onlinereview/phases/GenericAppealPhaseHandler.java
+	fix some check-style if's and cast warning.
+
+src/java/main/com/cronos/onlinereview/phases/ManagerHelper.java
+	fix check-style header line warning.
+
+src/java/main/com/cronos/onlinereview/phases/MilestoneScreeningPhaseHandler.java
+	add parameter tag for 'conn' in method putPhaseStartInfos.
+
+src/java/main/com/cronos/onlinereview/phases/PhasesHelper.java
+	fix check-style header line warning.
+	fix some check-style if's and cast warning.
+	add return and parameter tag for 'dependency' in method isDependenctMet.
+	removed unused parameter tag for 'detail' in method logPhaseHandlingException.
+
+src/java/main/com/cronos/onlinereview/phases/PrimaryReviewAppealsResponsePhaseHandler.java
+	fix some check-style if's and cast warning.
+	removed unused return tag in method calCommentType.
+
+src/java/main/com/cronos/onlinereview/phases/PrimaryReviewEvaluationPhaseHandler.java
+	fix check-style header line warning.
+	fix some check-style if's and cast warning.
+	add whitespace after the comma in method perform.
+	fix line longer than 120 in method updateScores.
+
+src/java/main/com/cronos/onlinereview/phases/ReviewPhaseHandler.java
+	fix line longer than 120 in method updateSubmissionScores.
+	add whitespace before and after the '=' in method updateSubmissionScores.
+
+src/java/main/com/cronos/onlinereview/phases/ReviewRegistrationPhaseHandler.java
+	fix some check-style warning about missing braces in if construct.
+
+src/java/main/com/cronos/onlinereview/phases/ScreeningPhaseHandler.java
+	fix line longer than 120 in field NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG.
+	add final modifier for field INDIVIDUAL_SCREENING_MSG, and NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG.
+
+src/java/main/com/cronos/onlinereview/phases/SecondaryReviewerReviewPhaseHandler.java
+	fix line longer than 120 in field DEFAULT_NAMESPACE.
+	fix line longer than 120 in method allReviewsDone, putPhaseStartInfoValues, updateSubmissionScores
+
+src/java/main/com/cronos/onlinereview/phases/SubmissionPhaseHandler.java
+	fix check-style header line warning.
+
+src/java/main/com/cronos/onlinereview/phases/lookup/NotificationTypeLookupUtility.java
+	add whitespace after the comma in field CACHED_PAIRS
+
+src/java/main/com/cronos/onlinereview/phases/lookup/PhaseTypeLookupUtility.java
+	add whitespace after the comma in field CACHED_PAIRS
+
+src/java/main/com/cronos/onlinereview/phases/lookup/ProjectInfoTypeLookupUtility.java
+	add whitespace after the comma in field CACHED_PAIRS
+
+src/java/main/com/cronos/onlinereview/phases/lookup/ResourceRoleLookupUtility.java
+	add whitespace after the comma in field CACHED_PAIRS
+
+src/java/main/com/cronos/onlinereview/phases/lookup/SubmissionStatusLookupUtility.java
+	add whitespace after the comma in field CACHED_PAIRS
+
+src/java/main/com/cronos/onlinereview/phases/lookup/UploadStatusLookupUtility.java
+	add whitespace after the comma in field CACHED_PAIRS
+
+src/java/main/com/cronos/onlinereview/phases/lookup/UploadTypeLookupUtility.java
+	add whitespace after the comma in field CACHED_PAIRS
+
+src/java/tests/com/cronos/onlinereview/phases/BaseTest.java
+	merged the field DOC_GENERATOR_CONFIG_FILE
+	update doConfig() to add DOC_GENERATOR_CONFIG_FILE into Configuration.
+
+add these files, came from online_review_phases_Review Process Improvements.rar;
+	./test_files/accuracy/Document_Manager.xml
+	./test_files/config/Document_Manager.xml
+	./test_files/failure/Document_Manager.xml
+	./test_files/stress/Document_Manager.xml
+
+src/java/tests/com/cronos/onlinereview/phases/SubmissionPhaseHandlerTest.java
+	update setUp() to add DOC_GENERATOR_CONFIG_FILE into Configuration.
+
+src/java/tests/com/cronos/onlinereview/phases/AbstractPhaseHandlerTest.java
+	merged the field DOC_GENERATOR_CONFIG_FILE
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/AbstractPhaseHandlerSubclass.java
+	Changed return type of canPerform() methods from boolean to OperationCheckResult.
+	update the JavaDoc.
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/SubmissionPhaseHandlerFailureTest.java
+	It is now more reliable to depend on member function that return value of type OperationCheckResult.
+	the following need to be check for its return value:
+	unit test in testCanPerform_Phase_UploadManagerError_UploadPersistenceException
+	unit test in testCanPerform_Phase_UploadManagerError_SearchBuilderException
+
+src/java/tests/com/cronos/onlinereview/phases/failuretests/ApprovalPhaseHandlerFailureTest.java
+	It is now more reliable to depend on member function that return value of type OperationCheckResult.
+	the following need to be check for its return value:
+	testCanPerform_Phase_OpenPhase_ResourceManagerError_SearchBuilderConfigurationException
+	testCanPerform_Phase_OpenPhase_ResourceManagerError_ResourcePersistenceException
+	testCanPerform_Phase_OpenPhase_ResourceManagerError_SearchBuilderException
+	testCanPerform_Phase_OpenPhase_ReviewManagerError_ReviewManagementException
+
+src/java/tests/com/cronos/onlinereview/phases/stresstests/StressBaseTest.java
+	add DOC_GENERATOR_CONFIG_FILE
+
+src/java/tests/com/cronos/onlinereview/phases/stresstests/FinalFixPhaseHandlerTest.java
+	updated HashMap<String, Object> in testSendEmailPhaseMapOfStringObject
+
+src/java/tests/com/cronos/onlinereview/phases/stresstests/FinalReviewPhaseHandlerTest.java
+	trap PhaseHandlingException cause by missing Configuration property.
+
+src/java/tests/com/cronos/onlinereview/phases/stresstests/AggregationPhaseHandlerTest.java
+	updated AggregationPhaseHandler instance variables on setUp and testPerform_stop.
+	trap PhaseHandlingException cause by missing Configuration property.
+
+src/java/tests/com/cronos/onlinereview/phases/stresstests/SpecificationSubmissionPhaseHandlerStressTest
+	updated runCanPerform() to return OperationCheckResult.isSuccess()
+
+//-------- from old ChangeLog.txt
+
+/**
+ * Changed files on this directory:
+ *
+ * ./src/java/main/com/cronos/onlinereview/phases
+ */
+MilestoneSubmissionPhaseHandler.java
+	comment unused import declaration
+
+PhasesHelper.java
+	added static PhaseHandlingException logPhaseHandlingException(Log, PhaseHandlingException, String, Long)
+    added static final String SECONDARY_REVIEWER_ROLE_NAME = "Secondary Reviewer";
+    added static final String SECONDARY_REVIEWER_REVIEW = "Secondary Reviewer Review";
+    added static final String PRIMARY_REVIEW_EVALUATOR_ROLE_NAME = "Primary Review Evaluator";
+
+GenericAppealPhaseHandler.java
+	boolean canPerform(Phase) change to OperationCheckResult canPerform(Phase)
+
+PrimaryReviewAppealsResponsePhaseHandler.java
+	boolean canPerform(Phase) change to OperationCheckResult canPerform(Phase)
+
+PrimaryReviewEvaluationPhaseHandler.java
+	boolean canPerform(Phase) change to OperationCheckResult canPerform(Phase)
+
+ReviewRegistrationPhaseHandler.java
+	boolean canPerform(Phase) change to OperationCheckResult canPerform(Phase)
+
+SecondaryReviewerReviewPhaseHandler.java
+	boolean canPerform(Phase) change to OperationCheckResult canPerform(Phase)
+	comment unused import declaration
+
+/**
+ * Changed files on this directory:
+ *
+ * ./src/java/tests/com/cronos/onlinereview/phases/failuretests/mock
+ */
+
+MockPhaseManager.java
+	boolean canStart(Phase) change to OperationCheckResult canStart(Phase),
+and boolean canEnd(Phase) change to OperationCheckResult canEnd(Phase).
+
+MockProjectManager.java
+	unimplemented methods added.
+
+MockResourceManager.java
+	unimplemented methods added.
+
+MockUploadManager.java
+	unimplemented methods added.
+
+MockUploadPersistence.java
+	unimplemented methods added.
+
+MockReviewManager.java
+	unimplemented methods added.
+
+MockConnection.java
+	made as an abstract class to avoid compile error under JDK1.6
+	unimplemented methods added.
+
+/**
+ * Changed files on this directory:
+ *
+ * ./src/java/tests/com/cronos/onlinereview/phases/failuretests
+ */
+
+AbstractPhaseHandlerFailureTest.java
+	Added definition of WORKDAYS_UNITEST_PROPERTIES for using non-deprecated DefaultWorkdays(),
+	and update method createPhase() to use WORKDAYS_UNITEST_PROPERTIES.
+
+AbstractPhaseHandlerSubclass.java
+	boolean canPerform(Phase) change to OperationCheckResult canPerform(Phase)
+
+TestDataFactory.java
+	added cast to Connection in method getMockConnection().
+
+/**
+ * Changed files on this directory:
+ *
+ * ./src/java/tests/com/cronos/onlinereview/phases/stresstests
+ */
+
+AppealsPhaseHandlerTest.java
+	added method evaluateOcr() to convert OperationCheckResult into boolean.
+	modify testCanPerformHandlerWithOpen() to use evaluateOcr().
+
+SpecificationReviewPhaseHandlerStressTest.java
+	updated runCanPerform() to return OperationCheckResult.isSuccess()
+
+SpecificationSubmissionPhaseHandlerStressTest.java
+	updated runCanPerform() to return OperationCheckResult.isSuccess()
+
+StressBaseTest.java
+	add definition for "DOC_GENERATOR_CONFIG_FILE"

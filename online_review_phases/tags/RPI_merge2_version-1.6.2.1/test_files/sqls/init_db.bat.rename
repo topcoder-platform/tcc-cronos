@@ -1,0 +1,28 @@
+@setlocal
+@echo off
+
+set LOG=1.log
+set DBF=online_review
+set CREATE=create database
+
+pushd .
+
+echo Creating %DBF% ...
+echo drop database %DBF% | dbaccess -                                
+echo drop database informix | dbaccess -                                
+echo %CREATE% %DBF% with log | dbaccess -                                
+echo %CREATE% informix with log | dbaccess -                                
+
+echo Inserting data for %DBF% ...
+djredir -o %LOG% -eo -i merge-all.sql dbaccess -                                
+
+echo Read log:%LOG% for %DBF%
+
+:exit
+popd
+
+set LOG=
+set DBF=
+set CREATE=
+@echo on
+@endlocal

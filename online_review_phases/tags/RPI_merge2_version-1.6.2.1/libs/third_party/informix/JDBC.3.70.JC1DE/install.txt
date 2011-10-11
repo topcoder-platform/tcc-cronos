@@ -1,0 +1,327 @@
+                              IBM Informix
+             Installation Notes for IBM Informix JDBC Driver
+
+3.70.JC1, October 2010
+
+This file contains instructions for installing and uninstalling IBM® Informix® 
+JDBC Driver 3.70.JC1.
+
+
+JDK REQUIREMENT
+_____________________________
+
+To use IBM Informix JDBC Driver Version 3.70.JC1, you must use a 
+JDK 1.6 or later package on your platform. 
+
+
+
+OBTAINING THE JDBC DRIVER
+_____________________________
+
+You can obtain the IBM Informix JDBC Driver from the IBM Informix JDBC Driver 
+product CD, from the JDBC directory of the IBM Informix product bundle CD, or 
+you can download the driver from 
+http://www.ibm.com/software/data/informix/tools/jdbc
+
+The CD or Web site download contain the following files:
+
+*  setup.jar
+*  doc/jdbcrel.htm
+*  doc/install.txt (this file)
+*  doc/patchinfo.htm
+
+The setup.jar file is the IBM Informix JDBC Driver installation program.
+
+The documentation directory, <dir>/doc, contains the release notes file in 
+HTML format. Refer to this document for any new information that is not 
+available in the manual.
+
+
+
+INSTALLING THE JDBC DRIVER
+_____________________________
+
+Prerequisites:
+
+If you downloaded the IBM Informix JDBC Driver as .zip file from the Web site, 
+unzip the file to a directory.
+
+If you are installing the driver from a CD, load the CD into the CD-ROM drive.
+
+If you are installing the driver as part of the Informix installation program,
+follow the steps in the IBM Installation Guide for your operating system.
+
+INSTALLING JDBC DRIVER IN GRAPHICAL OR CONSOLE MODE
+
+1. From a command prompt, start the installation program by using one of
+   the following commands:
+   *  To start in graphical mode:
+      java -jar <dir>/setup.jar install -i gui
+
+   *  To start in console mode: 
+      java -jar <dir>/setup.jar install -i console
+
+      Where <dir> is the location of the setup.jar file.
+
+      An installation log is available in your installation location, 
+      in a file called
+      IBM_Informix_JDBC_Driver_Version_3.70_InstallLog.log
+
+2. Read the license agreement and accept the terms. Respond to the
+   prompts as the installation guides you.
+
+3. When prompted, accept the default directory or specify a different
+   directory.
+
+   On Windows, the default directory is:    
+
+   C:\Program Files\IBM\Informix_JDBC_Driver
+
+   
+4. When prompted, verify the location of the installation path.
+
+   The installer installs the JDBC driver and notifies you that an
+   uninstaller is being added to the installation directory.
+
+   Note: If the installation stalls when connected to an NFS-mounted file 
+         system, you should first try resolving NFS issues. In some cases, 
+         unmounting and remounting the share can resolve the issue. Otherwise,
+         forcefully terminate the installation, clean up any orphaned 
+         processes, and restart the installation.
+
+5. Specify Finish when you see this message: 
+   InstallShield Wizard has successfully installed IBM Informix JDBC Driver.
+   
+
+INSTALLING INFORMIX JDBC DRIVER IN SILENT MODE
+
+From a command prompt, run the following command:
+
+java -jar <dir>/setup.jar install -i silent 
+     -DUSER_INSTALL_DIR=<destination-dir> -DLICENSE_ACCEPTED=TRUE
+
+Where:
+
+<dir> is the location of setup.jar file.
+
+<destination-dir> is the directory where you want to install the JDBC Driver.
+
+The installation is complete when the command has finished executing.
+
+An installation log is available in your installation location, in a file 
+called IBM_Informix_JDBC_Driver_Version_3.70_InstallLog.log
+
+
+UNINSTALLING THE JDBC DRIVER
+_____________________________
+
+When you install IBM Informix JDBC Driver, an uninstall application is added 
+to the directory where you installed the JDBC Driver. Uninstalling IBM 
+Informix JDBC Driver completely removes the driver and all of its components 
+from your computer.
+
+The following section describes how to uninstall IBM Informix JDBC Driver on 
+all platforms.
+
+Tip: If the <destination-dir> in which you installed the IBM Informix JDBC 
+     Driver includes spaces in its pathname, enclose the entire pathname in 
+     quotation marks when executing the uninstall command.
+      
+
+
+UNINSTALLING IN GRAPHICAL OR CONSOLE MODE
+
+If you installed the Informix JDBC driver by using the Informix installation
+program, you must use run the uninstall executable program that was
+added to your computer when the driver was installed. Refer to the 
+Informix JDBC Programmer's Guide for the specific steps to uninstall 
+the driver.
+
+If you installed the Informix JDBC driver separately from other Informix
+programs, run one of the following commands to start the uninstall program. 
+The <destination-dir> is the directory in which you installed the IBM Informix 
+JDBC Driver:
+
+To uninstall in graphical mode:
+
+java -jar <destination-dir>/uninstall/uninstall_jdbc/uninstaller.jar -i gui
+
+
+To uninstall in console mode:
+
+java -jar <destination-dir>/uninstall/uninstall_jdbc/uninstaller.jar -i console
+
+
+Follow the prompts to uninstall the JDBC driver.
+
+
+
+UNINSTALLING IN SILENT MODE
+
+Run the following command to start the uninstall program in silent mode, where 
+<destination-dir> is the directory in which you installed the IBM Informix 
+JDBC Driver:
+
+
+java -jar <destination-dir>/uninstall/uninstall_jdbc/uninstaller.jar -silent
+
+The Uninstall program does not send you any messages but uninstalls the driver 
+in silent mode.
+
+_____________________________
+
+CONTACT SUPPORT: 
+http://www.ibm.com/software/data/informix/ids/support/
+
+_____________________________
+
+NOTICES:
+This information was developed for products and services offered in the U.S.A.
+
+IBM® may not offer the products, services, or features discussed in this 
+document in other countries. Consult your local IBM representative for 
+information on the products and services currently available in your area. 
+Any reference to an IBM product, program, or service is not intended to state 
+or imply that only that IBM product, program, or service may be used. Any 
+functionally equivalent product, program, or service that does not infringe 
+any IBM intellectual property right may be used instead. However, it is the 
+user's responsibility to evaluate and verify the operation of any non-IBM 
+product, program, or service. IBM may have patents or pending patent 
+applications covering subject matter described in this document. The furnishing
+of this document does not grant you any license to 
+these patents. You can send license inquiries, in writing, to:
+
+IBM Director of Licensing
+IBM Corporation
+North Castle Drive
+Armonk, NY 10504-1785
+U.S.A.
+For license inquiries regarding double-byte (DBCS) information, contact the 
+IBM Intellectual Property Department in your country or send inquiries, 
+in writing, to:
+
+Intellectual Property Licensing
+Legal and Intellectual Property Law
+IBM Japan Ltd.
+1623-14, Shimotsuruma, Yamato-shi
+Kanagawa 242-8502 Japan
+
+The following paragraph does not apply to the United Kingdom or any other country 
+where such provisions are inconsistent with local law: 
+
+INTERNATIONAL BUSINESS MACHINES CORPORATION PROVIDES THIS PUBLICATION "AS IS" 
+WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT 
+LIMITED TO, THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY OR 
+FITNESS FOR A PARTICULAR PURPOSE. Some states do not allow disclaimer of 
+express or implied warranties in certain transactions, therefore, this 
+statement may not apply to you.
+
+This information could include technical inaccuracies or typographical errors. 
+Changes are periodically made to the information herein; these changes will 
+be incorporated in new editions of the publication. IBM may make 
+improvements and/or changes in the product(s) and/or the program(s) described 
+in this publication at any time without notice.
+
+Any references in this information to non-IBM Web sites are provided for 
+convenience only and do not in any manner serve as an endorsement of those Web 
+sites. The materials at those Web sites are not part of the materials 
+for this IBM product and use of those Web sites is at your own risk.
+
+IBM may use or distribute any of the information you supply in any way it 
+believes appropriate without incurring any obligation to you. Licensees of this
+program who wish to have information about it for the purpose of enabling: 
+(i) the exchange of information between independently created programs and 
+other programs (including this one) and (ii) the mutual use of the information 
+which has been exchanged, should contact:
+
+IBM Corporation
+J46A/G4
+555 Bailey Avenue
+San Jose, CA 95141-1003
+U.S.A.
+
+Such information may be available, subject to appropriate terms and conditions, 
+including in some cases, payment of a fee.
+
+The licensed program described in this document and all licensed material 
+available for it are provided by IBM under terms of the IBM Customer Agreement, 
+IBM International Program License Agreement or any equivalent agreement between
+us.
+
+Any performance data contained herein was determined in a controlled 
+environment. Therefore, the results obtained in other operating environments 
+may vary significantly. Some measurements may have been made on 
+development-level systems and there is no guarantee that these measurements 
+will be the same on generally available systems. Furthermore, some measurements
+may have been estimated through extrapolation. Actual results may vary. 
+Users of this document should verify the applicable data for their specific 
+environment.
+
+Information concerning non-IBM products was obtained from the suppliers of 
+those products, their published announcements or other publicly available 
+sources. IBM has not tested those products and cannot confirm the accuracy of
+performance, compatibility or any other claims related to non-IBM products. 
+Questions on the capabilities of non-IBM products should be addressed to the 
+suppliers of those products.
+
+All statements regarding IBM's future direction or intent are subject to 
+change or withdrawal without notice, and represent goals and objectives only.
+
+All IBM prices shown are IBM's suggested retail prices, are current and are 
+subject to change without notice. Dealer prices may vary.
+
+This information is for planning purposes only. The information herein is 
+subject to change before the products described become available.
+
+This information contains examples of data and reports used in daily business 
+operations. To illustrate them as completely as possible, the examples 
+include the names of individuals, companies, brands, and products. All of 
+these names are fictitious and any similarity to the names and addresses 
+used by an actual business enterprise is entirely coincidental.
+
+COPYRIGHT LICENSE:
+
+This information contains sample application programs in source language, which 
+illustrate programming techniques on various operating platforms. You may copy,
+modify, and distribute these sample programs in any form without payment to 
+IBM, for the purposes of developing, using, marketing or distributing 
+application programs conforming to the application programming interface for 
+the operating platform for which the sample programs are written. 
+These examples have not been thoroughly tested under all conditions. IBM, 
+therefore, cannot guarantee or imply reliability, serviceability, or function
+of these programs. The sample programs are provided "AS IS", without warranty
+of any kind. IBM shall not be liable for any damages arising out of your use 
+of the sample programs.
+
+Each copy or any portion of these sample programs or any derivative work, must 
+include a copyright notice as follows:
+
+© (your company name) (year). Portions of this code are derived from IBM Corp. 
+Sample Programs.
+
+© Copyright IBM Corp. _enter the year or years_. All rights reserved.
+
+If you are viewing this information softcopy, the photographs and color 
+illustrations may not appear.
+
+_____________________________
+
+TRADEMARKS:
+
+IBM, the IBM logo, and ibm.com® are trademarks or registered trademarks of 
+International Business Machines Corp., registered in many jurisdictions 
+worldwide. Other product and service names might be trademarks of IBM or other
+companies. A current list of IBM trademarks is available on the Web at 
+“Copyright and trademark information” at
+
+http://www.ibm.com/legal/copytrade.shtml.
+
+Java™ and all Java-based trademarks are trademarks of Sun Microsystems, Inc. 
+in the United States, other countries, or both.
+
+Other company, product, or service names may be trademarks or service marks of
+others.
+
+Contact support: http://www.ibm.com/software/data/informix/ids/support/
+
+© Copyright IBM Corp. 1996, 2010

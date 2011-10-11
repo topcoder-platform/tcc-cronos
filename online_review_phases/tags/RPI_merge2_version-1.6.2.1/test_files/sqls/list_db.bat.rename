@@ -1,0 +1,24 @@
+@setlocal
+@echo off
+
+set LOG=db_ids.log
+set DBF=online_review
+set CREATE=create database
+
+pushd .
+
+echo Opening %DBF% ...
+
+echo Inserting data for %DBF% ...
+djredir -o %LOG% -eo -i .\data\list_ids.sql dbaccess -                                
+
+echo Read log:%LOG% for %DBF%
+
+:exit
+popd
+
+set LOG=
+set DBF=
+set CREATE=
+@echo on
+@endlocal

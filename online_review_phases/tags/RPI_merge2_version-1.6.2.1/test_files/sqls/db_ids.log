@@ -1,0 +1,142 @@
+
+Database selected.
+
+
+
+
+name              resource_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              notification_type_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              resource_role_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              project_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              project_audit_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              file_type_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              prize_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              studio_spec_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              review_application_id_seq
+next_block_start  20
+block_size        20
+exhausted         0
+
+name              phase_id_seq
+next_block_start  1000
+block_size        1
+exhausted         0
+
+name              upload_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              upload_type_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              upload_status_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              submission_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              submission_status_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              scorecard_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              scorecard_group_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              scorecard_section_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              scorecard_question_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              screening_task_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              screening_result_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              review_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              review_item_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              review_comment_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              review_item_comment_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+name              submission_type_id_seq
+next_block_start  1
+block_size        1
+exhausted         0
+
+26 row(s) retrieved.
+
+
+Database closed.
+
+

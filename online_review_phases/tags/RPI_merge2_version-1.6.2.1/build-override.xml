@@ -1,0 +1,68 @@
+<project name="Extended target" basedir=".">
+
+	<property name="informix.prop.file" value="test_files/informix.properties"/>
+
+	<!-- Accuracy test configuration -->
+	<property name="accuracy.factory.source" value="conf/accuracy_DB_Factory.xml"/>
+	<property name="accuracy.factory.target" value="test_files/accuracy/ConnectionFactory.xml"/>
+
+	<property name="accuracy.user.source" value="conf/accuracy_User_Project_Data_Store.xml"/>
+	<property name="accuracy.user.target" value="test_files/accuracy/UserProjectDataStore.xml"/>
+
+	<!-- Config test configuration -->
+	<property name="config.factory.source" value="conf/config_DB_Factory.xml"/>
+	<property name="config.factory.target" value="test_files/config/DB_Factory.xml"/>
+
+	<property name="config.user.source" value="conf/config_User_Project_Data_Store.xml"/>
+	<property name="config.user.target" value="test_files/config/User_Project_Data_Store.xml"/>
+
+	<!-- Failure test configuration -->
+	<property name="failure.factory.source" value="conf/failure_DB_Factory.xml"/>
+	<property name="failure.factory.target" value="test_files/failure/DB_Factory.xml"/>
+
+	<property name="failure.user.source" value="conf/failure_User_Project_Data_Store.xml"/>
+	<property name="failure.user.target" value="test_files/failure/User_Project_Data_Store.xml"/>
+
+	<property name="failure.config.source" value="conf/failure_Config.xml"/>
+	<property name="failure.config.target" value="test_files/failure/config.xml"/>
+
+	<!-- Stress test configuration -->
+	<property name="stress.factory.source" value="conf/stress_DB_Factory.xml"/>
+	<property name="stress.factory.target" value="test_files/stress/DB_Factory.xml"/>
+
+	<property name="stress.user.source" value="conf/stress_User_Project_Data_Store.xml"/>
+	<property name="stress.user.target" value="test_files/stress/User_Project_Data_Store.xml"/>
+
+	<macrodef name="setupdbconfig">
+        <attribute name="source" />
+        <attribute name="target" />
+        <sequential>
+            <copy tofile="@{target}" file="@{source}" overwrite="true" />
+            <replace file="@{target}" propertyFile="${informix.prop.file}">
+                <replacefilter token="@IFXDRIVER@" property="jdbc.Driver" />
+                <replacefilter token="@USERNAME@" property="jdbc.username" />
+                <replacefilter token="@PASSWORD@" property="jdbc.password" />
+                <replacefilter token="@DOMAIN@" property="jdbc.ip" />
+                <replacefilter token="@PORT@" property="jdbc.port" />
+                <replacefilter token="@DATABASE@" property="jdbc.database" />
+                <replacefilter token="@SERVERNAME@" property="jdbc.server" />
+            </replace>
+        </sequential>
+	</macrodef>
+
+	<target name="update-config">
+		<!-- Config -->
+		<setupdbconfig source="${config.factory.source}" target="${config.factory.target}" />
+		<setupdbconfig source="${config.user.source}" target="${config.user.target}" />
+		<!-- Failure -->
+		<setupdbconfig source="${failure.factory.source}" target="${failure.factory.target}" />
+		<setupdbconfig source="${failure.user.source}" target="${failure.user.target}" />
+		<setupdbconfig source="${failure.config.source}" target="${failure.config.target}" />
+		<!-- Stress -->
+		<setupdbconfig source="${stress.factory.source}" target="${stress.factory.target}" />
+		<setupdbconfig source="${stress.user.source}" target="${stress.user.target}" />
+		<!-- Accuracy -->
+		<setupdbconfig source="${accuracy.factory.source}" target="${accuracy.factory.target}" />
+		<setupdbconfig source="${accuracy.user.source}" target="${accuracy.user.target}" />
+	</target>
+</project>
