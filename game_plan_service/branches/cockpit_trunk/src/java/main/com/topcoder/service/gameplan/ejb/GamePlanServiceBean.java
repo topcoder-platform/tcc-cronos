@@ -111,12 +111,12 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             + "pcl.name as project_type,"
             + "(SELECT COUNT(lpx.dest_project_id) FROM linked_project_xref lpx"
             + "    WHERE lpx.source_project_id = p.project_id AND lpx.link_type_id = 5) "
-            + "FROM user_permission_grant upg, project p"
+            + "FROM project p"
             + "  INNER JOIN tc_direct_project tcd ON tcd.project_id = p.tc_direct_project_id"
             + "  LEFT OUTER JOIN project_status_lu psl ON psl.project_status_id = p.project_status_id"
             + "  LEFT OUTER JOIN project_category_lu pcl ON pcl.project_category_id = p.project_category_id "
-            + "WHERE p.project_status_id != 3 AND p.project_category_id != 27  "
-            + " and tcd.project_id = upg.resource_id  and upg.permission_type_id in (1,2,3 ) ";
+            + "WHERE p.project_status_id != 3 AND p.project_category_id != 27  ";
+
 
     /**
      * Represents the sql for retrieving IDs of dependency projects.
@@ -133,6 +133,19 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
      */
     private static final String RETRIEVE_DIRECT_PROJECT_SQL =
             "SELECT project_id, name FROM user_permission_grant upg, tc_direct_project WHERE upg.resource_id = project_id and  upg.permission_type_id in (1,2,3 ) ";
+
+    private static final String PERMISSION_CHECKING = " AND (exists (select u.user_id  "
+                                                 + "    from user as u "
+                                                 + "    join user_role_xref as uref  "
+                                                 + "       on u.user_id = :userId "
+                                                 + "       and u.user_id = uref.login_id  "
+                                                 + "    join security_roles as sr  "
+                                                  + "      on uref.role_id = sr.role_id  "
+                                                  + "      and sr.description in ('TC Staff')) "
+                                                 + "   OR exists (select permission_type_id  "
+                                                 + "          from user_permission_grant as upg    "
+                                                 + "         where resource_id=p.tc_direct_project_id and permission_type_id in (1,2,3)  "
+                                                 + "          and upg.user_id = :userId  )) ";
 
     /**
      * Represents the name for active status.
@@ -268,8 +281,9 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
                                     + "]", end - start));
 
             return tcDirectProjectGamePlanData;
-        } catch (GamePlanPersistenceException e) {
-            throw logException(e);
+        } catch (Exception e) {
+            logException(e);
+            throw new GamePlanPersistenceException(e.getMessage(), e);
         }
     }
 
@@ -284,7 +298,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
             throw logException(new IllegalArgumentException("The tcSubject should not be null."));
         }
 
-        // checks whether the current user is an admin
+/*        // checks whether the current user is an admin
         boolean isAdmin = false;
         Set<TCPrincipal> roles = tcSubject.getPrincipals();
 
@@ -304,7 +318,9 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
         if (!isAdmin) {
             userId = tcSubject.getUserId();
         }
-        return userId;
+        return userId; */
+
+        return tcSubject.getUserId();
     }
 
     /**
@@ -414,7 +430,7 @@ public class GamePlanServiceBean implements GamePlanServiceLocal, GamePlanServic
 
         String queryStr = RETRIEVE_SOFTWARE_PROJECT_DATA;
         if (userId != null) {
-            queryStr += " AND upg.user_id = :userId";
+            queryStr += PERMISSION_CHECKING;
         }
 
         if (directProjectId != null) {
