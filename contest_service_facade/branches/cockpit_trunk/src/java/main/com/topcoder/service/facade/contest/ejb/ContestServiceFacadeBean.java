@@ -1554,10 +1554,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
                 // milestone prizes
+		 	if (competition.getProjectHeader().getPrizes() != null && competition.getProjectHeader().getPrizes().size() > 0) {
                 for (Prize prize : competition.getProjectHeader().getPrizes()) {
                     if (prize.getPrizeType().getId() == MILESTONE_PRIZE_TYPE_ID) {
                         totalFee += prize.getPrizeAmount() * prize.getNumberOfSubmissions();
                     }
+		   	}
                 }
             } else {
                 // studio competition
@@ -5933,6 +5935,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     addNotification = Boolean.parseBoolean(preferences.get(GLOBAL_TIMELINE_NOTIFICATION));
                     addForumWatch = Boolean.parseBoolean(preferences.get(GLOBAL_FORUM_WATCH));
                     
+                    // grant user to project level forum 
+                    ProjectData cockpitProj = projectService.getProject(tcSubject, permission.getProjectId());
+                    if (cockpitProj.getForumCategoryId() != null && !cockpitProj.getForumCategoryId().equals(""))
+                    {
+                        Long projForumId = Long.parseLong(cockpitProj.getForumCategoryId());
+                         createSoftwareForumWatchAndRole(projForumId, permission.getUserId(), addForumWatch);
+
+                    }
                     List<Long> projectIds = projectServices
                             .getProjectIdByTcDirectProject(permission
                                     .getProjectId());
@@ -5953,6 +5963,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     }
 
                     if (toDelete != null) {
+
+                        // remove user to project level forum 
+                        ProjectData cockpitProj = projectService.getProject(tcSubject, permission.getProjectId());
+                        if (cockpitProj.getForumCategoryId() != null && !cockpitProj.getForumCategoryId().equals(""))
+                        {
+                            Long projForumId = Long.parseLong(cockpitProj.getForumCategoryId());
+                            deleteSoftwareForumWatchAndRole(projForumId, permission.getUserId());
+
+                        }
+
                         List<Long> projectIds = projectServices
                                 .getProjectIdByTcDirectProject(permission
                                         .getProjectId());
