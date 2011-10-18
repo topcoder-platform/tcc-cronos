@@ -63,6 +63,7 @@ import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectSpec;
 import com.topcoder.management.project.ProjectStatus;
+import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.ProjectStudioSpecification;
 import com.topcoder.management.project.Prize;
@@ -1455,10 +1456,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 asset.setTechnologies(new ArrayList<Technology>());
                 asset.setShortDescription("NA");
                 asset.setDetailedDescription("NA");
-                Category root = getDefaultRootCategory();
-                asset.setRootCategory(root);
-                asset.setCategories(new ArrayList<Category>());
-                asset.getCategories().add(getDefaultCategory(root));
+                
                 
                 // create with nextAvailableStartDate, name, project category etc
                 SoftwareCompetition comp = new SoftwareCompetition();
@@ -1562,6 +1560,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
 
                 }
+
+                Category root = getDefaultRootCategory(projectHeader.getProjectCategory());
+                asset.setRootCategory(root);
+                asset.setCategories(new ArrayList<Category>());
+                asset.getCategories().add(getDefaultCategory(root, projectHeader.getProjectCategory()));
                 
 
                 // get capacity full dates
@@ -3574,14 +3577,24 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         }
     }
 
-    private Category getDefaultRootCategory() throws LiquidPortalServiceException
+    private Category getDefaultRootCategory(ProjectCategory type) throws LiquidPortalServiceException
     {
         try
         {
             List<Category> cats = catalogService.getActiveCategories();
             for (Category cat : cats )
             {
-                if (cat.getParentCategory() == null && cat.getName().equals("Not Set"))
+                if (type.getProjectType().getId() == ProjectType.COMPONENT.getId() && cat.getParentCategory() == null && cat.getName().equals("Not Set"))
+                {
+                    return cat;
+                }
+
+                else if (type.getProjectType().getId() == ProjectType.STUDIO.getId() && cat.getParentCategory() == null && cat.getName().equals("Studio"))
+                {
+                    return cat;
+                }
+
+                else if (type.getProjectType().getId() == ProjectType.APPLICATION.getId() && cat.getParentCategory() == null && cat.getName().equals("Application"))
                 {
                     return cat;
                 }
@@ -3594,7 +3607,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
         return null;
     }
 
-    private Category getDefaultCategory(Category parent) throws LiquidPortalServiceException
+    private Category getDefaultCategory(Category parent, ProjectCategory type) throws LiquidPortalServiceException
     {
         try
         {
@@ -3604,7 +3617,22 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             {
                 if (cat.getParentCategory() != null 
                         && cat.getParentCategory().getId() == parent.getId()
+                        && type.getProjectType().getId() == ProjectType.COMPONENT.getId()
                         && cat.getName().equals("Not Set"))
+                {
+                    return cat;
+                }
+                else if (cat.getParentCategory() != null 
+                        && cat.getParentCategory().getId() == parent.getId()
+                        && type.getProjectType().getId() == ProjectType.APPLICATION.getId()
+                        && cat.getName().equals("Business Layer"))
+                {
+                    return cat;
+                }
+                 else if (cat.getParentCategory() != null 
+                        && cat.getParentCategory().getId() == parent.getId()
+                        && type.getProjectType().getId() == ProjectType.STUDIO.getId()
+                        && cat.getName().equals("Studio"))
                 {
                     return cat;
                 }
