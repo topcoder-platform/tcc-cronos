@@ -278,4 +278,22 @@ public interface UserService {
      */
     public List<User> searchUser(String key) throws UserServiceException;
 
+     /**
+     * Check if user has agreed term
+     *
+     * @param handle
+     *            the user handle
+     * @param termsId
+     *            the ID of the term agreed by the user
+     * @return boolean
+     *
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, or if <code>termsId</code> is non-positive
+     * @throws UserServiceException
+     *             if the association already exists, the user cannot be found in the DB, or if the given term
+     *             does not exist in the DB
+     * @since 1.1
+     */
+    public boolean checkUserTerm(long userId, long termsId) throws UserServiceException;
+
 }
