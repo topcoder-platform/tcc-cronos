@@ -1190,6 +1190,62 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
         }
     }
 
+
+     /**
+     * Check if user has agreed term
+     *
+     * @param handle
+     *            the user handle
+     * @param termsId
+     *            the ID of the term agreed by the user
+     * @return boolean
+     *
+     * @throws IllegalArgumentException
+     *             if <code>handle</code> is null or empty, or if <code>termsId</code> is non-positive
+     * @throws UserServiceException
+     *             if the association already exists, the user cannot be found in the DB, or if the given term
+     *             does not exist in the DB
+     * @since 1.1
+     */
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+    public boolean checkUserTerm(long userId, long termsId) throws UserServiceException {
+
+        logEnter("checkUserTerm(String,long)");
+        logParameters(userId, termsId);
+
+        try {
+           
+            Helper.checkNonPositive(logger, termsId, "termsId");
+
+            //long userId = getUserId(handle);
+
+            EntityManager em = getEntityManager();
+
+            // First check if the association already exist
+            Query query1 = em.createNativeQuery(
+                    "select terms_of_use_id from user_terms_of_use_xref "
+                    + "where user_id  = :userId and terms_of_use_id = :termsId");
+
+            query1.setParameter("userId", userId);
+            query1.setParameter("termsId", termsId);
+
+            if (query1.getResultList().isEmpty()) {
+                return false;
+            }
+            else {
+                return true;
+            }
+
+            
+
+        } catch (PersistenceException e) {
+            throw wrapUserServiceException(e,
+                    "A persitence error occurred in checkUserTerm");
+        } finally {
+            logExit("checkUserTerm(String,long)");
+        }
+    }
+
     /**
      * <p>
      * Returns the <code>EntityManager</code> looked up from the session context.
