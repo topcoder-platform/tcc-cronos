@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.text.DecimalFormat;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
@@ -2028,25 +2029,22 @@ final class PhasesHelper {
         long projectId, boolean appealPhase) throws PhaseHandlingException {
         // get the submissions
         Submission[] submissions = null;
-
-        try {
-            // changes in version 1.4
-            submissions = PhasesHelper.searchActiveSubmissions(helper.getUploadManager(), conn,
-                projectId, CONTEST_SUBMISSION_TYPE);
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+ 
+         // changes in version 1.4
+         submissions = PhasesHelper.searchActiveSubmissions(helper.getUploadManager(), conn,
+             projectId, CONTEST_SUBMISSION_TYPE);
 
         // for each submission, get the submitter and its scores
         try {
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+			DecimalFormat df = new DecimalFormat("#.##");
 
             for (Submission submission : submissions) {
                 Map<String, Object> values = new HashMap<String, Object>();
                 values.put("SUBMITTER_HANDLE", notNullValue(helper.getResourceManager().getResource(
                     submission.getUpload().getOwner()).getProperty("Handle")));
-                values.put(appealPhase ? "SUBMITTER_SCORE" : "SUBMITTER_PRE_APPEALS_SCORE", submission
-                    .getInitialScore());
+                values.put(appealPhase ? "SUBMITTER_SCORE" : "SUBMITTER_PRE_APPEALS_SCORE",
+                    df.format(submission.getInitialScore()));
                 result.add(values);
             }
 
@@ -2087,7 +2085,9 @@ final class PhasesHelper {
                     values.put("SUBMITTER_RELIABILITY", notNullValue(submitter.getProperty("Reliability")));
                     values.put("SUBMITTER_RATING", notNullValue(submitter.getProperty("Rating")));
                 } else {
-                    values.put("SUBMITTER_SCORE", notNullValue(submission.getScreeningScore()));
+                    Double initialScore = submission.getScreeningScore();
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    values.put("SUBMITTER_SCORE", initialScore != null ? df.format(initialScore) : notNullValue(initialScore));
 
                     boolean failedScreening = false;
                     if (submission.getSubmissionStatus() != null) {
@@ -2095,7 +2095,7 @@ final class PhasesHelper {
                         failedScreening = statusName.equalsIgnoreCase("Failed Screening") ||
                             statusName.equalsIgnoreCase("Failed Milestone Screening");
                     }
-                    values.put("SUBMITTER_RESULT", failedScreening ? "Failed Screening": "Pass Screening");
+                    values.put("SUBMITTER_RESULT", failedScreening ? "Failed Screening": "Passed Screening");
                 }
 
                 result.add(values);

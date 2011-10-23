@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.DecimalFormat;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
@@ -325,11 +326,12 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
 
             // add the submission result to the values map
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+            DecimalFormat df = new DecimalFormat("#.##");
             for (Submission sub : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
                 Resource submitt = getManagerHelper().getResourceManager().getResource(sub.getUpload().getOwner());
                 infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(submitt.getProperty(PhasesHelper.HANDLE)));
-                infos.put("SUBMITTER_SCORE", sub.getInitialScore());
+                infos.put("SUBMITTER_SCORE", df.format(sub.getInitialScore()));
                 result.add(infos);
             }
             values.put("SUBMITTER", result);

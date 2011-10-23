@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.DecimalFormat;
 
 import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.deliverable.Submission;
@@ -363,12 +364,13 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 false, true, isStudioProject || appealsResponsePhase == null);
 
             // add the submission result to the values map
+			DecimalFormat df = new DecimalFormat("#.##");
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
             for (Submission sub : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
                 Resource submitter = getManagerHelper().getResourceManager().getResource(sub.getUpload().getOwner());
                 infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(submitter.getProperty(PhasesHelper.HANDLE)));
-                infos.put("SUBMITTER_SCORE", sub.getInitialScore());
+                infos.put("SUBMITTER_SCORE", df.format(sub.getInitialScore()));
                 result.add(infos);
             }
             values.put("SUBMITTER", result);

@@ -26,10 +26,13 @@ import com.topcoder.project.phases.Phase;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.DecimalFormat;
 
 /**
  * <p>
@@ -336,14 +339,22 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), conn, reviewPhase,
                 operator, false, false, true);
 
-            // for each submission, get the submitter and its scores
+            // Order submissions by placement for the notification messages
+            Arrays.sort(subs, new Comparator<Submission>() { 
+                public int compare(Submission sub1, Submission sub2) {
+                   return (int) (sub1.getPlacement() - sub2.getPlacement());
+                } 
+            });
+
+            // For each submission, get the submitter and its scores
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+            DecimalFormat df = new DecimalFormat("#.##");
             for (Submission submission : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
                 Resource submitter = getManagerHelper().getResourceManager().getResource(submission.getUpload().getOwner());
                 infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(submitter.getProperty(PhasesHelper.HANDLE)));
-                infos.put("SUBMITTER_PRE_APPEALS_SCORE", submission.getInitialScore());
-                infos.put("SUBMITTER_POST_APPEALS_SCORE", submission.getFinalScore());
+                infos.put("SUBMITTER_PRE_APPEALS_SCORE", df.format(submission.getInitialScore()));
+                infos.put("SUBMITTER_POST_APPEALS_SCORE", df.format(submission.getFinalScore()));
                 infos.put("SUBMITTER_RESULT", submission.getPlacement());
                 result.add(infos);
             }
