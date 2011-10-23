@@ -52,8 +52,16 @@ import java.util.Random;
 /**
  * <p>Generator for single project data.</p>
  * 
+ * <p>
+ * Version 1.1 Change notes:
+ *   <ol>
+ *     <li>Updated {@link #generateProject()} method to set completion timestamps for completed, deleted and cancelled
+ *     contests.</li>
+ *   </ol>
+ * </p>
+ * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class ProjectDataGenerator {
 
@@ -1067,6 +1075,36 @@ public class ProjectDataGenerator {
             
             approver.setReviews(new Review[] {approval});
         }
+        
+        // Completion date
+        Long lastPhaseEndTimeOffset = null;
+        if ((projectStatus == ProjectStatus.COMPLETED) 
+            || (projectStatus == ProjectStatus.CANCELLED_CLIENT_REQUEST)
+            || (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW)
+            || (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW)
+            || (projectStatus == ProjectStatus.CANCELLED_FAILED_SCREENING)
+            || (projectStatus == ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE)
+            || (projectStatus == ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE)
+            || (projectStatus == ProjectStatus.CANCELLED_ZERO_REGISTRATIONS)
+            || (projectStatus == ProjectStatus.CANCELLED_ZERO_SUBMISSIONS)
+            || (projectStatus == ProjectStatus.DELETED)) {
+            Phase[] projectPhases = project.getPhases();
+            for (int i = 0; i < projectPhases.length; i++) {
+                Phase projectPhase = projectPhases[i];
+                Long actualEndTimeOffset = projectPhase.getActualEndTimeOffset();
+                if (actualEndTimeOffset != null) {
+                    if ((lastPhaseEndTimeOffset == null) 
+                        || (lastPhaseEndTimeOffset.compareTo(actualEndTimeOffset) < 0)) {
+                        lastPhaseEndTimeOffset = actualEndTimeOffset;
+                    }
+                }
+            }
+        }
+        if (lastPhaseEndTimeOffset == null) {
+            lastPhaseEndTimeOffset = 0L;
+        }
+        Date now = new Date();
+        project.setCompletionDate(new Date(now.getTime() + lastPhaseEndTimeOffset * 60 * 1000));
 
         return project;
     }

@@ -50,8 +50,16 @@ import java.util.Set;
  * <p>A class generating the SQL statements for inserting the test data into database tables to represent a single
  * client in <code>Time Tracker</code> application.</p>
  * 
+ * <p>
+ * Version 1.1 Change notes:
+ *   <ol>
+ *     <li>Updated {@link #insertProjectInfos(Project, PrintWriter)} method to record project completion timestamp if
+ *     set.</li>
+ *   </ol>
+ * </p>
+ * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class TestDataSQLConverter {
 
@@ -528,6 +536,7 @@ public class TestDataSQLConverter {
      * @param out a <code>PrintWriter</code> to write the generated SQL statements to.
      */
     private void insertProjectInfos(Project project, PrintWriter out) {
+        DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm z");
         Component component = project.getComponent();
         if (component != null) {
             insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.EXTERNAL_REFERENCE_ID,
@@ -621,6 +630,10 @@ public class TestDataSQLConverter {
         if (project.getRunnerUpUserId() != null) {
             insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.RUNNER_UP_EXTERNAL_REFERENCE_ID, 
                                     String.valueOf(project.getRunnerUpUserId()), out);
+        }
+        if (project.getCompletionDate() != null) {
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.COMPLETION_TIMESTAMP, 
+                                    dateFormat.format(project.getCompletionDate()), out);
         }
     }
 

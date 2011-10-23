@@ -4,14 +4,22 @@
 package com.cronos.onlinereview.test.data.tcscatalog;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
  * <p>A DTO for single project to be generated. Corresponds to <code>tcs_catalog.project</code> and
  * <code>tcs_catalog.project_info</code> database tables.</p>
  *
+ * <p>
+ * Version 1.1 Change notes:
+ *   <ol>
+ *     <li>Added {@link #completionDate} property.</li>
+ *   </ol>
+ * </p>
+ *
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class Project implements Serializable {
 
@@ -237,6 +245,13 @@ public class Project implements Serializable {
      * <p>A <code>Long</code> providing the ID of runner-up user..</p>
      */
     private Long runnerUpUserId;
+
+    /**
+     * <p>A <code>Date</code> providing the completion date for project.</p>
+     * 
+     * @since 1.1
+     */
+    private Date completionDate;
 
     /**
      * <p>Constructs new <code>Project</code> instance. This implementation does nothing.</p>
@@ -1035,5 +1050,25 @@ public class Project implements Serializable {
      */
     public void setWinnerUserId(Long winnerUserId) {
         this.winnerUserId = winnerUserId;
+    }
+
+    /**
+     * <p>Gets the completion date for project.</p>
+     *
+     * @return a <code>Date</code> providing the completion date for project.
+     * @since 1.1
+     */
+    public Date getCompletionDate() {
+        return this.completionDate;
+    }
+
+    /**
+     * <p>Sets the completion date for project.</p>
+     *
+     * @param completionDate a <code>Date</code> providing the completion date for project.
+     * @since 1.1
+     */
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
     }
 }
