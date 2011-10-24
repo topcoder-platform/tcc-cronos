@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.informix.jdbc.IfxDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:informix-sqli://127.0.0.1:2021/tcs_catalog:INFORMIXSERVER=informixoltp_tcp</value>
+		</property>
+		<property name="username">
+			<value>informix</value>
+		</property>
+		<property name="password">
+			<value>wrong</value>
+		</property>
+	</bean>
+
+ <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" >
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="mappingResources">
+            <list>
+                <value>mapping.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.InformixDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+	<bean id="logger" class="com.topcoder.util.log.LogManager" factory-method="getLog">
+		<constructor-arg value="myLogger" />
+	</bean>
+
+	<bean id="hibernateTemplate" class=" org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="lookupService" class="com.topcoder.accounting.service.impl.LookupServiceImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="logger" ref="logger" />
+	</bean>
+
+	<bean id="billingCostAuditService"
+		class="com.topcoder.accounting.service.impl.BillingCostAuditServiceImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="logger" ref="logger" />
+	</bean>
+
+	<bean id="billingCostDataService"
+		class="com.topcoder.accounting.service.impl.BillingCostDataServiceImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="logger" ref="logger" />
+		<property name="projectCategoryIds">
+			<list>
+				<value>1</value>
+				<value>2</value>
+			</list>
+		</property>
+		<property name="studioProjectCategoryIds">
+			<list>
+				<value>11</value>
+				<value>12</value>
+			</list>
+		</property>
+		<property name="statusMapping">
+			<map>
+				<entry key="pending">
+					<value>1</value>
+				</entry>
+				<entry key="active">
+					<value>2</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>

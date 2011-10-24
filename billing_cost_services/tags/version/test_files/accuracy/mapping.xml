@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" [
+    <!ENTITY types SYSTEM "classpath://your/domain/types.xml">
+]>
+
+<hibernate-mapping package="com.topcoder.accounting.entities.dao">
+
+    <class name="PaymentArea" table="payment_area">
+        <id name="id" column="id" type="long" />
+ 	  <property name="name" column="name" type="string" length="40"/>
+    </class>
+
+    <class name="AccountingAuditRecord" table="accounting_audit_record">
+        <id name="id" column="id" type="long" />
+ 	  <property name="action" column="action" type="string" length="50"/>
+	  <property name="userName" column="user_name" type="string" length="50"/>
+	  <property name="timestamp" column="timestamp" type="timestamp"/>
+    </class>
+
+    <class name="BillingCostExport" table="billing_cost_export">
+         <id name="id" column="id" type="long" />
+ 	  <property name="accountantName" column="accountant_name" type="string" length="50"/>
+	  <many-to-one name="paymentArea" column="payment_area_id" class="PaymentArea" lazy="false"/>
+	  <property name="recordsCount" column="records_count" type="int"/>
+	  <property name="timestamp" column="timestamp" type="timestamp"/>
+    </class>
+
+    <class name="BillingCostExportDetail" table="billing_cost_export_detail">
+         <id name="id" column="id" type="long" />
+	  <property name="billingCostExportId" column="billing_cost_export_id" type="long"/>
+	  <property name="contestId" column="contest_id" type="long"/>
+ 	  <property name="customer" column="customer_name" type="string" length="100"/>
+	  <property name="paymentDetailId" column="payment_detail_id" type="long"/>
+	  <property name="projectInfoTypeId" column="project_info_type_id" type="long"/>
+	  <property name="billingAmount" column="billing_amount" type="float"/>
+ 	  <property name="paymentType" column="payment_type" type="string" length="25"/>
+ 	  <property name="contestName" column="contest_name" type="string" length="255"/>
+	  <property name="inQuickBooks" column="in_quickbooks" type="boolean"/>
+ 	  <property name="invoiceNumber" column="invoice_number" type="string" length="45"/>
+	  <property name="quickBooksImportTimestamp" column="quickbooks_import_timestamp" type="timestamp"/>
+    </class>
+
+
+</hibernate-mapping>
