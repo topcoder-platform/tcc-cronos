@@ -9,13 +9,13 @@
 	<property name="tcsubject" value="test_files/tcsubject.jar" />
 	<property name="shared.jar" value="test_files/shared.jar" />
 	
-    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
-    <property name="json_object.jar" value="${tcs_libdir}/json_object/1.0.0/json_object.jar"/>
-    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
-    <property name="security.jar" value="${tcs_libdir}/security/1.0.0/security.jar"/>
-    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
-    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
-    	<property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
+  <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+  <property name="json_object.jar" value="${tcs_libdir}/json_object/1.0.0/json_object.jar"/>
+  <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+  <property name="security.jar" value="${tcs_libdir}/security/1.0.0/security.jar"/>
+  <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+  <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+  <property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
      
 	<!-- 3rd party dependencies -->
 	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar"/>
@@ -23,7 +23,9 @@
 	<property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar" />
 	<property name="spring.dir" value="${ext_libdir}/spring/2.5.6" />
 	<property name="hibernate.dir" value="${ext_libdir}/hibernate/3.6.5" />
-	<property name="apache-commons.dir" value="${ext_libdir}/apache-commons" />
+	<property name="commons-collections.jar" value="${ext_libdir}/commons-collections/3.1/commons-collections.jar"/>
+	<property name="commons-dbcp.jar" value="${ext_libdir}/commons-dbcp/1.3/commons-dbcp.jar"/>
+	<property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging.jar"/>
 
 	<path id="component.tcs-dependencies">
     	<pathelement location="${base_exception.jar}"/>
@@ -32,13 +34,12 @@
     	<pathelement location="${security.jar}"/>
     	<pathelement location="${typesafe_enum.jar}"/>
     	<pathelement location="${object_formatter.jar}"/>
-    			  <pathelement location="${topcoder_commons_utility.jar}"/>
+      <pathelement location="${topcoder_commons_utility.jar}"/>
 		  <pathelement location="${tcsubject}" />
-		  	  <pathelement location="${shared.jar}" />
+		  <pathelement location="${shared.jar}" />
 	</path>
 
-	<path id="component.3rdParty-dependencies">
-		
+	<path id="component.3rdParty-dependencies">		
 		<fileset dir="${spring.dir}">
 			<include name="dist/*.jar" />
 		</fileset>
@@ -47,14 +48,13 @@
 		</fileset>
 	</path>
 
-	<path id="component.test.3rdParty-dependencies">
-		
+	<path id="component.test.3rdParty-dependencies">		
 		<pathelement location="${junit.jar}" />
 		<pathelement location="${log4j.jar}" />
 		<pathelement location="${ifxjdbc.jar}" />
-		<fileset dir="${apache-commons.dir}">
-			<include name="*.jar" />
-		</fileset>
+		<pathelement location="${commons-collections.jar}" />
+		<pathelement location="${commons-dbcp.jar}" />
+		<pathelement location="${commons-logging.jar}" />
 	</path>
 
 </project>
