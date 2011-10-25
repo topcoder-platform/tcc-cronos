@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late;
 
@@ -19,7 +19,7 @@ import com.topcoder.management.deliverable.late.search.LateDeliverableFilterBuil
  * </p>
  *
  * @author sparemax
- * @version 1.0
+ * @version 1.0.6
  */
 public class UnitTests extends TestCase {
     /**
@@ -35,6 +35,7 @@ public class UnitTests extends TestCase {
         suite.addTest(Demo.suite());
         suite.addTest(HelperUnitTests.suite());
         suite.addTest(LateDeliverableUnitTests.suite());
+        suite.addTest(LateDeliverableTypeUnitTests.suite());
 
         suite.addTest(LateDeliverableManagerImplUnitTests.suite());
 

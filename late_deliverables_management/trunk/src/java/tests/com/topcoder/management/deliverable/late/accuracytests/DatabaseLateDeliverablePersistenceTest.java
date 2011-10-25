@@ -5,12 +5,14 @@
 package com.topcoder.management.deliverable.late.accuracytests;
 
 import com.topcoder.management.deliverable.late.LateDeliverable;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.management.deliverable.late.impl.persistence.DatabaseLateDeliverablePersistence;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.ResultSet;
 import java.util.Date;
+import java.util.List;
 
 import static com.topcoder.management.deliverable.late.accuracytests.TestHelper.getDate;
 import static com.topcoder.management.deliverable.late.accuracytests.TestHelper.getPrivateField;
@@ -67,15 +69,14 @@ public class DatabaseLateDeliverablePersistenceTest extends PersistenceTestBase 
         final String explanation = "explaination";
         final String response = "response";
 
-        final long projectPhaseId = 3L;
-        final long resourceId = 4L;
-        final long deliverableId = 5L;
-
+        final long projectPhaseId = 101L;
+        final long resourceId = 1003L;
+        final long deliverableId = 4L;
         LateDeliverable lateDeliverable = lateDeliverableManager.retrieve(2);
         LateDeliverable entity =
             getUpdatedEntity(lateDeliverable, deadline, createDate, delay, lastNotify, true, explanation, response,
                              projectPhaseId, resourceId, deliverableId);
-
+        entity.getType().setId(3);
         lateDeliverablePersistence.update(entity);
 
         ResultSet rs = null;
@@ -97,6 +98,7 @@ public class DatabaseLateDeliverablePersistenceTest extends PersistenceTestBase 
             Assert.assertEquals(rs.getTimestamp("deadline").getTime(), deadline.getTime());
             Assert.assertEquals(rs.getTimestamp("create_date").getTime(), createDate.getTime());
             Assert.assertEquals(rs.getTimestamp("last_notified").getTime(), lastNotify.getTime());
+            Assert.assertEquals(rs.getInt("late_deliverable_type_id"), 3);
 
             // Should not have second record.
             Assert.assertFalse(rs.next());
@@ -140,5 +142,30 @@ public class DatabaseLateDeliverablePersistenceTest extends PersistenceTestBase 
         lateDeliverable.setDeliverableId(deliverableId);
 
         return lateDeliverable;
+    }
+
+
+    /**
+     * <p> Accuracy test for the method <code>getLateDeliverableTypes(LateDeliverable)</code>. </p>
+     *
+     * @throws Exception to JUnit
+     */
+    @Test
+    public void testgetLateDeliverableTypes_Accuracy() throws Exception {
+
+        lateDeliverablePersistence = new DatabaseLateDeliverablePersistence();
+        lateDeliverablePersistence.configure(persistenceConfig);
+
+        List<LateDeliverableType> list = lateDeliverablePersistence.getLateDeliverableTypes();
+        Assert.assertEquals("The result is incorrect", list.size(), 3);
+        Assert.assertEquals("The result is incorrect", list.get(0).getId(), 1);
+        Assert.assertEquals("The result is incorrect", list.get(0).getDescription(), "des1");
+        Assert.assertEquals("The result is incorrect", list.get(0).getName(), "Late Review Phase");
+        Assert.assertEquals("The result is incorrect", list.get(1).getId(), 2);
+        Assert.assertEquals("The result is incorrect", list.get(1).getDescription(), "des2");
+        Assert.assertEquals("The result is incorrect", list.get(1).getName(), "Late Submission Phase");
+        Assert.assertEquals("The result is incorrect", list.get(2).getId(), 3);
+        Assert.assertEquals("The result is incorrect", list.get(2).getDescription(), "des3");
+        Assert.assertEquals("The result is incorrect", list.get(2).getName(), "Late Final fix Phase");
     }
 }

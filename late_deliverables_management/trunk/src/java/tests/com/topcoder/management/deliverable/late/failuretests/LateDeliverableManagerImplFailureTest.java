@@ -16,6 +16,7 @@ import com.topcoder.configuration.persistence.XMLFilePersistence;
 import com.topcoder.management.deliverable.late.LateDeliverable;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementException;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl;
 import com.topcoder.management.deliverable.late.impl.LateDeliverablePersistenceException;
 import com.topcoder.util.config.ConfigManager;
@@ -219,6 +220,9 @@ public class LateDeliverableManagerImplFailureTest extends TestCase {
     	lateDeliverable.setProjectPhaseId(1);
     	lateDeliverable.setResourceId(1);
     	lateDeliverable.setResponse("reply");
+    	LateDeliverableType type = new LateDeliverableType();
+    	type.setId(1);
+        lateDeliverable.setType(type );
         try {
 			instance.update(lateDeliverable );
             fail("Expects LateDeliverablePersistenceException");
@@ -257,6 +261,9 @@ public class LateDeliverableManagerImplFailureTest extends TestCase {
     	lateDeliverable.setProjectPhaseId(1);
     	lateDeliverable.setResourceId(1);
     	lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(1);
+        lateDeliverable.setType(type );
         try {
 			instance.update(lateDeliverable );
             fail("Expects IllegalArgumentException");
@@ -281,8 +288,63 @@ public class LateDeliverableManagerImplFailureTest extends TestCase {
     	lateDeliverable.setProjectPhaseId(1);
     	lateDeliverable.setResourceId(1);
     	lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(1);
+        lateDeliverable.setType(type );
         try {
 			instance.update(lateDeliverable );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method update() with invalid input.
+     * Expects IllegalArgumentException.
+     */
+    public void test_update_7() throws Exception {
+        LateDeliverable lateDeliverable = new LateDeliverable();
+        lateDeliverable.setId(1);
+        lateDeliverable.setCreateDate(new Date());
+        lateDeliverable.setDeadline(new Date());
+        lateDeliverable.setDelay(2L);
+        lateDeliverable.setDeliverableId(1);
+        lateDeliverable.setExplanation("invalid");
+        lateDeliverable.setLastNotified(new Date());
+        lateDeliverable.setProjectPhaseId(1);
+        lateDeliverable.setResourceId(1);
+        lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(1);
+        lateDeliverable.setType(null );
+        try {
+            instance.update(lateDeliverable );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method update() with invalid input.
+     * Expects IllegalArgumentException.
+     */
+    public void test_update_8() throws Exception {
+        LateDeliverable lateDeliverable = new LateDeliverable();
+        lateDeliverable.setId(1);
+        lateDeliverable.setCreateDate(new Date());
+        lateDeliverable.setDeadline(new Date());
+        lateDeliverable.setDelay(2L);
+        lateDeliverable.setDeliverableId(1);
+        lateDeliverable.setExplanation("invalid");
+        lateDeliverable.setLastNotified(new Date());
+        lateDeliverable.setProjectPhaseId(1);
+        lateDeliverable.setResourceId(1);
+        lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(0);
+        lateDeliverable.setType(type );
+        try {
+            instance.update(lateDeliverable );
             fail("Expects IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // good
@@ -363,6 +425,18 @@ public class LateDeliverableManagerImplFailureTest extends TestCase {
 			instance.searchRestrictedLateDeliverables(null, 1);
             fail("Expects LateDeliverableManagementException");
         } catch (LateDeliverableManagementException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method getLateDeliverableTypes() with invalid database configuration.
+     * Expects LateDeliverablePersistenceException.
+     */
+    public void test_getLateDeliverableTypes_8() throws Exception {
+        try {
+            instance.getLateDeliverableTypes();
+            fail("Expects LateDeliverablePersistenceException");
+        } catch (LateDeliverablePersistenceException e) {
             // good
         }
     }

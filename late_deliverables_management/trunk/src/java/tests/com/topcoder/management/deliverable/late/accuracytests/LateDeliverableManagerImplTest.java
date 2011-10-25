@@ -4,13 +4,9 @@
 
 package com.topcoder.management.deliverable.late.accuracytests;
 
-import com.topcoder.management.deliverable.late.LateDeliverable;
-import com.topcoder.management.deliverable.late.search.LateDeliverableFilterBuilder;
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.OrFilter;
-import org.junit.Assert;
-import org.junit.Test;
+import static com.topcoder.management.deliverable.late.accuracytests.TestHelper.getDate;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.sql.ResultSet;
 import java.util.Arrays;
@@ -18,9 +14,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.topcoder.management.deliverable.late.accuracytests.TestHelper.getDate;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.topcoder.management.deliverable.late.LateDeliverable;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
+import com.topcoder.management.deliverable.late.search.LateDeliverableFilterBuilder;
+import com.topcoder.search.builder.filter.AndFilter;
+import com.topcoder.search.builder.filter.Filter;
+import com.topcoder.search.builder.filter.OrFilter;
 
 /**
  * <p> Accuracy test for <code>LateDeliverableManagerImpl</code>. </p>
@@ -72,6 +74,10 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         final Date deadLine = getDate(2010, 10, 22, 9, 5, 0);
         final Date lastNotified = getDate(2010, 10, 20, 9, 5, 0);
         final long delay = 10000L;
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(2);
+        type.setName("Late Submission Phase");
+        type.setDescription("des2");
 
         verifyData(lateDeliverable,
                    id,
@@ -84,7 +90,8 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
                    creatDate,
                    deadLine,
                    lastNotified,
-                   delay);
+                   delay,
+                   type);
     }
 
     /**
@@ -125,6 +132,10 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         final Date creatDate = getDate(2010, 10, 23, 12, 0, 0);
         final Date lastNotified = getDate(2010, 10, 23, 12, 0, 0);
         final Long delay = null;
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(2);
+        type.setName("Late Submission Phase");
+        type.setDescription("des2");
 
         verifyData(lateDeliverable,
                    id,
@@ -137,7 +148,8 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
                    creatDate,
                    deadLine,
                    lastNotified,
-                   delay);
+                   delay,
+                   type);
     }
 
     /**
@@ -155,10 +167,11 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
      * @param deadLine        value of deadline.
      * @param lastNotified    value of last notified.
      * @param delay           value for delay.
+     * @param type           value for LateDeliverableType.
      */
     private void verifyData(LateDeliverable lateDeliverable, int id, int deliverableId, int resourceId,
                             int projectPhaseId, boolean forgiven, String explaination, String response,
-                            Date creatDate, Date deadLine, Date lastNotified, Long delay) {
+                            Date creatDate, Date deadLine, Date lastNotified, Long delay, LateDeliverableType type) {
         assertEquals(id, lateDeliverable.getId());
         assertEquals(projectPhaseId, lateDeliverable.getProjectPhaseId());
         assertEquals(resourceId, lateDeliverable.getResourceId());
@@ -170,6 +183,9 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         assertEquals(deadLine, lateDeliverable.getDeadline());
         assertEquals(lastNotified, lateDeliverable.getLastNotified());
         assertEquals(delay, lateDeliverable.getDelay());
+        assertEquals(type.getId(), lateDeliverable.getType().getId());
+        assertEquals(type.getDescription(), lateDeliverable.getType().getDescription());
+        assertEquals(type.getName(), lateDeliverable.getType().getName());
     }
 
     /**
@@ -181,8 +197,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
      */
     @Test
     public void testUpdate_accuracy() throws Exception {
-        final LateDeliverable entity = new LateDeliverable();
-        entity.setId(1);
+        LateDeliverable entity = lateDeliverableManager.retrieve(1);
 
         final Long delay = null;
         entity.setDelay(delay);
@@ -194,17 +209,23 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         entity.setDeadline(deadline);
 
         final Date lastNotified = getDate(2010, 11, 1, 12, 0, 0);
-        entity.setLastNotified(lastNotified);
-
-        final int resourceId = 103;
+        entity.setLastNotified(lastNotified);        
+        
+        final int resourceId = 1002;
         entity.setResourceId(resourceId);
+        
+        final int projectPhaseId = 102;
+        entity.setProjectPhaseId(projectPhaseId);
+
 
         final boolean forgiven = true;
         entity.setForgiven(forgiven);
 
         final String response = "new_response";
         entity.setResponse(response);
-
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(3);
+        entity.setType(type);
         lateDeliverableManager.update(entity);
 
         ResultSet rs = null;
@@ -218,11 +239,13 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
             Assert.assertEquals(rs.getInt("forgive_ind"), 1);
             Assert.assertEquals(rs.getBigDecimal("delay"), null);
             Assert.assertEquals(rs.getLong("resource_id"), resourceId);
+            Assert.assertEquals(rs.getLong("project_phase_id"), projectPhaseId);
             Assert.assertEquals(rs.getString("response"), response);
-
+            
             Assert.assertEquals(rs.getTimestamp("deadline").getTime(), deadline.getTime());
             Assert.assertEquals(rs.getTimestamp("create_date").getTime(), createDate.getTime());
             Assert.assertEquals(rs.getTimestamp("last_notified").getTime(), lastNotified.getTime());
+            Assert.assertEquals(rs.getInt("late_deliverable_type_id"), 3);
 
             // Should not have second record.
             Assert.assertFalse(rs.next());
@@ -264,7 +287,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // all the records should be retrieved.
         Assert.assertEquals(ret.size(), 10);
 
-        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L,7L,8L,9L,10L));
         verifyIds(ret, ids);
     }
 
@@ -289,7 +312,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // There should be 4 records with id = 2,3,5,6 meet the condition forgiven = false and deliverableId = 3.
         Assert.assertEquals(ret.size(), 4);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(2L, 3L, 5L, 6L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(2L, 3L, 5L, 6L));
         verifyIds(ret, ids);
     }
 
@@ -309,7 +332,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // So there are 2 records with id = 1, 3
         Assert.assertEquals(ret.size(), 2);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(1L, 3L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(1L, 3L));
 
         verifyIds(ret, ids);
     }
@@ -332,7 +355,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // There should be 2 records with id = 2,4 has project_phase{id:102}
         Assert.assertEquals(ret.size(), 2);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(2L, 4L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(2L, 4L));
 
         verifyIds(ret, ids);
     }
@@ -355,7 +378,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // There should be 2 records with id = 1,2,3,4 has project_phase{id:102, 101}
         Assert.assertEquals(ret.size(), 4);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(1L, 2L, 3L, 4L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(1L, 2L, 3L, 4L));
 
         verifyIds(ret, ids);
     }
@@ -381,7 +404,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // forgiven = true.
         Assert.assertEquals(ret.size(), 6);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(2L, 4L, 7L, 8L, 9L, 10L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(2L, 4L, 7L, 8L, 9L, 10L));
 
         verifyIds(ret, ids);
     }
@@ -401,7 +424,27 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // There should be 2 records with id = 1,4 has deliverable id 4
         Assert.assertEquals(ret.size(), 2);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(1L, 4L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(1L, 4L));
+
+        verifyIds(ret, ids);
+    }
+
+    /**
+     * <p> Accuracy test for <code>searchAllLateDeliverables(Filter filter)</code>. </p>
+     *
+     * <p> Test that when the input is valid, the functionality of this method should be performed correctly.</p>
+     *
+     * @throws Exception to JUnit.
+     */
+    @Test
+    public void testSearchAllLateDeliverables_createLateDeliverableTypeIdFilter() throws Exception {
+        Filter typeFilter = LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(3);
+        final List<LateDeliverable> ret = lateDeliverableManager.searchAllLateDeliverables(typeFilter);
+
+        // There should be 1 records with id = 5L,6L has type 3
+        Assert.assertEquals(ret.size(), 2);
+
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(5L,6L));
 
         verifyIds(ret, ids);
     }
@@ -424,7 +467,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // The result should be the entity with resource id = 1004 and forgiven = false.
         Assert.assertEquals(ret.size(), 1);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(6L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(6L));
 
         verifyIds(ret, ids);
     }
@@ -440,14 +483,14 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
     public void testSearchRestrictedLateDeliverables_by_project_id() throws Exception {
 
         // Test for lateUser
-        Filter projectIdFilter = LateDeliverableFilterBuilder.createProjectIdFilter(100002);
+        Filter projectIdFilter = LateDeliverableFilterBuilder.createProjectIdFilter(100004);
         final int lateUserId = 10;
         final List<LateDeliverable> ret =
             lateDeliverableManager.searchRestrictedLateDeliverables(projectIdFilter, lateUserId);
 
-        Assert.assertEquals(ret.size(), 1);
+        Assert.assertEquals(ret.size(), 3);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(6L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(6L,7L,8L));
         verifyIds(ret, ids);
     }
 
@@ -489,10 +532,10 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
                                                                     lateUserId);
 
         // entity with id  = 8 can be retrieved.
-        Assert.assertEquals(ret.size(), 1);
+        Assert.assertEquals(ret.size(), 3);
 
         // Late user should be able to access the resources because the resource is assigend to him and he also has manager role.
-        final HashSet ids = new HashSet<Long>(Arrays.asList(8L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(6L,7L,8L));
         verifyIds(ret, ids);
     }
 
@@ -539,7 +582,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         Assert.assertEquals(ret.size(), 1);
 
         // Late user should be able to access the resources.
-        final HashSet ids = new HashSet<Long>(Arrays.asList(9L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(9L));
         verifyIds(ret, ids);
     }
 
@@ -559,7 +602,6 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // passed to the search method should have a manager resource (with role 13,14 or 15) in the same
         // project that the resource B belongs to. Again, make sure that the user has no cockpit access.
 
-        final int accessableProjectId = 100005;
 
         // User with id 13 has the manager role.
         final int lateUserId = 13;
@@ -569,7 +611,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         Assert.assertEquals(ret.size(), 2);
 
         // Late user should be able to access the resources.
-        final HashSet ids = new HashSet<Long>(Arrays.asList(9L,10L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(9L,10L));
         verifyIds(ret, ids);
     }
 
@@ -593,7 +635,7 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
         // entity with id  = 2,4 can be retrieved.
         Assert.assertEquals(ret.size(), 2);
 
-        final HashSet ids = new HashSet<Long>(Arrays.asList(2L, 4L));
+        final HashSet<Long> ids = new HashSet<Long>(Arrays.asList(2L, 4L));
         verifyIds(ret, ids);
     }
 
@@ -602,11 +644,32 @@ public class LateDeliverableManagerImplTest extends PersistenceTestBase {
      *
      * @param lateDeliverables Collection of LateDeliverable.
      * @param ids              Set of id.
+     * @throws Throwable 
      */
-    private static void verifyIds(List<LateDeliverable> lateDeliverables, HashSet ids) {
+    private static void verifyIds(List<LateDeliverable> lateDeliverables, HashSet<Long> ids) {
         for (LateDeliverable lateDeliverable : lateDeliverables) {
             Assert.assertTrue(String.format("id : %s should be in id set", lateDeliverable.getId()),
                               ids.contains(lateDeliverable.getId()));
         }
+    }
+
+    /**
+     * <p> Accuracy test for the method <code>getLateDeliverableTypes(LateDeliverable)</code>. </p>
+     *
+     * @throws Exception to JUnit
+     */
+    @Test
+    public void testgetLateDeliverableTypes_Accuracy() throws Exception {
+        List<LateDeliverableType> list = lateDeliverableManager.getLateDeliverableTypes();
+        Assert.assertEquals("The result is incorrect", list.size(), 3);
+        Assert.assertEquals("The result is incorrect", list.get(0).getId(), 1);
+        Assert.assertEquals("The result is incorrect", list.get(0).getDescription(), "des1");
+        Assert.assertEquals("The result is incorrect", list.get(0).getName(), "Late Review Phase");
+        Assert.assertEquals("The result is incorrect", list.get(1).getId(), 2);
+        Assert.assertEquals("The result is incorrect", list.get(1).getDescription(), "des2");
+        Assert.assertEquals("The result is incorrect", list.get(1).getName(), "Late Submission Phase");
+        Assert.assertEquals("The result is incorrect", list.get(2).getId(), 3);
+        Assert.assertEquals("The result is incorrect", list.get(2).getDescription(), "des3");
+        Assert.assertEquals("The result is incorrect", list.get(2).getName(), "Late Final fix Phase");
     }
 }

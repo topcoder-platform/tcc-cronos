@@ -15,6 +15,11 @@ import com.topcoder.util.datavalidator.AbstractObjectValidator;
  */
 public class MockedValidator extends AbstractObjectValidator {
     /**
+     * the serial version uid.
+     */
+    private static final long serialVersionUID = 4476906760075942604L;
+
+    /**
      * <p>
      * Creates an instance of MockValidator.
      * </p>

@@ -21,11 +21,18 @@ import com.topcoder.search.builder.filter.NullFilter;
  * </p>
  *
  * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added createLateDeliverableTypeIdFilter() method.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety: </strong> This class is immutable and thread safe.
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.2
+ * @version 1.0.6
  */
 public final class LateDeliverableFilterBuilder {
     /**
@@ -245,5 +252,26 @@ public final class LateDeliverableFilterBuilder {
         Helper.checkNull(maxDeadline, "maxDeadline");
 
         return new LessThanOrEqualToFilter("deadline", maxDeadline);
+    }
+
+    /**
+     * <p>
+     * Creates a filter that selects late deliverables of type with the given ID.
+     * </p>
+     *
+     * @param lateDeliverableTypeId
+     *            the ID of the late deliverable type.
+     *
+     * @return the filter that selects late deliverables of type with the given ID (not null).
+     *
+     * @throws IllegalArgumentException
+     *             if lateDeliverableTypeId &lt;= 0.
+     *
+     * @since 1.0.6
+     */
+    public static Filter createLateDeliverableTypeIdFilter(long lateDeliverableTypeId) {
+        Helper.checkPositive(lateDeliverableTypeId, "lateDeliverableTypeId");
+
+        return new EqualToFilter("lateDeliverableTypeId", lateDeliverableTypeId);
     }
 }

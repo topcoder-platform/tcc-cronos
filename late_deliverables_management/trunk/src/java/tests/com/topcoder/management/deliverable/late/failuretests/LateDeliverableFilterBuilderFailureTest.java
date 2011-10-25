@@ -30,7 +30,7 @@ public class LateDeliverableFilterBuilderFailureTest extends TestCase {
         return suite;
     }
     /**
-     * Failure test for method createProjectIdFilter() with null input.
+     * Failure test for method createProjectIdFilter() with illegal input.
      * Expects IllegalArgumentException.
      */
     public void test_createProjectIdFilter_1() throws Exception {
@@ -42,7 +42,7 @@ public class LateDeliverableFilterBuilderFailureTest extends TestCase {
         }
     }
     /**
-     * Failure test for method createProjectStatusIdFilter() with null input.
+     * Failure test for method createProjectStatusIdFilter() with illegal input.
      * Expects IllegalArgumentException.
      */
     public void test_createProjectStatusIdFilter_1() throws Exception {
@@ -54,7 +54,7 @@ public class LateDeliverableFilterBuilderFailureTest extends TestCase {
         }
     }
     /**
-     * Failure test for method createProjectCategoryIdFilter() with null input.
+     * Failure test for method createProjectCategoryIdFilter() with illegal input.
      * Expects IllegalArgumentException.
      */
     public void test_createProjectCategoryIdFilter_1() throws Exception {
@@ -66,12 +66,30 @@ public class LateDeliverableFilterBuilderFailureTest extends TestCase {
         }
     }
     /**
-     * Failure test for method createDeliverableIdFilter() with null input.
+     * Failure test for method createDeliverableIdFilter() with illegal input.
      * Expects IllegalArgumentException.
      */
     public void test_createDeliverableIdFilter_1() throws Exception {
         try {
         	LateDeliverableFilterBuilder.createDeliverableIdFilter(-1);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method createLateDeliverableTypeIdFilter() with illegal input.
+     * Expects IllegalArgumentException.
+     */
+    public void test_createLateDeliverableTypeIdFilter_1() throws Exception {
+        try {
+            LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(-1);
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+        try {
+            LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(0);
             fail("Expects IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // good

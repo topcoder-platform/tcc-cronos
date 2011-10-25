@@ -24,8 +24,15 @@ import com.topcoder.search.builder.filter.NullFilter;
  * Unit tests for {@link LateDeliverableFilterBuilder} class.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added test cases for createLateDeliverableTypeIdFilter() method.</li>
+ * </ol>
+ * </p>
+ *
  * @author sparemax
- * @version 1.0.2
+ * @version 1.0.6
  */
 public class LateDeliverableFilterBuilderUnitTests {
     /**
@@ -458,5 +465,55 @@ public class LateDeliverableFilterBuilderUnitTests {
         Date value = null;
 
         LateDeliverableFilterBuilder.createMaximumDeadlineFilter(value);
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>createLateDeliverableTypeIdFilter(long lateDeliverableTypeId)</code>.<br>
+     * The result should be correct.
+     * </p>
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_createLateDeliverableTypeIdFilter() {
+        long value = 1;
+        EqualToFilter filter = (EqualToFilter) LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(value);
+
+        assertEquals("'createLateDeliverableTypeIdFilter' should be correct.",
+            "lateDeliverableTypeId", filter.getName());
+        assertEquals("'createLateDeliverableTypeIdFilter' should be correct.", value, filter.getValue());
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>createLateDeliverableTypeIdFilter(long lateDeliverableTypeId)</code> with
+     * lateDeliverableTypeId is negative.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_createLateDeliverableTypeIdFilter_lateDeliverableTypeIdNegative() {
+        long value = -1;
+
+        LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(value);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>createLateDeliverableTypeIdFilter(long lateDeliverableTypeId)</code> with
+     * lateDeliverableTypeId is zero.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_createLateDeliverableTypeIdFilter_lateDeliverableTypeIdZero() {
+        long value = 0;
+
+        LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(value);
     }
 }

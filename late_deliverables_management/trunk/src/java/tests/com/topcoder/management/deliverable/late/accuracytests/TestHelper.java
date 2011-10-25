@@ -4,13 +4,6 @@
 
 package com.topcoder.management.deliverable.late.accuracytests;
 
-import com.topcoder.configuration.ConfigurationAccessException;
-import com.topcoder.configuration.ConfigurationObject;
-import com.topcoder.configuration.persistence.XMLFilePersistence;
-import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
-import com.topcoder.util.config.ConfigManager;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,6 +14,13 @@ import java.sql.Statement;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+
+import com.topcoder.configuration.ConfigurationAccessException;
+import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.configuration.persistence.XMLFilePersistence;
+import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
+import com.topcoder.util.config.ConfigManager;
 
 /**
  * <p>
@@ -175,17 +175,20 @@ final class TestHelper {
      */
     public static void executeSQL(Connection connection, String file) throws Exception {
         Statement stmt = null;
+        String sql = null;
         try {
             stmt = connection.createStatement();
 
             String[] values = readFile(file).split(";");
 
             for (String value : values) {
-                String sql = value.trim();
+                sql = value.trim();
                 if ((sql.length() != 0) && (!sql.startsWith("#"))) {
                     stmt.executeUpdate(sql);
                 }
             }
+        } catch (Exception e) {
+            throw new Exception("Error occurs when executing " + sql,e);
         } finally {
             if (stmt != null) {
                 stmt.close();

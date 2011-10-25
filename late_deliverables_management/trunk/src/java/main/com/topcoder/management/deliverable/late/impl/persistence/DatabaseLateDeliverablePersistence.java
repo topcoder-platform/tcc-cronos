@@ -5,10 +5,14 @@ package com.topcoder.management.deliverable.late.impl.persistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.db.connectionfactory.ConfigurationException;
@@ -19,6 +23,7 @@ import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.management.deliverable.late.Helper;
 import com.topcoder.management.deliverable.late.LateDeliverable;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.management.deliverable.late.impl.LateDeliverableNotFoundException;
 import com.topcoder.management.deliverable.late.impl.LateDeliverablePersistence;
 import com.topcoder.management.deliverable.late.impl.LateDeliverablePersistenceException;
@@ -26,9 +31,18 @@ import com.topcoder.util.log.Log;
 
 /**
  * <p>
- * This class is an implementation of LateDeliverablePersistence that updates late deliverables in database
- * persistence using JDBC and DB Connection Factory component. This class uses Logging Wrapper component to log errors
- * and debug information.
+ * This class is an implementation of LateDeliverablePersistence that updates late deliverables and retrieves all late
+ * deliverable types in/from database persistence using JDBC and DB Connection Factory component. This class uses
+ * Logging Wrapper component to log errors and debug information.
+ * </p>
+ *
+ * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added getLateDeliverableTypes() method.</li>
+ * <li>Updated throws documentation of update() method.</li>
+ * <li>Updated class documentation.</li>
+ * </ol>
  * </p>
  *
  * <p>
@@ -38,7 +52,7 @@ import com.topcoder.util.log.Log;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.4
+ * @version 1.0.6
  */
 public class DatabaseLateDeliverablePersistence implements LateDeliverablePersistence {
     /**
@@ -64,13 +78,30 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
 
     /**
      * <p>
+     * Represents the SQL string to query late deliverable types.
+     * </p>
+     *
+     * @since 1.0.6
+     */
+    private static final String SQL_QUERY_LATE_DELIVERABLE_TYPE =
+        "SELECT late_deliverable_type_id, name, description FROM late_deliverable_type_lu";
+
+    /**
+     * <p>
      * Represents the SQL string to update late deliverable.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>Added field to update the late deliverable type id.</li>
+     * </ol>
      * </p>
      */
     private static final String SQL_UPDATE_LATE_DELIVERABLE = "UPDATE late_deliverable SET project_phase_id = ?,"
         + " resource_id = ?, deliverable_id = ?, deadline = ?, compensated_deadline = ?, create_date = ?,"
         + " forgive_ind = ?, last_notified = ?, delay = ?, explanation = ?, explanation_date = ?, response = ?,"
-        + " response_user = ?, response_date = ? WHERE late_deliverable_id = ?";
+        + " response_user = ?, response_date = ?, late_deliverable_type_id = ? WHERE late_deliverable_id = ?";
 
     /**
      * <p>
@@ -156,12 +187,22 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
      * Updates the given late deliverable in persistence.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>Updated throws documentation for IllegalArgumentException.</li>
+     * <li>Added/updated steps to update the late deliverable type id.</li>
+     * <li>Added logging for IllegalStateException.</li>
+     * </ol>
+     * </p>
+     *
      * @param lateDeliverable
      *            the late deliverable with updated data.
      *
      * @throws IllegalArgumentException
      *             if lateDeliverable is null, lateDeliverable.getId() &lt;= 0, lateDeliverable.getDeadline() is null,
-     *             lateDeliverable.getCreateDate() is null.
+     *             lateDeliverable.getCreateDate() is null, lateDeliverable.getType() is null,
+     *             lateDeliverable.getType().getId() &lt;= 0.
      * @throws IllegalStateException
      *             if persistence was not configured properly (dbConnectionFactory is null).
      * @throws LateDeliverableNotFoundException
@@ -183,16 +224,14 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
             Helper.checkPositive(lateDeliverable.getId(), "lateDeliverable.getId()");
             Helper.checkNull(lateDeliverable.getDeadline(), "lateDeliverable.getDeadline()");
             Helper.checkNull(lateDeliverable.getCreateDate(), "lateDeliverable.getCreateDate()");
-
-            if (dbConnectionFactory == null) {
-                throw new IllegalStateException("This persistence was not properly configured.");
-            }
+            LateDeliverableType type = lateDeliverable.getType();
+            Helper.checkNull(type, "lateDeliverable.getType()");
+            Helper.checkPositive(type.getId(), "lateDeliverable.getType().getId()");
 
             Connection connection = null;
             try {
                 // Create a connection
-                connection = (connectionName == null) ? dbConnectionFactory.createConnection()
-                    : dbConnectionFactory.createConnection(connectionName);
+                connection = getConnection();
 
                 // Disable the auto commit mode
                 connection.setAutoCommit(false);
@@ -204,18 +243,8 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
             } catch (SQLException e) {
                 throw new LateDeliverablePersistenceException("A database access error occurred.", e);
             } finally {
-                if (connection != null) {
-                    try {
-                        // Close the connection
-                        connection.close();
-                    } catch (SQLException e) {
-                        // Log exception
-                        Helper.logException(log, signature, e, "A database access error occurred"
-                            + " when closing the connection to persistence (will be ignored).");
-
-                        // Ignore
-                    }
-                }
+                // Close the connection:
+                closeConnection(connection, log, signature);
             }
 
             // Log method exit
@@ -223,6 +252,9 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
         } catch (IllegalArgumentException e) {
             // Log exception
             throw Helper.logException(log, signature, e, "IllegalArgumentException is thrown.");
+        } catch (IllegalStateException e) {
+            // Log exception
+            throw Helper.logException(log, signature, e, "IllegalStateException is thrown.");
         } catch (LateDeliverableNotFoundException e) {
             // Log exception
             throw Helper.logException(log, signature, e, "LateDeliverableNotFoundException is thrown"
@@ -236,7 +268,80 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
 
     /**
      * <p>
+     * Retrieves all existing late deliverable types from persistence.
+     * </p>
+     *
+     * @return the retrieved late deliverable types (not null, doesn't contain null).
+     *
+     * @throws IllegalStateException
+     *             if persistence was not configured properly (dbConnectionFactory is null).
+     * @throws LateDeliverablePersistenceException
+     *             if some error occurred when accessing the persistence.
+     *
+     * @since 1.0.6
+     */
+    public List<LateDeliverableType> getLateDeliverableTypes() throws LateDeliverablePersistenceException {
+        Date enterTimestamp = new Date();
+        String signature = getSignature("getLateDeliverableTypes()");
+
+        // Log method entry
+        Helper.logEntrance(log, signature, null, null);
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            // Create a connection
+            connection = getConnection();
+
+            preparedStatement = connection.prepareStatement(SQL_QUERY_LATE_DELIVERABLE_TYPE);
+            // Execute the query:
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // Create a list for result:
+            List<LateDeliverableType> result = new ArrayList<LateDeliverableType>();
+            while (resultSet.next()) {
+                // Create late deliverable type instance:
+                LateDeliverableType lateDeliverableType = new LateDeliverableType();
+
+                lateDeliverableType.setId(resultSet.getLong("late_deliverable_type_id"));
+                lateDeliverableType.setName(resultSet.getString("name"));
+                lateDeliverableType.setDescription(resultSet.getString("description"));
+
+                // Add late deliverable type to the list:
+                result.add(lateDeliverableType);
+            }
+
+            // Log method exit
+            Helper.logExit(log, signature, new Object[] {result}, enterTimestamp);
+            return result;
+        } catch (IllegalStateException e) {
+            throw Helper.logException(log, signature, e, "IllegalStateException is thrown.");
+        } catch (DBConnectionException e) {
+            throw Helper.logException(log, signature, new LateDeliverablePersistenceException(
+                "Failed to create a database connection.", e), "LateDeliverablePersistenceException is thrown"
+                + " when retrieving all existing late deliverable types from persistence.");
+        } catch (SQLException e) {
+            throw Helper.logException(log, signature, new LateDeliverablePersistenceException(
+                "A database access error occurred.", e), "LateDeliverablePersistenceException is thrown"
+                + " when retrieving all existing late deliverable types from persistence.");
+        } finally {
+            // Close the prepared statement:
+            // (the result set will be automatically closed)
+            closeStatement(preparedStatement, log, signature);
+            // Close the connection:
+            closeConnection(connection, log, signature);
+        }
+    }
+
+    /**
+     * <p>
      * Updates the given late deliverable in persistence.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>Added/updated steps to update the late deliverable type id.</li>
+     * </ol>
      * </p>
      *
      * @param lateDeliverable
@@ -300,6 +405,9 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
             // Set response date to the prepared statement:
             preparedStatement.setTimestamp(index++, getTimestamp(lateDeliverable.getResponseDate()));
 
+            // Set late deliverable type ID to the prepared statement:
+            preparedStatement.setLong(index++, lateDeliverable.getType().getId());
+
             // Get ID from the late deliverable:
             long lateDeliverableId = lateDeliverable.getId();
             // Set it to the prepared statement:
@@ -319,13 +427,63 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
 
             throw e;
         } finally {
+            // Close the prepared statement:
+            closeStatement(preparedStatement, log, signature);
+        }
+    }
+
+    /**
+     * <p>
+     * Closes the connection.
+     * </p>
+     *
+     * @param connection
+     *            the connection.
+     * @param log
+     *            the logger.
+     * @param signature
+     *            the signature.
+     *
+     * @since 1.0.6
+     */
+    private static void closeConnection(Connection connection, Log log, String signature) {
+        if (connection != null) {
             try {
-                // Close the prepared statement:
-                preparedStatement.close();
+                // Close the connection
+                connection.close();
             } catch (SQLException e) {
                 // Log exception
                 Helper.logException(log, signature, e, "A database access error occurred"
                     + " when closing the connection to persistence (will be ignored).");
+
+                // Ignore
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Closes the statement.
+     * </p>
+     *
+     * @param statement
+     *            the statement.
+     * @param log
+     *            the logger.
+     * @param signature
+     *            the signature.
+     *
+     * @since 1.0.6
+     */
+    private static void closeStatement(Statement statement, Log log, String signature) {
+        if (statement != null) {
+            try {
+                // Close the statement:
+                statement.close();
+            } catch (SQLException e) {
+                // Log exception
+                Helper.logException(log, signature, e, "A database access error occurred"
+                    + " when closing the statement (will be ignored).");
 
                 // Ignore
             }
@@ -368,6 +526,30 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
 
             // Ignore
         }
+    }
+
+    /**
+     * <p>
+     * Gets the Connection.
+     * </p>
+     *
+     * @return the Connection.
+     *
+     * @throws IllegalStateException
+     *             if persistence was not configured properly (dbConnectionFactory is null).
+     * @throws DBConnectionException
+     *             if any error occurs.
+     *
+     * @since 1.0.6
+     */
+    private Connection getConnection() throws DBConnectionException {
+        if (dbConnectionFactory == null) {
+            throw new IllegalStateException("This persistence was not properly configured.");
+        }
+
+        // Create a connection
+        return (connectionName == null) ? dbConnectionFactory.createConnection()
+            : dbConnectionFactory.createConnection(connectionName);
     }
 
     /**

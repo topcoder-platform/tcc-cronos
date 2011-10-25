@@ -6,7 +6,9 @@ package com.topcoder.management.deliverable.late.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
@@ -16,6 +18,7 @@ import com.topcoder.management.deliverable.late.LateDeliverable;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementException;
 import com.topcoder.management.deliverable.late.LateDeliverableManager;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.search.builder.PersistenceOperationException;
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
@@ -47,63 +50,63 @@ import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
  * <em>Sample Configuration:</em>
  *
  * <pre>
- * &lt;?xml version="1.0"?&gt;
+ * &lt;?xml version=&quot;1.0&quot;?&gt;
  * &lt;CMConfig&gt;
- *   &lt;Config name="com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl"&gt;
- *     &lt;Property name="loggerName"&gt;
+ *   &lt;Config name=&quot;com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl&quot;&gt;
+ *     &lt;Property name=&quot;loggerName&quot;&gt;
  *       &lt;Value&gt;myLogger&lt;/Value&gt;
  *     &lt;/Property&gt;
- *     &lt;Property name="objectFactoryConfig"&gt;
- *       &lt;Property name="DatabaseLateDeliverablePersistence"&gt;
- *         &lt;Property name="type"&gt;
+ *     &lt;Property name=&quot;objectFactoryConfig&quot;&gt;
+ *       &lt;Property name=&quot;DatabaseLateDeliverablePersistence&quot;&gt;
+ *         &lt;Property name=&quot;type&quot;&gt;
  *           &lt;Value&gt;
  *             com.topcoder.management.deliverable.late.impl.persistence.DatabaseLateDeliverablePersistence
  *           &lt;/Value&gt;
  *         &lt;/Property&gt;
  *       &lt;/Property&gt;
  *     &lt;/Property&gt;
- *     &lt;Property name="searchBundleManagerNamespace"&gt;
+ *     &lt;Property name=&quot;searchBundleManagerNamespace&quot;&gt;
  *       &lt;Value&gt;LateDeliverableManagerImpl.SearchBuilderManager&lt;/Value&gt;
  *     &lt;/Property&gt;
- *     &lt;Property name="nonRestrictedSearchBundleName"&gt;
+ *     &lt;Property name=&quot;nonRestrictedSearchBundleName&quot;&gt;
  *       &lt;Value&gt;Non-restricted Late Deliverable Search Bundle&lt;/Value&gt;
  *     &lt;/Property&gt;
- *     &lt;Property name="restrictedSearchBundleName"&gt;
+ *     &lt;Property name=&quot;restrictedSearchBundleName&quot;&gt;
  *       &lt;Value&gt;Restricted Late Deliverable Search Bundle&lt;/Value&gt;
  *     &lt;/Property&gt;
- *     &lt;Property name="persistenceKey"&gt;
+ *     &lt;Property name=&quot;persistenceKey&quot;&gt;
  *       &lt;Value&gt;DatabaseLateDeliverablePersistence&lt;/Value&gt;
  *     &lt;/Property&gt;
- *     &lt;Property name="persistenceConfig"&gt;
- *       &lt;Property name="loggerName"&gt;
+ *     &lt;Property name=&quot;persistenceConfig&quot;&gt;
+ *       &lt;Property name=&quot;loggerName&quot;&gt;
  *         &lt;Value&gt;myLogger&lt;/Value&gt;
  *       &lt;/Property&gt;
- *       &lt;Property name="dbConnectionFactoryConfig"&gt;
- *         &lt;Property name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl"&gt;
- *           &lt;Property name="connections"&gt;
- *             &lt;Property name="default"&gt;
+ *       &lt;Property name=&quot;dbConnectionFactoryConfig&quot;&gt;
+ *         &lt;Property name=&quot;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&quot;&gt;
+ *           &lt;Property name=&quot;connections&quot;&gt;
+ *             &lt;Property name=&quot;default&quot;&gt;
  *               &lt;Value&gt;myConnection&lt;/Value&gt;
  *             &lt;/Property&gt;
- *             &lt;Property name="myConnection"&gt;
- *               &lt;Property name="producer"&gt;
+ *             &lt;Property name=&quot;myConnection&quot;&gt;
+ *               &lt;Property name=&quot;producer&quot;&gt;
  *                   &lt;Value&gt;com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer&lt;/Value&gt;
  *               &lt;/Property&gt;
- *               &lt;Property name="parameters"&gt;
- *                 &lt;Property name="jdbc_driver"&gt;
+ *               &lt;Property name=&quot;parameters&quot;&gt;
+ *                 &lt;Property name=&quot;jdbc_driver&quot;&gt;
  *                   &lt;Value&gt;com.informix.jdbc.IfxDriver&lt;/Value&gt;
  *                 &lt;/Property&gt;
- *                 &lt;Property name="jdbc_url"&gt;
+ *                 &lt;Property name=&quot;jdbc_url&quot;&gt;
  *                   &lt;Value&gt;
  *                     jdbc:informix-sqli://localhost:1526/tcs_catalog:informixserver=ol_topcoder
  *                   &lt;/Value&gt;
  *                 &lt;/Property&gt;
- *                 &lt;Property name="SelectMethod"&gt;
+ *                 &lt;Property name=&quot;SelectMethod&quot;&gt;
  *                   &lt;Value&gt;cursor&lt;/Value&gt;
  *                 &lt;/Property&gt;
- *                 &lt;Property name="user"&gt;
+ *                 &lt;Property name=&quot;user&quot;&gt;
  *                   &lt;Value&gt;informix&lt;/Value&gt;
  *                 &lt;/Property&gt;
- *                 &lt;Property name="password"&gt;
+ *                 &lt;Property name=&quot;password&quot;&gt;
  *                   &lt;Value&gt;123456&lt;/Value&gt;
  *                 &lt;/Property&gt;
  *               &lt;/Property&gt;
@@ -111,7 +114,7 @@ import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
  *           &lt;/Property&gt;
  *         &lt;/Property&gt;
  *       &lt;/Property&gt;
- *       &lt;Property name="connectionName"&gt;
+ *       &lt;Property name=&quot;connectionName&quot;&gt;
  *         &lt;Value&gt;myConnection&lt;/Value&gt;
  *       &lt;/Property&gt;
  *     &lt;/Property&gt;
@@ -144,6 +147,9 @@ import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
  * // lateDeliverable.getDeliverableId() must be 4
  * // lateDeliverable.isForgiven() must be false
  * // lateDeliverable.getExplanation() must be null
+ * // lateDeliverable.getType().getId() must be 1
+ * // lateDeliverable.getType().getName() must be &quot;Missed Deadline&quot;
+ * // lateDeliverable.getType().getDescription() must be &quot;Missed Deadline&quot;
  *
  * // Update the late deliverable by changing its forgiven flag and explanation
  * lateDeliverable.setForgiven(true);
@@ -163,6 +169,9 @@ import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
  * // lateDeliverables.get(0).getDeliverableId() must be 4
  * // lateDeliverables.get(0).isForgiven() must be true
  * // lateDeliverables.get(0).getExplanation() must be &quot;OR didn't work&quot;
+ * // lateDeliverables.get(0).getType().getId() must be 1
+ * // lateDeliverables.get(0).getType().getName() must be &quot;Missed Deadline&quot;
+ * // lateDeliverables.get(0).getType().getDescription() must be &quot;Missed Deadline&quot;
  *
  * // Search for all late deliverables from design category for all active projects
  * // to which user with ID=3 has a manager/copilot access
@@ -177,8 +186,31 @@ import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
  * // lateDeliverables.get(0).getDeliverableId() must be 3
  * // lateDeliverables.get(0).isForgiven() must be false
  * // lateDeliverables.get(0).getExplanation() must be null
+ * // lateDeliverables.get(0).getType().getId() must be 1
+ * // lateDeliverables.get(0).getType().getName() must be &quot;Missed Deadline&quot;
+ * // lateDeliverables.get(0).getType().getDescription() must be &quot;Missed Deadline&quot;
+ *
+ * // Retrieve all late deliverable types
+ * List&lt;LateDeliverableType&gt; lateDeliverableTypes = lateDeliverableManager.getLateDeliverableTypes();
+ * // lateDeliverableTypes.size() must be 2
+ * // lateDeliverableTypes.get(0).getId() must be 1
+ * // lateDeliverableTypes.get(0).getName() must be &quot;Missed Deadline&quot;
+ * // lateDeliverableTypes.get(0).getDescription() must be &quot;Missed Deadline&quot;
+ * // lateDeliverableTypes.get(1).getId() must be 2
+ * // lateDeliverableTypes.get(1).getName() must be &quot;Rejected Final Fix&quot;
+ * // lateDeliverableTypes.get(1).getDescription() must be &quot;Rejected Final Fix&quot;
  * </pre>
  *
+ * </p>
+ *
+ * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added getLateDeliverableTypes() method.</li>
+ * <li>Updated throws documentation of update() method.</li>
+ * <li>Updated getLateDeliverables() method.</li>
+ * <li>Updated class documentation.</li>
+ * </ol>
  * </p>
  *
  * <p>
@@ -187,7 +219,7 @@ import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.4
+ * @version 1.0.6
  */
 public class LateDeliverableManagerImpl implements LateDeliverableManager {
     /**
@@ -389,12 +421,20 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
      * Updates the given late deliverable in persistence.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>Updated throws documentation for IllegalArgumentException.</li>
+     * </ol>
+     * </p>
+     *
      * @param lateDeliverable
      *            the late deliverable with updated data.
      *
      * @throws IllegalArgumentException
      *             if lateDeliverable is null, lateDeliverable.getId() &lt;= 0, lateDeliverable.getDeadline() is null,
-     *             lateDeliverable.getCreateDate() is null.
+     *             lateDeliverable.getCreateDate() is null, lateDeliverable.getType() is null,
+     *             lateDeliverable.getType().getId() &lt;= 0.
      * @throws LateDeliverableNotFoundException
      *             if late deliverable with ID equal to lateDeliverable.getId() doesn't exist in persistence.
      * @throws LateDeliverablePersistenceException
@@ -432,6 +472,13 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
     /**
      * <p>
      * Retrieves the late deliverable with the given ID.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>The late deliverable types will be retrieved.</li>
+     * </ol>
      * </p>
      *
      * @param lateDeliverableId
@@ -489,6 +536,13 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
      * Searches for all late deliverables that are matched with the given filter. Returns an empty list if none found.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>The late deliverable types will be retrieved.</li>
+     * </ol>
+     * </p>
+     *
      * @param filter
      *            the filter for late deliverables (null if all late deliverables need to be retrieved).
      *
@@ -537,6 +591,13 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
      * Searches for all late deliverables that are matched with the given filter checking whether the user with the
      * specified ID has owner, manager or cockpit project access to the deliverables. Returns an empty list if none
      * found.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>The late deliverable types will be retrieved.</li>
+     * </ol>
      * </p>
      *
      * @param userId
@@ -609,7 +670,47 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
 
     /**
      * <p>
+     * Retrieves all existing late deliverable types.
+     * </p>
+     *
+     * @return the retrieved late deliverable types (not null, doesn't contain null).
+     *
+     * @throws LateDeliverablePersistenceException
+     *             if some error occurred when accessing the persistence.
+     *
+     * @since 1.0.6
+     */
+    public List<LateDeliverableType> getLateDeliverableTypes() throws LateDeliverablePersistenceException {
+        Date enterTimestamp = new Date();
+        String signature = getSignature("getLateDeliverableTypes()");
+
+        try {
+            // Log method entry
+            Helper.logEntrance(log, signature, null, null);
+
+            List<LateDeliverableType> result = persistence.getLateDeliverableTypes();
+
+            // Log method exit
+            Helper.logExit(log, signature, new Object[] {result}, enterTimestamp);
+
+            return result;
+        } catch (LateDeliverablePersistenceException e) {
+            // Log exception
+            throw Helper.logException(log, signature, e, "LateDeliverablePersistenceException is thrown"
+                + " when retrieving all existing late deliverable types.");
+        }
+    }
+
+    /**
+     * <p>
      * Retrieves the list of late deliverables with the search bundle and filter.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>Added steps to retrieve the late deliverable type.</li>
+     * </ol>
      * </p>
      *
      * @param searchBundle
@@ -633,6 +734,8 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
 
             // Create a list for result
             List<LateDeliverable> result = new ArrayList<LateDeliverable>();
+            // Create a map for cached late deliverable types:
+            Map<Long, LateDeliverableType> lateDeliverableTypes = new HashMap<Long, LateDeliverableType>();
 
             while (resultSet.next()) {
                 // Create late deliverable instance:
@@ -675,6 +778,27 @@ public class LateDeliverableManagerImpl implements LateDeliverableManager {
                 lateDeliverable.setResponseUser(resultSet.getString(index++));
                 // Copy response date from the result set to the late deliverable instance:
                 lateDeliverable.setResponseDate(resultSet.getTimestamp(index++));
+
+                // Get late deliverable type ID from the result set:
+                long lateDeliverableTypeId = resultSet.getLong(index++);
+                // Get cached late deliverable type from the map:
+                LateDeliverableType lateDeliverableType = lateDeliverableTypes.get(lateDeliverableTypeId);
+                if (lateDeliverableType == null) {
+                    // Create new late deliverable type instance:
+                    lateDeliverableType = new LateDeliverableType();
+                    // Set ID to the late deliverable type:
+                    lateDeliverableType.setId(lateDeliverableTypeId);
+                    // Copy late deliverable type name from the result set to the late deliverable type instance:
+                    lateDeliverableType.setName(resultSet.getString(index++));
+                    // Copy late deliverable type description from the result set to the late deliverable type
+                    // instance:
+                    lateDeliverableType.setDescription(resultSet.getString(index));
+
+
+                    lateDeliverableTypes.put(lateDeliverableTypeId, lateDeliverableType);
+                }
+                // Set late deliverable type to the late deliverable instance:
+                lateDeliverable.setType(lateDeliverableType);
 
                 // Add late deliverable to the list:
                 result.add(lateDeliverable);

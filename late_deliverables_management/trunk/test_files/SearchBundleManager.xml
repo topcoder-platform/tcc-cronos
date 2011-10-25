@@ -15,7 +15,7 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                  <Value>jdbc:informix-sqli://192.168.1.114:9088/tcs_catalog:informixserver=ol_ids_1110_1</Value>
+                  <Value>jdbc:informix-sqli://localhost:9088/tcs_catalog:informixserver=ol_svr_custom</Value>
                     </Property>
                     <Property name="SelectMethod">
                         <Value>cursor</Value>
@@ -24,7 +24,7 @@
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>system</Value>
+                        <Value>123456</Value>
                     </Property>
                 </Property>
             </Property>
@@ -63,12 +63,17 @@
             lt.explanation_date,
             lt.response,
             lt.response_user,
-            lt.response_date
+            lt.response_date,
+            lt.late_deliverable_type_id,
+            ldt.name,
+            ldt.description
             FROM late_deliverable lt
             INNER JOIN project_phase pp ON pp.project_phase_id = lt.project_phase_id
             INNER JOIN project p ON p.project_id = pp.project_id
             INNER JOIN resource_info ri ON ri.resource_id = lt.resource_id AND
                   ri.resource_info_type_id = 2
+            INNER JOIN late_deliverable_type_lu ldt
+                  ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
             WHERE
           </Value>
         </Property>
@@ -214,6 +219,26 @@
             </Property>
           </Property>
           <Property name="responseDate">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="lateDeliverableTypeId">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="lateDeliverableTypeName">
             <Property name="validator">
               <Property name="class">
                 <Value>validator</Value>
@@ -335,6 +360,15 @@
           <Property name="tcDirectProjectId">
             <Value>p.tc_direct_project_id</Value>
           </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
+          </Property>
         </Property>
       </Property>
 
@@ -361,7 +395,10 @@
             lt.explanation_date,
             lt.response,
             lt.response_user,
-            lt.response_date
+            lt.response_date,
+            lt.late_deliverable_type_id,
+            ldt.name,
+            ldt.description
             FROM late_deliverable lt
             INNER JOIN project_phase pp
             ON pp.project_phase_id = lt.project_phase_id
@@ -375,6 +412,9 @@
             ON g.resource_id = d.project_id
             INNER JOIN resource_info ri3 ON ri3.resource_id = lt.resource_id AND
                   ri3.resource_info_type_id = 2
+            INNER JOIN late_deliverable_type_lu ldt
+                ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
+                  
             WHERE
           </Value>
         </Property>
@@ -529,6 +569,26 @@
               </Property>
             </Property>
           </Property>
+          <Property name="lateDeliverableTypeId">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
           <Property name="projectId">
             <Property name="validator">
               <Property name="class">
@@ -608,6 +668,15 @@
                 <Value>default</Value>
               </Property>
             </Property>
+          </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
           </Property>
         </Property>
         <Property name="alias">
@@ -716,10 +785,16 @@
             lt.explanation_date,
             lt.response,
             lt.response_user,
-            lt.response_date
+            lt.response_date,
+            lt.late_deliverable_type_id,
+            ldt.name,
+            ldt.description
             FROM late_deliverable lt
             INNER JOIN project_phase pp ON pp.project_phase_id = lt.project_phase_id
             INNER JOIN project p ON p.project_id = pp.project_id
+            INNER JOIN late_deliverable_type_lu ldt
+                ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
+            
             WHERE
           </Value>
         </Property>
@@ -781,6 +856,26 @@
           <Property name="responseDate">
             <Value>lt.response_date</Value>
           </Property>
+          <Property name="lateDeliverableTypeId">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Property name="validator">
+              <Property name="class">
+                <Value>validator</Value>
+              </Property>
+              <Property name="identifier">
+                <Value>default</Value>
+              </Property>
+            </Property>
+          </Property>
           <Property name="projectId">
             <Value>pp.project_id</Value>
           </Property>
@@ -792,6 +887,15 @@
           </Property>
           <Property name="tcDirectProjectId">
             <Value>p.tc_direct_project_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
           </Property>
         </Property>
       </Property>
@@ -819,7 +923,10 @@
             lt.explanation_date,
             lt.response,
             lt.response_user,
-            lt.response_date
+            lt.response_date,
+            lt.late_deliverable_type_id,
+            ldt.name,
+            ldt.description
             FROM late_deliverable lt
             INNER JOIN project_phase pp
             ON pp.project_phase_id = lt.project_phase_id
@@ -831,6 +938,8 @@
             ON d.project_id = p.tc_direct_project_id
             LEFT OUTER JOIN corporate_oltp:user_permission_grant g
             ON g.resource_id = d.project_id
+            INNER JOIN late_deliverable_type_lu ldt
+                ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
             WHERE
           </Value>
         </Property>
@@ -904,6 +1013,15 @@
           <Property name="tcDirectProjectId">
             <Value>p.tc_direct_project_id</Value>
           </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
+          </Property>
         </Property>
       </Property>
     </Property>
@@ -929,6 +1047,8 @@
             FROM late_deliverable lt
             INNER JOIN project_phase pp ON pp.project_phase_id = lt.project_phase_id
             INNER JOIN project p ON p.project_id = pp.project_id
+            INNER JOIN late_deliverable_type_lu ldt
+                ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
             WHERE
           </Value>
         </Property>
@@ -1042,6 +1162,15 @@
           <Property name="tcDirectProjectId">
             <Value>p.tc_direct_project_id</Value>
           </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
+          </Property>
         </Property>
       </Property>
 
@@ -1065,6 +1194,8 @@
             ON d.project_id = p.tc_direct_project_id
             LEFT OUTER JOIN corporate_oltp:user_permission_grant g
             ON g.resource_id = d.project_id
+            INNER JOIN late_deliverable_type_lu ldt
+                ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
             WHERE
           </Value>
         </Property>
@@ -1197,6 +1328,15 @@
         </Property>
           <Property name="tcDirectProjectId">
             <Value>p.tc_direct_project_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
           </Property>
       </Property>
     </Property>
@@ -1233,10 +1373,15 @@
             lt.explanation_date,
             lt.response,
             lt.response_user,
-            lt.response_date
+            lt.response_date,
+            lt.late_deliverable_type_id,
+            ldt.name,
+            ldt.description
             FROM late_deliverable lt
             INNER JOIN project_phase pp ON pp.project_phase_id = lt.project_phase_id
             INNER JOIN project p ON p.project_id = pp.project_id
+            INNER JOIN late_deliverable_type_lu ldt
+                ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
             WHERE
           </Value>
         </Property>
@@ -1350,6 +1495,15 @@
           <Property name="tcDirectProjectId">
             <Value>p.tc_direct_project_id</Value>
           </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
+          </Property>
         </Property>
       </Property>
 
@@ -1373,7 +1527,10 @@
             lt.last_notified,
             lt.delay,
             lt.explanation,
-            lt.response
+            lt.response,
+            lt.late_deliverable_type_id,
+            ldt.name,
+            ldt.description
             FROM late_deliverable lt
             INNER JOIN project_phase pp
             ON pp.project_phase_id = lt.project_phase_id
@@ -1385,6 +1542,8 @@
             ON d.project_id = p.tc_direct_project_id
             LEFT OUTER JOIN corporate_oltp:user_permission_grant g
             ON g.resource_id = d.project_id
+            INNER JOIN late_deliverable_type_lu ldt
+                ON ldt.late_deliverable_type_id = lt.late_deliverable_type_id
             WHERE
           </Value>
         </Property>
@@ -1516,6 +1675,15 @@
           </Property>
           <Property name="tcDirectProjectId">
             <Value>p.tc_direct_project_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeId">
+            <Value>lt.late_deliverable_type_id</Value>
+          </Property>
+          <Property name="lateDeliverableTypeName">
+            <Value>ldt.name</Value>
+          </Property>
+          <Property name="lateDeliverableTypeDescription">
+            <Value>ldt.description</Value>
           </Property>
         </Property>
       </Property>

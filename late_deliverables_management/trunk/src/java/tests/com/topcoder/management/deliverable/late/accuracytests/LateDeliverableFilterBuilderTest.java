@@ -4,9 +4,11 @@
 
 package com.topcoder.management.deliverable.late.accuracytests;
 
-import com.topcoder.management.deliverable.late.search.LateDeliverableFilterBuilder;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.topcoder.management.deliverable.late.search.LateDeliverableFilterBuilder;
+import com.topcoder.search.builder.filter.EqualToFilter;
 
 /**
  * <p> Accuracy test for <code>LateDeliverableFilterBuilder</code>. </p>
@@ -74,5 +76,19 @@ public class LateDeliverableFilterBuilderTest {
     @Test
     public void testCreateForgivenFilter_accuracy() throws Exception {
         Assert.assertNotNull(LateDeliverableFilterBuilder.createForgivenFilter(false));
+    }
+
+    /**
+     * <p> Accuracy test for <code>createLateDeliverableTypeIdFilter(long id)</code>. </p>
+     *
+     * <p> Test that when the input is valid, the functionality of this method should be performed correctly.</p>
+     *
+     * @throws Exception to JUnit.
+     */
+    @Test
+    public void testcreateLateDeliverableTypeIdFilter_accuracy() throws Exception {
+        EqualToFilter createLateDeliverableTypeIdFilter = (EqualToFilter)LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(1);
+        Assert.assertEquals(createLateDeliverableTypeIdFilter.getName(), "lateDeliverableTypeId");
+        Assert.assertEquals(createLateDeliverableTypeIdFilter.getValue(), new Long(1L));
     }
 }

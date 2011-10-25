@@ -186,9 +186,9 @@ public class TestsHelper {
                 }
             }
         } finally {
-        	if (stmt != null) {
-        		stmt.close();
-        	}
+            if (stmt != null) {
+                stmt.close();
+            }
         }
     }
 

@@ -21,8 +21,16 @@ import org.junit.Test;
  * Unit tests for {@link LateDeliverable} class.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added test cases for type property.</li>
+ * <li>Updated test cases for constructor and toString() method.</li>
+ * </ol>
+ * </p>
+ *
  * @author sparemax
- * @version 1.0.4
+ * @version 1.0.6
  */
 public class LateDeliverableUnitTests {
     /**
@@ -64,6 +72,7 @@ public class LateDeliverableUnitTests {
         instance = new LateDeliverable();
 
         assertEquals("'id' should be correct.", 0L, TestsHelper.getField(instance, "id"));
+        assertNull("'type' should be correct.", TestsHelper.getField(instance, "type"));
         assertEquals("'projectId' should be correct.", 0L, TestsHelper.getField(instance, "projectId"));
         assertEquals("'projectPhaseId' should be correct.", 0L, TestsHelper.getField(instance, "projectPhaseId"));
         assertEquals("'resourceId' should be correct.", 0L, TestsHelper.getField(instance, "resourceId"));
@@ -104,6 +113,39 @@ public class LateDeliverableUnitTests {
 
         assertEquals("'setId' should be correct.",
             value, TestsHelper.getField(instance, "id"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getType()</code>.<br>
+     * The value should be properly retrieved.
+     * </p>
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_getType() {
+        LateDeliverableType value = new LateDeliverableType();
+        instance.setType(value);
+
+        assertSame("'getType' should be correct.", value, instance.getType());
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>setType(LateDeliverableType type)</code>.<br>
+     * The value should be properly set.
+     * </p>
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_setType() {
+        LateDeliverableType value = new LateDeliverableType();
+        instance.setType(value);
+
+        assertSame("'setType' should be correct.",
+            value, TestsHelper.getField(instance, "type"));
     }
 
     /**
@@ -548,25 +590,14 @@ public class LateDeliverableUnitTests {
      */
     @Test
     public void test_toString_1() {
-        instance.setId(1);
-        instance.setProjectId(6L);
-        instance.setProjectPhaseId(2);
-        instance.setResourceId(3);
-        instance.setDeliverableId(4);
-        instance.setDeadline(new Date());
-        instance.setCreateDate(new Date());
-        instance.setForgiven(true);
-        instance.setLastNotified(new Date());
-        instance.setDelay(5L);
-        instance.setExplanation("The explanation");
-        instance.setExplanationDate(new Date());
-        instance.setResponse("The response");
-        instance.setResponseUser("12345");
-        instance.setResponseDate(new Date());
+        instance = getLateDeliverable();
 
         String res = instance.toString();
 
         assertTrue("'toString' should be correct.", res.contains("id:1"));
+        assertTrue("'toString' should be correct.", res.contains("lateDeliverableType:"));
+        assertTrue("'toString' should be correct.", res.contains("name:The name"));
+        assertTrue("'toString' should be correct.", res.contains("description:The description"));
         assertTrue("'toString' should be correct.", res.contains("projectId:6"));
         assertTrue("'toString' should be correct.", res.contains("projectPhaseId:2"));
         assertTrue("'toString' should be correct.", res.contains("resourceId:3"));
@@ -593,11 +624,43 @@ public class LateDeliverableUnitTests {
     public void test_toString_2() {
         instance = new LateDeliverable();
         String expected = LateDeliverable.class.getName()
-            + "{id:0, projectId:0, projectPhaseId:0, resourceId:0, deliverableId:0, deadline:null,"
-            + " compensatedDeadline:null, createDate:null, forgiven:false, lastNotified:null, delay:null,"
-            + " explanation:null, explanationDate:null, response:null, responseUser:null, responseDate:null}";
+            + "{id:0, lateDeliverableType:null, projectId:0, projectPhaseId:0, resourceId:0, deliverableId:0,"
+            + " deadline:null, compensatedDeadline:null, createDate:null, forgiven:false, lastNotified:null,"
+            + " delay:null, explanation:null, explanationDate:null, response:null, responseUser:null,"
+            + " responseDate:null}";
         String res = instance.toString();
 
         assertEquals("'toString' should be correct.", expected, res);
+    }
+
+    /**
+     * Creates an instance of LateDeliverable.
+     *
+     * @return the LateDeliverable instance.
+     */
+    private static LateDeliverable getLateDeliverable() {
+        LateDeliverable lateDeliverable = new LateDeliverable();
+        lateDeliverable.setId(1);
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(1);
+        type.setName("The name");
+        type.setDescription("The description");
+        lateDeliverable.setType(type);
+        lateDeliverable.setProjectId(6L);
+        lateDeliverable.setProjectPhaseId(2);
+        lateDeliverable.setResourceId(3);
+        lateDeliverable.setDeliverableId(4);
+        lateDeliverable.setDeadline(new Date());
+        lateDeliverable.setCreateDate(new Date());
+        lateDeliverable.setForgiven(true);
+        lateDeliverable.setLastNotified(new Date());
+        lateDeliverable.setDelay(5L);
+        lateDeliverable.setExplanation("The explanation");
+        lateDeliverable.setExplanationDate(new Date());
+        lateDeliverable.setResponse("The response");
+        lateDeliverable.setResponseUser("12345");
+        lateDeliverable.setResponseDate(new Date());
+
+        return lateDeliverable;
     }
 }

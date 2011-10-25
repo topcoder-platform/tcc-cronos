@@ -14,6 +14,7 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.XMLFilePersistence;
 import com.topcoder.management.deliverable.late.LateDeliverable;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.management.deliverable.late.impl.LateDeliverablePersistenceException;
 import com.topcoder.management.deliverable.late.impl.persistence.DatabaseLateDeliverablePersistence;
 
@@ -143,6 +144,9 @@ public class DatabaseLateDeliverablePersistenceFailureTest extends TestCase {
     	lateDeliverable.setProjectPhaseId(1);
     	lateDeliverable.setResourceId(1);
     	lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(1);
+        lateDeliverable.setType(type );
         try {
 			instance.update(lateDeliverable );
             fail("Expects LateDeliverablePersistenceException");
@@ -199,6 +203,9 @@ public class DatabaseLateDeliverablePersistenceFailureTest extends TestCase {
     	lateDeliverable.setProjectPhaseId(1);
     	lateDeliverable.setResourceId(1);
     	lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(1);
+        lateDeliverable.setType(type );
         try {
 			instance.update(lateDeliverable );
             fail("Expects IllegalArgumentException");
@@ -232,10 +239,101 @@ public class DatabaseLateDeliverablePersistenceFailureTest extends TestCase {
     	lateDeliverable.setProjectPhaseId(1);
     	lateDeliverable.setResourceId(1);
     	lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(1);
+        lateDeliverable.setType(type );
         try {
 			instance.update(lateDeliverable );
             fail("Expects IllegalArgumentException");
         } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method update() with invalid input.
+     * Expects IllegalArgumentException.
+     */
+    public void test_update_7() throws Exception {
+        XMLFilePersistence persistence = new XMLFilePersistence();
+
+        // Get configuration
+        ConfigurationObject obj = persistence.loadFile(
+            "com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl", new File("test_files/failure/LateDeliverableManagerImpl.xml"));
+
+        obj = obj.getChild("com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl").getChild("persistenceConfig");
+        instance.configure(obj);
+
+        LateDeliverable lateDeliverable = new LateDeliverable();
+        lateDeliverable.setId(1);
+        lateDeliverable.setCreateDate(new Date());
+        lateDeliverable.setDeadline(new Date());
+        lateDeliverable.setDelay(2L);
+        lateDeliverable.setDeliverableId(1);
+        lateDeliverable.setExplanation("invalid");
+        lateDeliverable.setLastNotified(new Date());
+        lateDeliverable.setProjectPhaseId(1);
+        lateDeliverable.setResourceId(1);
+        lateDeliverable.setResponse("reply");
+        LateDeliverableType type = new LateDeliverableType();
+        type.setId(0);
+        lateDeliverable.setType(type );
+        try {
+            instance.update(lateDeliverable );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method update() with invalid input.
+     * Expects IllegalArgumentException.
+     */
+    public void test_update_8() throws Exception {
+        XMLFilePersistence persistence = new XMLFilePersistence();
+
+        // Get configuration
+        ConfigurationObject obj = persistence.loadFile(
+            "com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl", new File("test_files/failure/LateDeliverableManagerImpl.xml"));
+
+        obj = obj.getChild("com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl").getChild("persistenceConfig");
+        instance.configure(obj);
+
+        LateDeliverable lateDeliverable = new LateDeliverable();
+        lateDeliverable.setId(1);
+        lateDeliverable.setCreateDate(new Date());
+        lateDeliverable.setDeadline(null);
+        lateDeliverable.setDelay(2L);
+        lateDeliverable.setDeliverableId(1);
+        lateDeliverable.setExplanation("invalid");
+        lateDeliverable.setLastNotified(new Date());
+        lateDeliverable.setProjectPhaseId(1);
+        lateDeliverable.setResourceId(1);
+        lateDeliverable.setResponse("reply");
+        lateDeliverable.setType(null);
+        try {
+            instance.update(lateDeliverable );
+            fail("Expects IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+    /**
+     * Failure test for method getLateDeliverableTypes() with invalid database configuration.
+     * Expects LateDeliverablePersistenceException.
+     */
+    public void test_getLateDeliverableTypes_8() throws Exception {
+        XMLFilePersistence persistence = new XMLFilePersistence();
+
+        // Get configuration
+        ConfigurationObject obj = persistence.loadFile(
+            "com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl", new File("test_files/failure/LateDeliverableManagerImpl.xml"));
+
+        obj = obj.getChild("com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl").getChild("persistenceConfig");
+        instance.configure(obj);
+        try {
+            instance.getLateDeliverableTypes();
+            fail("Expects LateDeliverablePersistenceException");
+        } catch (LateDeliverablePersistenceException e) {
             // good
         }
     }

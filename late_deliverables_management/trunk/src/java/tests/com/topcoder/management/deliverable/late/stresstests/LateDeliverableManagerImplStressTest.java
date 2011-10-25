@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late.stresstests;
 
@@ -18,9 +18,11 @@ import junit.framework.TestCase;
 
 /**
  * Stress test for LateDeliverableManagerImpl class.
+ * Changes in 1.0.6: add new column 'late_deliverable_type_id' support.
  *
- * @author TCSDEVELOPER
- * @version 1.0
+ * @author TCSDEVELOPER, gjw99
+ * @version 1.0.6
+ * @since 1.0
  */
 public class LateDeliverableManagerImplStressTest extends TestCase {
     /**
@@ -77,7 +79,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
             assertEquals("retrieve is incorrect.", 30000, lateDeliverable.getId());
             assertEquals("retrieve is incorrect.", 101, lateDeliverable.getProjectPhaseId());
             assertEquals("retrieve is incorrect.", 1001, lateDeliverable.getResourceId());
-            assertEquals("retrieve is incorrect.", 55, lateDeliverable.getDeliverableId());
+            assertEquals("retrieve is incorrect.", 50, lateDeliverable.getDeliverableId());
             assertEquals("retrieve is incorrect.", "exp", lateDeliverable.getExplanation());
             assertEquals("retrieve is incorrect.", "resp", lateDeliverable.getResponse());
         }
@@ -107,7 +109,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
                             assertEquals("retrieve is incorrect.", 30000, lateDeliverable.getId());
                             assertEquals("retrieve is incorrect.", 101, lateDeliverable.getProjectPhaseId());
                             assertEquals("retrieve is incorrect.", 1001, lateDeliverable.getResourceId());
-                            assertEquals("retrieve is incorrect.", 55, lateDeliverable.getDeliverableId());
+                            assertEquals("retrieve is incorrect.", 50, lateDeliverable.getDeliverableId());
                             assertEquals("retrieve is incorrect.", "exp", lateDeliverable.getExplanation());
                             assertEquals("retrieve is incorrect.", "resp", lateDeliverable.getResponse());
                         }
@@ -148,7 +150,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
 
             assertEquals("'searchAllLateDeliverables' should be correct.", 1, list.size());
             LateDeliverable lateDeliverable = list.get(0);
-            assertEquals("searchAllLateDeliverables is incorrect.", 30000, lateDeliverable.getId());
+            assertEquals("searchAllLateDeliverables is incorrect.", 30002, lateDeliverable.getId());
             assertEquals("searchAllLateDeliverables is incorrect.", 101, lateDeliverable.getProjectPhaseId());
             assertEquals("searchAllLateDeliverables is incorrect.", 1001, lateDeliverable.getResourceId());
             assertEquals("searchAllLateDeliverables is incorrect.", 55, lateDeliverable.getDeliverableId());
@@ -189,7 +191,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
 
                             assertEquals("'searchAllLateDeliverables' should be correct.", 1, list.size());
                             LateDeliverable lateDeliverable = list.get(0);
-                            assertEquals("searchAllLateDeliverables is incorrect.", 30000, lateDeliverable.getId());
+                            assertEquals("searchAllLateDeliverables is incorrect.", 30002, lateDeliverable.getId());
                             assertEquals("searchAllLateDeliverables is incorrect.", 101, lateDeliverable
                                 .getProjectPhaseId());
                             assertEquals("searchAllLateDeliverables is incorrect.", 1001, lateDeliverable
@@ -233,7 +235,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
 
         List<LateDeliverable> list = instance.searchAllLateDeliverables(filter);
 
-        assertEquals("'searchAllLateDeliverables' should be correct.", 16365, list.size());
+        assertEquals("'searchAllLateDeliverables' should be correct.", 8184, list.size());
         long spent = System.currentTimeMillis() - start;
         System.out.println("Run DatabaseLateDeliverablePersistence#searchAllLateDeliverables 1 times , spent " + spent
             + "ms.");
@@ -253,7 +255,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
         long start = System.currentTimeMillis();
         List<LateDeliverable> list = instance.searchAllLateDeliverables(filter);
 
-        assertEquals("'searchAllLateDeliverables' should be correct.", 2727, list.size());
+        assertEquals("'searchAllLateDeliverables' should be correct.", 1169, list.size());
         long spent = System.currentTimeMillis() - start;
         System.out.println("Run DatabaseLateDeliverablePersistence#searchAllLateDeliverables 1 times , spent " + spent
             + "ms.");
@@ -283,7 +285,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
                         for (int i = 0; i < 5; i++) {
                             List<LateDeliverable> list = instance.searchAllLateDeliverables(threadFileter);
 
-                            assertEquals("'searchAllLateDeliverables' should be correct.", 2727, list.size());
+                            assertEquals("'searchAllLateDeliverables' should be correct.", 1169, list.size());
                         }
                     } catch (Throwable e) {
                         error = e;
@@ -298,7 +300,39 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
         }
         assertNull("No exception should be thrown.", error);
         long spent = System.currentTimeMillis() - start;
-        System.out.println("DatabaseLateDeliverablePersistence#searchAllLateDeliverables 50 times multi-thread, spent "
+        System.out.println("DatabaseLateDeliverablePersistence#searchAllLateDeliverables 53 times multi-thread, spent "
+            + spent + "ms.");
+    }
+
+    /**
+     * Stress test for searchAllLateDeliverables(Filter filter) method. It will search by some filters.
+     *
+     * @throws Exception
+     *             to JUnit.
+     */
+    @Test
+    public void testSearchAllLateDeliverables6() throws Exception {
+        Filter filter = new OrFilter(LateDeliverableFilterBuilder.createProjectCategoryIdFilter(1),
+            LateDeliverableFilterBuilder.createProjectStatusIdFilter(1));
+        filter = new AndFilter(filter, LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(1));
+        filter = new AndFilter(filter, LateDeliverableFilterBuilder.createForgivenFilter(true));
+        filter = new AndFilter(filter, LateDeliverableFilterBuilder.createDeliverableIdFilter(55));
+
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            List<LateDeliverable> list = instance.searchAllLateDeliverables(filter);
+
+            assertEquals("'searchAllLateDeliverables' should be correct.", 1, list.size());
+            LateDeliverable lateDeliverable = list.get(0);
+            assertEquals("searchAllLateDeliverables is incorrect.", 30002, lateDeliverable.getId());
+            assertEquals("searchAllLateDeliverables is incorrect.", 101, lateDeliverable.getProjectPhaseId());
+            assertEquals("searchAllLateDeliverables is incorrect.", 1001, lateDeliverable.getResourceId());
+            assertEquals("searchAllLateDeliverables is incorrect.", 55, lateDeliverable.getDeliverableId());
+            assertEquals("searchAllLateDeliverables is incorrect.", "exp", lateDeliverable.getExplanation());
+            assertEquals("searchAllLateDeliverables is incorrect.", "resp", lateDeliverable.getResponse());
+        }
+        long spent = System.currentTimeMillis() - start;
+        System.out.println("Run DatabaseLateDeliverablePersistence#searchAllLateDeliverables 100 times , spent "
             + spent + "ms.");
     }
 
@@ -313,7 +347,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
     public void testSearchRestrictedLateDeliverables1() throws Exception {
         Filter filter = new OrFilter(LateDeliverableFilterBuilder.createProjectCategoryIdFilter(1),
             LateDeliverableFilterBuilder.createProjectStatusIdFilter(1));
-        filter = new AndFilter(filter, LateDeliverableFilterBuilder.createDeliverableIdFilter(55));
+        filter = new AndFilter(filter, LateDeliverableFilterBuilder.createDeliverableIdFilter(53));
         filter = new AndFilter(filter, LateDeliverableFilterBuilder.createForgivenFilter(true));
 
         long start = System.currentTimeMillis();
@@ -321,10 +355,10 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
             List<LateDeliverable> list = instance.searchRestrictedLateDeliverables(filter, 3);
             assertEquals("'searchRestrictedLateDeliverables' should be correct.", 1, list.size());
             LateDeliverable lateDeliverable = list.get(0);
-            assertEquals("searchRestrictedLateDeliverables is incorrect.", 30000, lateDeliverable.getId());
+            assertEquals("searchRestrictedLateDeliverables is incorrect.", 30001, lateDeliverable.getId());
             assertEquals("searchRestrictedLateDeliverables is incorrect.", 101, lateDeliverable.getProjectPhaseId());
-            assertEquals("searchRestrictedLateDeliverables is incorrect.", 1001, lateDeliverable.getResourceId());
-            assertEquals("searchRestrictedLateDeliverables is incorrect.", 55, lateDeliverable.getDeliverableId());
+            assertEquals("searchRestrictedLateDeliverables is incorrect.", 1003, lateDeliverable.getResourceId());
+            assertEquals("searchRestrictedLateDeliverables is incorrect.", 53, lateDeliverable.getDeliverableId());
             assertEquals("searchRestrictedLateDeliverables is incorrect.", "exp", lateDeliverable.getExplanation());
             assertEquals("searchRestrictedLateDeliverables is incorrect.", "resp", lateDeliverable.getResponse());
         }
@@ -344,7 +378,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
     public void testSearchRestrictedLateDeliverables2() throws Exception {
         Filter filter = new OrFilter(LateDeliverableFilterBuilder.createProjectCategoryIdFilter(1),
             LateDeliverableFilterBuilder.createProjectStatusIdFilter(1));
-        filter = new AndFilter(filter, LateDeliverableFilterBuilder.createDeliverableIdFilter(55));
+        filter = new AndFilter(filter, LateDeliverableFilterBuilder.createDeliverableIdFilter(53));
         filter = new AndFilter(filter, LateDeliverableFilterBuilder.createForgivenFilter(true));
         final Filter threadFileter = filter;
 
@@ -361,13 +395,13 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
                             List<LateDeliverable> list = instance.searchRestrictedLateDeliverables(threadFileter, 3);
                             assertEquals("'searchRestrictedLateDeliverables' should be correct.", 1, list.size());
                             LateDeliverable lateDeliverable = list.get(0);
-                            assertEquals("searchRestrictedLateDeliverables is incorrect.", 30000, lateDeliverable
+                            assertEquals("searchRestrictedLateDeliverables is incorrect.", 30001, lateDeliverable
                                 .getId());
                             assertEquals("searchRestrictedLateDeliverables is incorrect.", 101, lateDeliverable
                                 .getProjectPhaseId());
-                            assertEquals("searchRestrictedLateDeliverables is incorrect.", 1001, lateDeliverable
+                            assertEquals("searchRestrictedLateDeliverables is incorrect.", 1003, lateDeliverable
                                 .getResourceId());
-                            assertEquals("searchRestrictedLateDeliverables is incorrect.", 55, lateDeliverable
+                            assertEquals("searchRestrictedLateDeliverables is incorrect.", 53, lateDeliverable
                                 .getDeliverableId());
                             assertEquals("searchRestrictedLateDeliverables is incorrect.", "exp", lateDeliverable
                                 .getExplanation());
@@ -407,7 +441,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
 
         List<LateDeliverable> list = instance.searchRestrictedLateDeliverables(filter, 1);
 
-        assertEquals("'searchAllLateDeliverables' should be correct.", 7794, list.size());
+        assertEquals("'searchAllLateDeliverables' should be correct.", 5846, list.size());
         // the properties has checked at atestSearchRestrictedLateDeliverables1 and
         // atestSearchRestrictedLateDeliverables2
         long spent = System.currentTimeMillis() - start;
@@ -453,7 +487,7 @@ public class LateDeliverableManagerImplStressTest extends TestCase {
 
         List<LateDeliverable> list = instance.searchRestrictedLateDeliverables(filter, 3);
 
-        assertEquals("'searchAllLateDeliverables' should be correct.", 6235, list.size());
+        assertEquals("'searchAllLateDeliverables' should be correct.", 5846, list.size());
         // the properties has checked at atestSearchRestrictedLateDeliverables1 and
         // atestSearchRestrictedLateDeliverables2
         long spent = System.currentTimeMillis() - start;

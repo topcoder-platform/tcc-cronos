@@ -12,11 +12,19 @@ import java.util.Date;
  * </p>
  *
  * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added type property.</li>
+ * <li>Updated toString() method.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety: </strong> This class is mutable and not thread safe.
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.0.4
+ * @version 1.0.6
  */
 public class LateDeliverable {
     /**
@@ -29,6 +37,15 @@ public class LateDeliverable {
      * </p>
      */
     private long id;
+
+    /**
+     * <p>
+     * The type of the late deliverable. Can be any value. Has getter and setter.
+     * </p>
+     *
+     * @since 1.0.6
+     */
+    private LateDeliverableType type;
 
     /**
      * <p>
@@ -222,6 +239,33 @@ public class LateDeliverable {
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * <p>
+     * Retrieves the type of the late deliverable.
+     * </p>
+     *
+     * @return the type of the late deliverable.
+     *
+     * @since 1.0.6
+     */
+    public LateDeliverableType getType() {
+        return type;
+    }
+
+    /**
+     * <p>
+     * Sets the type of the late deliverable.
+     * </p>
+     *
+     * @param type
+     *            the type of the late deliverable.
+     *
+     * @since 1.0.6
+     */
+    public void setType(LateDeliverableType type) {
+        this.type = type;
     }
 
     /**
@@ -574,12 +618,20 @@ public class LateDeliverable {
      * Returns a <code>String</code> representing this object.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.0.6:</em>
+     * <ol>
+     * <li>Added type property.</li>
+     * </ol>
+     * </p>
+     *
      * @return a string representation of this object.
      */
     @Override
     public String toString() {
         return Helper.concat(this.getClass().getName(), "{",
             "id:", id,
+            ", lateDeliverableType:", type,
             ", projectId:", projectId,
             ", projectPhaseId:", projectPhaseId,
             ", resourceId:", resourceId,

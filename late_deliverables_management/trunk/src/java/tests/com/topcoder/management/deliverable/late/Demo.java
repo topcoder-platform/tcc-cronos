@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.late;
 
@@ -23,8 +23,15 @@ import com.topcoder.search.builder.filter.Filter;
  * Shows usage for the component.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Updated demo.</li>
+ * </ol>
+ * </p>
+ *
  * @author saarixx, sparemax
- * @version 1.0
+ * @version 1.0.6
  */
 public class Demo {
     /**
@@ -110,6 +117,9 @@ public class Demo {
         // lateDeliverable.getDeliverableId() must be 4
         // lateDeliverable.isForgiven() must be false
         // lateDeliverable.getExplanation() must be null
+        // lateDeliverable.getType().getId() must be 1
+        // lateDeliverable.getType().getName() must be "Missed Deadline"
+        // lateDeliverable.getType().getDescription() must be "Missed Deadline"
 
         // Update the late deliverable by changing its forgiven flag and explanation
         lateDeliverable.setForgiven(true);
@@ -129,6 +139,9 @@ public class Demo {
         // lateDeliverables.get(0).getDeliverableId() must be 4
         // lateDeliverables.get(0).isForgiven() must be true
         // lateDeliverables.get(0).getExplanation() must be "OR didn't work"
+        // lateDeliverables.get(0).getType().getId() must be 1
+        // lateDeliverables.get(0).getType().getName() must be "Missed Deadline"
+        // lateDeliverables.get(0).getType().getDescription() must be "Missed Deadline"
 
         // Search for all late deliverables from design category for all active projects
         // to which user with ID=3 has a manager/copilot access
@@ -143,5 +156,18 @@ public class Demo {
         // lateDeliverables.get(0).getDeliverableId() must be 3
         // lateDeliverables.get(0).isForgiven() must be false
         // lateDeliverables.get(0).getExplanation() must be null
+        // lateDeliverables.get(0).getType().getId() must be 1
+        // lateDeliverables.get(0).getType().getName() must be "Missed Deadline"
+        // lateDeliverables.get(0).getType().getDescription() must be "Missed Deadline"
+
+        // Retrieve all late deliverable types
+        List<LateDeliverableType> lateDeliverableTypes = lateDeliverableManager.getLateDeliverableTypes();
+        // lateDeliverableTypes.size() must be 2
+        // lateDeliverableTypes.get(0).getId() must be 1
+        // lateDeliverableTypes.get(0).getName() must be "Missed Deadline"
+        // lateDeliverableTypes.get(0).getDescription() must be "Missed Deadline"
+        // lateDeliverableTypes.get(1).getId() must be 2
+        // lateDeliverableTypes.get(1).getName() must be "Rejected Final Fix"
+        // lateDeliverableTypes.get(1).getDescription() must be "Rejected Final Fix"
     }
 }

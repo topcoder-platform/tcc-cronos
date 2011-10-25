@@ -16,7 +16,6 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationPersistence;
 import com.topcoder.configuration.persistence.XMLFilePersistence;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
-import com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -85,9 +84,9 @@ public class StressTestHelper {
     public static ConfigurationObject getLateDeliverableManagerImplConfig() throws Exception {
         if (config == null) {
             ConfigurationPersistence persistence = new XMLFilePersistence();
-            ConfigurationObject obj = persistence.loadFile(LateDeliverableManagerImpl.class.getName(), new File(
+            ConfigurationObject obj = persistence.loadFile("com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl", new File(
                 "test_files/stress/LateDeliverableManagerImpl.xml"));
-            config = obj.getChild(LateDeliverableManagerImpl.class.getName());
+            config = obj.getChild("com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl");
         }
 
         return config;

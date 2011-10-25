@@ -24,6 +24,7 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.management.deliverable.late.LateDeliverable;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementException;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.management.deliverable.late.TestsHelper;
 import com.topcoder.management.deliverable.late.search.LateDeliverableFilterBuilder;
 import com.topcoder.search.builder.filter.AndFilter;
@@ -37,8 +38,16 @@ import com.topcoder.search.builder.filter.NotFilter;
  * Unit tests for {@link LateDeliverableManagerImpl} class.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added/updated test cases for getLateDeliverableTypes(), update(), retrieve, searchAllLateDeliverables and
+ * searchRestrictedLateDeliverables methods.</li>
+ * </ol>
+ * </p>
+ *
  * @author sparemax
- * @version 1.0.4
+ * @version 1.0.6
  */
 public class LateDeliverableManagerImplUnitTests {
     /**
@@ -711,6 +720,63 @@ public class LateDeliverableManagerImplUnitTests {
 
     /**
      * <p>
+     * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with lateDeliverable.getType()
+     * is <code>null</code>.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_update_lateDeliverableTypeNull() throws Exception {
+        lateDeliverable.setType(null);
+
+        instance.update(lateDeliverable);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with
+     * lateDeliverable.getType().getId() is negative.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_update_lateDeliverableTypeIdNegative() throws Exception {
+        lateDeliverable.getType().setId(-1);
+
+        instance.update(lateDeliverable);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with
+     * lateDeliverable.getType().getId() is zero.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_update_lateDeliverableTypeIdZero() throws Exception {
+        lateDeliverable.getType().setId(0);
+
+        instance.update(lateDeliverable);
+    }
+
+    /**
+     * <p>
      * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with late deliverable with ID
      * equal to lateDeliverable.getId() doesn't exist in persistence.<br>
      * <code>LateDeliverableNotFoundException</code> is expected.
@@ -765,6 +831,11 @@ public class LateDeliverableManagerImplUnitTests {
         assertEquals("'retrieve' should be correct.", 4, lateDeliverable.getDeliverableId());
         assertFalse("'retrieve' should be correct.", lateDeliverable.isForgiven());
         assertNull("'retrieve' should be correct.", lateDeliverable.getExplanation());
+
+        LateDeliverableType type = lateDeliverable.getType();
+        assertEquals("'retrieve' should be correct.", 1, type.getId());
+        assertEquals("'retrieve' should be correct.", "Missed Deadline", type.getName());
+        assertEquals("'retrieve' should be correct.", "Missed Deadline", type.getDescription());
     }
 
     /**
@@ -886,6 +957,7 @@ public class LateDeliverableManagerImplUnitTests {
         lateDeliverable.setResponse("Accepted");
         lateDeliverable.setResponseDate(new Date());
         lateDeliverable.setCompensatedDeadline(new Date());
+        lateDeliverable.getType().setId(2);
         instance.update(lateDeliverable);
 
         List<LateDeliverable> res = instance.searchAllLateDeliverables(filter);
@@ -909,6 +981,8 @@ public class LateDeliverableManagerImplUnitTests {
             lateDeliverable.getResponseDate());
         assertNotNull("'searchAllLateDeliverables' should be correct.",
             lateDeliverable.getCompensatedDeadline());
+        assertEquals("'searchAllLateDeliverables' should be correct.",
+            2, lateDeliverable.getType().getId());
     }
 
     /**
@@ -1051,6 +1125,26 @@ public class LateDeliverableManagerImplUnitTests {
 
     /**
      * <p>
+     * Accuracy test for the method <code>searchAllLateDeliverables(Filter filter)</code>. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_searchAllLateDeliverables_9() throws Exception {
+        filter = LateDeliverableFilterBuilder.createLateDeliverableTypeIdFilter(1);
+
+        List<LateDeliverable> res = instance.searchAllLateDeliverables(filter);
+
+        assertEquals("'searchAllLateDeliverables' should be correct.", 2, res.size());
+    }
+
+    /**
+     * <p>
      * Failure test for the method <code>searchAllLateDeliverables(Filter filter)</code> with an error occurred.<br>
      * <code>LateDeliverablePersistenceException</code> is expected.
      * </p>
@@ -1117,6 +1211,7 @@ public class LateDeliverableManagerImplUnitTests {
         assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponseUser());
         assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getResponseDate());
         assertNull("'searchRestrictedLateDeliverables' should be correct.", lateDeliverable.getCompensatedDeadline());
+        assertEquals("'searchRestrictedLateDeliverables' should be correct.", 1, lateDeliverable.getType().getId());
     }
 
     /**
@@ -1253,5 +1348,67 @@ public class LateDeliverableManagerImplUnitTests {
 
         filter = null;
         instance.searchRestrictedLateDeliverables(filter, userId);
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getLateDeliverableTypes()</code> with 2 items. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_getLateDeliverableTypes_1() throws Exception {
+        List<LateDeliverableType> res = instance.getLateDeliverableTypes();
+
+        assertEquals("'getLateDeliverableTypes' should be correct.", 2, res.size());
+        List<Long> list = Arrays.asList(res.get(0).getId(), res.get(1).getId());
+        assertTrue("'getLateDeliverableTypes' should be correct.", list.contains(1L));
+        assertTrue("'getLateDeliverableTypes' should be correct.", list.contains(2L));
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getLateDeliverableTypes()</code> with no data in the database. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_getLateDeliverableTypes_2() throws Exception {
+        TestsHelper.clearDB(connection);
+
+        List<LateDeliverableType> res = instance.getLateDeliverableTypes();
+
+        assertEquals("'getLateDeliverableTypes' should be correct.", 0, res.size());
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>getLateDeliverableTypes()</code> with an error occurred.<br>
+     * <code>LateDeliverablePersistenceException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = LateDeliverablePersistenceException.class)
+    public void test_getLateDeliverableTypes_Error() throws Exception {
+        config.getChild("persistenceConfig").getChild("dbConnectionFactoryConfig")
+            .getChild("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl").getChild("connections")
+            .getChild("myConnection").getChild("parameters").setPropertyValue("password", "invalid_\n_password");
+        instance = new LateDeliverableManagerImpl(config);
+
+        instance.getLateDeliverableTypes();
     }
 }

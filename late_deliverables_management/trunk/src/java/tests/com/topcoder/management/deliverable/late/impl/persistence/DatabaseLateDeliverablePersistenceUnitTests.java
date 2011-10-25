@@ -10,7 +10,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import junit.framework.JUnit4TestAdapter;
 
@@ -22,6 +24,7 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.management.deliverable.late.LateDeliverable;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementConfigurationException;
 import com.topcoder.management.deliverable.late.LateDeliverableManager;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.management.deliverable.late.TestsHelper;
 import com.topcoder.management.deliverable.late.impl.LateDeliverableManagerImpl;
 import com.topcoder.management.deliverable.late.impl.LateDeliverableNotFoundException;
@@ -32,8 +35,15 @@ import com.topcoder.management.deliverable.late.impl.LateDeliverablePersistenceE
  * Unit tests for {@link DatabaseLateDeliverablePersistence} class.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.0.6:</em>
+ * <ol>
+ * <li>Added/updated test cases for getLateDeliverableTypes() and update() methods.</li>
+ * </ol>
+ * </p>
+ *
  * @author sparemax
- * @version 1.0.4
+ * @version 1.0.6
  */
 public class DatabaseLateDeliverablePersistenceUnitTests {
     /**
@@ -333,6 +343,7 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
         assertNull("'lateDeliverable' should be correct.", lateDeliverable.getExplanation());
         assertNull("'lateDeliverable' should be correct.", lateDeliverable.getDelay());
         assertNotNull("'lateDeliverable' should be correct.", lateDeliverable.getLastNotified());
+        assertEquals("'lateDeliverable' should be correct.", 1, lateDeliverable.getType().getId());
 
         lateDeliverable.setDelay(10L);
         lateDeliverable.setForgiven(true);
@@ -343,6 +354,7 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
         lateDeliverable.setResponseDate(new Date());
         lateDeliverable.setLastNotified(null);
         lateDeliverable.setCompensatedDeadline(new Date());
+        lateDeliverable.getType().setId(2);
 
         instance.update(lateDeliverable);
 
@@ -358,9 +370,10 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
             "OK", lateDeliverable.getResponse().trim());
         assertEquals("'update' should be correct.",
             "1234", lateDeliverable.getResponseUser().trim());
-        assertNotNull("'lateDeliverable' should be correct.", lateDeliverable.getResponseDate());
-        assertNull("'lateDeliverable' should be correct.", lateDeliverable.getLastNotified());
-        assertNotNull("'lateDeliverable' should be correct.", lateDeliverable.getCompensatedDeadline());
+        assertNotNull("'update' should be correct.", lateDeliverable.getResponseDate());
+        assertNull("'update' should be correct.", lateDeliverable.getLastNotified());
+        assertNotNull("'update' should be correct.", lateDeliverable.getCompensatedDeadline());
+        assertEquals("'update' should be correct.", 2, lateDeliverable.getType().getId());
     }
 
     /**
@@ -382,6 +395,7 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
         lateDeliverable.setExplanation("OR didn't work");
         lateDeliverable.setResponse("OK");
         lateDeliverable.setLastNotified(null);
+        lateDeliverable.getType().setId(2);
 
         instance.update(lateDeliverable);
 
@@ -401,6 +415,7 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
             "OR didn't work", lateDeliverable.getExplanation().trim());
         assertEquals("'update' should be correct.",
             "OK", lateDeliverable.getResponse().trim());
+        assertEquals("'update' should be correct.", 2, lateDeliverable.getType().getId());
     }
 
     /**
@@ -490,6 +505,63 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
 
     /**
      * <p>
+     * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with lateDeliverable.getType()
+     * is <code>null</code>.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_update_lateDeliverableTypeNull() throws Exception {
+        lateDeliverable.setType(null);
+
+        instance.update(lateDeliverable);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with
+     * lateDeliverable.getType().getId() is negative.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_update_lateDeliverableTypeIdNegative() throws Exception {
+        lateDeliverable.getType().setId(-1);
+
+        instance.update(lateDeliverable);
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with
+     * lateDeliverable.getType().getId() is zero.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void test_update_lateDeliverableTypeIdZero() throws Exception {
+        lateDeliverable.getType().setId(0);
+
+        instance.update(lateDeliverable);
+    }
+
+    /**
+     * <p>
      * Failure test for the method <code>update(LateDeliverable lateDeliverable)</code> with this persistence was not
      * properly configured.<br>
      * <code>IllegalStateException</code> is expected.
@@ -553,11 +625,117 @@ public class DatabaseLateDeliverablePersistenceUnitTests {
      */
     @Test(expected = LateDeliverablePersistenceException.class)
     public void test_update_Error2() throws Exception {
-        // Drop tables
-        TestsHelper.executeSQL(connection, TestsHelper.TEST_FILES + "DBDrop_tcs.sql");
-
         try {
+            // Drop tables
+            TestsHelper.executeSQL(connection, TestsHelper.TEST_FILES + "DBDrop_tcs.sql");
+
             instance.update(lateDeliverable);
+        } finally {
+            // Create tables
+            TestsHelper.executeSQL(connection, TestsHelper.TEST_FILES + "DBSetup_tcs.sql");
+        }
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getLateDeliverableTypes()</code> with 2 items. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_getLateDeliverableTypes_1() throws Exception {
+        List<LateDeliverableType> res = instance.getLateDeliverableTypes();
+
+        assertEquals("'getLateDeliverableTypes' should be correct.", 2, res.size());
+        List<Long> list = Arrays.asList(res.get(0).getId(), res.get(1).getId());
+        assertTrue("'getLateDeliverableTypes' should be correct.", list.contains(1L));
+        assertTrue("'getLateDeliverableTypes' should be correct.", list.contains(2L));
+    }
+
+    /**
+     * <p>
+     * Accuracy test for the method <code>getLateDeliverableTypes()</code> with no data in the database. <br>
+     * The result should be correct.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test
+    public void test_getLateDeliverableTypes_2() throws Exception {
+        TestsHelper.clearDB(connection);
+
+        List<LateDeliverableType> res = instance.getLateDeliverableTypes();
+
+        assertEquals("'getLateDeliverableTypes' should be correct.", 0, res.size());
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>getLateDeliverableTypes()</code> with this persistence was not
+     * properly configured.<br>
+     * <code>IllegalStateException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = IllegalStateException.class)
+    public void test_getLateDeliverableTypes_NotConfigured() throws Exception {
+        instance = new DatabaseLateDeliverablePersistence();
+
+        instance.getLateDeliverableTypes();
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>getLateDeliverableTypes()</code> with an error occurred.<br>
+     * <code>LateDeliverablePersistenceException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = LateDeliverablePersistenceException.class)
+    public void test_getLateDeliverableTypes_Error1() throws Exception {
+        config.getChild("dbConnectionFactoryConfig")
+            .getChild("com.topcoder.db.connectionfactory.DBConnectionFactoryImpl")
+            .getChild("connections").getChild("myConnection").getChild("parameters")
+            .setPropertyValue("password", "invalid_\n_password");
+        instance.configure(config);
+
+        instance.getLateDeliverableTypes();
+    }
+
+    /**
+     * <p>
+     * Failure test for the method <code>getLateDeliverableTypes()</code> with an error occurred.<br>
+     * <code>LateDeliverablePersistenceException</code> is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.0.6
+     */
+    @Test(expected = LateDeliverablePersistenceException.class)
+    public void test_getLateDeliverableTypes_Error2() throws Exception {
+        try {
+            // Drop tables
+            TestsHelper.executeSQL(connection, TestsHelper.TEST_FILES + "DBDrop_tcs.sql");
+
+            instance.getLateDeliverableTypes();
         } finally {
             // Create tables
             TestsHelper.executeSQL(connection, TestsHelper.TEST_FILES + "DBSetup_tcs.sql");
