@@ -416,8 +416,15 @@ import com.topcoder.shared.util.DBMS;
  *   </ol>
  * </p>
  * 
+ * <p>
+ * Version 1.7.4 (Add Reporting Contest Type) Change notes:
+ *   <ol>
+ *     <li>Set DR flag off for reporting contest type.</li>
+ *   </ol>
+ * </p>
+ * 
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, GreatKevin, lmmortal
- * @version 1.7.3
+ * @version 1.7.4
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -497,7 +504,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @since 1.0.4
      */
     private static final int DESIGN_PROJECT_CATEGORY_ID = 1;
-
+    
+    /**
+     * <p>
+     * Represents the reporting project category id.
+     * </p>
+     * 
+     * @since 1.7.4
+     */
+    private static final long REPORTING_PROJECT_CATEGORY_ID = 36L;
 
     /**
      * Private constant specifying resource pay
@@ -2431,7 +2446,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.PUBLIC_PROJECT_PROPERTY_KEY, "Yes");
             contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "Yes");
             contest.getProjectHeader().setProperty(ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, "Open");
-            contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
 
             boolean hasEligibility = false;
 
@@ -2467,10 +2481,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (isCopilotContest(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
-                contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
                 contest.getProjectHeader().setProperty(ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, "standard_cca");
             }
             if (isStudio(contest)) {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
+            }
+            
+            if (contest.getProjectHeader().getProjectCategory().getId() != REPORTING_PROJECT_CATEGORY_ID) {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
+            } else {
+                contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
                 contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
             }
             
