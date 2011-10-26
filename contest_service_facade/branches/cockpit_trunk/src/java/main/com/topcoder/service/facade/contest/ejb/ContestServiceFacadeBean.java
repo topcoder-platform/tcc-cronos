@@ -6293,22 +6293,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 List<ProjectPermission> permissionsToAdd = new ArrayList<ProjectPermission>();
                 permissionsToAdd.add(permission);
                 updateProjectPermissions(currentUser,
-                        permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
-                
-                // Find the screener resource for current user; if there is none then create one
-                com.topcoder.management.resource.Resource screener
-                    = addPrimaryScreener(currentUser, copilotPostingProjectId, currentUser.getUserId());
-
-                // we will pass screening for all
-                for (int i = 0; i < submissions.length; i++) {
-                    Submission submission = submissions[i];
-                    ScorecardReviewData screeningData = getScreening(copilotPostingProjectId, screener.getId(), submission.getId());
-                     if ((screeningData.getReview() == null)
-                        || (screeningData.getReview().getSubmission() != submission.getId())) {
-                        createScreening(screener, submission.getId(), screeningData.getScorecard());
-                    }
-                }
-
+                        permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);                
             }
 
             // Find the Reviewer resource for current user; if there is none then create one
