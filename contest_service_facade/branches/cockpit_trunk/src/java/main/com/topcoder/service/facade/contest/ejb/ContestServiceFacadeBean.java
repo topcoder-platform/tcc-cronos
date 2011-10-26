@@ -490,29 +490,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private static final String RESOURCE_INFO_HANDLE_COMPONENTS = "Components";
 
-      /**
-     * Represents the project category id for development contests.
-     *
-     * @since 1.0.1
-     */
-    private static final int DEVELOPMENT_PROJECT_CATEGORY_ID = 2;
-
-
-    /**
-     * Represents the project category id for development contests.
-     *
-     * @since 1.0.4
-     */
-    private static final int DESIGN_PROJECT_CATEGORY_ID = 1;
-    
-    /**
-     * <p>
-     * Represents the reporting project category id.
-     * </p>
-     * 
-     * @since 1.7.4
-     */
-    private static final long REPORTING_PROJECT_CATEGORY_ID = 36L;
 
     /**
      * Private constant specifying resource pay
@@ -1713,7 +1690,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 toAddr = cc.getEmail();
             }
 
-            boolean isDevContest = competition.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
+            boolean isDevContest = competition.getProjectHeader().getProjectCategory().getId() == ProjectCategory.DEVELOPMENT.getId();
 
             boolean hasEligibility = contestEligibilityManager.haveEligibility(
                     new Long[] { tobeUpdatedCompetition.getProjectHeader().getId() }, false).size() > 0;
@@ -2094,7 +2071,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @return true if yes
      */
     private boolean isDevContest(SoftwareCompetition contest) {
-        return contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
+        return contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.DEVELOPMENT.getId();
     }
 
     /**
@@ -2207,7 +2184,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         contest.getProjectPhases(), contest.getProjectResources(), multiRoundEndDate, endDate,
                         String.valueOf(tcSubject.getUserId()));
 
-            if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID) {
+            if (contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.DEVELOPMENT.getId()) {
                 projectServices.linkDevelopmentToDesignContest(projectData.getProjectHeader().getId());
             }
 
@@ -2446,6 +2423,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             contest.getProjectHeader().setProperty(ProjectPropertyType.PUBLIC_PROJECT_PROPERTY_KEY, "Yes");
             contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "Yes");
             contest.getProjectHeader().setProperty(ProjectPropertyType.ELIGIBILITY_PROJECT_PROPERTY_KEY, "Open");
+            contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
 
             boolean hasEligibility = false;
 
@@ -2481,15 +2459,16 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             if (isCopilotContest(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
+                contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
                 contest.getProjectHeader().setProperty(ProjectPropertyType.CONFIDENTIALITY_TYPE_PROJECT_PROPERTY_KEY, "standard_cca");
             }
+
             if (isStudio(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
             }
             
-            if (contest.getProjectHeader().getProjectCategory().getId() != REPORTING_PROJECT_CATEGORY_ID) {
-                contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "On");
-            } else {
+            if (contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.REPORTING.getId()) 
+            {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
                 contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
             }
@@ -2522,7 +2501,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         devContest.getProjectHeader().getProperties().putAll(
                 designContest.getDevelopmentProjectHeader().getProperties());
         devContest.setDevelopmentProjectHeader(null);
-        devContest.getProjectHeader().getProjectCategory().setId(DEVELOPMENT_PROJECT_CATEGORY_ID);
+        devContest.getProjectHeader().getProjectCategory().setId(ProjectCategory.DEVELOPMENT.getId());
         devContest.getAssetDTO().setProductionDate(nextDevProdDay(devContest.getAssetDTO().getProductionDate()));
         devContest.setProjectHeaderReason("Create corresponding development contest");
         createSoftwareContest(tcSubject, devContest, tcDirectProjectId);
@@ -2669,8 +2648,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
         }
         // design/dev, add Components
-        else if (contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID
-             || contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
+        else if (contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.DEVELOPMENT.getId()
+             || contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.DESIGN.getId()) {
 
             resources[1] = new com.topcoder.management.resource.Resource();
             resources[1].setId(com.topcoder.management.resource.Resource.UNSET_ID);
@@ -2935,39 +2914,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 if (billingProjectId > 0) {
                     persistContestEligility(contest.getProjectHeader().getId(), billingProjectId , null, false);
                 }
-
-
-                //BugRace3074
-/**                if (contest.getProjectHeader().getProjectCategory().getId() == DESIGN_PROJECT_CATEGORY_ID) {
-                    long rst = projectServices.getDevelopmentContestId(contest.getId());
-                    if (rst != 0) {
-                        Duration twoDay = DatatypeFactory.newInstance().newDurationDayTime(true, 2, 0, 0, 0);
-                        //Since they are already sorted, just get the latest one's end time.
-                        XMLGregorianCalendar twoDaysLater =
-                            (getXMLGregorianCalendar(allPhases[allPhases.length - 1].getScheduledEndDate()));
-                        twoDaysLater.add(twoDay);
-
-                        SoftwareCompetition developmentContest = getSoftwareContestByProjectId(rst);
-                        developmentContest.getProjectPhases().setStartDate(getDate(twoDaysLater));
-                        phaseset = developmentContest.getProjectPhases().getPhases();
-                        phases = (com.topcoder.project.phases.Phase[]) phaseset.toArray(new com.topcoder.project.phases.Phase[phaseset.size()]);
-                        // add back project on phase
-                        for (int i = 0; i < phases.length; i++) {
-                             phases[i].setProject(developmentContest.getProjectPhases());
-                        }
-
-                        developmentContest.getProjectHeader().setProperty(ProjectPropertyType.PROJECT_NAME_PROJECT_PROPERTY_KEY, contest.getAssetDTO().getName());
-
-                        developmentContest.setProjectHeaderReason("Cascade update from corresponding design contest");
-                        projectServices.updateProject(developmentContest.getProjectHeader(),
-                                developmentContest.getProjectHeaderReason(),
-                                developmentContest.getProjectPhases(),
-                                developmentContest.getProjectResources(),
-                                String.valueOf(p.getUserId()));
-
-
-                    }
-                } */
             }
 
              Date startDate = contest.getProjectPhases().getStartDate();
@@ -5128,7 +5074,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         + " You can not create new version for it.");
             }
             boolean isDevContest =
-                contest.getProjectHeader().getProjectCategory().getId() == DEVELOPMENT_PROJECT_CATEGORY_ID;
+                contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.DEVELOPMENT.getId();
 
             //2.create new version
             Long compVersionId = Long.parseLong(contest.getProjectHeader().getProperty(ProjectPropertyType.EXTERNAL_REFERENCE_ID_PROJECT_PROPERTY_KEY));
