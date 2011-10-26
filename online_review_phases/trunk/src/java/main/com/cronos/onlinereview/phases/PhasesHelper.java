@@ -175,9 +175,16 @@ import com.topcoder.util.log.Log;
  * if they have user rank more than configured for the project.</li>
  * </ol>
  * </p>
+ * 
+ * <p>
+ * Version 1.7.3 (Copilot Posting Cleanup) Change notes:
+ * <ol>
+ * <li>Added {@link #isLastPhase(Phase) method to check if given phase is the last one.</li>
+ * </ol>
+ * </p>
  *
  * @author tuenm, bose_java, pulky, aroglite, waits, isv, saarixx, myxgyy, microsky, flexme, lmmortal
- * @version 1.7.2
+ * @version 1.7.3
  */
 final class PhasesHelper {
     /**
@@ -1610,6 +1617,38 @@ final class PhasesHelper {
         }
 
         return phaseIndex == 0;
+    }
+    
+    /**
+     * Checks if the given phase is the last phase in the project. Note that if multiple
+     * phases end at the same date/time at the end of the project, all they are
+     * considered to be last phases of the project.
+     * @param phase
+     *            the phase to be checked.
+     * @return true if phase is the last phase in the project, false otherwise.
+     * @since 1.7.3
+     */
+    static boolean isLastPhase(Phase phase) {
+        // Get all phases for the project
+        Phase[] phases = phase.getProject().getAllPhases();
+
+        // Get index of the input phase in phases array
+        int phaseIndex = 0;
+
+        for (int i = 0; i < phases.length; i++) {
+            if (phases[i].getId() == phase.getId()) {
+                phaseIndex = i;
+            }
+        }
+
+        Date endDate = phases[phaseIndex].calcEndDate();
+        for (int i=0; i < phases.length; i++) {
+        	if (i != phaseIndex && (phases[i].calcEndDate().after(endDate))) {
+        		return false;
+        	}
+        }
+
+        return true;
     }
 
     /**
