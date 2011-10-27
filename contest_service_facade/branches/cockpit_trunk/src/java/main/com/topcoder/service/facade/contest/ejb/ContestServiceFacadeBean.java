@@ -6242,6 +6242,27 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);                
             }
 
+            //TO REMOVE, handle existing copilot postings that have screening
+            SoftwareCompetition softwareCompetition = getSoftwareContestByProjectId(currentUser, copilotPostingProjectId);
+            if (hasScreening(softwareCompetition))
+            {
+                // Find the screener resource for current user; if there is none then create one
+                com.topcoder.management.resource.Resource screener
+                    = addPrimaryScreener(currentUser, copilotPostingProjectId, currentUser.getUserId());
+
+                // we will pass screening for all
+                for (int i = 0; i < submissions.length; i++) {
+                    Submission submission = submissions[i];
+                    ScorecardReviewData screeningData = getScreening(copilotPostingProjectId, screener.getId(), submission.getId());
+                     if ((screeningData.getReview() == null)
+                        || (screeningData.getReview().getSubmission() != submission.getId())) {
+                        createScreening(screener, submission.getId(), screeningData.getScorecard());
+                    }
+                }
+            }
+                
+
+
             // Find the Reviewer resource for current user; if there is none then create one
             com.topcoder.management.resource.Resource reviewer
                 = addReviewer(currentUser, copilotPostingProjectId, currentUser.getUserId());
@@ -6437,6 +6458,22 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         for (com.topcoder.project.phases.Phase phase : allPhases) {
             PhaseType phaseType = phase.getPhaseType();
             if ("Specification Submission".equals(phaseType.getName())) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    private boolean hasScreening(SoftwareCompetition SoftwareCompetition)
+    {
+
+
+        Set<com.topcoder.project.phases.Phase> allPhases = SoftwareCompetition.getProjectPhases().getPhases();
+        for (com.topcoder.project.phases.Phase phase : allPhases) {
+            PhaseType phaseType = phase.getPhaseType();
+            if ("Screening".equals(phaseType.getName())) {
                 return true;
             }
         }
