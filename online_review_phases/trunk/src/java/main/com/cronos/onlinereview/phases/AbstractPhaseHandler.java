@@ -15,6 +15,7 @@ import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectType;
+import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.ResourceRole;
@@ -37,6 +38,7 @@ import com.topcoder.search.builder.filter.Filter;
 
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
+import com.topcoder.util.config.Property;
 import com.topcoder.util.config.UnknownNamespaceException;
 import com.topcoder.util.file.DocumentGenerator;
 import com.topcoder.util.file.Template;
@@ -228,8 +230,17 @@ import java.util.Map;
  * </li>
  * </ul>
  * </p>
+ * 
+ * <p>
+ * Version 1.6.2 changes note:
+ * <ul>
+ * <li>
+ * Added copilot posting specific notifications.
+ * </li>
+ * </ul>
+ * </p>
  * @author tuenm, bose_java, pulky, argolite, waits, FireIce, microsky, lmmortal, VolodymyrK
- * @version 1.6.1
+ * @version 1.6.2
  */
 public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** constant for "Project Name" project info. */
@@ -309,6 +320,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @since 1.6
      */
     private final String studioProjectDetailsBaseURL;
+    
+    /**
+     * This constant stores Copilot project details page URL.
+     *
+     * @since 1.6.2
+     */
+    private final String copilotProjectDetailsBaseURL;
 
     /**
      * <p>
@@ -373,6 +391,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
         // get studio project details base url
         studioProjectDetailsBaseURL = managerHelper.getStudioProjectDetailsBaseURL();
+        
+        // get copilot posting project details base url.
+        copilotProjectDetailsBaseURL = managerHelper.getCopilotProjectDetailsBaseURL();
     }
 
     /**
@@ -521,7 +542,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             long[] externalIds = rm.getNotifications(projectId, notificationTypeId);
             // retrieve project information
             project = managerHelper.getProjectManager().getProject(projectId);
-            long projectTypeId = project.getProjectCategory().getProjectType().getId();
 
             Resource[] resources = rm.searchResources(ResourceFilterBuilder.createProjectIdFilter(projectId));
 
@@ -531,7 +551,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                     continue;
                 }
                 
-                EmailScheme emailScheme = getEmailSchemeForResource(resource, projectTypeId);
+                EmailScheme emailScheme = getEmailSchemeForResource(resource, project.getProjectCategory());
                 if (emailScheme == null) {
                     continue;
                 }
@@ -618,20 +638,22 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 	*
     * @param resource
 	*       the resource to get email shceme for
-	* @param projectTypeId
-	*       the project type id
+	* @param projectCategory
+	*       the project category
 	* @return the email scheme for resource. null if not found.
 	* @since 1.6.1.
 	*/
-    private EmailScheme getEmailSchemeForResource(Resource resource, long projectTypeId) {
+    private EmailScheme getEmailSchemeForResource(Resource resource, ProjectCategory projectCategory) {
         EmailScheme priorityEmailScheme = null;
         for (EmailScheme emailScheme : emailSchemes) {
             boolean containsProjectType = emailScheme.getProjectTypes().contains("*") ||
-                emailScheme.getProjectTypes().contains(""+projectTypeId);
+                emailScheme.getProjectTypes().contains(""+projectCategory.getProjectType().getId());
+            boolean containsProjectCategory = emailScheme.getProjectCategories().contains("*") ||
+                emailScheme.getProjectCategories().contains(""+projectCategory.getId());
             boolean containsRole = emailScheme.getRoles().contains("*") ||
                 emailScheme.getRoles().contains(resource.getResourceRole().getName());
                 
-            if (containsProjectType && containsRole) {
+            if (containsProjectType && containsProjectCategory && containsRole) {
                 if (priorityEmailScheme == null || priorityEmailScheme.getPriority() < emailScheme.getPriority()) {
                     priorityEmailScheme = emailScheme;
                 }
@@ -761,7 +783,9 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             field.setValue(projectDetailsBaseURL + project.getId());
         } else if ("STUDIO_LINK".equals(field.getName())) {
             field.setValue(studioProjectDetailsBaseURL + project.getId());
-        } else if (values.containsKey(field.getName())) {
+        } else if ("COPILOT_LINK".equals(field.getName())) {
+            field.setValue(copilotProjectDetailsBaseURL + project.getId());
+        }else if (values.containsKey(field.getName())) {
             if (values.get(field.getName()) != null) {
                 field.setValue(values.get(field.getName()).toString());
             }
@@ -868,11 +892,16 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                         emailScheme.setRoles(java.util.Arrays.asList(rolesArray));
                     }
                     
-                    String[] projectTypesArray = schemesProperty.getProperty(schemeName).getProperty("ProjectTypes").getValues();
-                    if (projectTypesArray != null && projectTypesArray.length > 0) {
-                        emailScheme.setProjectTypeIDs(java.util.Arrays.asList(projectTypesArray));
+                    Property projectTypesProp = schemesProperty.getProperty(schemeName).getProperty("ProjectTypes");
+                    if (projectTypesProp != null && projectTypesProp.getValues().length > 0) {
+                        emailScheme.setProjectTypes(java.util.Arrays.asList(projectTypesProp.getValues()));
                     }
-                    
+
+                    Property projectCategoriesProp = schemesProperty.getProperty(schemeName).getProperty("ProjectCategories");
+                    if (projectCategoriesProp != null && projectCategoriesProp.getValues().length > 0) {
+                        emailScheme.setProjectCategories(java.util.Arrays.asList(projectCategoriesProp.getValues()));
+                    }
+
                     String priority = schemesProperty.getProperty(schemeName).getProperty("Priority").getValue();
                     if (priority != null) {
                         try {

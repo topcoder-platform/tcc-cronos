@@ -198,9 +198,13 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * <li>Removed screeningManager together with its getter.</li>
  * <li>Removed private initScreeningManager() method.</li>
  * </ul>
+ * Version 1.6.2 changes note:
+ * <ul>
+ * <li>Add copilot specific notifications</li>
+ * </ul>
  * </p>
- * @author tuenm, bose_java, waits, saarixx, myxgyy, FireIce, microsky
- * @version 1.6.1
+ * @author tuenm, bose_java, waits, saarixx, myxgyy, FireIce, microsky, lmmortal
+ * @version 1.6.2
  */
 public class ManagerHelper {
     /**
@@ -349,6 +353,12 @@ public class ManagerHelper {
      * @since 1.6
      */
     private static final String PROP_STUDIO_PROJECT_DETAILS_URL = "StudioProjectDetailsURL";
+    
+    /**
+     * This constant stores copilot project details page url property name.
+     * @since 1.6.2
+     */
+    private static final String PROP_COPILOT_PROJECT_DETAILS_URL = "CopilotPostingProjectDetailsURL";
 
     /**
      * Property name constant for submission status IDgenerator name when creating UploadManager instance.
@@ -474,6 +484,12 @@ public class ManagerHelper {
      * @since 1.6
      */
     private final String studioProjectDetailsBaseURL;
+    
+    /**
+     * This constant stores copilot posting project details page URL.
+     * @since 1.6.2
+     */
+    private final String copilotProjectDetailsBaseURL;
 
 
     /**
@@ -533,7 +549,8 @@ public class ManagerHelper {
         this.projectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_PROJECT_DETAILS_URL, true);
         this.studioProjectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace,
             PROP_STUDIO_PROJECT_DETAILS_URL,
-                true);
+                true);        
+        this.copilotProjectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_COPILOT_PROJECT_DETAILS_URL, true);
     }
 
     /**
@@ -631,7 +648,16 @@ public class ManagerHelper {
         return studioProjectDetailsBaseURL;
     }
 
-
+    /**
+     * <p>
+     * Gets the copilot posting project details base url.
+     * </p>
+     * @return the copilot posting project details base url.
+     * @since 1.6.2
+     */
+    public String getCopilotProjectDetailsBaseURL() {
+        return copilotProjectDetailsBaseURL;
+    }
 
     /**
      * This method is called by constructor to create an instance of UploadManager. It retrieves the required

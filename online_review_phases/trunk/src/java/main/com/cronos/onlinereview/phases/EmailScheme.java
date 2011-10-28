@@ -37,7 +37,15 @@ public class EmailScheme {
      * It has getter/setter.
      * </p>
      */
-    private List<String> projectTypes = new ArrayList<String>();
+    private List<String> projectTypes;
+
+    /**
+     * <p>
+     * Represents the project category IDs associated with the email scheme. This field is initialized to the empty list.
+     * It has getter/setter.
+     * </p>
+     */
+    private List<String> projectCategories;
 
     /**
      * <p>
@@ -66,6 +74,13 @@ public class EmailScheme {
      * </p>
      */
     public EmailScheme() {
+        // By default all project types are included.
+        projectTypes = new ArrayList<String>();
+        projectTypes.add("*");
+
+        // By default all project categories are included.
+        projectCategories = new ArrayList<String>();
+        projectCategories.add("*");
     }
 
     /**
@@ -98,10 +113,28 @@ public class EmailScheme {
     /**
      * Set the value to projectTypes field.
      *
-     * @param roles the projectTypes to set
+     * @param projectTypes the projectTypes to set
      */
-    public void setProjectTypeIDs(List<String> projectTypes) {
+    public void setProjectTypes(List<String> projectTypes) {
         this.projectTypes = projectTypes;
+    }
+
+    /**
+     * Returns the value of projectCategories.
+     *
+     * @return the projectCategories
+     */
+    public List<String> getProjectCategories() {
+        return projectCategories;
+    }
+
+    /**
+     * Set the value to projectCategories field.
+     *
+     * @param projectCategories the projectCategories to set
+     */
+    public void setProjectCategories(List<String> projectCategories) {
+        this.projectCategories = projectCategories;
     }
 
     /**
@@ -134,7 +167,7 @@ public class EmailScheme {
     /**
      * Set the value to startEmailOptions field.
      *
-     * @param priority the startEmailOptions to set
+     * @param startEmailOptions the startEmailOptions to set
      */
     public void setStartEmailOptions(EmailOptions startEmailOptions) {
         this.startEmailOptions = startEmailOptions;
@@ -152,7 +185,7 @@ public class EmailScheme {
     /**
      * Set the value to endEmailOptions field.
      *
-     * @param priority the endEmailOptions to set
+     * @param endEmailOptions the endEmailOptions to set
      */
     public void setEndEmailOptions(EmailOptions endEmailOptions) {
         this.endEmailOptions = endEmailOptions;
