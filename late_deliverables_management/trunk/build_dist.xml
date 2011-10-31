@@ -12,6 +12,7 @@
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
+    <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -25,8 +26,6 @@
 
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
-    <!-- Import the dependencies of this build file -->
-    <import file="${basedir}/../build-checkstyle.xml"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="${component.name}"/>
@@ -42,7 +41,7 @@
     <property name="greekgod_libdir" value="../lib/greekgod"/>
     <property name="target_libdir" value="${greekgod_libdir}"/>
     -->
-    <property name="target_libdir" value="${cronos_libdir}"/>
+    <property name="target_libdir" value="${tcs_libdir}"/>
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
@@ -163,7 +162,7 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-            <junit fork="true" haltonerror="false" maxmemory="1200m">
+            <junit fork="true" haltonerror="false" maxMemory="1400M">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
@@ -186,7 +185,7 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-            <junit fork="true" haltonerror="false" maxmemory="1200m">
+            <junit fork="true" haltonerror="false">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
@@ -217,7 +216,7 @@
     </target>
 
     <target name="coveragereport" depends="coveragetest">
-        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
+        <cobertura-report format="${cobertura.format}" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
                           datafile="${cobertura.datafile}">
             <fileset dir="${javamain}">
                 <include name="**/*.java"/>
@@ -228,7 +227,7 @@
         </cobertura-report>
     </target>
 
-    <target name="reports">
+    <target name="reports" depends="test">
         <mkdir dir="${reports}"/>
         <junitreport todir="${reports}">
             <fileset dir="${testlogdir}">

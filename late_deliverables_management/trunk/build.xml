@@ -26,8 +26,6 @@
 
     <!-- Import the dependencies of this build file -->
     <import file="${basedir}/build-dependencies.xml"/>
-    <!-- Import the dependencies of this build file -->
-    <import file="${basedir}/../build-checkstyle.xml"/>
 
     <!-- COMPONENT PARAMETERS -->
     <property name="component" value="${component.name}"/>
