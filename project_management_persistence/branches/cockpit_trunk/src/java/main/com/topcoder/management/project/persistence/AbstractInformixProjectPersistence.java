@@ -21,22 +21,25 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.project.BillingProjectConfigType;
 import com.topcoder.management.project.BillingProjectConfiguration;
 import com.topcoder.management.project.ConfigurationException;
-import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.ContestSale;
+import com.topcoder.management.project.CopilotContestExtraInfo;
+import com.topcoder.management.project.CopilotContestExtraInfoType;
 import com.topcoder.management.project.DesignComponents;
+import com.topcoder.management.project.FileType;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Prize;
 import com.topcoder.management.project.PrizeType;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.project.ProjectCategory;
+import com.topcoder.management.project.ProjectCopilotType;
 import com.topcoder.management.project.ProjectPersistence;
 import com.topcoder.management.project.ProjectPropertyType;
 import com.topcoder.management.project.ProjectSpec;
@@ -178,7 +181,21 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *  - Update {@link #getProjectStudioSpecification(long)} and {@link #createProjectStudioSpecification(ProjectStudioSpecification, String)
  *  and {@link #updateProjectStudioSpecification(ProjectStudioSpecification, String)} methods to support the new generalFeedback field.
  *  </p>
- * 
+ *
+ * <p>
+ * Changes in version 1.4 (TC Cockpit Post a Copilot Assembly 2):
+ * <ul>
+ * <li>Added {@link #createOrUpdateProjectCopilotTypes(long, List, Connection, String, boolean)} and
+ * {@link #createOrUpdateCopilotContestExtraInfos(long, List, Connection, String, boolean)} to persist related data into
+ * database.</li>
+ * <li>Added {@link #getProjectCopilotTypes(long)} and {@link #getCopilotContestExtraInfos(long)} to retrieve related
+ * data from database.</li>
+ * <li>Modified {@link #createProject(Project, String)} and {@link #updateProject(Project, String, String)} to
+ * create/update copilot type and extra info for copilot posting contest.</li>
+ * <li>Modified {@link #getProjects(long[], Connection)} to retrieve copilot posting contest related data.</li>
+ * </ul>
+ * </p>
+ *
  * <p>
  * Thread Safety: This class is thread safe because it is immutable.
  * </p>
@@ -191,8 +208,8 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * </ol>
  * </p>
  * 
- * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER
- * @version 1.2.2
+ * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER, TCSASSEMBLY
+ * @version 1.4
  * @since 1.0
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
@@ -1990,6 +2007,67 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         = "SELECT DISTINCT project_id FROM project_prize_xref WHERE prize_id=";
 
     /**
+     * Represents the sql statement to delete project copilot types for specified project id.
+     * @since 1.4
+     */
+    private static final String DELETE_PROJECT_COPILOT_TYPES_SQL = "DELETE FROM project_copilot_type WHERE project_id = ?";
+
+    /**
+     * Represents the sql statement to create project copilot type cross reference.
+     * @since 1.4
+     */
+    private static final String CREATE_PROJECT_COPILOT_TYPE_SQL = "INSERT INTO project_copilot_type "
+            + "(project_id, project_copilot_type_id, create_user, create_date, modify_user, modify_date) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
+
+    /**
+     * Represents the sql statement to delete copilot contest extra infos for specified project id.
+     * @since 1.4
+     */
+    private static final String DELETE_COPILOT_CONTEST_EXTRA_INFOS_SQL = "DELETE FROM copilot_contest_extra_info WHERE copilot_posting_contest_id = ?";
+
+    /**
+     * Represents the sql statement to create copilot contest extra infos cross reference.
+     * @since 1.4
+     */
+    private static final String CREATE_COPILOT_CONTEST_EXTRA_INFO_SQL = "INSERT INTO copilot_contest_extra_info "
+            + "(copilot_posting_contest_id, copilot_contest_extra_info_type_id, value, create_user, create_date, modify_user, modify_date)"
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    /**
+     * Represents the sql statement to retrieve project copilot types for specified project id.
+     * @since 1.4
+     */
+    private static final String QUERY_PROJECT_COPILOT_TYPES_SQL = "SELECT "
+            + "lu.project_copilot_type_id, lu.name, lu.project_copilot_type_desc "
+            + "FROM project_copilot_type_lu lu, project_copilot_type t "
+            + "WHERE lu.project_copilot_type_id = t.project_copilot_type_id " + "AND t.project_id = ";
+
+    /**
+     * Represents the Represents the data types for querying project copilot types.
+     * @since 1.4
+     */
+    private static final DataType[] QUERY_PROJECT_COPILOT_TYPES_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE };
+
+    /**
+     * Represents the sql statement to retrieve copilot contest extra infos for specified project id.
+     * @since 1.4
+     */
+    private static final String QUERY_COPILOT_CONTEST_EXTRA_INFOS_SQL = "SELECT "
+            + "t.copilot_contest_extra_info_type_id, t.name, t.copilot_contest_extra_info_type_desc, i.value "
+            + "FROM copilot_contest_extra_info_type t, copilot_contest_extra_info i "
+            + "WHERE t.copilot_contest_extra_info_type_id = i.copilot_contest_extra_info_type_id "
+            + "AND i.copilot_posting_contest_id = ";
+
+    /**
+     * Represents the Represents the data types for querying copilot contest extra infos.
+     * @since 1.4
+     */
+    private static final DataType[] QUERY_COPILOT_CONTEST_EXTRA_INFOS_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+            Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
+
+    /**
      * <p>
      * The factory instance used to create connection to the database. It is
      * initialized in the constructor using DBConnectionFactory component and
@@ -2381,6 +2459,12 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 createOrUpdateProjectStudioSpecification(newId, project.getProjectStudioSpecification(), conn, operator);
             }
 
+            // set project copilot types and copilot contest extra info for copilot posting contest
+            if (project.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
+                createOrUpdateProjectCopilotTypes(newId, project.getProjectCopilotTypes(), conn, operator, false);
+                createOrUpdateCopilotContestExtraInfos(newId, project.getCopilotContestExtraInfos(), conn, operator, false);
+            }
+
             closeConnection(conn);
         } catch (PersistenceException e) {
             /*project.setCreationUser(null);
@@ -2475,6 +2559,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
                 createOrUpdateProjectStudioSpecification(project.getId(), project.getProjectStudioSpecification(), conn, operator);          
             }
 
+            // set project copilot types and copilot contest extra info for copilot posting contest
+            if (project.getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
+                createOrUpdateProjectCopilotTypes(project.getId(), project.getProjectCopilotTypes(), conn, operator, true);
+                createOrUpdateCopilotContestExtraInfos(project.getId(), project.getCopilotContestExtraInfos(), conn, operator, true);
+            }
 
             closeConnection(conn);
         } catch (PersistenceException e) {
@@ -4658,6 +4747,11 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             ProjectSpec[] specs = getProjectSpecs(projects[i].getId(), conn);
             if (specs != null && specs.length > 0) {
                 projects[i].setProjectSpec(specs[0]);
+            }
+
+            if (projects[i].getProjectCategory().getId() == ProjectCategory.COPILOT_POSTING.getId()) {
+                projects[i].setProjectCopilotTypes(getProjectCopilotTypes(projects[i].getId()));
+                projects[i].setCopilotContestExtraInfos(getCopilotContestExtraInfos(projects[i].getId()));
             }
         }
 
@@ -8187,8 +8281,204 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
         return null;
     }
 
+    /**
+     * <p>
+     * Creates or updates project copilot types for the specified project.
+     * </p>
+     * @param projectId
+     *            the id of the project.
+     * @param projectCopilotTypes
+     *            a list of <code>ProjectCopilotType</code> to create/update.
+     * @param conn
+     *            the database connection to use.
+     * @param operator
+     *            the operator of this operation.
+     * @param update
+     *            true if the operation is to update, or false if it is to create.
+     * @throws PersistenceException
+     *             if any error occurs from underlying persistence.
+     */
+    private void createOrUpdateProjectCopilotTypes(long projectId, List<ProjectCopilotType> projectCopilotTypes,
+            Connection conn, String operator, boolean update) throws PersistenceException {
+        if (update) {
+            getLogger().log(Level.INFO,
+                    "delete the project copilot types from database with the specified project id: " + projectId);
+            Helper.doDMLQuery(conn, DELETE_PROJECT_COPILOT_TYPES_SQL, new Object[] { projectId });
+        }
 
+        if (projectCopilotTypes == null) {
+            return;
+        }
 
-    
-    
+        for (ProjectCopilotType copilotType : projectCopilotTypes) {
+            getLogger()
+                    .log(Level.INFO,
+                            "insert record into project copilot type with id: [" + projectId + ", "
+                                    + copilotType.getId() + "]");
+
+            Timestamp createDate = new Timestamp(System.currentTimeMillis());
+
+            // insert the prize into database
+            Object[] queryArgs = new Object[] { projectId, copilotType.getId(), operator, createDate, operator,
+                    createDate };
+            Helper.doDMLQuery(conn, CREATE_PROJECT_COPILOT_TYPE_SQL, queryArgs);
+        }
+    }
+
+    /**
+     * <p>
+     * Creates or updates copilot contest extra infos for the specified project.
+     * </p>
+     * @param projectId
+     *            the id of the project.
+     * @param copilotContestExtraInfos
+     *            a list of <code>CopilotContestExtraInfo</code> to create/update.
+     * @param conn
+     *            the database connection to use.
+     * @param operator
+     *            the operator of this operation.
+     * @param update
+     *            true if the operation is to update, or false if it is to create.
+     * @throws PersistenceException
+     *             if any error occurs from underlying persistence.
+     */
+    private void createOrUpdateCopilotContestExtraInfos(long projectId,
+            List<CopilotContestExtraInfo> copilotContestExtraInfos, Connection conn, String operator, boolean update)
+            throws PersistenceException {
+        if (update) {
+            getLogger().log(Level.INFO,
+                    "delete the copilot extra infos from database with the specified project id: " + projectId);
+            Helper.doDMLQuery(conn, DELETE_COPILOT_CONTEST_EXTRA_INFOS_SQL, new Object[] { projectId });
+        }
+
+        if (copilotContestExtraInfos == null) {
+            return;
+        }
+
+        for (CopilotContestExtraInfo extraInfo : copilotContestExtraInfos) {
+            getLogger().log(
+                    Level.INFO,
+                    "insert record into copilot contest extra info with id: [" + projectId + ", "
+                            + extraInfo.getType().getId() + "]");
+
+            Timestamp createDate = new Timestamp(System.currentTimeMillis());
+
+            // insert the prize into database
+            Object[] queryArgs = new Object[] { projectId, extraInfo.getType().getId(), extraInfo.getValue(), operator,
+                    createDate, operator, createDate };
+            Helper.doDMLQuery(conn, CREATE_COPILOT_CONTEST_EXTRA_INFO_SQL, queryArgs);
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the project copilot types associated with the given project.
+     * </p>
+     * @param projectId
+     *            the id of the project.
+     * @return a list of <code>ProjectCopilotType</code>s representing the project copilot types associated with the
+     *         given project.
+     * @throws PersistenceException
+     *             if any error occurs from underlying persistence.
+     */
+    private List<ProjectCopilotType> getProjectCopilotTypes(long projectId) throws PersistenceException {
+        Helper.assertLongPositive(projectId, "projectId");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get project copilot types with the project id: " + projectId);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            // find project copilot types in the table
+            Object[][] rows = Helper.doQuery(conn, QUERY_PROJECT_COPILOT_TYPES_SQL + projectId, new Object[] {},
+                    QUERY_PROJECT_COPILOT_TYPES_COLUMN_TYPES);
+
+            List<ProjectCopilotType> copilotTypes = new ArrayList<ProjectCopilotType>();
+
+            // enumerate each row
+            for (int i = 0; i < rows.length; ++i) {
+                Object[] row = rows[i];
+
+                ProjectCopilotType copilotType = new ProjectCopilotType((Long) row[0], (String) row[1], (String) row[2]);
+                copilotTypes.add(copilotType);
+            }
+
+            closeConnection(conn);
+            return copilotTypes;
+        } catch (PersistenceException e) {
+            getLogger().log(
+                    Level.ERROR,
+                    new LogMessage(null, null, "Fails to retrieving project copilot types with project id: "
+                            + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * <p>
+     * Gets the copilot contest extra infos associated with the given project.
+     * </p>
+     * @param projectId
+     *            the id of the project.
+     * @return a list of <code>CopilotContestExtraInfo</code>s representing the copilot contest extra infos associated
+     *         with the given project.
+     * @throws PersistenceException
+     *             if any error occurs from underlying persistence.
+     */
+    private List<CopilotContestExtraInfo> getCopilotContestExtraInfos(long projectId) throws PersistenceException {
+        Helper.assertLongPositive(projectId, "projectId");
+
+        Connection conn = null;
+
+        getLogger().log(Level.INFO, "get copilot contest extra infos with the project id: " + projectId);
+        try {
+            // create the connection
+            conn = openConnection();
+
+            // check whether the project id is already in the database
+            if (!Helper.checkEntityExists("project", "project_id", projectId, conn)) {
+                throw new PersistenceException("The project with id " + projectId + " does not exist in the database.");
+            }
+
+            // find copilot contest extra info in the table
+            Object[][] rows = Helper.doQuery(conn, QUERY_COPILOT_CONTEST_EXTRA_INFOS_SQL + projectId, new Object[] {},
+                    QUERY_COPILOT_CONTEST_EXTRA_INFOS_COLUMN_TYPES);
+
+            List<CopilotContestExtraInfo> extraInfos = new ArrayList<CopilotContestExtraInfo>();
+
+            // enumerate each row
+            for (int i = 0; i < rows.length; ++i) {
+                Object[] row = rows[i];
+
+                CopilotContestExtraInfoType type = new CopilotContestExtraInfoType((Long) row[0], (String) row[1],
+                        (String) row[2]);
+                CopilotContestExtraInfo extraInfo = new CopilotContestExtraInfo();
+                extraInfo.setType(type);
+                extraInfo.setValue((String) row[3]);
+                extraInfos.add(extraInfo);
+            }
+
+            closeConnection(conn);
+            return extraInfos;
+        } catch (PersistenceException e) {
+            getLogger().log(
+                    Level.ERROR,
+                    new LogMessage(null, null, "Fails to retrieving copilot contest extra infos with project id: "
+                            + projectId, e));
+            if (conn != null) {
+                closeConnectionOnError(conn);
+            }
+            throw e;
+        }
+    }
 }
