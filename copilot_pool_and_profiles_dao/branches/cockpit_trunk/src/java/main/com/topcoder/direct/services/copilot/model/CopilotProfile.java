@@ -12,8 +12,12 @@ import java.util.Set;
  *
  * <p><strong>Thread safety:</strong> This class is mutable and not thread safe.</p>
  *
- * @author saarixx, TCSDEVELOPER
- * @version 1.0
+ * <p>
+ *     Version 1.1 - Add property handle to the DTO.
+ * </p>
+ *
+ * @author saarixx, hohosky
+ * @version 1.1
  */
 public class CopilotProfile extends IdentifiableEntity {
 
@@ -21,6 +25,14 @@ public class CopilotProfile extends IdentifiableEntity {
      * <p>The ID of the copilot user. Can be any value. Has getter and setter.</p>
      */
     private long userId;
+
+    /**
+     * <p>
+     *     The TopCoder handle of the copilot.
+     * </p>
+     * @since 1.1
+     */
+    private String handle;
 
     /**
      * <p>The copilot profile status. Can be any value. Has getter and setter.</p>
@@ -183,6 +195,26 @@ public class CopilotProfile extends IdentifiableEntity {
      */
     public void setProfileInfos(Set<CopilotProfileInfo> profileInfos) {
         this.profileInfos = profileInfos;
+    }
+
+    /**
+     * Gets the TopCoder user handle of the copilot.
+     *
+     * @return the TopCoder user handle.
+     * @since 1.1
+     */
+    public String getHandle() {
+        return handle;
+    }
+
+    /**
+     * Sets the TopCoder user handle.
+     *
+     * @param handle the TopCoder user handle.
+     * @since 1.1
+     */
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 }
 

@@ -13,6 +13,8 @@
         <property name="modifyDate" column="update_date" type="timestamp"/>
         <property name="modifyUser" column="update_user" type="string"/>
         <property name="userId" column="user_id" type="long"/>
+        <property name="handle" formula="(SELECT u.handle FROM user u where u.user_id = user_id)"
+			not-null="true" />
         <many-to-one name="status" class="CopilotProfileStatus" column=" copilot_profile_status_id" cascade="none"/>
         <property name="suspensionCount" column="suspension_count" type="integer"/>
         <property name="reliability" column="reliability" type="float"/>
