@@ -3,6 +3,10 @@
  */
 package com.topcoder.management.deliverable.latetracker;
 
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+
 import junit.framework.TestCase;
 
 import com.topcoder.configuration.ConfigurationObject;
@@ -29,8 +33,15 @@ import com.topcoder.util.log.LogFactory;
  * </ol>
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added test cases for checkLateDeliverableTypes() method.</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public class HelperTests extends TestCase {
     /**
@@ -166,6 +177,85 @@ public class HelperTests extends TestCase {
         String res = Helper.delayToString(delay);
 
         assertEquals("'delayToString' should be correct.", "3 days 0 hour 1 minute", res);
+    }
+
+    /**
+     * <p>
+     * Tests failure of <code>checkLateDeliverableTypes(Set&lt;LateDeliverableType&gt; types, String name,
+     * Log log, String signature)</code> method with
+     * <code>types</code> is empty.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @since 1.3
+     */
+    public void test_checkLateDeliverableTypes_Empty() {
+        Set<LateDeliverableType> types = EnumSet.noneOf(LateDeliverableType.class);
+
+        try {
+            Helper.checkLateDeliverableTypes(types, "name", log, "name");
+
+            fail("IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException e) {
+            // Good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests failure of <code>checkLateDeliverableTypes(Set&lt;LateDeliverableType&gt; types, String name,
+     * Log log, String signature)</code> method with
+     * <code>types</code> contains <code>null</code>.<br>
+     * <code>IllegalArgumentException</code> is expected.
+     * </p>
+     *
+     * @since 1.3
+     */
+    public void test_checkLateDeliverableTypes_ContainsNull() {
+        Set<LateDeliverableType> types = new HashSet<LateDeliverableType>();
+        types.add(null);
+
+        try {
+            Helper.checkLateDeliverableTypes(types, "name", log, "name");
+
+            fail("IllegalArgumentException is expected.");
+        } catch (IllegalArgumentException e) {
+            // Good
+        }
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>checkLateDeliverableTypes(Set&lt;LateDeliverableType&gt; types, String name,
+     * Log log, String signature)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.3
+     */
+    public void test_checkLateDeliverableTypes_1() {
+        Set<LateDeliverableType> types = EnumSet.allOf(LateDeliverableType.class);
+
+        Helper.checkLateDeliverableTypes(types, "name", log, "name");
+
+        // Good
+    }
+
+    /**
+     * <p>
+     * Tests accuracy of <code>checkLateDeliverableTypes(Set&lt;LateDeliverableType&gt; types, String name,
+     * Log log, String signature)</code> method.<br>
+     * Result should be correct.
+     * </p>
+     *
+     * @since 1.3
+     */
+    public void test_checkLateDeliverableTypes_2() {
+        Set<LateDeliverableType> types = null;
+
+        Helper.checkLateDeliverableTypes(types, "name", log, "name");
+
+        // Good
     }
 
     /**

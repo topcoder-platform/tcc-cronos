@@ -7,8 +7,8 @@
 		<Property name="resourceManagerKey">
           <Value>resourceManager</Value>
         </Property>
-		<Property name="trackingDeliverableIds">
-			<Value>1,2,3,4,5</Value>
+		<Property name="missedDeadlineTrackingDeliverableIds">
+			<Value>3,4</Value>
 		</Property>
 		<Property name="objectFactoryConfig">
 		  <Property name="resourceManager">

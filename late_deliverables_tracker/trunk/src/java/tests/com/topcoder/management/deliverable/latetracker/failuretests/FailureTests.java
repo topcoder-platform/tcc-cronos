@@ -3,7 +3,6 @@
  */
 package com.topcoder.management.deliverable.latetracker.failuretests;
 
-import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotifier;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

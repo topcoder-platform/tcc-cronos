@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
 
@@ -11,13 +11,22 @@ import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverabl
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Unit tests for <code>{@link LateDeliverablesTracker}</code> class.
  *
- * @author myxgyy
- * @version 1.0
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added/Updated test cases.</li>
+ * </ol>
+ * </p>
+ *
+ * @author myxgyy, sparemax
+ * @version 1.3
  */
 public class LateDeliverablesTrackerTests extends BaseTestCase {
     /**
@@ -46,6 +55,13 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
     private ConfigurationObject config;
 
     /**
+     * The tracked late deliverable types used for testing.
+     *
+     * @since 1.3
+     */
+    private Set<LateDeliverableType> lateDeliverableTypes;
+
+    /**
      * <p>
      * Sets up the test environment.
      * </p>
@@ -72,11 +88,14 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
         lateDeliverableProcessor = new LateDeliverableProcessorImpl();
         lateDeliverableProcessor.configure(lateDeliverableProcessorConfig);
 
+        lateDeliverableTypes = EnumSet.allOf(LateDeliverableType.class);
+
         // Get logger
         log = LogFactory.getLog("my_logger");
 
         // Create LateDeliverablesTracker
-        target = new LateDeliverablesTracker(lateDeliverablesRetriever, lateDeliverableProcessor, log);
+        target = new LateDeliverablesTracker(lateDeliverablesRetriever, lateDeliverableProcessor,
+            lateDeliverableTypes, log);
 
         config = getConfigurationObject(
             "config/LateDeliverablesTracker.xml", LateDeliverablesTracker.class.getName());
@@ -96,27 +115,50 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link
-     * LateDeliverablesTracker#LateDeliverablesTracker(LateDeliverablesRetriever,
-     * LateDeliverableProcessor, Log)} method.
+     * Accuracy test case for the <code>LateDeliverablesTracker#LateDeliverablesTracker(LateDeliverablesRetriever,
+     * LateDeliverableProcessor, Set&lt;LateDeliverableType&gt;, Log)</code> method.
      * </p>
      *
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_1() throws Exception {
+    public void test_Constructor1_1() throws Exception {
         assertNotNull("lateDeliverablesRetriever field should not be null", getField(target,
             "lateDeliverablesRetriever"));
         assertNotNull("lateDeliverableProcessor field should not be null", getField(target,
             "lateDeliverableProcessor"));
+        assertNotNull("lateDeliverableTypes field should not be null", getField(target, "lateDeliverableTypes"));
         assertNotNull("log field should not be null", getField(target, "log"));
     }
 
     /**
      * <p>
-     * Failure test case for the {@link
-     * LateDeliverablesTracker#LateDeliverablesTracker(LateDeliverablesRetriever,
-     * LateDeliverableProcessor, Log)} method.
+     * Accuracy test case for the <code>LateDeliverablesTracker#LateDeliverablesTracker(LateDeliverablesRetriever,
+     * LateDeliverableProcessor, Set&lt;LateDeliverableType&gt;, Log)</code> method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Constructor1_2() throws Exception {
+        lateDeliverableTypes = null;
+        target = new LateDeliverablesTracker(lateDeliverablesRetriever, lateDeliverableProcessor,
+            lateDeliverableTypes, log);
+
+        assertNotNull("lateDeliverablesRetriever field should not be null", getField(target,
+            "lateDeliverablesRetriever"));
+        assertNotNull("lateDeliverableProcessor field should not be null", getField(target,
+            "lateDeliverableProcessor"));
+        assertNull("lateDeliverableTypes field should be null", getField(target, "lateDeliverableTypes"));
+        assertNotNull("log field should not be null", getField(target, "log"));
+    }
+
+    /**
+     * <p>
+     * Failure test case for the <code>LateDeliverablesTracker#LateDeliverablesTracker(LateDeliverablesRetriever,
+     * LateDeliverableProcessor, Set&lt;LateDeliverableType&gt;, Log)</code> method.
      * </p>
      * <p>
      * The given <code>retriever</code> is <code>null</code>,
@@ -126,9 +168,10 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_2() throws Exception {
+    public void test_Constructor1_3() throws Exception {
         try {
-            new LateDeliverablesTracker(null, lateDeliverableProcessor, log);
+            new LateDeliverablesTracker(null, lateDeliverableProcessor,
+                lateDeliverableTypes, log);
             fail("should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // pass
@@ -137,9 +180,8 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link
-     * LateDeliverablesTracker#LateDeliverablesTracker(LateDeliverablesRetriever,
-     * LateDeliverableProcessor, Log)} method.
+     * Failure test case for the <code>LateDeliverablesTracker#LateDeliverablesTracker(LateDeliverablesRetriever,
+     * LateDeliverableProcessor, Set&lt;LateDeliverableType&gt;, Log)</code> method.
      * </p>
      * <p>
      * The given <code>processor</code> is <code>null</code>,
@@ -149,9 +191,10 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_3() throws Exception {
+    public void test_Constructor1_4() throws Exception {
         try {
-            new LateDeliverablesTracker(lateDeliverablesRetriever, null, log);
+            new LateDeliverablesTracker(lateDeliverablesRetriever, null,
+                lateDeliverableTypes, log);
             fail("should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // pass
@@ -170,12 +213,37 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_4() throws Exception {
+    public void test_Constructor2_1() throws Exception {
         target = new LateDeliverablesTracker(config);
         assertNotNull("lateDeliverablesRetriever field should not be null", getField(target,
             "lateDeliverablesRetriever"));
         assertNotNull("lateDeliverableProcessor field should not be null", getField(target,
             "lateDeliverableProcessor"));
+        assertNotNull("log field should not be null", getField(target, "log"));
+        assertNotNull("lateDeliverableTypes field should not be null", getField(target, "lateDeliverableTypes"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link
+     * LateDeliverablesTracker#LateDeliverablesTracker(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * All class fields should be set correctly according to configuration.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     */
+    public void test_Constructor2_2() throws Exception {
+        config.removeProperty("lateDeliverableTypes");
+
+        target = new LateDeliverablesTracker(config);
+        assertNotNull("lateDeliverablesRetriever field should not be null", getField(target,
+            "lateDeliverablesRetriever"));
+        assertNotNull("lateDeliverableProcessor field should not be null", getField(target,
+            "lateDeliverableProcessor"));
+        assertNull("lateDeliverableTypes field should be null", getField(target, "lateDeliverableTypes"));
         assertNotNull("log field should not be null", getField(target, "log"));
     }
 
@@ -192,7 +260,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_5() throws Exception {
+    public void test_Constructor2_3() throws Exception {
         config.setPropertyValue("loggerName", "");
 
         try {
@@ -216,7 +284,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_6() throws Exception {
+    public void test_Constructor2_4() throws Exception {
         config.setPropertyValue("loggerName", new Exception());
 
         try {
@@ -240,7 +308,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_7() throws Exception {
+    public void test_Constructor2_5() throws Exception {
         config.setPropertyValue("lateDeliverablesRetrieverKey", "");
 
         try {
@@ -264,7 +332,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_8() throws Exception {
+    public void test_Constructor2_6() throws Exception {
         config.removeProperty("lateDeliverablesRetrieverKey");
 
         try {
@@ -288,7 +356,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_9() throws Exception {
+    public void test_Constructor2_7() throws Exception {
         config.setPropertyValue("lateDeliverablesRetrieverKey", "not_exist");
 
         try {
@@ -312,7 +380,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_10() throws Exception {
+    public void test_Constructor2_8() throws Exception {
         config.setPropertyValue("lateDeliverablesRetrieverKey", new Exception());
 
         try {
@@ -336,7 +404,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_11() throws Exception {
+    public void test_Constructor2_9() throws Exception {
         config.removeProperty("lateDeliverableProcessorKey");
 
         try {
@@ -360,7 +428,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_12() throws Exception {
+    public void test_Constructor2_10() throws Exception {
         config.setPropertyValue("lateDeliverableProcessorKey", "");
 
         try {
@@ -384,7 +452,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_13() throws Exception {
+    public void test_Constructor2_11() throws Exception {
         config.setPropertyValue("lateDeliverableProcessorKey", "not_exist");
 
         try {
@@ -408,7 +476,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_14() throws Exception {
+    public void test_Constructor2_12() throws Exception {
         config.setPropertyValue("lateDeliverableProcessorKey", new Exception());
 
         try {
@@ -432,7 +500,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_15() throws Exception {
+    public void test_Constructor2_13() throws Exception {
         config.removeChild("lateDeliverableProcessorConfig");
 
         try {
@@ -456,7 +524,7 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_16() throws Exception {
+    public void test_Constructor2_14() throws Exception {
         config.removeChild("lateDeliverablesRetrieverConfig");
 
         try {
@@ -480,11 +548,115 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
      * @throws Exception
      *             to JUnit.
      */
-    public void test_Constructor_17() throws Exception {
+    public void test_Constructor2_15() throws Exception {
         try {
             new LateDeliverablesTracker(null);
             fail("should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link
+     * LateDeliverablesTracker#LateDeliverablesTracker(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypes property value is empty in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Constructor2_16() throws Exception {
+        config.setPropertyValues("lateDeliverableTypes", new Object[0]);
+
+        try {
+            new LateDeliverablesTracker(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link
+     * LateDeliverablesTracker#LateDeliverablesTracker(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypes property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Constructor2_17() throws Exception {
+        config.setPropertyValues("lateDeliverableTypes", new Object[] {1});
+
+        try {
+            new LateDeliverablesTracker(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link
+     * LateDeliverablesTracker#LateDeliverablesTracker(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypes property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Constructor2_18() throws Exception {
+        config.setPropertyValues("lateDeliverableTypes", new Object[] {"not_exist"});
+
+        try {
+            new LateDeliverablesTracker(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesTracker#LateDeliverablesTracker(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypes property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Constructor2_19() throws Exception {
+        config.setPropertyValues("lateDeliverableTypes",
+            new Object[] {"Rejected Final Fix", "Rejected Final Fix"});
+
+        try {
+            new LateDeliverablesTracker(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
             // pass
         }
     }
@@ -514,8 +686,8 @@ public class LateDeliverablesTrackerTests extends BaseTestCase {
         assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified()
             .getTime()) < 5000);
         assertEquals("should be equal", data.getCreateDate(), data.getLastNotified());
-        assertEquals("should be equal", lateDeliverablesRetriever.retrieve().get(0).getPhase()
-            .getScheduledEndDate(), data.getDeadline());
+        assertEquals("should be equal", lateDeliverablesRetriever.retrieve(lateDeliverableTypes).get(0)
+            .getPhase().getScheduledEndDate(), data.getDeadline());
         assertEquals("deliverable id wrong", 4, data.getDeliverableId());
 
         // manually check the email

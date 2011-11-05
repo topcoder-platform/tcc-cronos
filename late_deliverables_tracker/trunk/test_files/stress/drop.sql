@@ -30,4 +30,5 @@ DELETE FROM resource_role_lu;
 DELETE FROM resource_info_type_lu;
 DELETE FROM comment_type_lu;
 DELETE FROM phase_type_lu;
+DELETE FROM late_deliverable_type_lu;
 DELETE FROM late_deliverable;

@@ -10,9 +10,13 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,6 +36,7 @@ import com.topcoder.management.deliverable.latetracker.EmailSendingUtility;
 import com.topcoder.management.deliverable.latetracker.Helper;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverableProcessor;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesProcessingException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.project.Project;
@@ -48,8 +53,8 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 /**
  * <p>
  * This class is an implementation of <code>LateDeliverableProcessor</code> that uses pluggable
- * <code>ResourceManager</code> and <code>UserRetrieval</code> instances to retrieve an additional information about
- * the user who has a late deliverable, and DB Connection Factory component to perform auditing of all late
+ * <code>ResourceManager</code> and <code>UserRetrieval</code> instances to retrieve an additional information
+ * about the user who has a late deliverable, and DB Connection Factory component to perform auditing of all late
  * deliverables and last sent notifications in the database. To send warning email messages to the users this class
  * uses <code>EmailSendingUtility</code>. This class performs the logging of errors and debug information using
  * Logging Wrapper component.
@@ -70,9 +75,16 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * <ol>
  * <li>Added support for EXPLANATION, EXPLANATION_DEADLINE and EXPLANATION_CAN_BE_SENT parameters in email
  *     templates.</li>
- * <li>Delay is computed based on the compensated deadline if exists (previously was always computed based on the real
- *     deadline).</li>
+ * <li>Delay is computed based on the compensated deadline if exists (previously was always computed based on the
+ * real deadline).</li>
  * <li>Storing compensated deadline in the database.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added support of Rejected Final Fix late deliverable type.</li>
  * </ol>
  * </p>
  *
@@ -81,160 +93,175 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  *
  * <pre>
  * &lt;?xml version=&quot;1.0&quot;?&gt;
- *  &lt;CMConfig&gt;
- *  &lt;Config name=
- *  &quot;com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl&quot;&gt;
- *  &lt;Property name=&quot;loggerName&quot;&gt;
- *  &lt;Value&gt;myLogger&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;connectionName&quot;&gt;
- *  &lt;Value&gt;informix_connection&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;objectFactoryConfig&quot;&gt;
- *  &lt;property name=&quot;resourceManager&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.management.resource.persistence.PersistenceResourceManager&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;name&quot;&gt;
- *  &lt;Value&gt;ResourcePersistence&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;param2&quot;&gt;
- *  &lt;Property name=&quot;name&quot;&gt;
- *  &lt;Value&gt;SearchBundleManager&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;ResourcePersistence&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.management.resource.persistence.sql.SqlResourcePersistence&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;name&quot;&gt;
- *  &lt;Value&gt;DBConnectionFactory&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;DBConnectionFactory&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;type&quot;&gt;
- *  &lt;Value&gt;String&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;value&quot;&gt;
- *  &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;SearchBundleManager&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;type&quot;&gt;
- *  &lt;Value&gt;String&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;value&quot;&gt;
- *  &lt;Value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;userRetrieval&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.cronos.onlinereview.external.impl.DBUserRetrieval&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;type&quot;&gt;
- *  &lt;Value&gt;String&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;value&quot;&gt;
- *  &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;dbConnectionFactoryConfig&quot;&gt;
- *  &lt;Property name=&quot;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&quot;&gt;
- *  &lt;Property name=&quot;connections&quot;&gt;
- *  &lt;Property name=&quot;informix_connection&quot;&gt;
- *  &lt;Property name=&quot;producer&quot;&gt;
- *  &lt;Value&gt;com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;parameters&quot;&gt;
- *  &lt;Property name=&quot;jdbc_driver&quot;&gt;
- *  &lt;Value&gt;com.informix.jdbc.IfxDriver&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;jdbc_url&quot;&gt;
- *  &lt;Value&gt;jdbc:informix-sqli://192.168.1.3:9000/online_review:informixserver=tcs&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;user&quot;&gt;
- *  &lt;Value&gt;informix&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;password&quot;&gt;
- *  &lt;Value&gt;123456&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;emailSubjectForDeliverable3&quot;&gt;
- *  &lt;Value&gt;WARNING\: You are late when providing a deliverable for %PROJECT_NAME%&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;emailBodyForDeliverable3&quot;&gt;
- *  &lt;Value&gt;test_files/warn_email_template.html&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;notificationDeliverableIds&quot;&gt;
- *  &lt;Value&gt;4&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;defaultEmailSubjectTemplateText&quot;&gt;
- *  &lt;Value&gt;WARNING\: You are late when providing a deliverable for %PROJECT_NAME%&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;defaultEmailBodyTemplatePath&quot;&gt;
- *  &lt;Value&gt;test_files/warn_email_template.html&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;emailSender&quot;&gt;
- *  &lt;Value&gt;service@topcoder.com&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;resourceManagerKey&quot;&gt;
- *  &lt;Value&gt;resourceManager&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;userRetrievalKey&quot;&gt;
- *  &lt;Value&gt;userRetrieval&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;timestampFormat&quot;&gt;
- *  &lt;Value&gt;yyyy-MM-dd HH:mm:ss&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;notificationInterval&quot;&gt;
- *  &lt;Value&gt;10&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Config&gt;
- *  &lt;/CMConfig&gt;
+ * &lt;CMConfig&gt;
+ *     &lt;Config
+ *     name=&quot;com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl&quot;&gt;
+ *      &lt;Property name=&quot;loggerName&quot;&gt;
+ *          &lt;Value&gt;myLogger&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;connectionName&quot;&gt;
+ *          &lt;Value&gt;informix_connection&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;objectFactoryConfig&quot;&gt;
+ *          &lt;property name=&quot;resourceManager&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.management.resource.persistence.PersistenceResourceManager&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;name&quot;&gt;
+ *                          &lt;Value&gt;ResourcePersistence&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *                  &lt;Property name=&quot;param2&quot;&gt;
+ *                      &lt;Property name=&quot;name&quot;&gt;
+ *                          &lt;Value&gt;SearchBundleManager&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;ResourcePersistence&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.management.resource.persistence.sql.SqlResourcePersistence&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;name&quot;&gt;
+ *                          &lt;Value&gt;DBConnectionFactory&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;DBConnectionFactory&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;type&quot;&gt;
+ *                          &lt;Value&gt;String&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                      &lt;Property name=&quot;value&quot;&gt;
+ *                          &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;SearchBundleManager&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;type&quot;&gt;
+ *                          &lt;Value&gt;String&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                      &lt;Property name=&quot;value&quot;&gt;
+ *                          &lt;Value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;userRetrieval&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.cronos.onlinereview.external.impl.DBUserRetrieval&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;type&quot;&gt;
+ *                          &lt;Value&gt;String&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                      &lt;Property name=&quot;value&quot;&gt;
+ *                          &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;dbConnectionFactoryConfig&quot;&gt;
+ *          &lt;Property name=&quot;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&quot;&gt;
+ *              &lt;Property name=&quot;connections&quot;&gt;
+ *                  &lt;Property name=&quot;informix_connection&quot;&gt;
+ *                      &lt;Property name=&quot;producer&quot;&gt;
+ *                      &lt;Value&gt;com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                      &lt;Property name=&quot;parameters&quot;&gt;
+ *                              &lt;Property name=&quot;jdbc_driver&quot;&gt;
+ *                                  &lt;Value&gt;com.informix.jdbc.IfxDriver&lt;/Value&gt;
+ *                              &lt;/Property&gt;
+ *                              &lt;Property name=&quot;jdbc_url&quot;&gt;
+ *                      &lt;Value&gt;jdbc:informix-sqli://localhost:1526/test:informixserver=ol_topcoder&lt;/Value&gt;
+ *                              &lt;/Property&gt;
+ *                              &lt;Property name=&quot;user&quot;&gt;
+ *                                  &lt;Value&gt;informix&lt;/Value&gt;
+ *                              &lt;/Property&gt;
+ *                              &lt;Property name=&quot;password&quot;&gt;
+ *                                  &lt;Value&gt;123456&lt;/Value&gt;
+ *                              &lt;/Property&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/Property&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;missedDeadlineEmailSubjectForDeliverable3&quot;&gt;
+ *          &lt;Value&gt;WARNING\: You are late when providing a deliverable for %PROJECT_NAME%&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;missedDeadlineEmailBodyForDeliverable3&quot;&gt;
+ *          &lt;Value&gt;test_files/warn_email_template.html&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;missedDeadlineNotificationDeliverableIds&quot;&gt;
+ *          &lt;Value&gt;4&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;defaultMissedDeadlineEmailSubjectTemplateText&quot;&gt;
+ *          &lt;Value&gt;WARNING\: You are late when providing a deliverable for %PROJECT_NAME%&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;defaultMissedDeadlineEmailBodyTemplatePath&quot;&gt;
+ *          &lt;Value&gt;test_files/warn_email_template.html&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *         &lt;Property name=&quot;rejectedFinalFixEmailSubjectTemplateText&quot;&gt;
+ *           &lt;Value&gt;WARNING\: You need to explain why your Final Fix for %PROJECT_NAME% was rejected&lt;/Value&gt;
+ *         &lt;/Property&gt;
+ *         &lt;Property name=&quot;rejectedFinalFixEmailBodyTemplatePath&quot;&gt;
+ *           &lt;Value&gt;test_files/rejected_ff_email_template.html&lt;/Value&gt;
+ *         &lt;/Property&gt;
+ *      &lt;Property name=&quot;emailSender&quot;&gt;
+ *          &lt;Value&gt;service@topcoder.com&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;resourceManagerKey&quot;&gt;
+ *          &lt;Value&gt;resourceManager&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;userRetrievalKey&quot;&gt;
+ *          &lt;Value&gt;userRetrieval&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;timestampFormat&quot;&gt;
+ *          &lt;Value&gt;yyyy-MM-dd HH:mm:ss&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;notificationInterval&quot;&gt;
+ *          &lt;Value&gt;10&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *         &lt;Property name=&quot;explanationDeadlineIntervalInHours&quot;&gt;
+ *           &lt;Value&gt;24&lt;/Value&gt;
+ *         &lt;/Property&gt;
+ *         &lt;Property name=&quot;lateDeliverableTypeIds&quot;&gt;
+ *           &lt;Value&gt;Missed Deadline=1,Rejected Final Fix=2&lt;/Value&gt;
+ *         &lt;/Property&gt;
+ *         &lt;Property name=&quot;sendRejectedFinalFixNotifications&quot;&gt;
+ *           &lt;Value&gt;true&lt;/Value&gt;
+ *         &lt;/Property&gt;
+ *     &lt;/Config&gt;
+ * &lt;/CMConfig&gt;
  * </pre>
  *
  * </p>
  * <p>
- * Thread Safety: This class is not thread safe since it uses <code>ResourceManager</code> instance that is not thread
- * safe. It's assumed that{@link #configure(ConfigurationObject)} method will be called just once right after
+ * Thread Safety: This class is not thread safe since it uses <code>ResourceManager</code> instance that is not
+ * thread safe. It's assumed that{@link #configure(ConfigurationObject)} method will be called just once right after
  * instantiation, before calling any business methods. <code>LateDeliverableProcessorImpl</code> uses transactions
  * when inserting or updating data in persistence.
  * </p>
  *
  * @author saarixx, myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
     /**
@@ -243,6 +270,15 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </p>
      */
     private static final String CLASS_NAME = LateDeliverableProcessorImpl.class.getName();
+
+    /**
+     * <p>
+     * Represents the boolean values "true"/"false".
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final List<String> BOOLEAN_VALUES = Arrays.asList("true", "false");
 
     /**
      * <p>
@@ -264,20 +300,53 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * <p>
      * Represents the sql statement to get last dead line for the late deliverable.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
+     * </p>
      */
-    private static final String SELECT_MAX_DEADLINE_SQL = "select max(deadline) from late_deliverable"
-        + " where project_phase_id = ? and resource_id = ? and deliverable_id = ?";
+    private static final String SELECT_MAX_DEADLINE_SQL = "select max(deadline), count(*) from late_deliverable"
+        + " where project_phase_id = ? and resource_id = ? and deliverable_id = ? and late_deliverable_type_id = ?";
 
     /**
      * <p>
      * Represents the sql statement to get ID of late deliverable with maximum deadline.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
+     * </p>
      */
     private static final String SELECT_LATE_DELIVERABLE_ID_WITH_MAX_DEADLINE_SQL = "select late_deliverable_id "
-        + " from late_deliverable ld where ld.project_phase_id = ? and ld.resource_id = ? and ld.deliverable_id = ?"
-        + " and ld.deadline = (select max(deadline) from late_deliverable ld2"
-        + " where ld2.project_phase_id = ld.project_phase_id and ld2.resource_id = ld.resource_id"
+        + " from late_deliverable ld where ld.late_deliverable_type_id = ? and ld.project_phase_id = ?"
+        + " and ld.resource_id = ? and ld.deliverable_id = ? and ld.deadline = (select max(deadline)"
+        + " from late_deliverable ld2 where ld2.late_deliverable_type_id = ld.late_deliverable_type_id"
+        + " and ld2.project_phase_id = ld.project_phase_id and ld2.resource_id = ld.resource_id"
         + " and ld2.deliverable_id = ld.deliverable_id)";
+
+    /**
+     * <p>
+     * Represents the sql statement to get ID of late deliverable.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String SELECT_LATE_DELIVERABLE_ID_WITH_REJECTED_FF_SQL = "select late_deliverable_id"
+        + " from late_deliverable ld where ld.late_deliverable_type_id = ? and ld.project_phase_id = ?"
+        + " and ld.resource_id = ? and ld.deliverable_id = ?";
 
     /**
      * <p>
@@ -290,43 +359,17 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * <li>Added columns for retrieving late deliverable explanation and creation date from DB.</li>
      * </ol>
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated.</li>
+     * </ol>
+     * </p>
      */
     private static final String SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL = "select last_notified,"
         + " forgive_ind, explanation, create_date from late_deliverable where project_phase_id = ?"
-        + " and resource_id = ? and deadline = ? and deliverable_id = ?";
-
-    /**
-     * <p>
-     * Represents the sql statement to insert a record with last notified time.
-     * </p>
-     *
-     * <p>
-     * <em>Changes in 1.2:</em>
-     * <ol>
-     * <li>Added parameters for storing compensated deadline in the database.</li>
-     * </ol>
-     * </p>
-     */
-    private static final String INSERT_WITH_LAST_NOTIFICATION_SQL = "insert into late_deliverable (project_phase_id,"
-        + " resource_id, deliverable_id, deadline, compensated_deadline, create_date, forgive_ind, last_notified,"
-        + " delay) values (?, ?, ?, ?, ?, current, ?, current,"
-        + " (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
-
-    /**
-     * <p>
-     * Represents the sql statement to insert a record without last notified time.
-     * </p>
-     *
-     * <p>
-     * <em>Changes in 1.2:</em>
-     * <ol>
-     * <li>Added parameters for storing compensated deadline in the database.</li>
-     * </ol>
-     * </p>
-     */
-    private static final String INSERT_SQL = "insert into late_deliverable(project_phase_id, resource_id,"
-        + " deliverable_id, deadline, compensated_deadline, create_date, forgive_ind, delay)"
-        + " values (?, ?, ?, ?, ?, current, ?, (current - ?)::interval second(9) to second::char(16)::decimal(16,0))";
+        + " and resource_id = ? and deadline = ? and deliverable_id = ? and late_deliverable_type_id = ?";
 
     /**
      * <p>
@@ -340,10 +383,18 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * real deadline).</li>
      * </ol>
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated</li>
+     * </ol>
+     * </p>
      */
     private static final String UPDATE_SQL = "update late_deliverable set %1$sdelay ="
         + " (current - nvl(compensated_deadline, deadline))::interval second(9) to second::char(16)::decimal(16,0)"
-        + " where project_phase_id = ? and resource_id = ? and deadline = ? and deliverable_id = ?";
+        + " where project_phase_id = ? and resource_id = ? and deadline = ? and deliverable_id = ?"
+        + " and late_deliverable_type_id = ?";
 
     /**
      * <p>
@@ -362,25 +413,52 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
     /**
      * <p>
-     * Represents &quot;notificationDeliverableIds&quot; property key in configuration.
+     * Represents &quot;missedDeadlineNotificationDeliverableIds&quot; property key in configuration.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "NOTIFICATION_DELIVERABLE_IDS".</li>
+     * <li>Changed the value "notificationDeliverableIds" to "missedDeadlineNotificationDeliverableIds".</li>
+     * </ol>
      * </p>
      */
-    private static final String NOTIFICATION_DELIVERABLE_IDS = "notificationDeliverableIds";
+    private static final String MISSED_DEADLINE_NOTIFICATION_DELIVERABLE_IDS =
+        "missedDeadlineNotificationDeliverableIds";
 
     /**
      * <p>
-     * Represents &quot;defaultEmailSubjectTemplateText&quot; property key in
+     * Represents &quot;defaultMissedDeadlineEmailSubjectTemplateText&quot; property key in
      * configuration.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "DEFAULT_EMAIL_SUBJECT_TEMPLATE_TEXT".</li>
+     * <li>Changed the value "defaultEmailSubjectTemplateText" to "defaultMissedDeadlineEmailSubjectTemplateText".</li>
+     * </ol>
+     * </p>
      */
-    private static final String DEFAULT_EMAIL_SUBJECT_TEMPLATE_TEXT = "defaultEmailSubjectTemplateText";
+    private static final String DEFAULT_MISSED_DEADLINE_EMAIL_SUBJECT_TEMPLATE_TEXT =
+        "defaultMissedDeadlineEmailSubjectTemplateText";
 
     /**
      * <p>
-     * Represents &quot;defaultEmailBodyTemplatePath&quot; property key in configuration.
+     * Represents &quot;defaultMissedDeadlineEmailBodyTemplatePath&quot; property key in configuration.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "DEFAULT_EMAIL_BODY_TEMPLATE_PATH".</li>
+     * <li>Changed the value "defaultEmailBodyTemplatePath" to "defaultMissedDeadlineEmailBodyTemplatePath".</li>
+     * </ol>
      * </p>
      */
-    private static final String DEFAULT_EMAIL_BODY_TEMPLATE_PATH = "defaultEmailBodyTemplatePath";
+    private static final String DEFAULT_MISSED_DEADLINE_EMAIL_BODY_TEMPLATE_PATH =
+        "defaultMissedDeadlineEmailBodyTemplatePath";
 
     /**
      * <p>
@@ -419,18 +497,34 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
     /**
      * <p>
-     * Represents &quot;emailSubjectForDeliverable&quot; prefix of property in
+     * Represents &quot;missedDeadlineEmailSubjectForDeliverable&quot; prefix of property in
      * configuration.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "EMAIL_SUBJECT_PREFIX".</li>
+     * <li>Changed the value "emailSubjectForDeliverable" to "missedDeadlineEmailSubjectForDeliverable".</li>
+     * </ol>
+     * </p>
      */
-    private static final String EMAIL_SUBJECT_PREFIX = "emailSubjectForDeliverable";
+    private static final String MISSED_DEADLINE_EMAIL_SUBJECT_PREFIX = "missedDeadlineEmailSubjectForDeliverable";
 
     /**
      * <p>
-     * Represents &quot;emailBodyForDeliverable&quot; prefix of property in configuration.
+     * Represents &quot;missedDeadlineEmailBodyForDeliverable&quot; prefix of property in configuration.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "EMAIL_BODY_PREFIX".</li>
+     * <li>Changed the value "emailBodyForDeliverable" to "missedDeadlineEmailBodyForDeliverable".</li>
+     * </ol>
      * </p>
      */
-    private static final String EMAIL_BODY_PREFIX = "emailBodyForDeliverable";
+    private static final String MISSED_DEADLINE_EMAIL_BODY_PREFIX = "missedDeadlineEmailBodyForDeliverable";
 
     /**
      * <p>
@@ -440,6 +534,42 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * @since 1.2
      */
     private static final String EXPLANATION_DEADLINE_INTERVAL = "explanationDeadlineIntervalInHours";
+
+    /**
+     * <p>
+     * Represents &quot;rejectedFinalFixEmailSubjectTemplateText&quot; property key in configuration.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String REJECTED_FF_EMAIL_SUBJECT_TEMPLATE_TEXT = "rejectedFinalFixEmailSubjectTemplateText";
+
+    /**
+     * <p>
+     * Represents &quot;rejectedFinalFixEmailBodyTemplatePath&quot; property key in configuration.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String REJECTED_FF_EMAIL_BODY_TEMPLATE_PATH = "rejectedFinalFixEmailBodyTemplatePath";
+
+    /**
+     * <p>
+     * Represents &quot;lateDeliverableTypeIds&quot; property key in configuration.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String LATE_DELIVERABLE_TYPE_IDS = "lateDeliverableTypeIds";
+
+    /**
+     * <p>
+     * Represents &quot;sendRejectedFinalFixNotifications&quot; property key in configuration.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private static final String SEND_REJECTED_FF_NOTIFICATIONS = "sendRejectedFinalFixNotifications";
 
     /**
      * <p>
@@ -480,11 +610,11 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
     /**
      * <p>
-     * The set of deliverable IDs for which sending of notifications must be performed.
+     * The set of deliverable IDs for which sending of notifications must be performed. Is used for late deliverables
+     * of Missed Deadline type
      * </p>
      * <p>
-     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
-     * that.
+     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after that.
      * </p>
      * <p>
      * Cannot be null, cannot contain null or not positive element after initialization.
@@ -492,55 +622,71 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * <p>
      * Is used in {@link #processLateDeliverable(LateDeliverable)}.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "notificationDeliverableIds".</li>
+     * </ol>
+     * </p>
      */
-    private Set<Long> notificationDeliverableIds;
+    private Set<Long> missedDeadlineNotificationDeliverableIds;
 
     /**
      * <p>
-     * The mapping from deliverable ID to email subject template text to be used for late
-     * deliverables with this ID.
+     * The mapping from deliverable ID to email subject template text to be used for late deliverables with this ID.
+     * Is used for late deliverables of Missed Deadline type.
      * </p>
      * <p>
-     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
-     * that.
+     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after that.
      * </p>
      * <p>
-     * Cannot be null, cannot contain null/not positive key or null value after
-     * initialization.
+     * Cannot be null, cannot contain null/not positive key or null value after initialization.
      * </p>
      * <p>
      * Is used in {@link #processLateDeliverable(LateDeliverable)}.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "emailSubjectTemplateTexts".</li>
+     * </ol>
+     * </p>
      */
-    private Map<Long, String> emailSubjectTemplateTexts;
+    private Map<Long, String> missedDeadlineEmailSubjectTemplateTexts;
 
     /**
      * <p>
-     * The mapping from deliverable ID to email body template path (resource path or file
-     * path) to be used for late deliverables with this ID.
+     * The mapping from deliverable ID to email body template path (resource path or file path) to be used for late
+     * deliverables with this ID. Is used for late deliverables of Missed Deadline type.
      * </p>
      * <p>
-     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
-     * that.
+     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after that.
      * </p>
      * <p>
-     * Cannot be null, cannot contain null/not positive key or null/empty value after
-     * initialization.
+     * Cannot be null, cannot contain null/not positive key or null/empty value after initialization.
      * </p>
      * <p>
      * Is used in {@link #processLateDeliverable(LateDeliverable)}.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "emailBodyTemplatePaths".</li>
+     * </ol>
+     * </p>
      */
-    private Map<Long, String> emailBodyTemplatePaths;
+    private Map<Long, String> missedDeadlineEmailBodyTemplatePaths;
 
     /**
      * <p>
-     * The default email subject template text to be used for all deliverable IDs not
-     * configured in emailSubjectTemplateTexts collection.
+     * The default email subject template text to be used for all deliverable IDs not configured in
+     * missedDeadlineEmailSubjectTemplateTexts collection. Is used for late deliverables of Missed Deadline type.
      * </p>
      * <p>
-     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
-     * that.
+     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after that.
      * </p>
      * <p>
      * Cannot be null after initialization.
@@ -548,17 +694,24 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * <p>
      * Is used in {@link #processLateDeliverable(LateDeliverable)}.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "defaultEmailSubjectTemplateText".</li>
+     * </ol>
+     * </p>
      */
-    private String defaultEmailSubjectTemplateText;
+    private String defaultMissedDeadlineEmailSubjectTemplateText;
 
     /**
      * <p>
-     * The default email body template path (resource path or file path) to be used for
-     * all deliverable IDs not configured in emailBodyTemplatePaths collection.
+     * The default email body template path (resource path or file path) to be used for all deliverable IDs not
+     * configured in missedDeadlineEmailBodyTemplatePaths collection. Is used for late deliverables of Missed Deadline
+     * type.
      * </p>
      * <p>
-     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
-     * that.
+     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after that.
      * </p>
      * <p>
      * Cannot be null/empty after initialization.
@@ -566,8 +719,45 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * <p>
      * Is used in {@link #processLateDeliverable(LateDeliverable)}.
      * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "defaultEmailBodyTemplatePath".</li>
+     * </ol>
+     * </p>
      */
-    private String defaultEmailBodyTemplatePath;
+    private String defaultMissedDeadlineEmailBodyTemplatePath;
+
+    /**
+     * <p>
+     * The email subject template text to be used for sending notifications about Rejected Final Fix late
+     * deliverables.
+     * </p>
+     *
+     * <p>
+     * Is initialized in configure() and never changed after that. Cannot be null after initialization. Is used in
+     * processLateDeliverable().
+     * </p>
+     *
+     * @since 1.3
+     */
+    private String rejectedFinalFixEmailSubjectTemplateText;
+
+    /**
+     * <p>
+     * The email body template path (resource path or file path) to be used for sending notifications about Rejected
+     * Final Fix late deliverables.
+     * </p>
+     *
+     * <p>
+     * Is initialized in configure() and never changed after that. Cannot be null after initialization. Is used in
+     * processLateDeliverable().
+     * </p>
+     *
+     * @since 1.3
+     */
+    private String rejectedFinalFixEmailBodyTemplatePath;
 
     /**
      * <p>
@@ -661,6 +851,33 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
     /**
      * <p>
+     * The mapping from LateDeliverableType enum value to its corresponding record ID in the database.
+     * </p>
+     *
+     * <p>
+     * Is initialized in configure() and never changed after that. Cannot be null, cannot contain null key or null/not
+     * positive value, must contain exactly two entries after initialization. Is used in processLateDeliverable().
+     * </p>
+     *
+     * @since 1.3
+     */
+    private Map<LateDeliverableType, Long> lateDeliverableTypeIds;
+
+    /**
+     * <p>
+     * The value indicating whether notifications must be sent for Rejected Final Fix late deliverables.
+     * </p>
+     *
+     * <p>
+     * Is initialized in configure() and never changed after that. Is used in processLateDeliverable().
+     * </p>
+     *
+     * @since 1.3
+     */
+    private boolean sendRejectedFinalFixNotifications;
+
+    /**
+     * <p>
      * The logger used by this class for logging errors and debug information.
      * </p>
      * <p>
@@ -702,6 +919,16 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated property and configuration parameter names.</li>
+     * <li>Added steps for reading "rejectedFinalFixEmailSubjectTemplateText",
+     * "rejectedFinalFixEmailBodyTemplatePath", "lateDeliverableTypeIds" and "sendRejectedFinalFixNotifications"
+     * properties.</li>
+     * </ol>
+     * </p>
+     *
      * @param config
      *            the configuration object
      * @throws IllegalArgumentException
@@ -723,9 +950,9 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
         // Get notification deliverable IDs string from config
         String notificationDeliverableIdsStr = Helper.getPropertyValue(config,
-            NOTIFICATION_DELIVERABLE_IDS, false, true);
+            MISSED_DEADLINE_NOTIFICATION_DELIVERABLE_IDS, false, true);
         // Create set for parsed notification deliverable IDs
-        notificationDeliverableIds = new HashSet<Long>();
+        missedDeadlineNotificationDeliverableIds = new HashSet<Long>();
 
         // Split ID substrings in the comma separated string
         if ((notificationDeliverableIdsStr != null) && (notificationDeliverableIdsStr.trim().length() > 0)) {
@@ -733,29 +960,34 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
             for (String notificationDeliverableIdStr : notificationDeliverableIdsArray) {
                 // Parse and add ID to the set
-                notificationDeliverableIds.add(Helper.parseLong(notificationDeliverableIdStr,
-                    NOTIFICATION_DELIVERABLE_IDS, 1));
+                missedDeadlineNotificationDeliverableIds.add(Helper.parseLong(notificationDeliverableIdStr,
+                    MISSED_DEADLINE_NOTIFICATION_DELIVERABLE_IDS, 1));
             }
         }
 
-        // Create map for email subject templates
-        emailSubjectTemplateTexts = new HashMap<Long, String>();
-        // // Create map for email body templates
-        emailBodyTemplatePaths = new HashMap<Long, String>();
+        // Create map for Missed Deadline email subject templates:
+        missedDeadlineEmailSubjectTemplateTexts = new HashMap<Long, String>();
+        // Create map for Missed Deadline email body templates
+        missedDeadlineEmailBodyTemplatePaths = new HashMap<Long, String>();
 
         String[] allKeys = getAllKeys(config);
 
         for (String propertyKey : allKeys) {
-            initMap(config, emailSubjectTemplateTexts, propertyKey, EMAIL_SUBJECT_PREFIX);
-            initMap(config, emailBodyTemplatePaths, propertyKey, EMAIL_BODY_PREFIX);
+            initMap(config, missedDeadlineEmailSubjectTemplateTexts, propertyKey, MISSED_DEADLINE_EMAIL_SUBJECT_PREFIX);
+            initMap(config, missedDeadlineEmailBodyTemplatePaths, propertyKey, MISSED_DEADLINE_EMAIL_BODY_PREFIX);
         }
 
         // Get default email subject template from config
-        defaultEmailSubjectTemplateText = Helper.getPropertyValue(config,
-            DEFAULT_EMAIL_SUBJECT_TEMPLATE_TEXT, true, true);
+        defaultMissedDeadlineEmailSubjectTemplateText = Helper.getPropertyValue(config,
+            DEFAULT_MISSED_DEADLINE_EMAIL_SUBJECT_TEMPLATE_TEXT, true, true);
         // Get default email body template path from config
-        defaultEmailBodyTemplatePath = Helper.getPropertyValue(config, DEFAULT_EMAIL_BODY_TEMPLATE_PATH,
-            true, false);
+        defaultMissedDeadlineEmailBodyTemplatePath = Helper.getPropertyValue(config,
+            DEFAULT_MISSED_DEADLINE_EMAIL_BODY_TEMPLATE_PATH, true, false);
+
+        rejectedFinalFixEmailSubjectTemplateText = Helper.getPropertyValue(config,
+            REJECTED_FF_EMAIL_SUBJECT_TEMPLATE_TEXT, true, true);
+        rejectedFinalFixEmailBodyTemplatePath = Helper.getPropertyValue(config,
+            REJECTED_FF_EMAIL_BODY_TEMPLATE_PATH, true, false);
 
         // Get email sender from config
         String emailSender = Helper.getPropertyValue(config, EMAIL_SENDER_KEY, true, false);
@@ -774,26 +1006,139 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
             UserRetrieval.class);
 
         // Get timestamp format to be used in the email
-        String timestampFormatStr = Helper.getPropertyValue(config, TIMESTAMP_FORMAT_KEY, false, false);
+        timestampFormat = getTimestampFormat(config);
 
-        try {
-            timestampFormat = new SimpleDateFormat(
-                (timestampFormatStr == null) ? DEFAULT_TIME_FORMAT : timestampFormatStr);
-        } catch (IllegalArgumentException e) {
-            throw new LateDeliverablesTrackerConfigurationException("Invaid timestamp format value.", e);
-        }
+        // Read notification interval
+        notificationInterval = getNotificationInterval(config);
 
+        // Read and parse explanation deadline interval:
+        explanationDeadlineIntervalInHours = getExplanationDeadlineInterval(config);
+
+        lateDeliverableTypeIds = getLateDeliverableTypeIds(config);
+
+        // Get the value indicating whether notifications must be sent for Rejected Final Fix late deliverables:
+        sendRejectedFinalFixNotifications = getSendRejectedFinalFixNotifications(config);
+    }
+
+    /**
+     * Gets the notification interval.
+     *
+     * @param config
+     *            the configuration object.
+     *
+     * @return the notification interval.
+     *
+     * @throws LateDeliverablesTrackerConfigurationException
+     *             if some error occurred.
+     *
+     * @since 1.3
+     */
+    private static long getNotificationInterval(ConfigurationObject config) {
         // Read and parse notification interval
         String notificationIntervalStr = Helper.getPropertyValue(config, NOTIFICATION_INTERVAL_KEY,
             false, false);
 
         if (notificationIntervalStr != null) {
-            notificationInterval = Helper.parseLong(notificationIntervalStr,
+            return Helper.parseLong(notificationIntervalStr,
                 NOTIFICATION_INTERVAL_KEY, 1);
         }
+        return 0;
+    }
 
-        // Read and parse explanation deadline interval:
-        explanationDeadlineIntervalInHours = getExplanationDeadlineInterval(config);
+    /**
+     * Gets the timestamp format.
+     *
+     * @param config
+     *            the configuration object.
+     *
+     * @return the timestamp format.
+     *
+     * @throws LateDeliverablesTrackerConfigurationException
+     *             if some error occurred.
+     *
+     * @since 1.3
+     */
+    private static DateFormat getTimestampFormat(ConfigurationObject config) {
+        // Get timestamp format to be used in the email
+        String timestampFormatStr = Helper.getPropertyValue(config, TIMESTAMP_FORMAT_KEY, false, false);
+
+        try {
+            return new SimpleDateFormat((timestampFormatStr == null) ? DEFAULT_TIME_FORMAT : timestampFormatStr);
+        } catch (IllegalArgumentException e) {
+            throw new LateDeliverablesTrackerConfigurationException("Invaid timestamp format value.", e);
+        }
+    }
+
+
+    /**
+     * Gets the send rejected final fix notifications flag.
+     *
+     * @param config
+     *            the configuration object.
+     *
+     * @return the send rejected final fix notifications flag.
+     *
+     * @throws LateDeliverablesTrackerConfigurationException
+     *             if some error occurred.
+     *
+     * @since 1.3
+     */
+    private static boolean getSendRejectedFinalFixNotifications(ConfigurationObject config) {
+        // Get the value indicating whether notifications must be sent for Rejected Final Fix late deliverables:
+        String sendRejectedFinalFixNotificationsStr = Helper.getPropertyValue(config, SEND_REJECTED_FF_NOTIFICATIONS,
+            false, false);
+        boolean sendRejectedFinalFixNotifications;
+        if (sendRejectedFinalFixNotificationsStr == null) {
+            sendRejectedFinalFixNotifications = true;
+        } else {
+            int booleanValueIndex = BOOLEAN_VALUES.indexOf(sendRejectedFinalFixNotificationsStr);
+            if (booleanValueIndex == -1) {
+                throw new LateDeliverablesTrackerConfigurationException(
+                    "The 'sendRejectedFinalFixNotifications' property value should be 'true' or 'false'.");
+            }
+            sendRejectedFinalFixNotifications = (booleanValueIndex == 0);
+        }
+        return sendRejectedFinalFixNotifications;
+    }
+
+    /**
+     * Gets the late deliverable type ids.
+     *
+     * @param config
+     *            the configuration object.
+     *
+     * @return the late deliverable type ids.
+     *
+     * @throws LateDeliverablesTrackerConfigurationException
+     *             if some error occurred.
+     *
+     * @since 1.3
+     */
+    private static Map<LateDeliverableType, Long> getLateDeliverableTypeIds(ConfigurationObject config) {
+        Map<LateDeliverableType, Long> lateDeliverableTypeIds = new EnumMap<LateDeliverableType, Long>(
+            LateDeliverableType.class);
+        String[] lateDeliverableTypeIdsArray = Helper
+            .getPropertyValue(config, LATE_DELIVERABLE_TYPE_IDS, true, false).split(",");
+        for (String lateDeliverableTypeIdsStr : lateDeliverableTypeIdsArray) {
+            String[] lateDeliverableTypeIdPair = lateDeliverableTypeIdsStr.split("=");
+            if (lateDeliverableTypeIdPair.length != 2) {
+                throw new LateDeliverablesTrackerConfigurationException("The late deliverable type value '"
+                    + lateDeliverableTypeIdsStr + "' is invalid.");
+            }
+            String lateDeliverableTypeStr = lateDeliverableTypeIdPair[0];
+            String lateDeliverableTypeIdStr = lateDeliverableTypeIdPair[1];
+
+            LateDeliverableType lateDeliverableType = LateDeliverableType.fromString(lateDeliverableTypeStr);
+            if (lateDeliverableType == null) {
+                throw new LateDeliverablesTrackerConfigurationException("The late deliverable type value '"
+                    + lateDeliverableTypeStr + "' is undefined.");
+            }
+            long lateDeliverableTypeId = Helper.parseLong(lateDeliverableTypeIdStr, LATE_DELIVERABLE_TYPE_IDS, 1);
+
+            lateDeliverableTypeIds.put(lateDeliverableType, lateDeliverableTypeId);
+        }
+
+        return lateDeliverableTypeIds;
     }
 
     /**
@@ -933,11 +1278,18 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added support of REJECTED_FINAL_FIX late deliverable type.</li>
+     * </ol>
+     * </p>
+     *
      * @param lateDeliverable
      *            the late deliverable to be processed.
      * @throws IllegalArgumentException
-     *             if lateDeliverable is null, or any one of phase, project and deliverable of lateDeliverable is
-     *             null, or the scheduled end date of phase is null.
+     *             if lateDeliverable is null, or any one of phase, project, deliverable and type of lateDeliverable
+     *             is null, or the scheduled end date of phase is null.
      * @throws IllegalStateException
      *             if this class was not configured properly with use of {@link #configure(ConfigurationObject)}
      *             method.
@@ -962,7 +1314,13 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         Phase phase = lateDeliverable.getPhase();
         Date currentDeadline = phase.getScheduledEndDate();
         long deliverableId = deliverable.getId();
-        boolean needToNotify = notificationDeliverableIds.contains(deliverableId);
+        boolean needToNotify;
+        if (lateDeliverable.getType() == LateDeliverableType.MISSED_DEADLINE) {
+            // Check if warning email should be sent for this deliverable:
+            needToNotify = missedDeadlineNotificationDeliverableIds.contains(deliverableId);
+        } else {
+            needToNotify = sendRejectedFinalFixNotifications;
+        }
 
         Connection connection = getConnection(signature);
 
@@ -997,6 +1355,13 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * A helper method to process the given late deliverable.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added support of REJECTED_FINAL_FIX late deliverable type.</li>
+     * </ol>
+     * </p>
+     *
      * @param connection
      *            the connection.
      * @param lateDeliverable
@@ -1024,6 +1389,10 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         LateDeliverablesProcessingException {
         Project project = lateDeliverable.getProject();
 
+        LateDeliverableType lateDeliverableType = lateDeliverable.getType();
+        // Get late deliverable type ID:
+        long lateDeliverableTypeId = lateDeliverableTypeIds.get(lateDeliverable.getType());
+
         boolean canSendNotification = false;
         boolean addTrackingRecord = false;
         Date recordDeadline = currentDeadline;
@@ -1031,10 +1400,17 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         // Prepare variable that will store late deliverable record creation date:
         Date createDate = new Date(); // NEW in 1.2
 
-        Date oldDeadline = (Timestamp) doQuery(SELECT_MAX_DEADLINE_SQL, connection, new Object[] {phaseId,
-            resourceId, deliverableId}, true, Timestamp.class)[0];
-        if (oldDeadline != null) {
-            if (oldDeadline.compareTo(currentDeadline) < 0) {
+        Object[] result = doQuery(SELECT_MAX_DEADLINE_SQL, connection, new Object[] {phaseId, resourceId,
+            deliverableId, lateDeliverableTypeId}, true, Timestamp.class, Long.class);
+        // Check if records with the same phase ID, resource ID, deliverable and late deliverable type ID exists:
+        boolean alreadyTracked = ((Long) result[1] > 0);
+        if (alreadyTracked && (lateDeliverableType == LateDeliverableType.REJECTED_FINAL_FIX)) {
+            return;
+        }
+
+        Date oldDeadline = (Timestamp) result[0];
+        if (alreadyTracked && (oldDeadline != null)) {
+            if (oldDeadline.getTime() < currentDeadline.getTime()) {
                 // deadline was extended, but the user is late again
                 addTrackingRecord = true;
                 canSendNotification = true;
@@ -1042,9 +1418,9 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                 recordDeadline = oldDeadline;
                 // Prepare statement for retrieving last notification time and
                 // "forgive" flag for this late deliverable
-                Object[] result = doQuery(SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL, connection,
-                    new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()), deliverableId},
-                    false, Timestamp.class, Boolean.class, String.class, Timestamp.class);
+                result = doQuery(SELECT_LAST_NOTIFICATION_TIME_FORGIVE_SQL, connection,
+                    new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()), deliverableId,
+                        lateDeliverableTypeId}, false, Timestamp.class, Boolean.class, String.class, Timestamp.class);
 
                 int index = 0;
                 // Get the previous notification timestamp
@@ -1053,7 +1429,7 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                 if (!((Boolean) result[index++])
                     && (previousNotificationTime != null)
                     && ((System.currentTimeMillis() - previousNotificationTime.getTime())
-                    >= (notificationInterval * Helper.THOUSAND))) {
+                        >= (notificationInterval * Helper.THOUSAND))) {
                     // notificationInterval passed, need to send one more
                     // notification
                     canSendNotification = true;
@@ -1073,43 +1449,130 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         canSendNotification = canSendNotification && needToNotify;
 
         if (addTrackingRecord) {
-            Timestamp deadlineTimestamp = new Timestamp(currentDeadline.getTime());
-            // Get compensated deadline:
-            Timestamp compensatedDeadlineTimestamp = (lateDeliverable.getCompensatedDeadline() != null)
-                ? new Timestamp(lateDeliverable.getCompensatedDeadline().getTime()) : null; // NEW in 1.2
-
-            doDMLQuery(canSendNotification ? INSERT_WITH_LAST_NOTIFICATION_SQL : INSERT_SQL, connection,
-                new Object[] {phaseId, resourceId, deliverableId, deadlineTimestamp, compensatedDeadlineTimestamp,
-                    false, (compensatedDeadlineTimestamp != null) ? compensatedDeadlineTimestamp : deadlineTimestamp});
+            doDMLQuery(buildInsertSQL(lateDeliverableType, canSendNotification), connection,
+                buildInsertParams(lateDeliverableTypeId, phaseId, resourceId, deliverableId, lateDeliverableType,
+                    currentDeadline, lateDeliverable.getCompensatedDeadline()));
 
             // log data for record added to late_deliverables table
             Helper.logInfo(log, "late deliverable data : project id[" + project.getId() + "], phase id["
                 + phaseId + "]," + " resource id[" + resourceId + "], deliverable id[" + deliverableId + "].");
         } else {
             doDMLQuery(String.format(UPDATE_SQL, canSendNotification ? "last_notified = current, " : ""),
-                connection, new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()), deliverableId});
+                connection, new Object[] {phaseId, resourceId, new Timestamp(recordDeadline.getTime()), deliverableId,
+                    lateDeliverableTypeId});
         }
 
         if (canSendNotification) {
             // retrieve late deliverable ID
-            Object[] result = doQuery(SELECT_LATE_DELIVERABLE_ID_WITH_MAX_DEADLINE_SQL, connection, new Object[] {
-                phaseId, resourceId, deliverableId}, false, Long.class);
+            result = doQuery(
+                (lateDeliverableType == LateDeliverableType.MISSED_DEADLINE)
+                    ? SELECT_LATE_DELIVERABLE_ID_WITH_MAX_DEADLINE_SQL
+                        : SELECT_LATE_DELIVERABLE_ID_WITH_REJECTED_FF_SQL, connection,
+                        new Object[] {lateDeliverableTypeId, phaseId, resourceId, deliverableId}, false, Long.class);
 
-            sendEmail((Long) result[0], lateDeliverable, explanation, createDate);
+            sendEmail(lateDeliverableType, (Long) result[0], lateDeliverable, explanation, createDate);
         }
     }
 
     /**
+     * Builds the parameters for inserting a record.
+     *
+     * @param lateDeliverableTypeId
+     *            the late deliverable type id.
+     * @param phaseId
+     *            the phase id.
+     * @param resourceId
+     *            the resource id.
+     * @param deliverableId
+     *            the deliverable id.
+     * @param lateDeliverableType
+     *            the late deliverable type.
+     * @param currentDeadline
+     *            the current deadline.
+     * @param compensatedDeadline
+     *            the compensated deadline.
+     *
+     * @return the parameters.
+     *
+     * @since 1.3
+     */
+    private static Object[] buildInsertParams(long lateDeliverableTypeId, long phaseId, long resourceId,
+        long deliverableId, LateDeliverableType lateDeliverableType, Date currentDeadline,
+        Date compensatedDeadline) {
+        List<Object> params = new ArrayList<Object>();
+        params.add(lateDeliverableTypeId);
+        params.add(phaseId);
+        params.add(resourceId);
+        params.add(deliverableId);
+        params.add(false);
+        if (lateDeliverableType == LateDeliverableType.MISSED_DEADLINE) {
+            Timestamp deadlineTimestamp = new Timestamp(currentDeadline.getTime());
+            // Get compensated deadline:
+            Timestamp compensatedDeadlineTimestamp = (compensatedDeadline != null) ? new Timestamp(
+                compensatedDeadline.getTime()) : null;
+
+            params.add(deadlineTimestamp);
+            params.add(compensatedDeadlineTimestamp);
+            params.add((compensatedDeadlineTimestamp != null) ? compensatedDeadlineTimestamp : deadlineTimestamp);
+
+        }
+
+        return params.toArray(new Object[] {params.size()});
+    }
+
+    /**
+     * Constructs the SQL string to insert a record.
+     *
+     * @param lateDeliverableType
+     *            the late deliverable type.
+     * @param canSendNotification
+     *            the can send notification flag.
+     *
+     * @return the SQL string to insert a record.
+     *
+     * @since 1.3
+     */
+    private static String buildInsertSQL(LateDeliverableType lateDeliverableType, boolean canSendNotification) {
+        StringBuilder sqlStr = new StringBuilder();
+        sqlStr.append("insert into late_deliverable (late_deliverable_type_id, project_phase_id")
+            .append(", resource_id, deliverable_id, create_date, forgive_ind");
+
+        StringBuilder valuesStr = new StringBuilder();
+        valuesStr.append(") values (?, ?, ?, ?, current, ?");
+
+        if (lateDeliverableType == LateDeliverableType.MISSED_DEADLINE) {
+            // Missed deadline
+
+            sqlStr.append(", deadline, compensated_deadline, delay");
+            valuesStr.append(", ?, ?, (current - ?)::interval second(9) to second::char(16)::decimal(16,0)");
+        }
+        if (canSendNotification) {
+            // Last notified
+
+            sqlStr.append(", last_notified");
+            valuesStr.append(", current");
+        }
+
+        return sqlStr.append(valuesStr).append(")").toString();
+    }
+
+    /**
      * Checks the given <code>lateDeliverable</code>.
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added type check.</li>
+     * </ol>
+     * </p>
      *
      * @param signature
      *            the method name.
      * @param lateDeliverable
      *            the late deliverable to be processed.
      * @throws IllegalArgumentException
-     *             if lateDeliverable is null, or any one of phase, project and
-     *             deliverable of lateDeliverable is null, or the scheduled end
-     *             date of phase is null.
+     *             if lateDeliverable is null, or any one of phase, project, deliverable and type of lateDeliverable is
+     *             null, or the scheduled end date of phase is null.
      */
     private void checkArgument(LateDeliverable lateDeliverable, String signature) {
         try {
@@ -1121,6 +1584,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
                 "The project of lateDeliverable should not be null.");
             ExceptionUtils.checkNull(lateDeliverable.getDeliverable(), null, null,
                 "The deliverable of lateDeliverable should not be null.");
+            ExceptionUtils.checkNull(lateDeliverable.getType(), null, null,
+                "The type of lateDeliverable should not be null.");
             ExceptionUtils.checkNull(lateDeliverable.getPhase().getScheduledEndDate(), null, null,
                 "The scheduledEndDate of phase of lateDeliverable should not be null.");
         } catch (IllegalArgumentException e) {
@@ -1130,6 +1595,13 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
 
     /**
      * Checks all required fields have been set.
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated the code.</li>
+     * </ol>
+     * </p>
      *
      * @param signature
      *            the method name.
@@ -1141,14 +1613,23 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         Helper.checkState(timestampFormat, "timestampFormat", log, signature);
         Helper.checkState(dbConnectionFactory, "dbConnectionFactory", log, signature);
         Helper.checkState(emailSendingUtility, "emailSendingUtility", log, signature);
-        Helper.checkState(notificationDeliverableIds, "notificationDeliverableIds", log, signature);
-        Helper.checkState(emailSubjectTemplateTexts, "emailSubjectTemplateTexts", log, signature);
-        Helper.checkState(emailBodyTemplatePaths, "emailBodyTemplatePaths", log, signature);
-        Helper.checkState(defaultEmailSubjectTemplateText, "defaultEmailSubjectTemplateText", log,
+        Helper.checkState(missedDeadlineNotificationDeliverableIds, "missedDeadlineNotificationDeliverableIds", log,
             signature);
-        Helper.checkState(defaultEmailBodyTemplatePath, "defaultEmailBodyTemplatePath", log, signature);
+        Helper.checkState(missedDeadlineEmailSubjectTemplateTexts, "missedDeadlineEmailSubjectTemplateTexts", log,
+            signature);
+        Helper.checkState(missedDeadlineEmailBodyTemplatePaths, "missedDeadlineEmailBodyTemplatePaths", log,
+            signature);
+        Helper.checkState(defaultMissedDeadlineEmailSubjectTemplateText,
+            "defaultMissedDeadlineEmailSubjectTemplateText", log, signature);
+        Helper.checkState(defaultMissedDeadlineEmailBodyTemplatePath, "defaultMissedDeadlineEmailBodyTemplatePath",
+            log, signature);
+        Helper.checkState(rejectedFinalFixEmailSubjectTemplateText, "rejectedFinalFixEmailSubjectTemplateText", log,
+            signature);
+        Helper.checkState(rejectedFinalFixEmailBodyTemplatePath, "rejectedFinalFixEmailBodyTemplatePath", log,
+            signature);
         Helper.checkState(resourceManager, "resourceManager", log, signature);
         Helper.checkState(userRetrieval, "userRetrieval", log, signature);
+        Helper.checkState(lateDeliverableTypeIds, "lateDeliverableTypeIds", log, signature);
     }
 
     /**
@@ -1334,6 +1815,15 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * </ol>
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added support of REJECTED_FINAL_FIX late deliverable type.</li>
+     * </ol>
+     * </p>
+     *
+     * @param lateDeliverableType
+     *            the type of the late deliverable.
      * @param lateDeliverableId
      *            the id of the late deliverable.
      * @param lateDeliverable
@@ -1348,8 +1838,8 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
      * @throws LateDeliverablesProcessingException
      *             if fails to get the required information of email.
      */
-    private void sendEmail(long lateDeliverableId, LateDeliverable lateDeliverable, String explanation,
-        Date createDate)
+    private void sendEmail(LateDeliverableType lateDeliverableType, long lateDeliverableId,
+        LateDeliverable lateDeliverable, String explanation, Date createDate)
         throws LateDeliverablesProcessingException {
         long resourceId = lateDeliverable.getDeliverable().getResource();
         long deliverableId = lateDeliverable.getDeliverable().getId();
@@ -1358,21 +1848,24 @@ public class LateDeliverableProcessorImpl implements LateDeliverableProcessor {
         Map<String, Object> params = prepareParameters(lateDeliverableId, lateDeliverable, explanation, createDate);
 
         String subjectTemplateText;
-
-        if (emailSubjectTemplateTexts.containsKey(deliverableId)) {
-            // Get email subject template to be used
-            subjectTemplateText = emailSubjectTemplateTexts.get(deliverableId);
-        } else {
-            subjectTemplateText = defaultEmailSubjectTemplateText;
-        }
-
         String bodyTemplatePath;
 
-        if (emailBodyTemplatePaths.containsKey(deliverableId)) {
-            // Get email body template path to be used:
-            bodyTemplatePath = emailBodyTemplatePaths.get(deliverableId);
+        if (lateDeliverableType == LateDeliverableType.MISSED_DEADLINE) {
+            if (missedDeadlineEmailSubjectTemplateTexts.containsKey(deliverableId)) {
+                // Get email subject template to be used
+                subjectTemplateText = missedDeadlineEmailSubjectTemplateTexts.get(deliverableId);
+            } else {
+                subjectTemplateText = defaultMissedDeadlineEmailSubjectTemplateText;
+            }
+            if (missedDeadlineEmailBodyTemplatePaths.containsKey(deliverableId)) {
+                // Get email body template path to be used:
+                bodyTemplatePath = missedDeadlineEmailBodyTemplatePaths.get(deliverableId);
+            } else {
+                bodyTemplatePath = defaultMissedDeadlineEmailBodyTemplatePath;
+            }
         } else {
-            bodyTemplatePath = defaultEmailBodyTemplatePath;
+            subjectTemplateText = rejectedFinalFixEmailSubjectTemplateText;
+            bodyTemplatePath = rejectedFinalFixEmailBodyTemplatePath;
         }
 
         // Send warning email to the user

@@ -1,14 +1,13 @@
 package com.topcoder.management.deliverable.latetracker.failuretests;
 
+import junit.framework.TestCase;
+
 import com.topcoder.configuration.ConfigurationObject;
-import com.topcoder.management.deliverable.latetracker.LateDeliverablesTracker;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackingJobRunner;
 import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotificationJobRunner;
-import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotifier;
 import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesTrackingUtility;
 import com.topcoder.util.config.ConfigManager;
-import junit.framework.TestCase;
 
 /**
  * Failure test cases for <code>NotRespondedLateDeliverablesNotificationJobRunner</code> class.

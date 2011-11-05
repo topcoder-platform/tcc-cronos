@@ -257,3 +257,6 @@ INSERT INTO user_rating(user_id, phase_id) values (2, 112);
 INSERT INTO user_rating(user_id, phase_id) values (2, 113);
 INSERT INTO email(user_id, email_id, address, primary_ind) VALUES (2, 1, 'ivern@topcoder.com', 1);
 INSERT INTO email(user_id, email_id, address, primary_ind) VALUES (1, 2, 'zhijie_liu@topcoder.com', 1);
+
+INSERT INTO late_deliverable_type_lu(late_deliverable_type_id,name,description) VALUES (1, 'Missed Deadline', 'Missed Deadline');
+INSERT INTO late_deliverable_type_lu(late_deliverable_type_id,name,description) VALUES (2, 'Rejected Final Fix', 'Rejected Final Fix');

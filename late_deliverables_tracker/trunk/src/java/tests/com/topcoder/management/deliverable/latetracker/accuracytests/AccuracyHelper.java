@@ -10,13 +10,16 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.configuration.persistence.ConfigurationFileManager;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.util.config.ConfigManager;
 
 /**
@@ -24,8 +27,8 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * <b>Thread safety:</b> This class is immutable and so thread safe.
  *
- * @author mumujava, KLW
- * @version 1.2
+ * @author mumujava, KLW, gjw99
+ * @version 1.3
  */
 public class AccuracyHelper extends TestCase {
 
@@ -233,4 +236,16 @@ public class AccuracyHelper extends TestCase {
         }
         return value;
     }
+
+    /**
+     * The LateDeliverableType set to be used for retrieving.
+     * @return the types set
+     * @since 1.3
+     */
+    static Set<LateDeliverableType> getTypes() {
+    	Set<LateDeliverableType> types = new HashSet<LateDeliverableType>();
+    	types.add(LateDeliverableType.MISSED_DEADLINE);
+    	types.add(LateDeliverableType.REJECTED_FINAL_FIX);
+    	return types;
+	}
 }

@@ -244,12 +244,19 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * </p>
  *
  * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added support of "LATE_DELIVERABLE_TYPE" email template field.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
  * Thread Safety: This class is immutable, but not thread safe since it uses ProjectManager, ResourceManager and
  * DeliverablePersistence instances that are not guaranteed to be thread safe.
  * </p>
  *
  * @author saarixx, sparemax
- * @version 1.2
+ * @version 1.3
  * @since 1.2
  */
 public class NotRespondedLateDeliverablesNotifier {
@@ -540,6 +547,14 @@ public class NotRespondedLateDeliverablesNotifier {
      * sends email notifications to the project managers of these late deliverables.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added support of "LATE_DELIVERABLE_TYPE" email template field.</li>
+     * <li>Using "N/A" when deadline or delay property is null.</li>
+     * </ol>
+     * </p>
+     *
      * @throws NotRespondedLateDeliverablesNotificationException
      *             if some error occurred when retrieving not responded late deliverables or sending email
      *             notifications to managers.
@@ -606,6 +621,14 @@ public class NotRespondedLateDeliverablesNotifier {
      * Sends the late deliverable warning email to the user.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added support of "LATE_DELIVERABLE_TYPE" email template field.</li>
+     * <li>Using "N/A" when deadline or delay property is null.</li>
+     * </ol>
+     * </p>
+     *
      * @param userId
      *            the user id.
      * @param lateDeliverableDetailsList
@@ -648,19 +671,21 @@ public class NotRespondedLateDeliverablesNotifier {
             lateDeliverableParams.put("LATE_DELIVERABLE_ID",
                 Long.toString(lateDeliverableDetails.getLateDeliverableId()));
 
+            lateDeliverableParams.put("LATE_DELIVERABLE_TYPE", lateDeliverableDetails.getLateDeliverableTypeName());
+
             lateDeliverableParams.put("PROJECT_NAME", lateDeliverableDetails.getProjectName());
             lateDeliverableParams.put("PROJECT_VERSION", lateDeliverableDetails.getProjectVersion());
             lateDeliverableParams.put("PROJECT_ID", Long.toString(lateDeliverableDetails.getProjectId()));
             lateDeliverableParams.put("PHASE_NAME", lateDeliverableDetails.getPhaseName());
             lateDeliverableParams.put("DELIVERABLE_NAME", lateDeliverableDetails.getDeliverableName());
-            lateDeliverableParams.put("DEADLINE", timestampFormat.format(deadline));
+            lateDeliverableParams.put("DEADLINE", formatTimestamp(deadline));
             lateDeliverableParams.put("LATE_MEMBER_HANDLE", lateDeliverableDetails.getLateMemberHandle());
 
             Long delay = lateDeliverableDetails.getDelay();
             lateDeliverableParams.put("DELAY",
                 Helper.delayToString((delay == null) ? null : (delay * Helper.THOUSAND)));
             lateDeliverableParams.put("COMPENSATED_DEADLINE",
-                timestampFormat.format(compensatedDeadline == null ? deadline : compensatedDeadline));
+                compensatedDeadline == null ? formatTimestamp(deadline) : timestampFormat.format(compensatedDeadline));
             lateDeliverableParams.put("COMPENSATED_AND_REAL_DEADLINES_DIFFER",
                 Boolean.toString(compensatedDeadline != null));
 
@@ -673,6 +698,20 @@ public class NotRespondedLateDeliverablesNotifier {
 
         // Send warning email to the user:
         emailSendingUtility.sendEmail(emailSubjectTemplateText, emailBodyTemplatePath, email, params);
+    }
+
+    /**
+     * Formats the timestamp.
+     *
+     * @param timestamp
+     *            the timestamp.
+     *
+     * @return the string representing the timestamp or "N/A" if the timestamp is <code>null</code>.
+     *
+     * @since 1.3
+     */
+    private String formatTimestamp(Date timestamp) {
+        return timestamp == null ? "N/A" : timestampFormat.format(timestamp);
     }
 
     /**
@@ -789,6 +828,13 @@ public class NotRespondedLateDeliverablesNotifier {
      * Creates a LateDeliverableDetails instance with given values.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Set name of the late deliverable type to the late deliverable details.</li>
+     * </ol>
+     * </p>
+     *
      * @param lateDeliverable
      *            the late deliverable.
      * @param deliverable
@@ -799,6 +845,8 @@ public class NotRespondedLateDeliverablesNotifier {
      *            the project id.
      * @param phaseName
      *            the project name.
+     * @param lateMemberHandle
+     *            the late member handle.
      *
      * @return the LateDeliverableDetails instance.
      */
@@ -828,6 +876,9 @@ public class NotRespondedLateDeliverablesNotifier {
         lateDeliverableDetails.setCompensatedDeadline(lateDeliverable.getCompensatedDeadline());
         // Set late member handle to the late deliverable details instance:
         lateDeliverableDetails.setLateMemberHandle(lateMemberHandle);
+
+        // Set name of the late deliverable type to the late deliverable details instance:
+        lateDeliverableDetails.setLateDeliverableTypeName(lateDeliverable.getType().getName());
 
         return lateDeliverableDetails;
     }
@@ -976,11 +1027,18 @@ public class NotRespondedLateDeliverablesNotifier {
      * </p>
      *
      * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added lateDeliverableTypeName property.</li>
+     * </ol>
+     * </p>
+     *
+     * <p>
      * Thread Safety: This class is mutable and not thread safe.
      * </p>
      *
-     * @author saarixx, sparemax
-     * @version 1.2
+     * @author saarixx, sparemax, TCSDEVELOPER
+     * @version 1.3
      * @since 1.2
      */
     private class LateDeliverableDetails {
@@ -1089,6 +1147,19 @@ public class NotRespondedLateDeliverablesNotifier {
          * </p>
          */
         private String lateMemberHandle;
+
+        /**
+         * <p>
+         * The name of the late deliverable type.
+         * </p>
+         *
+         * <p>
+         * Can be any value. Has getter and setter.
+         * </p>
+         *
+         * @since 1.3
+         */
+        private String lateDeliverableTypeName;
 
         /**
          * <p>
@@ -1327,6 +1398,33 @@ public class NotRespondedLateDeliverablesNotifier {
          */
         public void setLateMemberHandle(String lateMemberHandle) {
             this.lateMemberHandle = lateMemberHandle;
+        }
+
+        /**
+         * <p>
+         * Retrieves the name of the late deliverable type.
+         * </p>
+         *
+         * @return the name of the late deliverable type.
+         *
+         * @since 1.3
+         */
+        public String getLateDeliverableTypeName() {
+            return lateDeliverableTypeName;
+        }
+
+        /**
+         * <p>
+         * Sets the name of the late deliverable type.
+         * </p>
+         *
+         * @param lateDeliverableTypeName
+         *            the name of the late deliverable type.
+         *
+         * @since 1.3
+         */
+        public void setLateDeliverableTypeName(String lateDeliverableTypeName) {
+            this.lateDeliverableTypeName = lateDeliverableTypeName;
         }
     }
 }

@@ -11,6 +11,7 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesProcessingException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl;
@@ -23,8 +24,8 @@ import com.topcoder.project.phases.Phase;
 /**
  * Failure test cases <code>LateDeliverableProcessorImpl</code>.
  *
- * @author gjw99, jmn
- * @version 1.2
+ * @author gjw99, jmn, mumujava
+ * @version 1.3
  * @since 1.0
  */
 public class LateDeliverableProcessorImplFailureTests extends TestCase {
@@ -117,7 +118,7 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
      */
     public void test_configure4() throws Exception {
         try {
-            config.setPropertyValue("notificationDeliverableIds", new Exception());
+            config.setPropertyValue("missedDeadlineNotificationDeliverableIds", new Exception());
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -133,7 +134,7 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
      */
     public void test_configure5() throws Exception {
         try {
-            config.setPropertyValue("notificationDeliverableIds", ", ");
+            config.setPropertyValue("missedDeadlineNotificationDeliverableIds", ", ");
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -149,7 +150,7 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
      */
     public void test_configure6() throws Exception {
         try {
-            config.setPropertyValue("notificationDeliverableIds", "1,2,-1");
+            config.setPropertyValue("missedDeadlineNotificationDeliverableIds", "1,2,-1");
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -165,7 +166,7 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
      */
     public void test_configure7() throws Exception {
         try {
-            config.setPropertyValue("notificationDeliverableIds", "1,2,,3");
+            config.setPropertyValue("missedDeadlineNotificationDeliverableIds", "1,2,,3");
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -348,6 +349,150 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
             // pass
         }
     }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure19() throws Exception {
+        try {
+            config.setPropertyValue("rejectedFinalFixEmailSubjectTemplateText", null);
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure20() throws Exception {
+        try {
+            config.setPropertyValue("rejectedFinalFixEmailBodyTemplatePath", " ");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure21() throws Exception {
+        try {
+            config.setPropertyValue("rejectedFinalFixEmailBodyTemplatePath", null);
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure22() throws Exception {
+        try {
+            config.setPropertyValue("lateDeliverableTypeIds", " ");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure23() throws Exception {
+        try {
+            config.setPropertyValue("lateDeliverableTypeIds", null);
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure24() throws Exception {
+        try {
+            config.setPropertyValue("lateDeliverableTypeIds", "invalid types ids");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure25() throws Exception {
+        try {
+            config.setPropertyValue("lateDeliverableTypeIds", "Missed Deadline=XXX,Rejected Final Fix=YYY");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure26() throws Exception {
+        try {
+            config.setPropertyValue("lateDeliverableTypeIds", "Missed Deadline=0,Rejected Final Fix=-1");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure27() throws Exception {
+        try {
+            config.setPropertyValue("sendRejectedFinalFixNotifications", "not a boolean");
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
 
     /**
      * Test configure.
@@ -383,6 +528,7 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
     public void test_processLateDeliverable2() throws Exception {
         LateDeliverable entity = new LateDeliverable();
         entity.setCompensatedDeadline(new Date());
+        entity.setType(LateDeliverableType.MISSED_DEADLINE);
         entity.setDeliverable(new Deliverable(1, 1, 1, new Long(1), false));
         entity.setProject(new Project(1, new ProjectCategory(1, "n", new ProjectType(1, "1")),
             new ProjectStatus(1, "1")));
@@ -411,11 +557,66 @@ public class LateDeliverableProcessorImplFailureTests extends TestCase {
             new ProjectStatus(1, "1")));
         entity.setPhase(new Phase(new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 1));
         entity.getPhase().setScheduledEndDate(new Date());
+        entity.setType(LateDeliverableType.MISSED_DEADLINE);
 
         try {
             instance.configure(config);
 
             TestHelper.setPrivateField(LateDeliverableProcessorImpl.class, instance, "connectionName", "wrong name");
+            instance.processLateDeliverable(entity);
+            fail("LateDeliverablesProcessingException should be thrown.");
+        } catch (LateDeliverablesProcessingException e) {
+            // pass
+        }
+    }
+    /**
+     * Test processLateDeliverable. lateDeliverableTypeIds doesn't exist.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_processLateDeliverable4() throws Exception {
+        LateDeliverable entity = new LateDeliverable();
+        entity.setCompensatedDeadline(new Date());
+        entity.setDeliverable(new Deliverable(1, 1, 1, new Long(1), false));
+        entity.setProject(new Project(1, new ProjectCategory(1, "n", new ProjectType(1, "1")),
+            new ProjectStatus(1, "1")));
+        entity.setPhase(new Phase(new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 1));
+        entity.getPhase().setScheduledEndDate(new Date());
+        entity.setType(LateDeliverableType.REJECTED_FINAL_FIX);
+
+        config.setPropertyValue("lateDeliverableTypeIds", "Missed Deadline=11110,Rejected Final Fix=10000");
+        instance.configure(config);
+        try {
+
+            instance.processLateDeliverable(entity);
+            fail("LateDeliverablesProcessingException should be thrown.");
+        } catch (LateDeliverablesProcessingException e) {
+            // pass
+        }
+    }
+    /**
+     * Test processLateDeliverable. the template doesn't exist.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_processLateDeliverable5() throws Exception {
+        LateDeliverable entity = new LateDeliverable();
+        entity.setCompensatedDeadline(new Date());
+        entity.setDeliverable(new Deliverable(1, 1, 1, new Long(1), false));
+        entity.setProject(new Project(1, new ProjectCategory(1, "n", new ProjectType(1, "1")),
+            new ProjectStatus(1, "1")));
+        entity.setPhase(new Phase(new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 1));
+        entity.getPhase().setScheduledEndDate(new Date());
+        entity.setType(LateDeliverableType.REJECTED_FINAL_FIX);
+
+        config.setPropertyValue("rejectedFinalFixEmailBodyTemplatePath", "the template doesn't exist");
+        instance.configure(config);
+        try {
+
             instance.processLateDeliverable(entity);
             fail("LateDeliverablesProcessingException should be thrown.");
         } catch (LateDeliverablesProcessingException e) {

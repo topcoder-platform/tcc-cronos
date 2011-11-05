@@ -136,7 +136,7 @@
         </Value>
     </Property>
     <Property name="emailBodyTemplatePath">
-        <Value>test_files/pm_notification_email_template.html</Value>
+        <Value>test_files/stress/pm_notification_email_template.html</Value>
     </Property>
     <Property name="emailSender">
         <Value>service@topcoder.com</Value>

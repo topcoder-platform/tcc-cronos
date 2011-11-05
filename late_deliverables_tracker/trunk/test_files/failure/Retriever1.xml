@@ -4,7 +4,7 @@
 		<Property name="loggerName">
 			<Value>myLogger</Value>
 		</Property>
-		<Property name="trackingDeliverableIds">
+		<Property name="missedDeadlineTrackingDeliverableIds">
 			<Value>3,4</Value>
 		</Property>
 		<Property name="objectFactoryConfig">

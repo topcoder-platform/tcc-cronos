@@ -352,5 +352,12 @@ INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, nam
 INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, required, create_user, create_date, modify_user, modify_date)
   VALUES (26, 14, 15, 'Specification Review', 'Specification Review', 1, 'System', CURRENT, 'System', CURRENT );
 
+INSERT INTO late_deliverable_type_lu(late_deliverable_type_id,name,description) VALUES (1, 'Missed Deadline', 'Missed Deadline');
+INSERT INTO late_deliverable_type_lu(late_deliverable_type_id,name,description) VALUES (2, 'Rejected Final Fix', 'Rejected Final Fix');
+
+INSERT INTO project(project_id, project_status_id, project_category_id, create_user, create_date, modify_user, modify_date) VALUES(1, 1, 1, 'admin', CURRENT, 'admin', CURRENT);
+INSERT INTO project_phase(project_phase_id, project_id, phase_type_id, phase_status_id, scheduled_start_time, scheduled_end_time, actual_end_time, duration, create_user, create_date, modify_user, modify_date) VALUES(1, 1, 1, 1, TO_DATE('2010-11-22 09:05:00', '%Y-%m-%d %H:%M:%S'), TO_DATE('2010-11-22 09:05:00', '%Y-%m-%d %H:%M:%S'), TO_DATE('2010-11-23 09:05:00', '%Y-%m-%d %H:%M:%S'), 4, 'admin', CURRENT, 'admin', CURRENT);
+
+INSERT INTO resource(resource_id,resource_role_id,project_id, project_phase_id, create_user, create_date, modify_user, modify_date) VALUES (1,17,1,1,CURRENT,CURRENT,CURRENT,CURRENT);
 
 

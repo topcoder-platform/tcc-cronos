@@ -1,5 +1,6 @@
 delete from resource_info;
 delete from resource;
+delete from phase_dependency;
 delete from project_phase;
 delete from project_info;
 delete from project;
@@ -22,4 +23,6 @@ delete from resource_info_type_lu;
 delete from comment_type_lu;
 delete from phase_type_lu;
 delete from submission_type_lu;
+delete from phase_dependency;
 delete from late_deliverable;
+delete from late_deliverable_type_lu;

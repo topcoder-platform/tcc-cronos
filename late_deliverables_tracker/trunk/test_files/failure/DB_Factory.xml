@@ -14,13 +14,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://127.0.0.1:9088/dev:informixserver=informix_db</Value>
+                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tcs:informixserver=ol_svr_custom</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>adminadmin</Value>
+                        <Value>123456</Value>
                     </Property>
                 </Property>
             </Property>

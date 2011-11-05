@@ -3,9 +3,13 @@
  */
 package com.topcoder.management.deliverable.latetracker.failuretests;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import junit.framework.TestCase;
 
 import com.topcoder.configuration.ConfigurationObject;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesRetrievalException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl;
@@ -13,8 +17,8 @@ import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverabl
 /**
  * Failure test cases <code>LateDeliverablesRetrieverImpl</code>.
  *
- * @author gjw99, TCSDEVELOPER
- * @version 1.1
+ * @author gjw99, mumujava
+ * @version 1.3
  * @since 1.0
  */
 public class LateDeliverablesRetrieverImplFailureTests extends TestCase {
@@ -108,7 +112,7 @@ public class LateDeliverablesRetrieverImplFailureTests extends TestCase {
      */
     public void test_configure4() throws Exception {
         try {
-            config.removeProperty("trackingDeliverableIds");
+            config.removeProperty("missedDeadlineTrackingDeliverableIds");
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -124,7 +128,7 @@ public class LateDeliverablesRetrieverImplFailureTests extends TestCase {
      */
     public void test_configure5() throws Exception {
         try {
-            config.setPropertyValue("trackingDeliverableIds", " ");
+            config.setPropertyValue("missedDeadlineTrackingDeliverableIds", " ");
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -140,7 +144,7 @@ public class LateDeliverablesRetrieverImplFailureTests extends TestCase {
      */
     public void test_configure6() throws Exception {
         try {
-            config.setPropertyValue("trackingDeliverableIds", "1,2,-1");
+            config.setPropertyValue("missedDeadlineTrackingDeliverableIds", "1,2,-1");
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -156,7 +160,7 @@ public class LateDeliverablesRetrieverImplFailureTests extends TestCase {
      */
     public void test_configure7() throws Exception {
         try {
-            config.setPropertyValue("trackingDeliverableIds", "1,2,,3");
+            config.setPropertyValue("missedDeadlineTrackingDeliverableIds", "1,2,,3");
             instance.configure(config);
             fail("LateDeliverablesTrackerConfigurationException should be thrown.");
         } catch (LateDeliverablesTrackerConfigurationException e) {
@@ -362,14 +366,113 @@ public class LateDeliverablesRetrieverImplFailureTests extends TestCase {
     }
 
     /**
+     * Test configure. missedDeadlineTrackingDeliverableIds is null.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure20() throws Exception {
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds",null);
+        try {
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure. missedDeadlineTrackingDeliverableIds is empty.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure21() throws Exception {
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds"," ");
+        try {
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure. missedDeadlineTrackingDeliverableIds contains non-integer.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure22() throws Exception {
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds","xyz");
+        try {
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test configure. missedDeadlineTrackingDeliverableIds contains non-positive.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_configure23() throws Exception {
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds","1,-1,0");
+        try {
+            instance.configure(config);
+            fail("LateDeliverablesTrackerConfigurationException should be thrown.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+    /**
+     * Test retrieve.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_retrieve1() throws Exception {
+        try {
+            instance.retrieve(new HashSet<LateDeliverableType>() );
+            fail("IAE should be thrown.");
+        } catch (IllegalArgumentException e) {
+            // pass
+        }
+    }
+    /**
+     * Test retrieve.
+     *
+     * @throws Exception
+     *             if any error
+     * @since 1.3
+     */
+    public void test_retrieve2() throws Exception {
+        try {
+            Set<LateDeliverableType> set = new HashSet<LateDeliverableType>();
+            set.add(null);
+            instance.retrieve(set );
+            fail("IAE should be thrown.");
+        } catch (IllegalArgumentException e) {
+            // pass
+        }
+    }
+    /**
      * Test retrieve.
      *
      * @throws Exception
      *             if any error
      */
-    public void test_retrieve1() throws Exception {
+    public void test_retrieve5() throws Exception {
         try {
-            instance.retrieve();
+            Set<LateDeliverableType> set = new HashSet<LateDeliverableType>();
+            set.add(LateDeliverableType.MISSED_DEADLINE);
+            set.add(LateDeliverableType.REJECTED_FINAL_FIX);
+            instance.retrieve(set );
             fail("ISE should be thrown.");
         } catch (IllegalStateException e) {
             // pass
@@ -382,12 +485,15 @@ public class LateDeliverablesRetrieverImplFailureTests extends TestCase {
      * @throws Exception
      *             if any error
      */
-    public void test_retrieve2() throws Exception {
+    public void test_retrieve6() throws Exception {
         try {
             instance.configure(config);
             TestHelper.setPrivateField(LateDeliverablesRetrieverImpl.class, instance, "projectManager",
                 new ProjectManagerMock());
-            instance.retrieve();
+            Set<LateDeliverableType> set = new HashSet<LateDeliverableType>();
+            set.add(LateDeliverableType.MISSED_DEADLINE);
+            set.add(LateDeliverableType.REJECTED_FINAL_FIX);
+            instance.retrieve(set );
             fail("LateDeliverablesRetrievalException should be thrown.");
         } catch (LateDeliverablesRetrievalException e) {
             // pass

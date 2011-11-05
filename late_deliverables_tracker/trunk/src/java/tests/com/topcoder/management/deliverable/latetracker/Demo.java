@@ -4,6 +4,8 @@
 package com.topcoder.management.deliverable.latetracker;
 
 import java.io.File;
+import java.util.EnumSet;
+import java.util.Set;
 
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotifier;
@@ -16,8 +18,15 @@ import com.topcoder.util.log.LogFactory;
 /**
  * Tests the demo of this component.
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Updated demo.</li>
+ * </ol>
+ * </p>
+ *
  * @author saarixx, myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public class Demo extends BaseTestCase {
     /**
@@ -83,8 +92,9 @@ public class Demo extends BaseTestCase {
         Log log = LogFactory.getLog("my_logger");
 
         // Create LateDeliverablesTracker
+        Set<LateDeliverableType> trackedLateDeliverableTypes = EnumSet.allOf(LateDeliverableType.class);
         LateDeliverablesTracker lateDeliverablesTracker = new LateDeliverablesTracker(
-            lateDeliverablesRetriever, lateDeliverableProcessor, log);
+            lateDeliverablesRetriever, lateDeliverableProcessor, trackedLateDeliverableTypes, log);
         // Track for late deliverables
         lateDeliverablesTracker.execute();
 

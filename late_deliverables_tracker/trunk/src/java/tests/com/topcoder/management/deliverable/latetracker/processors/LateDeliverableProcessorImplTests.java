@@ -4,6 +4,7 @@
 package com.topcoder.management.deliverable.latetracker.processors;
 
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import com.topcoder.management.deliverable.latetracker.BaseTestCase;
 import com.topcoder.management.deliverable.latetracker.EmailSendingException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverableData;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesProcessingException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl;
@@ -37,8 +39,15 @@ import com.topcoder.project.phases.Phase;
  * </ol>
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added/Updated test cases.</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public class LateDeliverableProcessorImplTests extends BaseTestCase {
     /**
@@ -55,6 +64,13 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * The <code>ConfigurationObject</code> instance used for testing.
      */
     private ConfigurationObject config;
+
+    /**
+     * The tracked late deliverable types used for testing.
+     *
+     * @since 1.3
+     */
+    private Set<LateDeliverableType> trackedLateDeliverableTypes;
 
     /**
      * <p>
@@ -76,6 +92,8 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         config = getConfigurationObject("config/LateDeliverableProcessorImpl.xml",
             LateDeliverableProcessorImpl.class.getName());
         target.configure(config);
+
+        trackedLateDeliverableTypes = EnumSet.allOf(LateDeliverableType.class);
     }
 
     /**
@@ -104,13 +122,16 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     public void test_Constructor() throws Exception {
         target = new LateDeliverableProcessorImpl();
-        assertNull("defaultEmailSubjectTemplateText field should be null", getField(target,
-            "defaultEmailSubjectTemplateText"));
-        assertNull("defaultEmailBodyTemplatePath field should be null",
-            getField(target, "defaultEmailBodyTemplatePath"));
-        assertNull("emailBodyTemplatePaths field should be null", getField(target, "emailBodyTemplatePaths"));
-        assertNull("emailSubjectTemplateTexts field should be null", getField(target, "emailSubjectTemplateTexts"));
-        assertNull("notificationDeliverableIds field should be null", getField(target, "notificationDeliverableIds"));
+        assertNull("defaultMissedDeadlineEmailSubjectTemplateText field should be null", getField(target,
+            "defaultMissedDeadlineEmailSubjectTemplateText"));
+        assertNull("defaultMissedDeadlineEmailBodyTemplatePath field should be null",
+            getField(target, "defaultMissedDeadlineEmailBodyTemplatePath"));
+        assertNull("missedDeadlineEmailBodyTemplatePaths field should be null",
+            getField(target, "missedDeadlineEmailBodyTemplatePaths"));
+        assertNull("missedDeadlineEmailSubjectTemplateTexts field should be null",
+            getField(target, "missedDeadlineEmailSubjectTemplateTexts"));
+        assertNull("missedDeadlineNotificationDeliverableIds field should be null",
+            getField(target, "missedDeadlineNotificationDeliverableIds"));
         assertNull("dbConnectionFactory field should be null", getField(target, "dbConnectionFactory"));
         assertNull("log field should be null", getField(target, "log"));
         assertNull("connectionName field should be null", getField(target, "connectionName"));
@@ -142,37 +163,55 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     @SuppressWarnings("unchecked")
     public void test_Configure_1() throws Exception {
-        assertEquals("defaultEmailSubjectTemplateText field should be null",
+        assertEquals("defaultMissedDeadlineEmailSubjectTemplateText field should be correct",
             "WARNING\\: You are late when providing a deliverable for %PROJECT_NAME%", getField(target,
-                "defaultEmailSubjectTemplateText"));
-        assertEquals("defaultEmailBodyTemplatePath field should be null", "test_files/warn_email_template.html",
-            getField(target, "defaultEmailBodyTemplatePath"));
+                "defaultMissedDeadlineEmailSubjectTemplateText"));
+        assertEquals("defaultMissedDeadlineEmailBodyTemplatePath field should be correct",
+            "test_files/warn_email_template.html", getField(target, "defaultMissedDeadlineEmailBodyTemplatePath"));
 
-        Map<?, ?> body = (Map) getField(target, "emailBodyTemplatePaths");
-        assertEquals("emailBodyTemplatePaths field wrong", 1, body.size());
-        assertEquals("emailBodyTemplatePaths field wrong",
+        Map<?, ?> body = (Map) getField(target, "missedDeadlineEmailBodyTemplatePaths");
+        assertEquals("missedDeadlineEmailBodyTemplatePaths field wrong", 1, body.size());
+        assertEquals("missedDeadlineEmailBodyTemplatePaths field wrong",
             "test_files/warn_email_template.html", body.get(new Long(3)));
 
-        Map<?, ?> subject = (Map) getField(target, "emailSubjectTemplateTexts");
-        assertEquals("emailSubjectTemplateTexts field wrong", 1, subject.size());
-        assertEquals("emailSubjectTemplateTexts field wrong",
+        Map<?, ?> subject = (Map) getField(target, "missedDeadlineEmailSubjectTemplateTexts");
+        assertEquals("missedDeadlineEmailSubjectTemplateTexts field wrong", 1, subject.size());
+        assertEquals("missedDeadlineEmailSubjectTemplateTexts field wrong",
             "WARNING\\: You are late when providing a deliverable for %PROJECT_NAME%", subject.get(new Long(3)));
 
-        Set<?> notificationDeliverableIds = (Set) getField(target, "notificationDeliverableIds");
-        assertEquals("notificationDeliverableIds field wrong", 1, notificationDeliverableIds.size());
-        assertTrue("notificationDeliverableIds field wrong", notificationDeliverableIds.contains(new Long(4)));
-        assertNotNull("dbConnectionFactory field should be null", getField(target, "dbConnectionFactory"));
-        assertNotNull("log field should be null", getField(target, "log"));
-        assertEquals("connectionName field should be null", "informix_connection", getField(target, "connectionName"));
-        assertNotNull("emailSendingUtility field should be null", getField(target, "emailSendingUtility"));
-        assertNotNull("resourceManager field should be null", getField(target, "resourceManager"));
-        assertNotNull("userRetrieval field should be null", getField(target, "userRetrieval"));
-        assertNotNull("timestampFormat field should be null", getField(target, "timestampFormat"));
+        Set<?> missedDeadlineNotificationDeliverableIds =
+            (Set) getField(target, "missedDeadlineNotificationDeliverableIds");
+        assertEquals("missedDeadlineNotificationDeliverableIds field wrong",
+            1, missedDeadlineNotificationDeliverableIds.size());
+        assertTrue("missedDeadlineNotificationDeliverableIds field wrong",
+            missedDeadlineNotificationDeliverableIds.contains(new Long(4)));
+        assertNotNull("dbConnectionFactory field should be correct", getField(target, "dbConnectionFactory"));
+        assertNotNull("log field should be correct", getField(target, "log"));
+        assertEquals("connectionName field should be correct", "informix_connection",
+            getField(target, "connectionName"));
+        assertNotNull("emailSendingUtility field should be correct", getField(target, "emailSendingUtility"));
+        assertNotNull("resourceManager field should be correct", getField(target, "resourceManager"));
+        assertNotNull("userRetrieval field should be correct", getField(target, "userRetrieval"));
+        assertNotNull("timestampFormat field should be correct", getField(target, "timestampFormat"));
         assertEquals("notificationInterval field should be correct", new Long(10),
             getField(target, "notificationInterval"));
 
         assertEquals("explanationDeadlineIntervalInHours field should be correct", 24,
             getField(target, "explanationDeadlineIntervalInHours"));
+
+        assertEquals("rejectedFinalFixEmailSubjectTemplateText field should be correct",
+            "WARNING\\: You need to explain why your Final Fix for %PROJECT_NAME% was rejected", getField(target,
+                "rejectedFinalFixEmailSubjectTemplateText"));
+        assertEquals("rejectedFinalFixEmailBodyTemplatePath field should be correct",
+            "test_files/rejected_ff_email_template.html", getField(target, "rejectedFinalFixEmailBodyTemplatePath"));
+
+        Map<LateDeliverableType, Long> lateDeliverableTypeIds =
+            (Map<LateDeliverableType, Long>) getField(target, "lateDeliverableTypeIds");
+        assertEquals("lateDeliverableTypeIds field wrong",
+            2, lateDeliverableTypeIds.size());
+
+        assertTrue("sendRejectedFinalFixNotifications field should be correct",
+            (Boolean) getField(target, "sendRejectedFinalFixNotifications"));
     }
 
     /**
@@ -251,7 +290,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The notificationDeliverableIds property is invalid in config,
+     * The missedDeadlineNotificationDeliverableIds property is invalid in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -259,7 +298,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_6() throws Exception {
-        config.setPropertyValue("notificationDeliverableIds", "x,3");
+        config.setPropertyValue("missedDeadlineNotificationDeliverableIds", "x,3");
 
         try {
             target.configure(config);
@@ -275,7 +314,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The notificationDeliverableIds property is negative in config,
+     * The missedDeadlineNotificationDeliverableIds property is negative in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -283,7 +322,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_7() throws Exception {
-        config.setPropertyValue("notificationDeliverableIds", "-5");
+        config.setPropertyValue("missedDeadlineNotificationDeliverableIds", "-5");
 
         try {
             target.configure(config);
@@ -299,7 +338,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The notificationDeliverableIds property is not type of String in config,
+     * The missedDeadlineNotificationDeliverableIds property is not type of String in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -307,7 +346,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_8() throws Exception {
-        config.setPropertyValue("notificationDeliverableIds", new Exception());
+        config.setPropertyValue("missedDeadlineNotificationDeliverableIds", new Exception());
 
         try {
             target.configure(config);
@@ -683,7 +722,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The defaultEmailSubjectTemplateText property value is missing in config,
+     * The defaultMissedDeadlineEmailSubjectTemplateText property value is missing in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -691,7 +730,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_24() throws Exception {
-        config.removeProperty("defaultEmailSubjectTemplateText");
+        config.removeProperty("defaultMissedDeadlineEmailSubjectTemplateText");
 
         try {
             target.configure(config);
@@ -707,7 +746,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The defaultEmailBodyTemplatePath property value is missing in config,
+     * The defaultMissedDeadlineEmailBodyTemplatePath property value is missing in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -715,7 +754,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_25() throws Exception {
-        config.removeProperty("defaultEmailBodyTemplatePath");
+        config.removeProperty("defaultMissedDeadlineEmailBodyTemplatePath");
 
         try {
             target.configure(config);
@@ -731,7 +770,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The defaultEmailBodyTemplatePath property value is empty in config,
+     * The defaultMissedDeadlineEmailBodyTemplatePath property value is empty in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -739,7 +778,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_26() throws Exception {
-        config.setPropertyValue("defaultEmailBodyTemplatePath", "");
+        config.setPropertyValue("defaultMissedDeadlineEmailBodyTemplatePath", "");
 
         try {
             target.configure(config);
@@ -755,7 +794,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The emailSubjectForDeliverable3 property value is empty in config,
+     * The missedDeadlineEmailSubjectForDeliverable3 property value is empty in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -763,7 +802,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_27() throws Exception {
-        config.setPropertyValue("emailSubjectForDeliverable3", "");
+        config.setPropertyValue("missedDeadlineEmailSubjectForDeliverable3", "");
 
         try {
             target.configure(config);
@@ -779,7 +818,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The emailBodyForDeliverable3 property value is empty in config,
+     * The missedDeadlineEmailBodyForDeliverable3 property value is empty in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -787,7 +826,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_28() throws Exception {
-        config.setPropertyValue("emailBodyForDeliverable3", "");
+        config.setPropertyValue("missedDeadlineEmailBodyForDeliverable3", "");
 
         try {
             target.configure(config);
@@ -803,7 +842,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The emailBodyForDeliverable in config has invalid suffix,
+     * The missedDeadlineEmailBodyForDeliverable in config has invalid suffix,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -811,7 +850,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_29() throws Exception {
-        config.setPropertyValue("emailBodyForDeliverableX", "value");
+        config.setPropertyValue("missedDeadlineEmailBodyForDeliverableX", "value");
 
         try {
             target.configure(config);
@@ -827,7 +866,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The emailSubjectForDeliverable in config has invalid suffix,
+     * The missedDeadlineEmailSubjectForDeliverable in config has invalid suffix,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -835,7 +874,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_30() throws Exception {
-        config.setPropertyValue("emailSubjectForDeliverableX", "value");
+        config.setPropertyValue("missedDeadlineEmailSubjectForDeliverableX", "value");
 
         try {
             target.configure(config);
@@ -862,26 +901,28 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
     public void test_Configure_31() throws Exception {
         config.removeProperty("notificationInterval");
         config.removeProperty("timestampFormat");
-        config.removeProperty("emailSubjectForDeliverable3");
-        config.removeProperty("emailBodyForDeliverable3");
-        config.removeProperty("notificationDeliverableIds");
+        config.removeProperty("missedDeadlineEmailSubjectForDeliverable3");
+        config.removeProperty("missedDeadlineEmailBodyForDeliverable3");
+        config.removeProperty("missedDeadlineNotificationDeliverableIds");
         config.removeProperty("loggerName");
         config.removeProperty("connectionName");
-        config.setPropertyValue("defaultEmailSubjectTemplateText", "");
+        config.setPropertyValue("defaultMissedDeadlineEmailSubjectTemplateText", "");
         target.configure(config);
         assertNull("log field should be null", getField(target, "log"));
         assertNull("connectionName field should be null", getField(target, "connectionName"));
-        assertEquals("defaultEmailSubjectTemplateText field should be null", "", getField(target,
-            "defaultEmailSubjectTemplateText"));
+        assertEquals("defaultMissedDeadlineEmailSubjectTemplateText field should be null", "", getField(target,
+            "defaultMissedDeadlineEmailSubjectTemplateText"));
 
-        Map<?, ?> body = (Map) getField(target, "emailBodyTemplatePaths");
-        assertEquals("emailBodyTemplatePaths field wrong", 0, body.size());
+        Map<?, ?> body = (Map) getField(target, "missedDeadlineEmailBodyTemplatePaths");
+        assertEquals("missedDeadlineEmailBodyTemplatePaths field wrong", 0, body.size());
 
-        Map<?, ?> subject = (Map) getField(target, "emailSubjectTemplateTexts");
-        assertEquals("emailSubjectTemplateTexts field wrong", 0, subject.size());
+        Map<?, ?> subject = (Map) getField(target, "missedDeadlineEmailSubjectTemplateTexts");
+        assertEquals("missedDeadlineEmailSubjectTemplateTexts field wrong", 0, subject.size());
 
-        Set<?> notificationDeliverableIds = (Set) getField(target, "notificationDeliverableIds");
-        assertEquals("notificationDeliverableIds field wrong", 0, notificationDeliverableIds.size());
+        Set<?> missedDeadlineNotificationDeliverableIds =
+            (Set) getField(target, "missedDeadlineNotificationDeliverableIds");
+        assertEquals("missedDeadlineNotificationDeliverableIds field wrong",
+            0, missedDeadlineNotificationDeliverableIds.size());
     }
 
     /**
@@ -980,6 +1021,350 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
 
     /**
      * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The rejectedFinalFixEmailSubjectTemplateText property value is missing in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_36() throws Exception {
+        config.removeProperty("rejectedFinalFixEmailSubjectTemplateText");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The rejectedFinalFixEmailBodyTemplatePath property value is missing in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_37() throws Exception {
+        config.removeProperty("rejectedFinalFixEmailBodyTemplatePath");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The rejectedFinalFixEmailBodyTemplatePath property value is empty in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_38() throws Exception {
+        config.setPropertyValue("rejectedFinalFixEmailBodyTemplatePath", " ");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypeIds property value is missing in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_39() throws Exception {
+        config.removeProperty("lateDeliverableTypeIds");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypeIds property value is empty in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_40() throws Exception {
+        config.setPropertyValue("lateDeliverableTypeIds", " ");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypeIds property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_41() throws Exception {
+        config.setPropertyValue("lateDeliverableTypeIds", "Missed Deadline");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypeIds property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_42() throws Exception {
+        config.setPropertyValue("lateDeliverableTypeIds", "Missed Deadline=invalid_num");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypeIds property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_43() throws Exception {
+        config.setPropertyValue("lateDeliverableTypeIds", "Missed Deadline=-1");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypeIds property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_44() throws Exception {
+        config.setPropertyValue("lateDeliverableTypeIds", "Missed Deadline=0");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The lateDeliverableTypeIds property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_45() throws Exception {
+        config.setPropertyValue("lateDeliverableTypeIds", "invalid=1");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The sendRejectedFinalFixNotifications property value is empty in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_46() throws Exception {
+        config.setPropertyValue("sendRejectedFinalFixNotifications", " ");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * The sendRejectedFinalFixNotifications property value is invalid in config,
+     * <code>LateDeliverablesTrackerConfigurationException</code> expected.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_47() throws Exception {
+        config.setPropertyValue("sendRejectedFinalFixNotifications", "True");
+
+        try {
+            target.configure(config);
+            fail("should have thrown LateDeliverablesTrackerConfigurationException");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // pass
+        }
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * Verifies all class fields have been set by configuration correctly.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_48() throws Exception {
+        config.removeProperty("sendRejectedFinalFixNotifications");
+
+        target.configure(config);
+
+        assertTrue("sendRejectedFinalFixNotifications field should be correct", (Boolean) getField(target,
+            "sendRejectedFinalFixNotifications"));
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverableProcessorImpl#configure(ConfigurationObject)} method.
+     * </p>
+     * <p>
+     * Verifies all class fields have been set by configuration correctly.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_Configure_49() throws Exception {
+        config.setPropertyValue("sendRejectedFinalFixNotifications", "false");
+
+        target.configure(config);
+
+        assertFalse("sendRejectedFinalFixNotifications field should be correct", (Boolean) getField(target,
+            "sendRejectedFinalFixNotifications"));
+    }
+
+    /**
+     * <p>
      * Failure test case for the {@link LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method with
      * 'explanationDeadlineIntervalInHours' is empty.
      * </p>
@@ -1074,7 +1459,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.configure(config);
 
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
-        LateDeliverable lateDeliverable = retriever.retrieve().get(0);
+        LateDeliverable lateDeliverable = retriever.retrieve(trackedLateDeliverableTypes).get(0);
         lateDeliverable.setCompensatedDeadline(new Date());
 
         target.processLateDeliverable(lateDeliverable);
@@ -1087,9 +1472,42 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         assertFalse("forgive should be false", data.isForgive());
         assertTrue("last notified time wrong", (System.currentTimeMillis() - data.getLastNotified().getTime()) < 5000);
         assertEquals("should be equal", data.getCreateDate(), data.getLastNotified());
-        assertEquals("should be equal", retriever.retrieve().get(0).getPhase().getScheduledEndDate(),
-            data.getDeadline());
+        assertEquals("should be equal", retriever.retrieve(trackedLateDeliverableTypes).get(0).getPhase()
+            .getScheduledEndDate(), data.getDeadline());
         assertEquals("deliverable id wrong", 4, data.getDeliverableId());
+
+        // please manually check the email
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverableProcessorImpl#processLateDeliverable(LateDeliverable)}
+     * method with "Rejected Final Fix".
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_processLateDeliverable_New() throws Exception {
+        config.removeProperty("explanationDeadlineIntervalInHours");
+        target.configure(config);
+
+        setupPhases(new long[] {101L, 102L}, new long[] {10L, 9L}, new long[] {3L, 2L}, true);
+        createDependency(101L, 102L);
+
+        LateDeliverable lateDeliverable = retriever.retrieve(trackedLateDeliverableTypes).get(0);
+
+        target.processLateDeliverable(lateDeliverable);
+
+        // check database record
+        List<LateDeliverableData> datas = getLateDeliverable();
+        assertEquals("should have one record", 1, datas.size());
+
+        LateDeliverableData data = datas.get(0);
+        assertFalse("forgive should be false", data.isForgive());
+        assertEquals("should be equal", 102, data.getProjectPhaseId());
 
         // please manually check the email
     }
@@ -1109,12 +1527,12 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     public void test_processLateDeliverable_2() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
-        target.processLateDeliverable(retriever.retrieve().get(0));
+        target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
         // sleep to pass the interval
         Thread.sleep(15000);
 
         setColumn("late_deliverable", "explanation", "Dog ate my laptop.");
-        target.processLateDeliverable(retriever.retrieve().get(0));
+        target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
 
         // verify the update
         List<LateDeliverableData> datas = getLateDeliverable();
@@ -1141,8 +1559,8 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     public void test_processLateDeliverable_3() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
-        target.processLateDeliverable(retriever.retrieve().get(0));
-        target.processLateDeliverable(retriever.retrieve().get(0));
+        target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
+        target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
         // verify the update
         List<LateDeliverableData> datas = getLateDeliverable();
         assertEquals("should have one record", 1, datas.size());
@@ -1168,7 +1586,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      */
     public void test_processLateDeliverable_4() throws Exception {
         setupPhases(new long[] {112L}, new long[] {3L}, new long[] {2L}, true);
-        target.processLateDeliverable(retriever.retrieve().get(0));
+        target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
         List<LateDeliverableData> datas = getLateDeliverable();
         assertEquals("should have one record", 1, datas.size());
         assertNull("should be null", datas.get(0).getLastNotified());
@@ -1190,7 +1608,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
     public void test_processLateDeliverable_5() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
 
-        LateDeliverable d = retriever.retrieve().get(0);
+        LateDeliverable d = retriever.retrieve(trackedLateDeliverableTypes).get(0);
         // delay time : two days
         target.processLateDeliverable(d);
         // extends the deadline
@@ -1242,7 +1660,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
     public void test_processLateDeliverable_6() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
 
-        LateDeliverable d = retriever.retrieve().get(0);
+        LateDeliverable d = retriever.retrieve(trackedLateDeliverableTypes).get(0);
         target.processLateDeliverable(d);
         // extends the deadline
         // delay time : 1 minute
@@ -1268,7 +1686,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
     public void test_processLateDeliverable_7() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
 
-        LateDeliverable d = retriever.retrieve().get(0);
+        LateDeliverable d = retriever.retrieve(trackedLateDeliverableTypes).get(0);
         target.processLateDeliverable(d);
         // extends the deadline
         // delay time : 20 minutes
@@ -1296,7 +1714,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
     public void test_processLateDeliverable_8() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
 
-        LateDeliverable d = retriever.retrieve().get(0);
+        LateDeliverable d = retriever.retrieve(trackedLateDeliverableTypes).get(0);
         target.processLateDeliverable(d);
         // extends the deadline
         // delay time : 1 hour
@@ -1321,13 +1739,13 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_processLateDeliverable_9() throws Exception {
-        config.setPropertyValue("emailSubjectForDeliverable4", "Subject");
-        config.setPropertyValue("emailBodyForDeliverable4", "test_files/warn_email_template.html");
+        config.setPropertyValue("missedDeadlineEmailSubjectForDeliverable4", "Subject");
+        config.setPropertyValue("missedDeadlineEmailBodyForDeliverable4", "test_files/warn_email_template.html");
         target.configure(config);
 
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
 
-        LateDeliverable d = retriever.retrieve().get(0);
+        LateDeliverable d = retriever.retrieve(trackedLateDeliverableTypes).get(0);
         target.processLateDeliverable(d);
 
         List<LateDeliverableData> datas = getLateDeliverable();
@@ -1353,7 +1771,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.configure(config);
 
         try {
-            target.processLateDeliverable(retriever.retrieve().get(0));
+            target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
             fail("should have thrown LateDeliverablesProcessingException");
         } catch (LateDeliverablesProcessingException e) {
             // pass
@@ -1380,7 +1798,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
         target.configure(config);
 
         try {
-            target.processLateDeliverable(retriever.retrieve().get(0));
+            target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
             fail("should have thrown LateDeliverablesProcessingException");
         } catch (LateDeliverablesProcessingException e) {
             // pass
@@ -1403,11 +1821,11 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
     public void test_processLateDeliverable_12() throws Exception {
         setupPhases(new long[] {112L}, new long[] {4L}, new long[] {2L}, true);
         // invalid template
-        config.setPropertyValue("defaultEmailSubjectTemplateText", "Subject:");
+        config.setPropertyValue("defaultMissedDeadlineEmailSubjectTemplateText", "Subject:");
         target.configure(config);
 
         try {
-            target.processLateDeliverable(retriever.retrieve().get(0));
+            target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
             fail("should have thrown EmailSendingException");
         } catch (EmailSendingException e) {
             assertEquals("no record", 0, getLateDeliverable().size());
@@ -1514,7 +1932,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
             LateDeliverableProcessorImpl.class.getName()));
 
         try {
-            target.processLateDeliverable(retriever.retrieve().get(0));
+            target.processLateDeliverable(retriever.retrieve(trackedLateDeliverableTypes).get(0));
             fail("should have thrown LateDeliverablesProcessingException");
         } catch (LateDeliverablesProcessingException e) {
             // verify roll back
@@ -1736,7 +2154,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * Failure test case for the {@link LateDeliverableProcessorImpl#processLateDeliverable(LateDeliverable)} method.
      * </p>
      * <p>
-     * The <code>notificationDeliverableIds</code> field is <code>null</code>,
+     * The <code>missedDeadlineNotificationDeliverableIds</code> field is <code>null</code>,
      * <code>IllegalStateException</code> expected.
      * </p>
      *
@@ -1744,7 +2162,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_processLateDeliverable_25() throws Exception {
-        setField(LateDeliverableProcessorImpl.class, target, "notificationDeliverableIds", null);
+        setField(LateDeliverableProcessorImpl.class, target, "missedDeadlineNotificationDeliverableIds", null);
 
         try {
             target.processLateDeliverable(createLateDeliverable(0));
@@ -1759,7 +2177,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * Failure test case for the {@link LateDeliverableProcessorImpl#processLateDeliverable(LateDeliverable)} method.
      * </p>
      * <p>
-     * The <code>emailSubjectTemplateTexts</code> field is <code>null</code>,
+     * The <code>missedDeadlineEmailSubjectTemplateTexts</code> field is <code>null</code>,
      * <code>IllegalStateException</code> expected.
      * </p>
      *
@@ -1767,7 +2185,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_processLateDeliverable_26() throws Exception {
-        setField(LateDeliverableProcessorImpl.class, target, "emailSubjectTemplateTexts", null);
+        setField(LateDeliverableProcessorImpl.class, target, "missedDeadlineEmailSubjectTemplateTexts", null);
 
         try {
             target.processLateDeliverable(createLateDeliverable(0));
@@ -1782,7 +2200,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * Failure test case for the {@link LateDeliverableProcessorImpl#processLateDeliverable(LateDeliverable)} method.
      * </p>
      * <p>
-     * The <code>emailBodyTemplatePaths</code> field is <code>null</code>,
+     * The <code>missedDeadlineEmailBodyTemplatePaths</code> field is <code>null</code>,
      * <code>IllegalStateException</code> expected.
      * </p>
      *
@@ -1790,7 +2208,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_processLateDeliverable_27() throws Exception {
-        setField(LateDeliverableProcessorImpl.class, target, "emailBodyTemplatePaths", null);
+        setField(LateDeliverableProcessorImpl.class, target, "missedDeadlineEmailBodyTemplatePaths", null);
 
         try {
             target.processLateDeliverable(createLateDeliverable(0));
@@ -1805,7 +2223,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * Failure test case for the {@link LateDeliverableProcessorImpl#processLateDeliverable(LateDeliverable)} method.
      * </p>
      * <p>
-     * The <code>defaultEmailSubjectTemplateText</code> field is <code>null</code>,
+     * The <code>defaultMissedDeadlineEmailSubjectTemplateText</code> field is <code>null</code>,
      * <code>IllegalStateException</code> expected.
      * </p>
      *
@@ -1813,7 +2231,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_processLateDeliverable_28() throws Exception {
-        setField(LateDeliverableProcessorImpl.class, target, "defaultEmailSubjectTemplateText", null);
+        setField(LateDeliverableProcessorImpl.class, target, "defaultMissedDeadlineEmailSubjectTemplateText", null);
 
         try {
             target.processLateDeliverable(createLateDeliverable(0));
@@ -1828,7 +2246,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      * Failure test case for the {@link LateDeliverableProcessorImpl#processLateDeliverable(LateDeliverable)} method.
      * </p>
      * <p>
-     * The <code>defaultEmailBodyTemplatePath</code> field is <code>null</code>,
+     * The <code>defaultMissedDeadlineEmailBodyTemplatePath</code> field is <code>null</code>,
      * <code>IllegalStateException</code> expected.
      * </p>
      *
@@ -1836,7 +2254,7 @@ public class LateDeliverableProcessorImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_processLateDeliverable_29() throws Exception {
-        setField(LateDeliverableProcessorImpl.class, target, "defaultEmailBodyTemplatePath", null);
+        setField(LateDeliverableProcessorImpl.class, target, "defaultMissedDeadlineEmailBodyTemplatePath", null);
 
         try {
             target.processLateDeliverable(createLateDeliverable(0));

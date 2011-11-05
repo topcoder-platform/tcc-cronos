@@ -6,6 +6,7 @@ package com.topcoder.management.deliverable.latetracker;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
+import java.util.Set;
 
 import com.topcoder.configuration.ConfigurationAccessException;
 import com.topcoder.configuration.ConfigurationObject;
@@ -38,11 +39,18 @@ import com.topcoder.util.objectfactory.impl.SpecificationConfigurationException;
  * </p>
  *
  * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added checkLateDeliverableTypes() method.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety: </strong> This class has no state, and thus it is thread safe.
  * </p>
  *
  * @author myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public final class Helper {
     /**
@@ -197,6 +205,43 @@ public final class Helper {
         }
 
         return sb.toString().trim();
+    }
+
+    /**
+     * <p>
+     * Validates the value of a variable. The value can not be empty or contain <code>null</code>.
+     * </p>
+     *
+     * @param types
+     *            the value of the variable to be validated.
+     * @param name
+     *            the name of the variable to be validated.
+     * @param log
+     *            The Log object.
+     * @param signature
+     *            the signature of the method to be logged.
+     *
+     * @throws IllegalArgumentException
+     *             if the value of the variable is empty or contains <code>null</code>.
+     *
+     * @since 1.3
+     */
+    public static void checkLateDeliverableTypes(Set<LateDeliverableType> types, String name, Log log,
+        String signature) {
+        if (types == null) {
+            return;
+        }
+
+        if (types.isEmpty()) {
+            throw Helper.logException(log, signature, new IllegalArgumentException("The parameter '" + name
+                + "' should not be empty."));
+        }
+        for (LateDeliverableType type : types) {
+            if (type == null) {
+                throw Helper.logException(log, signature, new IllegalArgumentException("The parameter '" + name
+                    + "' should not contain null element."));
+            }
+        }
     }
 
     /**

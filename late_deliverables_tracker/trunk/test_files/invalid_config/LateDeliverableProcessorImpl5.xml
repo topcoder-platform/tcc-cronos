@@ -58,34 +58,42 @@
 		                        <Value>com.informix.jdbc.IfxDriver</Value>
 		                    </Property>
 		                    <Property name="jdbc_url">
-		                        <Value>jdbc:informix-sqli://localhost:9088/dev:informixserver=informix_db</Value>
+		                        <Value>jdbc:informix-sqli://127.0.0.1:9088/tcs:informixserver=ol_svr_custom</Value>
 		                    </Property>
 		                    <Property name="user">
 		                        <Value>informix</Value>
 		                    </Property>
 		                    <Property name="password">
-		                        <Value>adminadmin</Value>
+		                        <Value>123456</Value>
 		                    </Property>
 		                </Property>
 		            </Property>
 		        </Property>
 		    </Property>
 		</Property>
-		<Property name="emailSubjectForDeliverable3">
+		<Property name="missedDeadlineEmailSubjectForDeliverable3">
 		    <Value>WARNING\: You are late when providing a deliverable for %PROJECT_NAME%</Value>
 		</Property>
-		<Property name="emailBodyForDeliverable3">
+		<Property name="missedDeadlineEmailBodyForDeliverable3">
 		    <Value>test_files/warn_email_template.html</Value>
 		</Property>
-		<Property name="notificationDeliverableIds">
+		<Property name="missedDeadlineNotificationDeliverableIds">
 		    <Value>4</Value>
 		</Property>
-		<Property name="defaultEmailSubjectTemplateText">
+		<Property name="defaultMissedDeadlineEmailSubjectTemplateText">
 		    <Value>WARNING\: You are late when providing a deliverable for %PROJECT_NAME%</Value>
 		</Property>
-		<Property name="defaultEmailBodyTemplatePath">
+		<Property name="defaultMissedDeadlineEmailBodyTemplatePath">
 		    <Value>test_files/warn_email_template.html</Value>
 		</Property>
+        <Property name="rejectedFinalFixEmailSubjectTemplateText">
+          <Value>
+            WARNING\: You need to explain why your Final Fix for %PROJECT_NAME% was rejected
+          </Value>
+        </Property>
+        <Property name="rejectedFinalFixEmailBodyTemplatePath">
+          <Value>test_files/rejected_ff_email_template.html</Value>
+        </Property>
 		<Property name="emailSender">
 		    <Value>service@topcoder.com</Value>
 		</Property>
@@ -103,6 +111,12 @@
 		</Property>
         <Property name="explanationDeadlineIntervalInHours">
           <Value>24</Value>
+        </Property>
+        <Property name="lateDeliverableTypeIds">
+          <Value>Missed Deadline=1,Rejected Final Fix=2</Value>
+        </Property>
+        <Property name="sendRejectedFinalFixNotifications">
+          <Value>true</Value>
         </Property>
     </Config>
 </CMConfig>

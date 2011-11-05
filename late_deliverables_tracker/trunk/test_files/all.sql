@@ -993,12 +993,13 @@ dest_project_id INT,
 link_type_id INT
 );
 
-create table late_deliverable (
+CREATE TABLE late_deliverable (
     late_deliverable_id serial NOT NULL,
+    late_deliverable_type_id INTEGER NOT NULL,
     project_phase_id INTEGER NOT NULL,
     resource_id INTEGER NOT NULL,
     deliverable_id INTEGER NOT NULL,
-    deadline DATETIME YEAR TO FRACTION NOT NULL,
+    deadline DATETIME YEAR TO FRACTION,
     compensated_deadline DATETIME YEAR TO FRACTION,
     create_date DATETIME YEAR TO FRACTION NOT NULL,
     forgive_ind DECIMAL(1,0) NOT NULL,
@@ -1022,3 +1023,14 @@ create table roles (
     description VARCHAR(254) not null,
     status_id DECIMAL(12,0) not null
 );
+
+
+CREATE TABLE "informix".late_deliverable_type_lu (
+    late_deliverable_type_id INT NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    description VARCHAR(254) NOT NULL
+);
+
+alter table 'informix'.late_deliverable_type_lu add constraint primary key
+  (late_deliverable_type_id)
+  constraint pk_late_deliverable_type_lu;

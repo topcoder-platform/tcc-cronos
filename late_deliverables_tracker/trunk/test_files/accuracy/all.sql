@@ -871,7 +871,7 @@ delete from id_sequences;
 
 
 -- create new lookup table for audit action types
-create table 'informix'.audit_action_type_lu (
+create table audit_action_type_lu (
     audit_action_type_id INT not null,
     name VARCHAR(50) not null,
     description VARCHAR(50) not null,
@@ -881,13 +881,13 @@ create table 'informix'.audit_action_type_lu (
     modify_date DATETIME YEAR TO FRACTION default CURRENT YEAR TO FRACTION not null
 );
 
-alter table 'informix'.audit_action_type_lu add constraint primary key 
+alter table audit_action_type_lu add constraint primary key 
 	(audit_action_type_id)
 	constraint audit_action_type_lu_pkey;
 
 
 -- create audit table for project resources
-create table 'informix'.project_user_audit  (
+create table project_user_audit  (
     project_user_audit_id DECIMAL(12,0) not null,
     project_id INT not null,
     resource_user_id DECIMAL(12,0) not null,
@@ -899,26 +899,26 @@ create table 'informix'.project_user_audit  (
 extent size 16 next size 16
 lock mode row; 
 
-alter table 'informix'.project_user_audit add constraint primary key 
+alter table project_user_audit add constraint primary key 
 	(project_user_audit_id)
 	constraint project_user_audit_pkey;
 
 -- enforce Referential Integrity.
-alter table 'informix'.project_user_audit add constraint foreign key 
+alter table project_user_audit add constraint foreign key 
 	(audit_action_type_id)
-	references 'informix'.audit_action_type_lu
+	references audit_action_type_lu
 	(audit_action_type_id) 
 	constraint project_user_audit_audit_action_type_lu_fk;
 
-alter table 'informix'.project_user_audit add constraint foreign key 
+alter table project_user_audit add constraint foreign key 
 	(project_id)
-	references 'informix'.project
+	references project
 	(project_id) 
 	constraint project_user_audit_project_fk;
 
-alter table 'informix'.project_user_audit add constraint foreign key 
+alter table project_user_audit add constraint foreign key 
 	(resource_role_id)
-	references 'informix'.resource_role_lu
+	references resource_role_lu
 	(resource_role_id) 
 	constraint project_user_audit_resource_role_lu_fk;
 
@@ -926,7 +926,7 @@ alter table 'informix'.project_user_audit add constraint foreign key
 CREATE SEQUENCE PROJECT_USER_AUDIT_SEQ;
 
 
-create table 'informix'.project_info_audit (
+create table project_info_audit (
 project_id int not null,
 project_info_type_id int not null,
 value varchar(255),
@@ -935,26 +935,26 @@ action_date datetime year to fraction not null,
 action_user_id decimal(12,0) not null
 );
 
-alter table 'informix'.project_info_audit add constraint foreign key 
+alter table project_info_audit add constraint foreign key 
 (audit_action_type_id)
-references 'informix'.audit_action_type_lu
+references audit_action_type_lu
 (audit_action_type_id) 
 constraint project_info_audit_audit_action_type_lu_fk;
 
-alter table 'informix'.project_info_audit add constraint foreign key 
+alter table project_info_audit add constraint foreign key 
 (project_id)
-references 'informix'.project
+references project
 (project_id) 
 constraint project_info_audit_project_fk;
 
-alter table 'informix'.project_info_audit add constraint foreign key 
+alter table project_info_audit add constraint foreign key 
 (project_info_type_id)
-references 'informix'.project_info_type_lu
+references project_info_type_lu
 (project_info_type_id) 
 constraint project_info_audit_project_info_type_lu_fk;
 
 ------------------------------------------------------------------------------
-create table 'informix'.project_phase_audit (
+create table project_phase_audit (
 project_phase_id int not null,
 scheduled_start_time datetime year to fraction,
 scheduled_end_time datetime year to fraction,
@@ -963,15 +963,15 @@ action_date datetime year to fraction not null,
 action_user_id decimal(12,0) not null
 );
 
-alter table 'informix'.project_phase_audit add constraint foreign key 
+alter table project_phase_audit add constraint foreign key 
 (audit_action_type_id)
-references 'informix'.audit_action_type_lu
+references audit_action_type_lu
 (audit_action_type_id) 
 constraint project_phase_audit_audit_action_type_lu_fk;
 
-alter table 'informix'.project_phase_audit add constraint foreign key 
+alter table project_phase_audit add constraint foreign key 
 (project_phase_id)
-references 'informix'.project_phase
+references project_phase
 (project_phase_id) 
 constraint project_phase_audit_project_phase_fk;
 
@@ -993,12 +993,13 @@ dest_project_id INT,
 link_type_id INT
 );
 
-create table late_deliverable (
+CREATE TABLE late_deliverable (
     late_deliverable_id serial NOT NULL,
+    late_deliverable_type_id INTEGER NOT NULL,
     project_phase_id INTEGER NOT NULL,
     resource_id INTEGER NOT NULL,
     deliverable_id INTEGER NOT NULL,
-    deadline DATETIME YEAR TO FRACTION NOT NULL,
+    deadline DATETIME YEAR TO FRACTION,
     compensated_deadline DATETIME YEAR TO FRACTION,
     create_date DATETIME YEAR TO FRACTION NOT NULL,
     forgive_ind DECIMAL(1,0) NOT NULL,
@@ -1022,3 +1023,14 @@ create table roles (
     description VARCHAR(254) not null,
     status_id DECIMAL(12,0) not null
 );
+
+
+CREATE TABLE late_deliverable_type_lu (
+    late_deliverable_type_id INT NOT NULL,
+    name VARCHAR(64) NOT NULL,
+    description VARCHAR(254) NOT NULL
+);
+
+alter table late_deliverable_type_lu add constraint primary key
+  (late_deliverable_type_id)
+  constraint pk_late_deliverable_type_lu;

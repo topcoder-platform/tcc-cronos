@@ -42,7 +42,7 @@
                   <Value>com.informix.jdbc.IfxDriver</Value>
                 </Property>
                 <Property name="jdbc_url">
-                  <Value>jdbc:informix-sqli://127.0.0.1:9091/tcs:INFORMIXSERVER=ol_tcs</Value>
+                  <Value>jdbc:informix-sqli://127.0.0.1:9088/tcs:informixserver=ol_svr_custom</Value>
                 </Property>
                 <Property name="SelectMethod">
                   <Value>cursor</Value>
@@ -51,7 +51,7 @@
                   <Value>informix</Value>
                 </Property>
                 <Property name="password">
-                  <Value>adminadmin</Value>
+                  <Value>123456</Value>
                 </Property>
               </Property>
             </Property>

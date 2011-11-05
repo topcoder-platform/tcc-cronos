@@ -1,11 +1,12 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.retrievers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.management.deliverable.latetracker.BaseTestCase;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesRetrievalException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
 import com.topcoder.management.deliverable.persistence.DeliverableCheckingException;
@@ -35,8 +37,15 @@ import com.topcoder.search.builder.SearchBuilderException;
  * </ol>
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added/Updated test cases.</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.1
+ * @version 1.3
  */
 public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
     /**
@@ -48,6 +57,13 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      * The <code>ConfigurationObject</code> instance used for testing.
      */
     private ConfigurationObject config;
+
+    /**
+     * The tracked late deliverable types used for testing.
+     *
+     * @since 1.3
+     */
+    private Set<LateDeliverableType> trackedLateDeliverableTypes;
 
     /**
      * <p>
@@ -64,6 +80,8 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         config = BaseTestCase.getConfigurationObject("config/LateDeliverablesRetrieverImpl.xml",
             LateDeliverablesRetrieverImpl.class.getName());
         target.configure(config);
+
+        trackedLateDeliverableTypes = EnumSet.allOf(LateDeliverableType.class);
     }
 
     /**
@@ -102,7 +120,8 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         assertNull("phaseManager field should be null", getField(target, "phaseManager"));
         assertNull("deliverableManager field should be null", getField(target, "deliverableManager"));
         assertNull("log field should be null", getField(target, "log"));
-        assertNull("trackingDeliverableIds field should be null", getField(target, "trackingDeliverableIds"));
+        assertNull("missedDeadlineTrackingDeliverableIds field should be null",
+            getField(target, "missedDeadlineTrackingDeliverableIds"));
         assertEquals("maxDurationOfPhaseWithCompensatedDeadline field should be 0",
             0L, getField(target, "maxDurationOfPhaseWithCompensatedDeadline"));
     }
@@ -133,10 +152,14 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         assertNotNull("deliverableManager field should be null", getField(target, "deliverableManager"));
         assertNotNull("log field should be null", getField(target, "log"));
 
-        Set<?> trackingDeliverableIds = (Set) getField(target, "trackingDeliverableIds");
-        assertEquals("trackingDeliverableIds field wrong", 2, trackingDeliverableIds.size());
-        assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(3)));
-        assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(4)));
+        Set<?> missedDeadlineTrackingDeliverableIds =
+            (Set) getField(target, "missedDeadlineTrackingDeliverableIds");
+        assertEquals("missedDeadlineTrackingDeliverableIds field wrong",
+            2, missedDeadlineTrackingDeliverableIds.size());
+        assertTrue("missedDeadlineTrackingDeliverableIds field wrong",
+            missedDeadlineTrackingDeliverableIds.contains(new Long(3)));
+        assertTrue("missedDeadlineTrackingDeliverableIds field wrong",
+            missedDeadlineTrackingDeliverableIds.contains(new Long(4)));
 
         assertEquals("maxDurationOfPhaseWithCompensatedDeadline field wrong",
             86400000L, getField(target, "maxDurationOfPhaseWithCompensatedDeadline"));
@@ -169,10 +192,14 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         assertNotNull("deliverableManager field should be null", getField(target, "deliverableManager"));
         assertNull("log field should be null", getField(target, "log"));
 
-        Set<?> trackingDeliverableIds = (Set) getField(target, "trackingDeliverableIds");
-        assertEquals("trackingDeliverableIds field wrong", 2, trackingDeliverableIds.size());
-        assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(3)));
-        assertTrue("trackingDeliverableIds field wrong", trackingDeliverableIds.contains(new Long(4)));
+        Set<?> missedDeadlineTrackingDeliverableIds =
+            (Set) getField(target, "missedDeadlineTrackingDeliverableIds");
+        assertEquals("missedDeadlineTrackingDeliverableIds field wrong",
+            2, missedDeadlineTrackingDeliverableIds.size());
+        assertTrue("missedDeadlineTrackingDeliverableIds field wrong",
+            missedDeadlineTrackingDeliverableIds.contains(new Long(3)));
+        assertTrue("missedDeadlineTrackingDeliverableIds field wrong",
+            missedDeadlineTrackingDeliverableIds.contains(new Long(4)));
 
         assertEquals("maxDurationOfPhaseWithCompensatedDeadline field wrong",
             1L, getField(target, "maxDurationOfPhaseWithCompensatedDeadline"));
@@ -254,7 +281,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The trackingDeliverableIds property is missing in config,
+     * The missedDeadlineTrackingDeliverableIds property is missing in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -262,7 +289,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_5() throws Exception {
-        config.removeProperty("trackingDeliverableIds");
+        config.removeProperty("missedDeadlineTrackingDeliverableIds");
 
         try {
             target.configure(config);
@@ -278,7 +305,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The trackingDeliverableIds property is empty in config,
+     * The missedDeadlineTrackingDeliverableIds property is empty in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -286,7 +313,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_6() throws Exception {
-        config.setPropertyValue("trackingDeliverableIds", "");
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds", "");
 
         try {
             target.configure(config);
@@ -302,7 +329,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The trackingDeliverableIds property is invalid in config,
+     * The missedDeadlineTrackingDeliverableIds property is invalid in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -310,7 +337,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_7() throws Exception {
-        config.setPropertyValue("trackingDeliverableIds", "x,3");
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds", "x,3");
 
         try {
             target.configure(config);
@@ -326,7 +353,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The trackingDeliverableIds property is not type of String in config,
+     * The missedDeadlineTrackingDeliverableIds property is not type of String in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -334,7 +361,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_8() throws Exception {
-        config.setPropertyValue("trackingDeliverableIds", new Exception());
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds", new Exception());
 
         try {
             target.configure(config);
@@ -350,7 +377,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      * LateDeliverablesRetrieverImpl#configure(ConfigurationObject)} method.
      * </p>
      * <p>
-     * The trackingDeliverableIds property is invalid in config,
+     * The missedDeadlineTrackingDeliverableIds property is invalid in config,
      * <code>LateDeliverablesTrackerConfigurationException</code> expected.
      * </p>
      *
@@ -358,7 +385,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_Configure_9() throws Exception {
-        config.setPropertyValue("trackingDeliverableIds", ",");
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds", ",");
 
         try {
             target.configure(config);
@@ -950,11 +977,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * Verifies all late deliverables have been retrieved correctly. In this case, there
-     * is only one late phase.
+     * Verifies all late deliverables have been retrieved correctly. In this case, there is only one late phase.
      * </p>
      *
      * <p>
@@ -970,7 +997,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
     public void test_retrieve_1() throws Exception {
         setupPhases(new long[] {101L}, new long[] {3L}, new long[] {2L}, true);
 
-        List<LateDeliverable> result = target.retrieve();
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
         assertEquals("should have one late deliverable", 1, result.size());
 
         LateDeliverable deliverable = result.get(0);
@@ -984,11 +1011,12 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * Verifies all late deliverables have been retrieved correctly. In this case, there
-     * are three phases, the first phase is closed, and the other two are late phases.
+     * Verifies all late deliverables have been retrieved correctly. In this case, there are three phases, the first
+     * phase is closed, and the other two are late phases.
      * </p>
      *
      * @throws Exception
@@ -1002,13 +1030,14 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         // setup two phases have late deliverable
         setupPhases(new long[] {101L, 102L, 103L}, new long[] {2L, 3L, 4L}, new long[] {3L, 2L, 2L}, true);
 
-        List<LateDeliverable> result = target.retrieve();
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
         assertEquals("should have two late deliverables", 2, result.size());
     }
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      *
      * @throws Exception
@@ -1016,8 +1045,8 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *
      * @since 1.1
      */
-    public void test_retrieve_New() throws Exception {
-        config.setPropertyValue("trackingDeliverableIds", "8,9,10");
+    public void test_retrieve_New1() throws Exception {
+        config.setPropertyValue("missedDeadlineTrackingDeliverableIds", "8,9,10");
         config.setPropertyValue("maxDurationOfPhaseWithCompensatedDeadline", "86500000");
         target = new LateDeliverablesRetrieverImpl();
         target.configure(config);
@@ -1025,29 +1054,134 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         // setup two phases have late deliverable
         setupPhases(new long[] {101L, 102L, 103L}, new long[] {8L, 9L, 10L}, new long[] {3L, 2L, 2L}, true);
 
-        List<LateDeliverable> result = target.retrieve();
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
         assertEquals("should have two late deliverables", 0, result.size());
     }
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_retrieve_New2() throws Exception {
+        setupPhases(new long[] {101L, 102L}, new long[] {10L, 9L}, new long[] {3L, 2L}, true);
+        createDependency(101L, 102L);
+
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
+        assertEquals("should have one late deliverable", 2, result.size());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_retrieve_New3() throws Exception {
+        trackedLateDeliverableTypes.clear();
+        trackedLateDeliverableTypes.add(LateDeliverableType.REJECTED_FINAL_FIX);
+
+        setupPhases(new long[] {101L, 102L}, new long[] {10L, 9L}, new long[] {3L, 2L},
+            true);
+        createDependency(101L, 102L);
+
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
+        assertEquals("should have one late deliverable", 2, result.size());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_retrieve_New4() throws Exception {
+        setupPhases(new long[] {101L, 102L}, new long[] {10L, 9L}, new long[] {3L, 2L}, true);
+        createDependency(101L, 102L);
+
+        trackedLateDeliverableTypes = null;
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
+        assertEquals("should have one late deliverable", 2, result.size());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method with the dependency phase is Approval.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_retrieve_New5() throws Exception {
+        setupPhases(new long[] {101L, 102L}, new long[] {11L, 9L}, new long[] {3L, 2L}, true);
+        createDependency(101L, 102L);
+
+        trackedLateDeliverableTypes = null;
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
+        assertEquals("should have one late deliverable", 0, result.size());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
+     * </p>
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    public void test_retrieve_New6() throws Exception {
+        setupPhases(new long[] {101L, 102L}, new long[] {10L, 9L}, new long[] {3L, 2L}, true);
+        createDependency(101L, 102L);
+
+        trackedLateDeliverableTypes.clear();
+        trackedLateDeliverableTypes.add(LateDeliverableType.MISSED_DEADLINE);
+        List<LateDeliverable> result = target.retrieve(trackedLateDeliverableTypes);
+        assertEquals("should have one late deliverable", 0, result.size());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * In this case, no active project &quot;Track Late Deliverables&quot; property set to
-     * &quot;true&quot;. Empty list expected.
+     * In this case, no active project &quot;Track Late Deliverables&quot; property set to &quot;true&quot;. Empty
+     * list expected.
      * </p>
      *
      * @throws Exception
      *             to JUnit.
      */
     public void test_retrieve_3() throws Exception {
-        assertEquals("empty list expected", 0, target.retrieve().size());
+        assertEquals("empty list expected", 0, target.retrieve(trackedLateDeliverableTypes).size());
     }
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
      * In this case, no phase is late. Empty list expected.
@@ -1060,16 +1194,16 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         // the phase is not late
         setupPhases(new long[] {101L}, new long[] {3L}, new long[] {2L}, false);
 
-        assertEquals("empty list expected", 0, target.retrieve().size());
+        assertEquals("empty list expected", 0, target.retrieve(trackedLateDeliverableTypes).size());
     }
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Accuracy test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * In this case, the late phase in not with type in tracking list. Empty list
-     * expected.
+     * In this case, the late phase in not with type in tracking list. Empty list expected.
      * </p>
      *
      * @throws Exception
@@ -1078,16 +1212,16 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
     public void test_retrieve_5() throws Exception {
         setupPhases(new long[] {101L}, new long[] {5L}, new long[] {2L}, true);
 
-        assertEquals("empty list expected", 0, target.retrieve().size());
+        assertEquals("empty list expected", 0, target.retrieve(trackedLateDeliverableTypes).size());
     }
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * The <code>projectManager</code> field is <code>null</code>,
-     * <code>IllegalStateException</code> expected.
+     * The <code>projectManager</code> field is <code>null</code>, <code>IllegalStateException</code> expected.
      * </p>
      *
      * @throws Exception
@@ -1097,7 +1231,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         setField(LateDeliverablesRetrieverImpl.class, target, "projectManager", null);
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown IllegalStateException");
         } catch (IllegalStateException e) {
             // pass
@@ -1106,11 +1240,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * The <code>phaseManager</code> field is <code>null</code>,
-     * <code>IllegalStateException</code> expected.
+     * The <code>phaseManager</code> field is <code>null</code>, <code>IllegalStateException</code> expected.
      * </p>
      *
      * @throws Exception
@@ -1120,7 +1254,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         setField(LateDeliverablesRetrieverImpl.class, target, "phaseManager", null);
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown IllegalStateException");
         } catch (IllegalStateException e) {
             // pass
@@ -1129,11 +1263,12 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * The <code>deliverableManager</code> field is <code>null</code>,
-     * <code>IllegalStateException</code> expected.
+     * The <code>deliverableManager</code> field is <code>null</code>, <code>IllegalStateException</code>
+     * expected.
      * </p>
      *
      * @throws Exception
@@ -1143,7 +1278,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         setField(LateDeliverablesRetrieverImpl.class, target, "deliverableManager", null);
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown IllegalStateException");
         } catch (IllegalStateException e) {
             // pass
@@ -1152,10 +1287,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * The <code>trackingDeliverableIds</code> field is <code>null</code>,
+     * The <code>missedDeadlineTrackingDeliverableIds</code> field is <code>null</code>,
      * <code>IllegalStateException</code> expected.
      * </p>
      *
@@ -1163,10 +1299,10 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
      *             to JUnit.
      */
     public void test_retrieve_9() throws Exception {
-        setField(LateDeliverablesRetrieverImpl.class, target, "trackingDeliverableIds", null);
+        setField(LateDeliverablesRetrieverImpl.class, target, "missedDeadlineTrackingDeliverableIds", null);
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown IllegalStateException");
         } catch (IllegalStateException e) {
             // pass
@@ -1175,11 +1311,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * Error occurred when searching projects,
-     * <code>LateDeliverablesRetrievalException</code> expected.
+     * Error occurred when searching projects, <code>LateDeliverablesRetrievalException</code> expected.
      * </p>
      *
      * @throws Exception
@@ -1193,7 +1329,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
             LateDeliverablesRetrieverImpl.class.getName()));
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown LateDeliverablesRetrievalException");
         } catch (LateDeliverablesRetrievalException e) {
             assertTrue("check inner cause", e.getCause() instanceof PersistenceException);
@@ -1202,11 +1338,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * Error occurred when getting phase projects,
-     * <code>LateDeliverablesRetrievalException</code> expected.
+     * Error occurred when getting phase projects, <code>LateDeliverablesRetrievalException</code> expected.
      * </p>
      *
      * @throws Exception
@@ -1220,7 +1356,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
             LateDeliverablesRetrieverImpl.class.getName()));
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown LateDeliverablesRetrievalException");
         } catch (LateDeliverablesRetrievalException e) {
             assertTrue("check inner cause", e.getCause() instanceof PhaseManagementException);
@@ -1229,11 +1365,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * Error occurred when searching deliverables,
-     * <code>LateDeliverablesRetrievalException</code> expected.
+     * Error occurred when searching deliverables, <code>LateDeliverablesRetrievalException</code> expected.
      * </p>
      *
      * @throws Exception
@@ -1247,7 +1383,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
             LateDeliverablesRetrieverImpl.class.getName()));
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown LateDeliverablesRetrievalException");
         } catch (LateDeliverablesRetrievalException e) {
             assertTrue("check inner cause", e.getCause() instanceof DeliverablePersistenceException);
@@ -1256,11 +1392,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * Error occurred when searching deliverables,
-     * <code>LateDeliverablesRetrievalException</code> expected.
+     * Error occurred when searching deliverables, <code>LateDeliverablesRetrievalException</code> expected.
      * </p>
      *
      * @throws Exception
@@ -1274,7 +1410,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
             LateDeliverablesRetrieverImpl.class.getName()));
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown LateDeliverablesRetrievalException");
         } catch (LateDeliverablesRetrievalException e) {
             assertTrue("check inner cause", e.getCause() instanceof SearchBuilderException);
@@ -1283,11 +1419,11 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
 
     /**
      * <p>
-     * Failure test case for the {@link LateDeliverablesRetrieverImpl#retrieve()} method.
+     * Failure test case for the <code>LateDeliverablesRetrieverImpl#retrieve(Set&lt;LateDeliverableType&gt;)</code>
+     * method.
      * </p>
      * <p>
-     * The deliverable fails to pass the check,
-     * <code>LateDeliverablesRetrievalException</code> expected.
+     * The deliverable fails to pass the check, <code>LateDeliverablesRetrievalException</code> expected.
      * </p>
      *
      * @throws Exception
@@ -1297,7 +1433,7 @@ public class LateDeliverablesRetrieverImplTests extends BaseTestCase {
         setupPhases(new long[] {1000L}, new long[] {3L}, new long[] {2L}, true);
 
         try {
-            target.retrieve();
+            target.retrieve(trackedLateDeliverableTypes);
             fail("should have thrown LateDeliverablesRetrievalException");
         } catch (LateDeliverablesRetrievalException e) {
             assertTrue("check inner cause", e.getCause() instanceof DeliverableCheckingException);

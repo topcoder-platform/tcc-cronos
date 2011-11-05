@@ -48,8 +48,15 @@ import com.topcoder.util.config.ConfigManager;
  * The base test case for Unit tests.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Updated code.</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public abstract class BaseTestCase extends TestCase {
     /**
@@ -79,12 +86,12 @@ public abstract class BaseTestCase extends TestCase {
     /**
      * An array of table names to be cleaned.
      */
-    private static final String[] ALL_TABLE_NAMES = new String[] {"resource_info", "resource",
+    private static final String[] ALL_TABLE_NAMES = new String[] {"phase_dependency", "resource_info", "resource",
         "project_phase", "project_info", "project", "comp_versions", "comp_catalog", "user_reliability",
         "user_rating", "user", "email", "id_sequences", "project_category_lu", "project_type_lu",
         "project_status_lu", "project_info_type_lu", "deliverable_lu", "phase_status_lu",
         "phase_criteria_type_lu", "resource_role_lu", "resource_info_type_lu", "comment_type_lu",
-        "phase_type_lu", "submission_type_lu", "late_deliverable"};
+        "phase_type_lu", "submission_type_lu", "late_deliverable", "late_deliverable_type_lu"};
 
     /**
      * Holds database connection factory instance.
@@ -624,6 +631,45 @@ public abstract class BaseTestCase extends TestCase {
     }
 
     /**
+     * Creates the dependency.
+     *
+     * @param dependencyId
+     *            the dependency phase id.
+     * @param dependentId
+     *            the dependent phase id.
+     *
+     * @throws Exception
+     *             to JUnit.
+     *
+     * @since 1.3
+     */
+    protected void createDependency(long dependencyId, long dependentId) throws Exception {
+        Connection conn = getConnection();
+        PreparedStatement preparedStmt = null;
+
+        try {
+            String insertSQL = "INSERT INTO phase_dependency "
+                + "(dependency_phase_id, dependent_phase_id, dependency_start, dependent_start, "
+                + "lag_time, create_user, create_date, modify_user, modify_date) "
+                + "VALUES (?, ?, ?, ?, ?, 'user', current, 'user', current)";
+
+            preparedStmt = conn.prepareStatement(insertSQL);
+
+            // insert into db
+            preparedStmt.setLong(1, dependencyId);
+            preparedStmt.setLong(2, dependentId);
+            preparedStmt.setBoolean(3, true);
+            preparedStmt.setBoolean(4, true);
+            preparedStmt.setLong(5, 5);
+
+            preparedStmt.executeUpdate();
+        } finally {
+            closeStatement(preparedStmt);
+        }
+
+    }
+
+    /**
      * Inserts a project and the standard phases into the database.
      *
      * @param phaseIds
@@ -672,11 +718,7 @@ public abstract class BaseTestCase extends TestCase {
                 preparedStmt.executeUpdate();
             }
 
-            Resource[] resources = new Resource[phaseIds.length];
-
-            for (int i = 0; i < phaseIds.length; i++) {
-                resources[i] = createResource(i + 1, phaseIds[i], 1, phaseTypeIds[i]);
-            }
+            Resource[] resources = getResources(phaseIds, phaseTypeIds);
 
             insertResources(conn, resources);
 
@@ -688,6 +730,37 @@ public abstract class BaseTestCase extends TestCase {
         } finally {
             closeStatement(preparedStmt);
         }
+    }
+
+    /**
+     * Creates the resources.
+     *
+     * @param phaseIds
+     *            the phase ids.
+     * @param phaseTypeIds
+     *            the phase type ids.
+     *
+     * @return the resources.
+     *
+     * @since 1.3
+     */
+    private Resource[] getResources(long[] phaseIds, long[] phaseTypeIds) {
+        Resource[] resources = new Resource[phaseIds.length];
+
+        for (int i = 0; i < phaseIds.length; i++) {
+            long phaseTypeId = phaseTypeIds[i];
+            long resourceRoleId;
+            if (phaseTypeId == 9) {
+                resourceRoleId = 1;
+            } else if (phaseTypeId == 10) {
+                resourceRoleId = 9;
+            } else {
+                resourceRoleId = phaseTypeId;
+            }
+            resources[i] = createResource(i + 1, phaseIds[i], 1, resourceRoleId);
+        }
+
+        return resources;
     }
 
     /**
@@ -821,6 +894,7 @@ public abstract class BaseTestCase extends TestCase {
         d.setDeliverable(deliverable);
         d.setPhase(phase);
         d.setProject(project);
+        d.setType(LateDeliverableType.MISSED_DEADLINE);
 
         return d;
     }

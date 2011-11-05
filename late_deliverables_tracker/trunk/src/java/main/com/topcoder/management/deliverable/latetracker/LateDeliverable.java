@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
 
@@ -11,9 +11,8 @@ import com.topcoder.project.phases.Phase;
 
 /**
  * <p>
- * This class is a container for information about a single late deliverable. It is a
- * simple JavaBean (POJO) that provides getters and setters for all private attributes and
- * performs no argument validation in the setters.
+ * This class is a container for information about a single late deliverable. It is a simple JavaBean (POJO) that
+ * provides getters and setters for all private attributes and performs no argument validation in the setters.
  * </p>
  *
  * <p>
@@ -24,11 +23,18 @@ import com.topcoder.project.phases.Phase;
  * </p>
  *
  * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added type:LateDeliverableType property.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
  * Thread Safety: This class is mutable and not thread safe.
  * </p>
  *
  * @author saarixx, myxgyy, sparemax
- * @version 1.1
+ * @version 1.3
  */
 public class LateDeliverable {
     /**
@@ -85,9 +91,23 @@ public class LateDeliverable {
     private Date compensatedDeadline;
 
     /**
+     * <p>
+     * The type of the late deliverable.
+     * </p>
+     *
+     * <p>
+     * Can be any value. Has getter and setter.
+     * </p>
+     *
+     * @since 1.3
+     */
+    private LateDeliverableType type;
+
+    /**
      * Creates an instance of <code>LateDeliverable</code>.
      */
     public LateDeliverable() {
+        // Empty
     }
 
     /**
@@ -172,5 +192,32 @@ public class LateDeliverable {
      */
     public void setCompensatedDeadline(Date compensatedDeadline) {
         this.compensatedDeadline = compensatedDeadline;
+    }
+
+    /**
+     * <p>
+     * Retrieves the type of the late deliverable.
+     * </p>
+     *
+     * @return the type of the late deliverable.
+     *
+     * @since 1.3
+     */
+    public LateDeliverableType getType() {
+        return type;
+    }
+
+    /**
+     * <p>
+     * Sets the type of the late deliverable.
+     * </p>
+     *
+     * @param type
+     *            the type of the late deliverable.
+     *
+     * @since 1.3
+     */
+    public void setType(LateDeliverableType type) {
+        this.type = type;
     }
 }

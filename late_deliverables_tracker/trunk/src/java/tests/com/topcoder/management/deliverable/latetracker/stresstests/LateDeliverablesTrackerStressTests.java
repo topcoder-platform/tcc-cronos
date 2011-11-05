@@ -7,10 +7,13 @@ package com.topcoder.management.deliverable.latetracker.stresstests;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTracker;
 import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl;
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl;
@@ -43,8 +46,11 @@ public class LateDeliverablesTrackerStressTests extends BaseStressTest {
 
         LateDeliverableProcessorImpl processor = new LateDeliverableProcessorImpl();
         processor.configure(StressTestUtil.getConfig(LateDeliverableProcessorImpl.class));
-
-        instance = new LateDeliverablesTracker(retriever, processor, LogFactory
+        
+        Set<LateDeliverableType> typesSet = new HashSet<LateDeliverableType>();
+        typesSet.add(LateDeliverableType.MISSED_DEADLINE);
+        typesSet.add(LateDeliverableType.REJECTED_FINAL_FIX);
+        instance = new LateDeliverablesTracker(retriever, processor, typesSet , LogFactory
                 .getLog("stress_tests_logger"));
     }
 

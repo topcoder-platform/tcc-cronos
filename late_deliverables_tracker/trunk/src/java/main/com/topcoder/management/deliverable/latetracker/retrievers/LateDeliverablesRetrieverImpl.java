@@ -4,7 +4,6 @@
 package com.topcoder.management.deliverable.latetracker.retrievers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +19,7 @@ import com.topcoder.management.deliverable.DeliverableManager;
 import com.topcoder.management.deliverable.PersistenceDeliverableManager;
 import com.topcoder.management.deliverable.latetracker.Helper;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesRetrievalException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesRetriever;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesTrackerConfigurationException;
@@ -49,10 +49,11 @@ import com.topcoder.util.objectfactory.ObjectFactory;
 /**
  * <p>
  * This class is an implementation of <code>LateDeliverablesRetriever</code> that uses pluggable
- * <code>ProjectManager</code>, <code>PhaseManager</code> and <code>DeliverableManager</code> instances to access data
- * in persistence. It looks for all active projects with &quot;Track Late Deliverables&quot; property set to true, and
- * then retrieves all incomplete deliverables for all late phases. This class performs the logging of errors and debug
- * information using Logging Wrapper component.
+ * <code>ProjectManager</code>, <code>PhaseManager</code> and <code>DeliverableManager</code> instances to
+ * access data in persistence. It looks for all active projects with &quot;Track Late Deliverables&quot; property set
+ * to true, and then retrieves all incomplete deliverables for all late phases or open Final Fix phases that go
+ * directly after Final Review. This class performs the logging of errors and debug information using Logging Wrapper
+ * component.
  * </p>
  *
  * <p>
@@ -74,120 +75,175 @@ import com.topcoder.util.objectfactory.ObjectFactory;
  * </p>
  *
  * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Supporting retrieval of late deliverables of requested types only.</li>
+ * <li>Added support of Rejected Final Fix late deliverables.</li>
+ * </ol>
+ * </p>
+ *
+ * <p>
  * Sample config:
  *
  * <pre>
- *  &lt;?xml version=&quot;1.0&quot;?&gt;
- *  &lt;CMConfig&gt;
- *  &lt;Config name=
- *  &quot;com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl&quot;&gt;
- *  &lt;Property name=&quot;loggerName&quot;&gt;
- *  &lt;Value&gt;myLogger&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;trackingDeliverableIds&quot;&gt;
- *  &lt;Value&gt;3,4&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;objectFactoryConfig&quot;&gt;
- *  &lt;property name=&quot;projectManager&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.management.project.ProjectManagerImpl&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;phaseManager&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.management.phase.DefaultPhaseManager&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;type&quot;&gt;
- *  &lt;Value&gt;String&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;value&quot;&gt;
- *  &lt;Value&gt;com.topcoder.management.phase.DefaultPhaseManager&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;deliverablePersistence&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.management.deliverable.persistence.sql.SqlDeliverablePersistence&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;name&quot;&gt;
- *  &lt;Value&gt;DBConnectionFactory&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;DBConnectionFactory&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;Property name=&quot;params&quot;&gt;
- *  &lt;Property name=&quot;param1&quot;&gt;
- *  &lt;Property name=&quot;type&quot;&gt;
- *  &lt;Value&gt;String&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;value&quot;&gt;
- *  &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;screeningDeliverableChecker&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.management.deliverable.latetracker.MockDeliverableChecker&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;/property&gt;
- *  &lt;property name=&quot;reviewDeliverableChecker&quot;&gt;
- *  &lt;property name=&quot;type&quot;&gt;
- *  &lt;value&gt;com.topcoder.management.deliverable.latetracker.MockDeliverableChecker&lt;/value&gt;
- *  &lt;/property&gt;
- *  &lt;/property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;projectManagerKey&quot;&gt;
- *  &lt;Value&gt;projectManager&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;phaseManagerKey&quot;&gt;
- *  &lt;Value&gt;phaseManager&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;deliverablePersistenceKey&quot;&gt;
- *  &lt;Value&gt;deliverablePersistence&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;deliverableChecker1&quot;&gt;
- *  &lt;Property name=&quot;deliverableName&quot;&gt;
- *  &lt;Value&gt;Screening Scorecard&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;deliverableCheckerKey&quot;&gt;
- *  &lt;Value&gt;screeningDeliverableChecker&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;deliverableChecker2&quot;&gt;
- *  &lt;Property name=&quot;deliverableName&quot;&gt;
- *  &lt;Value&gt;Review Scorecard&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;deliverableCheckerKey&quot;&gt;
- *  &lt;Value&gt;reviewDeliverableChecker&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;searchBundleManagerNamespace&quot;&gt;
- *  &lt;Value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/Value&gt;
- *  &lt;/Property&gt;
- *  &lt;/Config&gt;
- *  &lt;/CMConfig&gt;
+ * &lt;?xml version=&quot;1.0&quot;?&gt;
+ * &lt;CMConfig&gt;
+ *     &lt;Config
+ *     name=&quot;com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl&quot;&gt;
+ *      &lt;Property name=&quot;loggerName&quot;&gt;
+ *          &lt;Value&gt;myLogger&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;resourceManagerKey&quot;&gt;
+ *           &lt;Value&gt;resourceManager&lt;/Value&gt;
+ *         &lt;/Property&gt;
+ *      &lt;Property name=&quot;missedDeadlineTrackingDeliverableIds&quot;&gt;
+ *          &lt;Value&gt;3,4&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;objectFactoryConfig&quot;&gt;
+ *        &lt;property name=&quot;resourceManager&quot;&gt;
+ *             &lt;property name=&quot;type&quot;&gt;
+ *               &lt;value&gt;com.topcoder.management.resource.persistence.PersistenceResourceManager&lt;/value&gt;
+ *             &lt;/property&gt;
+ *             &lt;Property name=&quot;params&quot;&gt;
+ *               &lt;Property name=&quot;param1&quot;&gt;
+ *                 &lt;Property name=&quot;name&quot;&gt;
+ *                   &lt;Value&gt;ResourcePersistence&lt;/Value&gt;
+ *                 &lt;/Property&gt;
+ *               &lt;/Property&gt;
+ *               &lt;Property name=&quot;param2&quot;&gt;
+ *                 &lt;Property name=&quot;name&quot;&gt;
+ *                   &lt;Value&gt;SearchBundleManager&lt;/Value&gt;
+ *                 &lt;/Property&gt;
+ *               &lt;/Property&gt;
+ *             &lt;/Property&gt;
+ *           &lt;/property&gt;
+ *           &lt;property name=&quot;ResourcePersistence&quot;&gt;
+ *             &lt;property name=&quot;type&quot;&gt;
+ *               &lt;value&gt;com.topcoder.management.resource.persistence.sql.SqlResourcePersistence&lt;/value&gt;
+ *             &lt;/property&gt;
+ *             &lt;Property name=&quot;params&quot;&gt;
+ *               &lt;Property name=&quot;param1&quot;&gt;
+ *                 &lt;Property name=&quot;name&quot;&gt;
+ *                   &lt;Value&gt;DBConnectionFactory&lt;/Value&gt;
+ *                 &lt;/Property&gt;
+ *               &lt;/Property&gt;
+ *             &lt;/Property&gt;
+ *           &lt;/property&gt;
+ *           &lt;property name=&quot;SearchBundleManager&quot;&gt;
+ *             &lt;property name=&quot;type&quot;&gt;
+ *               &lt;value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/value&gt;
+ *             &lt;/property&gt;
+ *             &lt;Property name=&quot;params&quot;&gt;
+ *               &lt;Property name=&quot;param1&quot;&gt;
+ *                 &lt;Property name=&quot;type&quot;&gt;
+ *                   &lt;Value&gt;String&lt;/Value&gt;
+ *                 &lt;/Property&gt;
+ *                 &lt;Property name=&quot;value&quot;&gt;
+ *                   &lt;Value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/Value&gt;
+ *                 &lt;/Property&gt;
+ *               &lt;/Property&gt;
+ *             &lt;/Property&gt;
+ *           &lt;/property&gt;
+ *          &lt;property name=&quot;projectManager&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.management.project.ProjectManagerImpl&lt;/value&gt;
+ *              &lt;/property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;phaseManager&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.management.phase.DefaultPhaseManager&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;type&quot;&gt;
+ *                          &lt;Value&gt;String&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                      &lt;Property name=&quot;value&quot;&gt;
+ *                          &lt;Value&gt;com.topcoder.management.phase.DefaultPhaseManager&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;deliverablePersistence&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *              &lt;value&gt;com.topcoder.management.deliverable.persistence.sql.SqlDeliverablePersistence&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;name&quot;&gt;
+ *                          &lt;Value&gt;DBConnectionFactory&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;DBConnectionFactory&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/value&gt;
+ *              &lt;/property&gt;
+ *              &lt;Property name=&quot;params&quot;&gt;
+ *                  &lt;Property name=&quot;param1&quot;&gt;
+ *                      &lt;Property name=&quot;type&quot;&gt;
+ *                          &lt;Value&gt;String&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                      &lt;Property name=&quot;value&quot;&gt;
+ *                          &lt;Value&gt;com.topcoder.db.connectionfactory.DBConnectionFactoryImpl&lt;/Value&gt;
+ *                      &lt;/Property&gt;
+ *                  &lt;/Property&gt;
+ *              &lt;/Property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;screeningDeliverableChecker&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.management.deliverable.latetracker.MockDeliverableChecker&lt;/value&gt;
+ *              &lt;/property&gt;
+ *          &lt;/property&gt;
+ *          &lt;property name=&quot;reviewDeliverableChecker&quot;&gt;
+ *              &lt;property name=&quot;type&quot;&gt;
+ *                  &lt;value&gt;com.topcoder.management.deliverable.latetracker.MockDeliverableChecker&lt;/value&gt;
+ *              &lt;/property&gt;
+ *          &lt;/property&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;projectManagerKey&quot;&gt;
+ *          &lt;Value&gt;projectManager&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;phaseManagerKey&quot;&gt;
+ *          &lt;Value&gt;phaseManager&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;deliverablePersistenceKey&quot;&gt;
+ *          &lt;Value&gt;deliverablePersistence&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;deliverableChecker1&quot;&gt;
+ *          &lt;Property name=&quot;deliverableName&quot;&gt;
+ *              &lt;Value&gt;Screening Scorecard&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;deliverableCheckerKey&quot;&gt;
+ *              &lt;Value&gt;screeningDeliverableChecker&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;deliverableChecker2&quot;&gt;
+ *          &lt;Property name=&quot;deliverableName&quot;&gt;
+ *              &lt;Value&gt;Review Scorecard&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *          &lt;Property name=&quot;deliverableCheckerKey&quot;&gt;
+ *              &lt;Value&gt;reviewDeliverableChecker&lt;/Value&gt;
+ *          &lt;/Property&gt;
+ *      &lt;/Property&gt;
+ *      &lt;Property name=&quot;searchBundleManagerNamespace&quot;&gt;
+ *          &lt;Value&gt;com.topcoder.search.builder.SearchBundleManager&lt;/Value&gt;
+ *      &lt;/Property&gt;
+ *     &lt;/Config&gt;
+ * &lt;/CMConfig&gt;
  * </pre>
  *
  * </p>
  * <p>
- * Thread Safety: This class is not thread safe since it uses <code>ProjectManager</code>, <code>PhaseManager</code>,
- * <code>DeliverableManager</code> and <code>ResourceManager</code> instances that are not thread safe. It's assumed
- * that {@link #configure(ConfigurationObject)} method will be called just once right after instantiation, before
- * calling any business methods.
+ * Thread Safety: This class is not thread safe since it uses <code>ProjectManager</code>,
+ * <code>PhaseManager</code>, <code>DeliverableManager</code> and <code>ResourceManager</code> instances that
+ * are not thread safe. It's assumed that {@link #configure(ConfigurationObject)} method will be called just once
+ * right after instantiation, before calling any business methods.
  * </p>
  *
  * @author saarixx, myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever {
     /**
@@ -237,10 +293,18 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
 
     /**
      * <p>
-     * Represents &quot;trackingDeliverableIds&quot; property key in configuration.
+     * Represents &quot;missedDeadlineTrackingDeliverableIds&quot; property key in configuration.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "TRACKING_DELIVERABLE_IDS".</li>
+     * <li>Changed property "trackingDeliverableIds" to "missedDeadlineTrackingDeliverableIds".</li>
+     * </ol>
      * </p>
      */
-    private static final String TRACKING_DELIVERABLE_IDS = "trackingDeliverableIds";
+    private static final String MISSED_DEADLINE_TRACKING_DELIVERABLE_IDS = "missedDeadlineTrackingDeliverableIds";
 
     /**
      * <p>
@@ -312,7 +376,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * Cannot be null after initialization.
      * </p>
      * <p>
-     * Is used in {@link #retrieve()}.
+     * Is used in <code>retrieve(Set&lt;LateDeliverableType&gt;)</code>.
      * </p>
      */
     private ProjectManager projectManager;
@@ -329,7 +393,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * Cannot be null after initialization.
      * </p>
      * <p>
-     * Is used in {@link #retrieve()}.
+     * Is used in <code>retrieve(Set&lt;LateDeliverableType&gt;)</code>.
      * </p>
      */
     private PhaseManager phaseManager;
@@ -346,7 +410,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * Cannot be null after initialization.
      * </p>
      * <p>
-     * Is used in {@link #retrieve()}.
+     * Is used in <code>retrieve(Set&lt;LateDeliverableType&gt;)</code>.
      * </p>
      */
     private DeliverableManager deliverableManager;
@@ -363,7 +427,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * If is null after initialization, logging is not performed.
      * </p>
      * <p>
-     * Is used in {@link #retrieve()}.
+     * Is used in <code>retrieve(Set&lt;LateDeliverableType&gt;)</code>.
      * </p>
      */
     private Log log;
@@ -373,18 +437,23 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * The set of deliverable IDs for which tracking must be performed.
      * </p>
      * <p>
-     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after
-     * that.
+     * Is initialized in {@link #configure(ConfigurationObject)} and never changed after that.
      * </p>
      * <p>
-     * Can not be null or empty, cannot contain null or not positive element after
-     * initialization.
+     * Can not be null or empty, cannot contain null or not positive element after initialization.
      * </p>
      * <p>
-     * Is used in {@link #retrieve()}.
+     * Is used in <code>retrieve(Set&lt;LateDeliverableType&gt;)</code>.
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed from "trackingDeliverableIds".</li>
+     * </ol>
      * </p>
      */
-    private Set<Long> trackingDeliverableIds;
+    private Set<Long> missedDeadlineTrackingDeliverableIds;
 
     /**
      * <p>
@@ -408,12 +477,21 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     }
 
     /**
+     * <p>
      * Configures this instance with use of the given configuration object.
+     * </p>
      *
      * <p>
      * <em>Change in 1.1:</em>
      * <ol>
      * <li>Added step for reading maxDurationOfPhaseWithCompensatedDeadline.</li>
+     * </ol>
+     * </p>
+     *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Renamed property and configuration parameter.</li>
      * </ol>
      * </p>
      *
@@ -431,20 +509,21 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
         String loggerName = Helper.getPropertyValue(config, Helper.LOGGER_NAME_KEY, false, false);
         this.log = (loggerName == null) ? null : LogFactory.getLog(loggerName);
 
-        String trackingDeliverableIdsStr = Helper.getPropertyValue(config, TRACKING_DELIVERABLE_IDS,
-            true, false);
-        String[] trackingDeliverableIdsArray = trackingDeliverableIdsStr.split(Helper.COMMA);
+        String missedDeadlineTrackingDeliverableIdsStr = Helper.getPropertyValue(config,
+            MISSED_DEADLINE_TRACKING_DELIVERABLE_IDS, true, false);
+        String[] missedDeadlineTrackingDeliverableIdsArray =
+            missedDeadlineTrackingDeliverableIdsStr.split(Helper.COMMA);
 
-        if (trackingDeliverableIdsArray.length == 0) {
+        if (missedDeadlineTrackingDeliverableIdsArray.length == 0) {
             throw new LateDeliverablesTrackerConfigurationException("Property["
-                + TRACKING_DELIVERABLE_IDS + "] should contains comma separated values.");
+                + MISSED_DEADLINE_TRACKING_DELIVERABLE_IDS + "] should contain comma separated values.");
         }
 
-        trackingDeliverableIds = new HashSet<Long>(trackingDeliverableIdsArray.length);
+        missedDeadlineTrackingDeliverableIds = new HashSet<Long>(missedDeadlineTrackingDeliverableIdsArray.length);
 
-        for (String trackingDeliverableIdStr : trackingDeliverableIdsArray) {
-            trackingDeliverableIds.add(Helper.parseLong(trackingDeliverableIdStr,
-                TRACKING_DELIVERABLE_IDS, 1));
+        for (String missedDeadlineTrackingDeliverableIdStr : missedDeadlineTrackingDeliverableIdsArray) {
+            missedDeadlineTrackingDeliverableIds.add(Helper.parseLong(missedDeadlineTrackingDeliverableIdStr,
+                MISSED_DEADLINE_TRACKING_DELIVERABLE_IDS, 1));
         }
 
         // create object factory
@@ -454,7 +533,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
         projectManager = Helper.createObject(config, objectFactory, PROJECT_MANAGER_KEY,
             ProjectManager.class);
 
-        // // create phase manager via object factory
+        // create phase manager via object factory
         phaseManager = Helper.createObject(config, objectFactory, PHASE_MANAGER_KEY, PhaseManager.class);
 
         Map<String, DeliverableChecker> deliverableCheckers = getDeliverableCheckers(config,
@@ -548,7 +627,10 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     }
 
     /**
-     * Retrieves information about all late deliverables. Returns an empty list if no deliverables are late.
+     * <p>
+     * Retrieves information about late deliverables of the requested types. Returns an empty list if no late
+     * deliverables are found.
+     * </p>
      *
      * <p>
      * <em>Changes in 1.1:</em>
@@ -561,24 +643,45 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * </ol>
      * </p>
      *
-     * @return the list with information about all late deliverables (not null, doesn't contain null).
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added parameter "types".</li>
+     * <li>Added step for setting MISSED_DEADLINE late deliverable type.</li>
+     * <li>Added steps for obtaining REJECTED_FINAL_FIX late deliverables.</li>
+     * </ol>
+     * </p>
      *
+     * @param types
+     *            the types of late deliverables to be retrieved (null if all late deliverables of all supported types
+     *            must be retrieved).
+     *
+     * @return the list with information about found late deliverables (not null, doesn't contain null).
+     *
+     * @throws IllegalArgumentException
+     *             if types is empty or contains null.
      * @throws IllegalStateException
      *             if this class was not configured properly with use of {@link #configure(ConfigurationObject)}
-     *             method (deliverableManager, projectManager, phaseManager or trackingDeliverableIds is null).
+     *             method (deliverableManager, projectManager, phaseManager or missedDeadlineTrackingDeliverableIds is
+     *             null).
      * @throws LateDeliverablesRetrievalException
      *             if some error occurred when retrieving a list of late deliverables.
      */
-    public synchronized List<LateDeliverable> retrieve() throws LateDeliverablesRetrievalException {
+    public synchronized List<LateDeliverable> retrieve(Set<LateDeliverableType> types)
+        throws LateDeliverablesRetrievalException {
         final long start = System.currentTimeMillis();
-        final String signature = CLASS_NAME + ".retrieve()";
-        Helper.logEntrance(log, signature, null, null);
+        final String signature = CLASS_NAME + ".retrieve(Set<LateDeliverableType> types)";
+        Helper.logEntrance(log, signature, new String[] {"types"}, new Object[] {types});
+
+
+        // Check
+        Helper.checkLateDeliverableTypes(types, "types", log, signature);
 
         // check state
         Helper.checkState(projectManager, "projectManager", log, signature);
         Helper.checkState(phaseManager, "phaseManager", log, signature);
         Helper.checkState(deliverableManager, "deliverableManager", log, signature);
-        Helper.checkState(trackingDeliverableIds, "trackingDeliverableIds", log, signature);
+        Helper.checkState(missedDeadlineTrackingDeliverableIds, "missedDeadlineTrackingDeliverableIds", log, signature);
 
         // Search for all active projects
         Project[] projects = searchProjects(signature);
@@ -603,7 +706,7 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
             // Get phase projects for all matched project IDs
             com.topcoder.project.phases.Project[] phaseProjects = getPhaseProjects(projectIds, signature);
 
-            result = getLateDeliverables(phaseProjects, projectById, log, signature);
+            result = getLateDeliverables(types, phaseProjects, projectById, log, signature);
         }
 
         Helper.logExit(log, signature, result, start);
@@ -616,6 +719,18 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * Gets the late deliverables.
      * </p>
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Added parameter "types".</li>
+     * <li>Added step for setting MISSED_DEADLINE late deliverable type.</li>
+     * <li>Added steps for obtaining REJECTED_FINAL_FIX late deliverables.</li>
+     * </ol>
+     * </p>
+     *
+     * @param types
+     *            the types of late deliverables to be retrieved (null if all late deliverables of all supported types
+     *            must be retrieved).
      * @param phaseProjects
      *            the phase projects.
      * @param projectById
@@ -630,13 +745,23 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
      * @throws LateDeliverablesRetrievalException
      *             if any error occurs.
      */
-    private List<LateDeliverable> getLateDeliverables(com.topcoder.project.phases.Project[] phaseProjects,
-        Map<Long, Project> projectById, Log log, String signature) throws LateDeliverablesRetrievalException {
+    private List<LateDeliverable> getLateDeliverables(Set<LateDeliverableType> types,
+        com.topcoder.project.phases.Project[] phaseProjects, Map<Long, Project> projectById, Log log, String signature)
+        throws LateDeliverablesRetrievalException {
         List<Long> latePhaseIds = new ArrayList<Long>();
+        // Create a list for IDs of Final Fix phases going after Final Review:
+        List<Long> finalFixPhaseIds = new ArrayList<Long>();
         Map<Long, Phase> phaseById = new HashMap<Long, Phase>();
         // holds the ids of projects that have late deliverables
         Set<Long> lateProjectIds = new HashSet<Long>();
         Date currentDate = new Date();
+
+        // Check if "Missed Deadline" late deliverables should be retrieved:
+        boolean retrieveMissedDeadlines =
+            (types == null) || types.contains(LateDeliverableType.MISSED_DEADLINE);
+        // Check if "Rejected Final Fix" late deliverables should be retrieved:
+        boolean retrieveRejectedFinalFixes =
+            (types == null) || types.contains(LateDeliverableType.REJECTED_FINAL_FIX);
 
         for (com.topcoder.project.phases.Project phaseProject : phaseProjects) {
             // get all phases for the project
@@ -647,26 +772,39 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
                     continue;
                 }
 
-                if (currentDate.after(phase.getScheduledEndDate())) {
+                if (retrieveMissedDeadlines && currentDate.after(phase.getScheduledEndDate())) {
                     long phaseId = phase.getId();
                     latePhaseIds.add(phaseId);
                     phaseById.put(phaseId, phase);
                     lateProjectIds.add(phaseProject.getId());
                 }
+                if (retrieveRejectedFinalFixes && "Final Fix".equals(phase.getPhaseType().getName())
+                    && dependsOnFinalReviewPhase(phase)) {
+                    // Get ID of the phase:
+                    long phaseId = phase.getId();
+                    // Add phase ID to the list:
+                    finalFixPhaseIds.add(phaseId);
+                    // Put phase to the map:
+                    phaseById.put(phaseId, phase);
+                }
             }
         }
 
-        if (latePhaseIds.isEmpty()) {
-            return new ArrayList<LateDeliverable>();
-        } else {
+        List<LateDeliverable> result = new ArrayList<LateDeliverable>();
+        if (!latePhaseIds.isEmpty()) {
             // log IDs of projects that have late phases
             Helper.logInfo(log, "IDs of projects that have late phases : " + lateProjectIds);
             Helper.logInfo(log, "IDs of late phases : " + latePhaseIds);
 
-            Deliverable[] deliverables = searchDeliverables(latePhaseIds, signature);
-
-            return createResult(deliverables, projectById, phaseById, signature);
+            Deliverable[] deliverables = searchDeliverables(latePhaseIds, true, false, signature);
+            createLateDeliverables(result, deliverables, projectById, phaseById, true, signature);
         }
+        if (!finalFixPhaseIds.isEmpty()) {
+            Deliverable[] deliverables = searchDeliverables(finalFixPhaseIds, false, null, signature);
+            createLateDeliverables(result, deliverables, projectById, phaseById, false, signature);
+        }
+
+        return result;
     }
 
     /**
@@ -691,50 +829,45 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     }
 
     /**
-     * Creates <code>LateDeliverable</code> list from given parameters.
+     * Creates <code>LateDeliverable</code> instances from given parameters.
      *
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated 'trackingDeliverableIds' to 'missedDeadlineTrackingDeliverableIds'.</li>
+     * <li>Added support of Rejected Final Fix late deliverables.</li>
+     * </ol>
+     * </p>
+     *
+     * @param result
+     *            the list to hold the <code>LateDeliverable</code> instances.
      * @param deliverables
      *            the deliverables to create late deliverables.
      * @param projectById
      *            the map contains projects.
      * @param phaseById
      *            the map contains phases.
+     * @param missedDeadlineTracking
+     *            the missed deadline tracking flag.
      * @param signature
      *            the signature.
-     *
-     * @return the created list of <code>LateDeliverable</code>.
      *
      * @throws LateDeliverablesRetrievalException
      *             if any error occurs.
      */
-    private List<LateDeliverable> createResult(Deliverable[] deliverables, Map<Long, Project> projectById,
-        Map<Long, Phase> phaseById, String signature) throws LateDeliverablesRetrievalException {
-        List<LateDeliverable> result = new ArrayList<LateDeliverable>(deliverables.length);
-
+    private void createLateDeliverables(List<LateDeliverable> result, Deliverable[] deliverables,
+        Map<Long, Project> projectById, Map<Long, Phase> phaseById, boolean missedDeadlineTracking, String signature)
+        throws LateDeliverablesRetrievalException {
         for (Deliverable deliverable : deliverables) {
 
-            // MOVED in 1.1
             // Get project ID of the deliverable
             long projectId = deliverable.getProject();
-
-            // MOVED in 1.1
             // Get project by its ID from the map
             Project project = projectById.get(projectId);
-
-            // MOVED in 1.1
             // Get phase ID from deliverable
             long phaseId = deliverable.getPhase();
-
-            // MOVED in 1.1
             // Get phase by its ID from the map
             Phase phase = phaseById.get(phaseId);
-
-            // NEW in 1.1
-            // Get the compensated deadline if it differs from the real one
-            Date compensatedDeadline = getCompensatedDeadline(phase);
-            if ((compensatedDeadline != null) && (System.currentTimeMillis() < compensatedDeadline.getTime())) {
-                continue;
-            }
 
             LateDeliverable lateDeliverable = new LateDeliverable();
 
@@ -743,15 +876,26 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
             lateDeliverable.setProject(project);
             // Set phase to the late deliverable instance
             lateDeliverable.setPhase(phase);
-            // NEW in 1.1
-            // Set compensated deadline to the late deliverable instance
-            lateDeliverable.setCompensatedDeadline(compensatedDeadline);
+
+            if (missedDeadlineTracking) {
+                // Get the compensated deadline if it differs from the real one
+                Date compensatedDeadline = getCompensatedDeadline(phase);
+                if ((compensatedDeadline != null) && (System.currentTimeMillis() < compensatedDeadline.getTime())) {
+                    continue;
+                }
+                // Set compensated deadline to the late deliverable instance
+                lateDeliverable.setCompensatedDeadline(compensatedDeadline);
+
+                // Set late deliverable type to "Missed Deadline":
+                lateDeliverable.setType(LateDeliverableType.MISSED_DEADLINE);
+            } else {
+                // Set late deliverable type to "Rejected Final Fix":
+                lateDeliverable.setType(LateDeliverableType.REJECTED_FINAL_FIX);
+            }
 
             // add to result
             result.add(lateDeliverable);
         }
-
-        return result;
     }
 
     /**
@@ -793,48 +937,66 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
     /**
      * Searches deliverables for the given phases.
      *
-     * @param latePhaseIds
-     *            the phases which are late.
+     * <p>
+     * <em>Changes in version 1.3:</em>
+     * <ol>
+     * <li>Updated 'trackingDeliverableIds' to 'missedDeadlineTrackingDeliverableIds'.</li>
+     * <li>Added support of Rejected Final Fix deliverables.</li>
+     * </ol>
+     * </p>
+     *
+     * @param phaseIds
+     *            the ids of phases.
+     * @param missedDeadlineTracking
+     *            the missed deadline tracking flag.
+     * @param complete
+     *            the complete flag.
      * @param signature
      *            the method name used for logging.
      * @return the deliverables.
+     *
      * @throws LateDeliverablesRetrievalException
      *             if any error occurs.
      */
-    private Deliverable[] searchDeliverables(List<Long> latePhaseIds, String signature)
-        throws LateDeliverablesRetrievalException {
-        Filter phaseIdFilter;
+    private Deliverable[] searchDeliverables(List<Long> phaseIds, boolean missedDeadlineTracking, Boolean complete,
+        String signature) throws LateDeliverablesRetrievalException {
+        Filter filter;
 
-        if (latePhaseIds.size() == 1) {
-            // Create filter for filtering deliverables by the only late phase ID
-            phaseIdFilter = DeliverableFilterBuilder.createPhaseIdFilter(latePhaseIds.get(0));
+        if (phaseIds.size() == 1) {
+            // Create filter for filtering deliverables by the only phase ID
+            filter = DeliverableFilterBuilder.createPhaseIdFilter(phaseIds.get(0));
         } else {
-            // Create filter for filtering deliverables by all late phase ID
+            // Create a list for individual phase ID filters:
             List<Filter> individualPhaseIdFilters = new ArrayList<Filter>();
 
-            for (Long latePhaseId : latePhaseIds) {
-                Filter individualPhaseIdFilter = DeliverableFilterBuilder
-                    .createPhaseIdFilter(latePhaseId);
+            for (long phaseId : phaseIds) {
+                Filter individualPhaseIdFilter = DeliverableFilterBuilder.createPhaseIdFilter(phaseId);
                 individualPhaseIdFilters.add(individualPhaseIdFilter);
             }
 
-            phaseIdFilter = new OrFilter(individualPhaseIdFilters);
+            filter = new OrFilter(individualPhaseIdFilters);
         }
 
-        List<Filter> individualDeliverableIdFilters = new ArrayList<Filter>();
+        if (missedDeadlineTracking) {
+            // Missed deadline tracking
 
-        for (Long trackingDeliverableId : trackingDeliverableIds) {
-            Filter deliverableIdFilter = DeliverableFilterBuilder
-                .createDeliverableIdFilter(trackingDeliverableId);
-            individualDeliverableIdFilters.add(deliverableIdFilter);
+            List<Filter> individualDeliverableIdFilters = new ArrayList<Filter>();
+
+            for (Long missedDeadlineTrackingDeliverableId : missedDeadlineTrackingDeliverableIds) {
+                Filter deliverableIdFilter = DeliverableFilterBuilder
+                    .createDeliverableIdFilter(missedDeadlineTrackingDeliverableId);
+                individualDeliverableIdFilters.add(deliverableIdFilter);
+            }
+
+            Filter deliverableIdFilter = new OrFilter(individualDeliverableIdFilters);
+
+            filter = new AndFilter(filter, deliverableIdFilter);
         }
 
-        Filter deliverableIdFilter = new OrFilter(individualDeliverableIdFilters);
-        Filter filter = new AndFilter(phaseIdFilter, deliverableIdFilter);
         Deliverable[] deliverables;
 
         try {
-            deliverables = deliverableManager.searchDeliverables(filter, false);
+            deliverables = deliverableManager.searchDeliverables(filter, complete);
         } catch (DeliverablePersistenceException e) {
             throw Helper.logException(log, signature, new LateDeliverablesRetrievalException(
                 "Persistence layer error when searching deliverables.", e));
@@ -920,5 +1082,36 @@ public class LateDeliverablesRetrieverImpl implements LateDeliverablesRetriever 
             return null;
         }
         return result;
+    }
+
+    /**
+     * <p>
+     * Checks whether the specified phase depends on Final Review phase.
+     * </p>
+     *
+     * @param phase
+     *            the phase.
+     *
+     * @return true if the specified phase depends on Final Review phase; false otherwise.
+     *
+     * @since 1.3
+     */
+    private static boolean dependsOnFinalReviewPhase(Phase phase) {
+        // Get all dependencies of the phase:
+        Dependency[] dependencies = phase.getAllDependencies();
+        for (Dependency dependency : dependencies) {
+            // Get dependent phase from dependency data:
+            Phase dependentPhase = dependency.getDependent();
+            if (dependentPhase != phase) {
+                continue;
+            }
+
+            // Get type name of the dependency phase:
+            String dependencyPhaseTypeName = dependency.getDependency().getPhaseType().getName();
+            if ("Final Review".equals(dependencyPhaseTypeName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

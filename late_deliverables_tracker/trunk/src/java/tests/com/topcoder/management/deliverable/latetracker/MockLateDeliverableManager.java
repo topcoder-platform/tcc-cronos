@@ -8,6 +8,7 @@ import java.util.List;
 import com.topcoder.management.deliverable.late.LateDeliverable;
 import com.topcoder.management.deliverable.late.LateDeliverableManagementException;
 import com.topcoder.management.deliverable.late.LateDeliverableManager;
+import com.topcoder.management.deliverable.late.LateDeliverableType;
 import com.topcoder.search.builder.filter.Filter;
 
 /**
@@ -15,8 +16,15 @@ import com.topcoder.search.builder.filter.Filter;
  * A mock implementation of <code>LateDeliverableManager</code>. Used for testing.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added getLateDeliverableTypes() method.</li>
+ * </ol>
+ * </p>
+ *
  * @author sparemax
- * @version 1.2
+ * @version 1.3
  * @since 1.2
  */
 public class MockLateDeliverableManager implements LateDeliverableManager {
@@ -90,6 +98,22 @@ public class MockLateDeliverableManager implements LateDeliverableManager {
      * @return null.
      */
     public List<LateDeliverable> searchRestrictedLateDeliverables(Filter filter, long userId) {
+        return null;
+    }
+
+    /**
+     * <p>
+     * Retrieves all existing late deliverable types.
+     * </p>
+     *
+     * @return the retrieved late deliverable types (not null, doesn't contain null).
+     *
+     * @throws LateDeliverableManagementException
+     *             if some error occurred.
+     *
+     * @since 1.3
+     */
+    public List<LateDeliverableType> getLateDeliverableTypes() throws LateDeliverableManagementException {
         return null;
     }
 }

@@ -351,3 +351,6 @@ INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, nam
   VALUES (25, 13, 1, 'Specification Submission', 'Specification Submission', 0, 'System', CURRENT, 'System', CURRENT );
 INSERT INTO deliverable_lu (deliverable_id, phase_type_id, resource_role_id, name, description, required, create_user, create_date, modify_user, modify_date)
   VALUES (26, 14, 15, 'Specification Review', 'Specification Review', 1, 'System', CURRENT, 'System', CURRENT );
+
+INSERT INTO 'informix'.late_deliverable_type_lu(late_deliverable_type_id,name,description) VALUES (1, 'Missed Deadline', 'Missed Deadline');
+INSERT INTO 'informix'.late_deliverable_type_lu(late_deliverable_type_id,name,description) VALUES (2, 'Rejected Final Fix', 'Rejected Final Fix');

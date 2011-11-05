@@ -1,11 +1,13 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker.failuretests;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -14,6 +16,7 @@ import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.management.deliverable.Deliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverable;
 import com.topcoder.management.deliverable.latetracker.LateDeliverableProcessor;
+import com.topcoder.management.deliverable.latetracker.LateDeliverableType;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesProcessingException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesRetrievalException;
 import com.topcoder.management.deliverable.latetracker.LateDeliverablesRetriever;
@@ -30,8 +33,8 @@ import com.topcoder.project.phases.Phase;
 /**
  * Failure test for LateDeliverablesTracker class.
  *
- * @author TCSDEVELOPER
- * @version 1.1
+ * @author mumujava
+ * @version 1.3
  */
 public class LateDeliverablesTrackerFailureTest extends TestCase {
     /**
@@ -76,8 +79,11 @@ public class LateDeliverablesTrackerFailureTest extends TestCase {
         processor = new LateDeliverableProcessorImpl();
         processor.configure(lateDeliverableProcessorConfig);
 
+        Set<LateDeliverableType> set = new HashSet<LateDeliverableType>();
+        set.add(LateDeliverableType.MISSED_DEADLINE);
+        set.add(LateDeliverableType.REJECTED_FINAL_FIX);
         // Create LateDeliverablesTracker
-        tracker = new LateDeliverablesTracker(retriever, processor, null);
+        tracker = new LateDeliverablesTracker(retriever, processor, set, null);
 
         config = TestHelper.getConfigurationObject("failure/LateDeliverablesTracker.xml", LateDeliverablesTracker.class
             .getName());
@@ -99,8 +105,11 @@ public class LateDeliverablesTrackerFailureTest extends TestCase {
      * processor, Log log). When retriever is null.
      */
     public void testCtor1_RetrieverIsNull() {
+        Set<LateDeliverableType> set = new HashSet<LateDeliverableType>();
+        set.add(LateDeliverableType.MISSED_DEADLINE);
+        set.add(LateDeliverableType.REJECTED_FINAL_FIX);
         try {
-            new LateDeliverablesTracker(null, processor, null);
+            new LateDeliverablesTracker(null, processor, set, null);
             fail("Cannot go here.");
         } catch (IllegalArgumentException e) {
             // OK
@@ -112,8 +121,11 @@ public class LateDeliverablesTrackerFailureTest extends TestCase {
      * processor, Log log). When processor is null.
      */
     public void testCtor1_ProcessorIsNull() {
+        Set<LateDeliverableType> set = new HashSet<LateDeliverableType>();
+        set.add(LateDeliverableType.MISSED_DEADLINE);
+        set.add(LateDeliverableType.REJECTED_FINAL_FIX);
         try {
-            new LateDeliverablesTracker(retriever, null, null);
+            new LateDeliverablesTracker(retriever, null, set, null);
             fail("Cannot go here.");
         } catch (IllegalArgumentException e) {
             // OK
@@ -353,7 +365,54 @@ public class LateDeliverablesTrackerFailureTest extends TestCase {
             // OK
         }
     }
-
+    /**
+     * Test the constructor LateDeliverablesTracker(ConfigurationObject config). lateDeliverableTypes is empty.
+     *
+     * @throws Exception
+     *             to JUnit.
+     * @since 1.3
+     */
+    public void testCtor20() throws Exception {
+        config.setPropertyValues("lateDeliverableTypes", new String[0]);
+        try {
+            new LateDeliverablesTracker(config);
+            fail("Cannot go here.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // OK
+        }
+    }
+    /**
+     * Test the constructor LateDeliverablesTracker(ConfigurationObject config). lateDeliverableTypes contains duplicate.
+     *
+     * @throws Exception
+     *             to JUnit.
+     * @since 1.3
+     */
+    public void testCtor21() throws Exception {
+        config.setPropertyValues("lateDeliverableTypes", new String[]{"Missed Deadline","Missed Deadline"});
+        try {
+            new LateDeliverablesTracker(config);
+            fail("Cannot go here.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // OK
+        }
+    }
+    /**
+     * Test the constructor LateDeliverablesTracker(ConfigurationObject config). lateDeliverableTypes contains empty.
+     *
+     * @throws Exception
+     *             to JUnit.
+     * @since 1.3
+     */
+    public void testCtor22() throws Exception {
+        config.setPropertyValues("lateDeliverableTypes", new String[]{"Missed Deadline"," "});
+        try {
+            new LateDeliverablesTracker(config);
+            fail("Cannot go here.");
+        } catch (LateDeliverablesTrackerConfigurationException e) {
+            // OK
+        }
+    }
     /**
      * Test the method execute().
      *
@@ -392,7 +451,8 @@ public class LateDeliverablesTrackerFailureTest extends TestCase {
                  *
                  * @return the list of LateDeliverable.
                  */
-                public List<LateDeliverable> retrieve() throws LateDeliverablesRetrievalException {
+                public List<LateDeliverable> retrieve(
+                        Set<LateDeliverableType> types) throws LateDeliverablesRetrievalException {
                     List<LateDeliverable> list = new ArrayList<LateDeliverable>();
 
                     LateDeliverable entity = new LateDeliverable();
@@ -403,7 +463,7 @@ public class LateDeliverablesTrackerFailureTest extends TestCase {
                     entity.setPhase(new Phase(
                         new com.topcoder.project.phases.Project(new Date(), new DefaultWorkdays()), 1));
                     entity.getPhase().setScheduledEndDate(new Date());
-
+                    entity.setType(LateDeliverableType.MISSED_DEADLINE);
                     list.add(entity);
                     return list;
                 }
@@ -418,7 +478,7 @@ public class LateDeliverablesTrackerFailureTest extends TestCase {
                 }
             });
 
-        processor.configure(TestHelper.getConfigurationObject("failure/Processor1.xml",
+        processor.configure(TestHelper.getConfigurationObject("failure/processor1.xml",
             LateDeliverableProcessorImpl.class.getName()));
 
         try {

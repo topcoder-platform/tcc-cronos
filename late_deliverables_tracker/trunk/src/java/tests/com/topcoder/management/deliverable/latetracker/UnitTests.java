@@ -8,9 +8,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.topcoder.management.deliverable.latetracker.notification
-       .NotRespondedLateDeliverablesNotificationExceptionTests;
+    .NotRespondedLateDeliverablesNotificationExceptionTests;
 import com.topcoder.management.deliverable.latetracker.notification
-       .NotRespondedLateDeliverablesNotificationJobRunnerTests;
+    .NotRespondedLateDeliverablesNotificationJobRunnerTests;
 import com.topcoder.management.deliverable.latetracker.notification.NotRespondedLateDeliverablesNotifierTests;
 import com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImplTests;
 import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImplTests;
@@ -21,8 +21,15 @@ import com.topcoder.management.deliverable.latetracker.utility.LateDeliverablesT
  * This test case aggregates all Unit test cases.
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added LateDeliverableTypeUnitTests.</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.2
+ * @version 1.3
  */
 public class UnitTests extends TestCase {
     /**
@@ -36,6 +43,7 @@ public class UnitTests extends TestCase {
         suite.addTestSuite(Demo.class);
         suite.addTestSuite(HelperTests.class);
 
+        suite.addTestSuite(LateDeliverableTypeUnitTests.class);
         suite.addTestSuite(LateDeliverablesTrackingJobRunnerTests.class);
         suite.addTestSuite(LateDeliverablesTrackerTests.class);
         suite.addTestSuite(LateDeliverableTests.class);

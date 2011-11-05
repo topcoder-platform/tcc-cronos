@@ -1,9 +1,11 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010, 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.deliverable.latetracker;
 
 import java.util.Date;
+
+import junit.framework.TestCase;
 
 import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.management.deliverable.Deliverable;
@@ -12,8 +14,6 @@ import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.project.ProjectStatus;
 import com.topcoder.management.project.ProjectType;
 import com.topcoder.project.phases.Phase;
-
-import junit.framework.TestCase;
 
 /**
  * Unit tests for <code>{@link LateDeliverable}</code> class.
@@ -25,8 +25,15 @@ import junit.framework.TestCase;
  * </ol>
  * </p>
  *
+ * <p>
+ * <em>Changes in version 1.3:</em>
+ * <ol>
+ * <li>Added test cases for type:LateDeliverableType property.</li>
+ * </ol>
+ * </p>
+ *
  * @author myxgyy, sparemax
- * @version 1.1
+ * @version 1.3
  */
 public class LateDeliverableTests extends TestCase {
     /**
@@ -55,7 +62,7 @@ public class LateDeliverableTests extends TestCase {
     public void test_Constructor()  {
         assertNull("deliverable field wrong", target.getDeliverable());
         assertNull("phase field wrong", target.getPhase());
-        assertNull("project field wrong", target.getPhase());
+        assertNull("project field wrong", target.getProject());
     }
 
     /**
@@ -101,7 +108,7 @@ public class LateDeliverableTests extends TestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateProject#getProject()} method.
+     * Accuracy test case for the {@link LateDeliverable#getProject()} method.
      * </p>
      */
     public void test_getProject()  {
@@ -110,7 +117,7 @@ public class LateDeliverableTests extends TestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateProject#setProject(Project)} method.
+     * Accuracy test case for the {@link LateDeliverable#setProject(Project)} method.
      * </p>
      */
     public void test_setProject()  {
@@ -122,7 +129,7 @@ public class LateDeliverableTests extends TestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateProject#getCompensatedDeadline()} method.
+     * Accuracy test case for the {@link LateDeliverable#getCompensatedDeadline()} method.
      * </p>
      *
      * @since 1.1
@@ -133,7 +140,7 @@ public class LateDeliverableTests extends TestCase {
 
     /**
      * <p>
-     * Accuracy test case for the {@link LateProject#setCompensatedDeadline(Date)} method.
+     * Accuracy test case for the {@link LateDeliverable#setCompensatedDeadline(Date)} method.
      * </p>
      *
      * @since 1.1
@@ -142,5 +149,29 @@ public class LateDeliverableTests extends TestCase {
         Date compensatedDeadline = new Date();
         target.setCompensatedDeadline(compensatedDeadline);
         assertSame("project field should be set correctly", compensatedDeadline, target.getCompensatedDeadline());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverable#getType()} method.
+     * </p>
+     *
+     * @since 1.3
+     */
+    public void test_getType() {
+        assertNull("type field should be retrieved correctly", target.getType());
+    }
+
+    /**
+     * <p>
+     * Accuracy test case for the {@link LateDeliverable#setType(LateDeliverableType)} method.
+     * </p>
+     *
+     * @since 1.3
+     */
+    public void test_setType() {
+        LateDeliverableType type = LateDeliverableType.MISSED_DEADLINE;
+        target.setType(type);
+        assertEquals("project field should be set correctly", type, target.getType());
     }
 }

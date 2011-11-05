@@ -6,6 +6,7 @@ package com.topcoder.management.deliverable.latetracker.accuracytests;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +18,8 @@ import com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverabl
 
 /**
  * Accuracy tests for LateDeliverableProcessorImpl.
- * @author mumujava, victorsam, KLW
- * @version 1.2
+ * @author mumujava, victorsam, KLW, gjw99
+ * @version 1.3
  */
 public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
     /**
@@ -80,7 +81,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        LateDeliverable result = retriever.retrieve().get(0);
+        LateDeliverable result = retriever.retrieve(getTypes()).get(0);
         // test the new functionality
         Date compensatedDeadline = new Date(new Date().getTime()-MINUTE);
        result.setCompensatedDeadline(compensatedDeadline);
@@ -106,7 +107,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
          assertTrue("The delay is inocrrect.",delay<SIXTY+1);
     }
 
-    /**
+	/**
      * Accuracy test for method processLateDeliverable.
      *
      * "Screening Scorecard" deliverable is late. (No need to notify)
@@ -122,7 +123,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        List<LateDeliverable> res = retriever.retrieve();
+        List<LateDeliverable> res = retriever.retrieve(getTypes());
 
         config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
             "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
@@ -157,7 +158,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        List<LateDeliverable> res = retriever.retrieve();
+        List<LateDeliverable> res = retriever.retrieve(getTypes());
 
         config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
             "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
@@ -175,7 +176,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //extend the deadline
         AccuracyHelper.executeSqlFile("test_files/accuracy/extendDeadline1.sql");
 
-        res = retriever.retrieve();
+        res = retriever.retrieve(getTypes());
         instance.processLateDeliverable(res.get(0));
         //an email is expected to sent to wuyb@topcoder.com, manually check the mails please
 
@@ -211,7 +212,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        List<LateDeliverable> res = retriever.retrieve();
+        List<LateDeliverable> res = retriever.retrieve(getTypes());
 
         config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
             "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
@@ -257,7 +258,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        List<LateDeliverable> res = retriever.retrieve();
+        List<LateDeliverable> res = retriever.retrieve(getTypes());
 
         config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
             "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
@@ -302,7 +303,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        List<LateDeliverable> res = retriever.retrieve();
+        List<LateDeliverable> res = retriever.retrieve(getTypes());
 
         config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
             "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
@@ -350,7 +351,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        List<LateDeliverable> res = retriever.retrieve();
+        List<LateDeliverable> res = retriever.retrieve(getTypes());
 
         config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
             "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
@@ -398,7 +399,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
             "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
         retriever.configure(config);
-        LateDeliverable result = retriever.retrieve().get(0);
+        LateDeliverable result = retriever.retrieve(getTypes()).get(0);
        //not set the compensatedDeadline
        //result.setCompensatedDeadline(compensatedDeadline);
 
@@ -421,6 +422,45 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
         //check the dalay  
          assertTrue("The delay is inocrrect.",delay>SIXTY);
     }
+
+    /**
+     * Accuracy test for method processLateDeliverable.
+     *
+     * Of type REJECTED_FINAL_FIX.
+     * It will check 2 conditions:
+     * 1. new late deliverable is created.
+     * 2. the late deliverable is already tracked.
+     *
+     *
+     * @throws Exception to JUnit
+     * @since 1.3
+     */
+    public void test_processLateDeliverable9() throws Exception {
+        //addTrackingRecord = true, canSendNotification = true and needToNotify = true
+        AccuracyHelper.executeSqlFile("test_files/accuracy/test.sql");
+
+        LateDeliverablesRetrieverImpl retriever = new LateDeliverablesRetrieverImpl();
+        ConfigurationObject config = getConfigurationObject("accuracy/config/LateDeliverablesRetrieverImpl.xml",
+            "com.topcoder.management.deliverable.latetracker.retrievers.LateDeliverablesRetrieverImpl");
+        retriever.configure(config);
+        LateDeliverable result = retriever.retrieve(getTypes()).get(1);
+
+        config = getConfigurationObject("accuracy/config/LateDeliverableProcessorImpl.xml",
+            "com.topcoder.management.deliverable.latetracker.processors.LateDeliverableProcessorImpl");
+        instance.configure(config);
+        instance.processLateDeliverable(result);
+
+        Object[] lateDeliverable = getLateDeliverable(113, 2);
+        // check the late deliverables found, should be only one
+        assertEquals("one late deliverable should exist", 1, lateDeliverable.length/4);
+        assertTrue("the deliverable id must be positive", (Integer)lateDeliverable[2] > 0);
+        Timestamp timstamp = (Timestamp) lateDeliverable[1];
+        // alreadyTracked = true
+        instance.processLateDeliverable(result);
+        Timestamp afterProcessed = (Timestamp) getLateDeliverable(113, 2)[1];
+        assertEquals("the already tracked rejected final fix should not be processed", timstamp, afterProcessed);
+    }
+
     /**
      * <p>
      * Gets the late Deliverable.
@@ -445,7 +485,7 @@ public class LateDeliverableProcessorImplAccTests extends AccuracyHelper {
             List<Object> res = new ArrayList<Object>();
             while (rs.next()) {
                 res.add(rs.getBoolean(1));
-                res.add(rs.getDate(2));
+                res.add(rs.getTimestamp(2));
                 res.add(rs.getInt(3));
                 res.add(rs.getInt(4));
             }

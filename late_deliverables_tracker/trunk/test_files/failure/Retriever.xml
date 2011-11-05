@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <CMConfig>
     <Config name="failuretests">
-        <Property name="trackingDeliverableIds">
+        <Property name="missedDeadlineTrackingDeliverableIds">
             <Value>3,4</Value>
         </Property>
         <Property name="objectFactoryConfig">

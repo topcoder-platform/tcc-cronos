@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.topcoder.util.file.TemplateDataFormatException;
 import junit.framework.TestCase;
 
 import com.topcoder.util.log.Log;
@@ -561,29 +560,6 @@ public class EmailSendingUtilityTests extends TestCase {
             fail("should have thrown EmailSendingException");
         } catch (EmailSendingException e) {
             // pass
-        }
-    }
-
-     /**
-     * <p>
-     * Failure test case for the {@link EmailSendingUtility#sendEmail(String, String,
-     * String, Map)} method.
-     * </p>
-     * <p>
-     * The template data is invalid, <code>EmailSendingException</code> expected.
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
-     */
-    public void test_sendEmail_19() throws Exception {
-        params.put("PROJECT_ID", "&\\/=:");
-
-        try {
-            target.sendEmail("subject", TEMPLATE_FILE, "services@topcoder.com", params);
-            fail("should have thrown EmailSendingException");
-        } catch (EmailSendingException e) {
-            assertTrue("check inner cause", e.getCause() instanceof TemplateDataFormatException);
         }
     }
 }

@@ -37,7 +37,7 @@ public final class TestHelper {
         "user_rating", "user", "email", "id_sequences", "project_category_lu", "project_type_lu",
         "project_status_lu", "project_info_type_lu", "deliverable_lu", "phase_status_lu",
         "phase_criteria_type_lu", "resource_role_lu", "resource_info_type_lu", "comment_type_lu",
-        "phase_type_lu", "submission_type_lu", "late_deliverable"};
+        "phase_type_lu", "submission_type_lu", "late_deliverable", "late_deliverable_type_lu"};
 
     /**
      * Config files to be loaded.
