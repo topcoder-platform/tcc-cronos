@@ -1,7 +1,11 @@
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_id_seq', 1, 20, 0);
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_item_id_seq', 1, 20, 0);
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_comment_id_seq', 1, 20, 0);
-INSERT INTO id_sequences(name, next_block_start, block_size, exhausted) VALUES('review_item_comment_id_seq', 1, 20, 0); 
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('review_id_seq', 1, 20, 0);
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('review_item_id_seq', 1, 20, 0);
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('review_comment_id_seq', 1, 20, 0);
+INSERT INTO id_sequences(name, next_block_start, block_size, exhausted)
+  VALUES('review_item_comment_id_seq', 1, 20, 0);
 
 insert into scorecard_type_lu(scorecard_type_id) values (11);
 insert into scorecard_type_lu(scorecard_type_id) values (12);
@@ -9,6 +13,10 @@ insert into scorecard_type_lu(scorecard_type_id) values (13);
 insert into scorecard_type_lu(scorecard_type_id) values (14);
 insert into scorecard_type_lu(scorecard_type_id) values (15);
 insert into scorecard_type_lu(scorecard_type_id) values (16);
+insert into scorecard_type_lu(scorecard_type_id) values (17);
+insert into scorecard_type_lu(scorecard_type_id) values (18);
+insert into scorecard_type_lu(scorecard_type_id) values (19);
+insert into scorecard_type_lu(scorecard_type_id) values (20);
 
 insert into scorecard(scorecard_id, scorecard_type_id) values (11, 11);
 insert into scorecard(scorecard_id, scorecard_type_id) values (12, 12);
@@ -16,12 +24,21 @@ insert into scorecard(scorecard_id, scorecard_type_id) values (13, 13);
 insert into scorecard(scorecard_id, scorecard_type_id) values (14, 14);
 insert into scorecard(scorecard_id, scorecard_type_id) values (15, 15);
 insert into scorecard(scorecard_id, scorecard_type_id) values (16, 16);
+insert into scorecard(scorecard_id, scorecard_type_id) values (17, 17);
+insert into scorecard(scorecard_id, scorecard_type_id) values (18, 18);
+insert into scorecard(scorecard_id, scorecard_type_id) values (19, 19);
+insert into scorecard(scorecard_id, scorecard_type_id) values (20, 20);
 
 insert into scorecard_question(scorecard_question_id) values (11);
 insert into scorecard_question(scorecard_question_id) values (12);
 insert into scorecard_question(scorecard_question_id) values (13);
 insert into scorecard_question(scorecard_question_id) values (14);
 insert into scorecard_question(scorecard_question_id) values (15);
+insert into scorecard_question(scorecard_question_id) values (16);
+insert into scorecard_question(scorecard_question_id) values (17);
+insert into scorecard_question(scorecard_question_id) values (18);
+insert into scorecard_question(scorecard_question_id) values (19);
+insert into scorecard_question(scorecard_question_id) values (20);
 
 insert into resource(resource_id, project_id) values(11, null);
 insert into resource(resource_id, project_id) values(12, null);
@@ -32,12 +49,18 @@ insert into resource(resource_id, project_id) values(16, null);
 insert into resource(resource_id, project_id) values(17, null);
 insert into resource(resource_id, project_id) values(18, null);
 insert into resource(resource_id, project_id) values(19, null);
+insert into resource(resource_id, project_id) values(20, null);
 
 insert into submission(submission_id) values(11);
 insert into submission(submission_id) values(12);
 insert into submission(submission_id) values(13);
 insert into submission(submission_id) values(14);
 insert into submission(submission_id) values(15);
+insert into submission(submission_id) values(16);
+insert into submission(submission_id) values(17);
+insert into submission(submission_id) values(18);
+insert into submission(submission_id) values(19);
+insert into submission(submission_id) values(20);
 
 insert into comment_type_lu (comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
  values (11, 'stress_type11', 'the comment type 11', 'stress_review', DATE('1998-1-10'), 'tcdev11', DATE('1998-1-10'));
@@ -57,3 +80,5 @@ insert into comment_type_lu (comment_type_id, name, description, create_user, cr
  values (18, 'stress_type18', 'the comment type 18', 'stress_review', DATE('2006-10-10'), 'tcdev1', DATE('2006-10-10'));
  insert into comment_type_lu (comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
  values (19, 'stress_type19', 'the comment type 19', 'stress_review', DATE('2006-10-10'), 'tcdev1', DATE('2006-10-10'));
+ insert into comment_type_lu (comment_type_id, name, description, create_user, create_date, modify_user, modify_date)
+ values (20, 'stress_type20', 'the comment type 20', 'stress_review', DATE('2006-10-10'), 'tcdev1', DATE('2006-10-10'));

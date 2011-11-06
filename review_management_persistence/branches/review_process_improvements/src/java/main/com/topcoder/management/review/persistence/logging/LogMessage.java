@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2007-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence.logging;
 
@@ -11,56 +11,80 @@ import java.io.PrintStream;
  * Encapsulates the entry log data and generates consistent log messages.
  * </p>
  * <p>
- * <strong> Thread Safety: </strong> This class is mutable and not thread safe.
+ * Changes in 1.2:
+ * <ul>
+ * <li>Made immutable fields final.</li>
+ * </ul>
  * </p>
- * @version 1.1
- * @author saarixx, TCDEVELOPER
+ * <p>
+ * Thread Safety: This class has mutable logMessage field, and thus it is not thread safe. But
+ * InformixReviewPersistence always uses it in thread safe manner - LogMessage instances are never accessed from
+ * multiple threads.
+ * </p>
+ * @author saarixx, TCSDEVELOPER
+ * @version 1.2
  */
 public class LogMessage {
-    /** project id for the log message. */
-    private Long reviewId;
 
-    /** Operator doing the action. */
-    private String operator;
+    /**
+     * <p>
+     * Project id for the log message. Is initialized in the constructor and never changed after that. Can be any
+     * value. Has a getter. Is used in getLogMessage().
+     * </p>
+     */
+    private final Long reviewId;
 
-    /** free text message to log. */
-    private String message;
+    /**
+     * <p>
+     * Operator doing the action. Is initialized in the constructor and never changed after that. Can be any value. Has
+     * a getter. Is used in getLogMessage().
+     * </p>
+     */
+    private final String operator;
 
-    /** exception to append to the log message. */
-    private Throwable error;
+    /**
+     * <p>
+     * Free text message to log. Is initialized in the constructor and never changed after that. Can be any value. Has
+     * a getter. Is used in getLogMessage().
+     * </p>
+     */
+    private final String message;
 
-    /** generated log message. */
+    /**
+     * <p>
+     * Exception to append to the log message. Is initialized in the constructor and never changed after that. Can be
+     * any value. Has a getter. Is used in getLogMessage().
+     * </p>
+     */
+    private final Throwable error;
+
+    /**
+     * <p>
+     * Generated log message. Is initialized in getLogMessage() once and never changed after that. Can be any value. Is
+     * null when not initialized.
+     * </p>
+     */
     private String logMessage = null;
 
     /**
      * Creates a log message. Any parameter can be null.
-     * @param reviewId
-     *            the project id to log.
-     * @param operator
-     *            the operator to log.
-     * @param message
-     *            a free text message.
-     * @param error
-     *            an exception to append to the log message.
+     * @param reviewId the project id to log.
+     * @param operator the operator to log.
+     * @param message a free text message.
+     * @param error an exception to append to the log message.
      */
     public LogMessage(Long reviewId, String operator, String message, Throwable error) {
         this.reviewId = reviewId;
-
         this.operator = operator;
-
         this.message = message;
-
         this.error = error;
     }
 
     /**
-     * Creates a log message. Any parameter can be null.
-     * @param reviewId
-     *            the project id to log.
-     * @param operator
-     *            the operator to log.
-     * @param message
-     *            a free text message.
+     * Creates a log message. Any parameter can be null
+     * @param reviewId the project id to log.
+     * @param operator the operator to log.
+     * @param message a free text message.
      */
     public LogMessage(Long reviewId, String operator, String message) {
         this(reviewId, operator, message, null);
@@ -104,37 +128,27 @@ public class LogMessage {
      */
     public String getLogMessage() {
         if (logMessage == null) {
-            StringBuffer buffer = new StringBuffer();
-
-            buffer.append("operator: ").append((operator == null) ? "Unknown" : operator).append(
-                    "reviewId: ").append((reviewId == null) ? "Unknown" : reviewId.toString())
-                    .append(" - ").append(message);
-
+            StringBuilder buffer = new StringBuilder();
+            buffer.append("operator: ").append((operator == null) ? "Unknown" : operator).append("reviewId: ")
+                    .append((reviewId == null) ? "Unknown" : reviewId.toString()).append(" - ").append(message);
             // This should be done while the Logging Wrapper 1.2 is used.
-
-            // When the LW 1.3 would be ready, it will be possible pass the exception directly to
-            // LW.
+            // When the LW 1.3 would be ready, it will be possible pass the exception directly to LW.
             if (error != null) {
                 buffer.append('\n').append(getExceptionStackTrace(error));
             }
-
             logMessage = buffer.toString();
         }
-
         return logMessage;
     }
 
     /**
      * Return the exception stack trace string.
-     * @param cause
-     *            the exception to be recorded
+     * @param cause the exception to be recorded
      * @return stack trace
      */
     public static String getExceptionStackTrace(Throwable cause) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-
         cause.printStackTrace(new PrintStream(out));
-
         return out.toString();
     }
 

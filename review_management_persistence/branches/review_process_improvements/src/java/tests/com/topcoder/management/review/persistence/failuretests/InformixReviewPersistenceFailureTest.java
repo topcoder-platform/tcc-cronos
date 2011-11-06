@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence.failuretests;
 
@@ -18,7 +18,6 @@ import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.management.review.ConfigurationException;
 import com.topcoder.management.review.DuplicateReviewEntityException;
 import com.topcoder.management.review.ReviewEntityNotFoundException;
-import com.topcoder.management.review.ReviewPersistence;
 import com.topcoder.management.review.ReviewPersistenceException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.CommentType;
@@ -40,9 +39,13 @@ import junit.framework.TestCase;
  * <p>
  * Failure test for InformixReviewPersistence class.
  * </p>
+ * <p>
+ * Changes in 1.2: add test cases for removeReview.
+ * </p>
  *
  * @author arylio
- * @version 1.0
+ * @version 1.2
+ * @since 1.0
  */
 public class InformixReviewPersistenceFailureTest extends TestCase {
     /**
@@ -87,7 +90,6 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      */
     private InformixReviewPersistence persistenceInvalid = null;
 
-
     /**
      * The SearchBundle instance used in constructing persistence.
      */
@@ -100,8 +102,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * The setUp method of the unit test, add the config, prepare the test data,
-     * and create the testing instance.
+     * The setUp method of the unit test, add the config, prepare the test data, and create the testing instance.
      * </p>
      *
      * @throws Exception
@@ -148,7 +149,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
     /**
      * Add the namespace.
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     private static void loadConfig() throws Exception {
         clearConfig();
@@ -163,22 +165,32 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * <p>
      * Remove all the namespace.
      * </p>
+     * <p>
+     * Changes in 2.0 : use generic.
+     * </p>
      *
-     * @throws Exception to JUnit
+     * @throws Exception
+     *             to JUnit
      */
     private static void clearConfig() throws Exception {
         ConfigManager cm = ConfigManager.getInstance();
-        Iterator it = cm.getAllNamespaces();
+        Iterator<String> it = cm.getAllNamespaces();
         while (it.hasNext()) {
-            cm.removeNamespace((String) it.next());
+            cm.removeNamespace(it.next());
         }
     }
 
     /**
      * Execute the sql statements in a file.
      *
-     * @param filename the sql file.
-     * @throws Exception to JUnit
+     * <p>
+     * Changes in 2.0 : use generic.
+     * </p>
+     *
+     * @param filename
+     *            the sql file.
+     * @throws Exception
+     *             to JUnit
      */
     private static void executeSqlFile(String filename, Connection connection) throws Exception {
         Reader file = new FileReader(filename);
@@ -192,10 +204,10 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
         file.close();
 
-        List sqls = new ArrayList();
+        List<String> sqls = new ArrayList<String>();
         int lastIndex = 0;
 
-        //parse the sqls
+        // parse the sqls
         for (int i = 0; i < content.length(); i++) {
             if (content.charAt(i) == ';') {
                 sqls.add(content.substring(lastIndex, i).trim());
@@ -205,7 +217,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         Statement stmt = null;
 
         try {
-            stmt = connection.createStatement();;
+            stmt = connection.createStatement();
+            ;
             for (int i = 0; i < sqls.size(); i++) {
                 stmt.executeUpdate((String) sqls.get(i));
             }
@@ -216,11 +229,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(), when the default namespace not loaded,
-     * ConfigurationException is expected.
+     * Test ctor InformixReviewPersistence(), when the default namespace not loaded, ConfigurationException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCtor1_NamespaceNotExisted() throws Exception {
         ConfigManager.getInstance().removeNamespace(InformixReviewPersistence.class.getName());
@@ -234,11 +247,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(String namespace), when namespace is null,
-     * IllegalArgumentException is expected.
+     * Test ctor InformixReviewPersistence(String namespace), when namespace is null, IllegalArgumentException is
+     * expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCtor2_NamespaceIsNull() throws Exception {
         try {
@@ -251,11 +265,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(String namespace), when namespace is empty,
-     * IllegalArgumentException is expected.
+     * Test ctor InformixReviewPersistence(String namespace), when namespace is empty, IllegalArgumentException is
+     * expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCtor2_NamespaceIsEmpty() throws Exception {
         try {
@@ -272,7 +287,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * ConfigurationException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_ConnectionNameNotExisted() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid1");
@@ -280,11 +296,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(String namespace), when connection name is invalid,
-     * ConfigurationException is expected.
+     * Test ctor InformixReviewPersistence(String namespace), when connection name is invalid, ConfigurationException is
+     * expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_ConnectionNameInvalid() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid2");
@@ -296,7 +313,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * ConfigurationException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_FactoryNamespaceNotExisted() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid3");
@@ -304,11 +322,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(String namespace), when factory_namespace is invalid,
-     * ConfigurationException is expected.
+     * Test ctor InformixReviewPersistence(String namespace), when factory_namespace is invalid, ConfigurationException
+     * is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_FactoryNamespaceInvalid() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid4");
@@ -316,11 +335,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(String namespace), when factory_class is not existed,
-     * ConfigurationException is expected.
+     * Test ctor InformixReviewPersistence(String namespace), when factory_class is not existed, ConfigurationException
+     * is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_FactoryClassNotExisted() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid5");
@@ -328,11 +348,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(String namespace), when factory_class is invalid,
-     * ConfigurationException is expected.
+     * Test ctor InformixReviewPersistence(String namespace), when factory_class is invalid, ConfigurationException is
+     * expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_FactoryClassInvalid() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid6");
@@ -344,7 +365,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * ConfigurationException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_SearchBundleManagerNamespaceNotExisted() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid7");
@@ -356,7 +378,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * ConfigurationException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_SearchBundleManagerNamespaceInvalid() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid8");
@@ -368,7 +391,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * ConfigurationException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_SearchBundleNameNotExisted() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid9");
@@ -376,11 +400,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(String namespace), when search_bundle_name is invalid,
-     * ConfigurationException is expected.
+     * Test ctor InformixReviewPersistence(String namespace), when search_bundle_name is invalid, ConfigurationException
+     * is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor2_SearchBundleNameInvalid() throws Exception {
         innerTestCtor2_Invalid("com.topcoder.management.review.persistence.InformixReviewPersistence.invalid10");
@@ -388,13 +413,15 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test for ctor InformixReviewPersistence(String namespace), when namespace is invalid,
-     * ConfigurationException is expected.
+     * Test for ctor InformixReviewPersistence(String namespace), when namespace is invalid, ConfigurationException is
+     * expected.
      * </p>
      *
-     * @param namespace the namesapce to test.
+     * @param namespace
+     *            the namesapce to test.
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     private void innerTestCtor2_Invalid(String namespace) throws Exception {
         try {
@@ -407,11 +434,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName,
-     * SearchBundle searchBundle), when dbFactory is null, IllegalArgumentException is expected.
+     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName, SearchBundle
+     * searchBundle), when dbFactory is null, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor3_DbFactoryIsNull() throws Exception {
         try {
@@ -424,11 +452,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName,
-     * SearchBundle searchBundle), when searchBundle is null, IllegalArgumentException is expected.
+     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName, SearchBundle
+     * searchBundle), when searchBundle is null, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor3_SearchBundleIsNull() throws Exception {
         try {
@@ -441,11 +470,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName,
-     * SearchBundle searchBundle), when connectionName is null, IllegalArgumentException is expected.
+     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName, SearchBundle
+     * searchBundle), when connectionName is null, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor3_ConnectionNameIsNull() throws Exception {
         try {
@@ -458,11 +488,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName,
-     * SearchBundle searchBundle), when connectionName is empty, IllegalArgumentException is expected.
+     * Test ctor InformixReviewPersistence(DBConnectionFactory dbFactory, String connectionName, SearchBundle
+     * searchBundle), when connectionName is empty, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception to JUnit.
+     * @throws Exception
+     *             to JUnit.
      */
     public void testCtor3_ConnectionNameIsEmpty() throws Exception {
         try {
@@ -475,8 +506,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is null,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is null, IllegalArgumentException is expected.
      */
     public void testCreateReview_ReviewIsNull() throws Exception {
         try {
@@ -489,11 +519,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when operator is null,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when operator is null, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_OperatorIsNull() throws Exception {
         try {
@@ -506,11 +536,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when operator is emtpy,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when operator is emtpy, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_OperatorIsEmpty() throws Exception {
         try {
@@ -523,11 +553,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review already existed,
-     * DuplicateReviewEntityException is expected.
+     * Test createReview(Review review, String operator), when review already existed, DuplicateReviewEntityException is
+     * expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewExisted() throws Exception {
         try {
@@ -540,11 +571,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid1() throws Exception {
         Review review = new Review();
@@ -566,11 +597,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid2() throws Exception {
         Review review = new Review();
@@ -592,11 +623,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid3() throws Exception {
         Review review = new Review();
@@ -618,16 +649,16 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid4() throws Exception {
         Review review = createReview(1000);
         Comment comment = new Comment();
-        //comment.setAuthor(1);
+        // comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("comment");
@@ -642,11 +673,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid5() throws Exception {
         Review review = createReview(1000);
@@ -666,18 +697,18 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid6() throws Exception {
         Review review = createReview(1000);
         Comment comment = new Comment();
         comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
-        //comment.setCommentType(new CommentType(1, "CommentType"));
+        // comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("comment");
         review.addComment(comment);
         try {
@@ -690,11 +721,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid7() throws Exception {
         Review review = createReview(1000);
@@ -702,7 +733,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
-        //comment.setComment("comment");
+        // comment.setComment("comment");
         review.addComment(comment);
         try {
             persistence.createReview(review, "operator");
@@ -714,16 +745,16 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid8() throws Exception {
         Review review = createReview(1000);
         Item item = new Item(2000);
-        //item.setQuestion(1);
+        // item.setQuestion(1);
         item.setAnswer("answer");
         item.addComment(createComment(2001));
         review.addItem(item);
@@ -737,17 +768,17 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid9() throws Exception {
         Review review = createReview(1000);
         Item item = new Item(2000);
         item.setQuestion(1);
-        //item.setAnswer("answer");
+        // item.setAnswer("answer");
         item.addComment(createComment(2001));
         review.addItem(item);
         try {
@@ -760,11 +791,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid10() throws Exception {
         Review review = createReview(1000);
@@ -783,11 +814,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid11() throws Exception {
         Review review = createReview(1000);
@@ -796,7 +827,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         item.setAnswer("answer");
 
         Comment comment = new Comment(2100);
-        //comment.setAuthor(1);
+        // comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
@@ -812,11 +843,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid12() throws Exception {
         Review review = createReview(1000);
@@ -841,11 +872,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid13() throws Exception {
         Review review = createReview(1000);
@@ -856,7 +887,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         Comment comment = new Comment(2100);
         comment.setAuthor(1);
         comment.setExtraInfo("ExtraInfo");
-        //comment.setCommentType(new CommentType(1, "CommentType"));
+        // comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
         item.addComment(comment);
         review.addItem(item);
@@ -870,11 +901,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test createReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testCreateReview_ReviewInvalid14() throws Exception {
         Review review = createReview(1000);
@@ -886,7 +917,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         comment.setAuthor(1);
         comment.setExtraInfo("ExtraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
-        //comment.setComment("content");
+        // comment.setComment("content");
         item.addComment(comment);
         review.addItem(item);
         try {
@@ -899,8 +930,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test createReview(Review review, String operator), when failed to get connection,
-     * ReviewPersistenceException is expected.
+     * Test createReview(Review review, String operator), when failed to get connection, ReviewPersistenceException is
+     * expected.
      * </p>
      */
     public void tesCreateReview_Failed() {
@@ -914,11 +945,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is null,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is null, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewIsNull() throws Exception {
         try {
@@ -931,11 +962,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is null,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is null, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_OperatorIsNull() throws Exception {
         try {
@@ -948,11 +979,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when operator is empty,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when operator is empty, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_OperatorIsEmpty() throws Exception {
         try {
@@ -965,11 +996,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is not existed,
-     * ReviewEntityNotFoundException is expected.
+     * Test updateReview(Review review, String operator), when review is not existed, ReviewEntityNotFoundException is
+     * expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewNotExisted() throws Exception {
         try {
@@ -982,11 +1014,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid1() throws Exception {
         Review review = new Review(1);
@@ -1008,11 +1040,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid2() throws Exception {
         Review review = new Review(1);
@@ -1034,11 +1066,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid3() throws Exception {
         Review review = new Review(1);
@@ -1060,16 +1092,16 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid4() throws Exception {
         Review review = createReview();
         Comment comment = new Comment();
-        //comment.setAuthor(1);
+        // comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("comment");
@@ -1084,11 +1116,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid5() throws Exception {
         Review review = createReview();
@@ -1108,18 +1140,18 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid6() throws Exception {
         Review review = createReview();
         Comment comment = new Comment();
         comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
-        //comment.setCommentType(new CommentType(1, "CommentType"));
+        // comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("comment");
         review.addComment(comment);
         try {
@@ -1132,11 +1164,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid7() throws Exception {
         Review review = createReview();
@@ -1144,7 +1176,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
-        //comment.setComment("comment");
+        // comment.setComment("comment");
         review.addComment(comment);
         try {
             persistence.updateReview(review, "operator");
@@ -1156,16 +1188,16 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid8() throws Exception {
         Review review = createReview();
         Item item = new Item(2000);
-        //item.setQuestion(1);
+        // item.setQuestion(1);
         item.setAnswer("answer");
         item.addComment(createComment(2001));
         review.addItem(item);
@@ -1179,17 +1211,17 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid9() throws Exception {
         Review review = createReview();
         Item item = new Item(2000);
         item.setQuestion(1);
-        //item.setAnswer("answer");
+        // item.setAnswer("answer");
         item.addComment(createComment(2001));
         review.addItem(item);
         try {
@@ -1202,11 +1234,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid10() throws Exception {
         Review review = createReview();
@@ -1225,11 +1257,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid11() throws Exception {
         Review review = createReview();
@@ -1238,7 +1270,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         item.setAnswer("answer");
 
         Comment comment = new Comment(2100);
-        //comment.setAuthor(1);
+        // comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
@@ -1254,11 +1286,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid12() throws Exception {
         Review review = createReview();
@@ -1283,11 +1315,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid13() throws Exception {
         Review review = createReview();
@@ -1298,7 +1330,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         Comment comment = new Comment(2100);
         comment.setAuthor(1);
         comment.setExtraInfo("ExtraInfo");
-        //comment.setCommentType(new CommentType(1, "CommentType"));
+        // comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
         item.addComment(comment);
         review.addItem(item);
@@ -1312,11 +1344,11 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when review is invalid,
-     * IllegalArgumentException is expected.
+     * Test updateReview(Review review, String operator), when review is invalid, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testUpdateReview_ReviewInvalid14() throws Exception {
         Review review = createReview();
@@ -1328,7 +1360,7 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         comment.setAuthor(1);
         comment.setExtraInfo("ExtraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
-        //comment.setComment("content");
+        // comment.setComment("content");
         item.addComment(comment);
         review.addItem(item);
         try {
@@ -1341,8 +1373,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test updateReview(Review review, String operator), when failed to get connection,
-     * ReviewPersistenceException is expected.
+     * Test updateReview(Review review, String operator), when failed to get connection, ReviewPersistenceException is
+     * expected.
      * </p>
      */
     public void testUpdateReview_Failed() {
@@ -1359,7 +1391,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * Test getReview(long id), when id is zero, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testGetReview_IdIsZero() throws Exception {
         try {
@@ -1375,7 +1408,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * Test getReview(long id), when id is negative, IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testGetReview_IdIsNegative() throws Exception {
         try {
@@ -1391,7 +1425,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * Test getReview(long id), when id is not existed, ReviewEntityNotFoundException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testGetReview_NotExisted() throws Exception {
         try {
@@ -1407,7 +1442,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * Test getReview(long id), when failed to create connection, ReviewPersistenceException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testGetReview_Failed() throws Exception {
         try {
@@ -1418,11 +1454,9 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
         }
     }
 
-
     /**
      * <p>
-     * Test searchReviews(Filter filter, boolean complete),
-     * when filter is null, IllegalArgumentException is expected.
+     * Test searchReviews(Filter filter, boolean complete), when filter is null, IllegalArgumentException is expected.
      * </p>
      */
     public void testSearchReviews_FilterIsNull() throws Exception {
@@ -1436,8 +1470,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test searchReviews(Filter filter, boolean complete),
-     * when filter is invalid, ReviewPersistenceException is expected.
+     * Test searchReviews(Filter filter, boolean complete), when filter is invalid, ReviewPersistenceException is
+     * expected.
      * </p>
      */
     public void testSearchReviews_FilterIsInvalid() {
@@ -1452,11 +1486,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when reviewId is zero, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when reviewId is zero,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_ReviewIdIsZero() throws Exception {
         try {
@@ -1469,11 +1504,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when reviewId is negative, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when reviewId is negative,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_ReviewIdIsNegative() throws Exception {
         try {
@@ -1486,11 +1522,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when comment is null, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when comment is null,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_CommentIsNull() throws Exception {
         try {
@@ -1503,11 +1540,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when operator is null, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when operator is null,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_OperatorIsNull() throws Exception {
         try {
@@ -1520,11 +1558,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when operator is empty string, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when operator is empty string,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_OperatorIsEmpty() throws Exception {
         try {
@@ -1537,15 +1576,16 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when comment is invalid, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when comment is invalid,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_CommentInvalid1() throws Exception {
         Comment comment = new Comment(1);
-        //comment.setAuthor(1);
+        // comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
@@ -1559,11 +1599,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when comment is invalid, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when comment is invalid,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_CommentInvalid2() throws Exception {
         Comment comment = new Comment(1);
@@ -1581,11 +1622,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when comment is invalid, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when comment is invalid,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_CommentInvalid3() throws Exception {
         Comment comment = new Comment(1);
@@ -1603,16 +1645,17 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when comment is invalid, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when comment is invalid,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_CommentInvalid4() throws Exception {
         Comment comment = new Comment(1);
         comment.setAuthor(1);
-        //comment.setCommentType(new CommentType(1, "CommentType"));
+        // comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
         try {
             persistence.addReviewComment(-1, comment, "operator");
@@ -1624,17 +1667,18 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when comment is invalid, IllegalArgumentException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when comment is invalid,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_CommentInvalid5() throws Exception {
         Comment comment = new Comment(1);
         comment.setAuthor(1);
         comment.setCommentType(new CommentType(1, "CommentType"));
-        //comment.setComment("content");
+        // comment.setComment("content");
         try {
             persistence.addReviewComment(-1, comment, "operator");
             fail("IllegalArgumentException is expected, when comment is invalid.");
@@ -1645,11 +1689,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when reviewId is not existed, ReviewEntityNotFoundException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when reviewId is not existed,
+     * ReviewEntityNotFoundException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_ReviewIdNotExisted() throws Exception {
         try {
@@ -1662,11 +1707,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addReviewComment(long reviewId, Comment comment, String operator),
-     * when failed to create connection, ReviewPersistenceException is expected.
+     * Test addReviewComment(long reviewId, Comment comment, String operator), when failed to create connection,
+     * ReviewPersistenceException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddReviewComment_Failed() throws Exception {
         try {
@@ -1679,11 +1725,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addItemComment(long itemId, Comment comment, String operator), when itemId is zero,
-     * IllegalArgumentException is expected.
+     * Test addItemComment(long itemId, Comment comment, String operator), when itemId is zero, IllegalArgumentException
+     * is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testAddItemComment_ItemIdIsZero() throws Exception {
         try {
@@ -1700,7 +1747,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testAddItemComment_ItemIdIsNegative() throws Exception {
         try {
@@ -1717,7 +1765,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testAddItemComment_CommentIsNull() throws Exception {
         try {
@@ -1734,7 +1783,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testAddItemComment_OperatorIsNull() throws Exception {
         try {
@@ -1747,15 +1797,16 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addItemComment(long itemId, Comment comment, String operator),
-     * when operator is empty string, IllegalArgumentException is expected.
+     * Test addItemComment(long itemId, Comment comment, String operator), when operator is empty string,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddItemComment_CommentInvalid1() throws Exception {
         Comment comment = new Comment(1);
-        //comment.setAuthor(1);
+        // comment.setAuthor(1);
         comment.setExtraInfo("extraInfo");
         comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
@@ -1769,11 +1820,12 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addItemComment(long itemId, Comment comment, String operator),
-     * when operator is empty string, IllegalArgumentException is expected.
+     * Test addItemComment(long itemId, Comment comment, String operator), when operator is empty string,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddItemComment_CommentInvalid2() throws Exception {
         Comment comment = new Comment(1);
@@ -1791,38 +1843,18 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addItemComment(long itemId, Comment comment, String operator),
-     * when operator is empty string, IllegalArgumentException is expected.
+     * Test addItemComment(long itemId, Comment comment, String operator), when operator is empty string,
+     * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit
+     * @throws Exception
+     *             Exception to JUnit
      */
     public void testAddItemComment_CommentInvalid3() throws Exception {
         Comment comment = new Comment(1);
         comment.setAuthor(1);
-        //comment.setCommentType(new CommentType(1, "CommentType"));
+        // comment.setCommentType(new CommentType(1, "CommentType"));
         comment.setComment("content");
-        try {
-            persistence.addItemComment(1, comment, "operator");
-            fail("IllegalArgumentException is expected, when comment is invalid.");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-
-    /**
-     * <p>
-     * Test addItemComment(long itemId, Comment comment, String operator),
-     * when operator is empty string, IllegalArgumentException is expected.
-     * </p>
-     *
-     * @throws Exception Exception to JUnit
-     */
-    public void testAddItemComment_CommentInvalid4() throws Exception {
-        Comment comment = new Comment(1);
-        comment.setAuthor(1);
-        comment.setCommentType(new CommentType(1, "CommentType"));
-        //comment.setComment("content");
         try {
             persistence.addItemComment(1, comment, "operator");
             fail("IllegalArgumentException is expected, when comment is invalid.");
@@ -1837,7 +1869,30 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * IllegalArgumentException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit
+     */
+    public void testAddItemComment_CommentInvalid4() throws Exception {
+        Comment comment = new Comment(1);
+        comment.setAuthor(1);
+        comment.setCommentType(new CommentType(1, "CommentType"));
+        // comment.setComment("content");
+        try {
+            persistence.addItemComment(1, comment, "operator");
+            fail("IllegalArgumentException is expected, when comment is invalid.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Test addItemComment(long itemId, Comment comment, String operator), when operator is empty string,
+     * IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testAddItemComment_OperatorIsEmpty() throws Exception {
         try {
@@ -1854,7 +1909,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      * ReviewEntityNotFoundException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testAddItemComment_ItemIdNotExisted() throws Exception {
         try {
@@ -1867,15 +1923,16 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test addItemComment(long itemId, Comment comment, String operator), when  failed to create connection,
+     * Test addItemComment(long itemId, Comment comment, String operator), when failed to create connection,
      * ReviewPersistenceException is expected.
      * </p>
      *
-     * @throws Exception Exception to JUnit.
+     * @throws Exception
+     *             Exception to JUnit.
      */
     public void testAddItemComment_Failed() throws Exception {
         try {
-            persistenceInvalid.addItemComment(1,createComment(1), "operator");
+            persistenceInvalid.addItemComment(1, createComment(1), "operator");
             fail("ReviewPersistenceException is expected, when failed to create connection.");
         } catch (ReviewPersistenceException e) {
             // good
@@ -1884,8 +1941,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
 
     /**
      * <p>
-     * Test getAllCommentTypes(), when the connection name is invalid,
-     * failed to create connection, ReviewPersistenceException is expected.
+     * Test getAllCommentTypes(), when the connection name is invalid, failed to create connection,
+     * ReviewPersistenceException is expected.
      * </p>
      */
     public void testGetAllCommentTypes_Failed() {
@@ -1893,6 +1950,98 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
             persistenceInvalid.getAllCommentTypes();
             fail("ReviewPersistenceException is expected, when failed to create connection.");
         } catch (ReviewPersistenceException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Test removeReview(long id, String operator), when id is zero, IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             Exception to JUnit.
+     * @since 1.2
+     */
+    public void testRemoveReview_IdIsZero() throws Exception {
+        try {
+            persistence.removeReview(0, "operator");
+            fail("IllegalArgumentException is expected, when id is zero.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Test removeReview(long id, String operator), when id is negative, IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             Exception to JUnit.
+     * @since 1.2
+     */
+    public void testRemoveReview_IdIsNegative() throws Exception {
+        try {
+            persistence.removeReview(-1, "operator");
+            fail("IllegalArgumentException is expected, when id is negative.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Test removeReview(long id, String operator), when operator is null, IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             Exception to JUnit.
+     * @since 1.2
+     */
+    public void testRemoveReview_OperatorIsNull() throws Exception {
+        try {
+            persistence.removeReview(1, null);
+            fail("IllegalArgumentException is expected, when operator is null.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Test removeReview(long id, String operator), when operator is empty, IllegalArgumentException is expected.
+     * </p>
+     *
+     * @throws Exception
+     *             Exception to JUnit.
+     * @since 1.2
+     */
+    public void testRemoveReview_OperatorIsEmpty() throws Exception {
+        try {
+            persistence.removeReview(1, " ");
+            fail("IllegalArgumentException is expected, when operator is empty.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    /**
+     * <p>
+     * Test removeReview(long id, String operator), when review is not existed, ReviewEntityNotFoundException is
+     * expected.
+     * </p>
+     *
+     * @throws Exception
+     *             Exception to JUnit.
+     *
+     * @since 1.2
+     */
+    public void testRemoveReview_ReviewNotExisted() throws Exception {
+        try {
+            persistence.removeReview(9999, "operator");
+            fail("ReviewEntityNotFoundException is expected, when review not existed.");
+        } catch (ReviewEntityNotFoundException e) {
             // good
         }
     }
@@ -1915,7 +2064,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      *
      * @return a Review instance
      *
-     * @param reviewId the review id
+     * @param reviewId
+     *            the review id
      */
     private Review createReview(int reviewId) {
         Review review = new Review(reviewId);
@@ -1940,7 +2090,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      *
      * @return a Item instance
      *
-     * @param itemId the item id
+     * @param itemId
+     *            the item id
      */
     private Item createReviewItem(int itemId) {
         Item item = new Item(itemId);
@@ -1957,7 +2108,8 @@ public class InformixReviewPersistenceFailureTest extends TestCase {
      *
      * @return a comment instance
      *
-     * @param commentId the comment id
+     * @param commentId
+     *            the comment id
      */
     private Comment createComment(int commentId) {
         Comment comment = new Comment(commentId);

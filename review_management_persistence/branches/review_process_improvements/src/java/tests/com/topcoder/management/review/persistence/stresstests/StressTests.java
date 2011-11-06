@@ -7,7 +7,6 @@ package com.topcoder.management.review.persistence.stresstests;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.framework.TestResult;
 
 /**
  * <p>This test case aggregates all Stress test cases.</p>

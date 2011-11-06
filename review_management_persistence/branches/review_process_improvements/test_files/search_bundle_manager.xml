@@ -14,16 +14,56 @@
      			</Property>
    			</Property>
 			<Property name="context">
-				<Value>select review_id from review, scorecard, resource where review.scorecard_id=scorecard.scorecard_id and review.resource_id=resource.resource_id and</Value>
+				<Value>select review.review_id, review.resource_id, review.submission_id, review.scorecard_id, review.committed, review.score, review.initial_score, review.create_user, review.create_date, review.modify_user, review.modify_date from review, scorecard, resource where review.scorecard_id=scorecard.scorecard_id and review.resource_id=resource.resource_id and</Value>
   		    </Property>  
             <Property name="searchableFields">
-	            <Property name="dummy">
+	            <Property name="scorecardType">
     	            <Property name="validator">
                     	<Property name="class">
                         	<Value>validator</Value>
                         </Property>
     	               	<Property name="identifier">
-	    	                <Value>null</Value>
+	    	                <Value>default</Value>
+            	       	</Property>
+                    </Property>
+                </Property>
+				<Property name="submission">
+    	            <Property name="validator">
+                    	<Property name="class">
+                        	<Value>validator</Value>
+                        </Property>
+    	               	<Property name="identifier">
+	    	                <Value>default</Value>
+            	       	</Property>
+                    </Property>
+                </Property>
+				<Property name="reviewer">
+    	            <Property name="validator">
+                    	<Property name="class">
+                        	<Value>validator</Value>
+                        </Property>
+    	               	<Property name="identifier">
+	    	                <Value>default</Value>
+            	       	</Property>
+                    </Property>
+                </Property>
+				<Property name="project">
+    	            <Property name="validator">
+                    	<Property name="class">
+                        	<Value>validator</Value>
+                        </Property>
+    	               	<Property name="identifier">
+	    	                <Value>default</Value>
+            	       	</Property>
+                    </Property>
+                </Property>
+				<Property name="committed">
+    	            <Property name="validator">
+                    	<Property name="class">
+                        	<Value>validator</Value>
+                        </Property>
+    	               	<Property name="identifier">
+	    	                <Value>default</Value>
             	       	</Property>
                     </Property>
                 </Property>
@@ -49,9 +89,9 @@
      </Property>
   </Config>
   <Config name="com.topcoder.search.builder.validator.factory">
-      <Property name="validator:null">
+      <Property name="validator:default">
           <Property name="type">
-            <Value>com.topcoder.util.datavalidator.NullValidator</Value>
+            <Value>com.topcoder.management.review.persistence.MockValidator</Value>
           </Property>
       </Property>
   </Config>

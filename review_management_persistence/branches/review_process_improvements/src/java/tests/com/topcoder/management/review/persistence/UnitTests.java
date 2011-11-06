@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006, TopCoder, Inc. All rights reserved
+/*
+ * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.management.review.persistence;
 
@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
  * @version 1.0
  */
 public class UnitTests extends TestCase {
+
     /**
      * Aggregates all tests in this class.
      * @return test suite aggregating all tests.
@@ -23,7 +24,9 @@ public class UnitTests extends TestCase {
         final TestSuite suite = new TestSuite();
         suite.addTest(InformixReviewPersistenceTest.suite());
         suite.addTest(DemoTest.suite());
+        // added in 1.2
+        suite.addTestSuite(LogMessageTest.class);
+        suite.addTestSuite(HelperTest.class);
         return suite;
     }
-
 }
