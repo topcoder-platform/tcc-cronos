@@ -550,7 +550,7 @@ public class ResolveAppealHandler extends ReviewCommonHandler {
                 Resource[] allResources = getResourceManager().searchResources(filter);
                 for (Resource res : allResources) {
                     if (res.getResourceRole().getName().equals("Primary Review Evaluator")
-                            && Long.parseLong(res.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY)) == userId) {
+                            && Long.parseLong((String) res.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY)) == userId) {
                         authorResource = res;
                     }
                 }

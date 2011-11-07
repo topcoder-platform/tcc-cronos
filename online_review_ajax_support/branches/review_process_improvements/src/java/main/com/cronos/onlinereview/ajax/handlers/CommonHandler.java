@@ -121,7 +121,7 @@ public abstract class CommonHandler implements AjaxRequestHandler {
             throw new IllegalArgumentException("The resource can't be null.");
         }
         // check if "External Reference ID" property exists or not
-        String value = resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
+        String value = (String) resource.getProperty(EXTERNAL_REFERENCE_ID_PROPERTY);
         if (value == null) {
             return false;
         }
