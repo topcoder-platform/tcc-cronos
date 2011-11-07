@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.stresstests;
 
@@ -9,7 +9,6 @@ import java.util.Date;
 import com.cronos.onlinereview.phases.ScreeningPhaseHandler;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
-import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -24,16 +23,10 @@ import com.topcoder.util.config.ConfigManager;
  * </p>
  * <p>
  * Since this handler is immutable, so it's naturally thread safe. Here just do benchmark tests.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>remove unused imports.</li>
- * </ol>
  * </p>
  *
- * @author TCSDEVELOPER, TMALBONPH
- * @version 1.6.2
- * @since 1.3
+ * @author TCSDEVELOPER
+ * @version 1.3
  */
 public class ScreeningPhaseHandlerTest extends StressBaseTest {
 
@@ -119,19 +112,12 @@ public class ScreeningPhaseHandlerTest extends StressBaseTest {
             this.insertReviews(conn, new Review[]{screenReview });
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(screeningPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                   System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.canPerform(screeningPhase);
             }
-           endRecord(
+            endRecord(
                 "ScreeningPhaseHandler::canPerform(Phase)--(the phase status is false, the PrimaryScreening is false)",
                 FIRST_LEVEL);
-
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
 
         } finally {
             cleanTables();
@@ -188,19 +174,12 @@ public class ScreeningPhaseHandlerTest extends StressBaseTest {
             this.insertReviews(conn, new Review[]{screenReview });
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(screeningPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                   System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.canPerform(screeningPhase);
             }
             endRecord(
                 "ScreeningPhaseHandler::canPerform(Phase)--(the phase status is false, the PrimaryScreening is true)",
                 FIRST_LEVEL);
-
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
 
         } finally {
             cleanTables();
@@ -237,17 +216,10 @@ public class ScreeningPhaseHandlerTest extends StressBaseTest {
             super.setupSubmissionForScreening();
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(screeningPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                   System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.canPerform(screeningPhase);
             }
             endRecord("ScreeningPhaseHandler::canPerform(Phase)--(the phase status is true)", FIRST_LEVEL);
-
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
 
         } finally {
             cleanTables();
@@ -330,9 +302,6 @@ public class ScreeningPhaseHandlerTest extends StressBaseTest {
                 long timeS = System.currentTimeMillis();
                 handler.perform(screeningPhase, operator);
                 time = System.currentTimeMillis() - timeS;
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
-
             } finally {
                 cleanTables();
                 closeConnection();
@@ -358,12 +327,8 @@ public class ScreeningPhaseHandlerTest extends StressBaseTest {
         String operator = "operator";
 
         startRecord();
-        try {
-            for (int i = 0; i < FIRST_LEVEL; i++) {
-                handler.perform(screeningPhase, operator);
-            }
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
+        for (int i = 0; i < FIRST_LEVEL; i++) {
+            handler.perform(screeningPhase, operator);
         }
         endRecord("ScreeningPhaseHandler::perform(Phase, String)--(the phase status is true)", FIRST_LEVEL);
     }

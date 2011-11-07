@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
 package com.cronos.onlinereview.phases.failuretests;
 
 import com.topcoder.project.phases.PhaseStatus;
@@ -16,20 +17,12 @@ import java.util.Date;
 import java.sql.Connection;
 
 /**
- * <p>
- * A factory producing the sample data which could be used for testing purposes.
- * This class provides a set of static constants and a set of static methods producing the sample data.
- * Note that the methods produce a new copy of sample data on each method call.</p>
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>added cast to Connection in method getMockConnection().</li>
- * </ol>
- * </p>
+ * <p>A factory producing the sample data which could be used for testing purposes. This class provides a set of static
+ * constants and a set of static methods producing the sample data. Note that the methods produce a new copy of sample
+ * data on each method call.</p>
  *
- * @author isv, TMALBONPH
- * @version 1.6.2
- * @since 1.0
+ * @author  isv
+ * @version 1.0
  */
 public class TestDataFactory {
 
@@ -757,7 +750,6 @@ public class TestDataFactory {
      * @return a new <code>Project</code> instance.
      */
     public static Project getProject() {
-        @SuppressWarnings("deprecation")
         Project result = new Project(new Date(), new DefaultWorkdays());
         result.setId(2);
         return result;
@@ -780,7 +772,7 @@ public class TestDataFactory {
      * @return a new <code>Connection</code> instance.
      */
     public static Connection getMockConnection() {
-        return (Connection) new MockConnection();
+        return new MockConnection();
     }
 
     /**

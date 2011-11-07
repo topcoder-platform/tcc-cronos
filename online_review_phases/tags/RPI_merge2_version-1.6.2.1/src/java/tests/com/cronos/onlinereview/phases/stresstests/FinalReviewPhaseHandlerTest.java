@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.stresstests;
 
@@ -12,7 +12,6 @@ import com.cronos.onlinereview.phases.FinalReviewPhaseHandler;
 import com.cronos.onlinereview.phases.ReviewPhaseHandler;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
-import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -27,16 +26,10 @@ import com.topcoder.util.config.ConfigManager;
  * </p>
  * <p>
  * Since this handler is immutable, so it's naturally thread safe. Here just do benchmark tests.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>trap PhaseHandlingException cause by missing Configuration property.</li>
- * </ol>
  * </p>
  *
- * @author TCSDEVELOPER, TMALBONPH
- * @version 1.6.2
- * @since 1.3
+ * @author TCSDEVELOPER
+ * @version 1.3
  */
 public class FinalReviewPhaseHandlerTest extends StressBaseTest {
 
@@ -96,17 +89,12 @@ public class FinalReviewPhaseHandlerTest extends StressBaseTest {
             finalReviewPhase.setPhaseStatus(PhaseStatus.OPEN);
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(finalReviewPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL * 10; i++) {
+                handler.canPerform(finalReviewPhase);
             }
             endRecord("FinalReviewPhaseHandler::canPerform(Phase)--(the phase status is false)",
                 FIRST_LEVEL * 10);
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
+
         } finally {
             cleanTables();
         }
@@ -138,16 +126,10 @@ public class FinalReviewPhaseHandlerTest extends StressBaseTest {
             finalReviewPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(finalReviewPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.canPerform(finalReviewPhase);
             }
             endRecord("FinalReviewPhaseHandler::canPerform(Phase)--(the phase status is true)", FIRST_LEVEL);
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
         } finally {
             cleanTables();
         }
@@ -264,18 +246,13 @@ public class FinalReviewPhaseHandlerTest extends StressBaseTest {
             insertResourceInfo(conn, finalReviwer.getId(), 1, "2");
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(finalReviewPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.perform(finalReviewPhase, operator);
             }
             endRecord("FinalReviewPhaseHandler::perform(Phase, String)--" + "(the phase status is true)",
                 FIRST_LEVEL);
+
             // manually check the email
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
         } finally {
             cleanTables();
             closeConnection();
@@ -334,18 +311,13 @@ public class FinalReviewPhaseHandlerTest extends StressBaseTest {
             String operator = "1001";
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.perform(finalReviewPhase, operator);
-                }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.perform(finalReviewPhase, operator);
             }
             endRecord("FinalReviewPhaseHandler::perform(Phase, String)--"
-                + "(the phase status is false, the rejected is false)", FIRST_LEVEL);
+                + "(the phase status is false, the rejecte is false)", FIRST_LEVEL);
+
             // manually check the email
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
         } finally {
             cleanTables();
             closeConnection();
@@ -403,21 +375,15 @@ public class FinalReviewPhaseHandlerTest extends StressBaseTest {
             String operator = "1001";
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.perform(finalReviewPhase, operator);
-                    if (i == 0) {
-                        finalReviewPhase = finalReviewPhase.getProject().getAllPhases()[11];
-                    }
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.perform(finalReviewPhase, operator);
+                if (i == 0) {
+                    finalReviewPhase = finalReviewPhase.getProject().getAllPhases()[11];
                 }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
             }
             endRecord("FinalReviewPhaseHandler::perform(Phase, String)--"
-                + "(the phase status is false, the rejected is true)", FIRST_LEVEL);
+                + "(the phase status is false, the rejecte is true)", FIRST_LEVEL);
 
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
         } finally {
             closeConnection();
             cleanTables();

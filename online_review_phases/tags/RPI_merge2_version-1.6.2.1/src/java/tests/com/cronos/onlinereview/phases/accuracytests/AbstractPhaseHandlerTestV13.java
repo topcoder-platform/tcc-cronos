@@ -97,7 +97,7 @@ public class AbstractPhaseHandlerTestV13 extends BaseTestCase {
 
             // pass
         } catch (Exception e) {
-            throw e;
+        	throw e;
         }
     }
 }

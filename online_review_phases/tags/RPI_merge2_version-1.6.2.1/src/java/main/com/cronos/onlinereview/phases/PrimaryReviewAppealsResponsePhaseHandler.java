@@ -4,7 +4,6 @@
 package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -619,8 +618,6 @@ public class PrimaryReviewAppealsResponsePhaseHandler extends AbstractPhaseHandl
                 result.add(infos);
             }
             values.put("SUBMITTER", result);
-        } catch (SQLException ex) {
-            throw new PhaseHandlingException("Problem when looking up id.", ex);
         } catch (ResourcePersistenceException ex) {
             throw new PhaseHandlingException("Problem with resource persistence.", ex);
         } catch (UploadPersistenceException ex) {

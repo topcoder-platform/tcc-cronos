@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.lookup;
 
@@ -23,18 +23,12 @@ import java.util.Map;
  * name to upper case to meet Java and TopCoder standards.
  * </p>
  * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>add whitespace after the comma in field CACHED_PAIRS</li>
- * </ol>
- * </p>
- * <p>
  * Thread safety: This class is thread safe because its static method is
  * synchronized.
  * </p>
  *
- * @author tuenm, bose_java, TCSDEVELOPER, saarixx, myxgyy, TMALBONPH
- * @version 1.6.2
+ * @author tuenm, bose_java, TCSDEVELOPER, saarixx, myxgyy
+ * @version 1.4
  * @since 1.0
  */
 public class PhaseStatusLookupUtility {
@@ -51,11 +45,8 @@ public class PhaseStatusLookupUtility {
      * Made map type generic, added &quot;final&quot; modified to the variable and changed
      * name to upper case to meet Java and TopCoder standards.
      * </p>
-     * <p>
-     * Change in 1.6.2: add the whitespace after comma.
-     * </p>
      */
-    private static final Map<String, Long> CACHED_PAIRS = new HashMap<String, Long>();
+    private static final Map<String,Long> CACHED_PAIRS = new HashMap<String,Long>();
 
     /**
      * constant representing the sql query string to get the id for a given

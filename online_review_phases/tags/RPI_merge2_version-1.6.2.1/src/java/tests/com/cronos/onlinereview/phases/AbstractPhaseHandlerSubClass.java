@@ -3,12 +3,9 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.cronos.onlinereview.phases.ConfigurationException;
-
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.project.phases.Phase;
-
 
 /**
  * Dummy sub-class of AbstractPhaseHandler for testing purpose.

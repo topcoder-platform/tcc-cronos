@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
 package com.cronos.onlinereview.phases.failuretests.mock;
 
-import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseManager;
 import com.topcoder.management.phase.PhaseManagementException;
 import com.topcoder.management.phase.PhaseHandler;
@@ -21,44 +21,33 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * <p>
- * A mock implementation of {@link PhaseManager} class to be used for testing.
- * Overrides the protected methods declared by a super-class. The overridden methods are declared with
- * package private access so only the test cases could invoke them. The overridden methods simply call
- * the corresponding method of a super-class.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>Changed return type of canStart() and canEnd() methods from boolean to OperationCheckResult.</li>
- * <li>change Map into HashMap&lt;T,T></li>
- * <li>method that uses Map, now using HashMap&lt;T,T></li>
- * </ol>
- * </p>
+ * <p>A mock implementation of {@link PhaseManager} class to be used for testing.
+ * Overrides the protected methods declared by a super-class. The overridden methods are declared with package private access
+ * so only the test cases could invoke them. The overridden methods simply call the corresponding method of a super-class.
  *
- * @author isv, TMALBONPH
- * @version 1.6.2
- * @since 1.0
+ * @author  isv
+ * @version 1.0
  */
 public class MockPhaseManager implements PhaseManager {
 
     /**
-     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Map</code>s mapping
-     * the <code>String</code> names of the arguments to <code>Object</code>s representing the values of  arguments
-     * which have been provided by the caller of the method.</p>
+     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Map</code>s mapping the <code>
+     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been 
+     * provided by the caller of the method.</p>
      */
-    static HashMap<String, Object> methodArguments = new HashMap<String, Object>();
+    private static Map methodArguments = new HashMap();
 
     /**
-     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Exception</code>s
-     * to be thrown by methods.</p>
+     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Exception</code>s to be thrown by
+     * methods.</p>
      */
-    private static HashMap<String, Throwable> throwExceptions = new HashMap<String, Throwable>();
+    private static Map throwExceptions = new HashMap();
 
     /**
      * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Object</code>s to be
      * returned by methods.</p>
      */
-    private static HashMap<String, Object> methodResults = new HashMap<String, Object>();
+    private static Map methodResults = new HashMap();
 
     /**
      * <p>A <code>Throwable</code> representing the exception to be thrown from any method of the mock class.</p>
@@ -90,8 +79,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -106,14 +94,13 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", project0);
         arguments.put("2", string0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -132,8 +119,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -148,13 +134,12 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", new Long(long0));
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -175,8 +160,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -191,13 +175,12 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", longA0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -218,8 +201,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -234,12 +216,11 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        HashMap arguments = new HashMap();
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -260,8 +241,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -276,12 +256,11 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        HashMap arguments = new HashMap();
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -296,10 +275,9 @@ public class MockPhaseManager implements PhaseManager {
      *
      * @see PhaseManager#canStart(Phase)
      */
-    public OperationCheckResult canStart(Phase phase0) {
+    public boolean canStart(Phase phase0) {
         if (MockPhaseManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly",
-                MockPhaseManager.globalException);
+            throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
 
         String methodName = "canStart_Phase";
@@ -309,19 +287,16 @@ public class MockPhaseManager implements PhaseManager {
             throw new RuntimeException("The test may not be configured properly", exception);
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phase0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
-        if (((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue()) {
-            return OperationCheckResult.SUCCESS;
-        }
-        return new OperationCheckResult(false, "Can't start");
+
+        return ((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue();
 
     }
 
@@ -338,8 +313,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -354,14 +328,13 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phase0);
         arguments.put("2", string0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -375,13 +348,12 @@ public class MockPhaseManager implements PhaseManager {
      * @see PhaseManager#canEnd(Phase)
      * @throws PhaseManagementException
      */
-    public OperationCheckResult canEnd(Phase phase0) throws PhaseManagementException {
+    public boolean canEnd(Phase phase0) throws PhaseManagementException {
         if (MockPhaseManager.globalException != null) {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -396,21 +368,16 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phase0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
-        if (((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue()) {
-            return OperationCheckResult.SUCCESS;
-        }
-        return new OperationCheckResult(false, "Can't start");
-
+        return ((Boolean) MockPhaseManager.methodResults.get(methodName)).booleanValue();
 
     }
 
@@ -427,8 +394,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -443,14 +409,13 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phase0);
         arguments.put("2", string0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -469,8 +434,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -485,13 +449,12 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phase0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -512,8 +475,7 @@ public class MockPhaseManager implements PhaseManager {
             if (MockPhaseManager.globalException instanceof PhaseManagementException) {
                 throw (PhaseManagementException) MockPhaseManager.globalException;
             } else {
-                throw new RuntimeException("The test may not be configured properly",
-                    MockPhaseManager.globalException);
+                throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
             }
         }
 
@@ -528,14 +490,13 @@ public class MockPhaseManager implements PhaseManager {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phase0);
         arguments.put("2", string0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -548,11 +509,9 @@ public class MockPhaseManager implements PhaseManager {
      *
      * @see PhaseManager#registerHandler(PhaseHandler, PhaseType, PhaseOperationEnum)
      */
-    public void registerHandler(PhaseHandler phaseHandler0, PhaseType phaseType0,
-        PhaseOperationEnum phaseOperationEnum0) {
+    public void registerHandler(PhaseHandler phaseHandler0, PhaseType phaseType0, PhaseOperationEnum phaseOperationEnum0) {
         if (MockPhaseManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly",
-                MockPhaseManager.globalException);
+            throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
 
         String methodName = "registerHandler_PhaseHandler_PhaseType_PhaseOperationEnum";
@@ -562,15 +521,14 @@ public class MockPhaseManager implements PhaseManager {
             throw new RuntimeException("The test may not be configured properly", exception);
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phaseHandler0);
         arguments.put("2", phaseType0);
         arguments.put("3", phaseOperationEnum0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -585,8 +543,7 @@ public class MockPhaseManager implements PhaseManager {
      */
     public PhaseHandler unregisterHandler(PhaseType phaseType0, PhaseOperationEnum phaseOperationEnum0) {
         if (MockPhaseManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly",
-                MockPhaseManager.globalException);
+            throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
 
         String methodName = "unregisterHandler_PhaseType_PhaseOperationEnum";
@@ -596,14 +553,13 @@ public class MockPhaseManager implements PhaseManager {
             throw new RuntimeException("The test may not be configured properly", exception);
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phaseType0);
         arguments.put("2", phaseOperationEnum0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -620,8 +576,7 @@ public class MockPhaseManager implements PhaseManager {
      */
     public PhaseHandler[] getAllHandlers() {
         if (MockPhaseManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly",
-                MockPhaseManager.globalException);
+            throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
 
         String methodName = "getAllHandlers";
@@ -631,12 +586,11 @@ public class MockPhaseManager implements PhaseManager {
             throw new RuntimeException("The test may not be configured properly", exception);
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        HashMap arguments = new HashMap();
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -653,8 +607,7 @@ public class MockPhaseManager implements PhaseManager {
      */
     public HandlerRegistryInfo[] getHandlerRegistrationInfo(PhaseHandler phaseHandler0) {
         if (MockPhaseManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly",
-                MockPhaseManager.globalException);
+            throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
 
         String methodName = "getHandlerRegistrationInfo_PhaseHandler";
@@ -664,13 +617,12 @@ public class MockPhaseManager implements PhaseManager {
             throw new RuntimeException("The test may not be configured properly", exception);
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phaseHandler0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -687,8 +639,7 @@ public class MockPhaseManager implements PhaseManager {
      */
     public void setPhaseValidator(PhaseValidator phaseValidator0) {
         if (MockPhaseManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly",
-                MockPhaseManager.globalException);
+            throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
 
         String methodName = "setPhaseValidator_PhaseValidator";
@@ -698,13 +649,12 @@ public class MockPhaseManager implements PhaseManager {
             throw new RuntimeException("The test may not be configured properly", exception);
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", phaseValidator0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -719,8 +669,7 @@ public class MockPhaseManager implements PhaseManager {
      */
     public PhaseValidator getPhaseValidator() {
         if (MockPhaseManager.globalException != null) {
-            throw new RuntimeException("The test may not be configured properly",
-                MockPhaseManager.globalException);
+            throw new RuntimeException("The test may not be configured properly", MockPhaseManager.globalException);
         }
 
         String methodName = "getPhaseValidator";
@@ -730,12 +679,11 @@ public class MockPhaseManager implements PhaseManager {
             throw new RuntimeException("The test may not be configured properly", exception);
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockConnection.methodArguments.get(methodName);
+        HashMap arguments = new HashMap();
+        List args = (List) MockPhaseManager.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
-            MockConnection.methodArguments.put(methodName, args);
+            args = new ArrayList();
+            MockPhaseManager.methodArguments.put(methodName, args);
         }
         args.add(arguments);
 
@@ -764,7 +712,6 @@ public class MockPhaseManager implements PhaseManager {
      * @throws IllegalArgumentException if the specified argument does not exist.
      */
     public static Object getMethodArgument(String methodSignature, String argumentName) {
-        @SuppressWarnings("rawtypes")
         Map arguments = (Map) MockPhaseManager.methodArguments.get(methodSignature);
         if (!arguments.containsKey(argumentName)) {
             throw new IllegalArgumentException("The argument name " + argumentName + " is unknown.");
@@ -775,7 +722,7 @@ public class MockPhaseManager implements PhaseManager {
     /**
      * <pChecks if the specified method has been called during the test by the caller.</p>
      *
-     * @param  methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param  methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      * @return <code>true</code> if specified method was called; <code>false</code> otherwise.
      */
     public static boolean wasMethodCalled(String methodSignature) {
@@ -783,13 +730,12 @@ public class MockPhaseManager implements PhaseManager {
     }
 
     /**
-     * <p>Gets the values of the arguments which have been passed to the specified method by the caller.</p>
+     * <p>Gets the values of the argumenta which have been passed to the specified method by the caller.</p>
      *
-     * @param  methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param  methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      * @return a <code>List</code> of <code>Map</code> providing the values of the arguments on each call.
      *         which has been supplied by the caller of the specified method.
      */
-    @SuppressWarnings("rawtypes")
     public static List getMethodArguments(String methodSignature) {
         return (List) MockPhaseManager.methodArguments.get(methodSignature);
     }
@@ -797,7 +743,7 @@ public class MockPhaseManager implements PhaseManager {
     /**
      * <p>Sets the exception to be thrown when the specified method is called.</p>
      *
-     * @param methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      * @param exception a <code>Throwable</code> representing the exception to be thrown when the specified method is
      *        called. If this argument is <code>null</code> then no exception will be thrown.
      */

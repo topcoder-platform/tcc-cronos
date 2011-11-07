@@ -195,9 +195,9 @@ public class ApprovalPhaseHandlerAccTest extends BaseAccuracyTest {
             AccuracyTestHelper.addDependency("Approval", "Final Review", project, false);
 
             Phase phase = AccuracyTestHelper.getPhase("Approval", phases);
-
+	        
             //change dependency type to F2F
-            phase.getAllDependencies()[0].setDependentStart(false);
+	        phase.getAllDependencies()[0].setDependentStart(false);
 
             phase.setPhaseStatus(new PhaseStatus(2, "Open"));
 
@@ -220,7 +220,7 @@ public class ApprovalPhaseHandlerAccTest extends BaseAccuracyTest {
             AccuracyTestHelper.cleanTables();
         }
     }
-
+    
     /**
      * Tests the canPerform() method that check if the phase can start.
      * The input phase has no dependency, but the ApproversNum is not reached.

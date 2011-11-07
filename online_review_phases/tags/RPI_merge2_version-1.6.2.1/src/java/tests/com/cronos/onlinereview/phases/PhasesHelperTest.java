@@ -481,8 +481,7 @@ public class PhasesHelperTest extends BaseTest {
      */
     public void testGetIntegerProp_NotString() throws Exception {
         Resource resource = super.createResource(1L, 1L, 1L, 1L);
-        String snull = null;
-        resource.setProperty("name", snull);
+        resource.setProperty("name", new Exception());
 
         try {
             PhasesHelper.getIntegerProp(resource, "name");

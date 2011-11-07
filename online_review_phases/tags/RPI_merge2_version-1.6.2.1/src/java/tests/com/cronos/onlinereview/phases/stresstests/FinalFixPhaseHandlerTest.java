@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.stresstests;
 
@@ -27,16 +27,10 @@ import com.topcoder.util.config.ConfigManager;
  * </p>
  * <p>
  * Since this handler is immutable, so it's naturally thread safe. Here just do benchmark tests.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>updated HashMap&lt;String, Object> in testSendEmailPhaseMapOfStringObject</li>
- * </ol>
  * </p>
  *
- * @author TCSDEVELOPER, TMALBONPH
- * @version 1.6.2
- * @since 1.3
+ * @author TCSDEVELOPER
+ * @version 1.3
  */
 public class FinalFixPhaseHandlerTest extends StressBaseTest {
 
@@ -234,6 +228,7 @@ public class FinalFixPhaseHandlerTest extends StressBaseTest {
      * @throws Exception
      *             the exception occurs
      */
+    @SuppressWarnings("unchecked")
     public void testSendEmailPhaseMapOfStringObject() throws Exception {
 
         AbstractPhaseHandler handler = new FinalFixPhaseHandler();
@@ -257,7 +252,7 @@ public class FinalFixPhaseHandlerTest extends StressBaseTest {
 
             startRecord();
             for (int i = 0; i < FIRST_LEVEL; i++) {
-                handler.sendEmail(finalFixPhase, new HashMap<String, Object>());
+                handler.sendEmail(finalFixPhase, new HashMap());
             }
             endRecord("AbstractPhaseHandler::sendEmail(Phase, Map)", FIRST_LEVEL);
 

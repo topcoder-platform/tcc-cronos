@@ -30,16 +30,10 @@ import com.topcoder.util.config.ConfigManager;
  * submissions. Instead, this component is very likely to run under a concurrent web-environment.
  * Therefore, I wrote the test in a multi-threaded environment to guarantee that the new added
  * functionalities in version 1.4 are thread safe.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>updated runCanPerform() to return OperationCheckResult.isSuccess()</li>
- * </ol>
  * </p>
  *
- * @author TopCoder, TMALBONPH
- * @version 1.6.2
- * @since 1.0
+ * @author TopCoder
+ * @version 1.4
  */
 public class SpecificationSubmissionPhaseHandlerStressTest extends StressBaseTest {
 
@@ -100,7 +94,7 @@ public class SpecificationSubmissionPhaseHandlerStressTest extends StressBaseTes
      */
     protected void tearDown() throws Exception {
         cleanTables();
-        super.tearDown();
+        closeConnection();
         handler = null;
     }
 
@@ -119,6 +113,9 @@ public class SpecificationSubmissionPhaseHandlerStressTest extends StressBaseTes
 
         // get the result in single-threaded mode
         canPerformResult = runCanPerform();
+
+        // test the single-threaded result
+        assertTrue(canPerformResult);
 
         Thread[] threads = new Thread[THREADS];
         for (int i = 0; i < THREADS; i++) {
@@ -236,11 +233,11 @@ public class SpecificationSubmissionPhaseHandlerStressTest extends StressBaseTes
      * environment.
      * </p>
      *
-     * @return the OperationCheckResult value
+     * @return the boolean value
      * @throws Exception to JUnit
      */
     private boolean runCanPerform() throws Exception {
-        return handler.canPerform(submissionPhase).isSuccess();
+        return handler.canPerform(submissionPhase);
     }
 
     /**
@@ -278,7 +275,7 @@ public class SpecificationSubmissionPhaseHandlerStressTest extends StressBaseTes
                 // test the result, should be equal to the single-threaded result
                 assertEquals(
                     "The data sent and received in multi-threaded environment should not be the same!",
-                    canPerformResult, !resultMultithreaded);
+                    canPerformResult, resultMultithreaded);
             } catch (Exception e) {
                 lastException = e;
             }

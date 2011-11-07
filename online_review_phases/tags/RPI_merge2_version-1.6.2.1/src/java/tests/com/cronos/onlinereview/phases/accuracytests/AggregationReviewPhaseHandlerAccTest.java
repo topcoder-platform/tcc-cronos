@@ -193,9 +193,9 @@ public class AggregationReviewPhaseHandlerAccTest extends BaseAccuracyTest {
             AccuracyTestHelper.addDependency("Aggregation Review", "Aggregation", project, false);
 
             Phase phase = AccuracyTestHelper.getPhase("Aggregation Review", phases);
-
+	        
             //change dependency type to F2F
-            phase.getAllDependencies()[0].setDependentStart(false);
+	        phase.getAllDependencies()[0].setDependentStart(false);
 
             phase.setPhaseStatus(new PhaseStatus(2, "Open"));
 

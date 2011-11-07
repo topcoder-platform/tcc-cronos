@@ -10,7 +10,6 @@ import com.cronos.onlinereview.phases.AppealsPhaseHandler;
 import com.cronos.onlinereview.phases.ReviewPhaseHandler;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
-import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -26,17 +25,9 @@ import com.topcoder.util.config.ConfigManager;
  * <p>
  * Since this handler is immutable, so it's naturally thread safe. Here just do benchmark tests.
  * </p>
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>added method evaluateOcr() to convert OperationCheckResult into boolean.</li>
- * <li>modify testCanPerformHandlerWithOpen() to use evaluateOcr()</i>
- * </ol>
- * </p>
  *
- * @author TCSDEVELOPER, TCSASSEMBLER
- * @version 1.6.2
- * @since 1.0
+ * @author TCSDEVELOPER
+ * @version 1.3
  */
 public class AppealsPhaseHandlerTest extends StressBaseTest {
 
@@ -74,18 +65,6 @@ public class AppealsPhaseHandlerTest extends StressBaseTest {
     }
 
     /**
-     * Evaluate OperationCheckResult into a boolean value.
-     * @param ocr the OperationCheckResult instance.
-     *
-     * @return True if OperationCheckResult hold success operation.
-     */
-    private boolean evaluateOcr(OperationCheckResult ocr) {
-        if (ocr == null)
-            return false;
-        return ocr.isSuccess();
-    }
-
-    /**
      * Tests the AppealsPhaseHandler() constructor and canPerform with Open statuses.
      *
      * @throws Exception
@@ -108,14 +87,12 @@ public class AppealsPhaseHandlerTest extends StressBaseTest {
             appealsPhase.getAllDependencies()[0].setDependentStart(false);
 
             // time has not passed, dependencies not met
-            assertFalse("canPerform should have returned false",
-                evaluateOcr(handler.canPerform(appealsPhase)));
+            assertFalse("canPerform should have returned false", handler.canPerform(appealsPhase));
 
             // time has passed, but dependency not met.
             appealsPhase.setActualStartDate(new Date(System.currentTimeMillis() - 1000));
             appealsPhase.setActualEndDate(new Date());
-            assertFalse("canPerform should have returned false",
-                evaluateOcr(handler.canPerform(appealsPhase)));
+            assertFalse("canPerform should have returned false", handler.canPerform(appealsPhase));
 
             // time has passed and dependency met
             appealsPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);

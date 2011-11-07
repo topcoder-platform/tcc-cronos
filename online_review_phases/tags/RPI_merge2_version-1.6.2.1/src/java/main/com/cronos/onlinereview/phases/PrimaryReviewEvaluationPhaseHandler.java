@@ -4,7 +4,6 @@
 package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -239,8 +238,6 @@ public class PrimaryReviewEvaluationPhaseHandler extends AbstractPhaseHandler {
                 }
                 return new OperationCheckResult(false, "Not all Reviews are Commited");
 
-            } catch (SQLException sqle) {
-                throw new PhaseHandlingException("Failed to search submissions.", sqle);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
@@ -380,8 +377,6 @@ public class PrimaryReviewEvaluationPhaseHandler extends AbstractPhaseHandler {
                 throw new PhaseHandlingException("Problem when looking up resource for the submission.",
                     e);
             }
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Error retrieving submission status id", e);
         } catch (InconsistentDataException e) {
             throw new PhaseHandlingException("Problem when aggregating scores", e);
         } catch (UploadPersistenceException e) {

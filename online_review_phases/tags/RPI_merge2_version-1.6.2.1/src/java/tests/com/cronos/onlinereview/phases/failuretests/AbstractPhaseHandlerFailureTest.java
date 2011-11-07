@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.failuretests;
 
@@ -15,7 +15,6 @@ import com.cronos.onlinereview.phases.AbstractPhaseHandler;
 import com.cronos.onlinereview.phases.ConfigurationException;
 import com.cronos.onlinereview.phases.failuretests.mock.MockProjectManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockResourceManager;
-import com.topcoder.date.workdays.ConfigurationFileException;
 import com.topcoder.date.workdays.DefaultWorkdays;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
@@ -28,29 +27,14 @@ import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
 
 /**
- * <p>A failure test for {@link AbstractPhaseHandler} class.
- * Tests the proper handling of invalid input data by the methods.
- * Passes the invalid arguments to the methods and expects the appropriate exception to be thrown.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>Added definition of WORKDAYS_UNITEST_PROPERTIES for using non-deprecated DefaultWorkdays().</li>
- * <li>update method createPhase() to use WORKDAYS_UNITEST_PROPERTIES</li>
- * </ol>
- * </p>
+ * <p>A failure test for {@link AbstractPhaseHandler} class. Tests the proper handling of invalid input data by the
+ * methods. Passes the invalid arguments to the methods and expects the appropriate exception to be thrown.</p>
  *
- * @author isv, myxgyy, TMALBONPH
- * @version 1.6.2
+ * @author isv, myxgyy
+ * @version 1.2
  * @since 1.0
  */
 public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
-
-    /**
-     * Unit test file for creating DefaultWorkdays().
-     *
-     * @since 1.6.2
-     */
-    public static final String WORKDAYS_UNITEST_PROPERTIES = "test_files/workdays_unittest.properties";
 
     /**
      * <p>The instances of {@link AbstractPhaseHandler} which are tested. These instances are initialized in {@link
@@ -193,8 +177,8 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
     public void testAbstractPhaseHandler_String_2() {
-        String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-            "ConnectionFactoryNS", "");
+        String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests", "ConnectionFactoryNS",
+                                                   "");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -215,8 +199,8 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * value and expects the <code>ConfigurationException</code> to be thrown.</p>
      */
     public void testAbstractPhaseHandler_String_3() {
-        String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests",
-            "ConnectionFactoryNS", "3cwefqf141gg1g41");
+        String[] values = ConfigHelper.setProperty("com.cronos.onlinereview.phases.failuretests", "ConnectionFactoryNS",
+                                                   "3cwefqf141gg1g41");
         try {
             new AbstractPhaseHandlerSubclass(TestDataFactory.NAMESPACE);
             Assert.fail("ConfigurationException should have been thrown");
@@ -910,16 +894,9 @@ public class AbstractPhaseHandlerFailureTest extends AbstractTestCase {
      * @return phase instance.
      * @since 1.2
      */
-    @SuppressWarnings("deprecation")
     private Phase createPhase(long phaseId, long phaseStatusId, String phaseStatusName, long phaseTypeId,
         String phaseTypeName) {
-        DefaultWorkdays wday = null;
-        try {
-            wday = new DefaultWorkdays(WORKDAYS_UNITEST_PROPERTIES);
-        } catch (ConfigurationFileException e) {
-            wday = new DefaultWorkdays();
-        }
-        Project project = new Project(new Date(), wday);
+        Project project = new Project(new Date(), new DefaultWorkdays());
         project.setId(1);
 
         Phase phase = new Phase(project, 2000);

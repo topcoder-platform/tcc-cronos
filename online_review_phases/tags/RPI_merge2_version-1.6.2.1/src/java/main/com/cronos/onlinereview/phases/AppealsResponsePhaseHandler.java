@@ -26,10 +26,13 @@ import com.topcoder.project.phases.Phase;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.DecimalFormat;
 
 /**
  * <p>
@@ -106,8 +109,16 @@ import java.util.Map;
  * in case if operation cannot be performed.</li>
  * </ul>
  * </p>
- * @author tuenm, bose_java, argolite, waits, isv, microsky
- * @version 1.6.1
+ *
+ * <p>
+ * Version 1.7.1 (BUGR-4779) Change notes:
+ * <ol>
+ * <li>Updated {@link #updateSubmissions(Phase, String, Map)} method to populate contest prizes for submissions.</li>
+ * </ol>
+ * </p>
+ *
+ * @author tuenm, bose_java, argolite, waits, isv, microsky, flexme
+ * @version 1.7.1
  */
 public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     /**
@@ -177,13 +188,11 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS_RESPONSE);
 
-        // will throw exception if phase status is neither "Scheduled" nor
-        // "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
-            // return true if all dependencies have stopped and start time has
-            // been reached.
+            // return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.checkPhaseCanStart(phase);
         } else {
             OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
@@ -243,29 +252,36 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS_RESPONSE);
+        Connection conn = createConnection();
 
-        boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
+        try {
+            boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
+            Map<String, Object> values = new HashMap<String, Object>();
 
-        Map<String, Object> values = new HashMap<String, Object>();
-
-        if (toStart) {
-            // for start phase, puts the submission info/initial score
-            values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(createConnection(),
+            if (toStart) {
+                // for start phase, puts the submission info/initial score
+                values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(conn,
                     getManagerHelper(), phase.getProject().getId(), false));
-        } else {
-            // it is going to calculate the final score for every submission
-            // and puts the scores into the values after calculation
-            boolean passedReview = updateSubmissions(phase, operator, values);
-            if (!passedReview) {
-                // if there is no submission passes review after appeal response
-                // insert the post-mortem phase
-                PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
+            } else {
+                // it is going to calculate the final score for every submission
+                // and put the scores into the values after calculation
+                updateSubmissions(phase, operator, values);
+            
+                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                    phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+            
+                if (subs==null || subs.length == 0) {
+                    // if there is no active submissions after appeal response, insert the post-mortem phase
+                    PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
+                }
+                Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true, true));
+                values.put("N_AGGREGATOR", aggregators.length);
             }
-            Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true, true));
-            values.put("N_AGGREGATOR", aggregators.length);
-        }
 
-        sendEmail(phase, values);
+           sendEmail(phase, values);
+        } finally {
+            PhasesHelper.closeConnection(conn);
+        }
     }
 
     /**
@@ -279,12 +295,12 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     private Resource[] getAggregators(Phase aggregationPhase) throws PhaseHandlingException {
         Resource[] aggregators;
-        Connection connection = createConnection();
+        Connection conn = createConnection();
         try {
-            aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), connection,
+            aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     new String[] {"Aggregator" }, aggregationPhase.getId());
         } finally {
-            PhasesHelper.closeConnection(connection);
+            PhasesHelper.closeConnection(conn);
         }
         return aggregators;
     }
@@ -309,224 +325,45 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      * @param phase the phase instance.
      * @param operator operator name.
      * @param values the values map
-     * @return true if there is at least one submission passed review after
-     *         appeal response, false otherwise.
      * @throws PhaseHandlingException if there was an error updating data.
      * @version 1.2
      */
-    private boolean updateSubmissions(Phase phase, String operator, Map<String, Object> values)
+    private void updateSubmissions(Phase phase, String operator, Map<String, Object> values)
         throws PhaseHandlingException {
-        // A : Update failed review submission status to "Failed Review"
-        Connection conn = null;
-
-        // boolean flag to indicate whether all submissions fail review
-        boolean allSubmissionFailed = true;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
-
-            // Search all "Active" submissions for current project
-            // change in version 1.5
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(
-                            getManagerHelper().getUploadManager(), conn, phase
-                                            .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-
             // locate previous review phase
-            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW,
-                            false, true);
-            long reviewPhaseId = reviewPhase.getId();
+            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, true);
 
-            // Search all review scorecard for the review phase
-            Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn,
-                            getManagerHelper(), reviewPhaseId,
-                            PhasesHelper.REVIEWER_ROLE_NAMES, null);
+            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), conn, reviewPhase,
+                operator, false, false, true);
 
-            if (reviews.length == 0) {
-                throw new PhaseHandlingException("No reviews found for phase: "
-                                + reviewPhaseId);
-            }
+            // Order submissions by placement for the notification messages
+            Arrays.sort(subs, new Comparator<Submission>() { 
+                public int compare(Submission sub1, Submission sub2) {
+                   return (int) (sub1.getPlacement() - sub2.getPlacement());
+                } 
+            });
 
-            // Get minimum review score
-            float minScore = PhasesHelper.getScorecardMinimumScore(
-                            getManagerHelper().getScorecardManager(),
-                            reviews[0]);
-
-            // create array to hold scores from all reviewers for all
-            // submissions
-            com.topcoder.management.review.scoreaggregator.Submission[] submissionScores;
-            submissionScores = new com.topcoder.management.review.scoreaggregator.Submission[subs.length];
-
-            // for each submission, populate scores array to use with review
-            // score aggregator.
-            for (int iSub = 0; iSub < subs.length; iSub++) {
-                Submission submission = subs[iSub];
-                long subId = submission.getId();
-                List<Float> scoresList = new ArrayList<Float>();
-
-                // Match the submission with its reviews
-                for (int j = 0; j < reviews.length; j++) {
-                    if (subId == reviews[j].getSubmission()) {
-                        // get review score
-                        scoresList.add(reviews[j].getScore());
-                    }
-                }
-
-                // create float array
-                float[] scores = new float[scoresList.size()];
-
-                for (int iScore = 0; iScore < scores.length; iScore++) {
-                    scores[iScore] = ((Float) scoresList.get(iScore))
-                                    .floatValue();
-                }
-
-                submissionScores[iSub] = new com.topcoder.management.review.scoreaggregator.Submission(
-                                subId, scores);
-            }
-
-            // now calculate the aggregated scores and placements
-            ReviewScoreAggregator scoreAggregator = getManagerHelper()
-                            .getScorecardAggregator();
-
-            // this will hold as many elements as submissions
-            AggregatedSubmission[] aggregations = scoreAggregator
-                            .aggregateScores(submissionScores);
-            RankedSubmission[] placements = scoreAggregator
-                            .calcPlacements(aggregations);
-
-            // status objects
-            SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(
-                            getManagerHelper().getUploadManager(),
-                            "Failed Review");
-            SubmissionStatus noWinStatus = PhasesHelper.getSubmissionStatus(
-                            getManagerHelper().getUploadManager(),
-                            "Completed Without Win");
-
-            Resource winningSubmitter = null;
-            Resource runnerUpSubmitter = null;
-
-            // again iterate over submissions to set the initial score and
-            // placement
-            for (int iSub = 0; iSub < placements.length; iSub++) {
-                RankedSubmission rankedSubmission = placements[iSub];
-                rankedSubmission = PhasesHelper.breakTies(rankedSubmission, subs, placements);
-                Submission submission = PhasesHelper.getSubmissionById(subs,
-                                rankedSubmission.getId());
-                float aggScore = rankedSubmission.getAggregatedScore();
-                int placement = rankedSubmission.getRank();
-
-                // update submitter's final score
-                long submitterId = submission.getUpload().getOwner();
-                Resource submitter = getManagerHelper().getResourceManager()
-                                .getResource(submitterId);
-
-                // OrChange - update the final score and the placement into the
-                // submission table.
-                submission.setFinalScore(Double.valueOf(aggScore + ""));
-                submission.setPlacement(new Long(placement));
-
-                // Old Code Begins
-                // submitter.setProperty("Final Score",
-                // String.valueOf(aggScore));
-                // submitter.setProperty("Placement",
-                // String.valueOf(placement));
-                // Old Code Ends
-
-                // if failed review, then update the status
-                // Only if the status of the current submission is "Active",
-                // since "Failed Screening" should not be updated.
-                if (aggScore < minScore
-                                && submission.getSubmissionStatus()
-                                                .getDescription().equals(
-                                                                "Active")) {
-                    submission.setSubmissionStatus(failedStatus);
-                } else {
-
-                    // there is submission passed review, set flag
-                    // allSubmissionFailed to false
-                    allSubmissionFailed = false;
-
-                    // cache winning submitter.
-                    if (placement == 1) {
-                        winningSubmitter = submitter;
-                    } else {
-                        // cache runner up submitter.
-                        if (placement == 2) {
-                            runnerUpSubmitter = submitter;
-                        }
-                        submission.setSubmissionStatus(noWinStatus);
-                    }
-                }
-                // persist the change
-                getManagerHelper().getUploadManager().updateSubmission(
-                                submission, operator);
-                // getManagerHelper().getResourceManager().updateResource(submitter,
-                // operator);
-            } // end for
-
-            // cannot be the case where there is a runner up but no winner
-            if (runnerUpSubmitter != null && winningSubmitter == null) {
-                throw new PhaseHandlingException(
-                                "Runner up present, but no winner for project with id:"
-                                                + phase.getProject().getId());
-            }
-
-            // if there is a winner
-            if (winningSubmitter != null) {
-                // Set project properties to store the winner and the runner up
-                // Get the project instance
-                Project project = getManagerHelper().getProjectManager()
-                                .getProject(phase.getProject().getId());
-
-                Object winnerExtId = winningSubmitter.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
-                project.setProperty("Winner External Reference ID", winnerExtId);
-
-                // if there is a runner up
-                if (runnerUpSubmitter != null) {
-                    Object runnerExtId = runnerUpSubmitter.getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
-                    project.setProperty("Runner-up External Reference ID", runnerExtId);
-                }
-
-                // update the project
-                getManagerHelper().getProjectManager().updateProject(project,
-                                "Update the winner and runner up.", operator);
-            }
-
-            // for each submission, get the submitter and its scores
+            // For each submission, get the submitter and its scores
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+            DecimalFormat df = new DecimalFormat("#.##");
             for (Submission submission : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
-                infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(getManagerHelper().getResourceManager()
-                        .getResource(submission.getUpload().getOwner()).getProperty(PhasesHelper.HANDLE)));
-                infos.put("SUBMITTER_PRE_APPEALS_SCORE", submission.getInitialScore());
-                infos.put("SUBMITTER_POST_APPEALS_SCORE", submission.getFinalScore());
+                Resource submitter = getManagerHelper().getResourceManager().getResource(submission.getUpload().getOwner());
+                infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(submitter.getProperty(PhasesHelper.HANDLE)));
+                infos.put("SUBMITTER_PRE_APPEALS_SCORE", df.format(submission.getInitialScore()));
+                infos.put("SUBMITTER_POST_APPEALS_SCORE", df.format(submission.getFinalScore()));
                 infos.put("SUBMITTER_RESULT", submission.getPlacement());
                 result.add(infos);
             }
             values.put("SUBMITTER", result);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (ResourcePersistenceException e) {
-            throw new PhaseHandlingException(
-                            "Problem with resource persistence", e);
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Problem with upload persistence",
-                            e);
-        } catch (PersistenceException e) {
-            throw new PhaseHandlingException(
-                            "Problem with project persistence", e);
-        } catch (ValidationException e) {
-            throw new PhaseHandlingException(
-                            "Problem with project persistence", e);
-        } catch (InconsistentDataException e) {
-            throw new PhaseHandlingException("Problem when aggregating scores",
-                            e);
+            throw new PhaseHandlingException("Problem with resource persistence", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
-
-        // return whether there is at least one submission passes review after
-        // appeal response
-        return !allSubmissionFailed;
     }
 
     /**
@@ -537,20 +374,17 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     private boolean allAppealsResolved(Phase phase) throws PhaseHandlingException {
         // Find appeals : Go back to the nearest Review phase
-        Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false,
-                        false);
+        Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, false);
         if (reviewPhase == null) {
             return false;
         }
         long reviewPhaseId = reviewPhase.getId();
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
             // Get all reviews
             Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn,
-                            getManagerHelper(), reviewPhaseId,
-                            PhasesHelper.REVIEWER_ROLE_NAMES, null);
+                getManagerHelper(), reviewPhaseId, PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
             // for each review
             for (int i = 0; i < reviews.length; i++) {
@@ -575,8 +409,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                     comments = items[j].getAllComments();
 
                     for (int c = 0; c < comments.length; c++) {
-                        String commentType = comments[c].getCommentType()
-                                        .getName();
+                        String commentType = comments[c].getCommentType().getName();
 
                         if ("Appeal".equals(commentType)) {
                             appealCount++;

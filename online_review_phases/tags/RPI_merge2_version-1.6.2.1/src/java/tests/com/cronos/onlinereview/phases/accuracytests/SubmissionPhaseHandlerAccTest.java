@@ -225,9 +225,9 @@ public class SubmissionPhaseHandlerAccTest extends BaseAccuracyTest {
             AccuracyTestHelper.addDependency("Submission", "Registration", project, false);
 
             Phase phase = AccuracyTestHelper.getPhase("Submission", phases);
-
+	        
             //change dependency type to F2F
-            phase.getAllDependencies()[0].setDependentStart(false);
+	        phase.getAllDependencies()[0].setDependentStart(false);
 
             phase.setPhaseStatus(new PhaseStatus(2, "Open"));
 

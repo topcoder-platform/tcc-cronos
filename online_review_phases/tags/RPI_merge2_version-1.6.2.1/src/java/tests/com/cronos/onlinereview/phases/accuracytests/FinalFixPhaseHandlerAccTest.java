@@ -137,9 +137,9 @@ public class FinalFixPhaseHandlerAccTest extends BaseAccuracyTest {
             AccuracyTestHelper.addDependency("Final Fix", "Aggregation Review", project, false);
 
             Phase phase = AccuracyTestHelper.getPhase("Final Fix", phases);
-
+	        
             //change dependency type to F2F
-            phase.getAllDependencies()[0].setDependentStart(false);
+	        phase.getAllDependencies()[0].setDependentStart(false);
 
             phase.setPhaseStatus(new PhaseStatus(2, "Open"));
 

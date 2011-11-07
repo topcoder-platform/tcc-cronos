@@ -1,5 +1,4 @@
 <CMConfig>
-    <!-- 1.6.2 Change note: add the 'EmailTemplateSource' from 1.6 -->
     <Config name="com.cronos.onlinereview.phases.PostMortemPhaseHandler">
         <Property name="ConnectionName">
             <Value>informix_connection</Value>
@@ -29,12 +28,9 @@
         </Property>
         <Property name="DefaultScheme">
 	        <Property name="StartPhaseEmail">
-	            <Property name="SendEmail">
-	                <Value>yes</Value>
-	            </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
+	        	<Property name="SendEmail">
+	        		<Value>yes</Value>
+	        	</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -46,12 +42,9 @@
 	            </Property>
 	        </Property>
 	        <Property name="EndPhaseEmail">
-	            <Property name="SendEmail">
-	                <Value>yes</Value>
-	            </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
+	        	<Property name="SendEmail">
+	        		<Value>yes</Value>
+	        	</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -64,13 +57,10 @@
 	        </Property>
         </Property>
         <Property name="ExtendedScheme">
-            <Property name="StartPhaseEmail">
-	            <Property name="SendEmail">
-	                <Value>yes</Value>
-	            </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
+        	<Property name="StartPhaseEmail">
+        		<Property name="SendEmail">
+	        		<Value>yes</Value>
+	        	</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -83,14 +73,11 @@
 	            <Property name="Priority">
 	            	<Value>1</Value>
 	            </Property>
-            </Property>
-            <Property name="EndPhaseEmail">
-	            <Property name="SendEmail">
-	                <Value>yes</Value>
-	            </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
+        	</Property>
+        	<Property name="EndPhaseEmail">
+        		<Property name="SendEmail">
+	        		<Value>yes</Value>
+	        	</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -100,7 +87,7 @@
 	            <Property name="EmailFromAddress">
 	                <Value>topcoder.developer@gmail.com</Value>
 	            </Property>
-            </Property>
+        	</Property>
         </Property>
     </Config>
     

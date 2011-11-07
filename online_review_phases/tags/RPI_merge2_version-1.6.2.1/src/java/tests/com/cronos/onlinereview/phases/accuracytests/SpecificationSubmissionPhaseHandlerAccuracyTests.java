@@ -14,16 +14,10 @@ import com.topcoder.project.phases.Project;
 /**
  * <p>
  * Accuracy tests for the {@link SpecificationSubmissionPhaseHandler} class.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>remove unused imports and variables.</li>
- * </ol>
  * </p>
  *
- * @author akinwale, TMALBONPH
- * @version 1.6.2
- * @since 1.4
+ * @author akinwale
+ * @version 1.4
  */
 public class SpecificationSubmissionPhaseHandlerAccuracyTests extends BaseTestCase {
     /**
@@ -52,6 +46,7 @@ public class SpecificationSubmissionPhaseHandlerAccuracyTests extends BaseTestCa
      *             exception to pass to JUnit
      */
     public void testCanPerform_Scheduled() throws Exception {
+        String error = "canPerform does not work properly";
         Project project = super.setupPhasesWithSpecificationPhases(true);
         Phase[] phases = project.getAllPhases();
         Phase phase = phases[1];
@@ -82,6 +77,7 @@ public class SpecificationSubmissionPhaseHandlerAccuracyTests extends BaseTestCa
      *             exception to pass to JUnit
      */
     public void testCanPerform_Open_DependencyNotMet() throws Exception {
+        String error = "canPerform does not work properly";
         Project project = super.setupPhasesWithSpecificationPhases(true);
         Phase[] phases = project.getAllPhases();
         Phase phase = phases[1];

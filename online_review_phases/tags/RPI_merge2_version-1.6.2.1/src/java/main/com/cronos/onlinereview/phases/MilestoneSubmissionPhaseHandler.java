@@ -10,9 +10,9 @@ import java.util.Map;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
-//import com.topcoder.management.review.data.Review;
+import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
-//import com.topcoder.util.log.Level;
+import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 
@@ -163,9 +163,8 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
         if (toStart) {
             return PhasesHelper.checkPhaseCanStart(phase);
         } else {
-            Connection conn = null;
+            Connection conn = createConnection();
             try {
-                conn = createConnection();
                 OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
                 if (!result.isSuccess()) {
                     return result;
@@ -211,10 +210,8 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
 
         Map<String, Object> values = new HashMap<String, Object>();
 
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
-
             // retrieve the submissions information for sending mail.
             hasAnySubmission(conn, phase, values);
         } finally {
@@ -240,9 +237,8 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     private boolean hasAnySubmission(Connection conn, Phase phase, Map<String, Object> values)
         throws PhaseHandlingException {
-        Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper().getUploadManager(),
-            conn,
-                phase.getProject().getId(), phase.getId(), LOG);
+        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+            conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
 
         // for stop phase, we are going to support more information.
         if (values != null) {

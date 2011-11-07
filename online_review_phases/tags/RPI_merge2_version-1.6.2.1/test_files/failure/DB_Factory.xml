@@ -14,13 +14,13 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://localhost:2021/online_review:INFORMIXSERVER=informixoltp_tcp</Value>
+                       <Value>jdbc:informix-sqli://localhost:9088/online_review:informixserver=ol_topcoder</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
                     </Property>
                     <Property name="password">
-                        <Value>1nf0rm1x</Value>
+                        <Value>topcoder</Value>
                     </Property>
                 </Property>
             </Property>

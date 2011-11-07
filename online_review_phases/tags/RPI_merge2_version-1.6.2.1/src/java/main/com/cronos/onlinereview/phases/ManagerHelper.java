@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -33,8 +33,6 @@ import com.topcoder.util.datavalidator.StringValidator;
 import com.topcoder.util.idgenerator.IDGenerationException;
 import com.topcoder.util.idgenerator.IDGenerator;
 import com.topcoder.util.idgenerator.IDGeneratorFactory;
-import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
-import com.topcoder.web.ejb.user.UserTermsOfUse;
 
 /**
  * <p>
@@ -177,16 +175,6 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
  *  &lt;Property name=&quot;StudioProjectDetailsURL&quot;&gt;
  *      &lt;Value&gt;http://studio.topcoder.com/?projectDetails=?&lt;/Value&gt;
  *  &lt;/Property&gt;
- *  &lt;Property name=&quot;ProjectRoleTermsOfUse&quot;&gt;
- *      &lt;Property name=&quot;ClassName&quot;&gt;
- *          &lt;Value&gt;com.cronos.onlinereview.phases.MockProjectRoleTermsOfUse&lt;/Value&gt;
- *      &lt;/Property&gt;
- *  &lt;/Property&gt;
- *  &lt;Property name=&quot;UserTermsOfUse&quot;&gt;
- *      &lt;Property name=&quot;ClassName&quot;&gt;
- *          &lt;Value&gt;com.cronos.onlinereview.phases.MockUserTermsOfUse&lt;/Value&gt;
- *      &lt;/Property&gt;
- *  &lt;/Property&gt;
  * &lt;/Config&gt;
  * </pre>
  *
@@ -202,7 +190,6 @@ import com.topcoder.web.ejb.user.UserTermsOfUse;
  * Change in version 1.6:
  * <ul>
  * <li>add link property to studio contest for email reference.</li>
- * <li>add configuration of ProjectRoleTermsOfUse and UserTermsOfUse for access.</li>
  * </ul>
  * </p>
  * <p>
@@ -392,28 +379,6 @@ public class ManagerHelper {
      */
     private static final String PROP_SCORE_AGGREGATOR_NAMESPACE = "ScorecardAggregator.Namespace";
 
-    /**
-     * Property name constant for ProjectRoleTermsOfUse implementation class name.
-     * @since 1.6
-     */
-    private static final String PROJECT_ROLE_TERMS_OF_USE_CLASS_NAME = "ProjectRoleTermsOfUse.ClassName";
-
-    /**
-     * Property name constant for namespace to be passed to ProjectRoleTermsOfUse constructor.
-     * @since 1.6
-     */
-    private static final String PROJECT_ROLE_TERMS_OF_USE_NAMESPACE = "ProjectRoleTermsOfUse.Namespace";
-
-    /**
-     * Property name constant for UserTermsOfUse implementation class name.
-     * @since 1.6
-     */
-    private static final String USER_TERMS_OF_USE_CLASS_NAME = "UserTermsOfUse.ClassName";
-
-    /**
-     * Property name constant for namespace to be passed to UserTermsOfUse constructor.
-     */
-    private static final String USER_TERMS_OF_USE_NAMESPACE = "UserTermsOfUse.Namespace";
 
     /**
      * ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval all use same constructor signature which
@@ -510,17 +475,6 @@ public class ManagerHelper {
      */
     private final String studioProjectDetailsBaseURL;
 
-    /**
-     * Represents the ProjectRoleTermsOfUse instance.
-     * @since 1.6
-     */
-    private final ProjectRoleTermsOfUse projectRoleTermsOfUse;
-
-    /**
-     * Represents the UserTermsOfUse instance.
-     * @since 1.6
-     */
-    private final UserTermsOfUse userTermsOfUse;
 
     /**
      * Creates a new instance of ManagerHelper using the default configuration namespace of this class. This
@@ -580,10 +534,6 @@ public class ManagerHelper {
         this.studioProjectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace,
             PROP_STUDIO_PROJECT_DETAILS_URL,
                 true);
-        this.projectRoleTermsOfUse = initManager(namespace, PROJECT_ROLE_TERMS_OF_USE_CLASS_NAME,
-                PROJECT_ROLE_TERMS_OF_USE_NAMESPACE, ProjectRoleTermsOfUse.class, false);
-        this.userTermsOfUse = initManager(namespace, USER_TERMS_OF_USE_CLASS_NAME, USER_TERMS_OF_USE_NAMESPACE,
-                UserTermsOfUse.class, false);
     }
 
     /**
@@ -681,27 +631,7 @@ public class ManagerHelper {
         return studioProjectDetailsBaseURL;
     }
 
-    /**
-     * <p>
-     * Gets the ProjectRoleTermsOfUse instance.
-     * </p>
-     * @return the ProjectRoleTermsOfUse instance.
-     * @since 1.6
-     */
-    public ProjectRoleTermsOfUse getProjectRoleTermsOfUse() {
-        return projectRoleTermsOfUse;
-    }
 
-    /**
-     * <p>
-     * Gets the UserTermsOfUse instance.
-     * </p>
-     * @return the UserTermsOfUse instance.
-     * @since 1.6
-     */
-    public UserTermsOfUse getUserTermsOfUse() {
-        return userTermsOfUse;
-    }
 
     /**
      * This method is called by constructor to create an instance of UploadManager. It retrieves the required

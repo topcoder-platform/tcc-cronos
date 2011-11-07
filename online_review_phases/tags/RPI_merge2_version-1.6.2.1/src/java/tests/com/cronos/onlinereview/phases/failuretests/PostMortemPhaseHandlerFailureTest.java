@@ -30,14 +30,14 @@ import com.topcoder.util.config.ConfigManager;
  */
 public class PostMortemPhaseHandlerFailureTest extends AbstractTestCase {
 
-    /**
-     * The instance to test.
-     */
-    private PostMortemPhaseHandler instance;
+	/**
+	 * The instance to test.
+	 */
+	private PostMortemPhaseHandler instance;
 
-    /**
-     * The configuration file.
-     */
+	/**
+	 * The configuration file.
+	 */
     public static final String[] CONFIGURATION_FILES = new String[] {
         "failure/DB_Factory.xml",
         "failure/Logging_Wrapper.xml",
@@ -54,12 +54,12 @@ public class PostMortemPhaseHandlerFailureTest extends AbstractTestCase {
         "failure/Review_Score_Aggregator.xml",
         "failure/SearchBuilderCommon.xml"};
 
-    /**
-     * Sets up the environment.
-     * @throws Exception to JUnit
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+	/**
+	 * Sets up the environment.
+	 * @throws Exception to JUnit
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
         ConfigManager configManager = ConfigManager.getInstance();
         Iterator iter = configManager.getAllNamespaces();
         while (iter.hasNext()) {
@@ -69,14 +69,14 @@ public class PostMortemPhaseHandlerFailureTest extends AbstractTestCase {
         ConfigHelper.loadConfiguration(new File("failure/Failure.xml"));
         ConfigHelper.loadConfiguration(new File("failure/Phase_Handler.xml"));
         instance = new PostMortemPhaseHandler();
-    }
+	}
 
-    /**
-     * Cleans up the environment.
-     * @throws Exception to JUnit
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
+	/**
+	 * Cleans up the environment.
+	 * @throws Exception to JUnit
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
         ConfigManager configManager = ConfigManager.getInstance();
 
         Iterator iter = configManager.getAllNamespaces();
@@ -84,130 +84,130 @@ public class PostMortemPhaseHandlerFailureTest extends AbstractTestCase {
         while (iter.hasNext()) {
             configManager.removeNamespace((String) iter.next());
         }
-    }
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #PostMortemPhaseHandler(java.lang.String)}.
-     * In this case, the input is null and IllegalArgumentException is expected.
-     * @throws Exception to JUnit
-     */
-    public void testPostMortemPhaseHandler_NullInput() throws Exception {
-        try {
-            new PostMortemPhaseHandler(null);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #PostMortemPhaseHandler(java.lang.String)}.
+	 * In this case, the input is null and IllegalArgumentException is expected.
+	 * @throws Exception to JUnit
+	 */
+	public void testPostMortemPhaseHandler_NullInput() throws Exception {
+		try {
+			new PostMortemPhaseHandler(null);
+			fail("IllegalArgumentException expected");
+		} catch (IllegalArgumentException e) {
+			// good
+		}
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #PostMortemPhaseHandler(java.lang.String)}.
-     * In this case, the input is empty and IllegalArgumentException is expected.
-     * @throws Exception to JUnit
-     */
-    public void testPostMortemPhaseHandler_EmptyInput() throws Exception {
-        try {
-            new PostMortemPhaseHandler(" \t \n");
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #PostMortemPhaseHandler(java.lang.String)}.
+	 * In this case, the input is empty and IllegalArgumentException is expected.
+	 * @throws Exception to JUnit
+	 */
+	public void testPostMortemPhaseHandler_EmptyInput() throws Exception {
+		try {
+			new PostMortemPhaseHandler(" \t \n");
+			fail("IllegalArgumentException expected");
+		} catch (IllegalArgumentException e) {
+			// good
+		}
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #canPerform(com.topcoder.project.phases.Phase)}.
-     * In this case, the phase is null.
-     * @throws Exception to JUnit
-     */
-    public void testCanPerform_NullPhase() throws Exception {
-        try {
-            instance.canPerform(null);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #canPerform(com.topcoder.project.phases.Phase)}.
+	 * In this case, the phase is null.
+	 * @throws Exception to JUnit
+	 */
+	public void testCanPerform_NullPhase() throws Exception {
+		try {
+			instance.canPerform(null);
+			fail("IllegalArgumentException expected");
+		} catch (IllegalArgumentException e) {
+			// good
+		}
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #canPerform(com.topcoder.project.phases.Phase)}.
-     * In this case, the phase type is wrong.
-     * @throws Exception to JUnit
-     */
-    public void testCanPerform_WrongPhaseType() throws Exception {
-        try {
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #canPerform(com.topcoder.project.phases.Phase)}.
+	 * In this case, the phase type is wrong.
+	 * @throws Exception to JUnit
+	 */
+	public void testCanPerform_WrongPhaseType() throws Exception {
+		try {
             Phase phase = createPhase(1, 1, "Scheduled", 12, "INVALID");
-            instance.canPerform(phase);
-            fail("PhaseNotSupportedException expected");
-        } catch (PhaseNotSupportedException e) {
-            // good
-        }
-    }
+			instance.canPerform(phase);
+			fail("PhaseNotSupportedException expected");
+		} catch (PhaseNotSupportedException e) {
+			// good
+		}
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
-     * @throws Exception to JUnit
-     */
-    public void testPerform_NullPhase() throws Exception {
-        try {
-            instance.perform(null, "operator");
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
+	 * @throws Exception to JUnit
+	 */
+	public void testPerform_NullPhase() throws Exception {
+		try {
+			instance.perform(null, "operator");
+			fail("IllegalArgumentException expected");
+		} catch (IllegalArgumentException e) {
+			// good
+		}
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
-     * In this case, the operator is null.
-     * @throws Exception to JUnit
-     */
-    public void testPerform_NullOperator() throws Exception {
-        try {
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
+	 * In this case, the operator is null.
+	 * @throws Exception to JUnit
+	 */
+	public void testPerform_NullOperator() throws Exception {
+		try {
             Phase phase = createPhase(1, 1, "Scheduled", 12, "Post-Mortem");
-            instance.perform(phase, null);
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
+			instance.perform(phase, null);
+			fail("IllegalArgumentException expected");
+		} catch (IllegalArgumentException e) {
+			// good
+		}
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
-     * In this case, the operator is null.
-     * @throws Exception to JUnit
-     */
-    public void testPerform_EmptyOperator() throws Exception {
-        try {
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
+	 * In this case, the operator is null.
+	 * @throws Exception to JUnit
+	 */
+	public void testPerform_EmptyOperator() throws Exception {
+		try {
             Phase phase = createPhase(1, 1, "Scheduled", 12, "Post-Mortem");
-            instance.perform(phase, "\t \n");
-            fail("IllegalArgumentException expected");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
+			instance.perform(phase, "\t \n");
+			fail("IllegalArgumentException expected");
+		} catch (IllegalArgumentException e) {
+			// good
+		}
+	}
 
-    /**
-     * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
-     * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
-     * In this case, the phase type is wrong.
-     * @throws Exception to JUnit
-     */
-    public void testPerform_WrongPhaseType() throws Exception {
-        try {
+	/**
+	 * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler
+	 * #perform(com.topcoder.project.phases.Phase, java.lang.String)}.
+	 * In this case, the phase type is wrong.
+	 * @throws Exception to JUnit
+	 */
+	public void testPerform_WrongPhaseType() throws Exception {
+		try {
             Phase phase = createPhase(1, 1, "Scheduled", 12, "review");
-            instance.perform(phase, "operator");
-            fail("PhaseNotSupportedException expected");
-        } catch (PhaseNotSupportedException e) {
-            // good
-        }
-    }
+			instance.perform(phase, "operator");
+			fail("PhaseNotSupportedException expected");
+		} catch (PhaseNotSupportedException e) {
+			// good
+		}
+	}
 
     /**
      * Test method for {@link com.cronos.onlinereview.phases.PostMortemPhaseHandler

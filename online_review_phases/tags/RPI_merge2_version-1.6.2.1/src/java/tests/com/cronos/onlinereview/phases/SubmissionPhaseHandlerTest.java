@@ -36,13 +36,7 @@ import java.util.Date;
  * <li>Change some test because the return of canPerform change from boolean to OperationCheckResult.</li>
  * </ul>
  * </p>
- * <p>
- * Version 1.6.2 changes note:
- * <ul>
- * <li>update setUp() to add DOC_GENERATOR_CONFIG_FILE into Configuration.</li>
- * </ul>
- * </p>
- * @author bose_java, waits, microsky, TMALBONPH
+ * @author bose_java, waits, microsky
  * @version 1.6.1
  */
 public class SubmissionPhaseHandlerTest extends BaseTest {
@@ -56,7 +50,6 @@ public class SubmissionPhaseHandlerTest extends BaseTest {
         ConfigManager configManager = ConfigManager.getInstance();
 
         configManager.add(PHASE_HANDLER_CONFIG_FILE);
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
         configManager.add(EMAIL_CONFIG_FILE);
         configManager.add(MANAGER_HELPER_CONFIG_FILE);
 

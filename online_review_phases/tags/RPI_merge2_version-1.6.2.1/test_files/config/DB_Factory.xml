@@ -13,8 +13,8 @@
                     <Property name="jdbc_driver">
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
-                    <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://localhost:2021/online_review:INFORMIXSERVER=informixoltp_tcp</Value>
+                     <Property name="jdbc_url">
+                        <Value>jdbc:informix-sqli://127.0.0.1:2021/online_review:informixserver=informixoltp_tcp</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>
@@ -34,7 +34,7 @@
                         <Value>com.informix.jdbc.IfxDriver</Value>
                     </Property>
                     <Property name="jdbc_url">
-                        <Value>jdbc:informix-sqli://localhost:2021/online_review:INFORMIXSERVER=informixoltp_tcp</Value>
+                        <Value>jdbc:informix-sqli://127.0.0.1:2021/online_review:informixserver=informixoltp_tcp</Value>
                     </Property>
                     <Property name="user">
                         <Value>informix</Value>

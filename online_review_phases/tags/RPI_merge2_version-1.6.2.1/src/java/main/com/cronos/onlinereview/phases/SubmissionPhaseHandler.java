@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -79,15 +79,8 @@ import com.topcoder.project.phases.Phase;
  * getAutoScreeningPasses().</li>
  * </ul>
  * </p>
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>fix check-style header line warning.</li>
- * </ol>
- * </p>
- *
- * @author tuenm, bose_java, argolite, bramandia, saarixx, myxgyy, microsky, TMALBONPH
- * @version 1.6.2
+ * @author tuenm, bose_java, argolite, bramandia, saarixx, myxgyy, microsky
+ * @version 1.6.1
  * @since 1.0
  */
 public class SubmissionPhaseHandler extends AbstractPhaseHandler {
@@ -232,12 +225,8 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
         try {
             conn = createConnection();
 
-            subs = PhasesHelper.searchActiveSubmissions(
-                            getManagerHelper().getUploadManager(), conn, phase
-                                            .getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException(
-                            "Error retrieving submission status id", e);
+            subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
+                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
         } finally {
             PhasesHelper.closeConnection(conn);
         }

@@ -26,7 +26,9 @@ import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
 import com.topcoder.web.ejb.project.ProjectRoleTermsOfUse;
+import com.topcoder.web.ejb.project.ProjectRoleTermsOfUseLocator;
 import com.topcoder.web.ejb.user.UserTermsOfUse;
+import com.topcoder.web.ejb.user.UserTermsOfUseLocator;
 
 import javax.ejb.CreateException;
 import javax.naming.NamingException;
@@ -61,19 +63,14 @@ import javax.naming.NamingException;
  * </ol>
  * </p>
  * <p>
- * Version 1.6 Change notes:
- * <ol>
- * <li>Updated to use the cached ProjectRoleTermsOfUse and UserTermsOfUse instance.</li>
- * </ol>
- * </p>
- * <p>
- * Thread safety: This class is thread safe because it is immutable.
- * </p>
- * <p>
  * Version 1.6.1 changes note:
  * <ul>
  * <li>The return changes from boolean to OperationCheckResult.</li>
  * </ul>
+ * </p>
+ *
+ * <p>
+ * Thread safety: This class is thread safe because it is immutable.
  * </p>
  * @author argolite, waits, saarixx, isv, FireIce, microsky
  * @version 1.6.1
@@ -282,7 +279,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             ResourceManager resourceManager = managerHelper.getResourceManager();
             DateFormat dateFormatter = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
 
-            Connection conn = null;
+            Connection conn = createConnection();
             try {
                 // Locate the role for Post-Mortem Reviewer
                 ResourceRole postMortemReviewerRole = null;
@@ -293,8 +290,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                         break;
                     }
                 }
-
-                conn = createConnection();
 
                 long projectId = phase.getProject().getId();
 
@@ -395,14 +390,12 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if there was an error retrieving data.
      */
     private boolean allPostMortemReviewsDone(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
             // Search all post-mortem review scorecards for the current phase
-            conn = createConnection();
             Review[] reviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
-                                                                    phase.getProject().getId(),
-                                                                    POST_MORTEM_REVIEWER_FILTER, null);
+                phase.getProject().getId(), POST_MORTEM_REVIEWER_FILTER, null);
 
             // Count number of committed reviews
             int committedReviewsCount = 0;
@@ -443,12 +436,11 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * @version 1.6
      * @since 1.4
      */
-    @SuppressWarnings("unchecked")
     private boolean hasPendingTermsOfUse(long projectId, long userId, long roleId)
         throws CreateException, NamingException, RemoteException {
-        // now the services will be cached in ManagerHelper class.
-        ProjectRoleTermsOfUse projectRoleTermsOfUse = getManagerHelper().getProjectRoleTermsOfUse();
-        UserTermsOfUse userTermsOfUse = getManagerHelper().getUserTermsOfUse();
+        // get remote services
+        ProjectRoleTermsOfUse projectRoleTermsOfUse = ProjectRoleTermsOfUseLocator.getService();
+        UserTermsOfUse userTermsOfUse = UserTermsOfUseLocator.getService();
 
         List<Long>[] necessaryTerms = projectRoleTermsOfUse.getTermsOfUse(
             (int) projectId, new int[] {new Long(roleId).intValue() }, DBMS.COMMON_OLTP_DATASOURCE_NAME);

@@ -101,7 +101,8 @@ public class AccuracyTestHelper {
      *
      * @throws Exception if any unexpected error occurred.
      */
-    public static void clearAllConfigNS() throws Exception {
+    @SuppressWarnings("unchecked")
+	public static void clearAllConfigNS() throws Exception {
         ConfigManager configManager = ConfigManager.getInstance();
 
         for (Iterator iter = configManager.getAllNamespaces(); iter.hasNext();) {
@@ -118,7 +119,8 @@ public class AccuracyTestHelper {
      * @param instanceName a <code>String</code> providing the name of the static field holding the reference to the
      *                     singleton instance.
      */
-    public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
+    @SuppressWarnings("unchecked")
+	public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
         try {
             Field instanceField = clazz.getDeclaredField(instanceName);
             boolean accessibility = instanceField.isAccessible();
@@ -303,7 +305,7 @@ public class AccuracyTestHelper {
      * @throws Exception not for this test case.
      */
     @SuppressWarnings("deprecation")
-    public static Connection getConnection() throws Exception {
+	public static Connection getConnection() throws Exception {
         DBConnectionFactory dbFactory = new DBConnectionFactoryImpl(DBConnectionFactoryImpl.class.getName());
 
         if (connection == null) {

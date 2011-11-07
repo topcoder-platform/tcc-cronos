@@ -160,18 +160,16 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
                     return OperationCheckResult.SUCCESS;
                 }
 
-                Connection conn = null;
+                Connection conn = createConnection();
                 boolean canCloseAppealsEarly = false;
                 try {
-                    // check if all submitters agreed to close appeals phase
-                    // early
-                    conn = createConnection();
+                    // check if all submitters agreed to close appeals phase early
                     canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(
                                     getManagerHelper().getResourceManager(),
                                     getManagerHelper().getUploadManager(),
                                     conn, phase.getProject().getId());
                 } catch (PhaseHandlingException phe) {
-                    LOG.log(Level.ERROR, new LogMessage(new Long(phase.getId()), null,
+                    LOG.log(Level.ERROR, new LogMessage(phase.getId(), null,
                         "Fail to check if appeals can be closed early.", phe));
                     throw phe;
                 } finally {
@@ -212,10 +210,14 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();
-        // puts the submissions info/scores into the values map
-        values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(createConnection(),
-                                                                    getManagerHelper(),
-                                                                    phase.getProject().getId(), true));
+        Connection conn = createConnection();
+        try {
+            // puts the submissions info/scores into the values map
+            values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(conn, getManagerHelper(),
+                phase.getProject().getId(), true));
+        } finally {
+            PhasesHelper.closeConnection(conn);
+        }
         sendEmail(phase, values);
     }
 }

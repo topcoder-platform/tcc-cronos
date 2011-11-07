@@ -186,14 +186,18 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
                 return result;
             }
 
-            // change in version 1.4
-            // This is NOT the first phase in the project
-            // or all parent projects are completed
-            if (!PhasesHelper.isFirstPhase(phase) || PhasesHelper
-                .areParentProjectsCompleted(phase, createConnection(), this.getManagerHelper(), LOG)) {
-                return OperationCheckResult.SUCCESS;
-            } else {
-                return new OperationCheckResult("Not all parent projects are completed");
+            Connection conn = createConnection();
+            try {
+                // change in version 1.4
+                // This is NOT the first phase in the project or all parent projects are completed
+                if (!PhasesHelper.isFirstPhase(phase) ||
+                    PhasesHelper.areParentProjectsCompleted(phase, conn, this.getManagerHelper(), LOG)) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult("Not all parent projects are completed");
+                }
+            } finally {
+                PhasesHelper.closeConnection(conn);
             }
         } else {
             result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
@@ -336,9 +340,8 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      *             in case of any error while retrieving.
      */
     private Resource[] searchResources(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
             long resourceRoleId = ResourceRoleLookupUtility.lookUpId(conn,
                 PhasesHelper.SUBMITTER_ROLE_NAME);
             Filter roleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(resourceRoleId);

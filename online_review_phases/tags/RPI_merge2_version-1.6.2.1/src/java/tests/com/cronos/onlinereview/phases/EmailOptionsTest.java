@@ -13,15 +13,8 @@ import junit.framework.TestCase;
  * <li>EmailOptions does not have filed TemplateSource not. Remove this field's test of setter and getter</li>
  * </ul>
  * </p>
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>add test for setter and getter for templateSource.</li>
- * </ol>
- * </p>
- *
- * @author waits, microsky, TMALBONPH
- * @version 1.6.2
+ * @author waits, microsky
+ * @version 1.6.1
  * @since 1.0
  */
 public class EmailOptionsTest extends TestCase {
@@ -202,38 +195,5 @@ public class EmailOptionsTest extends TestCase {
         // with null value
         instance.setSend(null);
         assertNull("Failed to get value.", instance.isSend());
-    }
-
-    /**
-     * <p>
-     * Tests TemplateSource getter.
-     * </p>
-     */
-    public void testGetTemplateSource() {
-        // default value is 'file'
-        assertEquals("Failed to get value.", "file", instance.getTemplateSource());
-
-        // set value
-        instance.setTemplateSource("XFile");
-
-        // verify again
-        assertEquals("Failed to get value.", "XFile", instance.getTemplateSource());
-    }
-
-    /**
-     * <p>
-     * Tests TemplateSource setter.
-     * </p>
-     */
-    public void testSetTemplateSource() {
-        // set value
-        instance.setTemplateSource("FILE");
-
-        // verify
-        assertEquals("Failed to get value.", "FILE", instance.getTemplateSource());
-
-        // with null value
-        instance.setTemplateSource(null);
-        assertNull("Failed to get value.", instance.getTemplateSource());
     }
 }

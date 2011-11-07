@@ -8,7 +8,6 @@ import com.cronos.onlinereview.phases.PhaseNotSupportedException;
 import com.cronos.onlinereview.phases.failuretests.mock.MockResourceManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockReviewManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockScorecardManager;
-import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.ReviewManagementException;
@@ -24,22 +23,9 @@ import junit.framework.TestSuite;
  * <p>A failure test for {@link ApprovalPhaseHandler} class. Tests the proper handling of
  * invalid input data by the methods. Passes the invalid arguments to the methods and expects the appropriate exception
  * to be thrown.</p>
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>It is now more reliable to depend on member function that return value
- * of type OperationCheckResult.</li>
- * <li>the following need to be check for its return value:</li>
- * <li>unit test in testCanPerform_Phase_OpenPhase_ResourceManagerError_SearchBuilderConfigurationException</li>
- * <li>unit test in testCanPerform_Phase_OpenPhase_ResourceManagerError_ResourcePersistenceException</li>
- * <li>unit test in testCanPerform_Phase_OpenPhase_ResourceManagerError_SearchBuilderException</li>
- * <li>unit test in testCanPerform_Phase_OpenPhase_ReviewManagerError_ReviewManagementException</li>
- * </ol>
- * </p>
  *
- * @author isv, TMALBONPH
- * @version 1.6.2
- * @since 1.0
+ * @author isv
+ * @version 1.0
  */
 public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
 
@@ -328,11 +314,8 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new SearchBuilderConfigurationException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                OperationCheckResult result =
                 this.testedInstances[i].canPerform(TestDataFactory.getOpenApprovalPhase());
-                if (!result.isSuccess()) {
-                    Assert.fail("PhaseHandlingException should have been thrown");
-                }
+                Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {
@@ -352,11 +335,8 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new ResourcePersistenceException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                OperationCheckResult result =
                 this.testedInstances[i].canPerform(TestDataFactory.getOpenApprovalPhase());
-                if (!result.isSuccess()) {
-                    Assert.fail("PhaseHandlingException should have been thrown");
-                }
+                Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {
@@ -376,11 +356,8 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockResourceManager.throwGlobalException(new SearchBuilderException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                OperationCheckResult result =
                 this.testedInstances[i].canPerform(TestDataFactory.getOpenApprovalPhase());
-                if (!result.isSuccess()) {
-                    Assert.fail("PhaseHandlingException should have been thrown");
-                }
+                Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {
@@ -400,11 +377,8 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockReviewManager.throwGlobalException(new ReviewManagementException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                OperationCheckResult result =
                 this.testedInstances[i].canPerform(TestDataFactory.getOpenApprovalPhase());
-                if (!result.isSuccess()) {
-                    Assert.fail("PhaseHandlingException should have been thrown");
-                }
+                Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {
@@ -424,11 +398,8 @@ public class ApprovalPhaseHandlerFailureTest extends AbstractTestCase {
         MockScorecardManager.throwGlobalException(new PersistenceException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                OperationCheckResult result =
                 this.testedInstances[i].canPerform(TestDataFactory.getClosedApprovalPhase());
-                if (!result.isSuccess()) {
-                    Assert.fail("PhaseHandlingException should have been thrown");
-                }
+                Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {

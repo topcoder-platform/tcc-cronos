@@ -137,9 +137,9 @@ public class ReviewPhaseHandlerAccTest extends BaseAccuracyTest {
             AccuracyTestHelper.addDependency("Review", "Screening", project, false);
 
             Phase phase = AccuracyTestHelper.getPhase("Review", phases);
-
+	        
             //change dependency type to F2F
-            phase.getAllDependencies()[0].setDependentStart(false);
+	        phase.getAllDependencies()[0].setDependentStart(false);
 
             phase.setPhaseStatus(new PhaseStatus(2, "Open"));
 

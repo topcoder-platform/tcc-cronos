@@ -161,8 +161,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
             Connection conn = null;
             try {
                 conn = createConnection();
-                if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(),
-                    createConnection(), LOG) != null) {
+                if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(), conn, LOG) != null) {
                     return OperationCheckResult.SUCCESS;
                 } else {
                     return new OperationCheckResult("Specification submission doesn't exist.");

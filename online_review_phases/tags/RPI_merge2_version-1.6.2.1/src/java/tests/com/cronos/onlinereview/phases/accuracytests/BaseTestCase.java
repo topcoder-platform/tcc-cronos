@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.accuracytests;
 
@@ -51,17 +51,11 @@ import java.util.Properties;
 
 
 /**
- * <p>
  * Defines methods to do usual operations.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>fix warnings.</li>
- * </ol>
- * </p>
  *
- * @author myxgyy, assistant, akinwale, TMALBONPH
- * @version 1.6.2
+ * @author myxgyy, assistant, akinwale
+ * @version 1.4
+ *
  * @since 1.2
  */
 abstract class BaseTestCase extends TestCase {
@@ -168,6 +162,7 @@ abstract class BaseTestCase extends TestCase {
      *
      * @throws Exception to JUnit.
      */
+    @SuppressWarnings("unchecked")
     protected void clearAllNamespace() throws Exception {
         ConfigManager configManager = ConfigManager.getInstance();
 
@@ -1427,6 +1422,7 @@ abstract class BaseTestCase extends TestCase {
      *
      * @since 1.2
      */
+    @SuppressWarnings("unchecked")
     static Object getPrivateField(Class type, Object instance, String name) {
         Field field = null;
         Object obj = null;

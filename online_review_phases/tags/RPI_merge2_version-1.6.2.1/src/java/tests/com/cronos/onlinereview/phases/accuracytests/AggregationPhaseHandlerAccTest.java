@@ -105,8 +105,7 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
             OperationCheckResult result = handler.canPerform(phase);
 
             assertFalse("Not the expected checking result", result.isSuccess());
-            assertEquals("Wrong message",
-                "Dependency Appeals Response phase is not yet ended.", result.getMessage());
+            assertEquals("Wrong message",  "There is no winner for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -133,8 +132,7 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
             OperationCheckResult result = handler.canPerform(phase);
 
             assertFalse("Not the expected checking result", result.isSuccess());
-            assertEquals("Wrong message",
-                "There is no winner for the project", result.getMessage());
+            assertEquals("Wrong message",  "There is no winner for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -169,7 +167,7 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
             OperationCheckResult result = handler.canPerform(phase);
 
             assertFalse("Not the expected checking result", result.isSuccess());
-            assertEquals("Wrong message", "Phase start time is not yet reached.", result.getMessage());
+            assertEquals("Wrong message",  "There is no winner for the project",  result.getMessage());
         } finally {
             AccuracyTestHelper.closeConnection();
             AccuracyTestHelper.cleanTables();
@@ -195,9 +193,9 @@ public class AggregationPhaseHandlerAccTest extends BaseAccuracyTest {
             AccuracyTestHelper.addDependency("Aggregation", "Appeals Response", project, false);
 
             Phase phase = AccuracyTestHelper.getPhase("Aggregation", phases);
-
+	        
             //change dependency type to F2F
-            phase.getAllDependencies()[0].setDependentStart(false);
+	        phase.getAllDependencies()[0].setDependentStart(false);
 
             phase.setPhaseStatus(new PhaseStatus(2, "Open"));
 

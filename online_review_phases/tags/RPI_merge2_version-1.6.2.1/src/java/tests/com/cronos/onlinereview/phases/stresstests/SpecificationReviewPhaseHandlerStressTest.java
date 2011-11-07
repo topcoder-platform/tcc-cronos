@@ -30,16 +30,10 @@ import com.topcoder.util.config.ConfigManager;
  * submissions. Instead, this component is very likely to run under a concurrent web-environment.
  * Therefore, I wrote the test in a multi-threaded environment to guarantee that the new added
  * functionalities in version 1.4 are thread safe.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>updated runCanPerform() to return OperationCheckResult.isSuccess()</li>
- * </ol>
  * </p>
  *
- * @author TopCoder, TMALBONPH
- * @version 1.6.2
- * @since 1.0
+ * @author TopCoder
+ * @version 1.0
  */
 public class SpecificationReviewPhaseHandlerStressTest extends StressBaseTest {
 
@@ -110,7 +104,7 @@ public class SpecificationReviewPhaseHandlerStressTest extends StressBaseTest {
      */
     protected void tearDown() throws Exception {
         cleanTables();
-        super.tearDown();
+        closeConnection();
         handler = null;
     }
 
@@ -268,7 +262,7 @@ public class SpecificationReviewPhaseHandlerStressTest extends StressBaseTest {
      * @throws Exception to JUnit
      */
     private boolean runCanPerform() throws Exception {
-        return handler.canPerform(reviewPhase).isSuccess();
+        return handler.canPerform(reviewPhase);
     }
 
     /**

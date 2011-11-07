@@ -26,9 +26,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -43,9 +40,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -62,9 +56,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -82,9 +73,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template_manager.txt</Value>
 	            </Property>
@@ -124,9 +112,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/registration/registration_start_template.txt</Value>
 	            </Property>
@@ -141,9 +126,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/registration/registration_end_template.txt</Value>
 	            </Property>
@@ -160,9 +142,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/registration/registration_start_template.txt</Value>
 	            </Property>
@@ -177,9 +156,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/registration/registration_end_template.txt</Value>
 	            </Property>
@@ -224,9 +200,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_start_template.txt</Value>
 	            </Property>
@@ -244,9 +217,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_end_template.txt</Value>
 	            </Property>
@@ -266,9 +236,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_start_template.txt</Value>
 	            </Property>
@@ -283,9 +250,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_end_template.txt</Value>
 	            </Property>
@@ -302,9 +266,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_start_template.txt</Value>
 	            </Property>
@@ -319,9 +280,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_end_template.txt</Value>
 	            </Property>
@@ -338,9 +296,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_start_template.txt</Value>
 	            </Property>
@@ -358,9 +313,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/submission/submission_end_template.txt</Value>
 	            </Property>
@@ -411,9 +363,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_start_template.txt</Value>
 	            </Property>
@@ -431,9 +380,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_end_template.txt</Value>
 	            </Property>
@@ -453,9 +399,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_start_template.txt</Value>
 	            </Property>
@@ -470,9 +413,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_end_template_submitter.txt</Value>
 	            </Property>
@@ -492,9 +432,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_start_template.txt</Value>
 	            </Property>
@@ -512,9 +449,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_end_template.txt</Value>
 	            </Property>
@@ -534,9 +468,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_start_template.txt</Value>
 	            </Property>
@@ -551,9 +482,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_end_template_final_reviewer.txt</Value>
 	            </Property>
@@ -569,13 +497,10 @@
 	        </Property>
         </Property>
         <Property name="Observer">
-        	<Property name="StartPhaseEmail">
+        	         <Property name="StartPhaseEmail">
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_start_template.txt</Value>
 	            </Property>
@@ -593,9 +518,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/screening/screening_end_template_observer.txt</Value>
 	            </Property>
@@ -643,9 +565,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_start_template.txt</Value>
 	            </Property>
@@ -660,9 +579,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>true</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_end_template.txt</Value>
 	            </Property>
@@ -679,9 +595,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_start_template.txt</Value>
 	            </Property>
@@ -696,9 +609,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>true</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_end_template.txt</Value>
 	            </Property>
@@ -715,9 +625,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_start_template.txt</Value>
 	            </Property>
@@ -732,9 +639,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>true</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_end_template.txt</Value>
 	            </Property>
@@ -751,9 +655,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_start_template.txt</Value>
 	            </Property>
@@ -768,9 +669,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>true</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/review/review_end_template.txt</Value>
 	            </Property>
@@ -811,9 +709,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals/appeals_start_template.txt</Value>
 	            </Property>
@@ -828,9 +723,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals/appeals_end_template.txt</Value>
 	            </Property>
@@ -847,9 +739,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals/appeals_start_template.txt</Value>
 	            </Property>
@@ -864,9 +753,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals/appeals_end_template.txt</Value>
 	            </Property>
@@ -908,9 +794,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals_response/appeals_response_start_template.txt</Value>
 	            </Property>
@@ -925,9 +808,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals_response/appeals_response_end_template.txt</Value>
 	            </Property>
@@ -944,9 +824,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals_response/appeals_response_start_template.txt</Value>
 	            </Property>
@@ -961,9 +838,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/appeals_response/appeals_response_end_template.txt</Value>
 	            </Property>
@@ -1005,9 +879,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation/aggregation_start_template.txt</Value>
 	            </Property>
@@ -1019,12 +890,9 @@
 	            </Property>
 	        </Property>
 	        <Property name="EndPhaseEmail">
-	            <Property name="SendEmail">
+	        <Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation/aggregation_end_template.txt</Value>
 	            </Property>
@@ -1041,9 +909,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation/aggregation_start_template.txt</Value>
 	            </Property>
@@ -1058,9 +923,6 @@
 	            <Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation/aggregation_end_template.txt</Value>
 	            </Property>
@@ -1101,9 +963,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation_review/aggregation_review_start_template.txt</Value>
 	            </Property>
@@ -1118,9 +977,6 @@
 	            <Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation_review/aggregation_review_end_template.txt</Value>
 	            </Property>
@@ -1137,9 +993,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation_review/aggregation_review_start_template.txt</Value>
 	            </Property>
@@ -1150,13 +1003,9 @@
 	                <Value>topcoder.developer@gmail.com</Value>
 	            </Property>
 	        </Property>
-	        <Property name="EndPhaseEmail">
-				<Property name="SendEmail">
+	        <Property name="EndPhaseEmail"><Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/aggregation_review/aggregation_review_end_template.txt</Value>
 	            </Property>
@@ -1198,9 +1047,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_fix/final_fix_start_template.txt</Value>
 	            </Property>
@@ -1215,9 +1061,6 @@
 	            <Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_fix/final_fix_end_template.txt</Value>
 	            </Property>
@@ -1234,9 +1077,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_fix/final_fix_start_template.txt</Value>
 	            </Property>
@@ -1251,9 +1091,6 @@
 	            <Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_fix/final_fix_end_template.txt</Value>
 	            </Property>
@@ -1296,9 +1133,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_review/final_review_start_template.txt</Value>
 	            </Property>
@@ -1313,9 +1147,6 @@
 	            <Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_review/final_review_end_template.txt</Value>
 	            </Property>
@@ -1332,9 +1163,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_review/final_review_start_template.txt</Value>
 	            </Property>
@@ -1349,9 +1177,6 @@
 	            <Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/final_review/final_review_end_template.txt</Value>
 	            </Property>
@@ -1404,9 +1229,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/post_mortem/post_mortem_start_template.txt</Value>
 	            </Property>
@@ -1421,9 +1243,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/post_mortem/post_mortem_end_template.txt</Value>
 	            </Property>
@@ -1440,9 +1259,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/post_mortem/post_mortem_start_template.txt</Value>
 	            </Property>
@@ -1457,9 +1273,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/post_mortem/post_mortem_end_template.txt</Value>
 	            </Property>
@@ -1476,9 +1289,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/post_mortem/post_mortem_start_template.txt</Value>
 	            </Property>
@@ -1493,9 +1303,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/email_templates/post_mortem/post_mortem_end_template.txt</Value>
 	            </Property>
@@ -1533,9 +1340,6 @@
         	<Property name="SendEmail">
         		<Value>yes</Value>
         	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
             <Property name="EmailTemplateName">
                 <Value>test_files/email_templates/approval/approval_start_template.txt</Value>
             </Property>
@@ -1546,13 +1350,9 @@
                 <Value>topcoder.developer@gmail.com</Value>
             </Property>
         </Property>
-        <Property name="EndPhaseEmail">
-            <Property name="SendEmail">
+        <Property name="EndPhaseEmail"><Property name="SendEmail">
         		<Value>yes</Value>
         	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
             <Property name="EmailTemplateName">
                 <Value>test_files/email_templates/approval/approval_end_template.txt</Value>
             </Property>
@@ -1576,17 +1376,11 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         	<Property name="EndPhaseEmail">
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         </Property>
         <Property name="Submitter">
@@ -1594,17 +1388,11 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         	<Property name="EndPhaseEmail">
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         </Property>
         <Property name="Reviewer">
@@ -1612,17 +1400,11 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         	<Property name="EndPhaseEmail">
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         </Property>
         <Property name="Observer">
@@ -1630,17 +1412,11 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         	<Property name="EndPhaseEmail">
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
         	</Property>
         </Property>
     </Config>
@@ -1695,9 +1471,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1712,9 +1485,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1750,9 +1520,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1767,9 +1534,6 @@
         		<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1802,9 +1566,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1819,9 +1580,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1854,9 +1612,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1873,9 +1628,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1911,9 +1663,6 @@
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
 	            -->
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailSubject">
 	                <Value>Phase Start</Value>
 	            </Property>
@@ -1925,9 +1674,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1958,9 +1704,6 @@
         </Property>
         <Property name="DefaultScheme">
 	        <Property name="StartPhaseEmail">
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -1975,9 +1718,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>invalid</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2007,9 +1747,6 @@
         </Property>
         <Property name="DefaultScheme">
 	        <Property name="StartPhaseEmail">
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2024,9 +1761,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2076,9 +1810,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2093,9 +1824,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2128,9 +1856,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2147,9 +1872,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2181,9 +1903,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2200,9 +1919,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2235,9 +1951,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>yes</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2254,9 +1967,6 @@
 	        	<Property name="SendEmail">
 	        		<Value>no</Value>
 	        	</Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
 	            <Property name="EmailTemplateName">
 	                <Value>test_files/valid_email_template.txt</Value>
 	            </Property>
@@ -2291,12 +2001,9 @@
         </Property>
         <Property name="DefaultScheme">
           <Property name="StartPhaseEmail">
-              <Property name="SendEmail">
-                  <Value>yes</Value>
-              </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
+            <Property name="SendEmail">
+              <Value>yes</Value>
+            </Property>
               <Property name="EmailTemplateName">
                   <Value>test_files/email_templates/specification_submission/specification_submission_start_template.txt</Value>
               </Property>
@@ -2311,9 +2018,6 @@
             <Property name="SendEmail">
               <Value>yes</Value>
             </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
               <Property name="EmailTemplateName">
                   <Value>test_files/email_templates/specification_submission/specification_submission_end_template.txt</Value>
               </Property>
@@ -2351,9 +2055,6 @@
             <Property name="SendEmail">
               <Value>yes</Value>
             </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
               <Property name="EmailTemplateName">
                   <Value>test_files/email_templates/specification_review/specification_review_start_template.txt</Value>
               </Property>
@@ -2368,9 +2069,6 @@
             <Property name="SendEmail">
               <Value>yes</Value>
             </Property>
-				<Property name="EmailTemplateSource">
-					<Value>file</Value>
-				</Property>
               <Property name="EmailTemplateName">
                   <Value>test_files/email_templates/specification_review/specification_review_end_template.txt</Value>
               </Property>

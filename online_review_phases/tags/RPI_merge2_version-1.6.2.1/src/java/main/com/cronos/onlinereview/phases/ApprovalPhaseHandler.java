@@ -71,8 +71,14 @@ import com.topcoder.project.phases.Project;
  * <li>The return changes from boolean to OperationCheckResult.</li>
  * </ul>
  * </p>
+ * <p>
+ * Version 1.6.2 change notes:
+ * <ul>
+ * <li>Insert final fix phase with configured duration.</li>
+ * </ul>
+ * </p>
  * @author tuenm, bose_java, argolite, waits, saarixx, myxgyy, microsky
- * @version 1.6.1
+ * @version 1.6.2
  */
 public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     /**
@@ -82,13 +88,18 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.ApprovalPhaseHandler";
 
     /**
+    * Represents duration of final fix phase to insert.
+    */
+    private final Long finalFixDuration;
+    
+    /**
      * Create a new instance of ApprovalPhaseHandler using the default namespace
      * for loading configuration settings.
      * @throws ConfigurationException if errors occurred while loading
      *             configuration settings.
      */
     public ApprovalPhaseHandler() throws ConfigurationException {
-        super(DEFAULT_NAMESPACE);
+        this(DEFAULT_NAMESPACE);
     }
 
     /**
@@ -101,6 +112,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      */
     public ApprovalPhaseHandler(String namespace) throws ConfigurationException {
         super(namespace);
+        finalFixDuration = Long.parseLong(PhasesHelper.getPropertyValue(FinalFixPhaseHandler.class.getName(), "FinalFixPhaseDuration", true));
     }
 
     /**
@@ -160,12 +172,9 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
                 return result;
             }
 
-            Connection conn = null;
+            Connection conn = createConnection();
 
             try {
-
-                conn = createConnection();
-
                 int projectApproversCount = getApproverNumbers(phase);
 
                 // Set the fallback value to 1
@@ -259,26 +268,21 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
             if (rejected) {
                 // approval review rejected, insert final review/final fix phases
-                Connection conn = null;
+                Connection conn = createConnection();
                 try {
-                    conn = createConnection();
-
                     // find current phase index and also the lengths of 'final fix'
                     // and 'final review' phases.
                     Project currentPrj = phase.getProject();
 
                     // use helper method to insert final fix/final review phase
-                    int currentPhaseIndex = PhasesHelper.insertFinalFixAndFinalReview(phase, getManagerHelper()
-                        .getPhaseManager(),
-                                                                    operator);
+                    int currentPhaseIndex = PhasesHelper.insertFinalFixAndFinalReview(phase,
+                        getManagerHelper().getPhaseManager(), operator, finalFixDuration);
 
                     // get the id of the newly created final review phase
                     long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
                     Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, "Final Review", false, true);
                     PhasesHelper.createAggregatorOrFinalReviewer(previousFinalReviewPhase, getManagerHelper(),
-                        conn,
-                                                                 "Final Reviewer",
-                                                                 finalReviewPhaseId, operator);
+                        conn, "Final Reviewer", finalReviewPhaseId, operator);
                 } catch (PhaseManagementException e) {
                     throw new PhaseHandlingException("Problem when persisting phases", e);
                 } finally {
@@ -313,15 +317,10 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if any error occurs
      */
     private int getApproverNumbers(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
-            return PhasesHelper
-                .searchProjectResourcesForRoleNames(
-                    getManagerHelper(),
-                    conn,
-                                                                   new String[] {PhasesHelper.APPROVER_ROLE_NAME },
-                                                                   phase.getProject().getId()).length;
+            return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
+                new String[] {PhasesHelper.APPROVER_ROLE_NAME }, phase.getProject().getId()).length;
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -335,17 +334,11 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * @since 1.1
      */
     private boolean checkScorecardsCommitted(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
             // Get all approval scorecards and leave only those which relate to specified phase
-            conn = createConnection();
-            Review[] approveReviews = PhasesHelper
-                .searchProjectReviewsForResourceRoles(
-                    conn,
-                    getManagerHelper(),
-                                                                    phase.getProject().getId(),
-                                                                    new String[] {PhasesHelper.APPROVER_ROLE_NAME },
-                                                                    null);
+            Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
+                phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // No review has been filled, return false
@@ -387,12 +380,10 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * @since 1.1
      */
     private boolean checkScorecardsRejected(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn,
-                getManagerHelper(), phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME },
-                null);
+                getManagerHelper(), phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // check for approved/rejected comments.
@@ -440,9 +431,8 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      * @since 1.1
      */
     private boolean checkOtherFixesRequired(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
         try {
-            conn = createConnection();
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn,
                 getManagerHelper(), phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME },
                 null);

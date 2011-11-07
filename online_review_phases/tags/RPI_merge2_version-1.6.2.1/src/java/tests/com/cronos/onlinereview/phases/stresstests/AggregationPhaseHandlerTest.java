@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.stresstests;
 
@@ -11,7 +11,6 @@ import com.cronos.onlinereview.phases.AppealsResponsePhaseHandler;
 import com.cronos.onlinereview.phases.ReviewPhaseHandler;
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
-import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.scorecard.data.Scorecard;
@@ -26,19 +25,14 @@ import com.topcoder.util.config.ConfigManager;
  * </p>
  * <p>
  * Since this handler is immutable, so it's naturally thread safe. Here just do benchmark tests.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>updated AggregationPhaseHandler instance variables on setUp and testPerform_stop.</li>
- * <li>trap PhaseHandlingException cause by missing Configuration property.</li>
- * </ol>
  * </p>
  *
- * @author TCSDEVELOPER, TMALBONPH
- * @version 1.6.2
- * @since 1.3
+ * @author TCSDEVELOPER
+ * @version 1.3
  */
 public class AggregationPhaseHandlerTest extends StressBaseTest {
+
+
 
     /**
      * Represents the handler to test.
@@ -78,8 +72,8 @@ public class AggregationPhaseHandlerTest extends StressBaseTest {
      *             not under test.
      */
     protected void tearDown() throws Exception {
+
         super.tearDown();
-        handler = null;
     }
 
     /**
@@ -107,17 +101,11 @@ public class AggregationPhaseHandlerTest extends StressBaseTest {
             aggregationPhase.getAllDependencies()[0].getDependency().setPhaseStatus(PhaseStatus.CLOSED);
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(aggregationPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.canPerform(aggregationPhase);
             }
             endRecord("AggregationPhaseHandler::canPerform(Phase)--(the return value is false)", FIRST_LEVEL);
             // manually check the email
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
         } finally {
             cleanTables();
             closeConnection();
@@ -158,17 +146,11 @@ public class AggregationPhaseHandlerTest extends StressBaseTest {
             super.insertResourceInfo(conn, aggregator.getId(), 1, "1234");
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    handler.canPerform(aggregationPhase);
-                }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.canPerform(aggregationPhase);
             }
             endRecord("AggregationPhaseHandler::canPerform(Phase)--(the return value is true)", FIRST_LEVEL);
             // manually check the email
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
         } finally {
             cleanTables();
             closeConnection();
@@ -193,8 +175,6 @@ public class AggregationPhaseHandlerTest extends StressBaseTest {
                 long timeS = System.currentTimeMillis();
                 handler.perform(phase, operator);
                 time += System.currentTimeMillis() - timeS;
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
             } finally {
                 cleanTables();
                 closeConnection();
@@ -215,7 +195,7 @@ public class AggregationPhaseHandlerTest extends StressBaseTest {
      *             not under test.
      */
     public void testPerform_stop() throws Exception {
-        AggregationPhaseHandler shandler = new AggregationPhaseHandler(
+        AggregationPhaseHandler handler = new AggregationPhaseHandler(
             AggregationPhaseHandler.DEFAULT_NAMESPACE);
         AppealsResponsePhaseHandler aphandler = new AppealsResponsePhaseHandler(
             AppealsResponsePhaseHandler.DEFAULT_NAMESPACE);
@@ -301,18 +281,13 @@ public class AggregationPhaseHandlerTest extends StressBaseTest {
             insertResourceInfo(conn, aggregator.getId(), 1, "2");
 
             startRecord();
-            try {
-                for (int i = 0; i < FIRST_LEVEL; i++) {
-                    shandler.perform(aggregationPhase, operator);
-                }
-            } catch (PhaseHandlingException ex) {
-                System.err.println(ex.getMessage());
+            for (int i = 0; i < FIRST_LEVEL; i++) {
+                handler.perform(aggregationPhase, operator);
             }
             endRecord("AggregationPhaseHandler::perform(Phase, String)--(the phase status is stop)",
                 FIRST_LEVEL);
+
             // manually check the email
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
         } finally {
             cleanTables();
             closeConnection();

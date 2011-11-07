@@ -4,33 +4,23 @@
 package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
-//import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.deliverable.Submission;
-//import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
-//import com.topcoder.management.resource.search.ResourceFilterBuilder;
-//import com.topcoder.management.resource.search.ResourceRoleFilterBuilder;
 import com.topcoder.management.review.data.Review;
 import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
 import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
 import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
 import com.topcoder.project.phases.Phase;
-//import com.topcoder.search.builder.SearchBuilderConfigurationException;
-//import com.topcoder.search.builder.SearchBuilderException;
-//import com.topcoder.search.builder.filter.AndFilter;
-//import com.topcoder.search.builder.filter.Filter;
-//import com.topcoder.search.builder.filter.InFilter;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogFactory;
@@ -210,8 +200,6 @@ public class SecondaryReviewerReviewPhaseHandler extends AbstractPhaseHandler {
                 }
                 return new OperationCheckResult(false, "No Active submissions");
 
-            } catch (SQLException sqle) {
-                throw new PhaseHandlingException("Failed to search submissions.", sqle);
             } finally {
                 PhasesHelper.closeConnection(conn);
             }
@@ -382,9 +370,6 @@ public class SecondaryReviewerReviewPhaseHandler extends AbstractPhaseHandler {
             }
 
             return true;
-        } catch (SQLException e) {
-            throw new PhaseHandlingException(
-                    "Error retrieving submission status id", e);
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -428,9 +413,6 @@ public class SecondaryReviewerReviewPhaseHandler extends AbstractPhaseHandler {
             values.put("N_REQUIRED_REVIEWERS", reviewerNum);
             values.put("N_REVIEWERS", reviewers.length);
             values.put("NEED_REVIEWER", reviewers.length >= reviewerNum ? 0 : 1);
-        } catch (SQLException ex) {
-            throw logAndThrowException(ex, "Problem when looking up submissions for review phase.", null,
-                phase.getId());
         } finally {
             PhasesHelper.closeConnection(conn);
         }
@@ -565,8 +547,6 @@ public class SecondaryReviewerReviewPhaseHandler extends AbstractPhaseHandler {
                     operator, phase.getId());
 
             }
-        } catch (SQLException ex) {
-            throw logAndThrowException(ex, "Problem when looking up id", operator, phase.getId());
         } catch (InconsistentDataException ex) {
             throw logAndThrowException(ex, "Problem when aggregating scores", operator, phase.getId());
         } catch (UploadPersistenceException ex) {

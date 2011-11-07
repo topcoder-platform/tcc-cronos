@@ -46,7 +46,6 @@ public class ConfigHelper {
      */
     public static final void releaseNamespaces() {
         ConfigManager configManager = ConfigManager.getInstance();
-        @SuppressWarnings("rawtypes")
         Iterator iterator = configManager.getAllNamespaces();
         while (iterator.hasNext()) {
             try {
@@ -130,7 +129,7 @@ public class ConfigHelper {
      * @param instanceName a <code>String</code> providing the name of the static field holding the reference to the
      * singleton instance.
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked")
     public static final void releaseSingletonInstance(Class clazz, String instanceName) throws Exception {
         try {
             Field instanceField = clazz.getDeclaredField(instanceName);

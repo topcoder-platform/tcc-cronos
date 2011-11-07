@@ -130,40 +130,40 @@ public class SpecificationSubmissionPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
-        if (toStart) {
-            result = PhasesHelper.checkPhaseCanStart(phase);
-            if (!result.isSuccess()) {
-                return result;
-            }
+        Connection conn = null;
 
-            // This is NOT the first phase in the project
-            // or all parent projects are completed
-            if (!PhasesHelper.isFirstPhase(phase) || PhasesHelper
-                .areParentProjectsCompleted(phase, createConnection(), this.getManagerHelper(), LOG)) {
-                return OperationCheckResult.SUCCESS;
+        try {
+            conn = createConnection();
+
+            if (toStart) {
+                result = PhasesHelper.checkPhaseCanStart(phase);
+                if (!result.isSuccess()) {
+                    return result;
+                }
+
+                // This is NOT the first phase in the project or all parent projects are completed
+                if (!PhasesHelper.isFirstPhase(phase) ||
+                    PhasesHelper.areParentProjectsCompleted(phase, conn, this.getManagerHelper(), LOG)) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult("Not all parent projects are completed");
+                }
             } else {
-                return new OperationCheckResult("Not all parent projects are completed");
-            }
-        } else {
-            // Check phase dependencies
-            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+                // Check phase dependencies
+                result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
 
-            if (result.isSuccess()) {
-                Connection conn = null;
-                try {
-                    conn = createConnection();
-                    if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(),
-                        createConnection(), LOG) != null) {
+                if (result.isSuccess()) {
+                    if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(), conn, LOG) != null) {
                         return OperationCheckResult.SUCCESS;
                     } else {
                         return new OperationCheckResult("Specification submission doesn't exist");
                     }
-                } finally {
-                    PhasesHelper.closeConnection(conn);
                 }
+                // dependencies not met
+                return result;
             }
-            // dependencies not met
-            return result;
+        } finally {
+            PhasesHelper.closeConnection(conn);
         }
     }
 

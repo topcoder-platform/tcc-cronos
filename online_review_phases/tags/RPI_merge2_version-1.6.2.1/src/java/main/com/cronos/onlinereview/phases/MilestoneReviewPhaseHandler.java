@@ -5,13 +5,10 @@ package com.cronos.onlinereview.phases;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.text.DecimalFormat;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
@@ -19,7 +16,6 @@ import com.topcoder.management.deliverable.persistence.UploadPersistenceExceptio
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
-import com.topcoder.management.project.Prize;
 import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
@@ -81,8 +77,17 @@ import com.topcoder.util.log.LogFactory;
  * <li>The return changes from boolean to OperationCheckResult.</li>
  * </ul>
  * </p>
- * @author FireIce, microsky
- * @version 1.6.1
+ *
+ * <p>
+ * Version 1.6.2 (BUGR-4779) changes note:
+ * <ul>
+ * <li>Updated {@link #updateSubmissionScores(Connection, Phase, String, Map)} method to use 
+ * <code>PhaseHeleper.setSubmissionPrize</code> to populate milestone prizes for submissions.</li>
+ * </ul>
+ * </p>
+ *
+ * @author FireIce, microsky, flexme
+ * @version 1.6.2
  * @since 1.6
  */
 public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
@@ -100,13 +105,6 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      * </p>
      */
     private static final String PHASE_TYPE_MILESTONE_REVIEW = "Milestone Review";
-
-    /**
-     * <p>
-     * Represents the constant for milestone reviewer.
-     * </p>
-     */
-    private static final String MILESTONE_REVIEWER = "Milestone Reviewer";
 
     /**
      * Logger instance for this class.
@@ -190,7 +188,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
-        Connection conn = null;
+        Connection conn = createConnection();
         OperationCheckResult result;
         try {
             if (toStart) {
@@ -200,12 +198,9 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
                     return result;
                 }
 
-                conn = createConnection();
-
                 // Search all "Active" milestone submissions for current project with milestone submission type
-                Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(
-                        getManagerHelper().getUploadManager(), conn, phase.getProject().getId(), phase.getId(),
-                    LOG);
+                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                    conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
                 if (subs.length > 0) {
                     return OperationCheckResult.SUCCESS;
                 } else {
@@ -218,7 +213,6 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
                     return result;
                 }
 
-                conn = createConnection();
                 return allReviewsDone(conn, phase);
             }
         } finally {
@@ -265,10 +259,9 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
             if (toStart) {
                 // for start, puts the reviewer/submission info
                 putPhaseStartInfoValues(conn, phase, values);
@@ -299,15 +292,13 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
     private void putPhaseStartInfoValues(Connection conn, Phase phase, Map<String, Object> values)
         throws PhaseHandlingException {
         // Search all "Active" milestone submissions for current project with milestone submission type
-        Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper().getUploadManager(),
-            conn,
-                phase.getProject().getId(), phase.getId(), LOG);
+        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+            conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
         values.put("SUBMITTER",
-            PhasesHelper.constructSubmitterValues(subs, getManagerHelper().getResourceManager(),
-                false));
+            PhasesHelper.constructSubmitterValues(subs, getManagerHelper().getResourceManager(), false));
         // Search the milestone reviewer
         Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                new String[] {MILESTONE_REVIEWER }, phase.getId());
+            new String[] {PhasesHelper.MILESTONE_REVIEWER }, phase.getId());
         values.put("NEED_MILESTONE_REVIEWER", reviewers.length == 0 ? 1 : 0);
 
     }
@@ -330,157 +321,22 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
     private void updateSubmissionScores(Connection conn, Phase phase, String operator, Map<String, Object> values)
         throws PhaseHandlingException {
         try {
-            // Search all "Active" submissions with milestone submission type for current project
-            Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper()
-                .getUploadManager(),
-                    conn, phase.getProject().getId(), phase.getId(), LOG);
-
-            // Search the milestone reviewer
-            Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    new String[] {MILESTONE_REVIEWER }, phase.getId());
-
-            // Search all review scorecard for the current phase
-            Review[] reviews = PhasesHelper.searchReviewsForResources(conn, getManagerHelper(), reviewers, null);
-
-            // for each submission, populate scores array to use with review score aggregator.
-            com.topcoder.management.review.scoreaggregator.Submission[] submissionScores = new com.topcoder.management.review.scoreaggregator.Submission[subs.length];
-            for (int iSub = 0; iSub < subs.length; iSub++) {
-                Submission submission = subs[iSub];
-                long subId = submission.getId();
-                Float score = null;
-
-                // Match the submission with its reviews
-                for (int j = 0; j < reviews.length; j++) {
-                    if (subId == reviews[j].getSubmission()) {
-                        // get review score
-                        score = reviews[j].getScore();
-                    }
-                }
-
-                if (score == null) {
-                    LOG.log(Level.ERROR, "There is no score for the given submission with id - " + subId);
-                    throw new PhaseHandlingException("There is no score for the given submission with id - "
-                        + subId);
-                }
-
-                submission.setInitialScore(score.doubleValue());
-                submission.setFinalScore(score.doubleValue());
-                submissionScores[iSub] = new com.topcoder.management.review.scoreaggregator.Submission(subId,
-                                                                                    new float[] {score
-                                                                                        .floatValue() });
-            }
-
-            // Calculate placements for submissions based on review score
-            ReviewScoreAggregator scoreAggregator = getManagerHelper().getScorecardAggregator();
-            AggregatedSubmission[] aggregations = scoreAggregator.aggregateScores(submissionScores);
-            RankedSubmission[] placements = scoreAggregator.calcPlacements(aggregations);
-
-            // Get minimum passing score for review
-            float minScore = PhasesHelper
-                    .getScorecardMinimumScore(getManagerHelper().getScorecardManager(), reviews[0]);
-            SubmissionStatus failedStatus = PhasesHelper.getSubmissionStatus(
-                getManagerHelper().getUploadManager(), "Failed Milestone Review");
-
-            // Assign placements to submissions based on scores
-            for (int iSub = 0; iSub < subs.length; iSub++) {
-                Submission submission = subs[iSub];
-                for (int i = 0; i < placements.length; i++) {
-                    RankedSubmission rankedSubmission = placements[i];
-                    if (rankedSubmission.getId() == submission.getId()) {
-                        submission.setPlacement(rankedSubmission.getRank() * 1L);
-                        float aggScore = rankedSubmission.getAggregatedScore();
-                        if (aggScore < minScore) {
-                            submission.setSubmissionStatus(failedStatus);
-                        }
-                        break;
-                    }
-                }
-            }
-
-            // set the milestone prize.
-            Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
-
-            List<Prize> prizes = project.getPrizes();
-
-            if (prizes != null && !prizes.isEmpty()) {
-                prizes = new ArrayList<Prize>(prizes);
-                for (Iterator<Prize> iter = prizes.iterator(); iter.hasNext();) {
-                    Prize prize = iter.next();
-
-                    if (!"Milestone Prize".equals(prize.getPrizeType().getDescription())) {
-                        iter.remove();
-                    }
-                }
-
-                if (!prizes.isEmpty()) {
-                    // sort the milestone prizes
-                    Collections.sort(prizes, new Comparator<Prize>() {
-                        public int compare(Prize o1, Prize o2) {
-                            return o1.getPlace() - o2.getPlace();
-                        }
-                    });
-
-                    // sort the submissions.
-                    Arrays.sort(subs, new Comparator<Submission>() {
-                        public int compare(Submission o1, Submission o2) {
-                            int placementResult = o1.getPlacement().compareTo(o2.getPlacement());
-                            if (placementResult == 0) {
-                                return o1.getCreationTimestamp().compareTo(o2.getCreationTimestamp());
-                            } else {
-                                return placementResult;
-                            }
-                        }
-                    });
-
-                    Prize currentPrize = prizes.get(0);
-                    int currentPrizeIndex = 0;
-                    int currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
-                    for (int i = 0; i < subs.length; i++) {
-                        Submission submission = subs[i];
-                        if (submission.getPlacement() == currentPrize.getPlace()) {
-                            if (currentPrizeNumLeft > 0) {
-                                currentPrizeNumLeft--;
-                            } else {
-                                continue; // no more prizes left for awarding for current place
-                            }
-                        } else {
-                            currentPrizeIndex++;
-                            if (currentPrizeIndex >= prizes.size()) {
-                                break; // No more prizes left for awarding
-                            } else {
-                                currentPrize = prizes.get(currentPrizeIndex);
-                                currentPrizeNumLeft = currentPrize.getNumberOfSubmissions();
-                            }
-                        }
-                        submission.setPrize(currentPrize);
-                    }
-                }
-            }
-
-            // update the submissions
-            for (int iSub = 0; iSub < subs.length; iSub++) {
-                getManagerHelper().getUploadManager().updateSubmission(subs[iSub], operator);
-            }
+            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), conn, phase, operator,
+                true, true, true);
 
             // add the submission result to the values map
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+            DecimalFormat df = new DecimalFormat("#.##");
             for (Submission sub : subs) {
                 Map<String, Object> infos = new HashMap<String, Object>();
-                Resource submitt = getManagerHelper().getResourceManager().getResource(
-                        sub.getUpload().getOwner());
+                Resource submitt = getManagerHelper().getResourceManager().getResource(sub.getUpload().getOwner());
                 infos.put("SUBMITTER_HANDLE", PhasesHelper.notNullValue(submitt.getProperty(PhasesHelper.HANDLE)));
-                infos.put("SUBMITTER_SCORE", sub.getInitialScore());
+                infos.put("SUBMITTER_SCORE", df.format(sub.getInitialScore()));
                 result.add(infos);
             }
             values.put("SUBMITTER", result);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem when looking up resource for the submission.", e);
-        } catch (PersistenceException e) {
-            throw new PhaseHandlingException("Problem to get the project.", e);
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Problem when updating submission", e);
-        } catch (InconsistentDataException e) {
-            throw new PhaseHandlingException("Problem when updating submission", e);
         }
     }
 
@@ -503,49 +359,25 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private OperationCheckResult allReviewsDone(Connection conn, Phase phase) throws PhaseHandlingException {
         // Search all "Active" milestone submissions for current project
-        Submission[] subs = PhasesHelper.searchActiveMilestoneSubmissions(getManagerHelper().getUploadManager(),
-            conn,
-                phase.getProject().getId(), phase.getId(), LOG);
+        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+            conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
 
         // Search the reviewIds
         Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                new String[] {MILESTONE_REVIEWER }, phase.getId());
-
-        if (reviewers.length == 0) {
-            LOG.log(Level.INFO, "no milestone reviewer for project: " + phase.getProject().getId());
-            return new OperationCheckResult("Milestone reviewer is not assigned for the project");
-        }
+            new String[] {PhasesHelper.MILESTONE_REVIEWER }, phase.getId());
 
         if (reviewers.length != 1) {
             LOG.log(Level.ERROR, "There should be exactly one milestone reviewer.");
-            throw new PhaseHandlingException("There should be exactly one milestone reviewer.");
+            return new OperationCheckResult("There should be exactly one milestone reviewer.");
         }
 
         // Search all review scorecard for the current phase
-        Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(), phase.getId(),
-                new String[] {MILESTONE_REVIEWER }, null);
-
-        if (LOG.isEnabled(Level.DEBUG)) {
-            for (int i = 0; i < subs.length; i++) {
-                LOG.log(Level.DEBUG, "submission: " + subs[i].getId());
-            }
-
-            for (int i = 0; i < reviewers.length; i++) {
-                LOG.log(Level.DEBUG, "reviewer: " + reviewers[i].getId() + ", "
-                        + reviewers[i].getProperty(PhasesHelper.HANDLE) + ", "
-                        + reviewers[i].getResourceRole().getName());
-            }
-
-            for (int i = 0; i < reviews.length; i++) {
-                LOG.log(Level.DEBUG, "review: " + reviews[i].getId() + ", " + reviews[i].getSubmission() + ", "
-                        + reviews[i].getAuthor() + ", " + reviews[i].isCommitted());
-            }
-        }
+        Review[] reviews = PhasesHelper.searchReviewsForResources(conn, getManagerHelper(), reviewers, null);
 
         if (subs.length != reviews.length) {
-            LOG.log(Level.ERROR, "The number of reviews don't match the number of submissions."
-                                 + subs.length + " vs " + reviews.length);
-            return new OperationCheckResult("Not all milestone review scorecards are committed");
+            LOG.log(Level.ERROR, "The number of reviews doesn't match the number of submissions."
+                + subs.length + " vs " + reviews.length);
+            return new OperationCheckResult("Not all milestone review scorecards are committed.");
         }
 
         // make sure that all reviews are committed.
@@ -574,7 +406,7 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
             }
 
             if (!reviewFound) {
-                LOG.log(Level.ERROR, "There is no review for the given submission " + subId);
+                LOG.log(Level.ERROR, "There is no review for the submission " + subId);
                 return new OperationCheckResult(
                     "Not all milestone review scorecards are committed (see submission with ID=" + subId + ")");
             }

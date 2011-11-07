@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases.failuretests;
 
@@ -12,7 +12,6 @@ import com.cronos.onlinereview.phases.failuretests.mock.MockReviewManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockScreeningManager;
 import com.cronos.onlinereview.phases.failuretests.mock.MockUploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
-import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.ReviewManagementException;
@@ -29,20 +28,9 @@ import junit.framework.TestSuite;
  * <p>A failure test for {@link SubmissionPhaseHandler} class. Tests the proper handling
  * of invalid input data by the methods. Passes the invalid arguments to the methods and expects the appropriate
  * exception to be thrown.</p>
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>It is now more reliable to depend on member function that return value
- * of type OperationCheckResult.</li>
- * <li>the following need to be check for its return value:</li>
- * <li>unit test in testCanPerform_Phase_UploadManagerError_UploadPersistenceException</li>
- * <li>unit test in testCanPerform_Phase_UploadManagerError_SearchBuilderException</li>
- * </ol>
- * </p>
  *
- * @author isv, TMALBONPH
- * @version 1.6.2
- * @since 1.0
+ * @author isv
+ * @version 1.0
  */
 public class SubmissionPhaseHandlerFailureTest extends AbstractTestCase {
 
@@ -415,11 +403,8 @@ public class SubmissionPhaseHandlerFailureTest extends AbstractTestCase {
         MockUploadManager.throwGlobalException(new UploadPersistenceException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                OperationCheckResult result =
                 this.testedInstances[i].canPerform(TestDataFactory.getOpenSubmissionPhase());
-                if (!result.isSuccess()) {
-                    Assert.fail("PhaseHandlingException should have been thrown");
-                }
+                Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {
@@ -439,11 +424,8 @@ public class SubmissionPhaseHandlerFailureTest extends AbstractTestCase {
         MockUploadManager.throwGlobalException(new SearchBuilderException("FailureTest"));
         for (int i = 0; i < this.testedInstances.length; i++) {
             try {
-                OperationCheckResult result =
                 this.testedInstances[i].canPerform(TestDataFactory.getOpenSubmissionPhase());
-                if (!result.isSuccess()) {
-                    Assert.fail("PhaseHandlingException should have been thrown");
-                }
+                Assert.fail("PhaseHandlingException should have been thrown");
             } catch (PhaseHandlingException e) {
                 // expected behavior
             } catch (Exception e) {

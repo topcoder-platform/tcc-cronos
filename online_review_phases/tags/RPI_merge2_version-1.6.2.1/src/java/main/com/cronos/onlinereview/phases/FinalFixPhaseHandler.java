@@ -58,9 +58,10 @@ import java.util.Arrays;
  * Version 1.6.1 changes note:
  * <ul>
  * <li>The return changes from boolean to OperationCheckResult.</li>
+ * <li>A safety check was added to prevent creating duplicated final reviews.</li>
  * </ul>
  * </p>
- * @author tuenm, bose_java, isv, saarixx, microsky
+ * @author tuenm, bose_java, isv, saarixx, microsky, VolodymyrK
  * @version 1.6.1
  */
 public class FinalFixPhaseHandler extends AbstractPhaseHandler {
@@ -161,11 +162,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             if (finalReviewPhase == null) {
                 return new OperationCheckResult("Final Review phase cannot be located");
             }
-            Connection conn = null;
+            Connection conn = createConnection();
 
             try {
-                conn = createConnection();
-
                 Resource[] finalReviewer = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                     new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
 
@@ -230,6 +229,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
         if (toStart) {
             checkFinalReviewWorksheet(phase, operator);
+            deletePreviousFinalFix(phase, operator);
         }
 
         sendEmail(phase);
@@ -241,11 +241,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
      * marked uncommitted. Previous final fix upload is deleted.
      * @param phase phase instance.
      * @param operator operator name.
-     * @throws PhaseHandlingException if an error occurs when retrieving/saving
-     *             data.
+     * @throws PhaseHandlingException if an error occurs when retrieving/saving data.
      */
     private void checkFinalReviewWorksheet(Phase phase, String operator) throws PhaseHandlingException {
-        // Check if the Final Review worksheet is created
         // Get nearest Final Review phase
         Phase finalReviewPhase = PhasesHelper.locatePhase(phase,
                 PhasesHelper.PHASE_FINAL_REVIEW, true, true);
@@ -254,14 +252,20 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         Phase previousAprovalPhase = PhasesHelper.locatePhase(phase,
                 PhasesHelper.PHASE_APPROVAL, false, false);
 
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
+            // Sometimes phase management framework fails to open the final fix phase (e.g. due to a DB error)
+            // at a later stage after the final review worksheet is created. In those rare cases the final review
+            // worksheet would be created again on the next iteration of the autopilot. To prevent the duplication
+            // this method checks if the final review worksheet already exists for this phase and returns if it does.
+            if (PhasesHelper.getWorksheet(conn, getManagerHelper(),
+                PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId()) != null) {
+                return;
+            }
 
             // Search for id of the Final Reviewer
-            Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
-                            getManagerHelper(), conn,
+            Resource[] resources = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
                             new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
 
             if (resources.length == 0) {
@@ -275,8 +279,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     conn, getManagerHelper(), phase.getProject().getId(),
                     new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
 
-                approvalWorksheets = PhasesHelper
-                    .getApprovalPhaseReviews(approvalWorksheets, previousAprovalPhase);
+                approvalWorksheets = PhasesHelper.getApprovalPhaseReviews(approvalWorksheets, previousAprovalPhase);
 
                 if (approvalWorksheets == null || approvalWorksheets.length == 0) {
                     throw new PhaseHandlingException("Approval worksheets do not exist.");
@@ -290,8 +293,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     finalWorksheet.setSubmission(approvalWorksheets[r].getSubmission());
 
                     // No review comments to copy from approval, only the review item comments.
-                    PhasesHelper.copyReviewItems(approvalWorksheets[r],
-                        finalWorksheet, COMMENT_TYPES_TO_COPY);
+                    PhasesHelper.copyReviewItems(approvalWorksheets[r], finalWorksheet, COMMENT_TYPES_TO_COPY);
                 }
 
             } else if (previousFinalReviewPhase != null) {
@@ -308,8 +310,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                 finalWorksheet.setCommitted(false);
 
                 // Locate the nearest backward Aggregation phase
-                Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation",
-                                false, false);
+                Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
                 if (aggPhase != null) {
                     // Create final review from aggregation worksheet
 
@@ -318,23 +319,19 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                         "Aggregator", aggPhase.getId());
 
                     if (aggWorksheet == null) {
-                        throw new PhaseHandlingException(
-                                        "aggregation worksheet does not exist.");
+                        throw new PhaseHandlingException("aggregation worksheet does not exist.");
                     }
 
                     // copy the comments and review items
-                    PhasesHelper.copyComments(aggWorksheet, finalWorksheet,
-                                    COMMENT_TYPES_TO_COPY, null);
-                    PhasesHelper.copyFinalReviewItems(aggWorksheet,
-                                    finalWorksheet);
+                    PhasesHelper.copyComments(aggWorksheet, finalWorksheet, COMMENT_TYPES_TO_COPY, null);
+                    PhasesHelper.copyFinalReviewItems(aggWorksheet, finalWorksheet);
 
                     // set the ID of a scorecard which the review scorecard
                     // corresponds to
                     finalWorksheet.setScorecard(aggWorksheet.getScorecard());
                     finalWorksheet.setSubmission(aggWorksheet.getSubmission());
                 } else {
-                    Phase reviewPhase = PhasesHelper.locatePhase(phase,
-                            PhasesHelper.REVIEW, false, true);
+                    Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, true);
 
                     // find winning submitter.
                     Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
@@ -349,9 +346,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     // find the winning submission
                     Filter winnerFilter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
                     long submissionTypeId = SubmissionTypeLookupUtility
-                        .lookUpId(
-                            conn,
-                                                                                 PhasesHelper.CONTEST_SUBMISSION_TYPE);
+                        .lookUpId(conn, PhasesHelper.CONTEST_SUBMISSION_TYPE);
                     long submissionStatusId = SubmissionStatusLookupUtility.lookUpId(conn, "Active");
                     Filter submissionTypeFilter = SubmissionFilterBuilder
                         .createSubmissionTypeIdFilter(submissionTypeId);
@@ -377,16 +372,13 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     for (int r = 0; r < reviews.length; r++) {
                         finalWorksheet.setScorecard(reviews[r].getScorecard());
                         finalWorksheet.setSubmission(reviews[r].getSubmission());
-                        PhasesHelper.copyComments(reviews[r], finalWorksheet,
-                            COMMENT_TYPES_TO_COPY, null);
-                        PhasesHelper.copyReviewItems(reviews[r],
-                            finalWorksheet, COMMENT_TYPES_TO_COPY);
+                        PhasesHelper.copyComments(reviews[r], finalWorksheet, COMMENT_TYPES_TO_COPY, null);
+                        PhasesHelper.copyReviewItems(reviews[r], finalWorksheet, COMMENT_TYPES_TO_COPY);
                     }
                 }
 
                 // persist the review
-                getManagerHelper().getReviewManager().createReview(
-                                finalWorksheet, operator);
+                getManagerHelper().getReviewManager().createReview(finalWorksheet, operator);
             } else {
                 // Mark Final Review worksheet uncommitted
                 finalWorksheet.setAuthor(resources[0].getId());
@@ -394,32 +386,40 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
                 // persist the copy
                 finalWorksheet = PhasesHelper.cloneReview(finalWorksheet);
-                getManagerHelper().getReviewManager().createReview(
-                                finalWorksheet, operator);
+                getManagerHelper().getReviewManager().createReview(finalWorksheet, operator);
             }
 
+        } catch (ReviewManagementException e) {
+            throw new PhaseHandlingException("Problem when persisting review", e);
+        } catch (SQLException e) {
+            throw new PhaseHandlingException("Problem when looking up id", e);
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("Problem when persisting upload", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
+        } finally {
+            PhasesHelper.closeConnection(conn);
+        }
+    }
+
+    /**
+     * This method is called from perform method when phase is starting.
+     * The method deletes previous final fix upload if present.
+     * @param phase phase instance.
+     * @param operator operator name.
+     * @throws PhaseHandlingException if an error occurs when retrieving/saving data.
+     */
+    private void deletePreviousFinalFix(Phase phase, String operator) throws PhaseHandlingException {
+        try {
             // delete the earlier final fix if it exists.
             Upload finalFix = getFinalFix(phase);
             if (finalFix != null) {
                 finalFix.setUploadStatus(PhasesHelper.getUploadStatus(
-                                getManagerHelper().getUploadManager(),
-                                "Deleted"));
-                getManagerHelper().getUploadManager().updateUpload(finalFix,
-                                operator);
+                                getManagerHelper().getUploadManager(), "Deleted"));
+                getManagerHelper().getUploadManager().updateUpload(finalFix, operator);
             }
-        } catch (ReviewManagementException e) {
-            throw new PhaseHandlingException("Problem when persisting review",
-                            e);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Problem when persisting upload",
-                            e);
-        } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException(
-                            "Problem when retrieving winning submission.", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
+            throw new PhaseHandlingException("Problem when persisting upload", e);
         }
     }
 
@@ -427,27 +427,22 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
      * This retrieves the final fix upload. It returns null if none exist.
      * @param phase phase instance.
      * @return the final fix upload, null if none exist.
-     * @throws PhaseHandlingException if error occurs when retrieving, or if
-     *             multiple uploads exist.
+     * @throws PhaseHandlingException if error occurs when retrieving, or if multiple uploads exist.
      */
     private Upload getFinalFix(Phase phase) throws PhaseHandlingException {
-        Connection conn = null;
+        Connection conn = createConnection();
 
         try {
-            conn = createConnection();
-
-            long uploadTypeId = UploadTypeLookupUtility.lookUpId(conn,
-                    PHASE_TYPE_FINAL_FIX);
-            long uploadStatusId = UploadStatusLookupUtility.lookUpId(conn,
-                            "Active");
+            long uploadTypeId = UploadTypeLookupUtility.lookUpId(conn, PHASE_TYPE_FINAL_FIX);
+            long uploadStatusId = UploadStatusLookupUtility.lookUpId(conn, "Active");
 
             // get final fix upload based on "Final Fix" type, "Active" status
             // and winning submitter resource id filters.
             Filter uploadTypeFilter = UploadFilterBuilder.createUploadTypeIdFilter(uploadTypeId);
             Filter uploadStatusFilter = UploadFilterBuilder.createUploadStatusIdFilter(uploadStatusId);
             Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
-                            getManagerHelper().getResourceManager(),
-                            getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
+                getManagerHelper().getResourceManager(),
+                getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
             Filter resourceIdFilter = UploadFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
             Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {uploadTypeFilter,
                 uploadStatusFilter, resourceIdFilter }));
@@ -459,14 +454,12 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             } else if (uploads.length == 1) {
                 return uploads[0];
             } else {
-                throw new PhaseHandlingException(
-                                "There cannot be multiple final fix uploads");
+                throw new PhaseHandlingException("There cannot be multiple final fix uploads");
             }
         } catch (SQLException e) {
             throw new PhaseHandlingException("Problem when looking up id", e);
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Problem when retrieving upload",
-                            e);
+            throw new PhaseHandlingException("Problem when retrieving upload", e);
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException("Problem with search builder", e);
         } finally {

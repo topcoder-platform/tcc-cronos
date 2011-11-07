@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2006-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2006 TopCoder Inc., All Rights Reserved.
  */
+
 package com.cronos.onlinereview.phases.failuretests.mock;
 
 import com.topcoder.management.resource.persistence.ResourcePersistence;
@@ -19,43 +20,32 @@ import java.util.ArrayList;
 
 /**
  * <p>A mock implementation of {@link ResourcePersistence} class to be used for testing.
- * Overrides the protected methods declared by a super-class. The overridden methods are declared
- * with package private access so only the test cases could invoke them. The overridden methods simply
- * call the corresponding method of a super-class.
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ol>
- * <li>added unimplemented methods.</li>
- * <li>change Map into HashMap&lt;T,T></li>
- * <li>method that uses Map, now using HashMap&lt;T,T></li>
- * <li>add common codes into method checkGlobalException.</li>
- * </ol>
- * </p>
+ * Overrides the protected methods declared by a super-class. The overridden methods are declared with package private access
+ * so only the test cases could invoke them. The overridden methods simply call the corresponding method of a super-class.
  *
- * @author  isv, TMALBONPH
- * @version 1.6.2
- * @since 1.0
+ * @author  isv
+ * @version 1.0
  */
 public class MockResourcePersistence implements ResourcePersistence {
 
     /**
-     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Map</code>s mapping
-     * the <code>String</code> names of the arguments to <code>Object</code>s representing the values of  arguments
-     * which have been provided by the caller of the method.</p>
+     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Map</code>s mapping the <code>
+     * String</code> names of the arguments to <code>Object</code>s representing the values of  arguments which have been 
+     * provided by the caller of the method.</p>
      */
-    private static HashMap<String, Object> methodArguments = new HashMap<String, Object>();
+    private static Map methodArguments = new HashMap();
 
     /**
-     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Exception</code>s
-     * to be thrown by methods.</p>
+     * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Exception</code>s to be thrown by
+     * methods.</p>
      */
-    private static HashMap<String, Throwable> throwExceptions = new HashMap<String, Throwable>();
+    private static Map throwExceptions = new HashMap();
 
     /**
      * <p>A <code>Map</code> mapping the <code>String</code> method signatures to <code>Object</code>s to be
      * returned by methods.</p>
      */
-    private static HashMap<String, Object> methodResults = new HashMap<String, Object>();
+    private static Map methodResults = new HashMap();
 
     /**
      * <p>A <code>Throwable</code> representing the exception to be thrown from any method of the mock class.</p>
@@ -81,31 +71,6 @@ public class MockResourcePersistence implements ResourcePersistence {
     }
 
     /**
-     * <p>Common method to check for globalException.</p>
-     * <p>
-     * Version 1.6.2 (Online Review Phases) Change notes:
-     * <ol>
-     * <li>move all common code checks in here.</li>
-     * <li>added to make this class small in size.</li>
-     * </ol>
-     * </p>
-     * @throws ResourcePersistenceException If globalException is not <code>null</code>
-     * and an instance of ResourcePersistenceException.
-     * @throws RuntimeException If globalException is not <code>null</code>
-     * and not an instance of ResourcePersistenceException.
-     */
-    private void checkGlobalException() throws ResourcePersistenceException {
-        if (MockResourcePersistence.globalException != null) {
-            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
-                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
-            } else {
-                throw new RuntimeException("The test may not be configured properly",
-                        MockResourcePersistence.globalException);
-            }
-        }
-    }
-
-    /**
      * <p>A mock implementation of the method. The method either throws an exception which might have been specified
      * through {@link #throwException(String, Throwable)} method or return a result specified through
      * {@link #setMethodResult(String, Object)} method.</p>
@@ -114,7 +79,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void addResource(Resource resource0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "addResource_Resource";
 
@@ -127,12 +98,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", resource0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -148,7 +118,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void deleteResource(Resource resource0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "deleteResource_Resource";
 
@@ -161,12 +137,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", resource0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -182,7 +157,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void updateResource(Resource resource0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "updateResource_Resource";
 
@@ -195,12 +176,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", resource0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -216,7 +196,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public Resource loadResource(long long0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadResource_long";
 
@@ -229,12 +215,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", new Long(long0));
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -251,9 +236,14 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @see ResourcePersistence#addNotification(long, long, long, String)
      * @throws ResourcePersistenceException
      */
-    public void addNotification(long long0, long long1, long long2, String string0)
-        throws ResourcePersistenceException {
-        checkGlobalException();
+    public void addNotification(long long0, long long1, long long2, String string0) throws ResourcePersistenceException {
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "addNotification_long_long_long_String";
 
@@ -266,15 +256,14 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", new Long(long0));
         arguments.put("2", new Long(long1));
         arguments.put("3", new Long(long2));
         arguments.put("4", string0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -289,9 +278,14 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @see ResourcePersistence#removeNotification(long, long, long, String)
      * @throws ResourcePersistenceException
      */
-    public void removeNotification(long long0, long long1, long long2, String string0)
-        throws ResourcePersistenceException {
-        checkGlobalException();
+    public void removeNotification(long long0, long long1, long long2, String string0) throws ResourcePersistenceException {
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "removeNotification_long_long_long_String";
 
@@ -304,15 +298,14 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", new Long(long0));
         arguments.put("2", new Long(long1));
         arguments.put("3", new Long(long2));
         arguments.put("4", string0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -327,9 +320,14 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @see ResourcePersistence#loadNotification(long, long, long)
      * @throws ResourcePersistenceException
      */
-    public Notification loadNotification(long long0, long long1, long long2)
-        throws ResourcePersistenceException {
-        checkGlobalException();
+    public Notification loadNotification(long long0, long long1, long long2) throws ResourcePersistenceException {
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadNotification_long_long_long";
 
@@ -342,14 +340,13 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", new Long(long0));
         arguments.put("2", new Long(long1));
         arguments.put("3", new Long(long2));
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -367,7 +364,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void addNotificationType(NotificationType notificationType0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "addNotificationType_NotificationType";
 
@@ -380,12 +383,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", notificationType0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -401,7 +403,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void deleteNotificationType(NotificationType notificationType0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "deleteNotificationType_NotificationType";
 
@@ -414,12 +422,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", notificationType0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -435,7 +442,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void updateNotificationType(NotificationType notificationType0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "updateNotificationType_NotificationType";
 
@@ -448,12 +461,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", notificationType0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -469,7 +481,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public NotificationType loadNotificationType(long long0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadNotificationType_long";
 
@@ -482,12 +500,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", new Long(long0));
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -505,7 +522,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void addResourceRole(ResourceRole resourceRole0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "addResourceRole_ResourceRole";
 
@@ -518,12 +541,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", resourceRole0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -539,7 +561,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void deleteResourceRole(ResourceRole resourceRole0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "deleteResourceRole_ResourceRole";
 
@@ -552,12 +580,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", resourceRole0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -573,7 +600,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public void updateResourceRole(ResourceRole resourceRole0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "updateResourceRole_ResourceRole";
 
@@ -586,12 +619,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", resourceRole0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -607,7 +639,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public ResourceRole loadResourceRole(long long0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadResourceRole_long";
 
@@ -620,12 +658,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", new Long(long0));
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -643,7 +680,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public Resource[] loadResources(long[] longA0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadResources_long[]";
 
@@ -656,12 +699,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", longA0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -679,7 +721,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public NotificationType[] loadNotificationTypes(long[] longA0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadNotificationTypes_long[]";
 
@@ -692,12 +740,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", longA0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -715,7 +762,13 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @throws ResourcePersistenceException
      */
     public ResourceRole[] loadResourceRoles(long[] longA0) throws ResourcePersistenceException {
-        checkGlobalException();
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadResourceRoles_long[]";
 
@@ -728,12 +781,11 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", longA0);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -750,9 +802,14 @@ public class MockResourcePersistence implements ResourcePersistence {
      * @see ResourcePersistence#loadNotifications(long[], long[], long[])
      * @throws ResourcePersistenceException
      */
-    public Notification[] loadNotifications(long[] longA0, long[] longA1, long[] longA2)
-        throws ResourcePersistenceException {
-        checkGlobalException();
+    public Notification[] loadNotifications(long[] longA0, long[] longA1, long[] longA2) throws ResourcePersistenceException {
+        if (MockResourcePersistence.globalException != null) {
+            if (MockResourcePersistence.globalException instanceof ResourcePersistenceException) {
+                throw (ResourcePersistenceException) MockResourcePersistence.globalException;
+            } else {
+                throw new RuntimeException("The test may not be configured properly", MockResourcePersistence.globalException);
+            }
+        }
 
         String methodName = "loadNotifications_long[]_long[]_long[]";
 
@@ -765,14 +822,13 @@ public class MockResourcePersistence implements ResourcePersistence {
             }
         }
 
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
+        HashMap arguments = new HashMap();
         arguments.put("1", longA0);
         arguments.put("2", longA1);
         arguments.put("3", longA2);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
+        List args = (List) MockResourcePersistence.methodArguments.get(methodName);
         if (args == null) {
-            args = new ArrayList<Object>();
+            args = new ArrayList();
             MockResourcePersistence.methodArguments.put(methodName, args);
         }
         args.add(arguments);
@@ -781,10 +837,30 @@ public class MockResourcePersistence implements ResourcePersistence {
 
     }
 
+    public Notification[] loadNotifications(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
+    }
+
+     public ResourceRole[] loadResourceRoles(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
+    }
+
+    public NotificationType[] loadNotificationTypes(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
+    }
+
+    public Resource[] loadResources(CustomResultSet resultSet) throws ResourcePersistenceException
+    {
+        return null;
+    }
+
     /**
      * <p>Sets the result to be returned by the specified method.</p>
      *
-     * @param methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      *        declared by the implemented interface/class.
      * @param result an <code>Object</code> representing the result to be returned by specified method.
      */
@@ -795,14 +871,13 @@ public class MockResourcePersistence implements ResourcePersistence {
     /**
      * <p>Gets the value of the specified argument which has been passed to the specified method by the caller.</p>
      *
-     * @param  methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param  methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      * @param  argumentName a <code>String</code> providing the name of the argument to get the value for.
      * @return an <code>Object</code> (including <code>null</code>) providing the value of the specified argument
      *         which has been supplied by the caller of the specified method.
      * @throws IllegalArgumentException if the specified argument does not exist.
      */
     public static Object getMethodArgument(String methodSignature, String argumentName) {
-        @SuppressWarnings("rawtypes")
         Map arguments = (Map) MockResourcePersistence.methodArguments.get(methodSignature);
         if (!arguments.containsKey(argumentName)) {
             throw new IllegalArgumentException("The argument name " + argumentName + " is unknown.");
@@ -813,7 +888,7 @@ public class MockResourcePersistence implements ResourcePersistence {
     /**
      * <pChecks if the specified method has been called during the test by the caller.</p>
      *
-     * @param  methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param  methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      * @return <code>true</code> if specified method was called; <code>false</code> otherwise.
      */
     public static boolean wasMethodCalled(String methodSignature) {
@@ -821,13 +896,12 @@ public class MockResourcePersistence implements ResourcePersistence {
     }
 
     /**
-     * <p>Gets the values of the arguments which have been passed to the specified method by the caller.</p>
+     * <p>Gets the values of the argumenta which have been passed to the specified method by the caller.</p>
      *
-     * @param  methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param  methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      * @return a <code>List</code> of <code>Map</code> providing the values of the arguments on each call.
      *         which has been supplied by the caller of the specified method.
      */
-    @SuppressWarnings("rawtypes")
     public static List getMethodArguments(String methodSignature) {
         return (List) MockResourcePersistence.methodArguments.get(methodSignature);
     }
@@ -835,7 +909,7 @@ public class MockResourcePersistence implements ResourcePersistence {
     /**
      * <p>Sets the exception to be thrown when the specified method is called.</p>
      *
-     * @param methodSignature a <code>String</code> uniquely distinguishing the target method among other methods
+     * @param methodSignature a <code>String</code> uniquelly distinguishing the target method among other methods
      * @param exception a <code>Throwable</code> representing the exception to be thrown when the specified method is
      *        called. If this argument is <code>null</code> then no exception will be thrown.
      */
@@ -872,158 +946,6 @@ public class MockResourcePersistence implements ResourcePersistence {
      * <p>Initializes the initial state for all created instances of <code>MockResourcePersistence</code> class.</p>
      */
     public static void init() {
-    }
-
-    /**
-     * <p>A mock implementation of the method. The method either throws an exception which might have been specified
-     * through {@link #throwException(String, Throwable)} method or return a result specified through
-     * {@link #setMethodResult(String, Object)} method.</p>
-     *
-     * @since 1.6.2
-     * @see ResourcePersistence#loadResources(com.topcoder.util.sql.databaseabstraction.CustomResultSet)
-     * @throws ResourcePersistenceException
-     */
-    @Override
-    public Resource[] loadResources(CustomResultSet resultSet) throws ResourcePersistenceException {
-        checkGlobalException();
-
-        String methodName = "loadResources_CustomResultSet";
-
-        Throwable exception = (Throwable) MockResourcePersistence.throwExceptions.get(methodName);
-        if (exception != null) {
-            if (exception instanceof ResourcePersistenceException) {
-                throw (ResourcePersistenceException) exception;
-            } else {
-                throw new RuntimeException("The test may not be configured properly", exception);
-            }
-        }
-
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        arguments.put("1", resultSet);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
-        if (args == null) {
-            args = new ArrayList<Object>();
-            MockResourcePersistence.methodArguments.put(methodName, args);
-        }
-        args.add(arguments);
-
-        return (Resource[]) MockResourcePersistence.methodResults.get(methodName);
-
-    }
-
-    /**
-     * <p>A mock implementation of the method. The method either throws an exception which might have been specified
-     * through {@link #throwException(String, Throwable)} method or return a result specified through
-     * {@link #setMethodResult(String, Object)} method.</p>
-     *
-     * @since 1.6.2
-     * @see ResourcePersistence#loadNotificationTypes(com.topcoder.util.sql.databaseabstraction.CustomResultSet)
-     * @throws ResourcePersistenceException
-     */
-    @Override
-    public NotificationType[] loadNotificationTypes(CustomResultSet resultSet) throws ResourcePersistenceException {
-        checkGlobalException();
-
-        String methodName = "loadNotificationTypes_CustomResultSet";
-
-        Throwable exception = (Throwable) MockResourcePersistence.throwExceptions.get(methodName);
-        if (exception != null) {
-            if (exception instanceof ResourcePersistenceException) {
-                throw (ResourcePersistenceException) exception;
-            } else {
-                throw new RuntimeException("The test may not be configured properly", exception);
-            }
-        }
-
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        arguments.put("1", resultSet);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
-        if (args == null) {
-            args = new ArrayList<Object>();
-            MockResourcePersistence.methodArguments.put(methodName, args);
-        }
-        args.add(arguments);
-
-        return (NotificationType[]) MockResourcePersistence.methodResults.get(methodName);
-
-    }
-
-    /**
-     * <p>A mock implementation of the method. The method either throws an exception which might have been specified
-     * through {@link #throwException(String, Throwable)} method or return a result specified through
-     * {@link #setMethodResult(String, Object)} method.</p>
-     *
-     * @since 1.6.2
-     * @see ResourcePersistence#loadResourceRoles(com.topcoder.util.sql.databaseabstraction.CustomResultSet)
-     * @throws ResourcePersistenceException
-     */
-    @Override
-    public ResourceRole[] loadResourceRoles(CustomResultSet resultSet) throws ResourcePersistenceException {
-        checkGlobalException();
-
-        String methodName = "loadResourceRoles_CustomResultSet";
-
-        Throwable exception = (Throwable) MockResourcePersistence.throwExceptions.get(methodName);
-        if (exception != null) {
-            if (exception instanceof ResourcePersistenceException) {
-                throw (ResourcePersistenceException) exception;
-            } else {
-                throw new RuntimeException("The test may not be configured properly", exception);
-            }
-        }
-
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        arguments.put("1", resultSet);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
-        if (args == null) {
-            args = new ArrayList<Object>();
-            MockResourcePersistence.methodArguments.put(methodName, args);
-        }
-        args.add(arguments);
-
-        return (ResourceRole[]) MockResourcePersistence.methodResults.get(methodName);
-
-    }
-
-    /**
-     * <p>A mock implementation of the method. The method either throws an exception which might have been specified
-     * through {@link #throwException(String, Throwable)} method or return a result specified through
-     * {@link #setMethodResult(String, Object)} method.</p>
-     *
-     * @since 1.6.2
-     * @see ResourcePersistence#loadNotifications(com.topcoder.util.sql.databaseabstraction.CustomResultSet)
-     * @throws ResourcePersistenceException
-     */
-    @Override
-    public Notification[] loadNotifications(CustomResultSet resultSet) throws ResourcePersistenceException {
-        checkGlobalException();
-
-        String methodName = "loadResourceRoles_CustomResultSet";
-
-        Throwable exception = (Throwable) MockResourcePersistence.throwExceptions.get(methodName);
-        if (exception != null) {
-            if (exception instanceof ResourcePersistenceException) {
-                throw (ResourcePersistenceException) exception;
-            } else {
-                throw new RuntimeException("The test may not be configured properly", exception);
-            }
-        }
-
-        HashMap<String, Object> arguments = new HashMap<String, Object>();
-        arguments.put("1", resultSet);
-        @SuppressWarnings("unchecked")
-        List<Object> args = (List<Object>) MockResourcePersistence.methodArguments.get(methodName);
-        if (args == null) {
-            args = new ArrayList<Object>();
-            MockResourcePersistence.methodArguments.put(methodName, args);
-        }
-        args.add(arguments);
-
-        return (Notification[]) MockResourcePersistence.methodResults.get(methodName);
-
     }
 
 }

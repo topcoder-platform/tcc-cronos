@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2011 TopCoder Inc., All Rights Reserved.
  */
 package com.cronos.onlinereview.phases;
 
@@ -71,16 +71,8 @@ import java.util.Map;
  * <li>update insertSubmissions for database table changes.</li>
  * </ul>
  * </p>
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes:
- * <ul>
- * <li>merge the field DOC_GENERATOR_CONFIG_FILE</li>
- * <li>update doConfig() to add DOC_GENERATOR_CONFIG_FILE into Configuration.</li>
- * </ul>
- * </p>
- * @author bose_java, waits, myxgyy, microsky, TMALBONPH
- * @version 1.6.2
- * @since 1.1
+ * @author bose_java, waits, myxgyy, microsky
+ * @version 1.6.1
  */
 public class BaseTest extends TestCase {
     /**
@@ -122,9 +114,6 @@ public class BaseTest extends TestCase {
 
     /** constant for logging wrapper configuration file. */
     public static final String LOGGING_WRAPPER_CONFIG_FILE = "config/Logging_Wrapper.xml";
-
-    /** constant for document generator configuration file. */
-    public static final String DOC_GENERATOR_CONFIG_FILE = "config/Document_Manager.xml";
 
     /** constant for manager helper configuration file. */
     public static final String PHASE_HANDLER_CONFIG_FILE = "config/Phase_Handler.xml";
@@ -205,7 +194,6 @@ public class BaseTest extends TestCase {
      *             in case of config error.
      */
     protected void doConfig() throws ConfigManagerException {
-        configManager.add(DOC_GENERATOR_CONFIG_FILE);
     }
 
     /**

@@ -66,12 +66,8 @@ import java.util.Iterator;
  * Version 1.4, change notes: add generateSpecificationPhases method for testing version 1.4.
  * </p>
  *
- * <p>
- * Version 1.6.2 (Online Review Phases) Change notes: add DOC_GENERATOR_CONFIG_FILE.
- * </p>
- *
- * @author bose_java, waits, TopCoder, TMALBONPH
- * @version 1.6.2
+ * @author bose_java, waits, TopCoder
+ * @version 1.4
  * @since 1.0
  */
 public class StressBaseTest extends TestCase {
@@ -101,9 +97,6 @@ public class StressBaseTest extends TestCase {
 
     /** constant for logging wrapper configuration file. */
     public static final String LOGGING_WRAPPER_CONFIG_FILE = "config/Logging_Wrapper.xml";
-
-    /** constant for document generator configuration file. */
-    public static final String DOC_GENERATOR_CONFIG_FILE = "config/Document_Manager.xml";
 
     /** constant for manager helper configuration file. */
     public static final String PHASE_HANDLER_CONFIG_FILE = "config/Phase_Handler.xml";
@@ -172,12 +165,10 @@ public class StressBaseTest extends TestCase {
      *
      * @throws Exception pass any unexpected exception to JUnit.
      */
-    @SuppressWarnings("deprecation")
     protected void setUp() throws Exception {
         configManager = ConfigManager.getInstance();
 
         // Remove all namespaces
-        @SuppressWarnings("rawtypes")
         Iterator iter = configManager.getAllNamespaces();
 
         while (iter.hasNext()) {
@@ -202,7 +193,6 @@ public class StressBaseTest extends TestCase {
      */
     protected void tearDown() throws Exception {
         // Remove all namespaces
-        @SuppressWarnings("rawtypes")
         Iterator iter = configManager.getAllNamespaces();
 
         while (iter.hasNext()) {
@@ -234,7 +224,6 @@ public class StressBaseTest extends TestCase {
      *
      * @return phase instance.
      */
-    @SuppressWarnings("deprecation")
     protected Phase createPhase(long phaseId, long phaseStatusId, String phaseStatusName, long phaseTypeId,
         String phaseTypeName) {
         Project project = new Project(new Date(), new DefaultWorkdays());
@@ -847,7 +836,6 @@ public class StressBaseTest extends TestCase {
      *
      * @throws Exception not under test.
      */
-    @SuppressWarnings("deprecation")
     protected Project setupPhases(String stepPhase, boolean hasDependentProject, boolean past)
         throws Exception {
         Connection conn = getConnection();
@@ -983,7 +971,6 @@ public class StressBaseTest extends TestCase {
      * @return project instance with phases populated.
      * @throws Exception not under test.
      */
-    @SuppressWarnings("deprecation")
     protected Project setupPhasesWithoutAggregation() throws Exception {
         Connection conn = getConnection();
         PreparedStatement preparedStmt = null;
@@ -1932,7 +1919,6 @@ public class StressBaseTest extends TestCase {
      *
      * @since 1.1
      */
-    @SuppressWarnings("deprecation")
     protected Project setupPhasesWithPostMortem() throws Exception {
         Connection conn = getConnection();
         PreparedStatement preparedStmt = null;
@@ -2038,7 +2024,6 @@ public class StressBaseTest extends TestCase {
      * @throws Exception to JUnit.
      * @since 1.4
      */
-    @SuppressWarnings("deprecation")
     protected Project generateSpecificationPhases(int id, boolean hasExtraDepends) throws Exception {
         Connection conn = getConnection();
         PreparedStatement preparedStmt = null;
@@ -2173,7 +2158,6 @@ public class StressBaseTest extends TestCase {
      * @return the value of the private field
      * @since 1.2
      */
-    @SuppressWarnings("rawtypes")
     static Object getPrivateField(Class type, Object instance, String name) {
         Field field = null;
         Object obj = null;
