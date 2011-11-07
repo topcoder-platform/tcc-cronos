@@ -42,6 +42,7 @@ import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.sql.databaseabstraction.CustomResultSet;
 import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
+import com.topcoder.util.sql.databaseabstraction.NullColumnValueException;
 
 /**
  * <p>
@@ -211,14 +212,6 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  * <ul>
  * <li>Removed review_system_version column from tables project_type_lu and project_info_type_lu. Update queries
  * to reflect this change.</li>
- * </ul>
- * </p>
- *
- * <p>
- * Remark in version 1.2.1
- * <ul>
- * <li>There is difference between Review Process Improvements Project and TC - Studio Replatforming Project,
- * Refer to TC - Studio Replatforming Project, use action_user column instead of action_user_id column.</li>
  * </ul>
  * </p>
  *
@@ -544,8 +537,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * @since 1.1.2
      */
     private static final String PROJECT_INFO_AUDIT_INSERT_SQL = "INSERT INTO project_info_audit "
-        + "(project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user) "
-        + "VALUES (?, ?, ?, ?, ?, ?)"; // Updated in 1.2.1 change action_user_id to action_user
+        + "(project_id, project_info_type_id, value, audit_action_type_id, action_date, action_user_id) "
+        + "VALUES (?, ?, ?, ?, ?, ?)";
 
     /**
      * Represents the sql statement to query file types.
@@ -2935,6 +2928,8 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             throw new PersistenceException("cursor state is invalid.", icse);
         } catch (SQLException e) {
             throw new PersistenceException(e.getMessage(), e);
+        } catch (NullColumnValueException e) {
+            throw new PersistenceException(e.getMessage(), e);
         } finally {
             if (conn != null) {
                 closeConnection(conn);
@@ -3471,9 +3466,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
             statement.setString(index++, value);
             statement.setInt(index++, auditType);
             statement.setTimestamp(index++, new Timestamp(project.getModificationTimestamp().getTime()));
-            //statement.setLong(index++, Long.parseLong(project.getModificationUser()));
-            // Updated in 1.2.1 use action_user column instead of action_user_id column
-            statement.setString(index++, project.getModificationUser());
+            statement.setLong(index++, Long.parseLong(project.getModificationUser()));
 
             if (statement.executeUpdate() != 1) {
                 throw new PersistenceException("Audit information was not successfully saved.");
