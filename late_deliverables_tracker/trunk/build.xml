@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="TopCoder Java Generic Build" default="dist" basedir=".">
+<project name="Cronos Java Generic Build" default="dist" basedir=".">
     <property file="${basedir}/build.version"/>
     <property file="../topcoder_global.properties"/>
 
@@ -9,10 +9,13 @@
     <property name="libdir" value="../tcs/lib"/>
     <property name="tcs_libdir" value="${libdir}/tcs"/>
     <property name="ext_libdir" value="${libdir}/third_party"/>
+
+    <property name="cronos_libdir" value="${libdir}/cronos"/>
+    <property name="target_libdir" value="${cronos_libdir}"/>
+
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
     <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
-    <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
     <property name="srcdir" value="src"/>
@@ -35,13 +38,6 @@
     <property name="component_version"
               value="${component.version.major}.${component.version.minor}.${component.version.micro}"/>
     <property name="component_path" value="${distfilename}/${component_version}"/>
-
-    <!-- Change this for custom component build -->
-    <!--
-    <property name="greekgod_libdir" value="../lib/greekgod"/>
-    <property name="target_libdir" value="${greekgod_libdir}"/>
-    -->
-    <property name="target_libdir" value="${tcs_libdir}"/>
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
@@ -79,9 +75,6 @@
     <property name="dist_docpackage" value="${builddir}/doc_package"/>
     <property name="docpackage.jar" value="${distfilename}_docs.jar"/>
 
-    <!-- include ant contrib tasks -->
-    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
-
     <!-- classes needed to compile the production code -->
     <path id="buildlibs">
         <path refid="component.tcs-dependencies"/>
@@ -97,8 +90,8 @@
         </fileset>
         <path refid="buildlibs"/>
         <pathelement location="${build_classdir}"/>
-        <pathelement location="${testfiles}"/>
         <pathelement location="${configdir}"/>
+        <pathelement location="${testfiles}"/>
     </path>
 
     <!-- cobertura task definition -->
@@ -216,7 +209,7 @@
     </target>
 
     <target name="coveragereport" depends="coveragetest">
-        <cobertura-report format="${cobertura.format}" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
+        <cobertura-report format="html" destdir="${testlogdir}/coverage/" srcdir="${srcdir}"
                           datafile="${cobertura.datafile}">
             <fileset dir="${javamain}">
                 <include name="**/*.java"/>
@@ -243,28 +236,11 @@
 
     <target name="manifest">
         <mkdir dir="${manifest_file_path}"/>
-
-        <if>
-          <and>
-            <isset property="component.mainclass"/>
-            <length string="${component.mainclass}" when="greater" length="0" />
-          </and>
-          <then>
-            <manifest file="${manifest_file}">
-              <attribute name="Component-Vendor" value="TopCoder Inc."/>
-              <attribute name="Component-Name" value="${component}"/>
-              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-              <attribute name="Main-Class" value="${component.mainclass}"/>
-            </manifest>
-          </then>
-          <else>
-            <manifest file="${manifest_file}">
-              <attribute name="Component-Vendor" value="TopCoder Inc."/>
-              <attribute name="Component-Name" value="${component}"/>
-              <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
-            </manifest>
-          </else>
-        </if>
+        <manifest file="${manifest_file}">
+            <attribute name="Component-Vendor" value="TopCoder Inc."/>
+            <attribute name="Component-Name" value="${component}"/>
+            <attribute name="Component-Version" value="${component_version}.${component.version.build}"/>
+        </manifest>
     </target>
 
     <target name="dist" depends="compile, manifest">
@@ -297,6 +273,7 @@
 
     <target name="clean">
         <delete dir="${builddir}"/>
+        <delete dir="${testlogdir}"/>
     </target>
 
     <!-- ************************************************************************** -->
@@ -318,7 +295,11 @@
         <copy file="${component.jar}" todir="${target_libdir}/${component_path}"/>
     </target>
 
-    <target name="dist_tcs" depends="clean,dist,javadoc">
+    <target name="distclean">
+        <delete dir="${builddir}"/>
+    </target>
+
+    <target name="dist_tcs" depends="distclean,dist,javadoc">
         <!-- define tcs distribution format -->
         <mkdir dir="${build_tcsdistdir}"/>
         <copy todir="${build_tcsdistdir}">
@@ -330,6 +311,7 @@
                 <include name="${test_reflib}/**/*"/>
                 <include name="build.version"/>
                 <include name="build-dependencies.xml"/>
+                <include name="build-override.xml"/>
                 <include name="README"/>
                 <include name="build.version"/>
             </fileset>
@@ -381,7 +363,7 @@
         <jar jarfile="${dev_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
-                       build.version,
+                       build-override.xml,
                        README,
                        ${configdir}/**,
                        ${javamain}/**/*.java,
@@ -401,6 +383,8 @@
         <jar jarfile="${design_submission.jar}"
              basedir="."
              includes="build-dependencies.xml,
+                       build.version,
+                       build.xml,
                        ${configdir}/**,
                        ${javamain}/**,
                        ${docsdir}/**,
