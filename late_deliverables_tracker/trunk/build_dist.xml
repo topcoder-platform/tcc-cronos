@@ -11,7 +11,7 @@
     <property name="ext_libdir" value="${libdir}/third_party"/>
     <property name="debug" value="off"/>
     <property name="verbose" value="no"/>
-    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.9.3"/>
+    <property name="cobertura.dir" value="${ext_libdir}/cobertura/1.8"/>
     <property name="cobertura.format" value="html"/>
 
     <!-- DIRECTORY SETUP -->
@@ -41,7 +41,7 @@
     <property name="greekgod_libdir" value="../lib/greekgod"/>
     <property name="target_libdir" value="${greekgod_libdir}"/>
     -->
-    <property name="target_libdir" value="${cronos_libdir}"/>
+    <property name="target_libdir" value="${tcs_libdir}"/>
 
     <!-- DIRECTORY STRUCTURE -->
     <property name="javasrc" value="${srcdir}/java"/>
@@ -162,7 +162,7 @@
         <!-- standard test task -->
         <sequential>
             <mkdir dir="${testlogdir}"/>
-            <junit fork="true" haltonerror="false" maxmemory="1524m">
+            <junit fork="true" haltonerror="false" maxMemory="1400M">
                 <classpath location="${build_testclassdir}"/>
                 <classpath refid="test.build.classpath"/>
                 <test name="${package}.AllTests" todir="${testlogdir}">
@@ -185,7 +185,7 @@
                     <include name="**/*.class"/>
                 </fileset>
             </cobertura-instrument>
-            <junit fork="true" haltonerror="false" maxmemory="1524m">
+            <junit fork="true" haltonerror="false" maxMemory="1400M">
                 <sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.datafile}"/>
                 <classpath location="${instrumented.dir}"/>
                 <classpath location="${build_testclassdir}"/>
@@ -298,4 +298,8 @@
     <target name="clean">
         <delete dir="${builddir}"/>
     </target>
+
+    <!-- Import the macro definitions used to override standard behaviour of
+    some of the targets of this build file. -->
+    <import file="${basedir}/build-override.xml" optional="true"/>
 </project>

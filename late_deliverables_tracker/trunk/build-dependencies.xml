@@ -46,15 +46,15 @@
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
 
-    <property name="log4j.jar" value="E:\tcs\lib\third_party\log4j\1.2.15\log4j.jar"/>
+    <property name="log4j.jar" value="${ext_libdir}\log4j\1.2.15\log4j.jar"/>
     
-    <property name="ifxjdbc.jar" value="E:\tcs\lib\third_party\informix\1.4.1\ifxjdbc.jar"/>
-    <property name="javamail.jar" value="E:\tcs\lib\third_party\javamail\javamail.jar"/>
-    <property name="activation.jar" value="E:\tcs\lib\third_party\javamail\1.4.3\activation.jar"/>
-    <property name="imap.jar" value="E:\tcs\lib\third_party\javamail\1.4.3\lib\imap.jar"/>
-    <property name="mailapi.jar" value="E:\tcs\lib\third_party\javamail\1.4.3\lib\mailapi.jar"/>
-    <property name="pop3.jar" value="E:\tcs\lib\third_party\javamail\1.4.3\lib\pop3.jar"/>
-    <property name="smtp.jar" value="E:\tcs\lib\third_party\javamail\1.4.3\lib\smtp.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar"/>
+    <property name="javamail.jar" value="${ext_libdir}/javamail/javamail.jar"/>
+    <property name="activation.jar" value="${ext_libdir}/javamail/1.4.3/activation.jar"/>
+    <property name="imap.jar" value="${ext_libdir}/javamail/1.4.3/lib/imap.jar"/>
+    <property name="mailapi.jar" value="${ext_libdir}/javamail/1.4.3/lib/mailapi.jar"/>
+    <property name="pop3.jar" value="${ext_libdir}/javamail/1.4.3/lib/pop3.jar"/>
+    <property name="smtp.jar" value="${ext_libdir}/javamail/1.4.3/lib/smtp.jar"/>
 
     <path id="component.tcs-dependencies">
         <pathelement location="${email_engine.jar}"/>
