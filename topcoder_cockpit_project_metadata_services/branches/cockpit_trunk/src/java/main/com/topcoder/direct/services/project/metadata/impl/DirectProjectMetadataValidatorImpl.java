@@ -133,7 +133,7 @@ public class DirectProjectMetadataValidatorImpl extends AbstractDirectProjectMet
                 if (resultNum > 1) {
                     throw new ValidationException("The key is not single.");
                 }
-                if ((resultNum == 1) && (!resultList.get(0).equals(projectMetadata.getId()))) {
+                if ((resultNum == 1) && ! ((long) resultList.get(0) == projectMetadata.getId())) {
                     throw new ValidationException("A record with the project id and the key id already exists.");
                 }
             }

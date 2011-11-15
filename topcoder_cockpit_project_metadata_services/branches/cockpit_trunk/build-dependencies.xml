@@ -13,31 +13,30 @@
     <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
     <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
     
-    <property name="topcoder_cockpit_project_metadata_services_entities.jar" value="test_files/entities.jar"/>
+    <property name="topcoder_cockpit_project_metadata_services_entities.jar" value="${tcs_libdir}/topcoder_cockpit_project_metadata_entities/1.0.0/topcoder_cockpit_project_metadata_entities.jar"/>
 
     <!-- 3rd party dependencies -->
     <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>
     
-    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
     
-    <property name="commons-dbcp.jar" value="${ext_libdir}/spring-framework-2.5.6.SEC01/lib/jakarta-commons/commons-dbcp.jar"/>
-    <property name="commons-logging.jar" value="${ext_libdir}/commons-logging.jar"/>
-    <property name="commons-pool.jar" value="${ext_libdir}/commons-pool.jar"/>
-    <property name="log4j.jar" value="${ext_libdir}/spring-framework-2.5.6.SEC01/lib/log4j/log4j-1.2.15.jar"/>
-    <property name="hibernate3.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/hibernate3.jar"/>
-    <property name="common-annotations.jar" value="${ext_libdir}/spring-framework-2.5.6.SEC01/lib/j2ee/common-annotations.jar"/>
-    <property name="ehcache.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/optional/ehcache/ehcache-1.5.0.jar"/>
-    <property name="backport-util-concurrent.jar" value="${ext_libdir}/spring-framework-2.5.6.SEC01/lib/concurrent/backport-util-concurrent.jar"/>
-    <property name="antlr.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/required/antlr-2.7.6.jar"/>
-    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/required/slf4j-api-1.5.8.jar"/>
-    <property name="slf4j-log4j.jar" value="${ext_libdir}/spring-framework-2.5.6.SEC01/lib/slf4j/slf4j-log4j12-1.5.0.jar"/>
-    <property name="dom4j.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/required/dom4j-1.6.1.jar"/>
-    <property name="javassist.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/required/javassist-3.9.0.GA.jar"/>
-    <property name="jta.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/required/jta-1.1.jar"/>
-    <property name="commons-collections.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/required/commons-collections-3.1.jar"/>
-    <property name="hibernate-jpa.jar" value="${ext_libdir}/hibernate-distribution-3.5.4-Final/lib/jpa/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+    <property name="commons-dbcp.jar" value="${ext_libdir}/commons-dbcp/commons-dbcp.jar"/>
+    <property name="commons-logging.jar" value="${ext_libdir}/struts/commons-logging-1.1.1.jar"/>
+    <property name="commons-pool.jar" value="${ext_libdir}/commons-pool/commons-pool.jar"/>
+    <property name="log4j.jar" value="${ext_libdir}/jboss/log4j.jar"/>
+    <property name="hibernate3.jar" value="${ext_libdir}/hibernate/hibernate3.jar"/>
+    <property name="common-annotations.jar" value="${ext_libdir}/spring/common-annotations.jar"/>
+    <property name="ehcache.jar" value="${ext_libdir}/hibernate/ehcache-1.5.0.jar"/>
+    <property name="antlr.jar" value="${ext_libdir}/hibernate/antlr-2.7.6.jar"/>
+    <property name="slf4j-api.jar" value="${ext_libdir}/hibernate/slf4j-api-1.5.8.jar"/>
+    <property name="slf4j-log4j.jar" value="${ext_libdir}/spring/slf4j-log4j12-1.5.0.jar"/>
+    <property name="dom4j.jar" value="${ext_libdir}/hibernate/dom4j-1.6.1.jar"/>
+    <property name="javassist.jar" value="${ext_libdir}/hibernate/javassist-3.9.0.GA.jar"/>
+    <property name="jta.jar" value="${ext_libdir}/hibernate/jta-1.1.jar"/>
+    <property name="commons-collections.jar" value="${ext_libdir}/hibernate/commons-collections-3.1.jar"/>
+    <property name="hibernate-jpa.jar" value="${ext_libdir}/hibernate/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
 	
-    <property name="spring.jar" value="test_files/spring.jar"/>
+    <property name="spring.jar" value="${ext_libdir}/spring/spring.jar"/>
 
     <path id="component.tcs-dependencies">
         <pathelement location="${base_exception.jar}"/>
