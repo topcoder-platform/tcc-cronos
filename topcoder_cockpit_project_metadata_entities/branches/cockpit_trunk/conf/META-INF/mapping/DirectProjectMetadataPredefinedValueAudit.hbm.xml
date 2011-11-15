@@ -4,7 +4,7 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.topcoder.direct.services.project.metadata.entities.dao">
   <class name="DirectProjectMetadataPredefinedValueAudit" table="direct_project_metadata_predefined_value_audit">
-    <id name="id" column="id">
+    <id name="id" column="direct_project_metadata_predefined_value_audit_id">
 			<generator class="increment"/>
     </id>
 
