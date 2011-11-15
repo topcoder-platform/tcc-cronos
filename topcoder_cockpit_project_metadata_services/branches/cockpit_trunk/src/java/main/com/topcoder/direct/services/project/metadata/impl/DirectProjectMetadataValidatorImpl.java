@@ -53,7 +53,7 @@ public class DirectProjectMetadataValidatorImpl extends AbstractDirectProjectMet
      * </p>
      */
     private static final String QUERY_DIRECT_PROJECT_METADATA =
-        "SELECT id FROM direct_project_metadata WHERE tc_direct_project_id=:tc_direct_project_id"
+        "SELECT project_metadata_id FROM direct_project_metadata WHERE tc_direct_project_id=:tc_direct_project_id"
         + " AND project_metadata_key_id=:project_metadata_key_id";
 
     /**
