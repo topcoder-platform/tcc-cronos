@@ -22,14 +22,15 @@
 
 	<!-- 3rd party dependencies -->
   <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit.jar"/>
-  <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
+  <property name="jaxb-api.jar" value="${ext_libdir}/jaxb/2.1.7/jaxb-api.jar"/>
+  <property name="javaee.jar" value="${ext_libdir}/j2ee/1.5/javaee.jar"/>
   
 	 <!-- Struts jars -->
 	<property name="struts_dir" value="${ext_libdir}/struts/2.0.14/lib" />
 	<property name="commons-logging.jar" value="${struts_dir}/commons-logging-1.0.4.jar"/>
   
   <!-- Spring jars -->
-  <property name="spring_dir" value="${ext_libdir}/spring/2.5.6/dist" />
+  <property name="spring_dir" value="${ext_libdir}/spring" />
   <property name="spring.jar" value="${spring_dir}/spring.jar" />
 
 
@@ -50,6 +51,7 @@
 	</path>
 
 	<path id="component.3rdParty-dependencies">
+		<pathelement location="${jaxb-api.jar}" />
 		<pathelement location="${javaee.jar}" />
 		<pathelement location="${spring.jar}" />
 		<pathelement location="${commons-logging.jar}" />
