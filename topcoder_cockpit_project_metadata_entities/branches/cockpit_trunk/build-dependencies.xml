@@ -1,4 +1,4 @@
-<project name="Dependency Import"  basedir=".">
+<project basedir="." default="dist" name="Dependency Import">
     <!-- property file defining the component's dependencies -->
 
     <!-- Properties used in compile_targets ANT target for JDK version x -->
