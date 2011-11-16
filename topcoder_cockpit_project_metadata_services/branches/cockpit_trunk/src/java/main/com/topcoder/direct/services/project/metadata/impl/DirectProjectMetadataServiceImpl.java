@@ -254,7 +254,7 @@ public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetad
      */
     private static final String QUERY_PROJECT_ID =
         "SELECT distinct tc_direct_project_id FROM direct_project_metadata INNER JOIN direct_project_metadata_key"
-        + " ON direct_project_metadata.project_metadata_key_id=direct_project_metadata_key.id WHERE ";
+        + " ON direct_project_metadata.project_metadata_key_id=direct_project_metadata_key.project_metadata_key_id WHERE ";
 
     /**
      * <p>
