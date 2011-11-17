@@ -222,7 +222,6 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
 
             Helper.checkNull(lateDeliverable, "lateDeliverable");
             Helper.checkPositive(lateDeliverable.getId(), "lateDeliverable.getId()");
-            Helper.checkNull(lateDeliverable.getDeadline(), "lateDeliverable.getDeadline()");
             Helper.checkNull(lateDeliverable.getCreateDate(), "lateDeliverable.getCreateDate()");
             LateDeliverableType type = lateDeliverable.getType();
             Helper.checkNull(type, "lateDeliverable.getType()");
@@ -373,7 +372,7 @@ public class DatabaseLateDeliverablePersistence implements LateDeliverablePersis
             // Set deliverable ID to the prepared statement:
             preparedStatement.setLong(index++, lateDeliverable.getDeliverableId());
             // Set deadline to the prepared statement:
-            preparedStatement.setTimestamp(index++, new Timestamp(lateDeliverable.getDeadline().getTime()));
+            preparedStatement.setTimestamp(index++, getTimestamp(lateDeliverable.getDeadline()));
             // Set compensated deadline to the prepared statement:
             preparedStatement.setTimestamp(index++, getTimestamp(lateDeliverable.getCompensatedDeadline()));
             // Set create date to the prepared statement:
