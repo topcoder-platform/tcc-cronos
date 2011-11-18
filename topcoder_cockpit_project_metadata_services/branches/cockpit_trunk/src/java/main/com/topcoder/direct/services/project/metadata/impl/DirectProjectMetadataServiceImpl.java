@@ -788,14 +788,14 @@ public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetad
             if (metadataKeyIdValueFilter.getMetadataValueOperator() == MetadataValueOperator.EQUALS) {
                 return new StringBuilder().append("direct_project_metadata.project_metadata_key_id=").append(
                     metadataKeyIdValueFilter.getProjectMetadataKeyId()).append(
-                    " AND direct_project_metadata.metadata_value='").append(
-                    checkMetadataValue(metadataKeyIdValueFilter.getMetadataValue())).append("'").toString();
+                    " AND LOWER(direct_project_metadata.metadata_value)='").append(
+                    checkMetadataValue(metadataKeyIdValueFilter.getMetadataValue().toLowerCase())).append("'").toString();
             }
             if (metadataKeyIdValueFilter.getMetadataValueOperator() == MetadataValueOperator.LIKE) {
                 return new StringBuilder().append("direct_project_metadata.project_metadata_key_id=").append(
                     metadataKeyIdValueFilter.getProjectMetadataKeyId()).append(
-                    " AND direct_project_metadata.metadata_value LIKE '%").append(
-                    checkMetadataValue(metadataKeyIdValueFilter.getMetadataValue())).append("%'").toString();
+                    " AND LOWER(direct_project_metadata.metadata_value) LIKE '%").append(
+                    checkMetadataValue(metadataKeyIdValueFilter.getMetadataValue().toLowerCase())).append("%'").toString();
             }
         }
 
@@ -805,14 +805,14 @@ public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetad
             if (metadataKeyNameValueFilter.getMetadataValueOperator() == MetadataValueOperator.EQUALS) {
                 return new StringBuilder().append("direct_project_metadata_key.name='").append(
                     metadataKeyNameValueFilter.getProjectMetadataKeyName()).append(
-                    "' AND direct_project_metadata.metadata_value='").append(
-                    checkMetadataValue(metadataKeyNameValueFilter.getMetadataValue())).append("'").toString();
+                    "' AND LOWER(direct_project_metadata.metadata_value)='").append(
+                    checkMetadataValue(metadataKeyNameValueFilter.getMetadataValue().toLowerCase())).append("'").toString();
             }
             if (metadataKeyNameValueFilter.getMetadataValueOperator() == MetadataValueOperator.LIKE) {
                 return new StringBuilder().append("direct_project_metadata_key.name='").append(
                     metadataKeyNameValueFilter.getProjectMetadataKeyName()).append(
-                    "' AND direct_project_metadata.metadata_value LIKE '%").append(
-                    checkMetadataValue(metadataKeyNameValueFilter.getMetadataValue())).append("%'").toString();
+                    "' AND LOWER(direct_project_metadata.metadata_value) LIKE '%").append(
+                    checkMetadataValue(metadataKeyNameValueFilter.getMetadataValue().toLowerCase())).append("%'").toString();
             }
         }
 
