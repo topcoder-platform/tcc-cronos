@@ -3168,7 +3168,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                             long resourceUserId 
                                 = Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID));
                             forums.assignRole(resourceUserId, "Software_Moderators_" + forumId);
-                            forums.createForumWatch(resourceUserId, forumId);
+                            forums.createCategoryWatch(resourceUserId, forumId);
                         }
                     }
                 }
