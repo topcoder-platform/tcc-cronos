@@ -2375,6 +2375,8 @@ public class SqlUploadPersistence implements UploadPersistence {
                 prizeType.setId(resultSet.getLong("prize_type_id"));
                 prizeType.setDescription(resultSet.getString("prize_type_desc"));
                 prize.setPrizeType(prizeType);
+				
+				submission.setPrize(prize);
             }
             
             submission.setUpload(loadUpload(resultSet));
