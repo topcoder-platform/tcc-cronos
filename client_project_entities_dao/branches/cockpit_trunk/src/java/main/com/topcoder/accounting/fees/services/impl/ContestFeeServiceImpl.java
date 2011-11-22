@@ -3,15 +3,14 @@
  */
 package com.topcoder.accounting.fees.services.impl;
 
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
 
 
 import com.topcoder.accounting.fees.entities.BillingAccount;
 import com.topcoder.accounting.fees.entities.ContestFeeDetails;
-import com.topcoder.accounting.fees.entities.ContestType;
 import com.topcoder.accounting.fees.entities.FeeAuditRecord;
 import com.topcoder.accounting.fees.entities.SearchResult;
 import com.topcoder.accounting.fees.persistence.ContestFeePersistence;
@@ -103,39 +102,16 @@ public class ContestFeeServiceImpl implements ContestFeeService {
      *             if there is any exception.
      */
     public BillingAccount getBillingAccount(long projectId) throws ContestFeeServiceException {
-        BillingAccount account = persistence.getBillingAccount(projectId);
-        // populate type names
-        //Map<String, ContestType> types = persistence.getContesetTypes();      
+        BillingAccount account = persistence.getBillingAccount(projectId); 
         
         if (account.getContestFees() != null) {
         	Iterator<ContestFeeDetails> it = account.getContestFees().iterator();
             while (it.hasNext()) {
             	ContestFeeDetails details = it.next();
                 String id = Long.toString(details.getContestTypeId());
-                //ContestType type = types.get(id);
-                //if (type == null) {
-               // 	it.remove();                	
-                //} else if (type != null && type.getDescription() != null && type.getDescription().trim().length() != 0) {
-                //    details.setContestTypeDescription(type.getDescription());
-               // } else {
-                    details.setContestTypeDescription(id);
-               // }
+                details.setContestTypeDescription(id);
             }
-        } /*else {
-        	account.setContestFees(new ArrayList<ContestFeeDetails>());
-        	
-        	// create default fees for the project
-        	for (ContestType contestType : types.values()) {
-        		ContestFeeDetails details = new ContestFeeDetails();
-        		details.setIsDelete(0);
-        		details.setIsStudio(0);
-        		details.setProjectId(projectId);
-        		details.setContestTypeId(contestType.getTypeId());
-        		details.setContestTypeDescription(contestType.getDescription());
-        		
-        		account.getContestFees().add(details);
-        	}
-        }*/
+        }
 
         return account;
     }

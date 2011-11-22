@@ -24,13 +24,7 @@ import com.topcoder.accounting.fees.services.ContestFeePersistenceException;
 
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
-/*
-import com.topcoder.shared.dataAccess.Request;
-import com.topcoder.shared.dataAccess.resultSet.ResultSetContainer;
-import com.topcoder.shared.util.DBMS;
 
-import com.topcoder.web.common.CachedDataAccess;
-import com.topcoder.web.common.cache.MaxAge;*/
 
 /**
  * Implements contract methods to manage contest fees for billing accounts. It defines CRUD operations on contest fee
@@ -60,11 +54,7 @@ public class ContestFeePersistenceImpl implements ContestFeePersistence {
      * fully mutable.
      */
     private SessionFactory sessionFactory;
-    /**
-     * Represents the contest types map instance. It is managed with a getter and setter. It may have any value. It is
-     * fully mutable.
-     */
-    private Map<String, ContestType> contestTypes = null;
+
 
     /**
      * Default Constructor.
@@ -91,68 +81,6 @@ public class ContestFeePersistenceImpl implements ContestFeePersistence {
     	session.flush();
     }
 
-    /**
-     * Checks whether the given contestFeeDetails is valid.
-     * 
-     * @param contestFeeDetails
-     *            - the given value to check.
-     * @throws ContestFeePersistenceException
-     *             - if there is any exception.
-     * @throws IllegalArgumentException
-     *             - if contestFeeDetails is null.
-     */
-    private void checkContestFeeDetails(ContestFeeDetails contestFeeDetails) throws ContestFeePersistenceException {
-        if (contestFeeDetails == null) {
-            throw new IllegalArgumentException("The given ContestFeeDetails instance should not be null.");
-        }
-        if (contestFeeDetails.getFee() <= 0) {
-            throw new IllegalArgumentException("The given Fee of ContestFeeDetails should be positive.");
-        }
-
-       /* if (!getContesetTypes().keySet().contains(Long.toString(contestFeeDetails.getContestTypeId()))) {
-            throw new IllegalArgumentException("The given contest type of ContestFeeDetails is invalid.");
-        }*/
-    }
-
-    /**
-     * Get all contest types in database.
-     * 
-     * @return all contest types.
-     * @throws ContestFeePersistenceException
-     *             if there is any exception.
-     *
-    public Map<String, ContestType> getContesetTypes() throws ContestFeePersistenceException {
-        if (contestTypes == null) {
-            CachedDataAccess dataAccess = new CachedDataAccess(MaxAge.QUARTER_HOUR, DBMS.TCS_OLTP_DATASOURCE_NAME);
-
-            Request request = new Request();
-            request.setContentHandle("project_categories_replatforming");
-            contestTypes = new HashMap<String, ContestType>();
-            try {
-                ResultSetContainer container = dataAccess.getData(request)
-                        .get("project_categories_replatforming");
-                int recordNum = container.size();
-                for (int i = 0; i < recordNum; i++) {
-                    ContestType type = new ContestType();
-                    type.setTypeId(container.getIntItem(i, "project_category_id"));
-                    if (container.getIntItem(i, "project_type_id") == 3) {
-                        type.setStudio(true);
-                    } else {
-                        type.setStudio(false);
-                    }
-                    type.setDescription(container.getStringItem(i, "name"));
-
-                    contestTypes.put(Integer.toString(type.getTypeId()), type);
-                }
-
-            } catch (Exception e) {
-                // ignore it
-                contestTypes = null;
-                throw new ContestFeePersistenceException(e.getMessage(), e);
-            }
-        }
-        return contestTypes;
-    }*/
 
     /**
      * This method is responsible for updating contest fee given instance of ContestFeeDetails and project id.
