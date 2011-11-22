@@ -4,6 +4,7 @@
 package com.topcoder.service.project;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
@@ -28,13 +29,17 @@ import javax.persistence.SqlResultSetMapping;
  * <p>
  *     Version 1.2 - add the property project forum category id.
  * </p>
+ * <p>
+ *     Version 1.3 - Release Assembly - TopCoder Cockpit DataTables Filter Panel and Search Bar changes:
+ *     - add the property {@link #creationDate} to represent the project creation date.
+ * </p>
  *
  * <p>
  * <b>Thread Safety</b>: This class is not thread safe as it has mutable state.
  * </p>
  *
  * @author humblefool, FireIce, GreatKevin
- * @version 1.2
+ * @version 1.3
  */
 @SqlResultSetMapping(
 		name="GetProjectsResult",
@@ -43,7 +48,8 @@ import javax.persistence.SqlResultSetMapping;
 			            @FieldResult(name="name", column="name"),
 			            @FieldResult(name="description", column="description"),
                         @FieldResult(name="projectStatusId", column="project_status_id"),
-                        @FieldResult(name="forumCategoryId", column="project_forum_id")}
+                        @FieldResult(name="forumCategoryId", column="project_forum_id"),
+                        @FieldResult(name="creationDate", column="create_date")}
 		)})
 @Entity
 public class ProjectData implements Serializable {
@@ -108,6 +114,12 @@ public class ProjectData implements Serializable {
      * @since 1.2
      */
     private String forumCategoryId;
+
+    /**
+     * The creation date of the project.
+     * @since 1.3
+     */
+    private Date creationDate;
 
     /**
      * <p>
@@ -229,5 +241,25 @@ public class ProjectData implements Serializable {
      */
     public void setForumCategoryId(String forumCategoryId) {
         this.forumCategoryId = forumCategoryId;
+    }
+
+    /**
+     * Gets the project creation date.
+     *
+     * @return the project creation date.
+     * @since 1.3
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * Sets the project creation date.
+     *
+     * @param creationDate the project creation date to set.
+     * @since 1.3
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

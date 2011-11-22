@@ -233,6 +233,12 @@ import com.topcoder.util.log.LogManager;
  *      <li>Add the support of the new column project_forum_id which is used to store the project forum category id.</li>
  *  </uL>
  *
+ *  </p>
+ *  Version 1.3 (Release Assembly - TopCoder Cockpit DataTables Filter Panel and Search Bar) changes note:
+ *  <uL>
+ *      <li>Add the project creation date into the return ProjectData</li>
+ *  </uL>
+ *
  * <p>
  * <b>Thread Safety</b>: This class is thread safe as it is immutable except for the session context. The
  * sessionContext resource, despite being mutable, does not compromise thread safety as it is injected by the EJB
@@ -260,7 +266,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description, project_status_id, , project_forum_id FROM tc_direct_project p";
+    private static final String QUERY_ALL_PROJECTS = "SELECT project_id, name, description, project_status_id, , project_forum_id, create_date FROM tc_direct_project p";
 
     /**
      * <p>
@@ -278,7 +284,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
      *
      * @since 1.1
      */
-    private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description, project_status_id, project_forum_id FROM tc_direct_project p, user_permission_grant per "
+    private static final String QUERY_PROJECTS_BY_USER = "SELECT project_id, name, description, project_status_id, project_forum_id, create_date FROM tc_direct_project p, user_permission_grant per "
                                     + " where p.project_id = per.resource_id and per.user_id = ";
 
     /**
