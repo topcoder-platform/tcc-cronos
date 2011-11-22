@@ -4,6 +4,7 @@
 package com.topcoder.service.facade.contest;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Project summary data object to hold project data for each status.
@@ -12,8 +13,13 @@ import java.io.Serializable;
  *     Version 1.1 changes: add the property directProjectStatusId into the ProjectSummaryData.
  * </p>
  *
- * @author BeBetter
- * @version 1.1
+ * <p>
+ *     Version 1.2 Release Assembly - TopCoder Cockpit DataTables Filter Panel and Search Bar changes:
+ *     - Add property {@link #projectCreationDate}, {@link #customerId} and {@link #customerName}
+ * </p>
+ *
+ * @author BeBetter, GreatKevin
+ * @version 1.2
  */
 public class ProjectSummaryData implements Serializable {
     /**
@@ -40,6 +46,25 @@ public class ProjectSummaryData implements Serializable {
      * @since 1.1
      */
     private Long directProjectStatusId;
+
+
+    /**
+     * The project creation date.
+     * @since 1.2
+     */
+    private Date projectCreationDate;
+
+    /**
+     * The id of the customer.
+     * @since 1.2
+     */
+    private long customerId;
+
+    /**
+     * The name of the customer
+     * @since 1.2
+     */
+    private String customerName;
 
     /**
      * <p>
@@ -248,5 +273,64 @@ public class ProjectSummaryData implements Serializable {
      */
     public void setDirectProjectStatusId(Long directProjectStatusId) {
         this.directProjectStatusId = directProjectStatusId;
+    }
+
+    /**
+     * Gets the project creation date.
+     *
+     * @return the project creation date.
+     * @since 1.2
+     */
+    public Date getProjectCreationDate() {
+        return projectCreationDate;
+    }
+
+    /**
+     * Sets the project creation date.
+     *
+     * @param projectCreationDate the project creation date.
+     * @since 1.2
+     */
+    public void setProjectCreationDate(Date projectCreationDate) {
+        this.projectCreationDate = projectCreationDate;
+    }
+
+    /**
+     * Gets the id of the project customer.
+     *
+     * @return the id of the project customer.
+     * @since 1.2
+     */
+    public long getCustomerId() {
+        return customerId;
+    }
+
+    /**
+     * Sets the id of the project customer.
+     *
+     * @param customerId the id of the project customer.
+     */
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
+    }
+
+    /**
+     * Gets the name of the project customer.
+     *
+     * @return the name of the project customer.
+     * @since 1.2
+     */
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    /**
+     * Sets the name of the project customer.
+     *
+     * @param customerName the name of the project customer.
+     * @since 1.2
+     */
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

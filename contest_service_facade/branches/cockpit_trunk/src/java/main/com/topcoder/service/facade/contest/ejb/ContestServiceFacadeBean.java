@@ -422,9 +422,16 @@ import com.topcoder.shared.util.DBMS;
  *     <li>Set DR flag off for reporting contest type.</li>
  *   </ol>
  * </p>
+ *
+ * <p>
+ * Version 1.7.5 (Release Assembly - TopCoder Cockpit DataTables Filter Panel and Search Bar) Change notes:
+ *   <ol>
+ *     <li>Add project creation date to {@link #getProjectData(com.topcoder.security.TCSubject)}</li>
+ *   </ol>
+ * </p>
  * 
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, GreatKevin, lmmortal
- * @version 1.7.4
+ * @version 1.7.5
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -3483,6 +3490,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      *
      * <p>Version 1.7.1 - set project status id into the ProjectSummaryData returned</p>
      *
+     * <p>Version 1.7.5 - set project creation date into the ProjectSummaryData returned</p>
+     *
      * @param tcSubject <code>TCSubject</code> object
      * @return a list of <code>ProjectSummaryData</code> objects
      *
@@ -3512,6 +3521,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 data.setProjectId(project.getProjectId());
                 data.setProjectName(project.getName());
                 data.setDirectProjectStatusId(project.getProjectStatusId());
+                data.setProjectCreationDate(project.getCreationDate());
                 result.add(data);
                 projectDataMap.put(data.getProjectId(), data);
             }
