@@ -113,5 +113,5 @@ public interface ContestFeePersistence {
      * @throws ContestFeePersistenceException
      *             if there is any exception.
      */
-    Map<String, ContestType> getContesetTypes() throws ContestFeePersistenceException;
+    //Map<String, ContestType> getContesetTypes() throws ContestFeePersistenceException;
 }

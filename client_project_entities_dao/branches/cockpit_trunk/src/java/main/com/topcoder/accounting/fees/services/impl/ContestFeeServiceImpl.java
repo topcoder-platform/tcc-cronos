@@ -105,23 +105,23 @@ public class ContestFeeServiceImpl implements ContestFeeService {
     public BillingAccount getBillingAccount(long projectId) throws ContestFeeServiceException {
         BillingAccount account = persistence.getBillingAccount(projectId);
         // populate type names
-        Map<String, ContestType> types = persistence.getContesetTypes();      
+        //Map<String, ContestType> types = persistence.getContesetTypes();      
         
         if (account.getContestFees() != null) {
         	Iterator<ContestFeeDetails> it = account.getContestFees().iterator();
             while (it.hasNext()) {
             	ContestFeeDetails details = it.next();
                 String id = Long.toString(details.getContestTypeId());
-                ContestType type = types.get(id);
-                if (type == null) {
-                	it.remove();                	
-                } else if (type != null && type.getDescription() != null && type.getDescription().trim().length() != 0) {
-                    details.setContestTypeDescription(type.getDescription());
-                } else {
+                //ContestType type = types.get(id);
+                //if (type == null) {
+               // 	it.remove();                	
+                //} else if (type != null && type.getDescription() != null && type.getDescription().trim().length() != 0) {
+                //    details.setContestTypeDescription(type.getDescription());
+               // } else {
                     details.setContestTypeDescription(id);
-                }
+               // }
             }
-        } else {
+        } /*else {
         	account.setContestFees(new ArrayList<ContestFeeDetails>());
         	
         	// create default fees for the project
@@ -135,7 +135,7 @@ public class ContestFeeServiceImpl implements ContestFeeService {
         		
         		account.getContestFees().add(details);
         	}
-        }
+        }*/
 
         return account;
     }

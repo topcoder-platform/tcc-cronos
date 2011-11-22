@@ -22,13 +22,15 @@ import com.topcoder.accounting.fees.persistence.ContestFeePersistence;
 import com.topcoder.accounting.fees.services.ContestFeeConfigurationException;
 import com.topcoder.accounting.fees.services.ContestFeePersistenceException;
 
+import com.topcoder.util.log.Log;
+import com.topcoder.util.log.LogManager;
+/*
 import com.topcoder.shared.dataAccess.Request;
 import com.topcoder.shared.dataAccess.resultSet.ResultSetContainer;
 import com.topcoder.shared.util.DBMS;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogManager;
+
 import com.topcoder.web.common.CachedDataAccess;
-import com.topcoder.web.common.cache.MaxAge;
+import com.topcoder.web.common.cache.MaxAge;*/
 
 /**
  * Implements contract methods to manage contest fees for billing accounts. It defines CRUD operations on contest fee
@@ -107,9 +109,9 @@ public class ContestFeePersistenceImpl implements ContestFeePersistence {
             throw new IllegalArgumentException("The given Fee of ContestFeeDetails should be positive.");
         }
 
-        if (!getContesetTypes().keySet().contains(Long.toString(contestFeeDetails.getContestTypeId()))) {
+       /* if (!getContesetTypes().keySet().contains(Long.toString(contestFeeDetails.getContestTypeId()))) {
             throw new IllegalArgumentException("The given contest type of ContestFeeDetails is invalid.");
-        }
+        }*/
     }
 
     /**
@@ -118,7 +120,7 @@ public class ContestFeePersistenceImpl implements ContestFeePersistence {
      * @return all contest types.
      * @throws ContestFeePersistenceException
      *             if there is any exception.
-     */
+     *
     public Map<String, ContestType> getContesetTypes() throws ContestFeePersistenceException {
         if (contestTypes == null) {
             CachedDataAccess dataAccess = new CachedDataAccess(MaxAge.QUARTER_HOUR, DBMS.TCS_OLTP_DATASOURCE_NAME);
@@ -150,7 +152,7 @@ public class ContestFeePersistenceImpl implements ContestFeePersistence {
             }
         }
         return contestTypes;
-    }
+    }*/
 
     /**
      * This method is responsible for updating contest fee given instance of ContestFeeDetails and project id.
