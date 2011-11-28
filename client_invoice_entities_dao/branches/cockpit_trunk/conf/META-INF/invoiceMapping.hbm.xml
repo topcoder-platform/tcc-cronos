@@ -12,6 +12,7 @@
         <property name="contestId" column="contest_id" type="long"/>
         <many-to-one name="invoiceType" class="InvoiceType" column="invoice_type_id" cascade="none"/>
         <property name="paymentId" column="payment_id" type="long"/>
+        <property name="invoiceAmount" column="invoice_amount" type="double"/>
         <property name="processed" column="processed" type="boolean"/>
         <property name="createDate" column="create_date" type="timestamp" update="false"/>
         <property name="createUser" column="create_user" type="string" update="false"/>

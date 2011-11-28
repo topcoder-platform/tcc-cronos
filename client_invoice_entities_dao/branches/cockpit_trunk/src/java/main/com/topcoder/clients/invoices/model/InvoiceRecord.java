@@ -34,7 +34,12 @@ public class InvoiceRecord extends IdentifiableEntity {
      * <p>The ID of the payment. Can be any value. Has getter and setter.</p>
      */
     private Long paymentId;
-    
+
+    /**
+     * <p>The invoice amount. Can be any value. Has getter and setter.</p>
+     */
+    private Double invoiceAmount;
+
     /**
      * <p>The flag indicates whether the record has been processed. Can be any value. Has getter and setter.</p>
      */
@@ -135,5 +140,23 @@ public class InvoiceRecord extends IdentifiableEntity {
      */
     public void setProcessed(boolean processed) {
         this.processed = processed;
+    }
+
+    /**
+     * <p>Gets the invoice amount.</p>
+     *
+     * @return the invoice amount.
+     */
+    public Double getInvoiceAmount() {
+        return invoiceAmount;
+    }
+
+    /**
+     * <p>Sets the invoice amount..</p>
+     *
+     * @param invoiceAmount the invoice amount.
+     */
+    public void setInvoiceAmount(Double invoiceAmount) {
+        this.invoiceAmount = invoiceAmount;
     }
 }
