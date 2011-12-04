@@ -265,20 +265,31 @@ public class ProjectTermsOfUseDaoImplAccuracyTest extends BaseAccuracyTest {
     public void testGetTermsOfUse1() throws Exception {
         // retrieve agreeable and non-agreeable terms of use for each group of project 1 and resource roles 1,2
         projectId = 1;
-        int[] resourceRoleIds = new int[] {1, 2 };
-        Map<Integer, List<TermsOfUse>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, null);
-        assertEquals("Two groups should present in mapping.", 2, actual.size());
-        assertEquals("Group 0 should have 3 terms of use.", 3, actual.get(0).size());
+        int[] resourceRoleIds = new int[] {1, 2};
+        Map<Integer, Map<Integer, List<TermsOfUse>>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, null);
+        assertEquals("Two roles should present in mapping.", 2, actual.size());
+        assertEquals("Role 1 should have 1 group of terms of use.", 1, actual.get(1).size());
+        assertEquals("Role 2 should have 1 group of terms of use.", 1, actual.get(2).size());
+
+        // check the group of terms for role 1
+        List<TermsOfUse> terms = actual.get(1).get(0);
+        assertEquals("Group 0 for Role 1 should have 3 terms of use.", 3, terms.size());
+
         // check that terms correctly sorted
-        for (int i = 0; i < actual.get(0).size(); i++) {
-            assertEquals("Correct terms of use should be placed on position " + i + " in resulted list.", i + 1, actual
-                    .get(0).get(i).getTermsOfUseId());
+        for (int i = 0; i < terms.size(); i++) {
+            assertEquals("Correct terms of use should be placed on position " + i + " in resulted list.",
+                    i + 1, terms.get(i).getTermsOfUseId());
         }
-        assertEquals("Group 1 should have 1 terms of use.", 1, actual.get(1).size());
+
+        // check the group of terms for role 2
+        terms = actual.get(2).get(1);
+
+        assertEquals("Group 1 for Role 2 should have 1 terms of use.", 1, terms.size());
+
         TermsOfUseAgreeabilityType agreeabilityType = createTermsOfUseAgreeabilityType(2, "Electronically-agreeable",
                 "Electronically-agreeable");
         assertTrue("Group 1 should have 1 terms of use.",
-                compareTermsOfUse(createTermsOfUse(1, 1, "t1", "url1", agreeabilityType), actual.get(1).get(0)));
+                compareTermsOfUse(createTermsOfUse(1, 1, "t1", "url1", agreeabilityType), terms.get(0)));
     }
 
     /**
@@ -302,49 +313,23 @@ public class ProjectTermsOfUseDaoImplAccuracyTest extends BaseAccuracyTest {
      *             if any error occurs
      */
     public void testGetTermsOfUse2() throws Exception {
-        // retrieve agreeable and non-agreeable terms of use for each group of project 2 and resource roles 1
-        projectId = 2;
-        int[] resourceRoleIds = new int[] {1 };
-        Map<Integer, List<TermsOfUse>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, null);
-        assertEquals("One group should present in mapping.", 1, actual.size());
-        assertEquals("Group 2 should have 1 terms of use.", 1, actual.get(2).size());
-        TermsOfUseAgreeabilityType noagreeabilityType = createTermsOfUseAgreeabilityType(1, "Non-agreeable",
-                "Non-agreeable");
-        assertTrue("Group 2 should have 1 terms of use.",
-                compareTermsOfUse(createTermsOfUse(2, 1, "t2", "url2", noagreeabilityType), actual.get(2).get(0)));
-    }
-
-    /**
-     * <p>
-     * Tests {@link ProjectTermsOfUseDaoImpl#getTermsOfUse(int, int[], int[])} with valid arguments passed without
-     * including non-agreeable terms.
-     * </p>
-     * <p>
-     * Mapping for group 1 to project role terms of use should be retrieved successfully. No exception is expected.
-     * </p>
-     *
-     * <p>
-     * Change in 1.1:
-     * <ul>
-     * <li>Update to support removal of memberAgreeable and electronicallySignable properties of TermsOfUse.
-     * <li>Update to support adding of TermsOfUse#agreeabilityType property.
-     * </ul>
-     * </p>
-     *
-     * @throws Exception
-     *             if any error occurs
-     */
-    public void testGetTermsOfUse_Agreeable() throws Exception {
-        // retrieve only agreeable terms of use for each group of project 1 and resource roles 1,2
         projectId = 1;
-        int[] resourceRoleIds = new int[] {1, 2 };
-        Map<Integer, List<TermsOfUse>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {2 });
-        assertEquals("One group should present in mapping.", 1, actual.size());
-        assertEquals("Group 1 should have 1 terms of use.", 1, actual.get(1).size());
+        int[] resourceRoleIds = new int[] {1, 2};
+        Map<Integer, Map<Integer, List<TermsOfUse>>> actual = dao.getTermsOfUse(projectId, resourceRoleIds,
+                new int[] { 2 });   // retrieve the electronically-agreeable terms
+        assertEquals("Two roles should present in mapping.", 2, actual.size());
+        // no group for role 1 because the group for it contains non-electronically-agreeable terms
+        assertEquals("Role 1 should have 0 group of terms of use.", 0, actual.get(1).size());
+        assertEquals("Role 2 should have 1 group of terms of use.", 1, actual.get(2).size());
+
+        // check the group of terms for role 2
+        List<TermsOfUse> terms = actual.get(2).get(1);
+        assertEquals("Group 1 for Role 2 should have 1 terms of use.", 1, terms.size());
         TermsOfUseAgreeabilityType agreeabilityType = createTermsOfUseAgreeabilityType(2, "Electronically-agreeable",
                 "Electronically-agreeable");
         assertTrue("Group 1 should have 1 terms of use.",
-                compareTermsOfUse(createTermsOfUse(1, 1, "t1", "url1", agreeabilityType), actual.get(1).get(0)));
+                compareTermsOfUse(createTermsOfUse(1, 1, "t1", "url1", agreeabilityType), terms.get(0)));
+
     }
 
     /**
@@ -362,11 +347,21 @@ public class ProjectTermsOfUseDaoImplAccuracyTest extends BaseAccuracyTest {
      * @since 1.1
      */
     public void testGetTermsOfUse_NonAgreeable() throws Exception {
-        // retrieve only Non-agreeable terms of use for each group of project 1 and resource roles 1,2
         projectId = 1;
-        int[] resourceRoleIds = new int[] {1, 2 };
-        Map<Integer, List<TermsOfUse>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {1 });
-        assertEquals("No group should present in mapping", 0, actual.size());
+        int[] resourceRoleIds = new int[] {1, 3};
+        Map<Integer, Map<Integer, List<TermsOfUse>>> actual = dao.getTermsOfUse(projectId, resourceRoleIds,
+                new int[] { 1 });   // retrieve the non-agreeable terms
+        assertEquals("Two roles should present in mapping.", 2, actual.size());
+        assertEquals("Role 1 should have 0 group of terms of use.", 0, actual.get(1).size());
+        assertEquals("Role 2 should have 1 group of terms of use.", 1, actual.get(3).size());
+
+        // check the group of terms for role 3
+        List<TermsOfUse> terms = actual.get(3).get(2);
+        assertEquals("Group 2 for Role 3 should have 1 terms of use.", 1, terms.size());
+        TermsOfUseAgreeabilityType agreeabilityType = createTermsOfUseAgreeabilityType(1, "Non-agreeable",
+                "Non-agreeable");
+        assertTrue("Group 2 should have 1 terms of use.",
+                compareTermsOfUse(createTermsOfUse(2, 1, "t2", "url2", agreeabilityType), terms.get(0)));
     }
 
     /**
@@ -392,9 +387,11 @@ public class ProjectTermsOfUseDaoImplAccuracyTest extends BaseAccuracyTest {
     public void testGetTermsOfUse_Agreeable_Empty() throws Exception {
         // retrieve only agreeable terms of use for each group of project 1 and resource roles 1
         projectId = 1;
-        int[] resourceRoleIds = new int[] {1 };
-        Map<Integer, List<TermsOfUse>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {2 });
-        assertEquals("No group should present in mapping.", 0, actual.size());
+        int[] resourceRoleIds = new int[] {2};
+        Map<Integer, Map<Integer, List<TermsOfUse>>> actual
+            = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {1});
+        assertEquals("Two roles should present in mapping.", 1, actual.size());
+        assertEquals("Role 1 should have 0 group of terms of use.", 0, actual.get(2).size());
     }
 
     /**
@@ -421,7 +418,7 @@ public class ProjectTermsOfUseDaoImplAccuracyTest extends BaseAccuracyTest {
         // retrieve only agreeable terms of use for each group of project 3 and resource roles 1,2
         projectId = 3;
         int[] resourceRoleIds = new int[] {1, 2 };
-        Map<Integer, List<TermsOfUse>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {2 });
+        Map<Integer, Map<Integer, List<TermsOfUse>>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {2 });
         assertEquals("No groups should present in mapping.", 0, actual.size());
     }
 
@@ -449,7 +446,7 @@ public class ProjectTermsOfUseDaoImplAccuracyTest extends BaseAccuracyTest {
         // retrieve only agreeable terms of use for each group of project 3 and resource roles 1,2
         projectId = 2;
         int[] resourceRoleIds = new int[] {2 };
-        Map<Integer, List<TermsOfUse>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {2 });
+        Map<Integer, Map<Integer, List<TermsOfUse>>> actual = dao.getTermsOfUse(projectId, resourceRoleIds, new int[] {2 });
         assertEquals("No groups should present in mapping.", 0, actual.size());
     }
 }

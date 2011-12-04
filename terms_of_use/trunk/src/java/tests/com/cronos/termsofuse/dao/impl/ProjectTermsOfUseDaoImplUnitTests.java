@@ -355,11 +355,13 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
      */
     @Test
     public void test_getTermsOfUse_1() throws Exception {
-        Map<Integer, List<TermsOfUse>> res = instance.getTermsOfUse(1, new int[] {1, 2}, null);
+        Map<Integer, Map<Integer, List<TermsOfUse>>> res = instance.getTermsOfUse(1, new int[] {1, 2}, null);
 
         assertEquals("'getTermsOfUse' should be correct.", 2, res.size());
-        assertEquals("'getTermsOfUse' should be correct.", 3, res.get(0).size());
         assertEquals("'getTermsOfUse' should be correct.", 1, res.get(1).size());
+        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).size());
+        assertEquals("'getTermsOfUse' should be correct.", 3, res.get(1).get(0).size());
+        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).get(1).size());
     }
 
     /**
@@ -382,10 +384,12 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
      */
     @Test
     public void test_getTermsOfUse_2() throws Exception {
-        Map<Integer, List<TermsOfUse>> res = instance.getTermsOfUse(1, new int[] {1, 2}, new int[] {2, 3});
+        Map<Integer, Map<Integer, List<TermsOfUse>>> res = instance.getTermsOfUse(1, new int[] {1, 2}, new int[] {2, 3});
 
-        assertEquals("'getTermsOfUse' should be correct.", 1, res.size());
-        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(1).size());
+        assertEquals("'getTermsOfUse' should be correct.", 2, res.size());
+        assertEquals("'getTermsOfUse' should be correct.", 0, res.get(1).size());
+        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).size());
+        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).get(1).size());
     }
 
     /**
@@ -408,7 +412,7 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
      */
     @Test
     public void test_getTermsOfUse_3() throws Exception {
-        Map<Integer, List<TermsOfUse>> res = instance.getTermsOfUse(Integer.MAX_VALUE, new int[] {1, 2}, null);
+        Map<Integer, Map<Integer, List<TermsOfUse>>> res= instance.getTermsOfUse(Integer.MAX_VALUE, new int[] {1, 2}, null);
 
         assertEquals("'getTermsOfUse' should be correct.", 0, res.size());
 

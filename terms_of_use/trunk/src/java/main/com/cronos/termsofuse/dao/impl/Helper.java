@@ -516,7 +516,7 @@ final class Helper {
         } else if (obj instanceof List) {
             return toString((List<?>) obj);
         } else if (obj instanceof Map) {
-            return toString((Map<Integer, List<TermsOfUse>>) obj);
+            return toString((Map<Integer, Map<Integer, List<TermsOfUse>>>) obj);
         }
 
         return String.valueOf(obj);
@@ -548,7 +548,35 @@ final class Helper {
      *
      * @return the string.
      */
-    private static String toString(Map<Integer, List<TermsOfUse>> obj) {
+    private static String toString(Map<Integer, Map<Integer, List<TermsOfUse>>> obj) {
+        StringBuilder sb = new StringBuilder("{");
+
+        boolean first = true;
+        for (Entry<Integer, Map<Integer, List<TermsOfUse>>> entry : obj.entrySet()) {
+            if (!first) {
+                // Append a comma
+                sb.append(", ");
+            }
+            first = false;
+
+            sb.append(entry.getKey()).append('=').append(
+                    toStringForGroup((Map<Integer, List<TermsOfUse>>)entry.getValue()));
+        }
+
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    /**
+     * Converts the Map instance to a string.
+     *
+     * @param obj
+     *            the Map instance (not <code>null</code>).
+     *
+     * @return the string.
+     */
+    private static String toStringForGroup(Map<Integer, List<TermsOfUse>> obj) {
         StringBuilder sb = new StringBuilder("{");
 
         boolean first = true;
@@ -566,6 +594,7 @@ final class Helper {
 
         return sb.toString();
     }
+
 
     /**
      * Converts the List to a string.

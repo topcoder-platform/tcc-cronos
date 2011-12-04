@@ -84,6 +84,12 @@ public interface ProjectTermsOfUseDao {
      * </ol>
      * </p>
      *
+     * <p>
+     * <em>Changes in 1.1.1</em>
+     * This method should return a map
+     * where the key is the role id and the value is the TOU groups linked to that role.
+     * </p>
+     *
      * @param resourceRoleIds
      *            the role ids to associate.
      * @param projectId
@@ -93,15 +99,15 @@ public interface ProjectTermsOfUseDao {
      *            agreeability type is not required; if at least one terms of use in the group has agreeability type
      *            with not specified ID, the whole group is ignored)
      *
-     * @return Map of lists of terms of use entities. The key of the map is the group index, the value is the list of
-     *         terms for this group.
+     * @return Map of lists of terms of use entities. The key of the map is the role id, the value is the
+     *         TOU groups for this role.
      *
      * @throws IllegalArgumentException
      *             if resourceRoleIds is null or empty array, or agreeabilityTypeIds is empty.
      * @throws TermsOfUsePersistenceException
      *             if any persistence error occurs.
      */
-    public Map<Integer, List<TermsOfUse>> getTermsOfUse(int projectId, int[] resourceRoleIds,
+    public Map<Integer, Map<Integer, List<TermsOfUse>>> getTermsOfUse(int projectId, int[] resourceRoleIds,
         int[] agreeabilityTypeIds) throws TermsOfUsePersistenceException;
 
     /**
