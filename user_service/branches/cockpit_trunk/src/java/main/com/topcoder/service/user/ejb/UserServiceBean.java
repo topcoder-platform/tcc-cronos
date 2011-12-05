@@ -1670,7 +1670,7 @@ public class UserServiceBean implements UserServiceRemote, UserServiceLocal {
                     "select "
                     + "user.user_id, user.handle, user.first_name, user.last_name, email.address "
                     + "from user "
-                    + "left outer join email on user.user_id = email.user_id "
+                    + "left outer join email on user.user_id = email.user_id and email.primary_ind = 1 "
                     + "where UPPER(user.handle) like(UPPER(:userHandle)) ");
 
             basicInfoquery.setParameter("userHandle", key);
