@@ -15,7 +15,7 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 						</Property>
 		                <Property name="jdbc_url">
-		                    <Value>jdbc:informix-sqli://localhost:9088/test:informixserver=tcs</Value>
+		                    <Value>jdbc:informix-sqli://129.127.226.5:2021/informix:informixserver=informixoltp_tcp</Value>
 		                </Property>
 		                <Property name="user">
 		                    <Value>informix</Value>
@@ -51,7 +51,7 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 						</Property>
 		                <Property name="jdbc_url">
-		                    <Value>jdbc:informix-sqli://localhost:9088/test:informixserver=tcs</Value>
+		                    <Value>jdbc:informix-sqli://129.127.226.5:2021/informix:informixserver=informixoltp_tcp</Value>
 		                </Property>
 		                <Property name="user">
 		                    <Value>informix</Value>
@@ -84,7 +84,7 @@
 						<Value>com.informix.jdbc.IfxDriver</Value>
 						</Property>
 		                <Property name="jdbc_url">
-		                    <Value>jdbc:informix-sqli://localhost:9088/test:informixserver=tcs</Value>
+		                    <Value>jdbc:informix-sqli://129.127.226.5:2021/informix:informixserver=informixoltp_tcp</Value>
 		                </Property>
 		                <Property name="user">
 		                    <Value>informix</Value>
