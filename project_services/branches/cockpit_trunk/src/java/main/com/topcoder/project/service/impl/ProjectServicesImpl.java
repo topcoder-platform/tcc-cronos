@@ -1843,8 +1843,15 @@ public class ProjectServicesImpl implements ProjectServices {
             boolean requireApproval = projectManager.requireApprovalPhase(billingProjectId);
             boolean isStudio = (projectHeader.getProjectCategory().getProjectType().getId() == ProjectType.STUDIO.getId());
 
-            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
+			if (!isStudio)
+			{
+				projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
+						.valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
+			}
+			else
+			{
+				projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, "false");
+			}
 
             projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, String
                     .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.RELIABILITY_BONUS_ELIGIBLE)));
@@ -2633,8 +2640,15 @@ public class ProjectServicesImpl implements ProjectServices {
                 requireApproval = false;
             }
 
-            projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
-                    .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
+            if (!isStudio)
+			{
+				projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, String
+						.valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.POST_MORTEM_REQUIRED)));
+			}
+			else
+			{
+				projectHeader.setProperty(ProjectPropertyType.POST_MORTEM_REQUIRED_PROJECT_PROPERTY_KEY, "false");
+			}
 
             projectHeader.setProperty(ProjectPropertyType.RELIABILITY_BONUS_ELIGIBLE_PROJECT_PROPERTY_KEY, String
                     .valueOf(getBooleanClientProjectConfig(billingProjectId, BillingProjectConfigType.RELIABILITY_BONUS_ELIGIBLE)));
