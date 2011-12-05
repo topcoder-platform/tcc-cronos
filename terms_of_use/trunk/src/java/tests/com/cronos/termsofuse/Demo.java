@@ -245,11 +245,11 @@ public class Demo {
         // Will return two lists:
         // 1st with ids: 1,2,3
         // 2nd with ids: 1
-        Map<Integer, Map<Integer, List<TermsOfUse>>> termsGroupMap = projectTermsOfUseDao.getTermsOfUse(1, new int[] {1, 2}, null);
+        Map<Integer, List<TermsOfUse>> termsGroupMap = projectTermsOfUseDao.getTermsOfUse(1, 1, null);
 
         // Get terms of use without non-member-agreeable terms
         // Will return one list:
         // 1st with ids: 1
-        termsGroupMap = projectTermsOfUseDao.getTermsOfUse(1, new int[] {1, 2}, new int[] {2, 3});
+        termsGroupMap = projectTermsOfUseDao.getTermsOfUse(1, 1, new int[] {2, 3});
     }
 }

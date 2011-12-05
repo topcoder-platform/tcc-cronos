@@ -72,7 +72,7 @@ public interface ProjectTermsOfUseDao {
 
     /**
      * <p>
-     * This method retrieves terms of use for specific pair of user and resource roles and groups it by terms of use
+     * This method retrieves terms of use for specific pair of user and resource role and groups it by terms of use
      * groups. Additionally groups can be filtered by agreeability types.
      * </p>
      *
@@ -90,8 +90,8 @@ public interface ProjectTermsOfUseDao {
      * where the key is the role id and the value is the TOU groups linked to that role.
      * </p>
      *
-     * @param resourceRoleIds
-     *            the role ids to associate.
+     * @param resourceRoleId
+     *            the role id to associate.
      * @param projectId
      *            the project id to associate.
      * @param agreeabilityTypeIds
@@ -99,15 +99,15 @@ public interface ProjectTermsOfUseDao {
      *            agreeability type is not required; if at least one terms of use in the group has agreeability type
      *            with not specified ID, the whole group is ignored)
      *
-     * @return Map of lists of terms of use entities. The key of the map is the role id, the value is the
-     *         TOU groups for this role.
+     * @return Map of lists of terms of use entities. The key of the map is the group id, the value is the
+     *         TOUs for this role.
      *
      * @throws IllegalArgumentException
      *             if resourceRoleIds is null or empty array, or agreeabilityTypeIds is empty.
      * @throws TermsOfUsePersistenceException
      *             if any persistence error occurs.
      */
-    public Map<Integer, Map<Integer, List<TermsOfUse>>> getTermsOfUse(int projectId, int[] resourceRoleIds,
+    public Map<Integer, List<TermsOfUse>> getTermsOfUse(int projectId, int resourceRoleId,
         int[] agreeabilityTypeIds) throws TermsOfUsePersistenceException;
 
     /**

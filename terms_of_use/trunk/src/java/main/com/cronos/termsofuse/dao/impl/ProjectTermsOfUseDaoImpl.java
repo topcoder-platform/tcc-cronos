@@ -154,13 +154,13 @@ public class ProjectTermsOfUseDaoImpl extends BaseTermsOfUseDao implements Proje
      * </p>
      */
     private static final String QUERY_TERMS =
-        "SELECT resource_role_id, tou.terms_of_use_id, sort_order, group_ind, terms_of_use_type_id, title, url,"
+        "SELECT tou.terms_of_use_id, sort_order, group_ind, terms_of_use_type_id, title, url,"
         + " tou.terms_of_use_agreeability_type_id, touat.name as terms_of_use_agreeability_type_name,"
         + " touat.description as terms_of_use_agreeability_type_description FROM project_role_terms_of_use_xref"
         + " INNER JOIN terms_of_use tou ON project_role_terms_of_use_xref.terms_of_use_id = tou.terms_of_use_id"
         + " INNER JOIN terms_of_use_agreeability_type_lu touat ON touat.terms_of_use_agreeability_type_id"
         + " = tou.terms_of_use_agreeability_type_id"
-        + " WHERE project_id = ? AND resource_role_id IN (%1$s) order by resource_role_id, group_ind, sort_order";
+        + " WHERE project_id = ? AND resource_role_id = ? order by group_ind, sort_order";
 
     /**
      * <p>
@@ -304,11 +304,11 @@ public class ProjectTermsOfUseDaoImpl extends BaseTermsOfUseDao implements Proje
      *         TOU groups for this role.
      *
      * @throws IllegalArgumentException
-     *             if resourceRoleIds is null or empty array, or agreeabilityTypeIds is empty.
+     *             if agreeabilityTypeIds is empty.
      * @throws TermsOfUsePersistenceException
      *             if any persistence error occurs.
      */
-    public Map<Integer, Map<Integer, List<TermsOfUse>>> getTermsOfUse(int projectId, int[] resourceRoleIds,
+    public Map<Integer, List<TermsOfUse>> getTermsOfUse(int projectId, int resourceRoleId,
         int[] agreeabilityTypeIds) throws TermsOfUsePersistenceException {
         String signature = CLASS_NAME + ".getTermsOfUse(int projectId, int[] resourceRoleIds,"
             + " int[] agreeabilityTypeIds)";
@@ -318,42 +318,25 @@ public class ProjectTermsOfUseDaoImpl extends BaseTermsOfUseDao implements Proje
 
         // Log method entry
         Helper.logEntrance(log, signature,
-            new String[] {"projectId", "resourceRoleIds", "agreeabilityTypeIds"},
-            new Object[] {projectId, toList(resourceRoleIds), agreeabilityTypeIdsList});
+            new String[] {"projectId", "resourceRoleId", "agreeabilityTypeIds"},
+            new Object[] {projectId, resourceRoleId, agreeabilityTypeIdsList});
 
         try {
-            Helper.checkNull(resourceRoleIds, "resourceRoleIds");
-            if (resourceRoleIds.length == 0) {
-                throw new IllegalArgumentException("'resourceRoleIds' should not be empty.");
-            }
             if ((agreeabilityTypeIds != null) && (agreeabilityTypeIds.length == 0)) {
                 throw new IllegalArgumentException("'agreeabilityTypeIds' should not be empty.");
             }
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < resourceRoleIds.length; i++) {
-                if (i != 0) {
-                    // Append a comma
-                    sb.append(", ");
-                }
-                sb.append("?");
-            }
-
-            String query = String.format(QUERY_TERMS, sb.toString());
 
             Connection conn = Helper.createConnection(getDBConnectionFactory());
             PreparedStatement ps = null;
 
             try {
-                ps = conn.prepareStatement(query);
+                ps = conn.prepareStatement(QUERY_TERMS);
                 ps.setInt(1, projectId);
-                for (int i = 0; i < resourceRoleIds.length; i++) {
-                    ps.setInt(2 + i, resourceRoleIds[i]);
-                }
+                ps.setInt(2, resourceRoleId);
 
                 ResultSet rs = ps.executeQuery();
 
-                Map<Integer, Map<Integer, List<TermsOfUse>>> result = getTermsOfUse(rs, agreeabilityTypeIdsList);
+                Map<Integer, List<TermsOfUse>> result = getTermsOfUse(rs, agreeabilityTypeIdsList);
 
                 // Log method exit
                 Helper.logExit(log, signature, new Object[] {result});
@@ -433,19 +416,16 @@ public class ProjectTermsOfUseDaoImpl extends BaseTermsOfUseDao implements Proje
      * @throws SQLException
      *             if any persistence error occurs.
      */
-    private static Map<Integer, Map<Integer, List<TermsOfUse>>> getTermsOfUse(ResultSet rs, List<Integer> agreeabilityTypeIds)
+    private static Map<Integer, List<TermsOfUse>> getTermsOfUse(ResultSet rs, List<Integer> agreeabilityTypeIds)
         throws SQLException {
 
-        Map<Integer, Map<Integer, List<TermsOfUse>>> result = new HashMap<Integer, Map<Integer, List<TermsOfUse>>>();
+        Map<Integer, List<TermsOfUse>> result = new HashMap<Integer, List<TermsOfUse>>();
 
         // Flag, specifying whether the groupList should not be added to result list
         // This is done when one of user terms of the list has agreeability type ID
         // that is not in agreeabilityTypeIds and agreeabilityTypeIds != null:
         Integer previousGroup = null;
-        Integer previousRole = null;
 
-        Map<Integer, List<TermsOfUse>> groups = new HashMap<Integer, List<TermsOfUse>>();
-        Integer role = 0;
         // The single list of terms ids, which contains ids from the same group.
         List<TermsOfUse> groupList = new ArrayList<TermsOfUse>();
         Integer group = 0;
@@ -455,38 +435,41 @@ public class ProjectTermsOfUseDaoImpl extends BaseTermsOfUseDao implements Proje
         // and includeNonMemberAgreeable flag == false
         boolean ignoreGroupList = false;
 
+        // Iterate over all results
         while (rs.next()) {
-            // get the role in the current row
-            role = rs.getInt("resource_role_id");
-
-            groups = result.get(role);
-            if (groups == null) {
-                groups = new HashMap<Integer, List<TermsOfUse>>();
-                result.put(role, groups);
-            }
-            
+            // Get the group
             group = rs.getInt("group_ind");
-            groupList = groups.get(group);
-            if (groupList == null) {
-                groupList = new ArrayList<TermsOfUse>();
-                groups.put(group, groupList);
-            }
-            groupList.add(Helper.getTermsOfUse(rs, null, null));
 
-        }
-        
-        if (agreeabilityTypeIds != null) {
-            for (Map.Entry<Integer, Map<Integer, List<TermsOfUse>>> roleEntry : result.entrySet()) {
-                for (Map.Entry<Integer, List<TermsOfUse>> groupEntry : roleEntry.getValue().entrySet()) {
-                    for (TermsOfUse terms : groupEntry.getValue()) {
-                        TermsOfUseAgreeabilityType agreeabilityType = terms.getAgreeabilityType();
-                        int termsOfUseAgreeabilityTypeId = agreeabilityType.getTermsOfUseAgreeabilityTypeId();
-                        if (!agreeabilityTypeIds.contains(termsOfUseAgreeabilityTypeId)) {
-                            roleEntry.getValue().remove(groupEntry.getKey());
-                        }
-                    }
+            // if moved to next group, add current list to result and clear.
+            if (!group.equals(previousGroup)) {
+                if (!groupList.isEmpty() && !ignoreGroupList) {
+                    result.put(previousGroup, new ArrayList<TermsOfUse>(groupList));
+                }
+                groupList.clear();
+
+                previousGroup = group;
+                ignoreGroupList = false;
+            }
+            if (ignoreGroupList) {
+                // Skip the group
+                continue;
+            }
+
+            TermsOfUse terms = Helper.getTermsOfUse(rs, null, null);
+            groupList.add(terms);
+
+            if (agreeabilityTypeIds != null) {
+                TermsOfUseAgreeabilityType agreeabilityType = terms.getAgreeabilityType();
+                int termsOfUseAgreeabilityTypeId = agreeabilityType.getTermsOfUseAgreeabilityTypeId();
+
+                if (!agreeabilityTypeIds.contains(termsOfUseAgreeabilityTypeId)) {
+                    ignoreGroupList = true;
                 }
             }
+        }
+        // If some data present, add to result
+        if (!groupList.isEmpty() && !ignoreGroupList) {
+            result.put(group, groupList);
         }
 
         return result;

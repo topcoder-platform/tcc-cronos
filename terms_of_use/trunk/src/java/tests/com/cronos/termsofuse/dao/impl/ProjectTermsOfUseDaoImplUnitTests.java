@@ -355,13 +355,9 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
      */
     @Test
     public void test_getTermsOfUse_1() throws Exception {
-        Map<Integer, Map<Integer, List<TermsOfUse>>> res = instance.getTermsOfUse(1, new int[] {1, 2}, null);
+        Map<Integer, List<TermsOfUse>> res = instance.getTermsOfUse(1, 1, null);
 
-        assertEquals("'getTermsOfUse' should be correct.", 2, res.size());
-        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(1).size());
-        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).size());
-        assertEquals("'getTermsOfUse' should be correct.", 3, res.get(1).get(0).size());
-        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).get(1).size());
+        assertEquals("'getTermsOfUse' should be correct.", 3, res.get(0).size());
     }
 
     /**
@@ -384,12 +380,10 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
      */
     @Test
     public void test_getTermsOfUse_2() throws Exception {
-        Map<Integer, Map<Integer, List<TermsOfUse>>> res = instance.getTermsOfUse(1, new int[] {1, 2}, new int[] {2, 3});
+        Map<Integer, List<TermsOfUse>> res = instance.getTermsOfUse(1, 2, new int[] {2, 3});
 
-        assertEquals("'getTermsOfUse' should be correct.", 2, res.size());
-        assertEquals("'getTermsOfUse' should be correct.", 0, res.get(1).size());
-        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).size());
-        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(2).get(1).size());
+        assertEquals("'getTermsOfUse' should be correct.", 1, res.size());
+        assertEquals("'getTermsOfUse' should be correct.", 1, res.get(1).size());
     }
 
     /**
@@ -412,56 +406,10 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
      */
     @Test
     public void test_getTermsOfUse_3() throws Exception {
-        Map<Integer, Map<Integer, List<TermsOfUse>>> res= instance.getTermsOfUse(Integer.MAX_VALUE, new int[] {1, 2}, null);
+        Map<Integer, List<TermsOfUse>> res= instance.getTermsOfUse(Integer.MAX_VALUE, 1, null);
 
         assertEquals("'getTermsOfUse' should be correct.", 0, res.size());
 
-    }
-
-    /**
-     * <p>
-     * Failure test for the method <code>getTermsOfUse(int projectId, int[] resourceRoleIds,
-     * int[] agreeabilityTypeIds)</code> with resourceRoleIds is <code>null</code>.<br>
-     * <code>IllegalArgumentException</code> is expected.
-     * </p>
-     *
-     * <p>
-     * <em>Changes in 1.1:</em>
-     * <ol>
-     * <li>Updated code to support replaced includeNonMemberAgreeable:boolean parameter with
-     * agreeabilityTypeIds:int[].</li>
-     * </ol>
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void test_getTermsOfUse_resourceRoleIdsNull() throws Exception {
-        instance.getTermsOfUse(projectId, null, null);
-    }
-
-    /**
-     * <p>
-     * Failure test for the method <code>getTermsOfUse(int projectId, int[] resourceRoleIds,
-     * int[] agreeabilityTypeIds)</code> with resourceRoleIds is empty.<br>
-     * <code>IllegalArgumentException</code> is expected.
-     * </p>
-     *
-     * <p>
-     * <em>Changes in 1.1:</em>
-     * <ol>
-     * <li>Updated code to support replaced includeNonMemberAgreeable:boolean parameter with
-     * agreeabilityTypeIds:int[].</li>
-     * </ol>
-     * </p>
-     *
-     * @throws Exception
-     *             to JUnit.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void test_getTermsOfUse_resourceRoleIdsEmpty() throws Exception {
-        instance.getTermsOfUse(projectId, new int[0], null);
     }
 
     /**
@@ -479,7 +427,7 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
      */
     @Test(expected = IllegalArgumentException.class)
     public void test_getTermsOfUse_agreeabilityTypeIdsEmpty() throws Exception {
-        instance.getTermsOfUse(projectId, new int[] {1, 2}, new int[0]);
+        instance.getTermsOfUse(projectId, 1, new int[0]);
     }
 
     /**
@@ -504,7 +452,7 @@ public class ProjectTermsOfUseDaoImplUnitTests extends BaseUnitTests {
     public void test_getTermsOfUse_PersistenceError() throws Exception {
         instance = new ProjectTermsOfUseDaoImpl(TestsHelper.getConfig(TestsHelper.CONFIG_INVALID));
 
-        instance.getTermsOfUse(1, new int[] {1, 2}, null);
+        instance.getTermsOfUse(1, 1, null);
     }
 
     /**

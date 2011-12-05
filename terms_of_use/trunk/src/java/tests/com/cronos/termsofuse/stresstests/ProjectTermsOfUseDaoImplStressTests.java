@@ -268,15 +268,14 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
         StressTestHelper.StressTestContext context = StressTestHelper.testExecutionStarted("ProjectTermsOfUseDaoImplStressTests"
             + "#testGetTermsOfUse");
 
-        int resourceRoleId = 1;
         long termsOfUseId = 1;
-        Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+        Map<Integer, List<TermsOfUse>> result;
 
         for (int i = 0; i < StressTestHelper.LOOPS; i++) {
             StressTestHelper.executeUpdate(getConnection(), String.format(INSERT_TERMS_OF_USE, termsOfUseId));
             StressTestHelper.executeUpdate(getConnection(), String.format(INSERT_PROJECT_TERMS_OF_USE, i, termsOfUseId));
 
-            result = instance.getTermsOfUse(i, new int[] {resourceRoleId}, null);
+            result = instance.getTermsOfUse(i, 1, null);
             assertNotNull("List of TermsOfUse was null..", result);
             assertEquals("Incorrect number of TermsOfUse retrieved.", 1, result.size());
 
@@ -304,15 +303,15 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
         StressTestHelper.StressTestContext context = StressTestHelper.testExecutionStarted("ProjectTermsOfUseDaoImplStressTests"
             + "#testGetTermsOfUse");
 
-        Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+        Map<Integer, List<TermsOfUse>> result;
 
         StressTestHelper.executeBatch(getConnection(), "test_files/stresstests/input/input1.sql");
 
         for (int i = 0; i < StressTestHelper.LOOPS; i++) {
 
-            result = instance.getTermsOfUse(1, new int[] {1, 2, 3}, null);
+            result = instance.getTermsOfUse(1, 1, null);
             assertNotNull("List of TermsOfUse was null.", result);
-            assertEquals("Incorrect number of TermsOfUse retrieved.", 3, result.size());
+            assertEquals("Incorrect number of TermsOfUse retrieved.", 34, result.size());
         }
 
         StressTestHelper.testExecutionCompleted(context);
@@ -336,51 +335,15 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
         StressTestHelper.StressTestContext context = StressTestHelper.testExecutionStarted("ProjectTermsOfUseDaoImplStressTests"
             + "#testGetTermsOfUse");
 
-        Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+        Map<Integer, List<TermsOfUse>> result;
 
         StressTestHelper.executeBatch(getConnection(), "test_files/stresstests/input/input2.sql");
 
         for (int i = 0; i < StressTestHelper.LOOPS; i++) {
 
-            result = instance.getTermsOfUse(1, new int[] {1, 2, 3}, null);
+            result = instance.getTermsOfUse(1, 1, null);
             assertNotNull("List of TermsOfUse was null.", result);
-            assertEquals("Incorrect number of TermsOfUse retrieved.", 3, result.size());
-        }
-
-        StressTestHelper.testExecutionCompleted(context);
-    }
-
-    /**
-     * <p>Tests the {@link ProjectTermsOfUseDaoImpl#getTermsOfUse(int, int[], int[])} method.</p>
-     *
-     * <p>
-     * <em>Changes in 1.1:</em>
-     * <ol>
-     * <li>make the test can be compile and run correctly.</li>
-     * </ol>
-     * </p>
-     *
-     * @throws Exception if any error occurs
-     */
-    @Test
-    public void testGetTermsOfUseBulk3() throws Exception {
-
-        StressTestHelper.StressTestContext context = StressTestHelper.testExecutionStarted("ProjectTermsOfUseDaoImplStressTests"
-            + "#testGetTermsOfUse");
-
-        Map<Integer, Map<Integer, List<TermsOfUse>>> result;
-
-        StressTestHelper.executeBatch(getConnection(), "test_files/stresstests/input/input3.sql");
-
-        for (int i = 0; i < StressTestHelper.LOOPS; i++) {
-
-            result = instance.getTermsOfUse(1, new int[] {1, 2, 3, 4, 5}, null);
-            assertNotNull("List of TermsOfUse was null.", result);
-            assertEquals("Incorrect number of TermsOfUse retrieved.", 10, result.get(1).size());
-            assertEquals("Incorrect number of TermsOfUse retrieved.", 10, result.get(2).size());
-            assertEquals("Incorrect number of TermsOfUse retrieved.", 10, result.get(3).size());
-            assertEquals("Incorrect number of TermsOfUse retrieved.", 10, result.get(4).size());
-            assertEquals("Incorrect number of TermsOfUse retrieved.", 10, result.get(5).size());
+            assertEquals("Incorrect number of TermsOfUse retrieved.", 167, result.size());
         }
 
         StressTestHelper.testExecutionCompleted(context);
@@ -412,7 +375,7 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
             executorService.submit(new Runnable() {
                 public void run() {
 
-                    Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+                    Map<Integer, List<TermsOfUse>> result;
                     int resourceRoleId;
 
                     synchronized (syncLock) {
@@ -422,9 +385,9 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
 
                     for (int i = 1; i <= StressTestHelper.LOOPS; i++) {
                         try {
-                            result = instance.getTermsOfUse(1, new int[] {resourceRoleId}, null);
+                            result = instance.getTermsOfUse(1, resourceRoleId, null);
                             assertNotNull("List of TermsOfUse was null.", result);
-                            assertEquals("Incorrect number of TermsOfUse retrieved.", 50, result.get(resourceRoleId).size());
+                            assertEquals("Incorrect number of TermsOfUse retrieved.", 50, result.get(0).size());
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -466,7 +429,7 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
 
                     int resourceRoleId = 1;
                     long termsOfUseId = 1;
-                    Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+                    Map<Integer, List<TermsOfUse>> result;
 
                     int currentThread;
 
@@ -482,9 +445,9 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
                             StressTestHelper.executeUpdate(getConnection(), String.format(INSERT_PROJECT_TERMS_OF_USE,
                                 i, termsOfUseId));
 
-                            result = instance.getTermsOfUse(i, new int[] {resourceRoleId}, null);
+                            result = instance.getTermsOfUse(i, resourceRoleId, null);
                             assertNotNull("List of TermsOfUse was null..", result);
-                            assertEquals("Incorrect number of TermsOfUse retrieved.", 1, result.get(resourceRoleId).size());
+                            assertEquals("Incorrect number of TermsOfUse retrieved.", 1, result.get(0).size());
 
                             termsOfUseId++;
                         } catch (Exception e) {
@@ -526,7 +489,7 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
             executorService.submit(new Runnable() {
                 public void run() {
 
-                    Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+                    Map<Integer, List<TermsOfUse>> result;
                     int resourceRoleId;
 
                     synchronized (syncLock) {
@@ -536,9 +499,9 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
 
                     for (int i = 1; i <= StressTestHelper.LOOPS; i++) {
                         try {
-                            result = instance.getTermsOfUse(1, new int[] {resourceRoleId}, new int[] {0});
+                            result = instance.getTermsOfUse(1, resourceRoleId, new int[] {0});
                             assertNotNull("List of TermsOfUse was null.", result);
-                            assertEquals("Incorrect number of TermsOfUse retrieved.", 25, result.get(resourceRoleId).size());
+                            assertEquals("Incorrect number of TermsOfUse retrieved.", 25, result.size());
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -578,7 +541,7 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
             executorService.submit(new Runnable() {
                 public void run() {
 
-                    Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+                    Map<Integer, List<TermsOfUse>> result;
                     int resourceRoleId;
 
                     synchronized (syncLock) {
@@ -588,9 +551,9 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
 
                     for (int i = 1; i <= StressTestHelper.LOOPS; i++) {
                         try {
-                            result = instance.getTermsOfUse(1, new int[] {resourceRoleId}, new int[] {5});
+                            result = instance.getTermsOfUse(1, resourceRoleId, new int[] {5});
                             assertNotNull("List of TermsOfUse was null.", result);
-                            assertEquals("Incorrect number of TermsOfUse retrieved.", 0, result.get(resourceRoleId).size());
+                            assertEquals("Incorrect number of TermsOfUse retrieved.", 0, result.size());
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -630,7 +593,7 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
             executorService.submit(new Runnable() {
                 public void run() {
 
-                    Map<Integer, Map<Integer, List<TermsOfUse>>> result;
+                    Map<Integer, List<TermsOfUse>> result;
                     int resourceRoleId;
 
                     synchronized (syncLock) {
@@ -640,9 +603,9 @@ public class ProjectTermsOfUseDaoImplStressTests extends BaseStressTests {
 
                     for (int i = 1; i <= StressTestHelper.LOOPS; i++) {
                         try {
-                            result = instance.getTermsOfUse(1, new int[] {resourceRoleId}, new int[] {1, 5});
+                            result = instance.getTermsOfUse(1, resourceRoleId, new int[] {1, 5});
                             assertNotNull("List of TermsOfUse was null.", result);
-                            assertEquals("Incorrect number of TermsOfUse retrieved.", 25, result.get(resourceRoleId).size());
+                            assertEquals("Incorrect number of TermsOfUse retrieved.", 25, result.size());
 
                         } catch (Exception e) {
                             e.printStackTrace();

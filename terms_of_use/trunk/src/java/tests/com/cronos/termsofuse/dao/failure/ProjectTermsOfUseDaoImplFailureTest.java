@@ -206,7 +206,7 @@ public class ProjectTermsOfUseDaoImplFailureTest extends BaseFailureTest {
         ConfigurationObject configurationObject = getConfigurationObject("test_files/failure/config.xml", "failureConfig");
         instance = new ProjectTermsOfUseDaoImpl(configurationObject);
         try {
-            instance.getTermsOfUse(1, new int[]{1}, new int[]{1});
+            instance.getTermsOfUse(1, 1, new int[]{1});
             fail("Expects an error");
         } catch (TermsOfUsePersistenceException e) {
             // good
@@ -220,35 +220,7 @@ public class ProjectTermsOfUseDaoImplFailureTest extends BaseFailureTest {
      */
     public void test_getTermsOfUse_2() throws Exception {
         try {
-            instance.getTermsOfUse(1, new int[]{1}, new int[]{});
-            fail("Expects an error");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-    /**
-     * Failure test for method getTermsOfUse() with empty resourceRoleIds.
-     * Expects IllegalArgumentException.
-     * Changes in 1.1: update the passed in parameters of the method
-     * @throws Exception if any error
-     */
-    public void test_getTermsOfUse_3() throws Exception {
-        try {
-            instance.getTermsOfUse(1, new int[]{}, new int[]{1});
-            fail("Expects an error");
-        } catch (IllegalArgumentException e) {
-            // good
-        }
-    }
-    /**
-     * Failure test for method getTermsOfUse() with null resourceRoleIds.
-     * Expects IllegalArgumentException.
-     * Changes in 1.1: update the passed in parameters of the method
-     * @throws Exception if any error
-     */
-    public void test_getTermsOfUse_4() throws Exception {
-        try {
-            instance.getTermsOfUse(1, null, new int[]{1});
+            instance.getTermsOfUse(1, 1, new int[]{});
             fail("Expects an error");
         } catch (IllegalArgumentException e) {
             // good
