@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.accounting.fees.entities;
+package com.topcoder.clients.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,7 +19,7 @@ import java.util.List;
  *   </ol>
  * </p>
  * 
- * @author winstips, TCSDEVELOPER
+ * @author winstips, isv
  * @version 1.1
  */
 public class BillingAccount implements Serializable {
@@ -47,7 +47,7 @@ public class BillingAccount implements Serializable {
      * Represents the list of contest fees associated with the billing account. It is managed with a getter and setter.
      * It may have any value. It is fully mutable.
      */
-    private List<ContestFeeDetails> contestFees;
+    private List<ProjectContestFee> contestFees;
     /**
      * Represents the start time of the project. It is managed with a getter and setter. It may have any value. It is
      * fully mutable.
@@ -152,7 +152,7 @@ public class BillingAccount implements Serializable {
      * 
      * @return contestFees field value.
      */
-    public List<ContestFeeDetails> getContestFees() {
+    public List<ProjectContestFee> getContestFees() {
         return contestFees;
     }
 
@@ -162,7 +162,7 @@ public class BillingAccount implements Serializable {
      * @param contestFees
      *            - the given value to set.
      */
-    public void setContestFees(List<ContestFeeDetails> contestFees) {
+    public void setContestFees(List<ProjectContestFee> contestFees) {
         this.contestFees = contestFees;
     }
 

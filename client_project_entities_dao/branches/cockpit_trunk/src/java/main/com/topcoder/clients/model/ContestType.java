@@ -1,14 +1,14 @@
 /*
  * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.accounting.fees.entities;
+package com.topcoder.clients.model;
 
 /**
  * Represents the contest type entity. It's a DTO object.
  * 
  * Thread safety: The class is mutable and not thread safe.
  * 
- * @author winstips, TCSDEVELOPER
+ * @author winstips, isv
  * @version 1.0
  */
 public class ContestType {

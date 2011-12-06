@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -29,8 +30,16 @@ import javax.xml.bind.annotation.XmlType;
  * Here contest_type_id column expected to refer to studio_oltp:contest_type_lu.contest_type_id for Studio contests
  * and refer to tcs_catalog:project_category_lu.project_category_id for non-Studion projects
  * </p>
- * @author TCSDEVELOPER
- * @version 1.0
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - Project Contest Fee Management Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #contestTypeDescription} property.</li>
+ *   </ol>
+ * </p>
+ * 
+ * @author isv
+ * @version 1.1
  * @since Configurable Contest Fees v1.0 Assembly
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -80,7 +89,15 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
   @Column(name = "is_studio")
   private boolean studio;
 
-  /**
+    /**
+     * <p>A <code>String</code> providing the description of contest type (non-persistent).</p>
+     * 
+     * @since 1.1
+     */
+    @Transient
+    private String contestTypeDescription;
+
+    /**
      * Returns the value of studio.
      * @return the studio
      */
@@ -195,4 +212,24 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
   public double getContestFee() {
     return this.contestFee;
   }
+
+    /**
+     * <p>Gets the description of contest type (non-persistent).</p>
+     *
+     * @return a <code>String</code> providing the description of contest type (non-persistent).
+     * @since 1.1
+     */
+    public String getContestTypeDescription() {
+        return this.contestTypeDescription;
+    }
+
+    /**
+     * <p>Sets the description of contest type (non-persistent).</p>
+     *
+     * @param contestTypeDescription a <code>String</code> providing the description of contest type (non-persistent).
+     * @since 1.1
+     */
+    public void setContestTypeDescription(String contestTypeDescription) {
+        this.contestTypeDescription = contestTypeDescription;
+    }
 }

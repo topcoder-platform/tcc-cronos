@@ -1,28 +1,32 @@
 /*
  * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.accounting.fees.persistence;
+package com.topcoder.clients.dao;
 
 import java.util.List;
-import java.util.Map;
 
-import com.topcoder.accounting.fees.entities.BillingAccount;
-import com.topcoder.accounting.fees.entities.ContestFeeDetails;
-import com.topcoder.accounting.fees.entities.ContestType;
-import com.topcoder.accounting.fees.entities.FeeAuditRecord;
-import com.topcoder.accounting.fees.services.ContestFeePersistenceException;
+import com.topcoder.clients.model.BillingAccount;
+import com.topcoder.clients.model.ProjectContestFee;
+import com.topcoder.clients.model.FeeAuditRecord;
 
 /**
  * Defines contract methods to manage contest fees for billing accounts. It defines CRUD operations on contest fee for a
  * billing and create/update default contest fees.
- * 
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - Project Contest Fees Management Update 1 Assembly) Change notes:
+ *   <ol>
+ *     <li>Added {@link #search(boolean, int, int, String, String)} method.</li>
+ *     <li>Added {@link #getBillingAccountSize(boolean, boolean)} method.</li>
+ *   </ol>
+ * </p>
  * 
  * Thread safety: The implementation should be reasonable thread safe.
  * 
- * @author winstips, TCSDEVELOPER
- * @version 1.0
+ * @author winstips, isv
+ * @version 1.1
  */
-public interface ContestFeePersistence {
+public interface ProjectContestFeeDAO {
     /**
      * This method is responsible for creating contest fees.
      * 
@@ -31,7 +35,7 @@ public interface ContestFeePersistence {
      * @throws ContestFeePersistenceException
      *             if there is any exception.
      */
-    void save(List<ContestFeeDetails> contestFees) throws ContestFeePersistenceException;
+    void save(List<ProjectContestFee> contestFees) throws ContestFeePersistenceException;
 
     /**
      * This method is responsible for updating contest fee given instance of ContestFeeDetails and project id.
@@ -42,7 +46,7 @@ public interface ContestFeePersistence {
      * @throws ContestFeePersistenceException
      *             if there is any exception.
      */
-    void update(ContestFeeDetails contestFeeDetails) throws ContestFeePersistenceException;
+    void update(ProjectContestFee contestFeeDetails) throws ContestFeePersistenceException;
 
     /**
      * This method is responsible for retrieving billing account given billing account id.
@@ -81,6 +85,22 @@ public interface ContestFeePersistence {
     List<BillingAccount> search(int pageSize, int pageNumber, String sortColumn, String sortOrder);
 
     /**
+     * <p>Gets the list of billing accounts either having or not having contest fees set.</p>
+     * 
+     * @param contestFeesSet <code>true</code> if accounts having contest fees set are to be returned only; 
+     *        <code>false</code> if accounts having no contest fees set are to be returned only.
+     * @param pageNumber - denotes the page number. should be positive and > 0.
+     * @param pageSize - denotes no of items to display per page.should be positive (>0)
+     * @param sortColumn - denotes the name of the one of the member of BillingAccount entity which will be used for
+     *        sorting resultant billing entities
+     * @param sortOrder - denotes the SortOrder string. It can be ASC or DSC value.
+     * @return returns instance of search result<BillingAccount>
+     * @since 1.1
+     */
+    List<BillingAccount> search(boolean contestFeesSet, int pageSize, int pageNumber, String sortColumn, 
+                                String sortOrder);
+
+    /**
      * contract responsible for persisting audit record given instance of FeeAuditRecord.
      * 
      * @Param record - instance of FeeAuditRecord. should not be null.
@@ -105,6 +125,17 @@ public interface ContestFeePersistence {
      * @return total BillingAccount record number.
      */
     int getBillingAccountSize();
+    
+    /**
+     * <p>Gets the total number of billing accounts matching the specified criteria.</p>
+     * 
+     * @param active <code>true</code> if active billing accounts are to be counted; <code>false</code> if inactive.
+     * @param contestFeesSet <code>true</code> if billing accounts with contest fees set are to be counted;
+     *        <code>false</code> otherwise.
+     * @return an <code>int</code> providing the total number of billing accounts.
+     * @since 1.1
+     */
+    int getBillingAccountSize(boolean active, boolean contestFeesSet);
 
     /**
      * Get all contest types in database.

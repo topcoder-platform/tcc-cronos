@@ -1,23 +1,22 @@
 /*
  * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.accounting.fees.services.impl;
+package com.topcoder.clients.dao.impl;
 
 
 import java.util.Iterator;
 import java.util.List;
 
 
-
-import com.topcoder.accounting.fees.entities.BillingAccount;
-import com.topcoder.accounting.fees.entities.ContestFeeDetails;
-import com.topcoder.accounting.fees.entities.FeeAuditRecord;
-import com.topcoder.accounting.fees.entities.SearchResult;
-import com.topcoder.accounting.fees.persistence.ContestFeePersistence;
-import com.topcoder.accounting.fees.services.ContestFeeConfigurationException;
-import com.topcoder.accounting.fees.services.ContestFeePersistenceException;
-import com.topcoder.accounting.fees.services.ContestFeeService;
-import com.topcoder.accounting.fees.services.ContestFeeServiceException;
+import com.topcoder.clients.dao.ContestFeeConfigurationException;
+import com.topcoder.clients.dao.ProjectContestFeeDAO;
+import com.topcoder.clients.dao.ContestFeePersistenceException;
+import com.topcoder.clients.dao.ProjectContestFeeService;
+import com.topcoder.clients.dao.ContestFeeServiceException;
+import com.topcoder.clients.model.BillingAccount;
+import com.topcoder.clients.model.FeeAuditRecord;
+import com.topcoder.clients.model.ProjectContestFee;
+import com.topcoder.clients.model.SearchResult;
 import com.topcoder.util.log.Log;
 import com.topcoder.util.log.LogManager;
 
@@ -27,11 +26,18 @@ import com.topcoder.util.log.LogManager;
  * 
  * Thread safety: The class is mutable and not thread safe. But it'll not caused thread safety issue if used under
  * Spring container.
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - Project Contest Fees Management Update 1 Assembly) Change notes:
+ *   <ol>
+ *     <li>Added {@link #search(boolean, int, int, String, String)} method.</li>
+ *   </ol>
+ * </p>
  * 
- * @author winstips, TCSDEVELOPER
- * @version 1.0
+ * @author winstips, isv
+ * @version 1.1
  */
-public class ContestFeeServiceImpl implements ContestFeeService {
+public class ProjectContestFeeServiceImpl implements ProjectContestFeeService {
     /**
      * 
      * Instance of Logger used to perform logging operations. It is managed with a getter and setter. It may have any
@@ -42,12 +48,12 @@ public class ContestFeeServiceImpl implements ContestFeeService {
      * Instance of DataAccess used to perform db operations. It is managed with a getter and setter. It may have any
      * value. It is fully mutable.
      */
-    private ContestFeePersistence persistence;
+    private ProjectContestFeeDAO persistence;
 
     /**
      * Default Constructor.
      */
-    public ContestFeeServiceImpl() {
+    public ProjectContestFeeServiceImpl() {
     }
 
     /**
@@ -58,7 +64,7 @@ public class ContestFeeServiceImpl implements ContestFeeService {
      * @throws ContestFeePersistenceException
      *             if there is any exception.
      */
-    public void save(List<ContestFeeDetails> contestFees) throws ContestFeeServiceException {
+    public void save(List<ProjectContestFee> contestFees) throws ContestFeeServiceException {
         this.persistence.save(contestFees);
     }
 
@@ -70,7 +76,7 @@ public class ContestFeeServiceImpl implements ContestFeeService {
      * @throws ContestFeeServiceException
      *             if there is any exception.
      */
-    public void update(ContestFeeDetails contestFeeDetails) throws ContestFeeServiceException {
+    public void update(ProjectContestFee contestFeeDetails) throws ContestFeeServiceException {
         this.persistence.update(contestFeeDetails);
     }
 
@@ -105,9 +111,9 @@ public class ContestFeeServiceImpl implements ContestFeeService {
         BillingAccount account = persistence.getBillingAccount(projectId); 
         
         if (account.getContestFees() != null) {
-        	Iterator<ContestFeeDetails> it = account.getContestFees().iterator();
+        	Iterator<ProjectContestFee> it = account.getContestFees().iterator();
             while (it.hasNext()) {
-            	ContestFeeDetails details = it.next();
+            	ProjectContestFee details = it.next();
                 String id = Long.toString(details.getContestTypeId());
                 details.setContestTypeDescription(id);
             }
@@ -133,6 +139,33 @@ public class ContestFeeServiceImpl implements ContestFeeService {
         searchResult.setPageSize(pageSize);
         searchResult.setTotal(persistence.getBillingAccountSize());
         searchResult.setTotalPageCount((int) Math.ceil(accounts.size() / pageSize)); // note upper bound
+        searchResult.setItems(accounts);
+        return searchResult;
+    }
+
+    /**
+     * <p>Gets the list of billing accounts either having or not having contest fees set.</p>
+     * 
+     * @param contestFeesSet <code>true</code> if accounts having contest fees set are to be returned only; 
+     *        <code>false</code> if accounts having no contest fees set are to be returned only.
+     * @param pageNumber - denotes the page number. should be positive and > 0.
+     * @param pageSize - denotes no of items to display per page.should be positive (>0)
+     * @param sortColumn - denotes the name of the one of the member of BillingAccount entity which will be used for
+     *        sorting resultant billing entities
+     * @param sortOrder - denotes the SortOrder string. It can be ASC or DSC value.
+     * @return returns instance of search result<BillingAccount>
+     * @since 1.1
+     */
+    public SearchResult<BillingAccount> search(boolean contestFeesSet, int pageSize, int pageNumber, String sortColumn, 
+                                               String sortOrder) {
+        List<BillingAccount> accounts = this.persistence.search(contestFeesSet, pageSize, pageNumber, sortColumn, 
+                                                                sortOrder);
+        int billingAccountsCount = persistence.getBillingAccountSize(true, contestFeesSet);
+        SearchResult<BillingAccount> searchResult = new SearchResult<BillingAccount>();
+        searchResult.setPageNumber(pageNumber);
+        searchResult.setPageSize(pageSize);
+        searchResult.setTotal(billingAccountsCount);
+        searchResult.setTotalPageCount((int) Math.ceil(billingAccountsCount / pageSize)); // note upper bound
         searchResult.setItems(accounts);
         return searchResult;
     }
@@ -190,7 +223,7 @@ public class ContestFeeServiceImpl implements ContestFeeService {
      * 
      * @return persistence field value.
      */
-    public ContestFeePersistence getPersistence() {
+    public ProjectContestFeeDAO getPersistence() {
         return persistence;
     }
 
@@ -200,7 +233,7 @@ public class ContestFeeServiceImpl implements ContestFeeService {
      * @param persistence
      *            - the given value to set.
      */
-    public void setPersistence(ContestFeePersistence persistence) {
+    public void setPersistence(ProjectContestFeeDAO persistence) {
         this.persistence = persistence;
     }
 

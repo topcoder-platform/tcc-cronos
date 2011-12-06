@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.accounting.fees.entities;
+package com.topcoder.clients.model;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import java.util.Date;
  * 
  * Thread safety: The class is mutable and not thread safe.
  * 
- * @author winstips, TCSDEVELOPER
+ * @author winstips, isv
  * @version 1.0
  */
 public class FeeAuditRecord {

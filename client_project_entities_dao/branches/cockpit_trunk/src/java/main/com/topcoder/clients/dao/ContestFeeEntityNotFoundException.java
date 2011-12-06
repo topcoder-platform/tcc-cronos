@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.accounting.fees.services;
+package com.topcoder.clients.dao;
 
 /**
  * The ContestFeeEntityNotFoundException will be thrown from the update and delete methods if the entity is not found in
@@ -10,7 +10,7 @@ package com.topcoder.accounting.fees.services;
  * 
  * Thread safety: The class is mutable and not thread safe.
  * 
- * @author winstips, TCSDEVELOPER
+ * @author winstips, isv
  * @version 1.0
  */
 public class ContestFeeEntityNotFoundException extends ContestFeeServiceException {

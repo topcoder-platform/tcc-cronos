@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2010 - 2011 TopCoder Inc., All Rights Reserved.
  */
-package com.topcoder.accounting.fees.services;
+package com.topcoder.clients.dao;
 
 import com.topcoder.util.errorhandling.BaseCriticalException;
 
@@ -11,7 +11,7 @@ import com.topcoder.util.errorhandling.BaseCriticalException;
  * 
  * Thread safety: The class is mutable and not thread safe.
  * 
- * @author winstips, TCSDEVELOPER
+ * @author winstips, isv
  * @version 1.0
  */
 public class ContestFeeServiceException extends BaseCriticalException {
