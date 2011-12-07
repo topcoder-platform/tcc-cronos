@@ -40,9 +40,17 @@ import com.topcoder.management.project.link.ProjectLinkType;
  * safe, thus additional synchronization is used when accessing their methods.
  * </p>
  *
+ * <p>
+ * Version 1.0.1 (Release Assembly - TC Direct Select From Copilot Pool Assembly) Change notes:
+ *   <ol>
+ *     <li>Update {@link #checkContestIdList()} method to not throw IAE if contest list is empty.</li>
+ *     <li>Update {@link #calculateContestsStat()} method to not count bug race number.</li>
+ *   </ol>
+ * </p>
+ *
  * @param <T> the type of the entity to be managed by this service
- * @author saarixx, TCSDEVELOPER
- * @version 1.0
+ * @author saarixx, TCSDEVELOPER, tangzx
+ * @version 1.0.1
  */
 public abstract class BaseCopilotService<T extends IdentifiableEntity> extends GenericServiceImpl<T> {
     /**
@@ -249,9 +257,12 @@ public abstract class BaseCopilotService<T extends IdentifiableEntity> extends G
      */
     private static void checkContestIdList(List<Long> contestIdList) {
         Helper.checkNull(contestIdList, "contestIdList");
+        // update to not throw IAE when it's empty
+        /*
         if (contestIdList.isEmpty()) {
             throw new IllegalArgumentException("contestIdList should not be empty.");
         }
+        */
         for (Long contestId : contestIdList) {
             Helper.checkNull(contestId, "Any element in contestIdList");
             if (contestId <= 0) {
@@ -330,6 +341,10 @@ public abstract class BaseCopilotService<T extends IdentifiableEntity> extends G
         try {
             // Create contests stat instance
             ContestsStat contestsStat = new ContestsStat();
+            if (contestIdList.isEmpty()) {
+                return contestsStat;
+            }
+            
             // Get projects for the given contest IDs
             long[] projectIds = obtainProjectIds(contestIdList);
             Project[] projects = null;
@@ -361,8 +376,9 @@ public abstract class BaseCopilotService<T extends IdentifiableEntity> extends G
                         stat.setFailedContests(stat.getFailedContests() + 1);
                     }
                 }
+                // update to not retrieve bug count since the implementation is incorrect for now
                 // Get the number of bugs for this contest
-                totalBugs += utilityDAO.getContestBugCount(contestId);
+                // totalBugs += utilityDAO.getContestBugCount(contestId);
             }
             // Set total contests number to the result
             contestsStat.setTotalContests(projects.length - totalReposted);
@@ -375,10 +391,12 @@ public abstract class BaseCopilotService<T extends IdentifiableEntity> extends G
             // Set the number of current (active) contests to the result
             contestsStat.setCurrentContests(currentContests);
             return contestsStat;
+        /*    
         } catch (CopilotDAOException e) {
             // should not do logging here because only public methods should do logging.
             throw new CopilotServiceException("Error occurred when executing utilityDAO.getContestBugCount method.",
                 e);
+        */        
         } catch (PersistenceException e) {
             // should not do logging here because only public methods should do logging.
             throw new CopilotServiceException(
