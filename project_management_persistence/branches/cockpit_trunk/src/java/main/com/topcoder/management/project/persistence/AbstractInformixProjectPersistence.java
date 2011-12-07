@@ -207,9 +207,16 @@ import com.topcoder.util.sql.databaseabstraction.InvalidCursorStateException;
  *   situation that tc_direct_project_id is null.</li>
  * </ol>
  * </p>
- * 
- * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER, TCSASSEMBLY
- * @version 1.4
+ *
+ * <p>
+ * Version 1.5 (Release Assembly - TC Direct Select From Copilot Pool Assembly) Change notes:
+ *   <ol>
+ *     <li>Updated QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES to make it works.</li>
+ *   </ol>
+ * </p>
+ *
+ * @author tuenm, urtks, bendlund, fuyun, flytoj2ee, TCSDEVELOPER, tangzx
+ * @version 1.5
  * @since 1.0
  */
 public abstract class AbstractInformixProjectPersistence implements ProjectPersistence {
@@ -1149,7 +1156,7 @@ public abstract class AbstractInformixProjectPersistence implements ProjectPersi
      * Represents the column types for the result set which is returned by executing the sql statement to query all
      * project categories.
      */
-    private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] { Helper.LONG_TYPE,
+    private static final DataType[] QUERY_ALL_PROJECT_CATEGORIES_COLUMN_TYPES = new DataType[] {
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE };
 
