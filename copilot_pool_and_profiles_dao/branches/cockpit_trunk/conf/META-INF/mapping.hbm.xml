@@ -15,7 +15,7 @@
         <property name="userId" column="user_id" type="long"/>
         <property name="handle" formula="(SELECT u.handle FROM user u where u.user_id = user_id)"
 			not-null="true" />
-        <many-to-one name="status" class="CopilotProfileStatus" column=" copilot_profile_status_id" cascade="none"/>
+        <many-to-one name="status" class="CopilotProfileStatus" column=" copilot_profile_status_id" cascade="none" lazy="false"/>
         <property name="suspensionCount" column="suspension_count" type="integer"/>
         <property name="reliability" column="reliability" type="float"/>
         <property name="activationDate" column="activation_date" type="timestamp"/>

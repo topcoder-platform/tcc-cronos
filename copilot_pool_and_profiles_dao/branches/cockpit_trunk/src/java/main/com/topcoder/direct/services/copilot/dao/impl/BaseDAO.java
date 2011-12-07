@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import java.text.MessageFormat;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional; 
 
 /**
  * <p>This class is base for all DAO implementations provided in this component. It holds a Logging Wrapper logger and
@@ -30,6 +31,7 @@ import java.util.List;
  * @author saarixx, TCSDEVELOPER
  * @version 1.0
  */
+@Transactional
 public abstract class BaseDAO {
 
     /**
