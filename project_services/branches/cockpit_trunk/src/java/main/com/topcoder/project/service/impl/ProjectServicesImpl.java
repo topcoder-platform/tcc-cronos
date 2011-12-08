@@ -1328,27 +1328,11 @@ public class ProjectServicesImpl implements ProjectServices {
             fullProjectData.setResources(resources);
 
             // searches the teams associated with given project
-            logDebug("Starts calling TeamManager#findTeams method.");
+            /*logDebug("Starts calling TeamManager#findTeams method.");
             TeamHeader[] teams = teamManager.findTeams(projectId);
             logDebug("Finished calling TeamManager#findTeams method.");
             // sets the teams to fullProjectData
-            fullProjectData.setTeams(teams);
-
-//COMMENT OUT, we dont need to set technologies here
-/*            String externalProjectIdStr = (String) projectHeader.getProperty(EXTERNAL_REFERENCE_ID);
-            if (externalProjectIdStr != null) {
-                long externalProjectId = Long.parseLong(externalProjectIdStr);
-                // retrieves the external project with given project id
-                logDebug("Starts calling ProjectRetrieval#retrieveProject method.");
-                ExternalProject externalProject = projectRetrieval.retrieveProject(externalProjectId);
-                logDebug("Finished calling ProjectRetrieval#retrieveProject method.");
-                // gets the technologies associated with give project and sets them to
-                // fullProjectData
-                fullProjectData.setTechnologies(externalProject.getTechnologies());
-            } else {
-                logDebug("Project " + projectId + " is missing external reference");
-            }
-*/
+            fullProjectData.setTeams(teams); */
 
             // get the contest sale
             fullProjectData.setContestSales(this.getContestSales(projectId));
