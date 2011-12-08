@@ -168,6 +168,7 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
   }
 
   /**
+   * @deprecated use setContestTypeId
    * <p>
    * Sets the <code>contestTypeId</code> field value.
    * </p>
@@ -178,6 +179,19 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
   public void setContestType(long contestTypeId) {
     this.contestTypeId = contestTypeId;
   }
+  
+  /**
+   * <p>
+   * Sets the <code>contestTypeId</code> field value.
+   * </p>
+   *
+   * @param contestTypeId
+   *            the value to set
+   */
+  public void setContestTypeId(long contestTypeId) {
+    this.contestTypeId = contestTypeId;
+  }
+
 
   /**
    * <p>
