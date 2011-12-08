@@ -150,7 +150,7 @@ public class AdminServiceFacadeBean implements AdminServiceFacadeLocal,
                     "Error when get contest fees by the project id of "
                             + projectId);
         } finally {
-            logExit("getContestFeesByProject(tcSubject, projectId)", ret);
+            logExit("getContestFeesByProject(tcSubject, projectId)", ret.size());
         }
     }
 
@@ -229,7 +229,7 @@ public class AdminServiceFacadeBean implements AdminServiceFacadeLocal,
                     "Error when searching projects by project name of  "
                             + projectName);
         } finally {
-            logExit("searchProjectsByProjectName(tcSubject, projectName)", ret);
+            logExit("searchProjectsByProjectName(tcSubject, projectName)", ret.size());
         }
     }
 
@@ -268,7 +268,7 @@ public class AdminServiceFacadeBean implements AdminServiceFacadeLocal,
                     "Error when searching projects by client name of  "
                             + clientName);
         } finally {
-            logExit("searchProjectsByClientName(tcSubject, clientName)", ret);
+            logExit("searchProjectsByClientName(tcSubject, clientName)", ret.size());
         }
     }
 
