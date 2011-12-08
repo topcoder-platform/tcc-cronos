@@ -693,7 +693,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         throws ProjectNotFoundFault, AuthorizationFailedFault, PersistenceFault {
 
         logEnter("getProject(tcSubject, long)");
-        logParameters("project id: {0}", tcSubject);
+        logParameters("project id: {0}", tcSubject.getUserId());
         logParameters("project id: {1}", projectId);
 
         try {
@@ -994,7 +994,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         throws IllegalArgumentFault, ProjectNotFoundFault, AuthorizationFailedFault, PersistenceFault {
 
         logEnter("updateProject(TCSubject, ProjectData)");
-        logParameters("project data: {0}", tcSubject);
+        logParameters("project data: {0}", tcSubject.getUserId());
         logParameters("project data: {1}", formatProjectData(projectData));
 
         try {
@@ -1070,7 +1070,7 @@ public class ProjectServiceBean implements ProjectServiceLocal, ProjectServiceRe
         throws AuthorizationFailedFault, ProjectHasCompetitionsFault, PersistenceFault {
 
         logEnter("deleteProject(tcSubject, long)");
-        logParameters("project id: {0}", tcSubject);
+        logParameters("project id: {0}", tcSubject.getUserId());
         logParameters("project id: {1}", projectId);
 
         try {
