@@ -179,6 +179,18 @@ public class ProjectContestFee extends ProjectContestFeeAudit {
   public void setContestType(long contestTypeId) {
     this.contestTypeId = contestTypeId;
   }
+
+  /**
+   * @deprecated use getContestTypeId
+   * <p>
+   * Gets the <code>contestTypeId</code> field value.
+   * </p>
+   *
+   * @return the <code>contestTypeId</code> field value.
+   */
+  public long getContestType() {
+    return this.contestTypeId;
+  }
   
   /**
    * <p>

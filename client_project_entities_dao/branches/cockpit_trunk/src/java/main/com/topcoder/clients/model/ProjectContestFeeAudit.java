@@ -243,6 +243,18 @@ public abstract class ProjectContestFeeAudit implements Serializable {
 		return this.deleted;
 	}
 
+    /**
+	 * <p>
+	 * Getter for 'deleted' property. Please refer to the related 'deleted'
+	 * field for more information.
+	 * </p>
+	 *
+	 * @return the value of the 'deleted' property. It can be any value.
+	 */
+	public Boolean getDeleted() {
+		return this.deleted;
+	}
+
 	/**
 	 * <p>
 	 * Setter for 'deleted' property. Please refer to the related 'deleted'
