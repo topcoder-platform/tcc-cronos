@@ -140,6 +140,18 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
     /**
      * <p>
+     * Represents the sql to get all resources with role.
+     * </p>
+     */
+    private static final String SQL_SELECT_ALL_RES_WITH_ROLE =
+        "SELECT r.resource_id, r.project_id, r.project_phase_id, r.create_user, r.create_date, r.modify_user,"
+            + " r.modify_date, rr.resource_role_id, rr.phase_type_id, rr.name, rr.description,"
+            + " rr.create_user as rr_create_user, rr.create_date as rr_create_date, rr.modify_user as rr_modify_user,"
+            + " rr.modify_date as rr_modify_date FROM resource r, resource_role_lu rr"
+                + " WHERE r.resource_role_id = rr.resource_role_id AND r.resource_id IN (";
+
+    /**
+     * <p>
      * Represents the sql for loading resource roles.
      * </p>
      */
@@ -291,6 +303,14 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      */
     private static final String SQL_SELECT_SUBMISSION =
         "SELECT submission_id FROM resource_submission " + "WHERE resource_id = ?";
+
+    /**
+     * <p>
+     * Represents the sql for selecting resource submissions.
+     * </p>
+     */
+    private static final String SQL_SELECT_RESOURCE_SUBMISSIONS =
+        "SELECT resource_id, submission_id FROM resource_submission WHERE resource_id IN (";
 
     /**
      * <p>
@@ -997,6 +1017,49 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         }
     }
 
+        /**
+     * Gets the submission entry array for <code>Resource</code> instance.
+     *
+     * @param connection the connection to database.
+     * @param resourceIds the resource ids.
+     * @return The map contains mapping from resource id to its submissions
+     * @throws ResourcePersistenceException if failed to get the submissions for resources.
+     */
+    private Map getResourceSubmissions(Connection connection, long[] resourceIds) throws ResourcePersistenceException {
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        List submissions = new ArrayList();
+
+        Map resSubmissions = new HashMap();
+        try {
+            statement = connection.prepareStatement(buildQueryWithIds(SQL_SELECT_RESOURCE_SUBMISSIONS, resourceIds));
+
+            rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Long resourceId = new Long(rs.getLong(1));
+                Long submissionId = new Long(rs.getLong(2));
+                List subs = new ArrayList();
+                if (resSubmissions.containsKey(resourceId)) {
+                    subs  = (List) resSubmissions.get(resourceId);
+                } else {
+                    subs = new ArrayList();
+                    resSubmissions.put(resourceId, subs);
+                }
+                subs.add(submissionId);
+            }
+
+            return resSubmissions;
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed to get external properties for resource.", e));
+            throw new ResourcePersistenceException("fail to retreive submission for resources.", e);
+        } finally {
+            Util.closeResultSet(rs);
+            Util.closeStatement(statement);
+
+        }
+    }
+
     /**
      * Updates the submission of the <code>Resource</code> instance.
      *
@@ -1206,6 +1269,70 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         }
     }
 
+        /**
+     * Constructs a <code>Resource</code> instance with role from given <code>ResultSet</code> instance.
+     *
+     * @param rs the <code>ResultSet</code> instance
+     * @param connection the <code>Connection</code> instance
+     * @return The Resource instance
+     * @throws ResourcePersistenceException if failed to construct the <code>Resource</code> instance.
+     */
+    private Resource constructResourceWithRole(ResultSet rs, Connection connection)
+        throws ResourcePersistenceException {
+        try {
+            Resource resource = new Resource();
+
+            int index = 1;
+            resource.setId(rs.getLong(index++));
+
+            if (rs.getObject(index) == null) {
+                resource.setProject(null);
+                index++;
+            } else {
+                resource.setProject(new Long(rs.getLong(index++)));
+            }
+
+            if (rs.getObject(index) == null) {
+                resource.setPhase(null);
+                index++;
+            } else {
+                resource.setPhase(new Long(rs.getLong(index++)));
+            }
+
+            resource.setCreationUser(rs.getString(index++));
+            resource.setCreationTimestamp(rs.getTimestamp(index++));
+            resource.setModificationUser(rs.getString(index++));
+            resource.setModificationTimestamp(rs.getTimestamp(index++));
+
+            ResourceRole role = new ResourceRole();
+            role.setId(rs.getLong(index++));
+
+            if (rs.getObject(index) == null) {
+                role.setPhaseType(null);
+                index++;
+            } else {
+                role.setPhaseType(new Long(rs.getLong(index++)));
+            }
+
+            role.setName(rs.getString(index++));
+            role.setDescription(rs.getString(index++));
+            role.setCreationUser(rs.getString(index++));
+            role.setCreationTimestamp(rs.getTimestamp(index++));
+            role.setModificationUser(rs.getString(index++));
+            role.setModificationTimestamp(rs.getTimestamp(index++));
+
+            resource.setResourceRole(role);
+
+            return resource;
+        } catch (SQLException e) {
+        	LOGGER.log(Level.ERROR, new LogMessage(null, null, "Failed to load the Resource from ResultSet.", e));
+            throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", e);
+        }finally {
+            Util.closeResultSet(rs);
+
+        }
+    }
+
     /**
      * Construct a Resource instance from given CustomResultSet instance.
      *
@@ -1251,6 +1378,70 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", e);
         }
     }
+
+    /**
+     * Construct a Resource instance from given CustomResultSet instance.
+     *
+     * @param rs
+     *            the CustomResultSet instance
+     * @return The Resource instance
+     * @throws ResourcePersistenceException
+     *             if failed to construct the Resource instance.
+     */
+    private Resource constructResourceWithRole(CustomResultSet rs, Connection connection) throws ResourcePersistenceException {
+        try {
+            Resource resource = new Resource();
+
+            resource.setId(rs.getLong("resource_id"));
+
+            if (rs.getObject("project_id") != null) {
+                resource.setProject(new Long(rs.getLong("project_id")));
+            } else {
+                resource.setProject(null);
+            }
+
+            if (rs.getObject("project_phase_id") != null) {
+                resource.setPhase(new Long(rs.getLong("project_phase_id")));
+            } else {
+                resource.setPhase(null);
+            }
+
+            resource.setCreationUser(rs.getString("create_user"));
+            resource.setCreationTimestamp(rs.getTimestamp("create_date"));
+            resource.setModificationUser(rs.getString("modify_user"));
+            resource.setModificationTimestamp(rs.getTimestamp("modify_date"));
+
+            // resource role
+            ResourceRole role = new ResourceRole();
+
+            role.setId(rs.getLong("resource_role_id"));
+
+            if (rs.getObject("phase_type_id") == null) {
+                role.setPhaseType(null);
+            } else {
+                role.setPhaseType(new Long(rs.getLong("phase_type_id")));
+            }
+
+            role.setName(rs.getString("name"));
+            role.setDescription(rs.getString("description"));
+            role.setCreationUser(rs.getString("rr_create_user"));
+            role.setCreationTimestamp(rs.getTimestamp("rr_create_date"));
+            role.setModificationUser(rs.getString("rr_modify_user"));
+            role.setModificationTimestamp(rs.getTimestamp("rr_modify_date"));
+
+            resource.setResourceRole(role);
+
+            // add submissions into resource
+            resource.setSubmissions(getSubmissionEntry(connection, resource));
+
+            return resource;
+        } catch (InvalidCursorStateException icse) {
+            throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", icse);
+        } catch (SQLException e) {
+            throw new ResourcePersistenceException("Failed to load the Resource from ResultSet.", e);
+        }
+    }
+
 
     /**
      * <p>
@@ -1973,16 +2164,30 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
         ResultSet rs = null;
 
         try {
-            statement = connection.prepareStatement(buildQueryWithIds(SQL_SELECT_ALL_RES, resourceIds));
+            statement = connection.prepareStatement(buildQueryWithIds(SQL_SELECT_ALL_RES_WITH_ROLE, resourceIds));
             rs = statement.executeQuery();
 
             List list = new ArrayList();
 
             while (rs.next()) {
-                list.add(constructResource(rs, connection));
+                list.add(constructResourceWithRole(rs, connection));
             }
 
             Resource[] resources = (Resource[]) list.toArray(new Resource[list.size()]);
+
+            // get resource submissions.
+            Map resSubmissions = getResourceSubmissions(connection, resourceIds);
+            for (int i = 0; i < resources.length; i++) {
+                Resource resource = resources[i];
+
+                List submissions = (List) resSubmissions.get(new Long(resource.getId()));
+
+                if (submissions == null) {
+                    resource.setSubmissions(new Long[0]);
+                } else {
+                    resource.setSubmissions((Long[]) submissions.toArray(new Long[submissions.size()]));
+                }
+            }
 
             // select all the external properties once and add the matching properties into resource
             // instances.
@@ -2075,7 +2280,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
             List list = new ArrayList();
 
             while (resultSet.next()) {
-                list.add(constructResource(resultSet, connection));
+                list.add(constructResourceWithRole(resultSet, connection));
             }
 
             Resource[] resources = (Resource[]) list.toArray(new Resource[list.size()]);
@@ -2083,6 +2288,20 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
 
             for (int i = 0; i < resources.length; ++i) {
                 resourceIds[i] = resources[i].getId();
+            }
+
+            // get resource submissions.
+            Map resSubmissions = getResourceSubmissions(connection, resourceIds);
+            for (int i = 0; i < resources.length; i++) {
+                Resource resource = resources[i];
+
+                List submissions = (List) resSubmissions.get(new Long(resource.getId()));
+
+                if (submissions == null) {
+                    resource.setSubmissions(new Long[0]);
+                } else {
+                    resource.setSubmissions((Long[]) submissions.toArray(new Long[submissions.size()]));
+                }
             }
 
             // select all the external properties once and add the matching properties into resource instances
