@@ -145,7 +145,7 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
      */
     private static final String SQL_SELECT_ALL_RES_WITH_ROLE =
         "SELECT r.resource_id, r.project_id, r.project_phase_id, r.create_user, r.create_date, r.modify_user,"
-            + " r.modify_date, rr.resource_role_id, rr.phase_type_id, rr.name, rr.description,"
+            + " r.modify_date, rr.resource_role_id, rr.phase_type_id, rr.name AS rr_name, rr.description AS rr_description,"
             + " rr.create_user as rr_create_user, rr.create_date as rr_create_date, rr.modify_user as rr_modify_user,"
             + " rr.modify_date as rr_modify_date FROM resource r, resource_role_lu rr"
                 + " WHERE r.resource_role_id = rr.resource_role_id AND r.resource_id IN (";
@@ -1422,8 +1422,8 @@ public abstract class AbstractResourcePersistence implements ResourcePersistence
                 role.setPhaseType(new Long(rs.getLong("phase_type_id")));
             }
 
-            role.setName(rs.getString("name"));
-            role.setDescription(rs.getString("description"));
+            role.setName(rs.getString("rr_name"));
+            role.setDescription(rs.getString("rr_description"));
             role.setCreationUser(rs.getString("rr_create_user"));
             role.setCreationTimestamp(rs.getTimestamp("rr_create_date"));
             role.setModificationUser(rs.getString("rr_modify_user"));
