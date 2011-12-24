@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="JMSFailure1">
+        <Property name="loggerName">
+            <Value>myLogger</Value>
+        </Property>
+        
+        <Property name="jmsConnectionFactoryName">
+        </Property>
+        
+        <Property name="queueName">
+            <Value>myQueueName</Value>
+        </Property>
+       
+    </Config>
+</CMConfig>

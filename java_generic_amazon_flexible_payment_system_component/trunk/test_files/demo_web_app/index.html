@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Web demo for Java Generic Amazon Flexible Payment System Component</title>
+</head>
+<body>
+	<div style="background-color:rgb(150,200,180)">
+		<center><h2>
+		Web demo for Java Generic Amazon Flexible Payment System Component (version 1.0)
+		</h2></center>
+	</div>
+	<h2>Hello, donator</h2>
+	<h2>Lets spend some money!</h2>
+
+	<table bgcolor="#22EEAA" border="1">
+	<tr><td> <!-- --------------- Authorization and payment -------- -->
+		<form method="post" action="AuthorizationServlet">
+			<b>initiatePaymentAuthorization zone</b><br/>
+			------------------------------------------------------------ <br/>
+			<input type="radio" name="authType" id="input_authType_0" value="0" checked/><label for="input_authType_0">Single-use Authorization</label>
+			<input type="radio" name="authType" id="input_authType_1" value="1"/><label for="input_authType_1">Multiple-use Authorization</label>
+			
+			<br/><br/>
+			<input type="checkbox" name="reservation1" /> Reservation<br />
+			
+			<br/>
+			<label>Enter payment amount:</label> <br/>
+			<input type="text" name="amount1" value="15"/>
+			
+			<br/>
+			<label>Enter threshold (for multiple payments only):</label> <br/>
+			<input type="text" name="threshold" value="200"/>
+			
+			<br/><br/>
+			<input type="submit" value="Request authorization and perform payment"/> 
+			<br/>
+		</form>
+	</td></tr>
+	</table>
+		
+	<br/>
+
+	<table bgcolor="#22EEAA" border="1">
+	<tr><td>
+		<form method="post" action="AuthorizedPaymentServlet">
+			<b>processAuthorizedPayment zone</b><br/>
+			------------------------------------------------------------ <br/>
+			<input type="checkbox" name="reservation2" /> Reservation<br />
+			
+			<br/>
+			<label>Enter payment amount:</label> <br/>
+			<input type="text" name="amount2" value="20.5"/>
+			
+			<br/>
+			<label>Enter authorization id:</label> <br/>
+			<input type="text" name="authorizationId"/> (required)
+			
+			<br/><br/>
+			<input type="submit" value="Perform authorized payment"/>
+			<br/>
+		</form>
+	</td></tr>
+	</table>
+		
+	<br/>
+
+	<table bgcolor="#22EEAA" border="1">
+	<tr><td>
+		<form method="post" action="PaymentOperationServlet">
+			<b>cancelPayment, settlePayment, refundPayment zone</b><br/>
+			-----------------------------------------------------------------------<br/>
+			<input type="radio" name="operation" id="input_operation_0" value="0" checked/><label for="input_operation_0">Cancel payment</label>
+			<input type="radio" name="operation" id="input_operation_1" value="1"/><label for="input_operation_1">Settle payment</label>
+			<input type="radio" name="operation" id="input_operation_2" value="2"/><label for="input_operation_2">Refund payment</label>
+			
+			<br/><br/>
+			<label>Enter payment id:</label> <br/>
+			<input type="text" name="paymentId"/> (required)
+	
+			<br/><br/>
+			<input type="submit" value="Perform operation"/>
+			<br/>
+		</form>
+	</td></tr>
+	</table>
+	
+	<center><h3><code>Topcoder, 2011</code></h3></center>
+</body>
+</html>

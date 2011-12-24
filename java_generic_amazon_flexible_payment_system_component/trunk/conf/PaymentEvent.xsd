@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="PaymentEvent">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element name="authorizationId" type="xs:long"/>
+          <xs:element name="errorCode" type="xs:string" minOccurs="0"/>
+          <xs:element name="errorMessage" type="xs:string" minOccurs="0"/>
+          <xs:element name="errorType" type="xs:string" minOccurs="0"/>
+          <xs:element name="eventType" type="paymentEventType" minOccurs="0"/>
+          <xs:element name="paymentDetails" type="paymentDetails" minOccurs="0"/>
+          <xs:element name="paymentId" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="paymentDetails">
+    <xs:sequence>
+      <xs:element name="amount" type="xs:decimal" minOccurs="0"/>
+      <xs:element name="parameters" type="mapEntryArray" minOccurs="0"/>
+      <xs:element name="reservation" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="mapEntry">
+    <xs:sequence>
+      <xs:element name="key" type="xs:string" minOccurs="0"/>
+      <xs:element name="value" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="paymentEventType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PAYMENT_SUCCESS"/>
+      <xs:enumeration value="PAYMENT_FAILURE"/>
+      <xs:enumeration value="RESERVATION_SUCCESS"/>
+      <xs:enumeration value="RESERVATION_FAILURE"/>
+      <xs:enumeration value="SETTLEMENT_SUCCESS"/>
+      <xs:enumeration value="SETTLEMENT_FAILURE"/>
+      <xs:enumeration value="REFUND_SUCCESS"/>
+      <xs:enumeration value="REFUND_FAILURE"/>
+      <xs:enumeration value="PAYMENT_CANCELLATION_SUCCESS"/>
+      <xs:enumeration value="PAYMENT_CANCELLATION_FAILURE"/>
+      <xs:enumeration value="AUTHORIZATION_SUCCESS"/>
+      <xs:enumeration value="AUTHORIZATION_FAILURE"/>
+      <xs:enumeration value="AUTHORIZATION_CANCELLATION_SUCCESS"/>
+      <xs:enumeration value="AUTHORIZATION_CANCELLATION_FAILURE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="mapEntryArray" final="#all">
+    <xs:sequence>
+      <xs:element name="item" type="mapEntry" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

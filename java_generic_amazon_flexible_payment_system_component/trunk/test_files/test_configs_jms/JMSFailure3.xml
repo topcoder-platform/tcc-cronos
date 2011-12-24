@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="JMSFailure3">
+        <Property name="loggerName">
+            <Value>myLogger</Value>
+        </Property>
+        
+        <Property name="jmsConnectionFactoryName">
+            <Value>myJMSConnectionFactory_unknownJNDI_name</Value>
+        </Property>
+        
+        <Property name="queueName">
+            <Value>paymentEventQueue</Value>
+        </Property>
+       
+    </Config>
+</CMConfig>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<CMConfig>
+    <Config name="JMSTest">
+        <Property name="loggerName">
+            <Value>myLogger</Value>
+        </Property>
+        
+        <Property name="jmsConnectionFactoryName">
+            <Value>myJMSConnectionFactory</Value>
+        </Property>
+        
+        <Property name="queueName">
+            <Value>paymentEventQueue</Value>
+        </Property>
+       
+    </Config>
+</CMConfig>
