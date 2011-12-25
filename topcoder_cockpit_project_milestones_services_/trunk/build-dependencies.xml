@@ -1,0 +1,40 @@
+<project name="Dependency Import" default="dist" basedir=".">
+	<!-- TCS dependencies -->
+
+	   <property name="component.target" value="1.5" />
+	    <property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+
+	<!-- 3rd party dependencies -->
+	<property name="dependency.jar" value="test_files/dependency.jar" />
+	<property name="junit-4.4.jar" value="test_files/junit-4.4.jar" />
+	<property name="topcoder_cockpit_project_metadata_entities.jar" value="test_files/topcoder_cockpit_project_metadata_entities.jar" />
+
+	<property name="spring.dir" value="${ext_libdir}/spring-framework/2.5.6" />
+	<property name="hibernate.dir" value="${ext_libdir}/hibernate/3.6.8" />
+	<property name="aspectj.dir" value="${ext_libdir}/aspectj/1.6.11" />
+
+	<path id="component.tcs-dependencies">
+		<pathelement location="${base_exception.jar}" />
+		<pathelement location="${topcoder_commons_utility.jar}" />
+		<pathelement location="${logging_wrapper.jar}" />
+		<pathelement location="${object_formatter.jar}" />
+		<pathelement location="${typesafe_enum.jar}" />
+		<pathelement location="${dependency.jar}" />
+		<pathelement location="${topcoder_cockpit_project_metadata_entities.jar}" />
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+		<pathelement location="${commons-dbcp.jar}" />
+		<pathelement location="${commons-pool.jar}" />
+		<fileset dir="${spring.dir}" includes="*.jar" />
+		<fileset dir="${hibernate.dir}" includes="*.jar" />
+		<fileset dir="${aspectj.dir}" includes="*.jar" />
+		<path refid="log4j" />
+	</path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit-4.4.jar}" />
+		<pathelement location="${ifxjdbc.jar}" />
+	</path>
+
+</project>
