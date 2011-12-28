@@ -3,14 +3,12 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.cronos.onlinereview.phases.logging.LogMessage;
-import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
 import com.topcoder.management.deliverable.Submission;
+import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.OperationCheckResult;
@@ -174,8 +172,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_AGGREGATION);
 
-        // will throw exception if phase status is neither "Scheduled" nor
-        // "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
@@ -186,30 +183,20 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             if (!result.isSuccess()) {
                 return result;
             }
-            
-            Connection conn = createConnection();
-            try {
-                Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper().getResourceManager(),
-                    getManagerHelper().getProjectManager(), conn, phase.getProject().getId());
 
-                Resource[] aggregator = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    new String[] {"Aggregator" }, phase.getId());
+            Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper(), phase.getProject().getId());
 
-                if (winner == null) {
-                    LOG.log(Level.WARN, "can't open aggregation because there is no winner for project: "
-                        + phase.getProject().getId());
-                    return new OperationCheckResult("There is no winner for the project");
-                }
-                if (aggregator.length != 1) {
-                    LOG.log(Level.WARN, "can't open aggregation because there is no Aggregator for project: "
-                        + phase.getProject().getId());
-                    return new OperationCheckResult("There is no aggregator for the project");
-                }
-                // return true if there is a winner and an aggregator
-                return OperationCheckResult.SUCCESS;
-            } finally {
-                PhasesHelper.closeConnection(conn);
+            Resource[] aggregator = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+                new String[] {"Aggregator" }, phase.getId());
+
+            if (winner == null) {
+                return new OperationCheckResult("There is no winner for the project");
             }
+            if (aggregator.length != 1) {
+                return new OperationCheckResult("There is no aggregator for the project");
+            }
+            // return true if there is a winner and an aggregator
+            return OperationCheckResult.SUCCESS;
         } else {
             // return true if all dependencies have stopped and aggregation
             // worksheet exists.
@@ -279,33 +266,26 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      * @param phase the phase.
      * @param operator operator name.
      * @return the number of aggregators
-     * @throws PhaseHandlingException if an error occurs when retrieving/saving
-     *             data.
+     * @throws PhaseHandlingException if an error occurs when retrieving/saving data.
      */
     private int checkAggregationWorksheet(Phase phase, String operator)
         throws PhaseHandlingException {
         // Check if the Aggregation worksheet is created
-        Phase previousAggregationPhase = PhasesHelper.locatePhase(phase,
-                        "Aggregation", false, false);
-
-        Connection conn = createConnection();
+        Phase previousAggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
 
         try {
             // Search for id of the Aggregator
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(
-                            getManagerHelper(), conn,
-                            new String[] {"Aggregator" }, phase.getId());
+                getManagerHelper(), new String[] {"Aggregator" }, phase.getId());
             if (aggregators.length == 0) {
                 throw new PhaseHandlingException(
-                                "No Aggregator resource found for phase: "
-                                                + phase.getId());
+                    "No Aggregator resource found for phase: " + phase.getId());
             }
-            String aggregatorUserId = (String) aggregators[0]
-                            .getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
+            String aggregatorUserId = (String) aggregators[0].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
 
             Review aggWorksheet = null;
             if (previousAggregationPhase != null) {
-                aggWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
+                aggWorksheet = PhasesHelper.getWorksheet(getManagerHelper(),
                     "Aggregator", previousAggregationPhase.getId());
             }
 
@@ -315,61 +295,49 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 aggWorksheet.setAuthor(aggregators[0].getId());
 
                 // copy the comments from review scorecards
-                Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, true);
-                Resource[] reviewers = PhasesHelper
-                                .searchResourcesForRoleNames(
-                                                getManagerHelper(),
-                                                conn,
-                                                PhasesHelper.REVIEWER_ROLE_NAMES,
-                                                reviewPhase.getId());
+                Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_REVIEW, false, true);
+                Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(
+                    getManagerHelper(),PhasesHelper.REVIEWER_ROLE_NAMES,reviewPhase.getId());
 
                 // find winning submitter.
                 Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
-                                getManagerHelper().getResourceManager(),
-                                getManagerHelper().getProjectManager(), conn,
-                                phase.getProject().getId());
+                    getManagerHelper(), phase.getProject().getId());
                 if (winningSubmitter == null) {
                     throw new PhaseHandlingException("No winner for project[Winner id not set] with id : "
                         + phase.getProject().getId());
                 }
 
+                UploadManager uploadManager = getManagerHelper().getUploadManager();
+
                 // find the winning submission
                 Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
 
-                // change in version 1.4
-                // AND submission type ID = "Contest Submission"
-                long submissionTypeId = SubmissionTypeLookupUtility.lookUpId(conn,
-                        PhasesHelper.CONTEST_SUBMISSION_TYPE);
+                long submissionTypeId = LookupHelper.getSubmissionType(uploadManager,
+                    PhasesHelper.CONTEST_SUBMISSION_TYPE).getId();
                 Filter typeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
 
-                Submission[] submissions = getManagerHelper()
-                                .getUploadManager().searchSubmissions(new AndFilter(filter, typeFilter));
+                Submission[] submissions = uploadManager.searchSubmissions(new AndFilter(filter, typeFilter));
 
-                // OrChange - Modified to handle multiple submissions for a
-                // single resource
+                // OrChange - Modified to handle multiple submissions for a single resource
                 Long winningSubmissionId = null;
                 if (submissions == null || submissions.length == 0) {
-                    LOG.log(Level.ERROR, "No winner for project with id"
-                                    + phase.getProject().getId());
+                    LOG.log(Level.ERROR, "No winner for project with id" + phase.getProject().getId());
                     throw new PhaseHandlingException(
                                     "No winning submission for project[Winner id search"
                                                     + " returned empty result for submission] with id : "
-                                                    + phase.getProject()
-                                                                    .getId());
+                                                    + phase.getProject().getId());
                 } else if (submissions.length >= 1) {
                     // loop through the submissions and find out the one with
                     // the placement as first
                     for (int i = 0; i < submissions.length; i++) {
                         Submission submission = submissions[i];
-                        if (submission.getPlacement() != null
-                                        && submission.getPlacement()
-                                                        .longValue() == 1) {
-                            winningSubmissionId = new Long(submission.getId());
+                        if (submission.getPlacement() != null && submission.getPlacement() == 1) {
+                            winningSubmissionId = submission.getId();
                             break;
                         }
                     }
                 } else {
-                    winningSubmissionId = new Long(submissions[0].getId());
+                    winningSubmissionId = submissions[0].getId();
                 }
                 // No winner id set at this point means, none of the submissions
                 // have placement as 1
@@ -377,39 +345,31 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                     throw new PhaseHandlingException(
                                     "No winning submission for project[Submissions from the"
                                                     + " winner id does not have placement 1] with id : "
-                                                    + phase.getProject()
-                                                                    .getId());
+                                                    + phase.getProject().getId());
                 }
 
                 // Search all review scorecard from review phase for the winning
                 // submitter
                 Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(
-                                conn, getManagerHelper(), reviewPhase.getId(),
+                                getManagerHelper(), reviewPhase.getId(),
                                 PhasesHelper.REVIEWER_ROLE_NAMES,
                                 winningSubmissionId);
 
                 for (int r = 0; r < reviews.length; r++) {
                     aggWorksheet.setScorecard(reviews[r].getScorecard());
                     aggWorksheet.setSubmission(reviews[r].getSubmission());
-                    PhasesHelper.copyComments(reviews[r], aggWorksheet,
-                                    COMMENT_TYPES_TO_COPY, null);
-                    PhasesHelper.copyReviewItems(reviews[r], aggWorksheet,
-                                    COMMENT_TYPES_TO_COPY);
+                    PhasesHelper.copyComments(reviews[r], aggWorksheet, COMMENT_TYPES_TO_COPY, null);
+                    PhasesHelper.copyReviewItems(reviews[r], aggWorksheet, COMMENT_TYPES_TO_COPY);
                 }
 
                 // Adding empty comments
-                CommentType aggregationReviewCommentType = PhasesHelper
-                                .getCommentType(getManagerHelper()
-                                                .getReviewManager(),
-                                                "Aggregation Review Comment");
-                CommentType submitterCommentType = PhasesHelper.getCommentType(
-                                getManagerHelper().getReviewManager(),
-                                "Submitter Comment");
+                CommentType aggregationReviewCommentType = LookupHelper.getCommentType(
+                    getManagerHelper().getReviewManager(),"Aggregation Review Comment");
+                CommentType submitterCommentType = LookupHelper.getCommentType(
+                    getManagerHelper().getReviewManager(), "Submitter Comment");
                 for (int i = 0; i < reviewers.length; i++) {
                     if (reviewers[i].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID) == null
-                                    || reviewers[i].getProperty(
-                                            PhasesHelper.EXTERNAL_REFERENCE_ID)
-                                                    .equals(aggregatorUserId)) {
+                        || reviewers[i].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID).equals(aggregatorUserId)) {
                         continue;
                     }
                     Comment comment = new Comment();
@@ -437,41 +397,28 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
                 // For each comment, reset comment extra info
                 for (int i = 0; i < comments.length; i++) {
                     Comment comment = comments[i];
-                    if (PhasesHelper.APPROVED.equalsIgnoreCase((String) comment
-                                    .getExtraInfo())
-                                    || PhasesHelper.ACCEPTED
-                                                    .equalsIgnoreCase((String) comment
-                                                                    .getExtraInfo())) {
+                    if (PhasesHelper.APPROVED.equalsIgnoreCase((String) comment.getExtraInfo())
+                        || PhasesHelper.ACCEPTED.equalsIgnoreCase((String) comment.getExtraInfo())) {
                         comment.setExtraInfo("Approving");
-                    } else if (PhasesHelper.REJECTED.equalsIgnoreCase((String) comment
-                                    .getExtraInfo())) {
+                    } else if (PhasesHelper.REJECTED.equalsIgnoreCase((String) comment.getExtraInfo())) {
                         comment.setExtraInfo(null);
                     }
                 }
 
                 // persist the copy
                 aggWorksheet = PhasesHelper.cloneReview(aggWorksheet);
-                getManagerHelper().getReviewManager().createReview(
-                                aggWorksheet, operator);
+                getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
             }
-            LOG.log(Level.INFO, new LogMessage(new Long(phase.getId()),
-                            operator, "create aggregate worksheet."));
+            LOG.log(Level.INFO, new LogMessage(phase.getId(),  operator, "create aggregate worksheet."));
             return aggregators.length;
         } catch (ReviewManagementException e) {
-            throw new PhaseHandlingException("Problem when persisting review",
-                            e);
-        } catch (SQLException e) {
-            LOG.log(Level.ERROR, new LogMessage(new Long(phase.getId()),
-                operator, "Fail to create aggregate worksheet.", e));
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
+            throw new PhaseHandlingException("Problem when persisting review", e);
         } catch (UploadPersistenceException e) {
             throw new PhaseHandlingException(
                             "Problem when retrieving winning submission.", e);
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException(
                             "Problem when retrieving winning submission.", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
     }
 
@@ -482,15 +429,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if an error occurs when retrieving/saving
      *             data.
      */
-    private boolean isAggregationWorksheetPresent(Phase phase)
-        throws PhaseHandlingException {
-        Connection conn = createConnection();
-        try {
-            Review review = PhasesHelper.getWorksheet(conn, getManagerHelper(), "Aggregator", phase.getId());
-            return (review != null && review.isCommitted());
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
-
+    private boolean isAggregationWorksheetPresent(Phase phase) throws PhaseHandlingException {
+        Review review = PhasesHelper.getWorksheet(getManagerHelper(), "Aggregator", phase.getId());
+        return (review != null && review.isCommitted());
     }
 }

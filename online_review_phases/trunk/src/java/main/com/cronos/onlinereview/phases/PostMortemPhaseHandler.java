@@ -4,7 +4,6 @@
 package com.cronos.onlinereview.phases;
 
 import java.rmi.RemoteException;
-import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -220,8 +219,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_POST_MORTEM);
 
-        // will throw exception if phase status is
-        // neither "Scheduled" nor "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
@@ -279,7 +277,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
             ResourceManager resourceManager = managerHelper.getResourceManager();
             DateFormat dateFormatter = new SimpleDateFormat("MM.dd.yyyy hh:mm a", Locale.US);
 
-            Connection conn = createConnection();
             try {
                 // Locate the role for Post-Mortem Reviewer
                 ResourceRole postMortemReviewerRole = null;
@@ -295,12 +292,12 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
 
                 // Get the list of existing Post-Mortem reviewers assigned to project so far
                 Resource[] existingPostMortemResources = PhasesHelper.searchProjectResourcesForRoleNames(
-                    managerHelper, conn, POST_MORTEM_REVIEWER_FILTER, projectId);
+                    managerHelper, POST_MORTEM_REVIEWER_FILTER, projectId);
                 // Add Submitters (who have submitted), reviewers as Post-Mortem Reviewers but only if they are not
                 // assigned to project as Post-Mortem reviewers already and have all necessary terms of use
                 // accepted
                 Resource[] candidatePostMortemResources = PhasesHelper.searchProjectResourcesForRoleNames(
-                    managerHelper, conn, POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES, projectId);
+                    managerHelper, POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES, projectId);
                 for (Resource resource : candidatePostMortemResources) {
                     boolean valid = false;
                     String roleName = resource.getResourceRole().getName();
@@ -354,8 +351,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                 }
 
                 Resource[] postMortemResources = PhasesHelper.searchProjectResourcesForRoleNames(managerHelper,
-                    conn, POST_MORTEM_REVIEWER_FILTER,
-                                                                      projectId);
+                     POST_MORTEM_REVIEWER_FILTER,projectId);
 
                 // according to discussion here http://forums.topcoder.com/?module=Thread&threadID=659556&start=0
                 // if the attribute is not set, default value would be 0
@@ -374,8 +370,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                 throw new PhaseHandlingException("Failed to add new Post-Mortem Reviewer resource", e);
             } catch (NamingException e) {
                 throw new PhaseHandlingException("Failed to add new Post-Mortem Reviewer resource", e);
-            } finally {
-                PhasesHelper.closeConnection(conn);
             }
         }
         sendEmail(phase, values);
@@ -390,34 +384,28 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if there was an error retrieving data.
      */
     private boolean allPostMortemReviewsDone(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
+        // Search all post-mortem review scorecards for the current phase
+        Review[] reviews = PhasesHelper.searchProjectReviewsForResourceRoles(getManagerHelper(),
+            phase.getProject().getId(), POST_MORTEM_REVIEWER_FILTER, null);
 
-        try {
-            // Search all post-mortem review scorecards for the current phase
-            Review[] reviews = PhasesHelper.searchProjectReviewsForResourceRoles(conn, getManagerHelper(),
-                phase.getProject().getId(), POST_MORTEM_REVIEWER_FILTER, null);
-
-            // Count number of committed reviews
-            int committedReviewsCount = 0;
-            for (int i = 0; i < reviews.length; ++i) {
-                if (reviews[i].isCommitted()) {
-                    committedReviewsCount++;
-                }
+        // Count number of committed reviews
+        int committedReviewsCount = 0;
+        for (int i = 0; i < reviews.length; ++i) {
+            if (reviews[i].isCommitted()) {
+                committedReviewsCount++;
             }
-
-            // Deny to close phase if minimum number of reviews is not committed
-            if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-                int reviewerNum = PhasesHelper.getIntegerAttribute(phase,
-                    PhasesHelper.REVIEWER_NUMBER_PROPERTY);
-                if (committedReviewsCount < reviewerNum) {
-                    return false;
-                }
-            }
-
-            return true;
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
+
+        // Deny to close phase if minimum number of reviews is not committed
+        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
+            int reviewerNum = PhasesHelper.getIntegerAttribute(phase,
+                PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+            if (committedReviewsCount < reviewerNum) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -433,7 +421,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * @throws NamingException if any errors occur during EJB lookup.
      * @throws RemoteException if any errors occur during EJB remote invocation.
      * @throws CreateException if any errors occur during EJB creation.
-     * @version 1.6
      * @since 1.4
      */
     private boolean hasPendingTermsOfUse(long projectId, long userId, long roleId)

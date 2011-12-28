@@ -3,7 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -151,8 +150,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_FINAL_REVIEW);
 
-        // will throw exception if phase status is neither "Scheduled" nor
-        // "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
@@ -221,7 +219,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             // an approval phase after final review is approved
             values.put("RESULT", checkFinalReview(phase, operator) ? "rejected" : "approved");
 
-            Phase approvalPhase = PhasesHelper.locatePhase(phase, "Approval", true, false);
+            Phase approvalPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_APPROVAL, true, false);
             if (approvalPhase != null) {
                 int approvers = getApproverNumbers(approvalPhase);
                 int approverNum = getRequiredReviewersNumber(approvalPhase);
@@ -263,13 +261,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if any error occurs
      */
     private int getFinalReviewerNumber(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
-        try {
-            return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, phase.getId()).length;
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+        return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+            new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, phase.getId()).length;
     }
 
     /**
@@ -280,13 +273,9 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      * @since 1.4
      */
     private int getApproverNumbers(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
-        try {
-            return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(), conn,
-                new String[] {PhasesHelper.APPROVER_ROLE_NAME }, phase.getProject().getId()).length;
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+        return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(),
+            new String[] {PhasesHelper.APPROVER_ROLE_NAME }, phase.getProject().getId()).length;
+
     }
 
     /**
@@ -298,14 +287,9 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      *             processing the phase.
      */
     private boolean isFinalWorksheetCommitted(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
-        try {
-            Review finalWorksheet = PhasesHelper.getWorksheet(conn, getManagerHelper(),
-                PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
-            return ((finalWorksheet != null) && finalWorksheet.isCommitted());
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+        Review finalWorksheet = PhasesHelper.getWorksheet(getManagerHelper(),
+            PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
+        return ((finalWorksheet != null) && finalWorksheet.isCommitted());
     }
 
     /**
@@ -328,10 +312,9 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      *             data.
      */
     private boolean checkFinalReview(Phase phase, String operator) throws PhaseHandlingException {
-        Connection conn = createConnection();
         try {
             ManagerHelper managerHelper = getManagerHelper();
-            Review finalWorksheet = PhasesHelper.getWorksheet(conn, managerHelper,
+            Review finalWorksheet = PhasesHelper.getWorksheet(managerHelper,
                 PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
 
             // check for approved/rejected comments.
@@ -381,13 +364,13 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
                                 .getId();
 
                 PhasesHelper.createAggregatorOrFinalReviewer(phase,
-                                managerHelper, conn, PhasesHelper.FINAL_REVIEWER_ROLE_NAME,
+                                managerHelper, PhasesHelper.FINAL_REVIEWER_ROLE_NAME,
                                 finalReviewPhaseId, operator);
             } else {
                 // Newly added in version 1.1
                 // the final review is approved, add approval phase if it does not exist yet
                 // and if there is corresponding property value
-                Phase approvalPhase = PhasesHelper.locatePhase(phase, "Approval", true, false);
+                Phase approvalPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_APPROVAL, true, false);
 
                 com.topcoder.management.project.ProjectManager projectManager =
                     getManagerHelper().getProjectManager();
@@ -405,8 +388,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Problem when persisting phases", e);
         } catch (PersistenceException e) {
             throw new PhaseHandlingException("Problem when reading phases", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
     }
 }

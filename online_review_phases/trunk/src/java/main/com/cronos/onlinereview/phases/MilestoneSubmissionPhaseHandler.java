@@ -3,18 +3,13 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
-import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
-import com.topcoder.util.log.Level;
-import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
 
 /**
  * <p>
@@ -75,11 +70,6 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      * </p>
      */
     private static final String PHASE_TYPE_MILESTONE_SUBMISSION = "Milestone Submission";
-
-    /**
-     * Represents the logger for this class. Is initialized during class loading and never changed after that.
-     */
-    private static final Log LOG = LogFactory.getLog(MilestoneSubmissionPhaseHandler.class.getName());
 
     /**
      * <p>
@@ -163,20 +153,15 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
         if (toStart) {
             return PhasesHelper.checkPhaseCanStart(phase);
         } else {
-            Connection conn = createConnection();
-            try {
-                OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
-                if (!result.isSuccess()) {
-                    return result;
-                }
-                if (!PhasesHelper.reachedPhaseEndTime(phase)) {
-                    return new OperationCheckResult("Phase end time is not yet reached");
-                }
-
-                return OperationCheckResult.SUCCESS;
-            } finally {
-                PhasesHelper.closeConnection(conn);
+            OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
             }
+            if (!PhasesHelper.reachedPhaseEndTime(phase)) {
+                return new OperationCheckResult("Phase end time is not yet reached");
+            }
+
+            return OperationCheckResult.SUCCESS;
         }
     }
 
@@ -210,35 +195,26 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
 
         Map<String, Object> values = new HashMap<String, Object>();
 
-        Connection conn = createConnection();
-        try {
-            // retrieve the submissions information for sending mail.
-            hasAnySubmission(conn, phase, values);
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
-
+        // retrieve the submissions information for sending mail.
+        populateProperties(phase, values);
         sendEmail(phase, values);
     }
 
     /**
      * <p>
-     * This method checks whether there is any milestone submission in this phase.
+     * This method populates properties for the email generation.
      * </p>
      * @param phase
-     *            the phase to check.
+     *            the phase.
      * @param values
-     *            the values map to hold the information for email generation
-     * @param conn
-     *            the database connection
-     * @return true if there is at least one submission, false otherwise.
+     *            the values map to hold the information for email generation.
      * @throws PhaseHandlingException
      *             if any error occurs during processing.
      */
-    private boolean hasAnySubmission(Connection conn, Phase phase, Map<String, Object> values)
+    void populateProperties(Phase phase, Map<String, Object> values)
         throws PhaseHandlingException {
         Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
+            phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
 
         // for stop phase, we are going to support more information.
         if (values != null) {
@@ -246,6 +222,5 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
             values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs,
                     getManagerHelper().getResourceManager(), false));
         }
-        return subs.length > 0;
     }
 }

@@ -3,11 +3,13 @@
  */
 package com.cronos.onlinereview.phases;
 
-import com.cronos.onlinereview.phases.lookup.SubmissionTypeLookupUtility;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.SubmissionStatus;
+import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
-import com.topcoder.management.deliverable.search.SubmissionFilterBuilder;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
@@ -15,16 +17,6 @@ import com.topcoder.management.resource.Resource;
 import com.topcoder.management.review.data.Review;
 
 import com.topcoder.project.phases.Phase;
-
-import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.Filter;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p>
@@ -37,9 +29,8 @@ import java.util.Map;
  * The screening phase can start as soon as the dependencies are met and can stop when the following conditions
  * met:
  * <ul>
- * <li>The dependencies are met</li>
- * <li>If manual screening is not required, all submissions have been auto-screened;</li>
- * <li>If manual screening is required, all active submissions have one screening scorecard committed.</li>
+ * <li>The dependencies are met.</li>
+ * <li>All active submissions have one screening scorecard committed.</li>
  * </ul>
  * </p>
  * <p>
@@ -81,11 +72,11 @@ import java.util.Map;
  * in case if operation cannot be performed.</li>
  * </ul>
  * </p>
- * 
+ *
  * <p>
  * Version 1.6.2 (TCCC-3631) Change notes:
  * <ol>
- * <li>Updated {@link #canPerform(Phase)} method to delete studio submission 
+ * <li>Updated {@link #canPerform(Phase)} method to delete studio submission
  * if they have user rank more than configured for the project.</li>
  * </ol>
  * </p>
@@ -94,24 +85,10 @@ import java.util.Map;
  */
 public class ScreeningPhaseHandler extends AbstractPhaseHandler {
     /**
-     * String:
-     * Not all primary screening scorecards are committed (see submission with ID=
-     */
-    private static String NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG = "Not all primary screening scorecards are committed (see submission with ID=";
-
-    /**
-     * String:
-     * Individual screening scorecard is not committed
-     */
-    private static String INDIVIDUAL_SCREENING_MSG = "Individual screening scorecard is not committed";
-    /**
      * Represents the default namespace of this class. It is used in the default
      * constructor to load configuration settings.
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.ScreeningPhaseHandler";
-
-    /** constant for "Screener" role name. */
-    private static final String ROLE_SCREENER = "Screener";
 
     /** constant for "Primary Screener" role name. */
     private static final String ROLE_PRIMARY_SCREENER = "Primary Screener";
@@ -121,12 +98,6 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
 
     /** constant for screening phase type. */
     private static final String PHASE_TYPE_SCREENING = "Screening";
-
-    /**
-     * Represents the roles for screening.
-     * @since 1.2
-     */
-    private static final String[] SCREENING_ROLES = new String[] {ROLE_PRIMARY_SCREENER, ROLE_SCREENER };
 
     /**
      * Create a new instance of ScreeningPhaseHandler using the default
@@ -190,30 +161,24 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SCREENING);
 
-        // will throw exception if phase status is neither "Scheduled" nor
-        // "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
         if (toStart) {
-            // return true if all dependencies have stopped and start time has
-            // been reached.
+            // return true if all dependencies have stopped and start time has been reached.
             result = PhasesHelper.checkPhaseCanStart(phase);
             if (!result.isSuccess()) {
                 return result;
             }
 
-            Connection conn = createConnection();
-            try {
-                // Search all "Active" submissions for current project
-                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-                if (subs.length == 0) {
-                    return new OperationCheckResult("Contest has no submissions");
-                }
+            // Search all "Active" submissions for current project
+            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+            if (subs.length > 0) {
                 return OperationCheckResult.SUCCESS;
-            } finally {
-                PhasesHelper.closeConnection(conn);
+            } else {
+                return new OperationCheckResult("There are no submissions for the project");
             }
         } else {
             result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
@@ -221,16 +186,7 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
                 return result;
             }
 
-            Boolean bPrimaryScreening = isPrimaryScreening(phase);
-            if (bPrimaryScreening == null) {
-                return new OperationCheckResult("Screener is not assigned for the project.");
-            }
-
-            if (bPrimaryScreening) {
-                return arePrimaryScorecardsCommitted(phase);
-            } else {
-                return areScorecardsCommitted(phase);
-            }
+            return areScorecardsCommitted(phase);
         }
     }
 
@@ -275,74 +231,61 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
 
-        // Database connection
-        Connection conn = createConnection();            
-
-        
         if (toStart) {
             try {
                 com.topcoder.management.project.Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
-                
+
                 if (PhasesHelper.isStudio(project)) {
-                    PhasesHelper.autoScreenStudioSubmissions(project, getManagerHelper(), PhasesHelper.CONTEST_SUBMISSION_TYPE, conn, operator);
+                    PhasesHelper.autoScreenStudioSubmissions(project, getManagerHelper(), PhasesHelper.CONTEST_SUBMISSION_TYPE, operator);
                 }
             } catch (PersistenceException e) {
                 throw new PhaseHandlingException("There was an error with project persistence", e);
-            } finally {
-                PhasesHelper.closeConnection(conn);
             }
-            
+
             // for start, put the submission information with need_primary_screener or not
             putPhaseStartInfos(phase, values);
         } else {
             // flag to indicate whether all submissions do not pass screening
             boolean noScreeningPass = false;
 
-            try {
-                // Search all submissions for current project
-                // change in version 1.4
-                Submission[] submissions = PhasesHelper.searchActiveSubmissions(
-                    getManagerHelper().getUploadManager(), conn, phase.getProject().getId(),
-                    PhasesHelper.CONTEST_SUBMISSION_TYPE);
+            // Search all submissions for current project
+            Submission[] submissions = PhasesHelper.searchActiveSubmissions(
+                getManagerHelper().getUploadManager(), phase.getProject().getId(),
+                PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
-                // Search all screening scorecard for the current phase
-                Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn,
-                    getManagerHelper(), phase.getId(), SCREENING_ROLES, null);
+            // Search all screening scorecard for the current phase
+            Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(
+                getManagerHelper(), phase.getId(), new String[] {ROLE_PRIMARY_SCREENER}, null);
 
-                if (submissions.length != screenReviews.length) {
-                    throw new PhaseHandlingException(
-                        "Submission count does not match screening count for project:" + phase.getProject().getId());
-                }
-
-                if (screenReviews.length > 0) {
-                    // There is screen reviews, start check screening passes
-                    noScreeningPass = true;
-
-                    // get minimum score
-                    float minScore = PhasesHelper.getScorecardMinimumScore(getManagerHelper().getScorecardManager(),
-                        screenReviews[0]);
-
-                    // for each submission...
-                    for (int iSub = 0; iSub < submissions.length; iSub++) {
-                        Submission submission = submissions[iSub];
-
-                        if (!processAndUpdateSubmission(submission, screenReviews, minScore, operator, conn)) {
-                            // if there is one passed screening, set
-                            // noScreeningPass to false
-                            noScreeningPass = false;
-                        }
-                    }
-                }
-                // put the submission screening result
-                values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(submissions,
-                    getManagerHelper().getResourceManager(), true));
-                values.put("NO_SCREENING_PASS", noScreeningPass ? 1 : 0);
-            } finally {
-                PhasesHelper.closeConnection(conn);
+            if (submissions.length != screenReviews.length) {
+                throw new PhaseHandlingException(
+                    "Submission count does not match screening count for project:" + phase.getProject().getId());
             }
 
+            if (screenReviews.length > 0) {
+                // There is screen reviews, start check screening passes
+                noScreeningPass = true;
+
+                // get minimum score
+                float minScore = PhasesHelper.getScorecardMinimumScore(
+                    getManagerHelper().getScorecardManager(),screenReviews[0]);
+
+                // for each submission...
+                for (int iSub = 0; iSub < submissions.length; iSub++) {
+                    Submission submission = submissions[iSub];
+
+                    if (!processAndUpdateSubmission(submission, screenReviews, minScore, operator)) {
+                        // if there is one passed screening, set noScreeningPass to false
+                        noScreeningPass = false;
+                    }
+                }
+            }
+            // put the submission screening result
+            values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(submissions,
+                getManagerHelper().getResourceManager(), true));
+            values.put("NO_SCREENING_PASS", noScreeningPass ? 1 : 0);
+
             // if there is no passed screening, insert post-mortem phase
-            // added in version 1.1
             if (noScreeningPass) {
                 PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
             }
@@ -361,26 +304,16 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if any error occurs
      */
     private void putPhaseStartInfos(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
-        // Database connection
-        Connection conn =createConnection();
-        Submission[] subs = null;
-        try {
-            // get the screeners
-            Resource[] screeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                conn, SCREENING_ROLES, phase.getId());
-            values.put("NEED_PRIMARY_SCREENER", screeners.length == 0 ? 1 : 0);
-            // get submissions
-            // change in version 1.4
-            subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-        } finally {
-            // close the connection after get the submissions
-            PhasesHelper.closeConnection(conn);
-        }
+        // get the screeners
+        Resource[] screeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+            new String[] {ROLE_PRIMARY_SCREENER}, phase.getId());
+        values.put("NEED_PRIMARY_SCREENER", screeners.length == 0 ? 1 : 0);
+        // get submissions
+        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+            phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
         // put the submitter info into the map
         values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs,
-                                                                         getManagerHelper().getResourceManager(),
-                                                                         false));
+            getManagerHelper().getResourceManager(), false));
     }
 
     /**
@@ -399,15 +332,11 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      * @param screenReviews screening reviews.
      * @param minScore minimum scorecard score.
      * @param operator operator name.
-     * @param conn connection to use when looking up ids.
      * @return true if the submission failed screen, false otherwise.
-     * @throws PhaseHandlingException if there was a problem retrieving/updating
-     *             data.
-     * @version 1.1
+     * @throws PhaseHandlingException if there was a problem retrieving/updating data.
      */
     private boolean processAndUpdateSubmission(Submission submission,
-                    Review[] screenReviews, float minScore, String operator,
-                    Connection conn) throws PhaseHandlingException {
+                    Review[] screenReviews, float minScore, String operator) throws PhaseHandlingException {
 
         // boolean flag to indicate whether the submission failed screen
         boolean failedScreening = false;
@@ -416,120 +345,38 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
         Review review = null;
         long subId = submission.getId();
 
-        for (int j = 0; j < screenReviews.length; j++) {
-            if (subId == screenReviews[j].getSubmission()) {
-                review = screenReviews[j];
+        for (Review screenReview : screenReviews) {
+            if (subId == screenReview.getSubmission()) {
+                review = screenReview;
                 break;
             }
         }
 
-        // get screening score
-        Float screeningScore = review.getScore();
+        if (review == null) {
+            throw new PhaseHandlingException("Unable to find screening review for the submission " + subId);
+        }
 
-        // Store the screening score for the submission
-        // long submitterId = submission.getUploads().get(0).getOwner();
+        Float screeningScore = review.getScore();
+        UploadManager uploadManager = getManagerHelper().getUploadManager();
+
         try {
+            // Set the screening score to the submission instead of the resource
             submission.setScreeningScore(Double.valueOf(String.valueOf(screeningScore)));
 
-            // If screeningScore < screening minimum score, Set submission
-            // status to "Failed Screening"
-            if (screeningScore.floatValue() < minScore) {
+            // If screeningScore < screening minimum score, Set submission status to "Failed Screening"
+            if (screeningScore < minScore) {
+                SubmissionStatus subStatus = LookupHelper.getSubmissionStatus(
+                    uploadManager, SUBMISSION_STATUS_FAILED_SCREENING);
 
-                SubmissionStatus subStatus = PhasesHelper.getSubmissionStatus(
-                    getManagerHelper().getUploadManager(), SUBMISSION_STATUS_FAILED_SCREENING);
                 submission.setSubmissionStatus(subStatus);
-
                 failedScreening = true;
             }
-            getManagerHelper().getUploadManager().updateSubmission(submission, operator);
+            uploadManager.updateSubmission(submission, operator);
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException(
-                            "There was a upload persistence error", e);
+            throw new PhaseHandlingException("There was a upload persistence error", e);
         }
 
         return failedScreening;
-    }
-
-    /**
-     * Checks if the submission that passed review has one scorecard committed.
-     * <p>
-     * Version 1.6.1 changes note:
-     * <ul>
-     * <li>The return changes from boolean to OperationCheckResult.</li>
-     * </ul>
-     * </p>
-     * @param phase phase instance.
-     * @return the validation result indicating whether the scorecards are committed, and if not,
-     *         providing a reasoning message (not null)
-     * @throws PhaseHandlingException if there was an error retrieving data.
-     */
-    private OperationCheckResult areScorecardsCommitted(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
-        try {
-            // get the submitter for this phase
-            Resource[] resources = PhasesHelper.searchResourcesForRoleNames(
-                            getManagerHelper(), conn,
-                            new String[] {PhasesHelper.SUBMITTER_ROLE_NAME }, phase.getId());
-
-            if (resources.length != 1) {
-                throw new PhaseHandlingException("Inconsistent data: Multiple resources");
-            }
-
-            Resource submitter = resources[0];
-
-            // search submission based on submitter
-            Submission submission = null;
-
-            Filter projectIdFilter = SubmissionFilterBuilder
-                            .createProjectIdFilter(phase.getProject().getId());
-            Filter resourceIdFilter = SubmissionFilterBuilder
-                            .createResourceIdFilter(submitter.getId());
-
-            // changes in version 1.4
-            // AND submission type ID = <looked up ID for "Contest Submission">
-            Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(
-                    SubmissionTypeLookupUtility.lookUpId(conn, PhasesHelper.CONTEST_SUBMISSION_TYPE));
-            Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {projectIdFilter,
-                resourceIdFilter, submissionTypeFilter }));
-            Submission[] submissions = getManagerHelper().getUploadManager()
-                            .searchSubmissions(fullFilter);
-
-            if (submissions.length != 1) {
-                throw new PhaseHandlingException("Inconsistent data: Multiple submissions");
-            }
-
-            submission = submissions[0];
-
-            // search for review
-            Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(conn, getManagerHelper(),
-                phase.getId(), new String[] {ROLE_SCREENER }, null);
-
-            if (screenReviews.length != 1) {
-                throw new PhaseHandlingException("Inconsistent data: Multiple reviews");
-            }
-
-            Review screenReview = screenReviews[0];
-
-            // Check if the screening review is associated with the submission
-            if (submission.getId() != screenReview.getSubmission()) {
-                return new OperationCheckResult(INDIVIDUAL_SCREENING_MSG);
-            }
-
-            // Check if the screening scorecards are committed
-            if (screenReview.isCommitted()) {
-                return OperationCheckResult.SUCCESS;
-            } else {
-                return new OperationCheckResult(INDIVIDUAL_SCREENING_MSG);
-            }
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("There was a submission retrieval error", e);
-        } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException("There was a search builder error", e);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("Problem when looking up ids.", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
     }
 
     /**
@@ -546,92 +393,46 @@ public class ScreeningPhaseHandler extends AbstractPhaseHandler {
      *         providing a reasoning message (not null)
      * @throws PhaseHandlingException if there was an error retrieving data.
      */
-    private OperationCheckResult arePrimaryScorecardsCommitted(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
+    private OperationCheckResult areScorecardsCommitted(Phase phase) throws PhaseHandlingException {
+        // get all screening scorecards for the phase
+        Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(getManagerHelper(),
+            phase.getId(), new String[] {ROLE_PRIMARY_SCREENER }, null);
 
-        try {
-            // get all screening scorecards for the phase
-            Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(
-                                            conn, getManagerHelper(),
-                                            phase.getId(),
-                                            new String[] {ROLE_PRIMARY_SCREENER },
-                                            null);
+        // get the submissions for the project
+        Submission[] submissions = PhasesHelper.searchActiveSubmissions(
+            getManagerHelper().getUploadManager(), phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
-            // get the submissions for the project
-            // change in version 1.4
-            Submission[] submissions = PhasesHelper.searchActiveSubmissions(
-                getManagerHelper().getUploadManager(), conn, phase.getProject().getId(),
-                PhasesHelper.CONTEST_SUBMISSION_TYPE);
+        // If the number of reviews doesn't match the number of submissions it means that
+        // not all screening scorecards have been committed yet.
+        if (screenReviews.length != submissions.length) {
+            return new OperationCheckResult("Not all screening scorecards are committed");
+        }
 
-            for (int i = 0; i < submissions.length; i++) {
-                long subId = submissions[i].getId();
+        for (int i = 0; i < submissions.length; i++) {
+            long subId = submissions[i].getId();
 
-                // check if each submission has a review...
-                boolean foundReview = false;
+            // check if each submission has a review
+            boolean foundReview = false;
 
-                for (int j = 0; j < screenReviews.length; j++) {
-                    if (subId == screenReviews[j].getSubmission()) {
-                        foundReview = true;
+            for (int j = 0; j < screenReviews.length; j++) {
+                if (subId == screenReviews[j].getSubmission()) {
+                    foundReview = true;
 
-                        // also check if each review is committed
-                        if (!screenReviews[j].isCommitted()) {
-                            return new OperationCheckResult(
-                                NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG + subId + ")");
-                        }
-
-                        break;
+                    // check if each review is committed
+                    if (!screenReviews[j].isCommitted()) {
+                        return new OperationCheckResult("Screening for " + subId + " has not been committed yet.");
                     }
-                }
 
-                // if a review was not found for a particular submission, return
-                // false.
-                if (!foundReview) {
-                    return new OperationCheckResult(
-                        NOT_ALL_PRIMARY_SCREENING_SCORECARDS_ARE_COMMITED_MSG + subId + ")");
+                    break;
                 }
             }
 
-            return OperationCheckResult.SUCCESS;
-
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
-    }
-
-    /**
-     * returns true if the screening mode is Primary, false if it is Individual.
-     * @param phase the phase instance.
-     * @return true if the screening mode is Primary, false if it is Individual.
-     * @throws PhaseHandlingException if an error occurs during data retrieval
-     *             or if data is inconsistent.
-     */
-    private Boolean isPrimaryScreening(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
-
-        try {
-            Resource[] screeners = null;
-
-            // search for primary screeners first
-            Resource[] primaryScreeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                new String[] {ROLE_PRIMARY_SCREENER }, phase.getId());
-
-            // if no row is returned, search for screeners
-            if (primaryScreeners.length == 0) {
-                screeners = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    new String[] {ROLE_SCREENER }, phase.getId());
-            } else {
-                screeners = new Resource[0];
+            // if a review was not found for a particular submission.
+            if (!foundReview) {
+                return new OperationCheckResult("Screening for " + subId + " has not been committed yet.");
             }
-
-            if (primaryScreeners.length > 0) {
-                return Boolean.TRUE;
-            } else if (screeners.length > 0) {
-                return Boolean.FALSE;
-            } else {
-                return null;
-            }
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
+
+        return OperationCheckResult.SUCCESS;
     }
 }

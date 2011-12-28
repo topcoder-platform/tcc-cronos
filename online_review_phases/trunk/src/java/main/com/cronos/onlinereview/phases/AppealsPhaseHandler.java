@@ -3,7 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,8 +70,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      * This constant stores the logger.
      * @since 1.1
      */
-    private static final Log LOG = LogFactory.getLog(AppealsPhaseHandler.class
-                    .getName());
+    private static final Log LOG = LogFactory.getLog(AppealsPhaseHandler.class.getName());
 
     /** constant for appeals phase type. */
     private static final String PHASE_TYPE_APPEALS = "Appeals";
@@ -142,8 +140,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS);
 
-        // will throw exception if phase status is neither "Scheduled" nor
-        // "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
@@ -160,20 +157,15 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
                     return OperationCheckResult.SUCCESS;
                 }
 
-                Connection conn = createConnection();
                 boolean canCloseAppealsEarly = false;
                 try {
                     // check if all submitters agreed to close appeals phase early
                     canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(
-                                    getManagerHelper().getResourceManager(),
-                                    getManagerHelper().getUploadManager(),
-                                    conn, phase.getProject().getId());
+                        getManagerHelper(), phase.getProject().getId());
                 } catch (PhaseHandlingException phe) {
                     LOG.log(Level.ERROR, new LogMessage(phase.getId(), null,
                         "Fail to check if appeals can be closed early.", phe));
                     throw phe;
-                } finally {
-                    PhasesHelper.closeConnection(conn);
                 }
                 if (canCloseAppealsEarly) {
                     return OperationCheckResult.SUCCESS;
@@ -210,14 +202,9 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();
-        Connection conn = createConnection();
-        try {
-            // puts the submissions info/scores into the values map
-            values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(conn, getManagerHelper(),
-                phase.getProject().getId(), true));
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+        // puts the submissions info/scores into the values map
+        values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(getManagerHelper(),
+            phase.getProject().getId(), true));
         sendEmail(phase, values);
     }
 }

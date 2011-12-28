@@ -206,7 +206,7 @@ import com.topcoder.util.idgenerator.IDGeneratorFactory;
  * @author tuenm, bose_java, waits, saarixx, myxgyy, FireIce, microsky, lmmortal
  * @version 1.6.2
  */
-public class ManagerHelper {
+final class ManagerHelper {
     /**
      * The default configuration namespace of this class. It is used in the default constructor.
      */
@@ -548,8 +548,7 @@ public class ManagerHelper {
         this.scorecardAggregator = initScorecardAggregator(namespace);
         this.projectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_PROJECT_DETAILS_URL, true);
         this.studioProjectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace,
-            PROP_STUDIO_PROJECT_DETAILS_URL,
-                true);        
+            PROP_STUDIO_PROJECT_DETAILS_URL, true);
         this.copilotProjectDetailsBaseURL = PhasesHelper.getPropertyValue(namespace, PROP_COPILOT_PROJECT_DETAILS_URL, true);
     }
 
@@ -752,8 +751,7 @@ public class ManagerHelper {
      */
     private ResourceManager initResourceManager(String namespace) throws ConfigurationException {
         // get all the property values
-        String resourceManagerClassName = PhasesHelper.getPropertyValue(namespace, PROP_RESOURCE_MGR_CLASS_NAME,
-            true);
+        String resourceManagerClassName = PhasesHelper.getPropertyValue(namespace, PROP_RESOURCE_MGR_CLASS_NAME, true);
         String resourceSearchBundleName = PhasesHelper.getPropertyValue(namespace,
                 PROP_RESOURCE_MGR_RESOURCE_BUNDLE_NAME, true);
         String resourceRoleSearchBundleName = PhasesHelper.getPropertyValue(namespace,
@@ -772,7 +770,7 @@ public class ManagerHelper {
                 PROP_RESOURCE_MGR_PERSISTENCE_CLASS_NAME, true);
 
         // create persistence instance
-        ResourcePersistence persistence = (ResourcePersistence) createPersistence(namespace, persistenceClassName,
+        ResourcePersistence persistence = createPersistence(namespace, persistenceClassName,
                 ResourcePersistence.class);
 
         // create search bundle instances...
@@ -895,7 +893,6 @@ public class ManagerHelper {
      * UploadPersistence instance. Since constructor signatures for both these classes is same, this common method
      * is
      * used.
-     * @param <T> template
      * @param namespace
      *            the namespace to load configuration settings from.
      * @param className
@@ -958,7 +955,6 @@ public class ManagerHelper {
      * This method is used to instantiate ScorecardManager, ReviewManager, ProjectManager, and UserRetrieval
      * instances
      * since all use the same constructor signature.
-     * @param <T> template
      * @param namespace
      *            the namespace to load configuration settings from.
      * @param classPropName
@@ -1023,8 +1019,6 @@ public class ManagerHelper {
      * <p>
      * Change in version 1.4: Use generic type to create object.
      * </p>
-     * @param <T>
-     *            the generic class type.
      * @param className
      *            name of class to be instantiated.
      * @param expectedType

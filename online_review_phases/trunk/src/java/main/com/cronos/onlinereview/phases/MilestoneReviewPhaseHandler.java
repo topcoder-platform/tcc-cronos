@@ -3,7 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,19 +10,11 @@ import java.util.Map;
 import java.text.DecimalFormat;
 
 import com.topcoder.management.deliverable.Submission;
-import com.topcoder.management.deliverable.SubmissionStatus;
-import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
-import com.topcoder.management.project.PersistenceException;
-import com.topcoder.management.project.Project;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Review;
-import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
-import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
-import com.topcoder.management.review.scoreaggregator.RankedSubmission;
-import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -56,9 +47,9 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * Version 1.6.1 (Milestone Support Assembly 1.0) Change notes:
  * <ol>
- * <li>Updated {@link #updateSubmissionScores(Connection, Phase, String, Map)} method to properly map prizes to
+ * <li>Updated {@link #updateSubmissionScores(Phase, String, Map)} method to properly map prizes to
  * submissions.</li>
- * <li>Updated {@link #updateSubmissionScores(Connection, Phase, String, Map)} method to rank submissions based on
+ * <li>Updated {@link #updateSubmissionScores(Phase, String, Map)} method to rank submissions based on
  * scores and update the status in case submission fails to pass review.</li>
  * </ol>
  * </p>
@@ -81,7 +72,7 @@ import com.topcoder.util.log.LogFactory;
  * <p>
  * Version 1.6.2 (BUGR-4779) changes note:
  * <ul>
- * <li>Updated {@link #updateSubmissionScores(Connection, Phase, String, Map)} method to use 
+ * <li>Updated {@link #updateSubmissionScores(Phase, String, Map)} method to use
  * <code>PhaseHeleper.setSubmissionPrize</code> to populate milestone prizes for submissions.</li>
  * </ul>
  * </p>
@@ -98,13 +89,6 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      * </p>
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.MilestoneReviewPhaseHandler";
-
-    /**
-     * <p>
-     * constant for milestone review phase type.
-     * </p>
-     */
-    private static final String PHASE_TYPE_MILESTONE_REVIEW = "Milestone Review";
 
     /**
      * Logger instance for this class.
@@ -183,40 +167,35 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_MILESTONE_REVIEW);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_MILESTONE_REVIEW);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
-        Connection conn = createConnection();
         OperationCheckResult result;
-        try {
-            if (toStart) {
-                // return true if all dependencies have stopped and start time has been reached.
-                result = PhasesHelper.checkPhaseCanStart(phase);
-                if (!result.isSuccess()) {
-                    return result;
-                }
-
-                // Search all "Active" milestone submissions for current project with milestone submission type
-                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-                    conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
-                if (subs.length > 0) {
-                    return OperationCheckResult.SUCCESS;
-                } else {
-                    return new OperationCheckResult(
-                        "There are no milestone submissions that passed screening for the project");
-                }
-            } else {
-                result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
-                if (!result.isSuccess()) {
-                    return result;
-                }
-
-                return allReviewsDone(conn, phase);
+        if (toStart) {
+            // return true if all dependencies have stopped and start time has been reached.
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
+                return result;
             }
-        } finally {
-            PhasesHelper.closeConnection(conn);
+
+            // Search all "Active" milestone submissions for current project with milestone submission type
+            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                 phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
+            if (subs.length > 0) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult(
+                    "There are no milestone submissions that passed screening for the project");
+            }
+        } else {
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+            if (!result.isSuccess()) {
+                return result;
+            }
+
+            return allReviewsDone(phase);
         }
     }
 
@@ -254,34 +233,27 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_MILESTONE_REVIEW);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_MILESTONE_REVIEW);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();
-        Connection conn = createConnection();
 
-        try {
-            if (toStart) {
-                // for start, puts the reviewer/submission info
-                putPhaseStartInfoValues(conn, phase, values);
-            } else {
-                // update the submission's initial score after review and set in the values map
-                updateSubmissionScores(conn, phase, operator, values);
-            }
-
-            sendEmail(phase, values);
-        } finally {
-            PhasesHelper.closeConnection(conn);
+        if (toStart) {
+            // for start, puts the reviewer/submission info
+            putPhaseStartInfoValues(phase, values);
+        } else {
+            // update the submission's initial score after review and set in the values map
+            updateSubmissionScores(phase, operator, values);
         }
+
+        sendEmail(phase, values);
     }
 
     /**
      * <p>
      * Puts the start review phase information about submissions and reviewer info to the value map.
      * </p>
-     * @param conn
-     *            the database connection
      * @param phase
      *            the current Phase, not null
      * @param values
@@ -289,15 +261,15 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException
      *             if any error occurs
      */
-    private void putPhaseStartInfoValues(Connection conn, Phase phase, Map<String, Object> values)
+    private void putPhaseStartInfoValues(Phase phase, Map<String, Object> values)
         throws PhaseHandlingException {
         // Search all "Active" milestone submissions for current project with milestone submission type
         Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
+            phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
         values.put("SUBMITTER",
             PhasesHelper.constructSubmitterValues(subs, getManagerHelper().getResourceManager(), false));
         // Search the milestone reviewer
-        Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+        Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
             new String[] {PhasesHelper.MILESTONE_REVIEWER }, phase.getId());
         values.put("NEED_MILESTONE_REVIEWER", reviewers.length == 0 ? 1 : 0);
 
@@ -307,8 +279,6 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      * This method calculates initial score of all submissions that passed screening and saves it to the
      * submitter's
      * resource properties. It is called from perform method when phase is stopping.
-     * @param conn
-     *            the database connection
      * @param phase
      *            phase instance.
      * @param operator
@@ -318,11 +288,11 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException
      *             in case of error when retrieving/updating data.
      */
-    private void updateSubmissionScores(Connection conn, Phase phase, String operator, Map<String, Object> values)
+    private void updateSubmissionScores(Phase phase, String operator, Map<String, Object> values)
         throws PhaseHandlingException {
         try {
-            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), conn, phase, operator,
-                true, true, true);
+            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), phase, operator,
+                true, true);
 
             // add the submission result to the values map
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
@@ -349,7 +319,6 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      * <li>The return changes from boolean to OperationCheckResult.</li>
      * </ul>
      * </p>
-     * @param conn the database connection
      * @param phase
      *            the phase instance.
      * @return the validation result indicating whether all reviews are done, and if not,
@@ -357,13 +326,13 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException
      *             if there was an error retrieving data.
      */
-    private OperationCheckResult allReviewsDone(Connection conn, Phase phase) throws PhaseHandlingException {
+    private OperationCheckResult allReviewsDone(Phase phase) throws PhaseHandlingException {
         // Search all "Active" milestone submissions for current project
         Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            conn, phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
+            phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
 
         // Search the reviewIds
-        Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
+        Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
             new String[] {PhasesHelper.MILESTONE_REVIEWER }, phase.getId());
 
         if (reviewers.length != 1) {
@@ -372,11 +341,9 @@ public class MilestoneReviewPhaseHandler extends AbstractPhaseHandler {
         }
 
         // Search all review scorecard for the current phase
-        Review[] reviews = PhasesHelper.searchReviewsForResources(conn, getManagerHelper(), reviewers, null);
+        Review[] reviews = PhasesHelper.searchReviewsForResources(getManagerHelper(), reviewers, null);
 
         if (subs.length != reviews.length) {
-            LOG.log(Level.ERROR, "The number of reviews doesn't match the number of submissions."
-                + subs.length + " vs " + reviews.length);
             return new OperationCheckResult("Not all milestone review scorecards are committed.");
         }
 

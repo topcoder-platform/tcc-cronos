@@ -4,27 +4,14 @@
 package com.cronos.onlinereview.phases;
 
 import com.topcoder.management.deliverable.Submission;
-import com.topcoder.management.deliverable.SubmissionStatus;
-import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
-import com.topcoder.management.project.PersistenceException;
-import com.topcoder.management.project.Project;
-import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Item;
 import com.topcoder.management.review.data.Review;
-import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
-import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
-import com.topcoder.management.review.scoreaggregator.RankedSubmission;
-import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
-
 import com.topcoder.project.phases.Phase;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -252,36 +239,31 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS_RESPONSE);
-        Connection conn = createConnection();
 
-        try {
-            boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
-            Map<String, Object> values = new HashMap<String, Object>();
+        boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
+        Map<String, Object> values = new HashMap<String, Object>();
 
-            if (toStart) {
-                // for start phase, puts the submission info/initial score
-                values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(conn,
-                    getManagerHelper(), phase.getProject().getId(), false));
-            } else {
-                // it is going to calculate the final score for every submission
-                // and put the scores into the values after calculation
-                updateSubmissions(phase, operator, values);
+        if (toStart) {
+            // for start phase, puts the submission info/initial score
+            values.put("SUBMITTER", PhasesHelper.getSubmitterValueArray(
+                getManagerHelper(), phase.getProject().getId(), false));
+        } else {
+            // it is going to calculate the final score for every submission
+            // and put the scores into the values after calculation
+            updateSubmissions(phase, operator, values);
             
-                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                    phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
             
-                if (subs==null || subs.length == 0) {
-                    // if there is no active submissions after appeal response, insert the post-mortem phase
-                    PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
-                }
-                Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true, true));
-                values.put("N_AGGREGATOR", aggregators.length);
+            if (subs==null || subs.length == 0) {
+                // if there is no active submissions after appeal response, insert the post-mortem phase
+                PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
             }
-
-           sendEmail(phase, values);
-        } finally {
-            PhasesHelper.closeConnection(conn);
+            Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true, true));
+            values.put("N_AGGREGATOR", aggregators.length);
         }
+
+        sendEmail(phase, values);
     }
 
     /**
@@ -295,13 +277,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     private Resource[] getAggregators(Phase aggregationPhase) throws PhaseHandlingException {
         Resource[] aggregators;
-        Connection conn = createConnection();
-        try {
-            aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    new String[] {"Aggregator" }, aggregationPhase.getId());
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+        aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+            new String[] {"Aggregator" }, aggregationPhase.getId());
         return aggregators;
     }
 
@@ -326,18 +303,16 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      * @param operator operator name.
      * @param values the values map
      * @throws PhaseHandlingException if there was an error updating data.
-     * @version 1.2
      */
     private void updateSubmissions(Phase phase, String operator, Map<String, Object> values)
         throws PhaseHandlingException {
-        Connection conn = createConnection();
 
         try {
             // locate previous review phase
-            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, true);
+            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_REVIEW, false, true);
 
-            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), conn, reviewPhase,
-                operator, false, false, true);
+            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), reviewPhase,
+                operator, false, true);
 
             // Order submissions by placement for the notification messages
             Arrays.sort(subs, new Comparator<Submission>() { 
@@ -361,8 +336,6 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             values.put("SUBMITTER", result);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("Problem with resource persistence", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
     }
 
@@ -374,24 +347,37 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     private boolean allAppealsResolved(Phase phase) throws PhaseHandlingException {
         // Find appeals : Go back to the nearest Review phase
-        Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.REVIEW, false, false);
+        Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_REVIEW, false, false);
         if (reviewPhase == null) {
             return false;
         }
         long reviewPhaseId = reviewPhase.getId();
-        Connection conn = createConnection();
 
-        try {
-            // Get all reviews
-            Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(conn,
-                getManagerHelper(), reviewPhaseId, PhasesHelper.REVIEWER_ROLE_NAMES, null);
+        // Get all reviews
+        Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(
+            getManagerHelper(), reviewPhaseId, PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
-            // for each review
-            for (int i = 0; i < reviews.length; i++) {
-                int appealCount = 0;
-                int responseCount = 0;
+        // for each review
+        for (int i = 0; i < reviews.length; i++) {
+            int appealCount = 0;
+            int responseCount = 0;
 
-                Comment[] comments = reviews[i].getAllComments();
+            Comment[] comments = reviews[i].getAllComments();
+
+            for (int c = 0; c < comments.length; c++) {
+                String commentType = comments[c].getCommentType().getName();
+
+                if ("Appeal".equals(commentType)) {
+                    appealCount++;
+                } else if ("Appeal Response".equals(commentType)) {
+                    responseCount++;
+                }
+            }
+
+            Item[] items = reviews[i].getAllItems();
+
+            for (int j = 0; j < items.length; ++j) {
+                comments = items[j].getAllComments();
 
                 for (int c = 0; c < comments.length; c++) {
                     String commentType = comments[c].getCommentType().getName();
@@ -402,32 +388,14 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
                         responseCount++;
                     }
                 }
-
-                Item[] items = reviews[i].getAllItems();
-
-                for (int j = 0; j < items.length; ++j) {
-                    comments = items[j].getAllComments();
-
-                    for (int c = 0; c < comments.length; c++) {
-                        String commentType = comments[c].getCommentType().getName();
-
-                        if ("Appeal".equals(commentType)) {
-                            appealCount++;
-                        } else if ("Appeal Response".equals(commentType)) {
-                            responseCount++;
-                        }
-                    }
-                }
-
-                // if appeals count does not match response count, return false.
-                if (appealCount != responseCount) {
-                    return false;
-                }
             }
 
-            return true;
-        } finally {
-            PhasesHelper.closeConnection(conn);
+            // if appeals count does not match response count, return false.
+            if (appealCount != responseCount) {
+                return false;
+            }
         }
+
+        return true;
     }
 }

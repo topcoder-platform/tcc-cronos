@@ -3,8 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -220,16 +218,8 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if any error occurs during processing.
      */
     private boolean hasAnySubmission(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
-        Connection conn = null;
-        Submission[] subs = null;
-        try {
-            conn = createConnection();
-
-            subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+            phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
         // for stop phase, we are going to support more information now from version 1.2
         if (values != null) {

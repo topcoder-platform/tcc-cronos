@@ -3,37 +3,24 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.text.DecimalFormat;
 
-import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.deliverable.Submission;
-import com.topcoder.management.deliverable.SubmissionStatus;
 import com.topcoder.management.deliverable.Upload;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
-import com.topcoder.management.project.ValidationException;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
-import com.topcoder.management.resource.search.ResourceFilterBuilder;
-import com.topcoder.management.resource.search.ResourceRoleFilterBuilder;
 import com.topcoder.management.review.data.Review;
-import com.topcoder.management.review.scoreaggregator.AggregatedSubmission;
-import com.topcoder.management.review.scoreaggregator.InconsistentDataException;
-import com.topcoder.management.review.scoreaggregator.RankedSubmission;
-import com.topcoder.management.review.scoreaggregator.ReviewScoreAggregator;
 import com.topcoder.project.phases.Phase;
-import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
 import com.topcoder.search.builder.filter.InFilter;
 import com.topcoder.util.log.Level;
@@ -191,10 +178,9 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.REVIEW);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_REVIEW);
 
-        // will throw exception if phase status is neither "Scheduled" nor
-        // "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
@@ -206,19 +192,13 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
                 return result;
             }
 
-            Connection conn = createConnection();
-            try {
-                // change in version 1.4
-                // Search all "Active" submissions for current project with contest submission type
-                Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-                    conn, phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-                if (subs.length > 0) {
-                    return OperationCheckResult.SUCCESS;
-                } else {
-                    return new OperationCheckResult("No submissions that passed screening");
-                }
-            } finally {
-                PhasesHelper.closeConnection(conn);
+            // Search all "Active" submissions for current project with contest submission type
+            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+            if (subs.length > 0) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult("No submissions that passed screening");
             }
         } else {
             result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
@@ -276,7 +256,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.REVIEW);
+        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_REVIEW);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
@@ -304,31 +284,24 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      * @since 1.2
      */
     private void putPhaseStartInfoValues(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
-        Connection conn = createConnection();
-
-        try {
-            // change in version 1.4
-            // Search all "Active" submissions for current project with contest submission type
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
-            values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs,
-                    getManagerHelper().getResourceManager(), false));
-            // Search the reviewIds
-            Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                    PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
-            // according to discussion here
-            // http://forums.topcoder.com/?module=Thread&threadID=659556&start=0
-            // if the attribute is not set, default value would be 0
-            int reviewerNum = 0;
-            if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-                reviewerNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
-            }
-            values.put("N_REQUIRED_REVIEWERS", reviewerNum);
-            values.put("N_REVIEWERS", reviewers.length);
-            values.put("NEED_REVIEWER", reviewers.length >= reviewerNum ? 0 : 1);
-        } finally {
-            PhasesHelper.closeConnection(conn);
+        // Search all "Active" submissions for current project with contest submission type
+        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+            phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+        values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs,
+            getManagerHelper().getResourceManager(), false));
+        // Search the reviewIds
+        Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+                PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
+        // according to discussion here
+        // http://forums.topcoder.com/?module=Thread&threadID=659556&start=0
+        // if the attribute is not set, default value would be 0
+        int reviewerNum = 0;
+        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
+            reviewerNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
         }
+        values.put("N_REQUIRED_REVIEWERS", reviewerNum);
+        values.put("N_REVIEWERS", reviewers.length);
+        values.put("NEED_REVIEWER", reviewers.length >= reviewerNum ? 0 : 1);
     }
 
     /**
@@ -353,15 +326,14 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private void updateSubmissionScores(Phase phase, String operator, Map<String, Object> values)
         throws PhaseHandlingException {
-        Connection conn = createConnection();
 
         try {
             Project project = getManagerHelper().getProjectManager().getProject(phase.getProject().getId());
             boolean isStudioProject = project.getProjectCategory().getProjectType().getId() == PhasesHelper.STUDIO_PROJECT_TYPE_ID;
             Phase appealsResponsePhase = PhasesHelper.locatePhase(phase, "Appeals Response", true, false);
 
-            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), conn, phase, operator,
-                false, true, isStudioProject || appealsResponsePhase == null);
+            Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), phase, operator,
+                true, isStudioProject || appealsResponsePhase == null);
 
             // add the submission result to the values map
 			DecimalFormat df = new DecimalFormat("#.##");
@@ -378,8 +350,6 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
             throw new PhaseHandlingException("Problem when looking up resource for the submission.", e);
         } catch (PersistenceException e) {
             throw new PhaseHandlingException("Fail to retrieve the corresponding project.", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
     }
 
@@ -400,59 +370,53 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      *             if there was an error retrieving data.
      */
     private OperationCheckResult allReviewsDone(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
+        // Search all "Active" submissions for current project
+        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
+            phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
 
-        try {
-            // Search all "Active" submissions for current project
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(), conn,
-                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+        // Search the reviewIds
+        Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
+            PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
 
-            // Search the reviewIds
-            Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn,
-                PhasesHelper.REVIEWER_ROLE_NAMES, phase.getId());
+        // Search all review scorecard for the current phase
+        Review[] reviews = PhasesHelper.searchReviewsForResources(getManagerHelper(), reviewers, null);
 
-            // Search all review scorecard for the current phase
-            Review[] reviews = PhasesHelper.searchReviewsForResources(conn, getManagerHelper(), reviewers, null);
+        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
+            int reviewerNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
 
-            if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-                int reviewerNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
-
-                if (reviewers.length < reviewerNum) {
-                    LOG.log(Level.INFO, "can't end phase because: reviewers.length < reviewerNum, projectId: "
-                        + phase.getProject().getId());
-                    return new OperationCheckResult("Not enough reviewers for project: " + phase.getProject().getId());
-                }
+            if (reviewers.length < reviewerNum) {
+                LOG.log(Level.INFO, "can't end phase because: reviewers.length < reviewerNum, projectId: "
+                    + phase.getProject().getId());
+                return new OperationCheckResult("Not enough reviewers for project: " + phase.getProject().getId());
             }
-
-            // for each submission
-            for (int iSub = 0; iSub < subs.length; iSub++) {
-                Submission submission = subs[iSub];
-                long subId = submission.getId();
-                int nunmberOfReviews = 0;
-
-                // Match the submission with its reviews
-                for (int j = 0; j < reviews.length; j++) {
-                    // check if review is committed
-                    if (!reviews[j].isCommitted()) {
-                        return new OperationCheckResult("There are uncommitted reviews.");
-                    }
-                    if (subId == reviews[j].getSubmission()) {
-                        nunmberOfReviews++;
-                    }
-                }
-
-                // if number of reviews does not match number of reviewers
-                if (nunmberOfReviews != reviewers.length) {
-                    LOG.log(Level.INFO, "can't end phase because: numReviews != reviewers.length, projectId: "
-                        + phase.getProject().getId());
-                    return new OperationCheckResult("Not all reviewers submitted their reviews.");
-                }
-            }
-
-            return OperationCheckResult.SUCCESS;
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
+
+        // for each submission
+        for (int iSub = 0; iSub < subs.length; iSub++) {
+            Submission submission = subs[iSub];
+            long subId = submission.getId();
+            int nunmberOfReviews = 0;
+
+            // Match the submission with its reviews
+            for (int j = 0; j < reviews.length; j++) {
+                // check if review is committed
+                if (!reviews[j].isCommitted()) {
+                    return new OperationCheckResult("There are uncommitted reviews.");
+                }
+                if (subId == reviews[j].getSubmission()) {
+                    nunmberOfReviews++;
+                }
+            }
+
+            // if number of reviews does not match number of reviewers
+            if (nunmberOfReviews != reviewers.length) {
+                LOG.log(Level.INFO, "can't end phase because: numReviews != reviewers.length, projectId: "
+                    + phase.getProject().getId());
+                return new OperationCheckResult("Not all reviewers submitted their reviews.");
+            }
+        }
+
+        return OperationCheckResult.SUCCESS;
     }
 
     /**
@@ -482,7 +446,7 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
         List<Long> reviewerIds = new ArrayList<Long>();
 
         for (int i = 0; i < reviewers.length; i++) {
-            reviewerIds.add(new Long(reviewers[i].getId()));
+            reviewerIds.add(reviewers[i].getId());
         }
 
         try {
@@ -527,17 +491,11 @@ public class ReviewPhaseHandler extends AbstractPhaseHandler {
      *             if any error occurred when retrieving data.
      */
     private Resource[] getDevelopmentReviewers(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
+        String[] roleNames = new String[] {
+            PhasesHelper.ACCURACY_REVIEWER_ROLE_NAME,
+            PhasesHelper.FAILURE_REVIEWER_ROLE_NAME,
+            PhasesHelper.STRESS_REVIEWER_ROLE_NAME};
 
-        try {
-            String[] roleNames = new String[] {
-                PhasesHelper.ACCURACY_REVIEWER_ROLE_NAME,
-                PhasesHelper.FAILURE_REVIEWER_ROLE_NAME,
-                PhasesHelper.STRESS_REVIEWER_ROLE_NAME};
-
-            return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), conn, roleNames, phase.getId());
-        } finally {
-            PhasesHelper.closeConnection(conn);
-        }
+        return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(), roleNames, phase.getId());
     }
 }

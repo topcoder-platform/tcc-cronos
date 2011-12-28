@@ -3,8 +3,6 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
-
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.project.phases.Phase;
@@ -125,45 +123,36 @@ public class SpecificationSubmissionPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SPECIFICATION_SUBMISSION);
 
-        // will throw exception if phase status is
-        // neither "Scheduled" nor "Open"
+        // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
-        Connection conn = null;
-
-        try {
-            conn = createConnection();
-
-            if (toStart) {
-                result = PhasesHelper.checkPhaseCanStart(phase);
-                if (!result.isSuccess()) {
-                    return result;
-                }
-
-                // This is NOT the first phase in the project or all parent projects are completed
-                if (!PhasesHelper.isFirstPhase(phase) ||
-                    PhasesHelper.areParentProjectsCompleted(phase, conn, this.getManagerHelper(), LOG)) {
-                    return OperationCheckResult.SUCCESS;
-                } else {
-                    return new OperationCheckResult("Not all parent projects are completed");
-                }
-            } else {
-                // Check phase dependencies
-                result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
-
-                if (result.isSuccess()) {
-                    if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(), conn, LOG) != null) {
-                        return OperationCheckResult.SUCCESS;
-                    } else {
-                        return new OperationCheckResult("Specification submission doesn't exist");
-                    }
-                }
-                // dependencies not met
+        if (toStart) {
+            result = PhasesHelper.checkPhaseCanStart(phase);
+            if (!result.isSuccess()) {
                 return result;
             }
-        } finally {
-            PhasesHelper.closeConnection(conn);
+
+            // This is NOT the first phase in the project or all parent projects are completed
+            if (!PhasesHelper.isFirstPhase(phase) ||
+                PhasesHelper.areParentProjectsCompleted(phase, this.getManagerHelper(), LOG)) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult("Not all parent projects are completed");
+            }
+        } else {
+            // Check phase dependencies
+            result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
+
+            if (result.isSuccess()) {
+                if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(), LOG) != null) {
+                    return OperationCheckResult.SUCCESS;
+                } else {
+                    return new OperationCheckResult("Specification submission doesn't exist");
+                }
+            }
+            // dependencies not met
+            return result;
         }
     }
 

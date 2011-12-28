@@ -5,23 +5,16 @@ package com.cronos.onlinereview.phases;
 
 import com.cronos.onlinereview.external.ExternalUser;
 import com.cronos.onlinereview.external.RetrievalException;
-import com.cronos.onlinereview.phases.lookup.NotificationTypeLookupUtility;
-
-import com.topcoder.db.connectionfactory.DBConnectionException;
-import com.topcoder.db.connectionfactory.DBConnectionFactory;
 
 import com.topcoder.management.phase.PhaseHandler;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
 import com.topcoder.management.project.Project;
-import com.topcoder.management.project.ProjectType;
 import com.topcoder.management.project.ProjectCategory;
 import com.topcoder.management.resource.Resource;
 import com.topcoder.management.resource.ResourceManager;
-import com.topcoder.management.resource.ResourceRole;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
-import com.topcoder.management.resource.search.ResourceRoleFilterBuilder;
 
 import com.topcoder.message.email.AddressException;
 import com.topcoder.message.email.EmailEngine;
@@ -33,8 +26,6 @@ import com.topcoder.project.phases.PhaseStatus;
 
 import com.topcoder.search.builder.SearchBuilderConfigurationException;
 import com.topcoder.search.builder.SearchBuilderException;
-import com.topcoder.search.builder.filter.AndFilter;
-import com.topcoder.search.builder.filter.Filter;
 
 import com.topcoder.util.config.ConfigManager;
 import com.topcoder.util.config.ConfigManagerException;
@@ -52,9 +43,6 @@ import com.topcoder.util.file.fieldconfig.NodeList;
 import com.topcoder.util.file.fieldconfig.TemplateFields;
 import com.topcoder.util.file.templatesource.FileTemplateSource;
 import com.topcoder.util.file.templatesource.TemplateSourceException;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -252,12 +240,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     /** constant for lookup value for notification type id. */
     private static final String NOTIFICATION_TYPE_TIMELINE_NOTIFICATION = "Timeline Notification";
 
-    /** Property name constant for connection factory namespace. */
-    private static final String PROP_CONNECTION_FACTORY_NS = "ConnectionFactoryNS";
-
-    /** Property name constant for connection name. */
-    private static final String PROP_CONNECTION_NAME = "ConnectionName";
-
     /** Property name constant for manager helper namespace. */
     private static final String PROP_MANAGER_HELPER_NAMESPACE = "ManagerHelperNamespace";
 
@@ -286,26 +268,12 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     private static final String EMAIL_TIMESTAMP_FORMAT = "EEE, MMM d, yyyy hh:mm a z";
 
     /**
-     * The factory instance used to create connection to the database. It is initialized in the constructor using
-     * DBConnectionFactory component and never changed after that. It will be used in various persistence methods of
-     * this project. This field is never null.
-     */
-    private final DBConnectionFactory factory;
-
-    /**
      * <p>
      * This field is used to retrieve manager instances to use in phase handlers. It is initialized in the constructor
      * and never change after that. It is never null.
      * </p>
      */
     private final ManagerHelper managerHelper;
-
-    /**
-     * Represents the connection name used to create connection to the database using DBConnectionFactory. This
-     * variable can be null. When it is null, default connection is be created. This variable can be initialized in
-     * the constructor and never change after that.
-     */
-    private final String connectionName;
 
     /**
      * This constant stores Online Review's project details page URL.
@@ -361,10 +329,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
     protected AbstractPhaseHandler(String namespace) throws ConfigurationException {
         PhasesHelper.checkString(namespace, "namespace");
 
-        // initialize DBConnectionFactory from given namespace, throw exception
-        // if property is missing.
-        this.factory = PhasesHelper.createDBConnectionFactory(namespace, PROP_CONNECTION_FACTORY_NS);
-
         // initialize ManagerHelper from given namespace if provided.
         String managerHelperNamespace = PhasesHelper.getPropertyValue(namespace, PROP_MANAGER_HELPER_NAMESPACE, false);
 
@@ -372,15 +336,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             this.managerHelper = new ManagerHelper();
         } else {
             this.managerHelper = new ManagerHelper(managerHelperNamespace);
-        }
-
-        // initialize connectionName with property value if provided.
-        String connName = PhasesHelper.getPropertyValue(namespace, PROP_CONNECTION_NAME, false);
-
-        if (!PhasesHelper.isStringNullOrEmpty(connName)) {
-            this.connectionName = connName;
-        } else {
-            this.connectionName = null;
         }
 
         // load the 'Schemes' property
@@ -475,28 +430,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
     /**
      * <p>
-     * This method is used by the subclass to create the connection to access database. The connection needs to be
-     * closed after use.
-     * </p>
-     *
-     * @return The database connection.
-     *
-     * @throws PhaseHandlingException if connection could not be created.
-     */
-    protected Connection createConnection() throws PhaseHandlingException {
-        try {
-            if (connectionName == null) {
-                return factory.createConnection();
-            } else {
-                return factory.createConnection(connectionName);
-            }
-        } catch (DBConnectionException ex) {
-            throw new PhaseHandlingException("Could not create connection", ex);
-        }
-    }
-
-    /**
-     * <p>
      * This method is used by the subclass to get the ManagerHelper instance.
      * </p>
      *
@@ -522,9 +455,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      *
      * @throws PhaseHandlingException if there was an error retrieving information or sending email.
      */
-    private void sendEmail(Phase phase, Map<String, Object> values, boolean bStart)
-        throws PhaseHandlingException {
-        Connection conn = createConnection();
+    private void sendEmail(Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
 
         Project project = null;
 
@@ -536,8 +467,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             long projectId = phase.getProject().getId();
 
             // Lookup notification type id for "Timeline Notification"
-            long notificationTypeId = NotificationTypeLookupUtility.lookUpId(conn,
-                    NOTIFICATION_TYPE_TIMELINE_NOTIFICATION);
+            long notificationTypeId = LookupHelper.getNotificationType(rm, NOTIFICATION_TYPE_TIMELINE_NOTIFICATION).getId();
+
             // retrieve users to be notified
             long[] externalIds = rm.getNotifications(projectId, notificationTypeId);
             // retrieve project information
@@ -564,9 +495,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                     userEmailSchemes.put(externalId, emailScheme);
                 }
             }
-        } catch (SQLException ex) {
-            throw new PhaseHandlingException("Could not lookup project info type id for "
-                    + NOTIFICATION_TYPE_TIMELINE_NOTIFICATION, ex);
         } catch (ResourcePersistenceException ex) {
             throw new PhaseHandlingException("There was a problem with resource retrieval", ex);
         } catch (PersistenceException ex) {
@@ -577,8 +505,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             throw new PhaseHandlingException("There was a problem with project retrieval", e);
         } catch (Exception e) {
             throw new PhaseHandlingException("Problem with retrieving information.", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
 
 
@@ -791,8 +717,6 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             }
         }
     }
-
-
 
     /**
      * <p>

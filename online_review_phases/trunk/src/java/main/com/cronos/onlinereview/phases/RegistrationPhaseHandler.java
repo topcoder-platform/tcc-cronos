@@ -3,17 +3,15 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cronos.onlinereview.phases.lookup.ResourceRoleLookupUtility;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.resource.Resource;
+import com.topcoder.management.resource.ResourceManager;
 import com.topcoder.management.resource.persistence.ResourcePersistenceException;
 import com.topcoder.management.resource.search.ResourceFilterBuilder;
 import com.topcoder.project.phases.Phase;
@@ -175,8 +173,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkPhaseType(phase, PHASE_TYPE_REGISTRATION);
 
-        // will throw exception if phase status is neither "Scheduled" nor
-        // "Open"
+        // will throw exception if phase status is neither "Scheduled" nor  "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
@@ -186,18 +183,12 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
                 return result;
             }
 
-            Connection conn = createConnection();
-            try {
-                // change in version 1.4
-                // This is NOT the first phase in the project or all parent projects are completed
-                if (!PhasesHelper.isFirstPhase(phase) ||
-                    PhasesHelper.areParentProjectsCompleted(phase, conn, this.getManagerHelper(), LOG)) {
-                    return OperationCheckResult.SUCCESS;
-                } else {
-                    return new OperationCheckResult("Not all parent projects are completed");
-                }
-            } finally {
-                PhasesHelper.closeConnection(conn);
+            // This is NOT the first phase in the project or all parent projects are completed
+            if (!PhasesHelper.isFirstPhase(phase) ||
+                PhasesHelper.areParentProjectsCompleted(phase, this.getManagerHelper(), LOG)) {
+                return OperationCheckResult.SUCCESS;
+            } else {
+                return new OperationCheckResult("Not all parent projects are completed");
             }
         } else {
             result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
@@ -281,12 +272,8 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
             values.put("REGISTRANT", registrantInfo(resources));
         }
 
-        if (resources.length == 0) {
-            // there is no registrations, return true
-            return true;
-        }
-
-        return false;
+        // there is no registrations, return true
+        return resources.length == 0;
     }
 
     /**
@@ -340,25 +327,20 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      *             in case of any error while retrieving.
      */
     private Resource[] searchResources(Phase phase) throws PhaseHandlingException {
-        Connection conn = createConnection();
+        ResourceManager resourceManager = getManagerHelper().getResourceManager();
         try {
-            long resourceRoleId = ResourceRoleLookupUtility.lookUpId(conn,
-                PhasesHelper.SUBMITTER_ROLE_NAME);
-            Filter roleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(resourceRoleId);
-            Filter projectIdfilter = ResourceFilterBuilder.createProjectIdFilter(phase.getProject()
-                .getId());
+            long submitterRoleId = LookupHelper.getResourceRole(resourceManager,
+                PhasesHelper.SUBMITTER_ROLE_NAME).getId();
+            Filter roleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId);
+            Filter projectIdfilter = ResourceFilterBuilder.createProjectIdFilter(phase.getProject().getId());
             Filter fullFilter = new AndFilter(roleIdFilter, projectIdfilter);
-            return getManagerHelper().getResourceManager().searchResources(fullFilter);
+            return resourceManager.searchResources(fullFilter);
         } catch (SearchBuilderConfigurationException e) {
             throw new PhaseHandlingException("search builder configuration error", e);
         } catch (ResourcePersistenceException e) {
             throw new PhaseHandlingException("resource persistence error", e);
         } catch (SearchBuilderException e) {
             throw new PhaseHandlingException("search builder error", e);
-        } catch (SQLException e) {
-            throw new PhaseHandlingException("error when looking up resource id.", e);
-        } finally {
-            PhasesHelper.closeConnection(conn);
         }
     }
 }
