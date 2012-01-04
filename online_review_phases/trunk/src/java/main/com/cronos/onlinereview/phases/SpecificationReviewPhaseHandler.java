@@ -74,16 +74,6 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     private static final Log LOG = LogFactory.getLog(SpecificationReviewPhaseHandler.class.getName());
 
     /**
-     * Constant for Specification Review phase type.
-     */
-    private static final String PHASE_TYPE_SPECIFICATION_REVIEW = "Specification Review";
-
-    /**
-     * Constant for Specification Reviewer role type.
-     */
-    private static final String ROLE_TYPE_SPECIFICATION_REVIEWER = "Specification Reviewer";
-
-    /**
      * Create a new instance of SpecificationReviewPhaseHandler using the default
      * namespace for loading configuration settings.
      * @throws ConfigurationException
@@ -142,7 +132,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SPECIFICATION_REVIEW);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_SPECIFICATION_REVIEW);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -188,7 +178,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
         }
 
         Review review = getSpecificationReview(phase, submission);
-        return (review == null) ? false : review.isCommitted();
+        return (review != null) && review.isCommitted();
     }
 
     /**
@@ -204,7 +194,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     private Review getSpecificationReview(Phase phase, Submission submission)
         throws PhaseHandlingException {
         Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(
-            getManagerHelper(), phase.getId(), new String[] {ROLE_TYPE_SPECIFICATION_REVIEWER }, submission.getId());
+            getManagerHelper(), phase.getId(), new String[] {Constants.ROLE_SPECIFICATION_REVIEWER }, submission.getId());
 
         if (reviews.length > 1) {
             LOG.log(Level.ERROR, "Multiple specification reviews exist");
@@ -244,7 +234,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SPECIFICATION_REVIEW);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_SPECIFICATION_REVIEW);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
@@ -271,7 +261,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private int getSpecificationReviewerNumber(Phase phase) throws PhaseHandlingException {
         return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-            new String[] {ROLE_TYPE_SPECIFICATION_REVIEWER }, phase.getId()).length;
+            new String[] {Constants.ROLE_SPECIFICATION_REVIEWER }, phase.getId()).length;
     }
 
     /**
@@ -304,7 +294,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
             try {
                 // Lookup submission status id for "Failed Review" status
                 SubmissionStatus status = LookupHelper.getSubmissionStatus(
-                    managerHelper.getUploadManager(), "Failed Review");
+                    managerHelper.getUploadManager(), Constants.SUBMISSION_STATUS_FAILED_REVIEW);
                 submission.setSubmissionStatus(status);
                 managerHelper.getUploadManager().updateSubmission(submission, operator);
             } catch (UploadPersistenceException e) {
@@ -321,7 +311,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
             long specReviewPhaseId = phase.getProject().getAllPhases()[currentPhaseIndex + 2].getId();
 
             PhasesHelper.createAggregatorOrFinalReviewer(phase, managerHelper,
-                ROLE_TYPE_SPECIFICATION_REVIEWER, specReviewPhaseId, operator);
+                Constants.ROLE_SPECIFICATION_REVIEWER, specReviewPhaseId, operator);
         }
 
         return rejected;
@@ -354,9 +344,9 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
         Comment[] comments = review.getAllComments();
 
         Comment comment = null;
-        for (int i = 0; i < comments.length; i++) {
-            if ("Specification Review Comment".equals(comments[i].getCommentType().getName())) {
-                comment = comments[i];
+        for (Comment currentComment : comments) {
+            if (Constants.COMMENT_TYPE_SPECIFICATION_REVIEW_COMMENT.equals(currentComment.getCommentType().getName())) {
+                comment = currentComment;
                 // use the first found one without checking how many of them exist
                 break;
             }
@@ -368,14 +358,14 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
         }
 
         String value = (String) comment.getExtraInfo();
-        if (PhasesHelper.REJECTED.equalsIgnoreCase(value)) {
+        if (Constants.COMMENT_VALUE_REJECTED.equalsIgnoreCase(value)) {
             // when the submission is rejected, we need to insert another specification
             // submission/specification review cycle,
             // Extra info for Specification Review Comment must be cleared.
             comment.resetExtraInfo();
             return true;
-        } else if (!PhasesHelper.APPROVED.equalsIgnoreCase(value)
-            && !PhasesHelper.ACCEPTED.equalsIgnoreCase(value)) {
+        } else if (!Constants.COMMENT_VALUE_APPROVED.equalsIgnoreCase(value)
+            && !Constants.COMMENT_VALUE_ACCEPTED.equalsIgnoreCase(value)) {
             LOG.log(Level.ERROR, "Invalid comment[" + value + "],"
                 + " comment can either be Approved, Accepted or Rejected.");
             throw new PhaseHandlingException(

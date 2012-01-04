@@ -72,9 +72,6 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      */
     private static final Log LOG = LogFactory.getLog(AppealsPhaseHandler.class.getName());
 
-    /** constant for appeals phase type. */
-    private static final String PHASE_TYPE_APPEALS = "Appeals";
-
     /**
      * Create a new instance of AppealsPhaseHandler using the default namespace
      * for loading configuration settings.
@@ -138,15 +135,14 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_APPEALS);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
         if (toStart) {
-            // return true if all dependencies have stopped and start time has
-            // been reached.
+            // return true if all dependencies have stopped and start time has been reached.
             return PhasesHelper.checkPhaseCanStart(phase);
         } else {
             result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
@@ -157,7 +153,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
                     return OperationCheckResult.SUCCESS;
                 }
 
-                boolean canCloseAppealsEarly = false;
+                boolean canCloseAppealsEarly;
                 try {
                     // check if all submitters agreed to close appeals phase early
                     canCloseAppealsEarly = PhasesHelper.canCloseAppealsEarly(
@@ -198,7 +194,7 @@ public class AppealsPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_APPEALS);
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();

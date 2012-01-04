@@ -82,24 +82,6 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.PostMortemPhaseHandler";
 
     /**
-     * Constant for post-mortem reviewer role name.
-     */
-    private static final String POST_MORTEM_REVIEWER_ROLE_NAME = "Post-Mortem Reviewer";
-
-    /**
-     * The name for the post-mortem phase.
-     */
-    private static final String PHASE_TYPE_POST_MORTEM = "Post-Mortem";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the reviewer role name.
-     * </p>
-     * @since 1.4
-     */
-    private static final String REVIEWER_ROLE_NAME = "Reviewer";
-
-    /**
      * <p>
      * A <code>String</code> array listing the names for roles for resources which are candidates for adding to
      * project as Post-Mortem reviewers when Post-Mortem phase starts.
@@ -107,9 +89,9 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * @since 1.4
      */
     private static final String[] POST_MORTEM_REVIEWER_CANDIDATE_ROLE_NAMES = new String[] {
-        PhasesHelper.SUBMITTER_ROLE_NAME, REVIEWER_ROLE_NAME,
-        PhasesHelper.ACCURACY_REVIEWER_ROLE_NAME, PhasesHelper.FAILURE_REVIEWER_ROLE_NAME,
-        PhasesHelper.STRESS_REVIEWER_ROLE_NAME, PhasesHelper.COPILOT_REVIEWER_ROLE_NAME };
+        Constants.ROLE_SUBMITTER, Constants.ROLE_REVIEWER,
+        Constants.ROLE_ACCURACY_REVIEWER, Constants.ROLE_FAILURE_REVIEWER,
+        Constants.ROLE_STRESS_REVIEWER, Constants.ROLE_COPILOT };
 
     /**
      * <p>
@@ -117,7 +99,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      * </p>
      * @since 1.4
      */
-    private static final String[] POST_MORTEM_REVIEWER_FILTER = new String[] {POST_MORTEM_REVIEWER_ROLE_NAME };
+    private static final String[] POST_MORTEM_REVIEWER_FILTER = new String[] {Constants.ROLE_POST_MORTEM_REVIEWER };
 
     /**
      * <p>
@@ -217,7 +199,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_POST_MORTEM);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_POST_MORTEM);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -268,7 +250,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
         // perform parameters checking
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_POST_MORTEM);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_POST_MORTEM);
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         // send email now if it is going to start
         Map<String, Object> values = new HashMap<String, Object>();
@@ -279,15 +261,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
 
             try {
                 // Locate the role for Post-Mortem Reviewer
-                ResourceRole postMortemReviewerRole = null;
-                ResourceRole[] resourceRoles = resourceManager.getAllResourceRoles();
-                for (ResourceRole role : resourceRoles) {
-                    if (role.getName().equals(POST_MORTEM_REVIEWER_ROLE_NAME)) {
-                        postMortemReviewerRole = role;
-                        break;
-                    }
-                }
-
+                ResourceRole postMortemReviewerRole = LookupHelper.getResourceRole(resourceManager, Constants.ROLE_POST_MORTEM_REVIEWER);
                 long projectId = phase.getProject().getId();
 
                 // Get the list of existing Post-Mortem reviewers assigned to project so far
@@ -301,7 +275,7 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                 for (Resource resource : candidatePostMortemResources) {
                     boolean valid = false;
                     String roleName = resource.getResourceRole().getName();
-                    if (PhasesHelper.SUBMITTER_ROLE_NAME.equalsIgnoreCase(roleName)) {
+                    if (Constants.ROLE_SUBMITTER.equalsIgnoreCase(roleName)) {
                         Long[] submissionIds = resource.getSubmissions();
                         if ((submissionIds != null) && (submissionIds.length > 0)) {
                             valid = true;
@@ -356,8 +330,8 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
                 // according to discussion here http://forums.topcoder.com/?module=Thread&threadID=659556&start=0
                 // if the attribute is not set, default value would be 0
                 int requiredRN = 0;
-                if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-                    requiredRN = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+                if (phase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER) != null) {
+                    requiredRN = PhasesHelper.getIntegerAttribute(phase, Constants.PHASE_CRITERIA_REVIEWER_NUMBER);
                 }
                 values.put("N_REQUIRED_POST_MORTEM_REVIEWERS", requiredRN);
                 values.put("N_POST_MORTEM_REVIEWERS", postMortemResources.length);
@@ -390,16 +364,15 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
 
         // Count number of committed reviews
         int committedReviewsCount = 0;
-        for (int i = 0; i < reviews.length; ++i) {
-            if (reviews[i].isCommitted()) {
+        for (Review review : reviews) {
+            if (review.isCommitted()) {
                 committedReviewsCount++;
             }
         }
 
         // Deny to close phase if minimum number of reviews is not committed
-        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-            int reviewerNum = PhasesHelper.getIntegerAttribute(phase,
-                PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+        if (phase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER) != null) {
+            int reviewerNum = PhasesHelper.getIntegerAttribute(phase, Constants.PHASE_CRITERIA_REVIEWER_NUMBER);
             if (committedReviewsCount < reviewerNum) {
                 return false;
             }
@@ -432,9 +405,9 @@ public class PostMortemPhaseHandler extends AbstractPhaseHandler {
         List<Long>[] necessaryTerms = projectRoleTermsOfUse.getTermsOfUse(
             (int) projectId, new int[] {new Long(roleId).intValue() }, DBMS.COMMON_OLTP_DATASOURCE_NAME);
 
-        for (int j = 0; j < necessaryTerms.length; j++) {
-            if (necessaryTerms[j] != null) {
-                for (Long termsId : necessaryTerms[j]) {
+        for (List<Long> necessaryTerm : necessaryTerms) {
+            if (necessaryTerm != null) {
+                for (Long termsId : necessaryTerm) {
                     if (!userTermsOfUse.hasTermsOfUse(userId, termsId, DBMS.COMMON_OLTP_DATASOURCE_NAME)) {
                         return true;
                     }

@@ -175,20 +175,11 @@ final class PhasesHelper {
      * Constant for reviewer role names to be used when searching for reviewer resources
      * and review scorecards.
      */
-    static final String[] REVIEWER_ROLE_NAMES = new String[] {"Reviewer", "Accuracy Reviewer",
-        "Failure Reviewer", "Stress Reviewer" };
-
-    /**
-     * <p>
-     * Represents the constant for milestone reviewer.
-     * </p>
-     */
-    static final String MILESTONE_REVIEWER = "Milestone Reviewer";
-
-    /**
-     * One The property name of resource.
-     */
-    static final String REVIEWER_NUMBER_PROPERTY = "Reviewer Number";
+    static final String[] REVIEWER_ROLE_NAMES = new String[] {
+        Constants.ROLE_REVIEWER,
+        Constants.ROLE_ACCURACY_REVIEWER,
+        Constants.ROLE_FAILURE_REVIEWER,
+        Constants.ROLE_STRESS_REVIEWER };
 
     /**
      * The property name external reference id constant.
@@ -208,131 +199,12 @@ final class PhasesHelper {
     static final String PAYMENT_STATUS_PROPERTY_KEY = "Payment Status";
 
     /**
-     * This constant stores Submitter role name.
-     * @since 1.1
-     */
-    static final String SUBMITTER_ROLE_NAME = "Submitter";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the final reviewer role name.
-     * </p>
-     * @since 1.4
-     */
-    static final String FINAL_REVIEWER_ROLE_NAME = "Final Reviewer";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the approver role name.
-     * </p>
-     * @since 1.4.7
-     */
-    static final String APPROVER_ROLE_NAME = "Approver";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the accuracy reviewer role name.
-     * </p>
-     * @since 1.4
-     */
-    static final String ACCURACY_REVIEWER_ROLE_NAME = "Accuracy Reviewer";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the failure reviewer role name.
-     * </p>
-     * @since 1.4
-     */
-    static final String FAILURE_REVIEWER_ROLE_NAME = "Failure Reviewer";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the stress reviewer role name.
-     * </p>
-     * @since 1.4
-     */
-    static final String STRESS_REVIEWER_ROLE_NAME = "Stress Reviewer";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the Copilot role name.
-     * </p>
-     * @since 1.4.5
-     */
-    static final String COPILOT_REVIEWER_ROLE_NAME = "Copilot";
-
-    /**
      * <p>
      * A <code>String</code> providing the name for handle property of the resource.
      * </p>
      * @since 1.4
      */
     static final String HANDLE = "Handle";
-
-    /**
-     * Constant for &quot;Contest Submission&quot; submission type.
-     * @since 1.4
-     */
-    static final String CONTEST_SUBMISSION_TYPE = "Contest Submission";
-
-    /**
-     * Constant for &quot;Milestone Submission&quot; submission type.
-     * @since 1.6
-     */
-    static final String MILESTONE_SUBMISSION_TYPE = "Milestone Submission";
-
-    /**
-     * Constant for &quot;Approved&quot; comment extra info.
-     * @since 1.4
-     */
-    static final String APPROVED = "Approved";
-
-    /**
-     * Constant for &quot;Accepted&quot; comment extra info.
-     * @since 1.4
-     */
-    static final String ACCEPTED = "Accepted";
-
-    /**
-     * Constant for &quot;Rejected&quot; comment extra info.
-     * @since 1.4
-     */
-    static final String REJECTED = "Rejected";
-
-    /**
-     * Constant for &quot;Review&quot; phase.
-     * @since 1.4
-     */
-    static final String PHASE_REVIEW = "Review";
-
-    /**
-     * Constant for &quot;Review&quot; phase.
-     * @since 1.7.4
-     */
-    static final String PHASE_MILESTONE_REVIEW = "Milestone Review";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the final reveiw phase.
-     * </p>
-     */
-    static final String PHASE_FINAL_FIX = "Final Fix";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the final reveiw phase.
-     * </p>
-     * @since 1.4
-     */
-    static final String PHASE_FINAL_REVIEW = "Final Review";
-
-    /**
-     * <p>
-     * A <code>String</code> providing the approval phase name.
-     * </p>
-     * @since 1.4.7
-     */
-    static final String PHASE_APPROVAL = "Approval";
 
     /**
      * This constant for one hour.
@@ -353,48 +225,18 @@ final class PhasesHelper {
     private static final String YES_VALUE = "Yes";
 
     /**
-     * constant for &quot;Scheduled&quot; phase status.
-     */
-    static final String PHASE_STATUS_SCHEDULED = "Scheduled";
-
-    /**
-     * constant for &quot;Open&quot; phase status.
-     */
-    private static final String PHASE_STATUS_OPEN = "Open";
-
-    /**
-     * constant for &quot;Closed&quot; phase status.
-     */
-    private static final String PHASE_STATUS_CLOSED = "Closed";
-
-    /**
      * an array of comment types which denote that a comment is a reviewer comment.
      */
-    private static final String[] REVIEWER_COMMENT_TYPES = new String[] {"Comment", "Required", "Recommended" };
-
-    /**
-    * Represents the studio project type id.
-    * @since 1.6.1
-    */
-    static final long STUDIO_PROJECT_TYPE_ID = 3;
+    private static final String[] REVIEWER_COMMENT_TYPES = new String[] {
+        Constants.COMMENT_TYPE_COMMENT,
+        Constants.COMMENT_TYPE_REQUIRED,
+        Constants.COMMENT_TYPE_RECOMMENDED };
 
     /**
      * Represents the maximum submissions property key.
      * @since 1.7.2
      */
     static final String MAXIMUM_SUBMISSIONS = "Maximum Submissions";
-
-    /**
-     * Represents the deleted upload status.
-     * @since 1.7.2
-     */
-    static final String UPLOAD_DELETED_STATUS = "Deleted";
-
-    /**
-     * Represents the deleted submission status.
-     * @since 1.7.2
-     */
-    static final String SUBMISSION_DELETED_STATUS = "Deleted";
 
     /**
      * private to prevent instantiation.
@@ -456,8 +298,7 @@ final class PhasesHelper {
     static void checkValuesMap(Map<String, Object> map) {
         checkNull(map, "Values map");
 
-        for (Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator(); it.hasNext();) {
-            Map.Entry<String, Object> entry = it.next();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             checkString(entry.getKey(), "key in values map");
             checkNull(entry.getValue(), "value in values map");
         }
@@ -619,7 +460,7 @@ final class PhasesHelper {
      * @return true if status is &quot;Scheduled&quot;, false otherwise.
      */
     static boolean isPhaseToStart(PhaseStatus status) {
-        return (PHASE_STATUS_SCHEDULED.equals(status.getName()));
+        return (Constants.PHASE_STATUS_SCHEDULED.equals(status.getName()));
     }
 
     /**
@@ -639,7 +480,7 @@ final class PhasesHelper {
      * @return true if phase status is &quot;Closed&quot;, false otherwise.
      */
     static boolean isPhaseClosed(PhaseStatus status) {
-        return (PHASE_STATUS_CLOSED.equals(status.getName()));
+        return (Constants.PHASE_STATUS_CLOSED.equals(status.getName()));
     }
 
     /**
@@ -649,7 +490,7 @@ final class PhasesHelper {
      * @return true if phase status is &quot;Closed&quot;, false otherwise.
      */
     static boolean isPhaseOpen(PhaseStatus status) {
-        return (PHASE_STATUS_OPEN.equals(status.getName()));
+        return (Constants.PHASE_STATUS_OPEN.equals(status.getName()));
     }
 
     /**
@@ -682,40 +523,40 @@ final class PhasesHelper {
             return OperationCheckResult.SUCCESS;
         }
 
-        for (int i = 0; i < dependencies.length; i++) {
+        for (Dependency dependency : dependencies) {
             // get the dependency phase.
-            Phase dependency = dependencies[i].getDependency();
+            Phase dependencyPhase = dependency.getDependency();
 
             if (bPhaseStarting) {
-                if (dependencies[i].isDependencyStart() && dependencies[i].isDependentStart()) {
+                if (dependency.isDependencyStart() && dependency.isDependentStart()) {
                     // S2S dependencies should be started change in version 1.4
                     // If phase B is configured to start when phase A starts, if the phase
                     // A is already closed, phase B should start in this case
-                    if (isDependencyMet(dependency)) {
-                        return new OperationCheckResult("Dependency " + dependency.getPhaseType().getName()
-                            + " phase is not yet started.");
+                    if (isDependencyMet(dependencyPhase)) {
+                        return new OperationCheckResult("Dependency " + dependencyPhase.getPhaseType().getName()
+                                + " phase is not yet started.");
                     }
-                } else if (!dependencies[i].isDependencyStart() && dependencies[i].isDependentStart()) {
+                } else if (!dependency.isDependencyStart() && dependency.isDependentStart()) {
                     // S2F dependencies should be closed
-                    if (!isPhaseClosed(dependency.getPhaseStatus())) {
-                        return new OperationCheckResult("Dependency " + dependency.getPhaseType().getName()
-                            + " phase is not yet ended.");
+                    if (!isPhaseClosed(dependencyPhase.getPhaseStatus())) {
+                        return new OperationCheckResult("Dependency " + dependencyPhase.getPhaseType().getName()
+                                + " phase is not yet ended.");
                     }
                 }
             } else {
-                if (dependencies[i].isDependencyStart() && !dependencies[i].isDependentStart()) {
+                if (dependency.isDependencyStart() && !dependency.isDependentStart()) {
                     // F2S dependencies should be started change in version 1.4
                     // If phase B is configured to end when phase A starts. It should end
                     // if the phase A is already closed.
-                    if (isDependencyMet(dependency)) {
-                        return new OperationCheckResult("Dependency " + dependency.getPhaseType().getName()
-                            + " phase is not yet started.");
+                    if (isDependencyMet(dependencyPhase)) {
+                        return new OperationCheckResult("Dependency " + dependencyPhase.getPhaseType().getName()
+                                + " phase is not yet started.");
                     }
-                } else if (!dependencies[i].isDependencyStart() && !dependencies[i].isDependentStart()) {
+                } else if (!dependency.isDependencyStart() && !dependency.isDependentStart()) {
                     // F2F dependencies should be closed
-                    if (!isPhaseClosed(dependency.getPhaseStatus())) {
-                        return new OperationCheckResult("Dependency " + dependency.getPhaseType().getName()
-                            + " phase is not yet ended.");
+                    if (!isPhaseClosed(dependencyPhase.getPhaseStatus())) {
+                        return new OperationCheckResult("Dependency " + dependencyPhase.getPhaseType().getName()
+                                + " phase is not yet ended.");
                     }
                 }
             }
@@ -1151,7 +992,7 @@ final class PhasesHelper {
      */
     static Submission[] searchActiveSubmissions(UploadManager uploadManager,
         long projectId, String submissionTypeName) throws PhaseHandlingException {
-        return searchSubmissions(uploadManager, projectId, new String[] {"Active"}, submissionTypeName);
+        return searchSubmissions(uploadManager, projectId, new String[] {Constants.SUBMISSION_STATUS_ACTIVE}, submissionTypeName);
     }
 
     /**
@@ -1201,7 +1042,7 @@ final class PhasesHelper {
 
             if (winnerId != null) {
                 long submitterRoleId = LookupHelper.getResourceRole(resourceManager,
-                    PhasesHelper.SUBMITTER_ROLE_NAME).getId();
+                    Constants.ROLE_SUBMITTER).getId();
                 ResourceFilterBuilder.createExtensionPropertyNameFilter(EXTERNAL_REFERENCE_ID);
 
                 AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
@@ -1272,8 +1113,8 @@ final class PhasesHelper {
         PhaseManager phaseManager = managerHelper.getPhaseManager();
 
         // create phase type and status objects
-        PhaseType postMortemPhaseType = LookupHelper.getPhaseType(phaseManager, "Post-Mortem");
-        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, PhasesHelper.PHASE_STATUS_SCHEDULED);
+        PhaseType postMortemPhaseType = LookupHelper.getPhaseType(phaseManager, Constants.PHASE_POST_MORTEM);
+        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, Constants.PHASE_STATUS_SCHEDULED);
 
         try {
             // Create new Post-Mortem phase
@@ -1284,13 +1125,13 @@ final class PhasesHelper {
                 new Long[] {Long.parseLong(postMortemPhaseDuration) * HOUR }, phaseStatus, false);
 
             // Set the number of required reviewers for Post-Mortem phase to default value
-            String postMortemPhaseDefaultReviewerNumber = getPropertyValue(PostMortemPhaseHandler.class
-                .getName(), "PostMortemPhaseDefaultReviewersNumber", true);
-            String postMortemPhaseDefaultScorecardID = getPropertyValue(PostMortemPhaseHandler.class
-                .getName(), "PostMortemPhaseDefaultScorecardID", true);
+            String postMortemPhaseDefaultReviewerNumber = getPropertyValue(PostMortemPhaseHandler.class.getName(),
+                "PostMortemPhaseDefaultReviewersNumber", true);
+            String postMortemPhaseDefaultScorecardID = getPropertyValue(PostMortemPhaseHandler.class.getName(),
+                "PostMortemPhaseDefaultScorecardID", true);
             Phase postMortemPhase = getPostMortemPhase(currentPrj);
-            postMortemPhase.setAttribute("Reviewer Number", postMortemPhaseDefaultReviewerNumber);
-            postMortemPhase.setAttribute("Scorecard ID", postMortemPhaseDefaultScorecardID);
+            postMortemPhase.setAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER, postMortemPhaseDefaultReviewerNumber);
+            postMortemPhase.setAttribute(Constants.PHASE_CRITERIA_SCORECARD_ID, postMortemPhaseDefaultScorecardID);
 
             phaseManager.updatePhases(currentPrj, operator);
         } catch (PhaseManagementException e) {
@@ -1321,8 +1162,8 @@ final class PhasesHelper {
         PhaseManager phaseManager = managerHelper.getPhaseManager();
 
         // create phase type and status objects
-        PhaseType approvalPhaseType = LookupHelper.getPhaseType(phaseManager, PhasesHelper.PHASE_APPROVAL);
-        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, PhasesHelper.PHASE_STATUS_SCHEDULED);
+        PhaseType approvalPhaseType = LookupHelper.getPhaseType(phaseManager, Constants.PHASE_APPROVAL);
+        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, Constants.PHASE_STATUS_SCHEDULED);
 
         try {
             // Create new Approval phase
@@ -1330,7 +1171,7 @@ final class PhasesHelper {
                 "ApprovalPhaseDuration", true);
 
             // Find lst Approval phase (if any)
-            Phase lastApprovalPhase = locatePhase(currentPhase, PhasesHelper.PHASE_APPROVAL, false, false);
+            Phase lastApprovalPhase = locatePhase(currentPhase, Constants.PHASE_APPROVAL, false, false);
 
             createNewPhases(currentPrj, currentPhase, new PhaseType[] {approvalPhaseType },
                 new Long[] {Long.parseLong(approvalPhaseDuration) * HOUR }, phaseStatus, false);
@@ -1348,13 +1189,13 @@ final class PhasesHelper {
                 approvalPhaseDefaultScorecardID = getPropertyValue(ApprovalPhaseHandler.class.getName(),
                     "ApprovalPhaseDefaultScorecardID", true);
             } else {
-                approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase.getAttribute("Reviewer Number");
-                approvalPhaseDefaultScorecardID = (String) lastApprovalPhase.getAttribute("Scorecard ID");
+                approvalPhaseDefaultReviewerNumber = (String) lastApprovalPhase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER);
+                approvalPhaseDefaultScorecardID = (String) lastApprovalPhase.getAttribute(Constants.PHASE_CRITERIA_SCORECARD_ID);
             }
 
             Phase approvalPhase = getApprovalPhase(currentPrj);
-            approvalPhase.setAttribute("Reviewer Number", approvalPhaseDefaultReviewerNumber);
-            approvalPhase.setAttribute("Scorecard ID", approvalPhaseDefaultScorecardID);
+            approvalPhase.setAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER, approvalPhaseDefaultReviewerNumber);
+            approvalPhase.setAttribute(Constants.PHASE_CRITERIA_SCORECARD_ID, approvalPhaseDefaultScorecardID);
 
             phaseManager.updatePhases(currentPrj, operator);
         } catch (PhaseManagementException e) {
@@ -1381,9 +1222,9 @@ final class PhasesHelper {
      */
     static int insertFinalFixAndFinalReview(Phase currentPhase, PhaseManager phaseManager,
         String operator, Long finalFixDuration) throws PhaseHandlingException {
-        PhaseType finalFixPhaseType = LookupHelper.getPhaseType(phaseManager, "Final Fix");
-        PhaseType finalReviewPhaseType = LookupHelper.getPhaseType(phaseManager, PhasesHelper.PHASE_FINAL_REVIEW);
-        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, PhasesHelper.PHASE_STATUS_SCHEDULED);
+        PhaseType finalFixPhaseType = LookupHelper.getPhaseType(phaseManager, Constants.PHASE_FINAL_FIX);
+        PhaseType finalReviewPhaseType = LookupHelper.getPhaseType(phaseManager, Constants.PHASE_FINAL_REVIEW);
+        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, Constants.PHASE_STATUS_SCHEDULED);
 
         // find current phase index and also the lengths of 'final fix' and 'final review' phases.
         Project currentPrj = currentPhase.getProject();
@@ -1448,9 +1289,9 @@ final class PhasesHelper {
     static int insertSpecSubmissionSpecReview(Phase currentPhase, PhaseManager phaseManager,
         String operator) throws PhaseHandlingException {
         PhaseType specSubmissionPhaseType = LookupHelper.getPhaseType(phaseManager,
-            "Specification Submission");
-        PhaseType specReviewPhaseType = LookupHelper.getPhaseType(phaseManager, "Specification Review");
-        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, PhasesHelper.PHASE_STATUS_SCHEDULED);
+            Constants.PHASE_SPECIFICATION_SUBMISSION);
+        PhaseType specReviewPhaseType = LookupHelper.getPhaseType(phaseManager, Constants.PHASE_SPECIFICATION_REVIEW);
+        PhaseStatus phaseStatus = LookupHelper.getPhaseStatus(phaseManager, Constants.PHASE_STATUS_SCHEDULED);
 
         // find current phase index and also the lengths of 'Specification Submission'
         // and 'Specification Review' phases.
@@ -1516,9 +1357,9 @@ final class PhasesHelper {
         // find the lengths of corresponding phase types, if not specified explicitly in the method parameter
         for (int p = 0; p < newPhaseLengths.length; p++) {
             if (newPhaseLengths[p] == null) {
-                for (int i = 0; i < phases.length; i++) {
-                    if (phases[i].getPhaseType().getId() == newPhaseTypes[p].getId()) {
-                        newPhaseLengths[p] = phases[i].getLength();
+                for (Phase phase : phases) {
+                    if (phase.getPhaseType().getId() == newPhaseTypes[p].getId()) {
+                        newPhaseLengths[p] = phase.getLength();
                     }
                 }
             }
@@ -1562,12 +1403,11 @@ final class PhasesHelper {
 
                 Dependency[] dependencies = afterPhase.getAllDependencies();
 
-                for (int d = 0; d < dependencies.length; d++) {
-                    Dependency dependency = dependencies[d];
+                for (Dependency dependency : dependencies) {
                     dependency.getDependent().removeDependency(dependency);
                     dependency.getDependent().addDependency(
                             new Dependency(lastNewPhase, dependency.getDependent(), dependency
-                                .isDependencyStart(), dependency.isDependentStart(), dependency.getLagTime()));
+                                    .isDependencyStart(), dependency.isDependentStart(), dependency.getLagTime()));
                 }
             }
         }
@@ -1579,8 +1419,7 @@ final class PhasesHelper {
         }
 
         // set the scheduled start and end times after dependencies are changed
-        for (int p = 0; p < newPhases.length; p++) {
-            Phase phase = newPhases[p];
+        for (Phase phase : newPhases) {
             phase.setScheduledStartDate(phase.calcStartDate());
             phase.setScheduledEndDate(phase.calcEndDate());
         }
@@ -1613,8 +1452,7 @@ final class PhasesHelper {
     static long createAggregatorOrFinalReviewer(Phase oldPhase, ManagerHelper managerHelper,
         String roleName, long newPhaseId, String operator)
         throws PhaseHandlingException {
-        // search for the old "Aggregator", "Final Reviewer" or "Specification Reviewer"
-        // resource
+        // search for the old "Aggregator", "Final Reviewer" or "Specification Reviewer" resource
         Resource[] resources = PhasesHelper.searchResourcesForRoleNames(managerHelper,
             new String[] {roleName }, oldPhase.getId());
 
@@ -1636,10 +1474,10 @@ final class PhasesHelper {
         if ((properties != null) && !properties.isEmpty()) {
             Set<?> entries = properties.entrySet();
 
-            for (Iterator<?> itr = entries.iterator(); itr.hasNext();) {
-                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) itr.next();
+            for (Object entry1 : entries) {
+                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) entry1;
 
-                if (!PAYMENT_PROPERTY_KEY.equals((String) entry.getKey())) {
+                if (!PAYMENT_PROPERTY_KEY.equals(entry.getKey())) {
                     newResource.setProperty((String) entry.getKey(), entry.getValue());
                 }
             }
@@ -1678,9 +1516,7 @@ final class PhasesHelper {
         Comment[] comments = fromWorkSheet.getAllComments();
 
         // copy all comments with given type and extra info.
-        for (int c = 0; c < comments.length; c++) {
-            Comment comment = comments[c];
-
+        for (Comment comment : comments) {
             if (isCommentToBeCopied(comment, typesToCopy, extraInfoToCheck)) {
                 toWorkSheet.addComment(copyComment(comment));
             }
@@ -1701,9 +1537,7 @@ final class PhasesHelper {
     static void copyReviewItems(Review fromWorkSheet, Review toWorkSheet, String[] typesToCopy) {
         Item[] reviewItems = fromWorkSheet.getAllItems();
 
-        for (int r = 0; r < reviewItems.length; r++) {
-            Item item = reviewItems[r];
-
+        for (Item item : reviewItems) {
             // create a new review item and copy all properties
             Item newItem = new Item(item.getId());
             newItem.setDocument(item.getDocument());
@@ -1713,9 +1547,7 @@ final class PhasesHelper {
             // copy all comments with given type and extra info.
             Comment[] comments = item.getAllComments();
 
-            for (int c = 0; c < comments.length; c++) {
-                Comment comment = comments[c];
-
+            for (Comment comment : comments) {
                 if (isCommentToBeCopied(comment, typesToCopy, null)) {
                     newItem.addComment(copyComment(comment));
                 }
@@ -1740,9 +1572,7 @@ final class PhasesHelper {
     static void copyFinalReviewItems(Review fromWorkSheet, Review toWorkSheet) {
         Item[] reviewItems = fromWorkSheet.getAllItems();
 
-        for (int r = 0; r < reviewItems.length; r++) {
-            Item item = reviewItems[r];
-
+        for (Item item : reviewItems) {
             // create a new review item and copy all properties
             Item newItem = new Item(item.getId());
             newItem.setDocument(item.getDocument());
@@ -1753,13 +1583,10 @@ final class PhasesHelper {
             Comment[] comments = item.getAllComments();
             boolean copy = false;
 
-            for (int c = 0; c < comments.length; c++) {
-                Comment comment = comments[c];
-
+            for (Comment comment : comments) {
                 // if it is a reviewer comment
                 if (isReviewerComment(comment)) {
-                    // mark copy flag as true or false based on whether it is
-                    // accepted.
+                    // mark copy flag as true or false based on whether it is accepted.
                     copy = "Accept".equals(comment.getExtraInfo());
                 }
 
@@ -1790,32 +1617,32 @@ final class PhasesHelper {
 
         Comment[] comments = review.getAllComments();
 
-        for (int i = 0; i < comments.length; ++i) {
+        for (Comment comment : comments) {
             Comment copiedComment = new Comment();
-            copiedComment.setAuthor(comments[i].getAuthor());
-            copiedComment.setComment(comments[i].getComment());
-            copiedComment.setCommentType(comments[i].getCommentType());
-            copiedComment.setExtraInfo(comments[i].getExtraInfo());
+            copiedComment.setAuthor(comment.getAuthor());
+            copiedComment.setComment(comment.getComment());
+            copiedComment.setCommentType(comment.getCommentType());
+            copiedComment.setExtraInfo(comment.getExtraInfo());
             copiedReview.addComment(copiedComment);
         }
 
         Item[] items = review.getAllItems();
 
-        for (int i = 0; i < items.length; ++i) {
+        for (Item item : items) {
             Item copiedItem = new Item();
-            copiedItem.setAnswer(items[i].getAnswer());
-            copiedItem.setDocument(items[i].getDocument());
-            copiedItem.setQuestion(items[i].getQuestion());
+            copiedItem.setAnswer(item.getAnswer());
+            copiedItem.setDocument(item.getDocument());
+            copiedItem.setQuestion(item.getQuestion());
             copiedReview.addItem(copiedItem);
 
-            comments = items[i].getAllComments();
+            comments = item.getAllComments();
 
-            for (int j = 0; j < comments.length; ++j) {
+            for (Comment comment : comments) {
                 Comment copiedComment = new Comment();
-                copiedComment.setAuthor(comments[j].getAuthor());
-                copiedComment.setComment(comments[j].getComment());
-                copiedComment.setCommentType(comments[j].getCommentType());
-                copiedComment.setExtraInfo(comments[j].getExtraInfo());
+                copiedComment.setAuthor(comment.getAuthor());
+                copiedComment.setComment(comment.getComment());
+                copiedComment.setCommentType(comment.getCommentType());
+                copiedComment.setExtraInfo(comment.getExtraInfo());
                 copiedItem.addComment(copiedComment);
             }
         }
@@ -1843,11 +1670,11 @@ final class PhasesHelper {
     static List<Map<String, Object>> getSubmitterValueArray(ManagerHelper helper,
         long projectId, boolean appealPhase) throws PhaseHandlingException {
         // get the submissions
-        Submission[] submissions = null;
+        Submission[] submissions;
 
          // changes in version 1.4
          submissions = PhasesHelper.searchActiveSubmissions(helper.getUploadManager(),
-             projectId, CONTEST_SUBMISSION_TYPE);
+             projectId, Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
 
         // for each submission, get the submitter and its scores
         try {
@@ -1907,8 +1734,8 @@ final class PhasesHelper {
                     boolean failedScreening = false;
                     if (submission.getSubmissionStatus() != null) {
                         String statusName = submission.getSubmissionStatus().getName();
-                        failedScreening = statusName.equalsIgnoreCase("Failed Screening") ||
-                            statusName.equalsIgnoreCase("Failed Milestone Screening");
+                        failedScreening = statusName.equalsIgnoreCase(Constants.SUBMISSION_STATUS_FAILED_SCREENING) ||
+                            statusName.equalsIgnoreCase(Constants.SUBMISSION_STATUS_FAILED_MILESTONE_SCREENING);
                     }
                     values.put("SUBMITTER_RESULT", failedScreening ? "Failed Screening": "Passed Screening");
                 }
@@ -1947,15 +1774,7 @@ final class PhasesHelper {
      * @return true if the comment is a reviewer comment, false otherwise.
      */
     private static boolean isReviewerComment(Comment comment) {
-        String commentType = comment.getCommentType().getName();
-
-        for (int i = 0; i < REVIEWER_COMMENT_TYPES.length; i++) {
-            if (commentType.equals(REVIEWER_COMMENT_TYPES[i])) {
-                return true;
-            }
-        }
-
-        return false;
+        return Arrays.asList(REVIEWER_COMMENT_TYPES).contains(comment.getCommentType().getName());
     }
 
     /**
@@ -1985,14 +1804,12 @@ final class PhasesHelper {
      *            extra info to check the comment against.
      * @return true if it is to be copied, false otherwise.
      */
-    private static boolean isCommentToBeCopied(Comment comment, String[] typesToCopy,
-        String extraInfoToCheck) {
+    private static boolean isCommentToBeCopied(Comment comment, String[] typesToCopy, String extraInfoToCheck) {
         String commentType = comment.getCommentType().getName();
 
-        for (int i = 0; i < typesToCopy.length; i++) {
-            // return true if it is one of the types to be copied and it is
-            // marked as "Accept"
-            if (commentType.equals(typesToCopy[i])) {
+        for (String typeTocopy : typesToCopy) {
+            // return true if it is one of the types to be copied and it is marked as "Accept"
+            if (commentType.equals(typeTocopy)) {
                 if (extraInfoToCheck != null) {
                     if (extraInfoToCheck.equals(comment.getExtraInfo())) {
                         return true;
@@ -2021,7 +1838,7 @@ final class PhasesHelper {
         try {
             ResourceManager resourceManager = managerHelper.getResourceManager();
             UploadManager uploadManager = managerHelper.getUploadManager();
-            long submitterRoleId = LookupHelper.getResourceRole(resourceManager, PhasesHelper.SUBMITTER_ROLE_NAME).getId();
+            long submitterRoleId = LookupHelper.getResourceRole(resourceManager, Constants.ROLE_SUBMITTER).getId();
 
             AndFilter fullFilter = new AndFilter(Arrays.asList(new Filter[] {
                 ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId),
@@ -2039,7 +1856,7 @@ final class PhasesHelper {
             }
 
             // check all submitters with active submission statuses (this will leave out failed screening and deleted)
-            Submission[] activeSubmissions = searchActiveSubmissions(uploadManager, projectId, CONTEST_SUBMISSION_TYPE);
+            Submission[] activeSubmissions = searchActiveSubmissions(uploadManager, projectId, Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
 
             for (Submission s : activeSubmissions) {
                 if (!earlyAppealResourceIds.contains(s.getUpload().getOwner())) {
@@ -2087,7 +1904,7 @@ final class PhasesHelper {
             if (!link.getType().isAllowOverlap()) {
                 com.topcoder.management.project.Project parentProject = link.getDestProject();
 
-                if (!parentProject.getProjectStatus().getName().equals("Completed")) {
+                if (!parentProject.getProjectStatus().getName().equals(Constants.PROJECT_STATUS_COMPLETED)) {
                     // if not active
                     if (parentProject.getProjectStatus().getId() != 1) {
                         return false;
@@ -2098,7 +1915,7 @@ final class PhasesHelper {
                     // Check if all phases are closed.
                     Phase[] phases = phasesProject.getAllPhases();
                     for (Phase phase : phases) {
-                        if (!phase.getPhaseStatus().getName().equals(PhasesHelper.PHASE_STATUS_CLOSED)) {
+                        if (!phase.getPhaseStatus().getName().equals(Constants.PHASE_STATUS_CLOSED)) {
                             return false;
                         }
                     }
@@ -2126,11 +1943,9 @@ final class PhasesHelper {
         List<Review> thisPhaseReviews = new ArrayList<Review>();
         Phase[] phases = thisPhase.getProject().getAllPhases();
 
-        for (int i = 0; i < phases.length; i++) {
-            Phase phase = phases[i];
-
-            if (phase.getPhaseType().getName().equals(PhasesHelper.PHASE_APPROVAL)) {
-                int reviewerNumber = Integer.parseInt((String) phase.getAttribute("Reviewer Number"));
+        for (Phase phase : phases) {
+            if (phase.getPhaseType().getName().equals(Constants.PHASE_APPROVAL)) {
+                int reviewerNumber = Integer.parseInt((String) phase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER));
 
                 if (phase.getId() != thisPhase.getId()) {
                     count += reviewerNumber;
@@ -2162,7 +1977,7 @@ final class PhasesHelper {
      * @since 1.3
      */
     static Phase getPostMortemPhase(Project project) {
-        return getLastPhaseByType(project, "Post-Mortem");
+        return getLastPhaseByType(project, Constants.PHASE_POST_MORTEM);
     }
 
     /**
@@ -2176,7 +1991,7 @@ final class PhasesHelper {
      * @since 1.3
      */
     private static Phase getApprovalPhase(Project project) {
-        return getLastPhaseByType(project, PhasesHelper.PHASE_APPROVAL);
+        return getLastPhaseByType(project, Constants.PHASE_APPROVAL);
     }
 
     /**
@@ -2223,7 +2038,7 @@ final class PhasesHelper {
         Log log) throws PhaseHandlingException {
         // Check if one specification submission exists
         Submission[] submissions = PhasesHelper.searchActiveSubmissions(
-            managerHelper.getUploadManager(), phase.getProject().getId(), "Specification Submission");
+            managerHelper.getUploadManager(), phase.getProject().getId(), Constants.SUBMISSION_TYPE_SPECIFICATION_SUBMISSION);
 
         if (submissions.length > 1) {
             log.log(Level.ERROR, "Multiple specification submissions exist.");
@@ -2360,8 +2175,8 @@ final class PhasesHelper {
         for (Submission submission : subs) {
             // Skip the failed submissions.
             if (submission.getFinalScore() < minScore ||
-                    !(submission.getSubmissionStatus().getName().equals("Active")
-                    || submission.getSubmissionStatus().getName().equals("Completed Without Win"))) {
+                    !(submission.getSubmissionStatus().getName().equals(Constants.SUBMISSION_STATUS_ACTIVE)
+                    || submission.getSubmissionStatus().getName().equals(Constants.SUBMISSION_STATUS_COMPLETED_WITHOUT_WIN))) {
                 submission.setPrize(null);
                 continue;
             }
@@ -2396,9 +2211,9 @@ final class PhasesHelper {
         PhasesHelper.checkString(operator, "operator");
 
         boolean isMilestone;
-        if (phase.getPhaseType().getName().equals(PhasesHelper.PHASE_REVIEW)) {
+        if (phase.getPhaseType().getName().equals(Constants.PHASE_REVIEW)) {
             isMilestone = false;
-        } else if (phase.getPhaseType().getName().equals(PhasesHelper.PHASE_MILESTONE_REVIEW)) {
+        } else if (phase.getPhaseType().getName().equals(Constants.PHASE_MILESTONE_REVIEW)) {
             isMilestone = true;
         } else {
             throw new PhaseNotSupportedException("Phase type must be either Review or Milestone Review");
@@ -2409,18 +2224,22 @@ final class PhasesHelper {
             UploadManager uploadManager = managerHelper.getUploadManager();
             com.topcoder.management.project.Project project =
                 managerHelper.getProjectManager().getProject(phase.getProject().getId());
-            boolean isStudioProject = project.getProjectCategory().getProjectType().getId() == STUDIO_PROJECT_TYPE_ID;
+            boolean isStudioProject = PhasesHelper.isStudio(project);
 
             // Search all reviewed submissions for current project.
             // We also consider submissions with the failed review status because this method is also called directly
             // from within the Online Review application when a manager edits a review scorecard.
             subs = searchSubmissions(uploadManager, phase.getProject().getId(),
-                new String[] {"Active", "Failed Review", "Failed Milestone Review", "Completed Without Win"},
-                isMilestone ? MILESTONE_SUBMISSION_TYPE : CONTEST_SUBMISSION_TYPE);
+                new String[] {
+                    Constants.SUBMISSION_STATUS_ACTIVE,
+                    Constants.SUBMISSION_STATUS_FAILED_REVIEW,
+                    Constants.SUBMISSION_STATUS_FAILED_MILESTONE_REVIEW,
+                    Constants.SUBMISSION_STATUS_COMPLETED_WITHOUT_WIN},
+                isMilestone ? Constants.SUBMISSION_TYPE_MILESTONE_SUBMISSION : Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
 
             // Search the reviewIds.
             Resource[] reviewers = searchResourcesForRoleNames(managerHelper,
-                isMilestone ? new String[] {MILESTONE_REVIEWER} : REVIEWER_ROLE_NAMES, phase.getId());
+                isMilestone ? new String[] {Constants.ROLE_MILESTONE_REVIEWER} : REVIEWER_ROLE_NAMES, phase.getId());
 
             // Search all review scorecard for the current phase.
             Review[] reviews = searchReviewsForResources(managerHelper, reviewers, null);
@@ -2472,10 +2291,10 @@ final class PhasesHelper {
             RankedSubmission[] placements = scoreAggregator.calcPlacements(aggregations);
 
             // status objects.
-            SubmissionStatus activeStatus = LookupHelper.getSubmissionStatus(uploadManager, "Active");
-            SubmissionStatus failedStatus = LookupHelper.getSubmissionStatus(uploadManager, "Failed Review");
-            SubmissionStatus failedMilestoneStatus = LookupHelper.getSubmissionStatus(uploadManager, "Failed Milestone Review");
-            SubmissionStatus noWinStatus = LookupHelper.getSubmissionStatus(uploadManager, "Completed Without Win");
+            SubmissionStatus activeStatus = LookupHelper.getSubmissionStatus(uploadManager, Constants.SUBMISSION_STATUS_ACTIVE);
+            SubmissionStatus failedStatus = LookupHelper.getSubmissionStatus(uploadManager, Constants.SUBMISSION_STATUS_FAILED_REVIEW);
+            SubmissionStatus failedMilestoneStatus = LookupHelper.getSubmissionStatus(uploadManager, Constants.SUBMISSION_STATUS_FAILED_MILESTONE_REVIEW);
+            SubmissionStatus noWinStatus = LookupHelper.getSubmissionStatus(uploadManager, Constants.SUBMISSION_STATUS_COMPLETED_WITHOUT_WIN);
 
             Resource winningSubmitter = null, runnerUpSubmitter = null;
 
@@ -2576,7 +2395,7 @@ final class PhasesHelper {
      * @return true if passed studio project, false otherwise.
      */
     static boolean isStudio(com.topcoder.management.project.Project project) {
-            return project.getProjectCategory().getProjectType().getId() == STUDIO_PROJECT_TYPE_ID;
+        return project.getProjectCategory().getProjectType().getName().equals(Constants.PROJECT_TYPE_STUDIO);
     }
     
     /**
@@ -2588,9 +2407,8 @@ final class PhasesHelper {
      * @param operator the operator to use 
      * @throws PhaseHandlingException if any error occurred
      */
-    static void autoScreenStudioSubmissions(com.topcoder.management.project.Project project, ManagerHelper helper, String submissionsType, String operator)
-            throws PhaseHandlingException 
-    {
+    static void autoScreenStudioSubmissions(com.topcoder.management.project.Project project, ManagerHelper helper,
+        String submissionsType, String operator) throws PhaseHandlingException {
         try {
             Object maxSubmissions = project.getProperty(MAXIMUM_SUBMISSIONS);
             if (maxSubmissions == null || maxSubmissions.toString().trim().length() == 0 || Integer.parseInt(maxSubmissions.toString()) < 1) {
@@ -2601,12 +2419,11 @@ final class PhasesHelper {
 
             Submission[] subs = searchActiveSubmissions(helper.getUploadManager(), project.getId(), submissionsType);
 
-            UploadStatus deletedUploadStatus = LookupHelper.getUploadStatus(helper.getUploadManager(), UPLOAD_DELETED_STATUS);
-            SubmissionStatus deletedSubmissionStatus = LookupHelper.getSubmissionStatus(helper.getUploadManager(), SUBMISSION_DELETED_STATUS);
+            UploadStatus deletedUploadStatus = LookupHelper.getUploadStatus(helper.getUploadManager(), Constants.UPLOAD_STATUS_DELETED);
+            SubmissionStatus deletedSubmissionStatus = LookupHelper.getSubmissionStatus(helper.getUploadManager(), Constants.SUBMISSION_STATUS_DELETED);
             
             for (Submission s : subs) {
                 if (s.getUserRank() > maxAllowedSubs) {
-
                     s.setSubmissionStatus(deletedSubmissionStatus);
                     s.getUpload().setUploadStatus(deletedUploadStatus);
                     helper.getUploadManager().updateUpload(s.getUpload(), operator);

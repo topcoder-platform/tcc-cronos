@@ -66,13 +66,6 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
 
     /**
      * <p>
-     * constant for milestone submission phase type.
-     * </p>
-     */
-    private static final String PHASE_TYPE_MILESTONE_SUBMISSION = "Milestone Submission";
-
-    /**
-     * <p>
      * Create a new instance of MilestoneSubmissionPhaseHandler using the default namespace for loading
      * configuration settings.
      * </p>
@@ -145,7 +138,7 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_MILESTONE_SUBMISSION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_MILESTONE_SUBMISSION);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -188,7 +181,7 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_MILESTONE_SUBMISSION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_MILESTONE_SUBMISSION);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -214,7 +207,7 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
     void populateProperties(Phase phase, Map<String, Object> values)
         throws PhaseHandlingException {
         Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            phase.getProject().getId(), PhasesHelper.MILESTONE_SUBMISSION_TYPE);
+            phase.getProject().getId(), Constants.SUBMISSION_TYPE_MILESTONE_SUBMISSION);
 
         // for stop phase, we are going to support more information.
         if (values != null) {

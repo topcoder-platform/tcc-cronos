@@ -38,7 +38,7 @@ final class LookupHelper {
      *             if upload status could not be found.
      */
     static UploadStatus getUploadStatus(UploadManager uploadManager, String statusName) throws PhaseHandlingException {
-        UploadStatus[] statuses = null;
+        UploadStatus[] statuses;
 
         try {
             statuses = uploadManager.getAllUploadStatuses();

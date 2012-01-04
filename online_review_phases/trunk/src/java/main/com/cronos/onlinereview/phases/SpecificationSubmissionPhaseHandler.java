@@ -61,11 +61,6 @@ public class SpecificationSubmissionPhaseHandler extends AbstractPhaseHandler {
     private static final Log LOG = LogFactory.getLog(SpecificationSubmissionPhaseHandler.class.getName());
 
     /**
-     * Constant for Specification Review phase type.
-     */
-    private static final String PHASE_TYPE_SPECIFICATION_SUBMISSION = "Specification Submission";
-
-    /**
      * Create a new instance of SpecificationSubmissionPhaseHandler using the default
      * namespace for loading configuration settings.
      * @throws ConfigurationException
@@ -121,7 +116,7 @@ public class SpecificationSubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SPECIFICATION_SUBMISSION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_SPECIFICATION_SUBMISSION);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -178,7 +173,7 @@ public class SpecificationSubmissionPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SPECIFICATION_SUBMISSION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_SPECIFICATION_SUBMISSION);
         PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         sendEmail(phase);
     }

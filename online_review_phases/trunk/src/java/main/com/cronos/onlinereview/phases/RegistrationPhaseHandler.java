@@ -91,9 +91,6 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.RegistrationPhaseHandler";
 
-    /** constant for registration phase type. */
-    private static final String PHASE_TYPE_REGISTRATION = "Registration";
-
     /**
      * Represents the logger for this class. Is initialized during class loading and never
      * changed after that.
@@ -171,7 +168,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_REGISTRATION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_REGISTRATION);
 
         // will throw exception if phase status is neither "Scheduled" nor  "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -235,7 +232,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_REGISTRATION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_REGISTRATION);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
@@ -289,10 +286,8 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         for (Resource resource : resources) {
             Map<String, Object> values = new HashMap<String, Object>();
-            values.put("REGISTRANT_HANDLE", PhasesHelper.notNullValue(resource
-                .getProperty(PhasesHelper.HANDLE)));
-            values.put("REGISTRANT_RELIABILITY", PhasesHelper.notNullValue(resource
-                .getProperty("Reliability")));
+            values.put("REGISTRANT_HANDLE", PhasesHelper.notNullValue(resource.getProperty(PhasesHelper.HANDLE)));
+            values.put("REGISTRANT_RELIABILITY", PhasesHelper.notNullValue(resource.getProperty("Reliability")));
             values.put("REGISTRANT_RATING", PhasesHelper.notNullValue(resource.getProperty("Rating")));
             result.add(values);
         }
@@ -308,12 +303,11 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
      *             if there is any error occurred while processing the phase.
      */
     private boolean areRegistrationsEnough(Phase phase) throws PhaseHandlingException {
-        if (phase.getAttribute("Registration Number") == null) {
+        if (phase.getAttribute(Constants.PHASE_CRITERIA_REGISTRATION_NUMBER) == null) {
             return true;
         }
 
-        int regNumber = PhasesHelper.getIntegerAttribute(phase, "Registration Number");
-
+        int regNumber = PhasesHelper.getIntegerAttribute(phase, Constants.PHASE_CRITERIA_REGISTRATION_NUMBER);
         Resource[] resources = searchResources(phase);
         return (regNumber <= resources.length);
     }
@@ -330,7 +324,7 @@ public class RegistrationPhaseHandler extends AbstractPhaseHandler {
         ResourceManager resourceManager = getManagerHelper().getResourceManager();
         try {
             long submitterRoleId = LookupHelper.getResourceRole(resourceManager,
-                PhasesHelper.SUBMITTER_ROLE_NAME).getId();
+                Constants.ROLE_SUBMITTER).getId();
             Filter roleIdFilter = ResourceFilterBuilder.createResourceRoleIdFilter(submitterRoleId);
             Filter projectIdfilter = ResourceFilterBuilder.createProjectIdFilter(phase.getProject().getId());
             Filter fullFilter = new AndFilter(roleIdFilter, projectIdfilter);

@@ -88,9 +88,6 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.SubmissionPhaseHandler";
 
-    /** constant for appeals phase type. */
-    private static final String PHASE_TYPE_SUBMISSION = "Submission";
-
     /**
      * Create a new instance of SubmissionPhaseHandler using the default
      * namespace for loading configuration settings.
@@ -150,7 +147,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SUBMISSION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_SUBMISSION);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -194,7 +191,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_SUBMISSION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_SUBMISSION);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
@@ -219,7 +216,7 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     private boolean hasAnySubmission(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
         Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+            phase.getProject().getId(), Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
 
         // for stop phase, we are going to support more information now from version 1.2
         if (values != null) {

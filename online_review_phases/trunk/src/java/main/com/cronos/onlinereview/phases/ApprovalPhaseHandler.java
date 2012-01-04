@@ -157,7 +157,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_APPROVAL);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_APPROVAL);
 
         // Throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -178,9 +178,8 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
             // Get the number of required approval (use reviewer number
             // criteria), if it's not set, fallback value is used
-            if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-                approverNum = PhasesHelper.getIntegerAttribute(phase,
-                        PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+            if (phase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER) != null) {
+                approverNum = PhasesHelper.getIntegerAttribute(phase, Constants.PHASE_CRITERIA_REVIEWER_NUMBER);
             }
 
             // version 1.1 : Return true if approver number is met
@@ -239,7 +238,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_APPROVAL);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_APPROVAL);
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         Map<String, Object> values = new HashMap<String, Object>();
@@ -248,8 +247,8 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
             // find the number of approvers
             int approvers = getApproverNumbers(phase);
             int approverNum = 1;
-            if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-                approverNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+            if (phase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER) != null) {
+                approverNum = PhasesHelper.getIntegerAttribute(phase, Constants.PHASE_CRITERIA_REVIEWER_NUMBER);
             }
             values.put("N_APPROVERS", approvers);
             values.put("N_REQUIRED_APPROVERS", approverNum);
@@ -257,7 +256,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
         } else {
             // Check whether there is approval review rejected
             boolean rejected = checkScorecardsRejected(phase);
-            values.put("RESULT", rejected ? PhasesHelper.REJECTED : PhasesHelper.APPROVED);
+            values.put("RESULT", rejected ? "rejected" : "approved");
 
             if (rejected) {
                 // approval review rejected, insert final review/final fix phases
@@ -272,9 +271,9 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
                     // get the id of the newly created final review phase
                     long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
-                    Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_FINAL_REVIEW, false, true);
+                    Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_FINAL_REVIEW, false, true);
                     PhasesHelper.createAggregatorOrFinalReviewer(previousFinalReviewPhase, getManagerHelper(),
-                        "Final Reviewer", finalReviewPhaseId, operator);
+                        Constants.ROLE_FINAL_REVIEWER, finalReviewPhaseId, operator);
                 } catch (PhaseManagementException e) {
                     throw new PhaseHandlingException("Problem when persisting phases", e);
                 }
@@ -308,7 +307,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
      */
     private int getApproverNumbers(Phase phase) throws PhaseHandlingException {
         return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(),
-            new String[] {PhasesHelper.APPROVER_ROLE_NAME }, phase.getProject().getId()).length;
+            new String[] {Constants.ROLE_APPROVER }, phase.getProject().getId()).length;
     }
 
     /**
@@ -321,7 +320,7 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     private boolean checkScorecardsCommitted(Phase phase) throws PhaseHandlingException {
         // Get all approval scorecards and leave only those which relate to specified phase
         Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(getManagerHelper(),
-            phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
+            phase.getProject().getId(), new String[] {Constants.ROLE_APPROVER }, null);
         approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
         // No review has been filled, return false
@@ -331,17 +330,16 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
 
         // approverNum default to 1
         int approverNum = 1;
-        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-            approverNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+        if (phase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER) != null) {
+            approverNum = PhasesHelper.getIntegerAttribute(phase, Constants.PHASE_CRITERIA_REVIEWER_NUMBER);
         }
 
-        // counter for committed review
+        // counter for committed reviews
         int commitedCount = 0;
 
-        // Check approval scorecards are committed and return false if there is at least one uncommited
-        // scorecard
-        for (int i = 0; i < approveReviews.length; i++) {
-            if (approveReviews[i].isCommitted()) {
+        // Check approval scorecards are committed and return false if there is at least one uncommited scorecard
+        for (Review approveReview : approveReviews) {
+            if (approveReview.isCommitted()) {
                 commitedCount++;
             }
         }
@@ -362,30 +360,29 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     private boolean checkScorecardsRejected(Phase phase) throws PhaseHandlingException {
         try {
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(
-                getManagerHelper(), phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
+                getManagerHelper(), phase.getProject().getId(), new String[] {Constants.ROLE_APPROVER }, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // check for approved/rejected comments.
             boolean rejected = false;
-            for (int reviewIndex = 0; reviewIndex < approveReviews.length; reviewIndex++) {
-                if (!approveReviews[reviewIndex].isCommitted()) {
+            for (Review approveReview : approveReviews) {
+                if (!approveReview.isCommitted()) {
                     continue;
                 }
 
-                Comment[] comments = approveReviews[reviewIndex].getAllComments();
+                Comment[] comments = approveReview.getAllComments();
 
-                for (int i = 0; i < comments.length; i++) {
-                    String value = (String) comments[i].getExtraInfo();
-                    if (comments[i].getCommentType().getName().equals("Approval Review Comment")) {
-                        if (PhasesHelper.APPROVED.equalsIgnoreCase(value)
-                            || PhasesHelper.ACCEPTED.equalsIgnoreCase(value)) {
+                for (Comment comment : comments) {
+                    String value = (String) comment.getExtraInfo();
+                    if (comment.getCommentType().getName().equals(Constants.COMMENT_TYPE_APPROVAL_REVIEW_COMMENT)) {
+                        if (Constants.COMMENT_VALUE_APPROVED.equalsIgnoreCase(value)
+                                || Constants.COMMENT_VALUE_ACCEPTED.equalsIgnoreCase(value)) {
                             continue;
-                        } else if (PhasesHelper.REJECTED.equalsIgnoreCase(value)) {
+                        } else if (Constants.COMMENT_VALUE_REJECTED.equalsIgnoreCase(value)) {
                             rejected = true;
                             break;
                         } else {
-                            throw new PhaseHandlingException(
-                                "Comment can either be Approved, Accepted or Rejected.");
+                            throw new PhaseHandlingException("Comment can either be Approved, Accepted or Rejected.");
                         }
                     }
                 }
@@ -410,22 +407,22 @@ public class ApprovalPhaseHandler extends AbstractPhaseHandler {
     private boolean checkOtherFixesRequired(Phase phase) throws PhaseHandlingException {
         try {
             Review[] approveReviews = PhasesHelper.searchProjectReviewsForResourceRoles(
-                getManagerHelper(), phase.getProject().getId(), new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
+                getManagerHelper(), phase.getProject().getId(), new String[] {Constants.ROLE_APPROVER }, null);
             approveReviews = PhasesHelper.getApprovalPhaseReviews(approveReviews, phase);
 
             // check for approved/rejected comments.
             boolean required = false;
-            for (int reviewIndex = 0; reviewIndex < approveReviews.length; reviewIndex++) {
-                if (!approveReviews[reviewIndex].isCommitted()) {
+            for (Review approveReview : approveReviews) {
+                if (!approveReview.isCommitted()) {
                     continue;
                 }
 
-                Comment[] comments = approveReviews[reviewIndex].getAllComments();
+                Comment[] comments = approveReview.getAllComments();
 
-                for (int i = 0; i < comments.length; i++) {
-                    String value = (String) comments[i].getExtraInfo();
-                    if (comments[i].getCommentType().getName().equals("Approval Review Comment - Other Fixes")) {
-                        if ("Required".equalsIgnoreCase(value)) {
+                for (Comment comment : comments) {
+                    String value = (String) comment.getExtraInfo();
+                    if (comment.getCommentType().getName().equals(Constants.COMMENT_TYPE_APPROVAL_REVIEW_COMMENT_OTHER_FIXES)) {
+                        if (Constants.COMMENT_VALUE_REQUIRED.equalsIgnoreCase(value)) {
                             required = true;
                             break;
                         }

@@ -707,13 +707,13 @@ final class ManagerHelper {
         setUploadFieldsSearchable(submissionSearchBundle);
 
         // get the id generators...
-        IDGenerator uploadIdGenerator = null;
-        IDGenerator uploadTypeIdGenerator = null;
-        IDGenerator uploadStatusIdGenerator = null;
-        IDGenerator submissionIdGenerator = null;
-        IDGenerator submissionStatusIdGenerator = null;
+        IDGenerator uploadIdGenerator;
+        IDGenerator uploadTypeIdGenerator;
+        IDGenerator uploadStatusIdGenerator;
+        IDGenerator submissionIdGenerator;
+        IDGenerator submissionStatusIdGenerator;
         // added in version 1.4
-        IDGenerator submissionTypeIdGenerator = null;
+        IDGenerator submissionTypeIdGenerator;
 
         try {
             uploadIdGenerator = IDGeneratorFactory.getIDGenerator(uploadIdGeneratorName);
@@ -788,9 +788,9 @@ final class ManagerHelper {
         setResourceFieldsSearchable(notificationTypeSearchBundle);
 
         // get the id generators...
-        IDGenerator resourceIdGenerator = null;
-        IDGenerator resourceRoleIdGenerator = null;
-        IDGenerator notificationTypeIdGenerator = null;
+        IDGenerator resourceIdGenerator;
+        IDGenerator resourceRoleIdGenerator;
+        IDGenerator notificationTypeIdGenerator;
 
         try {
             resourceIdGenerator = IDGeneratorFactory.getIDGenerator(resourceIdGeneratorName);
@@ -911,8 +911,8 @@ final class ManagerHelper {
                 PROP_CONNECTION_FACTORY_NS);
         String connectionName = PhasesHelper.getPropertyValue(namespace, PROP_CONNECTION_NAME, false);
 
-        Object[] params = null;
-        Class<?>[] paramTypes = null;
+        Object[] params;
+        Class<?>[] paramTypes;
 
         if (PhasesHelper.isStringNullOrEmpty(connectionName)) {
             // if connection name not specified, call constructor with

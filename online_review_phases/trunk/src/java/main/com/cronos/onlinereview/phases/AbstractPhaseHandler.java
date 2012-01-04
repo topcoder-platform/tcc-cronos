@@ -288,7 +288,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @since 1.6
      */
     private final String studioProjectDetailsBaseURL;
-    
+
     /**
      * This constant stores Copilot project details page URL.
      *
@@ -346,7 +346,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
         // get studio project details base url
         studioProjectDetailsBaseURL = managerHelper.getStudioProjectDetailsBaseURL();
-        
+
         // get copilot posting project details base url.
         copilotProjectDetailsBaseURL = managerHelper.getCopilotProjectDetailsBaseURL();
     }
@@ -456,8 +456,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @throws PhaseHandlingException if there was an error retrieving information or sending email.
      */
     private void sendEmail(Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
-
-        Project project = null;
+        Project project;
 
         // maps user IDs to EmailScheme
         Map<Long, EmailScheme> userEmailSchemes = new HashMap<Long, EmailScheme>();
@@ -481,12 +480,12 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 if (!contains(externalIds, externalId)) {
                     continue;
                 }
-                
+
                 EmailScheme emailScheme = getEmailSchemeForResource(resource, project.getProjectCategory());
                 if (emailScheme == null) {
                     continue;
                 }
-                
+
                 // since one user could have more than one role in project, we only need to set out
                 // one email for all the roles of the same user,
                 // we need to find the email scheme with largest priority here
@@ -531,7 +530,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                         values, bStart);
 
                 TCSEmailMessage message = new TCSEmailMessage();
-                message.setSubject(options.getSubject() + ": " + (String) project.getProperty(PROJECT_NAME));
+                message.setSubject(options.getSubject() + ": " + project.getProperty(PROJECT_NAME));
                 message.setBody(docGenerator.applyTemplate(root));
                 message.setFromAddress(options.getFromAddress());
                 message.setToAddress(user.getEmail(), TCSEmailMessage.TO);
@@ -558,7 +557,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
             throw new PhaseHandlingException("Problem with sending email", e);
         }
     }
-    
+
 	/**
 	* Finds email scheme for passed resource.
 	*
@@ -578,17 +577,17 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 emailScheme.getProjectCategories().contains(""+projectCategory.getId());
             boolean containsRole = emailScheme.getRoles().contains("*") ||
                 emailScheme.getRoles().contains(resource.getResourceRole().getName());
-                
+
             if (containsProjectType && containsProjectCategory && containsRole) {
                 if (priorityEmailScheme == null || priorityEmailScheme.getPriority() < emailScheme.getPriority()) {
                     priorityEmailScheme = emailScheme;
                 }
             }
         }
-        
+
         return priorityEmailScheme;
     }
-    
+
     /**
      * This method sets the values of the template fields with user, project information and lookup values
      * based on bStart variable which is true if phase is to start, false if phase is to end.
@@ -624,13 +623,13 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      */
     private void setNodes(Node[] nodes, ExternalUser user, Project project,
         Phase phase, Map<String, Object> values, boolean bStart) throws PhaseHandlingException {
-        for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i] instanceof Field) {
-                setField((Field) nodes[i], user, project, phase, values, bStart);
-            } else if (nodes[i] instanceof Loop) {
-                setLoopItems((Loop) nodes[i], user, project, phase, values, bStart);
-            } else if (nodes[i] instanceof Condition) {
-                Condition condition = ((Condition) nodes[i]);
+        for (Node node : nodes) {
+            if (node instanceof Field) {
+                setField((Field) node, user, project, phase, values, bStart);
+            } else if (node instanceof Loop) {
+                setLoopItems((Loop) node, user, project, phase, values, bStart);
+            } else if (node instanceof Condition) {
+                Condition condition = ((Condition) node);
 
                 if (values.containsKey(condition.getName())) {
                     condition.setValue(values.get(condition.getName()).toString());
@@ -700,7 +699,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
         } else if ("PROJECT_VERSION".equals(field.getName())) {
             field.setValue((String) project.getProperty(PROJECT_VERSION));
         } else if ("PROJECT_CATEGORY".equals(field.getName())) {
-            field.setValue((String) project.getProjectCategory().getName());
+            field.setValue(project.getProjectCategory().getName());
         } else if ("PHASE_OPERATION".equals(field.getName())) {
             field.setValue(bStart ? "start" : "end");
         } else if ("PHASE_TYPE".equals(field.getName())) {
@@ -752,7 +751,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
         //'SendEmail' is optional, the value could be 'Yes' or 'No', or 'True' or 'False', case-insenstive
         options.setSend(parseSendEmailPropValue(PhasesHelper.getPropertyValue(namespace,
-                    format(PROP_SEND_EMAIL, propertyPrefix), false)));
+                format(PROP_SEND_EMAIL, propertyPrefix), false)));
 
         return options;
     }
@@ -795,7 +794,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      */
     private static List<EmailScheme> getEmailSchemes(String namespace)
         throws ConfigurationException {
-        
+
         try {
             com.topcoder.util.config.Property schemesProperty =
                 ConfigManager.getInstance().getPropertyObject(namespace, "Schemes");
@@ -810,12 +809,12 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                 String schemeName = (String) schemeNames.nextElement();
                 if (schemeName != null) {
                     EmailScheme emailScheme = new EmailScheme();
-                    
+
                     String[] rolesArray = schemesProperty.getProperty(schemeName).getProperty("Roles").getValues();
                     if (rolesArray != null && rolesArray.length > 0) {
                         emailScheme.setRoles(java.util.Arrays.asList(rolesArray));
                     }
-                    
+
                     Property projectTypesProp = schemesProperty.getProperty(schemeName).getProperty("ProjectTypes");
                     if (projectTypesProp != null && projectTypesProp.getValues().length > 0) {
                         emailScheme.setProjectTypes(java.util.Arrays.asList(projectTypesProp.getValues()));
@@ -834,7 +833,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
                             throw new ConfigurationException("Can't parse priority value : " + priority, nfe);
                         }
                     }
-                    
+
                     //look up 'Scheme/xxPhaseEmail/xx'
                     if (PhasesHelper.doesPropertyExist(namespace, schemeName)) {
                         //if the configuration does not exist, create not send email options
@@ -850,7 +849,7 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
 
                         emailScheme.setStartEmailOptions(startEmailOption);
                         emailScheme.setEndEmailOptions(endEmailOption);
-                        schemes.add(emailScheme);                                                              
+                        schemes.add(emailScheme);
                     }
                 }
             }
@@ -894,8 +893,8 @@ public abstract class AbstractPhaseHandler implements PhaseHandler {
      * @return true if exists
      */
     private static boolean contains(long[] ids, long id) {
-        for (int i = 0; i < ids.length; i++) {
-            if (ids[i] == id) {
+        for (long id1 : ids) {
+            if (id1 == id) {
                 return true;
             }
         }

@@ -114,9 +114,6 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.AppealsResponsePhaseHandler";
 
-    /** constant for appeals response phase type. */
-    private static final String PHASE_TYPE_APPEALS_RESPONSE = "Appeals Response";
-
     /**
      * Create a new instance of AppealsResponsePhaseHandler using the default
      * namespace for loading configuration settings.
@@ -173,7 +170,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS_RESPONSE);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_APPEALS_RESPONSE);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -238,7 +235,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_APPEALS_RESPONSE);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_APPEALS_RESPONSE);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
@@ -253,13 +250,13 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             updateSubmissions(phase, operator, values);
             
             Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-                phase.getProject().getId(), PhasesHelper.CONTEST_SUBMISSION_TYPE);
+                phase.getProject().getId(), Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
             
             if (subs==null || subs.length == 0) {
                 // if there is no active submissions after appeal response, insert the post-mortem phase
                 PhasesHelper.insertPostMortemPhase(phase.getProject(), phase, getManagerHelper(), operator);
             }
-            Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, "Aggregation", true, true));
+            Resource[] aggregators = getAggregators(PhasesHelper.locatePhase(phase, Constants.PHASE_AGGREGATION, true, true));
             values.put("N_AGGREGATOR", aggregators.length);
         }
 
@@ -278,7 +275,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
     private Resource[] getAggregators(Phase aggregationPhase) throws PhaseHandlingException {
         Resource[] aggregators;
         aggregators = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-            new String[] {"Aggregator" }, aggregationPhase.getId());
+            new String[] {Constants.ROLE_AGGREGATOR }, aggregationPhase.getId());
         return aggregators;
     }
 
@@ -309,7 +306,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
 
         try {
             // locate previous review phase
-            Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_REVIEW, false, true);
+            Phase reviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_REVIEW, false, true);
 
             Submission[] subs = PhasesHelper.updateSubmissionsResults(getManagerHelper(), reviewPhase,
                 operator, false, true);
@@ -347,7 +344,7 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
      */
     private boolean allAppealsResolved(Phase phase) throws PhaseHandlingException {
         // Find appeals : Go back to the nearest Review phase
-        Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_REVIEW, false, false);
+        Phase reviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_REVIEW, false, false);
         if (reviewPhase == null) {
             return false;
         }
@@ -358,33 +355,33 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             getManagerHelper(), reviewPhaseId, PhasesHelper.REVIEWER_ROLE_NAMES, null);
 
         // for each review
-        for (int i = 0; i < reviews.length; i++) {
+        for (Review review : reviews) {
             int appealCount = 0;
             int responseCount = 0;
 
-            Comment[] comments = reviews[i].getAllComments();
+            Comment[] comments = review.getAllComments();
 
-            for (int c = 0; c < comments.length; c++) {
-                String commentType = comments[c].getCommentType().getName();
+            for (Comment comment : comments) {
+                String commentType = comment.getCommentType().getName();
 
-                if ("Appeal".equals(commentType)) {
+                if (Constants.COMMENT_TYPE_APPEAL.equals(commentType)) {
                     appealCount++;
-                } else if ("Appeal Response".equals(commentType)) {
+                } else if (Constants.COMMENT_TYPE_APPEAL_RESPONSE.equals(commentType)) {
                     responseCount++;
                 }
             }
 
-            Item[] items = reviews[i].getAllItems();
+            Item[] items = review.getAllItems();
 
-            for (int j = 0; j < items.length; ++j) {
-                comments = items[j].getAllComments();
+            for (Item item : items) {
+                comments = item.getAllComments();
 
-                for (int c = 0; c < comments.length; c++) {
-                    String commentType = comments[c].getCommentType().getName();
+                for (Comment comment : comments) {
+                    String commentType = comment.getCommentType().getName();
 
-                    if ("Appeal".equals(commentType)) {
+                    if (Constants.COMMENT_TYPE_APPEAL.equals(commentType)) {
                         appealCount++;
-                    } else if ("Appeal Response".equals(commentType)) {
+                    } else if (Constants.COMMENT_TYPE_APPEAL_RESPONSE.equals(commentType)) {
                         responseCount++;
                     }
                 }

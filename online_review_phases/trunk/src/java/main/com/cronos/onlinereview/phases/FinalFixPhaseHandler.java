@@ -70,11 +70,11 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
      * final review worksheet.
      */
     private static final String[] COMMENT_TYPES_TO_COPY = new String[] {
-        "Comment", "Required", "Recommended", "Appeal",
-        "Appeal Response", "Aggregation Comment",
-        "Aggregation Review Comment", "Submitter Comment",
-        "Final Fix Comment", "Final Review Comment",
-        "Manager Comment" };
+        Constants.COMMENT_TYPE_COMMENT, Constants.COMMENT_TYPE_REQUIRED,
+        Constants.COMMENT_TYPE_RECOMMENDED, Constants.COMMENT_TYPE_APPEAL,
+        Constants.COMMENT_TYPE_APPEAL_RESPONSE, Constants.COMMENT_TYPE_AGGREGATION_COMMENT,
+        Constants.COMMENT_TYPE_SUBMITTER_COMMENT, Constants.COMMENT_TYPE_MANAGER_COMMENT,
+        Constants.COMMENT_TYPE_FINAL_FIX_COMMENT, Constants.COMMENT_TYPE_FINAL_REVIEW_COMMENT};
 
     /**
      * Create a new instance of FinalFixPhaseHandler using the default namespace
@@ -132,15 +132,14 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_FINAL_FIX);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_FINAL_FIX);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         OperationCheckResult result;
         if (toStart) {
-            // return true if all dependencies have stopped and start time has
-            // been reached.
+            // return true if all dependencies have stopped and start time has been reached.
             result = PhasesHelper.checkPhaseCanStart(phase);
             if (!result.isSuccess()) {
                 return result;
@@ -148,13 +147,13 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
             // Get nearest Final Review phase
             Phase finalReviewPhase = PhasesHelper.locatePhase(phase,
-                            PhasesHelper.PHASE_FINAL_REVIEW, true, false);
+                            Constants.PHASE_FINAL_REVIEW, true, false);
             if (finalReviewPhase == null) {
                 return new OperationCheckResult("Final Review phase cannot be located");
             }
 
             Resource[] finalReviewer = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
+                new String[] {Constants.ROLE_FINAL_REVIEWER }, finalReviewPhase.getId());
 
             // return true if there is a final reviewer
             if (finalReviewer.length == 1) {
@@ -206,7 +205,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_FINAL_FIX);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_FINAL_FIX);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
@@ -228,9 +227,9 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
      */
     private void checkFinalReviewWorksheet(Phase phase, String operator) throws PhaseHandlingException {
         // Get nearest Final Review phase
-        Phase finalReviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_FINAL_REVIEW, true, true);
-        Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_FINAL_REVIEW, false, false);
-        Phase previousAprovalPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_APPROVAL, false, false);
+        Phase finalReviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_FINAL_REVIEW, true, true);
+        Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_FINAL_REVIEW, false, false);
+        Phase previousAprovalPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_APPROVAL, false, false);
 
         try {
             // Sometimes phase management framework fails to open the final fix phase (e.g. due to a DB error)
@@ -238,13 +237,13 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             // worksheet would be created again on the next iteration of the autopilot. To prevent the duplication
             // this method checks if the final review worksheet already exists for this phase and returns if it does.
             if (PhasesHelper.getWorksheet(getManagerHelper(),
-                PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId()) != null) {
+                Constants.ROLE_FINAL_REVIEWER, phase.getId()) != null) {
                 return;
             }
 
             // Search for id of the Final Reviewer
             Resource[] resources = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, finalReviewPhase.getId());
+                new String[] {Constants.ROLE_FINAL_REVIEWER }, finalReviewPhase.getId());
 
             if (resources.length == 0) {
                 throw new PhaseHandlingException(
@@ -255,7 +254,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             if (previousAprovalPhase != null) {
                 Review[] approvalWorksheets = PhasesHelper.searchProjectReviewsForResourceRoles(
                     getManagerHelper(), phase.getProject().getId(),
-                    new String[] {PhasesHelper.APPROVER_ROLE_NAME }, null);
+                    new String[] {Constants.ROLE_APPROVER }, null);
 
                 approvalWorksheets = PhasesHelper.getApprovalPhaseReviews(approvalWorksheets, previousAprovalPhase);
 
@@ -266,17 +265,17 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                 finalWorksheet = new Review();
 
                 // Copy the review items.
-                for (int r = 0; r < approvalWorksheets.length; r++) {
-                    finalWorksheet.setScorecard(approvalWorksheets[r].getScorecard());
-                    finalWorksheet.setSubmission(approvalWorksheets[r].getSubmission());
+                for (Review approvalWorksheet : approvalWorksheets) {
+                    finalWorksheet.setScorecard(approvalWorksheet.getScorecard());
+                    finalWorksheet.setSubmission(approvalWorksheet.getSubmission());
 
                     // No review comments to copy from approval, only the review item comments.
-                    PhasesHelper.copyReviewItems(approvalWorksheets[r], finalWorksheet, COMMENT_TYPES_TO_COPY);
+                    PhasesHelper.copyReviewItems(approvalWorksheet, finalWorksheet, COMMENT_TYPES_TO_COPY);
                 }
 
             } else if (previousFinalReviewPhase != null) {
                 finalWorksheet = PhasesHelper.getWorksheet(
-                    getManagerHelper(), PhasesHelper.FINAL_REVIEWER_ROLE_NAME, previousFinalReviewPhase.getId());
+                    getManagerHelper(), Constants.ROLE_FINAL_REVIEWER, previousFinalReviewPhase.getId());
             }
 
             if (finalWorksheet == null) {
@@ -288,13 +287,13 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                 finalWorksheet.setCommitted(false);
 
                 // Locate the nearest backward Aggregation phase
-                Phase aggPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
+                Phase aggPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_AGGREGATION, false, false);
                 if (aggPhase != null) {
                     // Create final review from aggregation worksheet
 
                     // Search the aggregated review scorecard
                     Review aggWorksheet = PhasesHelper.getWorksheet(getManagerHelper(),
-                        "Aggregator", aggPhase.getId());
+                        Constants.ROLE_AGGREGATOR, aggPhase.getId());
 
                     if (aggWorksheet == null) {
                         throw new PhaseHandlingException("aggregation worksheet does not exist.");
@@ -309,7 +308,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     finalWorksheet.setScorecard(aggWorksheet.getScorecard());
                     finalWorksheet.setSubmission(aggWorksheet.getSubmission());
                 } else {
-                    Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_REVIEW, false, true);
+                    Phase reviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_REVIEW, false, true);
 
                     // find winning submitter.
                     Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
@@ -323,11 +322,11 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                     UploadManager uploadManager = getManagerHelper().getUploadManager();
                     Filter winnerFilter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
 
-                    long activeStatusId = LookupHelper.getSubmissionStatus(uploadManager, "Active").getId();
+                    long activeStatusId = LookupHelper.getSubmissionStatus(uploadManager, Constants.SUBMISSION_STATUS_ACTIVE).getId();
                     Filter submissionStatusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(activeStatusId);
 
                     long submissionTypeId = LookupHelper.getSubmissionType(uploadManager,
-                        PhasesHelper.CONTEST_SUBMISSION_TYPE).getId();
+                        Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION).getId();
                     Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
 
                     Filter filter = new AndFilter(Arrays.asList(winnerFilter, submissionTypeFilter,
@@ -347,11 +346,11 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
                         getManagerHelper(), reviewPhase.getId(), PhasesHelper.REVIEWER_ROLE_NAMES,
                         winningSubmissionId);
 
-                    for (int r = 0; r < reviews.length; r++) {
-                        finalWorksheet.setScorecard(reviews[r].getScorecard());
-                        finalWorksheet.setSubmission(reviews[r].getSubmission());
-                        PhasesHelper.copyComments(reviews[r], finalWorksheet, COMMENT_TYPES_TO_COPY, null);
-                        PhasesHelper.copyReviewItems(reviews[r], finalWorksheet, COMMENT_TYPES_TO_COPY);
+                    for (Review review : reviews) {
+                        finalWorksheet.setScorecard(review.getScorecard());
+                        finalWorksheet.setSubmission(review.getSubmission());
+                        PhasesHelper.copyComments(review, finalWorksheet, COMMENT_TYPES_TO_COPY, null);
+                        PhasesHelper.copyReviewItems(review, finalWorksheet, COMMENT_TYPES_TO_COPY);
                     }
                 }
 
@@ -389,7 +388,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             Upload finalFix = getFinalFix(phase);
             if (finalFix != null) {
                 finalFix.setUploadStatus(LookupHelper.getUploadStatus(
-                    getManagerHelper().getUploadManager(), "Deleted"));
+                    getManagerHelper().getUploadManager(), Constants.UPLOAD_STATUS_DELETED));
                 getManagerHelper().getUploadManager().updateUpload(finalFix, operator);
             }
         } catch (UploadPersistenceException e) {
@@ -407,8 +406,8 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         UploadManager uploadManager = getManagerHelper().getUploadManager();
 
         try {
-            long uploadTypeId = LookupHelper.getUploadType(uploadManager, "Final Fix").getId();
-            long uploadStatusId = LookupHelper.getUploadStatus(uploadManager, "Active").getId();
+            long uploadTypeId = LookupHelper.getUploadType(uploadManager, Constants.UPLOAD_TYPE_FINAL_FIX).getId();
+            long uploadStatusId = LookupHelper.getUploadStatus(uploadManager, Constants.UPLOAD_STATUS_ACTIVE).getId();
 
             // get final fix upload based on "Final Fix" type, "Active" status
             // and winning submitter resource id filters.

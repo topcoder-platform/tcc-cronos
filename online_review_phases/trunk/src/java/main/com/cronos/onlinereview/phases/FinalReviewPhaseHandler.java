@@ -84,9 +84,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.FinalReviewPhaseHandler";
 
-    /** constant for final review comment. */
-    private static final String FINAL_REVIEW_COMMENT = "Final Review Comment";
-
     /**
     * Represents duration of final fix phase to insert.
     */
@@ -148,14 +145,13 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_FINAL_REVIEW);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_FINAL_REVIEW);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
         if (toStart) {
-            // return true if all dependencies have stopped and start time has
-            // been reached
+            // return true if all dependencies have stopped and start time has been reached
             return PhasesHelper.checkPhaseCanStart(phase);
         } else {
 
@@ -206,7 +202,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PhasesHelper.PHASE_FINAL_REVIEW);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_FINAL_REVIEW);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
 
@@ -219,7 +215,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             // an approval phase after final review is approved
             values.put("RESULT", checkFinalReview(phase, operator) ? "rejected" : "approved");
 
-            Phase approvalPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_APPROVAL, true, false);
+            Phase approvalPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_APPROVAL, true, false);
             if (approvalPhase != null) {
                 int approvers = getApproverNumbers(approvalPhase);
                 int approverNum = getRequiredReviewersNumber(approvalPhase);
@@ -246,8 +242,8 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private int getRequiredReviewersNumber(Phase phase) throws PhaseHandlingException {
         int approverNum = 1;
-        if (phase.getAttribute(PhasesHelper.REVIEWER_NUMBER_PROPERTY) != null) {
-            approverNum = PhasesHelper.getIntegerAttribute(phase, PhasesHelper.REVIEWER_NUMBER_PROPERTY);
+        if (phase.getAttribute(Constants.PHASE_CRITERIA_REVIEWER_NUMBER) != null) {
+            approverNum = PhasesHelper.getIntegerAttribute(phase, Constants.PHASE_CRITERIA_REVIEWER_NUMBER);
         }
         return approverNum;
     }
@@ -262,7 +258,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private int getFinalReviewerNumber(Phase phase) throws PhaseHandlingException {
         return PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-            new String[] {PhasesHelper.FINAL_REVIEWER_ROLE_NAME }, phase.getId()).length;
+            new String[] {Constants.ROLE_FINAL_REVIEWER }, phase.getId()).length;
     }
 
     /**
@@ -274,7 +270,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private int getApproverNumbers(Phase phase) throws PhaseHandlingException {
         return PhasesHelper.searchProjectResourcesForRoleNames(getManagerHelper(),
-            new String[] {PhasesHelper.APPROVER_ROLE_NAME }, phase.getProject().getId()).length;
+            new String[] {Constants.ROLE_APPROVER }, phase.getProject().getId()).length;
 
     }
 
@@ -288,7 +284,7 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private boolean isFinalWorksheetCommitted(Phase phase) throws PhaseHandlingException {
         Review finalWorksheet = PhasesHelper.getWorksheet(getManagerHelper(),
-            PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
+            Constants.ROLE_FINAL_REVIEWER, phase.getId());
         return ((finalWorksheet != null) && finalWorksheet.isCommitted());
     }
 
@@ -315,65 +311,56 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
         try {
             ManagerHelper managerHelper = getManagerHelper();
             Review finalWorksheet = PhasesHelper.getWorksheet(managerHelper,
-                PhasesHelper.FINAL_REVIEWER_ROLE_NAME, phase.getId());
+                Constants.ROLE_FINAL_REVIEWER, phase.getId());
 
             // check for approved/rejected comments.
             Comment[] comments = finalWorksheet.getAllComments();
             boolean rejected = false;
 
-            for (int i = 0; i < comments.length; i++) {
-                String value = (String) comments[i].getExtraInfo();
+            for (Comment comment : comments) {
+                String value = (String) comment.getExtraInfo();
 
-                if (comments[i].getCommentType().getName().equals(
-                        FINAL_REVIEW_COMMENT)) {
-                    if (PhasesHelper.APPROVED.equalsIgnoreCase(value)
-                                    || PhasesHelper.APPROVED.equalsIgnoreCase(value)) {
+                if (comment.getCommentType().getName().equals(Constants.COMMENT_TYPE_FINAL_REVIEW_COMMENT)) {
+                    if (Constants.COMMENT_VALUE_APPROVED.equalsIgnoreCase(value)
+                            || Constants.COMMENT_VALUE_APPROVED.equalsIgnoreCase(value)) {
                         continue;
-                    } else if (PhasesHelper.REJECTED.equalsIgnoreCase(value)) {
+                    } else if (Constants.COMMENT_VALUE_REJECTED.equalsIgnoreCase(value)) {
                         rejected = true;
 
                         break;
                     } else {
-                        throw new PhaseHandlingException(
-                                        "Comment can either be Approved or Rejected.");
+                        throw new PhaseHandlingException("Comment can either be Approved or Rejected.");
                     }
                 }
             }
 
             if (rejected) {
                 // Extra info for Final Review Comment must be cleared.
-                for (int i = 0; i < comments.length; i++) {
-
-                    if (comments[i].getCommentType().getName().equals(
-                            FINAL_REVIEW_COMMENT)) {
-                        comments[i].resetExtraInfo();
+                for (Comment comment : comments) {
+                    if (comment.getCommentType().getName().equals(Constants.COMMENT_TYPE_FINAL_REVIEW_COMMENT)) {
+                        comment.resetExtraInfo();
                     }
                 }
 
                 Project currentPrj = phase.getProject();
 
                 // use helper method to insert final fix/final review phases
-                int currentPhaseIndex = PhasesHelper
-                                .insertFinalFixAndFinalReview(
-                                                phase,
-                                                managerHelper.getPhaseManager(),
-                                                operator, finalFixDuration);
+                int currentPhaseIndex = PhasesHelper.insertFinalFixAndFinalReview(
+                    phase,managerHelper.getPhaseManager(),operator, finalFixDuration);
 
                 // get the id of the newly created final review phase
-                long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2]
-                                .getId();
+                long finalReviewPhaseId = currentPrj.getAllPhases()[currentPhaseIndex + 2].getId();
 
                 PhasesHelper.createAggregatorOrFinalReviewer(phase,
-                                managerHelper, PhasesHelper.FINAL_REVIEWER_ROLE_NAME,
+                                managerHelper, Constants.ROLE_FINAL_REVIEWER,
                                 finalReviewPhaseId, operator);
             } else {
                 // Newly added in version 1.1
                 // the final review is approved, add approval phase if it does not exist yet
                 // and if there is corresponding property value
-                Phase approvalPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_APPROVAL, true, false);
+                Phase approvalPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_APPROVAL, true, false);
 
-                com.topcoder.management.project.ProjectManager projectManager =
-                    getManagerHelper().getProjectManager();
+                com.topcoder.management.project.ProjectManager projectManager = getManagerHelper().getProjectManager();
                 com.topcoder.management.project.Project project =
                     projectManager.getProject(phase.getProject().getId());
                 String approvalRequired = (String) project.getProperty("Approval Required");

@@ -89,18 +89,15 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      */
     public static final String DEFAULT_NAMESPACE = "com.cronos.onlinereview.phases.AggregationPhaseHandler";
 
-    /** constant for aggregation phase type. */
-    private static final String PHASE_TYPE_AGGREGATION = "Aggregation";
-
     /**
      * array of comment types to be copied from individual review scorecards to
      * new aggregation worksheet.
      */
     private static final String[] COMMENT_TYPES_TO_COPY = new String[] {
-        "Comment", "Required", "Recommended", "Appeal",
-        "Appeal Response", "Aggregation Comment",
-        "Aggregation Review Comment", "Submitter Comment",
-        "Manager Comment" };
+        Constants.COMMENT_TYPE_COMMENT, Constants.COMMENT_TYPE_REQUIRED,
+        Constants.COMMENT_TYPE_RECOMMENDED, Constants.COMMENT_TYPE_APPEAL,
+        Constants.COMMENT_TYPE_APPEAL_RESPONSE, Constants.COMMENT_TYPE_AGGREGATION_COMMENT,
+        Constants.COMMENT_TYPE_SUBMITTER_COMMENT, Constants.COMMENT_TYPE_MANAGER_COMMENT };
 
     /**
      * The log instance used by this handler.
@@ -170,7 +167,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      */
     public OperationCheckResult canPerform(Phase phase) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_AGGREGATION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_AGGREGATION);
 
         // will throw exception if phase status is neither "Scheduled" nor "Open"
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
@@ -187,7 +184,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             Resource winner = PhasesHelper.getWinningSubmitter(getManagerHelper(), phase.getProject().getId());
 
             Resource[] aggregator = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
-                new String[] {"Aggregator" }, phase.getId());
+                new String[] {Constants.ROLE_AGGREGATOR }, phase.getId());
 
             if (winner == null) {
                 return new OperationCheckResult("There is no winner for the project");
@@ -198,8 +195,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
             // return true if there is a winner and an aggregator
             return OperationCheckResult.SUCCESS;
         } else {
-            // return true if all dependencies have stopped and aggregation
-            // worksheet exists.
+            // return true if all dependencies have stopped and aggregation worksheet exists.
             result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
             if (!result.isSuccess()) {
                 return result;
@@ -248,7 +244,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
     public void perform(Phase phase, String operator) throws PhaseHandlingException {
         PhasesHelper.checkNull(phase, "phase");
         PhasesHelper.checkString(operator, "operator");
-        PhasesHelper.checkPhaseType(phase, PHASE_TYPE_AGGREGATION);
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_AGGREGATION);
 
         boolean toStart = PhasesHelper.checkPhaseStatus(phase.getPhaseStatus());
         Map<String, Object> values = new HashMap<String, Object>();
@@ -260,9 +256,8 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * This method is called from perform method when phase is starting. If the
-     * Aggregation worksheet is not created, it is created; otherwise it is
-     * marked uncommitted, as well as the aggregation review comments.
+     * This method is called from perform method when phase is starting.
+     * The method crates the Aggregation worksheet.
      * @param phase the phase.
      * @param operator operator name.
      * @return the number of aggregators
@@ -270,155 +265,105 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      */
     private int checkAggregationWorksheet(Phase phase, String operator)
         throws PhaseHandlingException {
-        // Check if the Aggregation worksheet is created
-        Phase previousAggregationPhase = PhasesHelper.locatePhase(phase, "Aggregation", false, false);
+        // Check if there is already a previous Aggregation phase.
+        // In the past the system supported multiple Aggregation phase cycles but this is not longer supported.
+        Phase previousAggregationPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_AGGREGATION, false, false);
+        if (previousAggregationPhase != null) {
+            throw new PhaseHandlingException("Multiple Aggregation phases are no longer supported");
+        }
 
         try {
             // Search for id of the Aggregator
             Resource[] aggregators = PhasesHelper.searchResourcesForRoleNames(
-                getManagerHelper(), new String[] {"Aggregator" }, phase.getId());
-            if (aggregators.length == 0) {
+                getManagerHelper(), new String[] {Constants.ROLE_AGGREGATOR }, phase.getId());
+            if (aggregators.length != 1) {
                 throw new PhaseHandlingException(
-                    "No Aggregator resource found for phase: " + phase.getId());
+                    "Not exactly one Aggregator found for phase: " + phase.getId());
             }
-            String aggregatorUserId = (String) aggregators[0].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID);
+            // create the worksheet
+            Review aggWorksheet = new Review();
+            aggWorksheet.setAuthor(aggregators[0].getId());
 
-            Review aggWorksheet = null;
-            if (previousAggregationPhase != null) {
-                aggWorksheet = PhasesHelper.getWorksheet(getManagerHelper(),
-                    "Aggregator", previousAggregationPhase.getId());
+            // copy the comments from review scorecards
+            Phase reviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_REVIEW, false, true);
+
+            // find winning submitter.
+            Resource winningSubmitter = PhasesHelper.getWinningSubmitter(getManagerHelper(), phase.getProject().getId());
+            if (winningSubmitter == null) {
+                throw new PhaseHandlingException("No winner for project with id : "
+                    + phase.getProject().getId());
             }
 
-            if (aggWorksheet == null) {
-                // create the worksheet
-                aggWorksheet = new Review();
-                aggWorksheet.setAuthor(aggregators[0].getId());
+            UploadManager uploadManager = getManagerHelper().getUploadManager();
 
-                // copy the comments from review scorecards
-                Phase reviewPhase = PhasesHelper.locatePhase(phase, PhasesHelper.PHASE_REVIEW, false, true);
-                Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(
-                    getManagerHelper(),PhasesHelper.REVIEWER_ROLE_NAMES,reviewPhase.getId());
+            // find the winning submission
+            Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
 
-                // find winning submitter.
-                Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
-                    getManagerHelper(), phase.getProject().getId());
-                if (winningSubmitter == null) {
-                    throw new PhaseHandlingException("No winner for project[Winner id not set] with id : "
-                        + phase.getProject().getId());
-                }
+            long submissionTypeId = LookupHelper.getSubmissionType(uploadManager,
+                Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION).getId();
+            Filter typeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
 
-                UploadManager uploadManager = getManagerHelper().getUploadManager();
+            Submission[] submissions = uploadManager.searchSubmissions(new AndFilter(filter, typeFilter));
 
-                // find the winning submission
-                Filter filter = SubmissionFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
-
-                long submissionTypeId = LookupHelper.getSubmissionType(uploadManager,
-                    PhasesHelper.CONTEST_SUBMISSION_TYPE).getId();
-                Filter typeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
-
-                Submission[] submissions = uploadManager.searchSubmissions(new AndFilter(filter, typeFilter));
-
-                // OrChange - Modified to handle multiple submissions for a single resource
-                Long winningSubmissionId = null;
-                if (submissions == null || submissions.length == 0) {
-                    LOG.log(Level.ERROR, "No winner for project with id" + phase.getProject().getId());
-                    throw new PhaseHandlingException(
-                                    "No winning submission for project[Winner id search"
-                                                    + " returned empty result for submission] with id : "
-                                                    + phase.getProject().getId());
-                } else if (submissions.length >= 1) {
-                    // loop through the submissions and find out the one with
-                    // the placement as first
-                    for (int i = 0; i < submissions.length; i++) {
-                        Submission submission = submissions[i];
-                        if (submission.getPlacement() != null && submission.getPlacement() == 1) {
-                            winningSubmissionId = submission.getId();
-                            break;
-                        }
+            // OrChange - Modified to handle multiple submissions for a single resource
+            Long winningSubmissionId = null;
+            if (submissions == null || submissions.length == 0) {
+                LOG.log(Level.ERROR, "No winner for project with id" + phase.getProject().getId());
+                throw new PhaseHandlingException(
+                                "No winning submission for project[Winner id search"
+                                                + " returned empty result for submission] with id : "
+                                                + phase.getProject().getId());
+            } else if (submissions.length >= 1) {
+                // loop through the submissions and find out the one with the placement as first
+                for (Submission submission : submissions) {
+                    if (submission.getPlacement() != null && submission.getPlacement() == 1) {
+                        winningSubmissionId = submission.getId();
+                        break;
                     }
-                } else {
-                    winningSubmissionId = submissions[0].getId();
                 }
-                // No winner id set at this point means, none of the submissions
-                // have placement as 1
-                if (winningSubmissionId == null) {
-                    throw new PhaseHandlingException(
-                                    "No winning submission for project[Submissions from the"
-                                                    + " winner id does not have placement 1] with id : "
-                                                    + phase.getProject().getId());
-                }
-
-                // Search all review scorecard from review phase for the winning
-                // submitter
-                Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(
-                                getManagerHelper(), reviewPhase.getId(),
-                                PhasesHelper.REVIEWER_ROLE_NAMES,
-                                winningSubmissionId);
-
-                for (int r = 0; r < reviews.length; r++) {
-                    aggWorksheet.setScorecard(reviews[r].getScorecard());
-                    aggWorksheet.setSubmission(reviews[r].getSubmission());
-                    PhasesHelper.copyComments(reviews[r], aggWorksheet, COMMENT_TYPES_TO_COPY, null);
-                    PhasesHelper.copyReviewItems(reviews[r], aggWorksheet, COMMENT_TYPES_TO_COPY);
-                }
-
-                // Adding empty comments
-                CommentType aggregationReviewCommentType = LookupHelper.getCommentType(
-                    getManagerHelper().getReviewManager(),"Aggregation Review Comment");
-                CommentType submitterCommentType = LookupHelper.getCommentType(
-                    getManagerHelper().getReviewManager(), "Submitter Comment");
-                for (int i = 0; i < reviewers.length; i++) {
-                    if (reviewers[i].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID) == null
-                        || reviewers[i].getProperty(PhasesHelper.EXTERNAL_REFERENCE_ID).equals(aggregatorUserId)) {
-                        continue;
-                    }
-                    Comment comment = new Comment();
-                    comment.setAuthor(reviewers[i].getId());
-                    comment.setComment("");
-                    comment.setCommentType(aggregationReviewCommentType);
-                    aggWorksheet.addComment(comment);
-                }
-                Comment comment = new Comment();
-                comment.setAuthor(winningSubmitter.getId());
-                comment.setComment("");
-                comment.setCommentType(submitterCommentType);
-                aggWorksheet.addComment(comment);
-
-                getManagerHelper().getReviewManager().createReview(
-                                aggWorksheet, operator);
             } else {
-                // Mark uncommitted for the worksheet:
-                aggWorksheet.setAuthor(aggregators[0].getId());
-                aggWorksheet.setCommitted(false);
-
-                // Mark uncommitted for comments:
-                Comment[] comments = aggWorksheet.getAllComments();
-
-                // For each comment, reset comment extra info
-                for (int i = 0; i < comments.length; i++) {
-                    Comment comment = comments[i];
-                    if (PhasesHelper.APPROVED.equalsIgnoreCase((String) comment.getExtraInfo())
-                        || PhasesHelper.ACCEPTED.equalsIgnoreCase((String) comment.getExtraInfo())) {
-                        comment.setExtraInfo("Approving");
-                    } else if (PhasesHelper.REJECTED.equalsIgnoreCase((String) comment.getExtraInfo())) {
-                        comment.setExtraInfo(null);
-                    }
-                }
-
-                // persist the copy
-                aggWorksheet = PhasesHelper.cloneReview(aggWorksheet);
-                getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
+                winningSubmissionId = submissions[0].getId();
             }
+            // No winner id set at this point means, none of the submissions have placement as 1
+            if (winningSubmissionId == null) {
+                throw new PhaseHandlingException(
+                                "No winning submission for project[Submissions from the"
+                                                + " winner id does not have placement 1] with id : "
+                                                + phase.getProject().getId());
+            }
+
+            // Search all review scorecard from review phase for the winning  submitter
+            Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(
+                            getManagerHelper(), reviewPhase.getId(),
+                            PhasesHelper.REVIEWER_ROLE_NAMES,
+                            winningSubmissionId);
+
+            for (Review review : reviews) {
+                aggWorksheet.setScorecard(review.getScorecard());
+                aggWorksheet.setSubmission(review.getSubmission());
+                PhasesHelper.copyComments(review, aggWorksheet, COMMENT_TYPES_TO_COPY, null);
+                PhasesHelper.copyReviewItems(review, aggWorksheet, COMMENT_TYPES_TO_COPY);
+            }
+
+            // Adding empty comments
+            CommentType submitterCommentType = LookupHelper.getCommentType(
+                getManagerHelper().getReviewManager(), Constants.COMMENT_TYPE_SUBMITTER_COMMENT);
+            Comment comment = new Comment();
+            comment.setAuthor(winningSubmitter.getId());
+            comment.setComment("");
+            comment.setCommentType(submitterCommentType);
+            aggWorksheet.addComment(comment);
+
+            getManagerHelper().getReviewManager().createReview(aggWorksheet, operator);
+
             LOG.log(Level.INFO, new LogMessage(phase.getId(),  operator, "create aggregate worksheet."));
             return aggregators.length;
         } catch (ReviewManagementException e) {
             throw new PhaseHandlingException("Problem when persisting review", e);
         } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException(
-                            "Problem when retrieving winning submission.", e);
+            throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
         } catch (SearchBuilderException e) {
-            throw new PhaseHandlingException(
-                            "Problem when retrieving winning submission.", e);
+            throw new PhaseHandlingException("Problem when retrieving winning submission.", e);
         }
     }
 
@@ -430,7 +375,7 @@ public class AggregationPhaseHandler extends AbstractPhaseHandler {
      *             data.
      */
     private boolean isAggregationWorksheetPresent(Phase phase) throws PhaseHandlingException {
-        Review review = PhasesHelper.getWorksheet(getManagerHelper(), "Aggregator", phase.getId());
+        Review review = PhasesHelper.getWorksheet(getManagerHelper(), Constants.ROLE_AGGREGATOR, phase.getId());
         return (review != null && review.isCommitted());
     }
 }
