@@ -3164,7 +3164,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // All project users must have permission for accessing the project's forum
                 List<Permission> projectPermissions = permissionService.getPermissionsByProject(projectId);
                 for (Permission permission : projectPermissions) {
-                    forums.assignRole(permission.getUserId(), "Software_Users_" + forumId);
+                    forums.assignRole(permission.getUserId(), "Software_Moderators_" + forumId);
                 }
                 
                 // All project co-pilots must have forum moderation permission and forum watches added
@@ -4811,7 +4811,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
         	Forums forums = getSoftwareForums();
 
-            String roleId = "Software_Users_" + forumId;
+            String roleId = "Software_Moderators_" + forumId;
             if (watch)
             {
                 forums.createCategoryWatch(userId, forumId);
@@ -4847,7 +4847,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
         	Forums forums = getStudioForums();
 
-            String roleId = "Software_Users_" + forumId;
+            String roleId = "Software_Moderators_" + forumId;
             if (watch)
             {
                 forums.createForumWatch(userId, forumId);
@@ -4880,7 +4880,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
         	Forums forums = getSoftwareForums();
 
-            String roleId = "Software_Users_" + forumId;
+            String roleId = "Software_Moderators_" + forumId;
             forums.deleteCategoryWatch(userId, forumId);
             forums.removeRole(userId, roleId);
             logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");    	
@@ -4908,7 +4908,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         try {
         	Forums forums = getStudioForums();
 
-            String roleId = "Software_Users_" + forumId;
+            String roleId = "Software_Moderators_" + forumId;
             forums.deleteForumWatch(userId, forumId);
             forums.removeRole(userId, roleId);
             logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");    	
