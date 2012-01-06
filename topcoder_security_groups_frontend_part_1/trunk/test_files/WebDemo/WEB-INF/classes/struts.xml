@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE struts PUBLIC
+      "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+      "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.objectFactory" value="spring" />
+    <constant name="struts.custom.i18n.resources" value="message" />
+    
+    <package name="security" namespace="/security" extends="struts-default">
+    	<default-action-ref name="searchGroup"/>
+    	<global-results>
+            <result name="error">error.jsp</result>
+        </global-results>
+        
+    	<action name="index">
+    		<result>administrator-view-user-groups.jsp</result>
+    	</action>
+    	
+    	<action name="viewGroup" class="viewGroupAction">
+    		<result>administrator-view-user-group-details.jsp</result>
+    		<result name="input">error.jsp</result>
+    	</action>
+    	
+    	<action name="enterGroupDetailsInUpdate" class="updateGroupAction" method="enterGroupDetails">
+    		<param name="selectedClientId">2</param> 
+    		<result type="chain">
+    			 <param name="actionName">inputGroup</param>
+			</result>
+    		<interceptor-ref name="defaultStack">
+				<param name="validation.excludeMethods">enterGroupDetails</param>
+			</interceptor-ref>
+    	</action>
+    	
+    	<action name="inputGroup" class="updateGroupAction" method="input">
+    		<result name="input">administrator-update-user-group.jsp</result>
+    	</action>
+    	
+    	<action name="updateGroup" class="updateGroupAction" method="updateGroup">
+    		<result>administrator-update-user-group.html</result>
+    	</action>
+    	
+    	<action name="deleteGroup" class="deleteGroupAction">
+    		<result>administrator-view-user-groups.html</result>
+    	</action>
+    	
+    	<action name="searchGroup" class="searchGroupAction">
+    		<param name="criteria.userId">0</param>
+    		<result>administrator-view-user-groups.jsp</result>
+    	</action>
+    	
+    	<action name="viewGroups" class="searchGroupAction">
+    		<result>administrator-view-user-groups.jsp</result>
+    	</action>
+    	
+    	<action name="createGroup" class="createGroupAction">
+    		<result>administrator-create-new-group.jsp</result>
+    		<interceptor-ref name="defaultStack">
+				<param name="validation.excludeMethods">execute</param>
+			</interceptor-ref>
+    	</action>
+    </package>
+</struts>
