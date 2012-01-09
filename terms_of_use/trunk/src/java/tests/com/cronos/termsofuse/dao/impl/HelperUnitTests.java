@@ -27,7 +27,7 @@ import com.cronos.termsofuse.model.TermsOfUse;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -316,7 +316,7 @@ public class HelperUnitTests {
             + " INNER JOIN terms_of_use_agreeability_type_lu touat ON touat.terms_of_use_agreeability_type_id"
             + " = tou.terms_of_use_agreeability_type_id WHERE terms_of_use_type_id=?";
 
-        List<TermsOfUse> res = Helper.getTermsOfUse("getTermsOfUse", LogFactory.getLog("loggerName"),
+        List<TermsOfUse> res = Helper.getTermsOfUse("getTermsOfUse", LogManager.getLog("loggerName"),
             dbConnectionFactory, sql, null, 1);
 
         assertEquals("'getTermsOfUse' should be correct.", 3, res.size());
@@ -338,7 +338,7 @@ public class HelperUnitTests {
             new DBConnectionFactoryImpl(config.getChild("dbConnectionFactoryConfig"));
         String sql = "invalid";
 
-        Helper.getTermsOfUse("getTermsOfUse", LogFactory.getLog("loggerName"),
+        Helper.getTermsOfUse("getTermsOfUse", LogManager.getLog("loggerName"),
             dbConnectionFactory, sql, null, 1);
     }
 
@@ -539,7 +539,7 @@ public class HelperUnitTests {
      */
     @Test
     public void test_logEntrance_1() throws Exception {
-        Log logger = LogFactory.getLog("loggerName");
+        Log logger = LogManager.getLog("loggerName");
 
         Helper.logEntrance(logger, "signature", null, null);
     }
@@ -556,7 +556,7 @@ public class HelperUnitTests {
      */
     @Test
     public void test_logEntrance_2() throws Exception {
-        Log logger = LogFactory.getLog("loggerName");
+        Log logger = LogManager.getLog("loggerName");
 
         Helper.logEntrance(logger, "signature", new String[] {"p1", "p2"}, new String[] {"v1", "v2"});
     }
@@ -572,7 +572,7 @@ public class HelperUnitTests {
      */
     @Test
     public void test_logExit_1() throws Exception {
-        Log logger = LogFactory.getLog("loggerName");
+        Log logger = LogManager.getLog("loggerName");
 
         Helper.logExit(logger, "signature", null);
     }
@@ -588,7 +588,7 @@ public class HelperUnitTests {
      */
     @Test
     public void test_logExit_2() throws Exception {
-        Log logger = LogFactory.getLog("loggerName");
+        Log logger = LogManager.getLog("loggerName");
 
         Helper.logExit(logger, "signature", new String[] {"v1", "v2"});
     }
@@ -604,7 +604,7 @@ public class HelperUnitTests {
      */
     @Test
     public void test_logException() throws Exception {
-        Log logger = LogFactory.getLog("loggerName");
+        Log logger = LogManager.getLog("loggerName");
 
         Throwable e = new Exception("Test");
         Helper.logException(logger, "signature", e);

@@ -11,7 +11,7 @@ import com.topcoder.db.connectionfactory.DBConnectionFactory;
 import com.topcoder.db.connectionfactory.DBConnectionFactoryImpl;
 import com.topcoder.db.connectionfactory.UnknownConnectionException;
 import com.topcoder.util.log.Log;
-import com.topcoder.util.log.LogFactory;
+import com.topcoder.util.log.LogManager;
 
 /**
  * <p>
@@ -89,7 +89,7 @@ public abstract class BaseTermsOfUseDao {
 
             dbConnectionFactory = new DBConnectionFactoryImpl(dbConnectionFactoryConfig);
 
-            log = LogFactory.getLog(Helper.getRequiredProperty(configurationObject, KEY_LOGGER_NAME));
+            log = LogManager.getLog(Helper.getRequiredProperty(configurationObject, KEY_LOGGER_NAME));
         } catch (ConfigurationException e) {
             throw new TermsOfUseDaoConfigurationException("Failed to create the db connection factory.", e);
         } catch (UnknownConnectionException e) {

@@ -18,7 +18,6 @@ import com.cronos.termsofuse.dao.TermsOfUseDaoConfigurationException;
 import com.cronos.termsofuse.dao.TermsOfUsePersistenceException;
 import com.cronos.termsofuse.model.TermsOfUse;
 import com.cronos.termsofuse.model.TermsOfUseAgreeabilityType;
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 import com.topcoder.configuration.ConfigurationObject;
 import com.topcoder.util.log.Log;
 
