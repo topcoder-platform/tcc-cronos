@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.topcoder.clients.invoices.dao.EntityNotFoundException;
 import com.topcoder.clients.invoices.dao.GenericDAO;
@@ -24,11 +23,17 @@ import com.topcoder.clients.invoices.model.IdentifiableEntity;
  *
  * <p><strong>Thread safety:</strong> This class has mutable attributes, thus it's not thread safe. But it's assumed
  * that it will be initialized via Spring IoC before calling any business method, this way it's always used in thread
- * safe manner. It uses thread safe SessionFactory, Session and Log instances. This class uses Spring declarative
- * transactions, thus all methods that can modify data in persistence have Transactional annotation.</p>
+ * safe manner. It uses thread safe SessionFactory, Session and Log instances.</p>
  *
+ * <p>
+ * Version 1.1 (TC Accounting Tracking Invoiced Payments Part 2) change log:
+ * <ol>
+ *   <li>Remove the Spring annotation transaction.</li>
+ * </ol>
+ * </p>
+ * 
  * @author flexme
- * @version 1.0
+ * @version 1.1
  * @param <T> the type of the entity to be managed by this DAO
  */
 public abstract class GenericDAOImpl <T extends IdentifiableEntity> extends BaseDAO implements GenericDAO<T> {
@@ -67,7 +72,6 @@ public abstract class GenericDAOImpl <T extends IdentifiableEntity> extends Base
      * @throws IllegalArgumentException if entity is null
      * @throws InvoiceDAOException      if some other error occurred
      */
-    @Transactional
     public long create(T entity) throws InvoiceDAOException {
         final String methodName = "create";
         final long executionStart = System.currentTimeMillis();
@@ -118,7 +122,6 @@ public abstract class GenericDAOImpl <T extends IdentifiableEntity> extends Base
      * @throws EntityNotFoundException  if entity with the same ID cannot be found in the persistence
      * @throws InvoiceDAOException      if some other error occurred
      */
-    @Transactional
     public void update(T entity) throws InvoiceDAOException {
         final String methodName = "update";
         final long executionStart = System.currentTimeMillis();
@@ -177,7 +180,6 @@ public abstract class GenericDAOImpl <T extends IdentifiableEntity> extends Base
      * @throws EntityNotFoundException  if entity with the given ID doesn't exist in the persistence
      * @throws InvoiceDAOException      if some other error occurred
      */
-    @Transactional
     public void delete(long entityId) throws InvoiceDAOException {
         final String methodName = "delete";
         final long executionStart = System.currentTimeMillis();
@@ -229,7 +231,6 @@ public abstract class GenericDAOImpl <T extends IdentifiableEntity> extends Base
      * @throws InvoiceDAOException      if some other error occurred
      */
     @SuppressWarnings("unchecked")
-    @Transactional
     public T retrieve(long entityId) throws InvoiceDAOException {
         final String methodName = "retrieve";
         final long executionStart = System.currentTimeMillis();
@@ -270,7 +271,6 @@ public abstract class GenericDAOImpl <T extends IdentifiableEntity> extends Base
      *
      * @throws InvoiceDAOException if any error occurred
      */
-    @Transactional
     public List<T> retrieveAll() throws InvoiceDAOException {
         final String methodName = "retrieveAll";
         final long executionStart = System.currentTimeMillis();

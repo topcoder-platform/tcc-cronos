@@ -37,4 +37,14 @@ public interface InvoiceRecordDAO extends GenericDAO<InvoiceRecord> {
      * @throws InvoiceDAOException if some other error occurred.
      */
     InvoiceRecord getByPayment(long paymentId) throws InvoiceDAOException;
+    
+    /**
+     * <p>Get the number of invoice records of the specified invoice.</p>
+     * 
+     * @param invoiceId the id of the specified invoice.
+     * @return the number of invoice records of the specified invoice.
+     * @throws IllegalArgumentException if invoice id is not positive.
+     * @throws InvoiceDAOException if any other error occurred.
+     */
+    int countByInvoice(long invoiceId) throws InvoiceDAOException;
 }

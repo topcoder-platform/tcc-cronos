@@ -14,8 +14,16 @@ import com.topcoder.util.log.Log;
  *
  * <p><strong>Thread safety:</strong> This class is immutable and thread safe.</p>
  *
+ * <p>
+ * Version 1.1 (TC Accounting Tracking Invoiced Payments Part 2) change log:
+ * <ol>
+ *   <li>Added {@link #checkString(Log, String, String, String, String)} method to check the string
+ *   is not null or empty.</li>
+ * </ol>
+ * </p>
+ *
  * @author flexme
- * @version 1.0
+ * @version 1.1
  */
 final class Helper {
     /**
@@ -92,6 +100,27 @@ final class Helper {
         try {
             checkIsPositive(param, paramName);
         } catch (IllegalArgumentException e) {
+            Helper.logError(log, MessageFormat.format(ILLEGAL_ARGUMENT, className,
+                    methodName), e);
+            throw e;
+        }
+    }
+    
+   /**
+    * <p>Check is passed string is null or empty. If not {@link IllegalArgumentException} is log and throw.</p>
+    *
+    * @param log   log to use
+    * @param param   param to check
+    * @param paramName parameter name used in exception error message
+    * @param methodName method name
+    * @param className class name
+    * @throws IllegalArgumentException if the argument is invalid
+    * @since 1.1
+    */
+    static void checkString(Log log, String value, String paramName, String className, String methodName) {
+        if (value == null || value.trim().length() == 0) {
+            IllegalArgumentException e = new IllegalArgumentException(MessageFormat.format("Parameter {0} cannot be null or empty.",
+                    paramName));
             Helper.logError(log, MessageFormat.format(ILLEGAL_ARGUMENT, className,
                     methodName), e);
             throw e;

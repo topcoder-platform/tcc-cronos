@@ -6,7 +6,7 @@ package com.topcoder.clients.invoices.dao.impl;
 import java.text.MessageFormat;
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.HibernateException;
 
 import com.topcoder.clients.invoices.dao.InvoiceDAOException;
 import com.topcoder.clients.invoices.dao.InvoiceRecordDAO;
@@ -24,8 +24,15 @@ import com.topcoder.clients.invoices.model.InvoiceRecord;
  * that it will be initialized via Spring IoC before calling any business method, this way it's always used in thread
  * safe manner. It uses thread safe SessionFactory, Session and Log instances.</p>
  * 
+ * <p>
+ * Version 1.1 (TC Accounting Tracking Invoiced Payments Part 2) change log:
+ * <ol>
+ *   <li>Remove the Spring annotation transaction.</li>
+ * </ol>
+ * </p>
+ * 
  * @author flexme
- * @version 1.0
+ * @version 1.1
  */
 public class InvoiceRecordDAOImpl extends GenericDAOImpl<InvoiceRecord> implements InvoiceRecordDAO {
     
@@ -45,6 +52,11 @@ public class InvoiceRecordDAOImpl extends GenericDAOImpl<InvoiceRecord> implemen
     private static final String QUERY_BY_PAYMENT = "from InvoiceRecord where paymentId=:paymentId";
     
     /**
+     * <p>Represents a hql query used for retrieving the count of {@link InvoiceRecord} by invoice id.</p>
+     */
+    private static final String QUERY_COUNT_BY_INVOICE_STRING = "select count(*) from InvoiceRecord where invoice.id=:invoiceId";
+    
+    /**
      * <p>Creates new instance of <code>{@link InvoiceRecordDAOImpl}</code> class.</p>
      */
     public InvoiceRecordDAOImpl() {
@@ -61,7 +73,6 @@ public class InvoiceRecordDAOImpl extends GenericDAOImpl<InvoiceRecord> implemen
      * @throws InvoiceDAOException if some other error occurred.
      */
     @SuppressWarnings("unchecked")
-    @Transactional
     public InvoiceRecord getByContestAndInvoiceType(long contestId, long invoiceTypeId) throws InvoiceDAOException {
         final String methodName = "getByContestAndInvoiceType";
         final long executionStart = System.currentTimeMillis();
@@ -83,11 +94,13 @@ public class InvoiceRecordDAOImpl extends GenericDAOImpl<InvoiceRecord> implemen
             } else {
                 return list.get(0);
             }
-        } catch (InvoiceDAOException e) {
+        } catch (HibernateException e) {
+            InvoiceDAOException ex = new InvoiceDAOException(MessageFormat.format(
+                    "Error occurred when retrieving entities of {0}", "InvoiceRecord"), e);
             Helper.logError(getLog(),
-                    MessageFormat.format(Helper.METHOD_ERROR, CLASS_NAME, methodName), e);
+                    MessageFormat.format(Helper.METHOD_ERROR, CLASS_NAME, methodName), ex);
 
-            throw e;
+            throw ex;
         }
     }
     
@@ -100,7 +113,6 @@ public class InvoiceRecordDAOImpl extends GenericDAOImpl<InvoiceRecord> implemen
      * @throws InvoiceDAOException if some other error occurred.
      */
     @SuppressWarnings("unchecked")
-    @Transactional
     public InvoiceRecord getByPayment(long paymentId) throws InvoiceDAOException {
         final String methodName = "getByPayment";
         final long executionStart = System.currentTimeMillis();
@@ -120,11 +132,45 @@ public class InvoiceRecordDAOImpl extends GenericDAOImpl<InvoiceRecord> implemen
             } else {
                 return list.get(0);
             }
-        } catch (InvoiceDAOException e) {
+        } catch (HibernateException e) {
+            InvoiceDAOException ex = new InvoiceDAOException(MessageFormat.format(
+                    "Error occurred when retrieving entities of {0}", "InvoiceRecord"), e);
             Helper.logError(getLog(),
-                    MessageFormat.format(Helper.METHOD_ERROR, CLASS_NAME, methodName), e);
+                    MessageFormat.format(Helper.METHOD_ERROR, CLASS_NAME, methodName), ex);
 
-            throw e;
+            throw ex;
+        }
+    }
+    
+    /**
+     * <p>Get the number of invoice records of the specified invoice.</p>
+     * 
+     * @param invoiceId the id of the specified invoice.
+     * @return the number of invoice records of the specified invoice.
+     * @throws IllegalArgumentException if invoice id is not positive.
+     * @throws InvoiceDAOException if any other error occurred.
+     */
+    public int countByInvoice(long invoiceId) throws InvoiceDAOException {
+        final String methodName = "countByInvoice";
+        final long executionStart = System.currentTimeMillis();
+        Helper.logMethodEntered(getLog(), CLASS_NAME, methodName);
+        
+        Helper.checkIsPositive(getLog(), invoiceId, "invoiceId", CLASS_NAME, methodName);
+        
+        try {
+            int count = ((Long) getSession().createQuery(QUERY_COUNT_BY_INVOICE_STRING)
+                .setParameter("invoiceId", invoiceId).uniqueResult()).intValue();
+            
+            // log method exit
+            Helper.logMethodExited(getLog(), CLASS_NAME, methodName, executionStart);
+            return count;
+        } catch (HibernateException e) {
+            InvoiceDAOException ex = new InvoiceDAOException(MessageFormat.format(
+                    "Error occurred when retrieving entities of {0}", "InvoiceRecord"), e);
+            Helper.logError(getLog(),
+                    MessageFormat.format(Helper.METHOD_ERROR, CLASS_NAME, methodName), ex);
+
+            throw ex;
         }
     }
 }

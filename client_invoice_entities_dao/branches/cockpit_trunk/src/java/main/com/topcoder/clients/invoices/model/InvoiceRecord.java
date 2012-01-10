@@ -10,8 +10,15 @@ package com.topcoder.clients.invoices.model;
  *
  * <p><strong>Thread safety:</strong> This class is mutable and not thread safe.</p>
  *
+ * <p>
+ * Version 1.1 (TC Accounting Tracking Invoiced Payments Part 2) change log:
+ * <ol>
+ *   <li>Added field {@link #invoice}. Also the getter/setter were added.</li>
+ * </ol>
+ * </p>
+ * 
  * @author flexme
- * @version 1.0
+ * @version 1.1
  */
 public class InvoiceRecord extends IdentifiableEntity {
     
@@ -44,6 +51,13 @@ public class InvoiceRecord extends IdentifiableEntity {
      * <p>The flag indicates whether the record has been processed. Can be any value. Has getter and setter.</p>
      */
     private boolean processed;
+    
+    /**
+     * <p>The invoice this invoice record belongs to. Can be any value. Has getter and setter.</p>
+     * 
+     * @since 1.1
+     */
+    private Invoice invoice;
     
     /**
      * <p>Creates new instance of <code>{@link InvoiceRecord}</code> class.</p>
@@ -158,5 +172,25 @@ public class InvoiceRecord extends IdentifiableEntity {
      */
     public void setInvoiceAmount(Double invoiceAmount) {
         this.invoiceAmount = invoiceAmount;
+    }
+
+    /**
+     * <p>Gets the invoice this invoice record belongs to.</p>
+     * 
+     * @return the invoice this invoice record belongs to.
+     * @since 1.1
+     */
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    /**
+     * <p>Sets the invoice this invoice record belongs to.</p>
+     * 
+     * @param invoice the invoice this invoice record belongs to.
+     * @since 1.1
+     */
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 }
