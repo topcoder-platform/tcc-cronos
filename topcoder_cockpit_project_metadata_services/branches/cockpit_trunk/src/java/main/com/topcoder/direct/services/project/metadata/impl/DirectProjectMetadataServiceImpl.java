@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 - 2012 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.direct.services.project.metadata.impl;
 
@@ -225,8 +225,8 @@ import com.topcoder.util.log.Log;
  * safe manner by Spring IoC framework. The class is thread safe under these conditions.
  * </p>
  *
- * @author faeton, sparemax
- * @version 1.0
+ * @author faeton, sparemax, GreatKevin
+ * @version 1.1
  */
 @Transactional(rollbackFor = DirectProjectServiceException.class)
 public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetadataService implements
@@ -245,7 +245,17 @@ public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetad
      */
     private static final String QUERY_PROJECT_METADATA_BY_PROJECT =
         "SELECT directProjectMetadata FROM DirectProjectMetadata directProjectMetadata"
-        + " WHERE directProjectMetadata.tcDirectProjectId=:tcDirectProjectId";
+        + " WHERE directProjectMetadata.tcDirectProjectId=:tcDirectProjectId order by directProjectMetadata.metadataValue asc";
+
+    /**
+     * <p>
+     *  Represents the SQL string to query the project metadata by project id and project metadata key id.
+     * </p>
+     * @version 1.1
+     */
+    private static final String QUERY_PROJECT_METADATA_BY_PROJECT_AND_KEY =
+            "SELECT directProjectMetadata FROM DirectProjectMetadata directProjectMetadata"
+            + " WHERE directProjectMetadata.tcDirectProjectId=:tcDirectProjectId AND directProjectMetadata.projectMetadataKey.id=:projectMetadataKeyId order by directProjectMetadata.metadataValue asc";
 
     /**
      * <p>
@@ -414,12 +424,55 @@ public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetad
             performAudit(mergedEntity, userId, getAuditActionTypeIdMap().get(Helper.ACTION_UPDATE));
 
             long result = mergedEntity.getId();
-            LoggingWrapperUtility.logExit(logger, signature, new Object[] {result});
+            LoggingWrapperUtility.logExit(logger, signature, new Object[]{result});
             return result;
         } catch (javax.persistence.PersistenceException e) {
             // Log exception
             throw LoggingWrapperUtility.logException(logger, signature, new PersistenceException(
                 "Failed to create or update the project metadata.", e));
+        }
+    }
+
+    /**
+     * Batch save a list of project metadata.
+     *
+     * @param projectMetadataList a list of project metadata.
+     * @param userId the id of the user.
+     * @return a list of updated or created project metadata IDs.
+     * @throws ValidationException if entities fail the validation.
+     * @throws PersistenceException if  any problem with persistence occurs.
+     * @since 1.1
+     */
+    public long[] saveProjectMetadata(List<DirectProjectMetadata> projectMetadataList, long userId) throws ValidationException,
+            PersistenceException {
+        String signature = CLASS_NAME + ".saveProjectMetadata(List<DirectProjectMetadata> projectMetadataList, long userId)";
+        Log logger = getLogger();
+
+        LoggingWrapperUtility.logEntrance(logger, signature,
+                new String[]{"projectMetadataList", "userId"},
+                new Object[]{Helper.toString(projectMetadataList), userId});
+
+        try {
+            EntityManager entityManager = getEntityManager();
+
+            long[] result = new long[projectMetadataList.size()];
+            int count = 0;
+
+            for (DirectProjectMetadata data : projectMetadataList) {
+                // Update the entity
+                directProjectMetadataValidator.validate(data);
+                DirectProjectMetadata mergedEntity = entityManager.merge(data);
+                performAudit(mergedEntity, userId, getAuditActionTypeIdMap().get(Helper.ACTION_UPDATE));
+                result[count++] = mergedEntity.getId();
+            }
+
+            LoggingWrapperUtility.logExit(logger, signature, new Object[]{result});
+
+            return result;
+        } catch (javax.persistence.PersistenceException e) {
+            // Log exception
+            throw LoggingWrapperUtility.logException(logger, signature, new PersistenceException(
+                    "Failed to create or update the list of project metadata.", e));
         }
     }
 
@@ -534,6 +587,43 @@ public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetad
     }
 
     /**
+     * Gets the project metadata by project id and project metadata key id.
+     *
+     * @param tcDirectProjectId  the id of the direct project.
+     * @param projectMetadataKeyId the id of the project metadata key.
+     * @return a list of project metadata retrieved.
+     * @throws PersistenceException if any problem with persistence occurs.
+     * @since 1.1
+     */
+    @SuppressWarnings("unchecked")
+    public List<DirectProjectMetadata> getProjectMetadataByProjectAndKey(long tcDirectProjectId, long projectMetadataKeyId)
+            throws PersistenceException {
+        String signature = CLASS_NAME + ".getProjectMetadataByProjectAndKey(long tcDirectProjectId, long projectMetadataKeyId)";
+        Log logger = getLogger();
+
+        LoggingWrapperUtility.logEntrance(logger, signature,
+                new String[]{"tcDirectProjectId", "projectMetadataKey"},
+                new Object[]{tcDirectProjectId, projectMetadataKeyId});
+
+        try {
+            EntityManager entityManager = getEntityManager();
+
+            Query query = entityManager.createQuery(QUERY_PROJECT_METADATA_BY_PROJECT_AND_KEY);
+            query.setParameter("tcDirectProjectId", tcDirectProjectId);
+            query.setParameter("projectMetadataKeyId", projectMetadataKeyId);
+
+            List<DirectProjectMetadata> result = query.getResultList();
+
+            LoggingWrapperUtility.logExit(logger, signature, new Object[]{Helper.toString(result)});
+            return result;
+        } catch (javax.persistence.PersistenceException e) {
+            // Log exception
+            throw LoggingWrapperUtility.logException(logger, signature, new PersistenceException(
+                    "Failed to retrieve the project metadata.", e));
+        }
+    }
+
+    /**
      * Adds list of project metadata to the given tc project.
      *
      * @param userId
@@ -575,8 +665,8 @@ public class DirectProjectMetadataServiceImpl extends AbstractDirectProjectMetad
                 entityManager.find(DirectProjectMetadataKey.class, dto.getProjectMetadataKeyId());
 
             createProjectMetadata(
-                getDirectProjectMetadata(tcDirectProjectId, dto.getMetadataValue(), projectMetadataKey),
-                userId);
+                    getDirectProjectMetadata(tcDirectProjectId, dto.getMetadataValue(), projectMetadataKey),
+                    userId);
         }
 
         LoggingWrapperUtility.logExit(logger, signature, null);

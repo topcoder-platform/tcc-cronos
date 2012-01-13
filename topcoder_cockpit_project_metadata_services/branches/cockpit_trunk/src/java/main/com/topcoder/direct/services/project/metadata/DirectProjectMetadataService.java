@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2011 - 2012 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.direct.services.project.metadata;
 
@@ -18,11 +18,17 @@ import com.topcoder.direct.services.project.metadata.entities.dto.DirectProjectM
  * </p>
  *
  * <p>
+ *     Version 1.1 changes:
+ *     - Add method to batch saving a list of project metadata.
+ *     - Add method to get project metadata by project id and metadata key id.
+ * </p>
+ *
+ * <p>
  * <strong>Thread Safety: </strong> The implementations are required to be thread safe.
  * </p>
  *
- * @author faeton, sparemax
- * @version 1.0
+ * @author faeton, sparemax, GreatKevin
+ * @version 1.1
  */
 public interface DirectProjectMetadataService {
     /**
@@ -85,6 +91,19 @@ public interface DirectProjectMetadataService {
         PersistenceException;
 
     /**
+     * Batch save a list of project metadata.
+     *
+     * @param projectMetadataList a list of project metadata.
+     * @param userId the id of the user.
+     * @return a list of updated or created project metadata IDs.
+     * @throws ValidationException if entities fail the validation.
+     * @throws PersistenceException if  any problem with persistence occurs.
+     * @since 1.1
+     */
+    public long[] saveProjectMetadata(List<DirectProjectMetadata> projectMetadataList, long userId) throws ValidationException,
+                PersistenceException;
+
+    /**
      * Deletes project metadata.
      *
      * @param userId
@@ -126,6 +145,18 @@ public interface DirectProjectMetadataService {
      */
     public List<DirectProjectMetadata> getProjectMetadataByProject(long tcDirectProjectId)
         throws PersistenceException;
+
+    /**
+     * Gets the project metadata by project id and project metadata key id.
+     *
+     * @param tcDirectProjectId the id of the direct project.
+     * @param projectMetadataKey the id of the project metadata key.
+     * @return a list of project metadata retrieved.
+     * @throws PersistenceException if any problem with persistence occurs.
+     * @since 1.1
+     */
+    public List<DirectProjectMetadata> getProjectMetadataByProjectAndKey(long tcDirectProjectId, long projectMetadataKey)
+                throws PersistenceException;
 
     /**
      * Adds list of project metadata to the given tc project.
