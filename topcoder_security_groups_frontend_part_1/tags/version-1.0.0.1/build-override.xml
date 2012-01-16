@@ -1,0 +1,25 @@
+<project>
+    <path id="allpath">
+        <path refid="component.tcs-dependencies"/>
+        <path refid="component.3rdParty-dependencies"/>
+        <path refid="component.test.3rdParty-dependencies"/>
+    </path>
+
+    <property name="tomcat.dir" value="${ext_libdir}/tomcat/6.0.33" />
+    <property name="demo" value="demo.war" />
+    <target name="demo_war" depends="compile_tests">
+        <delete file="${demo}" />
+        <pathtofileset name="mfileset" pathrefid="allpath" dir="/"/>
+        <copy todir="${testfiles}/WebDemo/WEB-INF/lib" flatten="true">
+            <fileset refid="mfileset"/>
+        </copy>
+        <war warfile="${demo}">
+            <fileset dir="${testfiles}/WebDemo"/>
+            <classes dir="${build_classdir}" includes="**" />
+        </war>
+        <delete dir="${testfiles}/WebDemo/WEB-INF/lib"/>
+    </target>
+    <target name="deployDemo" depends="demo_war">
+        <copy todir="${tomcat.dir}/webapps" file="${demo}"/>
+    </target>
+</project>

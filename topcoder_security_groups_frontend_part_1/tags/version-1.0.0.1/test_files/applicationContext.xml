@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!-- dependency beans must be defined in applicationContext.xml -->
+
+   <bean id="authorizationService" class="com.topcoder.security.groups.services.mock.MockAuthorizationService">
+   </bean>
+   <bean id="billingAccountService" class="com.topcoder.security.groups.services.mock.MockBillingAccountService">
+   </bean>
+   <bean id="clientService" class="com.topcoder.security.groups.services.mock.MockClientService">
+   </bean>
+   <bean id="customerAdministratorService" class="com.topcoder.security.groups.services.mock.MockCustomerAdministratorService">
+   </bean>
+   <bean id="directProjectService" class="com.topcoder.security.groups.services.mock.MockDirectProjectService">
+   </bean>
+   <bean id="auditService" class="com.topcoder.security.groups.services.mock.MockGroupAuditService">
+   </bean>
+   <bean id="groupInvitationService" class="com.topcoder.security.groups.services.mock.MockGroupInvitationService">
+   </bean>
+   <bean id="groupMemberService" class="com.topcoder.security.groups.services.mock.MockGroupMemberService">
+   </bean>
+   <bean id="groupService" class="com.topcoder.security.groups.services.mock.MockGroupService">
+   </bean>
+   <bean id="userService" class="com.topcoder.security.groups.services.mock.MockUserService">
+   </bean>
+   
+   <bean id="logger" class="com.topcoder.util.log.log4j.Log4jLog">
+   		<constructor-arg type="java.lang.String" value="com.topcoder.security.groups.actions.DemoLog"/>
+   		<constructor-arg type="boolean" value="false"/>
+   </bean>
+    
+  <bean id="updateGroupAction"
+        class="com.topcoder.security.groups.actions.UpdateGroupAction" init-method="checkInit">
+        <property name="groupService" ref="groupService"/>
+        <property name="groupSessionKey" value="groupSessionKey"/>
+	    <property name="groupMemberService" ref="groupMemberService"/>
+        <property name="oldGroupMembersSessionKey" value="oldGroupMemebersSessionKey"/>
+        <property name="clientService" ref="clientService"/>
+        <property name="customerAdministratorService" ref="customerAdministratorService"/>
+        <property name="directProjectService" ref="directProjectService"/>
+        <property name="groupInvitationService" ref="groupInvitationService"/>
+        <property name="acceptRejectUrlBase" value="acceptRejectUrlBase"/>
+        <property name="registrationUrl" value="registrationUrl"/>
+        <property name="billingAccountService" ref="billingAccountService"/>
+        <property name="logger" ref="logger"/>
+        <property name="auditService" ref="auditService"/>
+        <property name="authorizationService" ref="authorizationService"/>
+		<property name="session">
+			<map>
+				<entry key="mockKey" value="mockValue"/>
+			</map>
+		</property>
+        <!-- other properties here -->
+  </bean>
+
+  <bean id="createGroupAction" class="com.topcoder.security.groups.actions.CreateGroupAction" init-method="checkInit">
+        <property name="groupService" ref="groupService"/>
+        <property name="groupSessionKey" value="groupSessionKey"/>
+        <property name="groupMemberService" ref="groupMemberService"/>
+        <property name="oldGroupMembersSessionKey" value="oldGroupMemebersSessionKey"/>
+        <property name="clientService" ref="clientService"/>
+        <property name="customerAdministratorService" ref="customerAdministratorService"/>
+        <property name="directProjectService" ref="directProjectService"/>
+        <property name="groupInvitationService" ref="groupInvitationService"/>
+        <property name="acceptRejectUrlBase" value="acceptRejectUrlBase"/>
+        <property name="registrationUrl" value="registrationUrl"/>
+        <property name="billingAccountService" ref="billingAccountService"/>
+        <property name="logger" ref="logger"/>
+        <property name="auditService" ref="auditService"/>
+        <property name="authorizationService" ref="authorizationService"/>
+		<property name="session">
+			<map>
+				<entry key="mockKey" value="mockValue"/>
+			</map>
+		</property>
+		
+        <!-- other properties here -->
+  </bean>
+
+  <bean id="deleteGroupAction" class="com.topcoder.security.groups.actions.DeleteGroupAction" init-method="checkInit">
+        <property name="groupService" ref="groupService"/>
+        <property name="logger" ref="logger"/>
+        <property name="auditService" ref="auditService"/>
+        <property name="authorizationService" ref="authorizationService"/>
+
+        <!-- other properties here -->
+  </bean>
+
+  <bean id="searchGroupAction"
+        class="com.topcoder.security.groups.actions.SearchGroupAction" init-method="checkInit">
+        <property name="groupService" ref="groupService"/>
+        <property name="logger" ref="logger"/>
+        <property name="auditService" ref="auditService"/>
+        <property name="authorizationService" ref="authorizationService"/>
+
+        <!-- other properties here -->
+  </bean>
+
+  <bean id="searchUserAction"
+        class="com.topcoder.security.groups.actions.SearchUserAction" init-method="checkInit">
+        <property name="userService" ref="userService"/>
+        <property name="logger" ref="logger"/>
+        <property name="auditService" ref="auditService"/>
+        <property name="authorizationService" ref="authorizationService"/>
+
+        <!-- other properties here -->
+  </bean>
+
+  <bean id="viewGroupAction"
+        class="com.topcoder.security.groups.actions.ViewGroupAction" init-method="checkInit">
+        <property name="groupService" ref="groupService"/>
+        <property name="logger" ref="logger"/>
+        <property name="auditService" ref="auditService"/>
+        <property name="authorizationService" ref="authorizationService"/>
+
+        <!-- other properties here -->
+  </bean>
+    <!-- put other configurations here -->
+
+</beans>
+

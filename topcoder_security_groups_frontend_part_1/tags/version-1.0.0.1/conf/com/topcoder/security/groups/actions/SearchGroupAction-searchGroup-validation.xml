@@ -1,0 +1,15 @@
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.2//EN" "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="pageSize">
+        <field-validator type="int">
+            <param name="min">1</param>
+            <message>${getText("pageSize.positive")}</message>
+        </field-validator>
+    </field>
+    <field name="page">
+        <field-validator type="int">
+            <param name="min">1</param>
+            <message>${getText("page.positive")}</message>
+        </field-validator>
+    </field>
+</validators>
