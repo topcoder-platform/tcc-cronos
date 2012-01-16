@@ -1,0 +1,73 @@
+<project name="Dependency Import" default="dist" basedir=".">
+    <!-- property file defining the component's dependencies -->
+
+    <!-- Properties used in compile_targets ANT target for JDK version x -->
+    <property name="component.target" value="1.6"/>
+    <property name="component.bootclasspath" value="${java_1_6_bootclasspath}"/>
+
+
+    <!-- TCS dependencies -->
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="configuration_api.jar" value="${tcs_libdir}/configuration_api/1.1.0/configuration_api.jar"/>
+    <property name="configuration_persistence.jar" value="${tcs_libdir}/configuration_persistence/1.0.2/configuration_persistence.jar"/>
+    <property name="logging_wrapper.jar" value="${tcs_libdir}/logging_wrapper/2.0.0/logging_wrapper.jar"/>
+    <property name="command_line_utility.jar" value="${tcs_libdir}/command_line_utility/1.0/command_line_utility.jar"/>
+    <property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.1.0/db_connection_factory.jar"/>
+    <property name="object_factory.jar" value="${tcs_libdir}/object_factory/2.2.0/object_factory.jar"/>
+    <property name="object_factory_configuration_api_plugin.jar" value="${tcs_libdir}/object_factory_configuration_api_plugin/1.1.0/object_factory_configuration_api_plugin.jar"/>
+    <property name="id_generator.jar" value="${tcs_libdir}/id_generator/3.1.0/id_generator.jar"/>
+    <property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
+    <property name="jndi_context_utility.jar" value="${tcs_libdir}/jndi_context_utility/2.0/jndi_context_utility.jar"/>
+    
+    <property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
+    <property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>
+    <property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.2.1/configuration_manager.jar"/>
+
+    <!-- 3rd party dependencies -->
+    <property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar"/>    
+    <property name="j2ee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
+    
+    <property name="amazon-fps-java-library.jar" value="${ext_libdir}/amazon-fps/2010-08-28/amazon-fps-2010-08-28-java-library.jar"/>
+    <property name="commons-codec.jar" value="${ext_libdir}/amazon-fps/2010-08-28/third-party/commons-codec-1.3/commons-codec-1.3.jar"/>
+    <property name="commons-httpclient.jar" value="${ext_libdir}/amazon-fps/2010-08-28/third-party/commons-httpclient-3.0.1/commons-httpclient-3.0.1.jar"/>
+    <property name="commons-logging.jar" value="${ext_libdir}/amazon-fps/2010-08-28/third-party/commons-logging-1.1/commons-logging-1.1.jar"/>
+    <property name="log4j.jar" value="${ext_libdir}/amazon-fps/2010-08-28/third-party/log4j-1.2.14/log4j-1.2.14.jar"/>
+    <property name="activemq.jar" value="${ext_libdir}/activemq/5.5.1/activemq-all-5.5.1.jar"/>
+    <property name="slf4j-log4j.jar" value="${ext_libdir}/activemq/5.5.1/lib/optional/slf4j-log4j12-1.5.11.jar"/>
+    
+    <property name="ifxjdbc.jar" value="${ext_libdir}/Informix/3.0/ifxjdbc.jar"/>
+
+    <path id="component.tcs-dependencies">
+        <pathelement location="${base_exception.jar}"/>
+        <pathelement location="${configuration_api.jar}"/>
+        <pathelement location="${configuration_persistence.jar}"/>
+        <pathelement location="${logging_wrapper.jar}"/>
+        <pathelement location="${command_line_utility.jar}"/>
+        <pathelement location="${db_connection_factory.jar}"/>
+        <pathelement location="${object_factory.jar}"/>
+        <pathelement location="${object_factory_configuration_api_plugin.jar}"/>
+        <pathelement location="${id_generator.jar}"/>
+        <pathelement location="${topcoder_commons_utility.jar}"/>
+        <pathelement location="${jndi_context_utility.jar}"/>        
+        <pathelement location="${configuration_manager.jar}"/>
+        <pathelement location="${object_formatter.jar}"/>
+        <pathelement location="${typesafe_enum.jar}"/>
+    </path>
+    
+    <path id="component.3rdParty-dependencies">
+		    <pathelement location="${j2ee.jar}" />
+		    <pathelement location="${amazon-fps-java-library.jar}"/>
+        <pathelement location="${commons-codec.jar}"/>
+        <pathelement location="${commons-httpclient.jar}"/>
+        <pathelement location="${commons-logging.jar}"/>
+        <pathelement location="${log4j.jar}"/>
+        <pathelement location="${activemq.jar}"/>
+        <pathelement location="${slf4j-log4j.jar}"/>
+    </path>
+
+    <path id="component.test.3rdParty-dependencies">
+        <pathelement location="${junit.jar}"/>
+        <pathelement location="${ifxjdbc.jar}"/>       
+    </path>
+
+</project>

@@ -1,0 +1,25 @@
+Added the following methods:
+- AuthorizationPersistence#getAllAuthorizations()
+- PaymentPersistence#getAllPayments()
+- PaymentPersistence#getPaymentsByAuthorization()
+- DatabaseAuthorizationPersistence#getAllAuthorizations()
+- DatabasePaymentPersistence#getAllPayments()
+- DatabasePaymentPersistence#getPaymentsByAuthorization()
+- AmazonPaymentManager#getAllAuthorizations()
+- AmazonPaymentManager#getAllPayments()
+- AmazonPaymentManager#getPaymentsByAuthorization()
+- AmazonPaymentManagerImpl#getAllAuthorizations()
+- AmazonPaymentManagerImpl#getAllPayments()
+- AmazonPaymentManagerImpl#getPaymentsByAuthorization()
+
+Updated description of AmazonPaymentManager in TCUML and CS.
+
+Added 3 use cases to UCD.
+
+Updated description of Strategy pattern in CS 1.1.
+
+Added Delegate pattern to CS 1.1.
+
+Updated CS 1.3.3.
+
+Extended CS 4.3.2 (demo).

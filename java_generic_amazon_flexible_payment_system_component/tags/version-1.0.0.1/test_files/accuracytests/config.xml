@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<CMConfig>
+  <Config name="com.topcoder.payments.amazonfps.AmazonPaymentManagerImpl">
+    <Property name="loggerName">
+      <Value>myLogger</Value>
+    </Property>
+    <Property name="objectFactoryConfig">
+      <Property name="DatabaseAuthorizationPersistence">
+        <Property name="type">
+          <Value>com.topcoder.payments.amazonfps.persistence.db.DatabaseAuthorizationPersistence</Value>
+        </Property>
+      </Property>
+      <Property name="DatabasePaymentPersistence">
+        <Property name="type">
+          <Value>com.topcoder.payments.amazonfps.persistence.db.DatabasePaymentPersistence</Value>
+        </Property>
+      </Property>
+      <Property name="JMSAmazonPaymentEventSubscriber">
+        <Property name="type">
+          <Value>com.topcoder.payments.amazonfps.subscribers.jms.JMSAmazonPaymentEventSubscriber</Value>
+        </Property>
+      </Property>
+    </Property>
+    <Property name="authorizationPersistenceKey">
+      <Value>DatabaseAuthorizationPersistence</Value>
+    </Property>
+    <Property name="authorizationPersistenceConfig">
+      <Property name="loggerName">
+        <Value>myLogger</Value>
+      </Property>
+      <Property name="dbConnectionFactoryConfig">
+            <Property name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+              <Property name="connections">
+                <Property name="default">
+                  <Value>myConnection</Value>
+                </Property>
+                <Property name="myConnection">
+                  <Property name="producer">
+                      <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                  </Property>
+                  <Property name="parameters">
+                      <Property name="jdbc_driver">
+                          <Value>com.informix.jdbc.IfxDriver</Value>
+                      </Property>
+                      <Property name="jdbc_url">
+                          <Value>jdbc:informix-sqli://localhost:2021/test:INFORMIXSERVER=informixoltp_tcp</Value>
+                      </Property>
+                      <Property name="SelectMethod">
+                          <Value>cursor</Value>
+                      </Property>
+                      <Property name="user">
+                          <Value>informix</Value>
+                      </Property>
+                      <Property name="password">
+                          <Value>topcoder</Value>
+                      </Property>
+                    </Property>
+                </Property>
+              </Property>
+            </Property>
+      </Property>
+      <Property name="connectionName">
+        <Value>myConnection</Value>
+      </Property>
+      <Property name="authorizationIdGeneratorName">
+        <Value>authorization</Value>
+      </Property>
+    </Property>
+    <Property name="paymentPersistenceKey">
+      <Value>DatabasePaymentPersistence</Value>
+    </Property>
+    <Property name="paymentPersistenceConfig">
+      <Property name="loggerName">
+        <Value>myLogger</Value>
+      </Property>
+      <Property name="dbConnectionFactoryConfig">
+            <Property name="com.topcoder.db.connectionfactory.DBConnectionFactoryImpl">
+              <Property name="connections">
+                <Property name="default">
+                  <Value>myConnection</Value>
+                </Property>
+                <Property name="myConnection">
+                  <Property name="producer">
+                      <Value>com.topcoder.db.connectionfactory.producers.JDBCConnectionProducer</Value>
+                  </Property>
+                  <Property name="parameters">
+                      <Property name="jdbc_driver">
+                          <Value>com.informix.jdbc.IfxDriver</Value>
+                      </Property>
+                      <Property name="jdbc_url">
+                          <Value>jdbc:informix-sqli://localhost:2021/test:INFORMIXSERVER=informixoltp_tcp</Value>
+                      </Property>
+                      <Property name="SelectMethod">
+                          <Value>cursor</Value>
+                      </Property>
+                      <Property name="user">
+                          <Value>informix</Value>
+                      </Property>
+                      <Property name="password">
+                          <Value>topcoder</Value>
+                      </Property>
+                    </Property>
+                </Property>
+              </Property>
+            </Property>
+      </Property>
+      <Property name="connectionName">
+        <Value>myConnection</Value>
+      </Property>
+      <Property name="paymentIdGeneratorName">
+        <Value>payment</Value>
+      </Property>
+      <Property name="paymentOperationIdGeneratorName">
+        <Value>paymentOperation</Value>
+      </Property>
+    </Property>
+    <Property name="paymentEventSubscriber1">
+      <Property name="subscriberKey">
+        <Value>JMSAmazonPaymentEventSubscriber</Value>
+      </Property>
+      <Property name="subscriberConfig">
+        <Property name="loggerName">
+          <Value>myLogger</Value>
+        </Property>
+        <Property name="jmsConnectionFactoryName">
+          <Value>myJMSConnectionFactory</Value>
+        </Property>
+        <Property name="queueName">
+          <Value>paymentEventQueue</Value>
+        </Property>
+      </Property>
+    </Property>
+    <Property name="awsAccessKey">
+      <Value>AKIAJ5ZFDPBCRAXGAYTA</Value>
+    </Property>
+    <Property name="awsSecretKey">
+      <Value>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</Value>
+    </Property>
+    <Property name="paymentMethods">
+      <Value>CC,ACH,ABT</Value>
+    </Property>
+  </Config>
+</CMConfig>
