@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="createMilestonesAction" class="com.topcoder.direct.actions.project.milestone.CreateMilestonesAction" init-method="afterPropertiesSet">
+    <property name="milestoneService" ref="milestoneService" />
+  </bean>
+
+  <bean id="deleteMilestonesAction" class="com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction" init-method="afterPropertiesSet">
+    <property name="milestoneService" ref="milestoneService" />
+  </bean>
+  
+  <bean id="getAllMilestonesAction" class="com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction" init-method="afterPropertiesSet">
+    <property name="milestoneService" ref="milestoneService" />
+  </bean>
+  
+   <bean id="getAllMilestonesInMonthAction" class="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction" init-method="afterPropertiesSet">
+    <property name="milestoneService" ref="milestoneService" />
+  </bean> 
+  
+   <bean id="loadMilestonesAction" class="com.topcoder.direct.actions.project.milestone.LoadMilestonesAction" init-method="afterPropertiesSet">
+    <property name="milestoneService" ref="milestoneService" />
+	<property name="responsiblePersonService" ref="responsiblePersonService" />
+  </bean> 
+  
+   <bean id="updateMilestonesAction" class="com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction" init-method="afterPropertiesSet">
+    <property name="milestoneService" ref="milestoneService" />
+  </bean> 
+  
+   <bean id="milestoneService" class="com.topcoder.direct.services.project.milestone.mock.MockMilestoneService"/>
+   
+   <bean id="responsiblePersonService" class="com.topcoder.direct.services.project.milestone.mock.MockResponsiblePersonService"/>
+
+</beans>

@@ -1,0 +1,44 @@
+<project name="Dependency Import" default="dist" basedir=".">
+	<!-- TCS dependencies -->
+
+	<property name="component.target" value="1.5" />
+	<property name="component.bootclasspath" value="${java_1_5_bootclasspath}" />
+		
+    <property name="base_exception.jar" value="${tcs_libdir}/base_exception/2.0.0/base_exception.jar"/>
+    <property name="shared.jar" value="${testfiles}/lib/shared.jar"/>
+    <property name="security.jar" value="${testfiles}/lib/security.jar"/>
+    <property name="topcoder_commons_utility.jar" value="${tcs_libdir}/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar"/>
+	<property name="services_mock.jar" value="${testfiles}/lib/services_mock.jar" />
+	<property name="dependency.jar" value="${testfiles}/lib/dep_mock.jar" />
+	
+
+	<!-- 3rd party dependencies -->
+	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
+    <property name="spring.jar" value="${testfiles}/lib/spring.jar"/>
+	<property name="struts2-core.jar" value="${testfiles}/lib/struts2-core-2.2.3.jar" />
+	<property name="xwork-core.jar" value="${testfiles}/lib/xwork-core-2.2.3.jar" />
+	<property name="log4j.jar" value="${testfiles}/lib/log4j-1.2.16.jar"/>
+    <property name="commons-logging.jar" value="${testfiles}/lib/commons-logging-1.1.1.jar"/>
+	
+	<path id="component.tcs-dependencies">
+		<pathelement location="${base_exception.jar}" />
+		<pathelement location="${topcoder_commons_utility.jar}" />
+		<pathelement location="${dependency.jar}" />
+		<pathelement location="${shared.jar}" />
+		<pathelement location="${security.jar}" />
+		<pathelement location="${services_mock.jar}" />
+	</path>
+
+	<path id="component.3rdParty-dependencies">
+	    <pathelement location="${xwork-core.jar}" />
+		<pathelement location="${spring.jar}" />
+		<pathelement location="${struts2-core.jar}" />
+		<pathelement location="${log4j.jar}" />
+	</path>
+
+	<path id="component.test.3rdParty-dependencies">
+		<pathelement location="${junit.jar}" />
+		<pathelement location="${commons-logging.jar}" />
+	</path>
+
+</project>

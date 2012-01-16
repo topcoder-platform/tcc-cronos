@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="Jason-PC" name="com.topcoder.direct.actions.project.milestone.AllTests" tests="180" time="4.977" timestamp="2012-01-16T05:25:17">
+  <properties>
+    <property name="component.version.major" value="1" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.6.0_21\jre" />
+    <property name="xwork-core.jar" value="test_files/lib/xwork-core-2.2.3.jar" />
+    <property name="dist_javadocs" value="build/dist/topcoder_cockpit_project_milestone_struts_actions-1.0.0/docs/javadocs" />
+    <property name="debug" value="true" />
+    <property name="build_distdir" value="build/dist" />
+    <property name="distfilename" value="topcoder_cockpit_project_milestone_struts_actions" />
+    <property name="component.version.micro" value="0" />
+    <property name="component.dist.jar" value="build/dist/topcoder_cockpit_project_milestone_struts_actions-1.0.0.jar" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\endorsed" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="design_dist.jar" value="topcoder_cockpit_project_milestone_struts_actions_1.0.0_design_dist.jar" />
+    <property name="javadocsdir" value="docs/javadocs" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="java.version" value="1.6.0_21" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="ant.project.invoked-targets" value="reports-all" />
+    <property name="cobertura.datafile" value="log/cobertura.ser" />
+    <property name="user.name" value="Jason" />
+    <property name="packagedir" value="com/topcoder/direct/actions/project/milestone" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="component_version" value="1.0.0" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="target_libdir" value="d:/tcs/lib/tcs" />
+    <property name="reports" value="log/reports" />
+    <property name="component.jar" value="build/dist/lib/tcs/topcoder_cockpit_project_milestone_struts_actions/1.0.0/topcoder_cockpit_project_milestone_struts_actions.jar" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="javamain" value="src/java/main" />
+    <property name="user.timezone" value="" />
+    <property name="component.version.build" value="1" />
+    <property name="path.separator" value=";" />
+    <property name="srcdir" value="src" />
+    <property name="file.encoding" value="Cp1252" />
+    <property name="services_mock.jar" value="test_files/lib/services_mock.jar" />
+    <property name="ant.project.default-target" value="dist" />
+    <property name="java_1_4_bootclasspath" value="c:/Program Files/Java/j2re1.4.2_19/lib/rt.jar" />
+    <property name="ant.file" value="D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\build.xml" />
+    <property name="javasrc" value="src/java" />
+    <property name="instrumented.dir" value="build/instrumented" />
+    <property name="component.target" value="1.5" />
+    <property name="component.tests.jar" value="build/dist/lib/tcs/topcoder_cockpit_project_milestone_struts_actions_tests.jar" />
+    <property name="java.io.tmpdir" value="C:\Users\Jason\AppData\Local\Temp\" />
+    <property name="user.language" value="en" />
+    <property name="manifest_file_path" value="build/dist/topcoder_cockpit_project_milestone_struts_actions-1.0.0/META-INF/" />
+    <property name="line.separator" value="
+" />
+    <property name="component.name" value="TopCoder Cockpit Project Milestone Struts Actions" />
+    <property name="ant.file.type" value="file" />
+    <property name="verbose" value="no" />
+    <property name="manifest_file" value="build/dist/topcoder_cockpit_project_milestone_struts_actions-1.0.0/META-INF//MANIFEST.MF" />
+    <property name="ant.file.TopCoder Java Generic Build" value="D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\build.xml" />
+    <property name="java.vm.info" value="mixed mode, sharing" />
+    <property name="component_path" value="topcoder_cockpit_project_milestone_struts_actions/1.0.0" />
+    <property name="sun.desktop" value="windows" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="dist_coverage" value="build/dist/topcoder_cockpit_project_milestone_struts_actions-1.0.0/docs/coverage" />
+    <property name="builddir" value="build" />
+    <property name="cobertura.dir" value="d:/tcs/lib/third_party/cobertura/1.9.4.1" />
+    <property name="struts2-core.jar" value="test_files/lib/struts2-core-2.2.3.jar" />
+    <property name="javac.encoding" value="UTF-8" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="dist_lib" value="build/dist/lib/tcs" />
+    <property name="junit.jar" value="d:/tcs/lib/third_party/junit/4.6/junit-4.6.jar" />
+    <property name="configdir" value="conf" />
+    <property name="build_tcsdistdir" value="build/dist/topcoder_cockpit_project_milestone_struts_actions-1.0.0" />
+    <property name="ant.file.type.Dependency Import" value="file" />
+    <property name="ant.version" value="Apache Ant version 1.8.0 compiled on February 1 2010" />
+    <property name="dist_docs" value="build/dist/topcoder_cockpit_project_milestone_struts_actions-1.0.0/docs" />
+    <property name="test_reflib" value="test_reflib" />
+    <property name="testlogdir" value="log" />
+    <property name="os.name" value="Windows 7" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="component.mainclass" value="" />
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\oracle\11.2.0\dbhome_1\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32\wbem;C:\Windows\system32\windowspowershell\v1.0\;c:\program files\ati technologies\ati.ace\core-static;c:\program files\intel\wifi\bin\;c:\program files\common files\intel\wirelesscommon\;c:\program files\ibm\gsk8\lib;C:\PROGRA~1\IBM\SQLLIB\BIN;C:\PROGRA~1\IBM\SQLLIB\FUNCTION;C:\PROGRA~1\IBM\SQLLIB\SAMPLES\REPL;C:\Program Files\ant\bin;C:\Program Files\Java\jdk1.6.0_21\bin;C:\PROGRA~1\ibm\gsk7\bin;C:\PROGRA~1\ibm\gsk7\lib;C:\Program Files\IBM\Informix\Client-SDK\bin;C:\Program Files\ibm\gsk7\bin;C:\Program Files\ibm\gsk7\lib;C:\Program Files\QuickTime\QTSystem\;c:\Program Files\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;c:\Program Files\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\" />
+    <property name="docpackage.jar" value="topcoder_cockpit_project_milestone_struts_actions_docs.jar" />
+    <property name="shared.jar" value="test_files/lib/shared.jar" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="basedir" value="D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission" />
+    <property name="java.class.version" value="50.0" />
+    <property name="ant.home" value="C:\Program Files\ant" />
+    <property name="java_1_5_bootclasspath" value="c:/Program Files/Java/jre1.5.0_22/lib/rt.jar" />
+    <property name="topcoder_commons_utility.jar" value="d:/tcs/lib/tcs/topcoder_commons_utility/1.0.0/topcoder_commons_utility.jar" />
+    <property name="log4j.jar" value="test_files/lib/log4j-1.2.16.jar" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\bin" />
+    <property name="ext_libdir" value="d:/tcs/lib/third_party" />
+    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="user.variant" value="" />
+    <property name="dependency.jar" value="test_files/lib/dep_mock.jar" />
+    <property name="build_targetclassdir" value="build/targetclasses" />
+    <property name="ant.file.type.TopCoder Java Generic Build" value="file" />
+    <property name="docsdir" value="docs" />
+    <property name="dev_dist.jar" value="topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_dist.jar" />
+    <property name="ant.project.name" value="TopCoder Java Generic Build" />
+    <property name="component.version.minor" value="0" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="component.bootclasspath" value="c:/Program Files/Java/jre1.5.0_22/lib/rt.jar" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="build_javadocsdir" value="build/docs/javadocs" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\ext;C:\Windows\Sun\Java\lib\ext" />
+    <property name="os.version" value="6.1" />
+    <property name="user.home" value="C:\Users\Jason" />
+    <property name="javadoc.jar" value="javadocs.jar" />
+    <property name="libdir" value="d:/tcs/lib" />
+    <property name="build_classdir" value="build/classes" />
+    <property name="commons-logging.jar" value="test_files/lib/commons-logging-1.1.1.jar" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="cobertura.format" value="html" />
+    <property name="component.distfilename" value="topcoder_cockpit_project_milestone_struts_actions" />
+    <property name="component.package" value="com.topcoder.direct.actions.project.milestone" />
+    <property name="build_testclassdir" value="build/testClasses" />
+    <property name="package" value="com.topcoder.direct.actions.project.milestone" />
+    <property name="base_exception.jar" value="d:/tcs/lib/tcs/base_exception/2.0.0/base_exception.jar" />
+    <property name="user.dir" value="D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission" />
+    <property name="component.packagedir" value="com/topcoder/direct/actions/project/milestone" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="ant.file.Dependency Import" value="D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\build-dependencies.xml" />
+    <property name="dist_docpackage" value="build/doc_package" />
+    <property name="java.vm.version" value="17.0-b17" />
+    <property name="java.class.path" value="D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\build\testClasses;d:\tcs\lib\third_party\junit\4.6\junit-4.6.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\commons-logging-1.1.1.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_reflib\easymock-3.0.jar;d:\tcs\lib\tcs\base_exception\2.0.0\base_exception.jar;d:\tcs\lib\tcs\topcoder_commons_utility\1.0.0\topcoder_commons_utility.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\dep_mock.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\shared.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\security.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\services_mock.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\xwork-core-2.2.3.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\spring.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\struts2-core-2.2.3.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files\lib\log4j-1.2.16.jar;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\build\classes;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\test_files;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\conf;D:\tcs\review\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission;C:\PROGRA~1\IBM\SQLLIB\java\db2java.zip;C:\PROGRA~1\IBM\SQLLIB\java\db2jcc.jar;C:\PROGRA~1\IBM\SQLLIB\java\sqlj.zip;C:\PROGRA~1\IBM\SQLLIB\java\db2jcc_license_cu.jar;C:\PROGRA~1\IBM\SQLLIB\bin;C:\PROGRA~1\IBM\SQLLIB\java\common.jar;C:\Program Files\Java\jre6\lib\ext\QTJava.zip;C:\Program Files\ant\lib\ant-launcher.jar;C:\Program Files\ant\lib\ant.jar;C:\Program Files\ant\lib\ant-junit.jar" />
+    <property name="dev_submission.jar" value="topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission.jar" />
+    <property name="ant.library.dir" value="C:\Program Files\ant\lib" />
+    <property name="os.arch" value="x86" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="checkstyle_config" value="../../checkstyle/checkstyle.xml" />
+    <property name="ant.core.lib" value="C:\Program Files\ant\lib\ant.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="file.separator" value="\" />
+    <property name="java.runtime.version" value="1.6.0_21-b07" />
+    <property name="build_docsdir" value="build/docs" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.6.0_21\jre\lib\resources.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\rt.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\jce.jar;C:\Program Files\Java\jdk1.6.0_21\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.6.0_21\jre\classes" />
+    <property name="javadoc.locale" value="en_US" />
+    <property name="design_submission.jar" value="topcoder_cockpit_project_milestone_struts_actions_1.0.0_design_submission.jar" />
+    <property name="security.jar" value="test_files/lib/security.jar" />
+    <property name="user.country" value="US" />
+    <property name="tcs_libdir" value="d:/tcs/lib/tcs" />
+    <property name="component" value="TopCoder Cockpit Project Milestone Struts Actions" />
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="java_1_6_bootclasspath" value="c:/Program Files/Java/jre6/lib/rt.jar" />
+    <property name="spring.jar" value="test_files/lib/spring.jar" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="testfiles" value="test_files" />
+    <property name="sun.arch.data.model" value="32" />
+    <property name="javatests" value="src/java/tests" />
+  </properties>
+  <testcase classname="com.topcoder.direct.actions.project.milestone.ActionHelperTest" name="testLogEntranceAccuracy" time="0.078" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.ActionHelperTest" name="testLogExitAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.ActionHelperTest" name="testCheckDuplicatedFailure" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.ActionHelperTest" name="testCheckDuplicated" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.ActionHelperTest" name="testCheckMilestonesFailure" time="0.031" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.ActionHelperTest" name="testValidatePermissionFailure" time="0.016" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testCtr" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testGetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testSetMilestoneService" time="0.062" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testGetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testSetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testAfterPropertiesSetFailure" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionAccuracy" time="0.406" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure5" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure6" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure7" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure8" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure9" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure10" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure11" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure12" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure13" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure14" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionTest" name="testExecuteActionFailure15" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testCtr" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testGetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testSetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testGetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testSetMilestones" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testAfterPropertiesSetFailure" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure5" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure6" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure7" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure8" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure9" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure10" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure11" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure12" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure13" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure14" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionTest" name="testExecuteActionFailure15" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testCtr" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testGetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testSetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testAfterPropertiesSetFailure" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testExecuteActionAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testExecuteActionFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testExecuteActionFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testExecuteActionFailure3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testExecuteActionFailure4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testExecuteActionFailure5" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testExecuteActionFailure6" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testGetMilestoneIds" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testSetMilestoneIds" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testGetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionTest" name="testSetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testCtr" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testGetMilestoneService" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testSetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testGetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testSetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testAfterPropertiesSetFailure" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testExecuteActionAccuracy" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testExecuteActionFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testExecuteActionFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testExecuteActionFailure3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testExecuteActionFailure4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testGetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testSetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testGetMonth" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testSetMonth" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testGetYear" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testSetYear" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testGetRequestedStatuses" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionTest" name="testSetRequestedStatuses" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testCtr" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testGetMilestoneService" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testSetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testGetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testSetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testAfterPropertiesSetFailure" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testExecuteActionAccuracy" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testExecuteActionFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testExecuteActionFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testGetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testSetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testGetRequestedStatuses" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testSetRequestedStatuses" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testGetSortOrder" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionTest" name="testSetSortOrder" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testCtr" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testGetMilestoneService" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testSetMilestoneService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testGetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testSetMilestones" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testExecuteActionAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testExecuteActionFailure1" time="0.11" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testExecuteActionFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testExecuteActionFailure3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testExecuteActionFailure4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testGetMilestoneIds" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testSetMilestoneIds" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testGetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testSetProjectId" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testGetResponsiblePersonService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testSetResponsiblePersonService" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testGetResponsiblePeople" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testSetResponsiblePeople" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testAfterPropertiesSetFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionTest" name="testAfterPropertiesSetFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionAccuracyTest" name="testExecuteActionAccuracy" time="0.047" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionAccuracyTest" name="testExecuteActionAccuracy2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionAccuracyTest" name="testExecuteActionAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionAccuracyTest" name="testExecuteActionAccuracy2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionAccuracyTest" name="testExecuteActionAccuracy" time="0.016" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionAccuracyTest" name="testExecuteActionAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionAccuracyTest" name="testExecuteActionAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionAccuracyTest" name="testExecuteActionAccuracy" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionAccuracyTest" name="testExecuteActionAccuracy2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testAfterPropertiesSetFailure" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE5" time="0.015" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE6" time="0.094" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE7" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE8" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE9" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE10" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE11" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE12" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionIAE13" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionAuthFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.CreateMilestonesActionFailureUnitTests" name="testExecuteActionAuthFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionFailureUnitTests" name="testAfterPropertiesSetFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionFailureUnitTests" name="testExecuteActionIAE1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionFailureUnitTests" name="testExecuteActionIAE2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionFailureUnitTests" name="testExecuteActionIAE3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionFailureUnitTests" name="testExecuteActionIAE4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionFailureUnitTests" name="testExecuteActionAuthFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.DeleteMilestonesActionFailureUnitTests" name="testExecuteActionAuthFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionFailureUnitTests" name="testAfterPropertiesSetFailure" time="0.015" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionFailureUnitTests" name="testExecuteActionIAE1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesActionFailureUnitTests" name="testExecuteActionIAE2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionFailureUnitTests" name="testAfterPropertiesSetFailure" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionFailureUnitTests" name="testExecuteActionIAE1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionFailureUnitTests" name="testExecuteActionIAE2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthActionFailureUnitTests" name="testExecuteActionIAE3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionFailureUnitTests" name="testAfterPropertiesSetFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionFailureUnitTests" name="testAfterPropertiesSetFailure2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionFailureUnitTests" name="testExecuteActionIAE1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionFailureUnitTests" name="testExecuteActionIAE2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionFailureUnitTests" name="testExecuteActionIAE3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.LoadMilestonesActionFailureUnitTests" name="testExecuteActionIAE4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testAfterPropertiesSetFailure" time="0.109" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE2" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE3" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE4" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE5" time="0.11" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE6" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE7" time="0.015" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE8" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE9" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE10" time="0.094" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE11" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE12" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionIAE13" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionAuthFailure1" time="0.0" />
+  <testcase classname="com.topcoder.direct.actions.project.milestone.UpdateMilestonesActionFailureUnitTests" name="testExecuteActionAuthFailure2" time="0.0" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
