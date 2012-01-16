@@ -14,26 +14,26 @@
 
     <property name="commons-dbcp.jar" value="${ext_libdir}/commons-dbcp/1.4/commons-dbcp-1.4.jar"/>
     <property name="commons-pool.jar" value="${ext_libdir}/commons-pool/1.5.6/commons-pool-1.5.6.jar"/>
-    <property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging-api-1.1.1.jar"/>
-    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.1.0/lib/ifxjdbc.jar"/>
-    <property name="junit.jar" value="${ext_libdir}/junit/4.8/junit-4.8.jar"/>
+    <property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>
+    <property name="ifxjdbcx.jar" value="${ext_libdir}/informix/ifxjdbcx.jar"/>
+    <property name="junit.jar" value="${ext_libdir}/junit/4.8.2/junit-4.8.2.jar"/>
     <property name="aopalliance.jar" value="${ext_libdir}/aopalliance/aopalliance.jar"/>
     <property name="dom4j.jar" value="${ext_libdir}/dom4j/1.6.1/dom4j-1.6.1.jar"/>
-    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/3.1.0/lib/ifxjdbc.jar"/>
+    <property name="ifxjdbc.jar" value="${ext_libdir}/informix/ifxjdbc.jar"/>
     <property name="aspectjweaver.jar" value="${ext_libdir}/aspectj/1.6.11/lib/aspectjweaver.jar"/>
     <property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging-api-1.1.1.jar"/>
     <property name="commons-collections.jar" value="${ext_libdir}/commons-collections/3.2.1/commons-collections-3.2.1.jar"/>
     <property name="slf4j-simple.jar" value="${ext_libdir}/slf4j/1.5.8/slf4j-simple-1.5.8.jar"/>
     <property name="slf4j-api.jar" value="${ext_libdir}/slf4j/1.5.8/slf4j-api-1.5.8.jar"/>
-    <property name="javassist.jar" value="${ext_libdir}/javassist/3.1/javassist.jar"/>
+    <property name="javassist.jar" value="${ext_libdir}/javassist/3.15/javassist.jar"/>
     <property name="antlr.jar" value="${ext_libdir}/antlr/3.2/antlr-3.2.jar"/>
     <property name="javaee.jar" value="${ext_libdir}/javaee/5.0/javaee.jar"/>
     <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.16/log4j-1.2.16.jar"/>
-    <property name="hibernate3.jar" value="${ext_libdir}/hibernate/3.6.7/hibernate3.jar"/>
+    <property name="hibernate3.jar" value="${ext_libdir}/hibernate/3.6.8/hibernate3.jar"/>
 
 	<property name="project.jar" value="test_files/project.jar" />
 
-	<property name="spring.dir" value="${ext_libdir}/spring-framework/3.1.0.M2/dist" />
+	<property name="spring.dir" value="${ext_libdir}/spring/3.1.0/dist" />
 	<property name="hibernate.dir" value="${ext_libdir}/hibernate/3.6.8" />
 	<property name="j2ee.dir" value="${ext_libdir}/javaee/5.0" />
     <property name="log4j.jar" value="${ext_libdir}/log4j/1.2.16/log4j-1.2.16.jar"/>
@@ -49,7 +49,6 @@
 
 	<path id="component.3rdParty-dependencies">
         <pathelement location="${dom4j.jar}" />
-        <pathelement location="${ifxjdbc.jar}" />
         <pathelement location="${aopalliance.jar}" />
         <pathelement location="${aspectjweaver.jar}" />
         <pathelement location="${commons-logging.jar}" />
@@ -74,6 +73,7 @@
 	<path id="component.test.3rdParty-dependencies">
 		<pathelement location="${junit.jar}" />
 		<pathelement location="${ifxjdbc.jar}" />
+		<pathelement location="${ifxjdbcx.jar}" />
 	</path>
 
 </project>

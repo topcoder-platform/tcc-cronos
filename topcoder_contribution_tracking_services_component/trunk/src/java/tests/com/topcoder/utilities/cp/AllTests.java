@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import com.topcoder.utilities.cp.FailureTests;
-import com.topcoder.utilities.cp.accuracy.AccuracyTests;
+import com.topcoder.utilities.cp.accuracy.AccuracyUnitTests;
 import com.topcoder.utilities.cp.stresstests.StressTests;
 
 
@@ -33,7 +33,7 @@ public class AllTests extends TestCase {
 
         suite.addTest(UnitTests.suite());
         suite.addTest(FailureTests.suite());
-        suite.addTest(AccuracyTests.suite());
+        suite.addTest(AccuracyUnitTests.suite());
         suite.addTest(StressTests.suite());
 
         return suite;
