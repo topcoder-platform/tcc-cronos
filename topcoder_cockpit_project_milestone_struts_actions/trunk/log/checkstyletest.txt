@@ -1,4 +1,0 @@
-Starting audit...
-E:\code\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\src\java\tests\com\topcoder\direct\actions\project\milestone\AllTests.java:15: Annotation style must be 'COMPACT_NO_ARRAY'.
-E:\code\topcoder_cockpit_project_milestone_struts_actions_1.0.0_dev_submission\src\java\tests\com\topcoder\direct\actions\project\milestone\AllTests.java:15:37: '}' is not preceded with whitespace.
-Audit done.
