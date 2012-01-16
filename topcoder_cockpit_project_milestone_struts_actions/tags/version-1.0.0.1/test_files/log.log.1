@@ -1,0 +1,623 @@
+16/01/12 13:24:53.923 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:24:53.923 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:24:53.923 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:24:53.923 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:24:53.923 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:24:53.923 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:24:53.955 INFO     Loading XML bean definitions from class path resource [beans.xml]
+16/01/12 13:24:54.001 DEBUG    Using JAXP provider [com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl]
+16/01/12 13:24:54.142 TRACE    Trying to resolve XML entity with public id [null] and system id [http://www.springframework.org/schema/beans/spring-beans.xsd]
+16/01/12 13:24:54.142 DEBUG    Loading schema mappings from [META-INF/spring.schemas]
+16/01/12 13:24:54.142 DEBUG    Loaded schema mappings: {http://www.springframework.org/schema/lang/spring-lang-2.5.xsd=org/springframework/scripting/config/spring-lang-2.5.xsd, http://www.springframework.org/schema/lang/spring-lang.xsd=org/springframework/scripting/config/spring-lang-2.5.xsd, http://www.springframework.org/schema/context/spring-context-2.5.xsd=org/springframework/context/config/spring-context-2.5.xsd, http://www.springframework.org/schema/jms/spring-jms-2.5.xsd=org/springframework/jms/config/spring-jms-2.5.xsd, http://www.springframework.org/schema/context/spring-context.xsd=org/springframework/context/config/spring-context-2.5.xsd, http://www.springframework.org/schema/aop/spring-aop.xsd=org/springframework/aop/config/spring-aop-2.5.xsd, http://www.springframework.org/schema/util/spring-util-2.0.xsd=org/springframework/beans/factory/xml/spring-util-2.0.xsd, http://www.springframework.org/schema/util/spring-util-2.5.xsd=org/springframework/beans/factory/xml/spring-util-2.5.xsd, http://www.springframework.org/schema/tool/spring-tool-2.0.xsd=org/springframework/beans/factory/xml/spring-tool-2.0.xsd, http://www.springframework.org/schema/tx/spring-tx-2.0.xsd=org/springframework/transaction/config/spring-tx-2.0.xsd, http://www.springframework.org/schema/tool/spring-tool-2.5.xsd=org/springframework/beans/factory/xml/spring-tool-2.5.xsd, http://www.springframework.org/schema/tx/spring-tx-2.5.xsd=org/springframework/transaction/config/spring-tx-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans-2.0.xsd=org/springframework/beans/factory/xml/spring-beans-2.0.xsd, http://www.springframework.org/schema/jms/spring-jms.xsd=org/springframework/jms/config/spring-jms-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans-2.5.xsd=org/springframework/beans/factory/xml/spring-beans-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans.xsd=org/springframework/beans/factory/xml/spring-beans-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee.xsd=org/springframework/ejb/config/spring-jee-2.5.xsd, http://www.springframework.org/schema/tool/spring-tool.xsd=org/springframework/beans/factory/xml/spring-tool-2.5.xsd, http://www.springframework.org/schema/tx/spring-tx.xsd=org/springframework/transaction/config/spring-tx-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee-2.0.xsd=org/springframework/ejb/config/spring-jee-2.0.xsd, http://www.springframework.org/schema/aop/spring-aop-2.0.xsd=org/springframework/aop/config/spring-aop-2.0.xsd, http://www.springframework.org/schema/aop/spring-aop-2.5.xsd=org/springframework/aop/config/spring-aop-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee-2.5.xsd=org/springframework/ejb/config/spring-jee-2.5.xsd, http://www.springframework.org/schema/lang/spring-lang-2.0.xsd=org/springframework/scripting/config/spring-lang-2.0.xsd, http://www.springframework.org/schema/util/spring-util.xsd=org/springframework/beans/factory/xml/spring-util-2.5.xsd}
+16/01/12 13:24:54.142 DEBUG    Found XML schema [http://www.springframework.org/schema/beans/spring-beans.xsd] in classpath: org/springframework/beans/factory/xml/spring-beans-2.5.xsd
+16/01/12 13:24:54.220 DEBUG    Loading bean definitions
+16/01/12 13:24:54.235 DEBUG    Loaded 8 bean definitions from location pattern [beans.xml]
+16/01/12 13:24:54.235 INFO     Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@ae506e]: org.springframework.beans.factory.support.DefaultListableBeanFactory@ee7a14
+16/01/12 13:24:54.235 DEBUG    8 beans defined in org.springframework.context.support.ClassPathXmlApplicationContext@ae506e: display name [org.springframework.context.support.ClassPathXmlApplicationContext@ae506e]; startup date [Mon Jan 16 13:24:53 CST 2012]; root of context hierarchy
+16/01/12 13:24:54.251 DEBUG    Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@b01d43]
+16/01/12 13:24:54.251 DEBUG    Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@c4fe76]
+16/01/12 13:24:54.267 INFO     Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@ee7a14: defining beans [createMilestonesAction,deleteMilestonesAction,getAllMilestonesAction,getAllMilestonesInMonthAction,loadMilestonesAction,updateMilestonesAction,milestoneService,responsiblePersonService]; root of factory hierarchy
+16/01/12 13:24:54.267 DEBUG    Creating shared instance of singleton bean 'createMilestonesAction'
+16/01/12 13:24:54.267 DEBUG    Creating instance of bean 'createMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.282 DEBUG    Eagerly caching bean 'createMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:24:54.282 DEBUG    Creating shared instance of singleton bean 'milestoneService'
+16/01/12 13:24:54.282 DEBUG    Creating instance of bean 'milestoneService' with merged definition [Root bean: class [com.topcoder.direct.services.project.milestone.mock.MockMilestoneService]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.282 DEBUG    Eagerly caching bean 'milestoneService' to allow for resolving potential circular references
+16/01/12 13:24:54.282 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]
+16/01/12 13:24:54.298 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]
+16/01/12 13:24:54.298 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:24:54.298 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:24:54.298 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:24:54.298 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:24:54.298 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:24:54.298 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:24:54.298 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:24:54.298 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:24:54.298 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:24:54.298 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:24:54.298 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:24:54.298 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:24:54.298 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:24:54.298 DEBUG    Creating shared instance of singleton bean 'deleteMilestonesAction'
+16/01/12 13:24:54.298 DEBUG    Creating instance of bean 'deleteMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.298 DEBUG    Eagerly caching bean 'deleteMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:24:54.298 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:24:54.298 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]
+16/01/12 13:24:54.313 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]
+16/01/12 13:24:54.313 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:24:54.313 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:24:54.313 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:24:54.313 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:24:54.313 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:24:54.313 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:24:54.313 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:24:54.313 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:24:54.313 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:24:54.313 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:24:54.313 TRACE    Found bean property 'milestoneIds' of type [java.util.List]
+16/01/12 13:24:54.313 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:24:54.313 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:24:54.313 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:24:54.313 DEBUG    Creating shared instance of singleton bean 'getAllMilestonesAction'
+16/01/12 13:24:54.313 DEBUG    Creating instance of bean 'getAllMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.313 DEBUG    Eagerly caching bean 'getAllMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:24:54.313 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:24:54.313 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction]
+16/01/12 13:24:54.313 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction]
+16/01/12 13:24:54.313 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:24:54.313 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:24:54.313 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:24:54.313 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:24:54.313 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:24:54.313 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:24:54.313 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:24:54.313 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:24:54.313 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:24:54.313 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:24:54.313 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:24:54.313 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:24:54.313 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:24:54.313 TRACE    Found bean property 'requestedStatuses' of type [java.util.List]
+16/01/12 13:24:54.313 TRACE    Found bean property 'sortOrder' of type [com.topcoder.direct.services.project.milestone.model.SortOrder]
+16/01/12 13:24:54.313 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:24:54.329 DEBUG    Creating shared instance of singleton bean 'getAllMilestonesInMonthAction'
+16/01/12 13:24:54.329 DEBUG    Creating instance of bean 'getAllMilestonesInMonthAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.329 DEBUG    Eagerly caching bean 'getAllMilestonesInMonthAction' to allow for resolving potential circular references
+16/01/12 13:24:54.329 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:24:54.329 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction]
+16/01/12 13:24:54.329 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction]
+16/01/12 13:24:54.329 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:24:54.329 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:24:54.329 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:24:54.329 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:24:54.329 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:24:54.329 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:24:54.329 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:24:54.329 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:24:54.329 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:24:54.329 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:24:54.329 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:24:54.329 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:24:54.329 TRACE    Found bean property 'month' of type [int]
+16/01/12 13:24:54.329 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:24:54.329 TRACE    Found bean property 'requestedStatuses' of type [java.util.List]
+16/01/12 13:24:54.329 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:24:54.329 TRACE    Found bean property 'year' of type [int]
+16/01/12 13:24:54.329 DEBUG    Creating shared instance of singleton bean 'loadMilestonesAction'
+16/01/12 13:24:54.329 DEBUG    Creating instance of bean 'loadMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.LoadMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.329 DEBUG    Eagerly caching bean 'loadMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:24:54.329 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:24:54.329 DEBUG    Creating shared instance of singleton bean 'responsiblePersonService'
+16/01/12 13:24:54.329 DEBUG    Creating instance of bean 'responsiblePersonService' with merged definition [Root bean: class [com.topcoder.direct.services.project.milestone.mock.MockResponsiblePersonService]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.329 DEBUG    Eagerly caching bean 'responsiblePersonService' to allow for resolving potential circular references
+16/01/12 13:24:54.329 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.LoadMilestonesAction]
+16/01/12 13:24:54.345 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.LoadMilestonesAction]
+16/01/12 13:24:54.345 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:24:54.345 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:24:54.345 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:24:54.345 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:24:54.345 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:24:54.345 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:24:54.345 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:24:54.345 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:24:54.345 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:24:54.345 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:24:54.345 TRACE    Found bean property 'milestoneIds' of type [java.util.List]
+16/01/12 13:24:54.345 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:24:54.345 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:24:54.345 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:24:54.345 TRACE    Found bean property 'responsiblePeople' of type [java.util.List]
+16/01/12 13:24:54.345 TRACE    Found bean property 'responsiblePersonService' of type [com.topcoder.direct.services.project.milestone.ResponsiblePersonService]
+16/01/12 13:24:54.345 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:24:54.345 DEBUG    Creating shared instance of singleton bean 'updateMilestonesAction'
+16/01/12 13:24:54.345 DEBUG    Creating instance of bean 'updateMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:24:54.345 DEBUG    Eagerly caching bean 'updateMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:24:54.345 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:24:54.345 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction]
+16/01/12 13:24:54.360 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction]
+16/01/12 13:24:54.360 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:24:54.360 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:24:54.360 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:24:54.360 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:24:54.360 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:24:54.360 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:24:54.360 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:24:54.360 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:24:54.360 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:24:54.360 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:24:54.360 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:24:54.360 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:24:54.360 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:24:54.360 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:24:54.360 DEBUG    Returning cached instance of singleton bean 'responsiblePersonService'
+16/01/12 13:24:54.360 DEBUG    Publishing event in context [org.springframework.context.support.ClassPathXmlApplicationContext@ae506e]: org.springframework.context.event.ContextRefreshedEvent[source=org.springframework.context.support.ClassPathXmlApplicationContext@ae506e: display name [org.springframework.context.support.ClassPathXmlApplicationContext@ae506e]; startup date [Mon Jan 16 13:24:53 CST 2012]; root of context hierarchy]
+16/01/12 13:24:54.360 DEBUG    Returning cached instance of singleton bean 'updateMilestonesAction'
+16/01/12 13:24:54.360 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.360 DEBUG    Exit com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012, the duration time is 0.
+16/01/12 13:24:54.360 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.360 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.360 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.469 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.469 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.469 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.469 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.579 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.579 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.579 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.579 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.688 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.688 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.688 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.703 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.907 DEBUG    Returning cached instance of singleton bean 'createMilestonesAction'
+16/01/12 13:24:54.907 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.907 DEBUG    Exit com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012, the duration time is 0.
+16/01/12 13:24:54.907 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:54.907 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:54 CST 2012.
+16/01/12 13:24:55.016 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.016 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.016 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.016 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.126 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.126 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.126 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.126 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.235 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.235 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.235 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.235 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.344 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.453 DEBUG    Returning cached instance of singleton bean 'deleteMilestonesAction'
+16/01/12 13:24:55.453 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.453 DEBUG    Exit com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012, the duration time is 0.
+16/01/12 13:24:55.453 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.453 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.469 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.562 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.562 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.562 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.890 DEBUG    Returning cached instance of singleton bean 'getAllMilestonesInMonthAction'
+16/01/12 13:24:55.890 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.890 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012, the duration time is 0.
+16/01/12 13:24:55.890 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.890 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.890 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:55.999 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:55 CST 2012.
+16/01/12 13:24:56.327 DEBUG    Returning cached instance of singleton bean 'getAllMilestonesAction'
+16/01/12 13:24:56.327 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:56.327 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012, the duration time is 0.
+16/01/12 13:24:56.327 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:56.327 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:56.654 DEBUG    Returning cached instance of singleton bean 'loadMilestonesAction'
+16/01/12 13:24:56.654 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:56.654 DEBUG    Exit com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012, the duration time is 0.
+16/01/12 13:24:56.654 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:56.764 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:56.764 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:56.764 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:56 CST 2012.
+16/01/12 13:24:57.169 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.169 DEBUG    Exit com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012, the duration time is 0.
+16/01/12 13:24:57.169 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.169 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.169 DEBUG    Exit com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012, the duration time is 0.
+16/01/12 13:24:57.200 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.200 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.200 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012, the duration time is 0.
+16/01/12 13:24:57.200 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.200 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012, the duration time is 0.
+16/01/12 13:24:57.200 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.200 DEBUG    Exit com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012, the duration time is 0.
+16/01/12 13:24:57.310 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.310 DEBUG    Exit com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012, the duration time is 0.
+16/01/12 13:24:57.310 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.325 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.419 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.419 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.419 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.434 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.434 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.528 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.528 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.528 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.528 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.637 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.637 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.637 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.637 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.746 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.746 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.746 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.856 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.856 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.856 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.856 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.965 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:57.965 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:57 CST 2012.
+16/01/12 13:24:58.074 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.074 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.074 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.183 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.183 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.183 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.292 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.292 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.292 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.402 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.402 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.402 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.402 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.402 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.511 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.526 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.526 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.526 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.526 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.620 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.620 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:24:58.620 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:24:58 CST 2012.
+16/01/12 13:25:09.119 DEBUG    Enter into test method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.119 DEBUG    Exit test method, the timeStamp is Mon Jan 16 13:25:09 CST 2012, the duration time is 0.
+16/01/12 13:25:09.368 INFO     Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e: display name [org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e]; startup date [Mon Jan 16 13:25:09 CST 2012]; root of context hierarchy
+16/01/12 13:25:09.400 DEBUG    Class [org.apache.commons.collections.map.CaseInsensitiveMap] or one of its dependencies is not present: java.lang.ClassNotFoundException: org.apache.commons.collections.map.CaseInsensitiveMap
+16/01/12 13:25:09.400 DEBUG    Class [edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap] or one of its dependencies is not present: java.lang.ClassNotFoundException: edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap
+16/01/12 13:25:09.400 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:09.400 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:09.400 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:09.400 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:09.400 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:09.400 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:09.431 INFO     Loading XML bean definitions from class path resource [beans.xml]
+16/01/12 13:25:09.478 DEBUG    Using JAXP provider [com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl]
+16/01/12 13:25:09.524 TRACE    Trying to resolve XML entity with public id [null] and system id [http://www.springframework.org/schema/beans/spring-beans.xsd]
+16/01/12 13:25:09.524 DEBUG    Loading schema mappings from [META-INF/spring.schemas]
+16/01/12 13:25:09.524 DEBUG    Loaded schema mappings: {http://www.springframework.org/schema/lang/spring-lang-2.5.xsd=org/springframework/scripting/config/spring-lang-2.5.xsd, http://www.springframework.org/schema/lang/spring-lang.xsd=org/springframework/scripting/config/spring-lang-2.5.xsd, http://www.springframework.org/schema/context/spring-context-2.5.xsd=org/springframework/context/config/spring-context-2.5.xsd, http://www.springframework.org/schema/jms/spring-jms-2.5.xsd=org/springframework/jms/config/spring-jms-2.5.xsd, http://www.springframework.org/schema/context/spring-context.xsd=org/springframework/context/config/spring-context-2.5.xsd, http://www.springframework.org/schema/aop/spring-aop.xsd=org/springframework/aop/config/spring-aop-2.5.xsd, http://www.springframework.org/schema/util/spring-util-2.0.xsd=org/springframework/beans/factory/xml/spring-util-2.0.xsd, http://www.springframework.org/schema/util/spring-util-2.5.xsd=org/springframework/beans/factory/xml/spring-util-2.5.xsd, http://www.springframework.org/schema/tool/spring-tool-2.0.xsd=org/springframework/beans/factory/xml/spring-tool-2.0.xsd, http://www.springframework.org/schema/tx/spring-tx-2.0.xsd=org/springframework/transaction/config/spring-tx-2.0.xsd, http://www.springframework.org/schema/tool/spring-tool-2.5.xsd=org/springframework/beans/factory/xml/spring-tool-2.5.xsd, http://www.springframework.org/schema/tx/spring-tx-2.5.xsd=org/springframework/transaction/config/spring-tx-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans-2.0.xsd=org/springframework/beans/factory/xml/spring-beans-2.0.xsd, http://www.springframework.org/schema/jms/spring-jms.xsd=org/springframework/jms/config/spring-jms-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans-2.5.xsd=org/springframework/beans/factory/xml/spring-beans-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans.xsd=org/springframework/beans/factory/xml/spring-beans-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee.xsd=org/springframework/ejb/config/spring-jee-2.5.xsd, http://www.springframework.org/schema/tool/spring-tool.xsd=org/springframework/beans/factory/xml/spring-tool-2.5.xsd, http://www.springframework.org/schema/tx/spring-tx.xsd=org/springframework/transaction/config/spring-tx-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee-2.0.xsd=org/springframework/ejb/config/spring-jee-2.0.xsd, http://www.springframework.org/schema/aop/spring-aop-2.0.xsd=org/springframework/aop/config/spring-aop-2.0.xsd, http://www.springframework.org/schema/aop/spring-aop-2.5.xsd=org/springframework/aop/config/spring-aop-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee-2.5.xsd=org/springframework/ejb/config/spring-jee-2.5.xsd, http://www.springframework.org/schema/lang/spring-lang-2.0.xsd=org/springframework/scripting/config/spring-lang-2.0.xsd, http://www.springframework.org/schema/util/spring-util.xsd=org/springframework/beans/factory/xml/spring-util-2.5.xsd}
+16/01/12 13:25:09.524 DEBUG    Found XML schema [http://www.springframework.org/schema/beans/spring-beans.xsd] in classpath: org/springframework/beans/factory/xml/spring-beans-2.5.xsd
+16/01/12 13:25:09.587 DEBUG    Loading bean definitions
+16/01/12 13:25:09.618 DEBUG    Loaded 8 bean definitions from location pattern [beans.xml]
+16/01/12 13:25:09.618 INFO     Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e]: org.springframework.beans.factory.support.DefaultListableBeanFactory@bf7190
+16/01/12 13:25:09.618 DEBUG    8 beans defined in org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e: display name [org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e]; startup date [Mon Jan 16 13:25:09 CST 2012]; root of context hierarchy
+16/01/12 13:25:09.634 DEBUG    Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@12611a7]
+16/01/12 13:25:09.634 DEBUG    Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@2a6f16]
+16/01/12 13:25:09.634 INFO     Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@bf7190: defining beans [createMilestonesAction,deleteMilestonesAction,getAllMilestonesAction,getAllMilestonesInMonthAction,loadMilestonesAction,updateMilestonesAction,milestoneService,responsiblePersonService]; root of factory hierarchy
+16/01/12 13:25:09.634 DEBUG    Creating shared instance of singleton bean 'createMilestonesAction'
+16/01/12 13:25:09.649 DEBUG    Creating instance of bean 'createMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.665 DEBUG    Eagerly caching bean 'createMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:25:09.665 DEBUG    Creating shared instance of singleton bean 'milestoneService'
+16/01/12 13:25:09.665 DEBUG    Creating instance of bean 'milestoneService' with merged definition [Root bean: class [com.topcoder.direct.services.project.milestone.mock.MockMilestoneService]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.665 DEBUG    Eagerly caching bean 'milestoneService' to allow for resolving potential circular references
+16/01/12 13:25:09.680 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]
+16/01/12 13:25:09.696 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]
+16/01/12 13:25:09.696 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:09.696 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:09.696 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:09.696 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:09.696 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:09.696 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:09.696 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:09.696 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:09.696 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:09.696 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:09.696 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:09.696 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:25:09.696 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:25:09.696 DEBUG    Creating shared instance of singleton bean 'deleteMilestonesAction'
+16/01/12 13:25:09.696 DEBUG    Creating instance of bean 'deleteMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.696 DEBUG    Eagerly caching bean 'deleteMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:25:09.696 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:25:09.696 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]
+16/01/12 13:25:09.712 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]
+16/01/12 13:25:09.712 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:09.712 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:09.712 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:09.712 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:09.712 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:09.712 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:09.712 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:09.712 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:09.712 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:09.712 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:09.712 TRACE    Found bean property 'milestoneIds' of type [java.util.List]
+16/01/12 13:25:09.712 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:09.712 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:25:09.712 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:25:09.712 DEBUG    Creating shared instance of singleton bean 'getAllMilestonesAction'
+16/01/12 13:25:09.712 DEBUG    Creating instance of bean 'getAllMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.712 DEBUG    Eagerly caching bean 'getAllMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:25:09.712 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:25:09.712 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction]
+16/01/12 13:25:09.727 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction]
+16/01/12 13:25:09.727 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:09.727 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:09.727 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:09.727 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:09.727 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:09.727 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:09.727 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:09.727 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:09.727 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:09.727 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:09.727 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:09.727 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:25:09.727 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:25:09.727 TRACE    Found bean property 'requestedStatuses' of type [java.util.List]
+16/01/12 13:25:09.727 TRACE    Found bean property 'sortOrder' of type [com.topcoder.direct.services.project.milestone.model.SortOrder]
+16/01/12 13:25:09.727 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:25:09.727 DEBUG    Creating shared instance of singleton bean 'getAllMilestonesInMonthAction'
+16/01/12 13:25:09.727 DEBUG    Creating instance of bean 'getAllMilestonesInMonthAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.727 DEBUG    Eagerly caching bean 'getAllMilestonesInMonthAction' to allow for resolving potential circular references
+16/01/12 13:25:09.727 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:25:09.727 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction]
+16/01/12 13:25:09.727 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction]
+16/01/12 13:25:09.727 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:09.727 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:09.727 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:09.727 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:09.727 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:09.727 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:09.727 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:09.727 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:09.727 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:09.727 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:09.727 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:09.727 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:25:09.727 TRACE    Found bean property 'month' of type [int]
+16/01/12 13:25:09.727 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:25:09.727 TRACE    Found bean property 'requestedStatuses' of type [java.util.List]
+16/01/12 13:25:09.727 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:25:09.727 TRACE    Found bean property 'year' of type [int]
+16/01/12 13:25:09.727 DEBUG    Creating shared instance of singleton bean 'loadMilestonesAction'
+16/01/12 13:25:09.727 DEBUG    Creating instance of bean 'loadMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.LoadMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.727 DEBUG    Eagerly caching bean 'loadMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:25:09.727 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:25:09.727 DEBUG    Creating shared instance of singleton bean 'responsiblePersonService'
+16/01/12 13:25:09.727 DEBUG    Creating instance of bean 'responsiblePersonService' with merged definition [Root bean: class [com.topcoder.direct.services.project.milestone.mock.MockResponsiblePersonService]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.727 DEBUG    Eagerly caching bean 'responsiblePersonService' to allow for resolving potential circular references
+16/01/12 13:25:09.727 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.LoadMilestonesAction]
+16/01/12 13:25:09.743 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.LoadMilestonesAction]
+16/01/12 13:25:09.743 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:09.743 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:09.743 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:09.743 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:09.743 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:09.743 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:09.743 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:09.743 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:09.743 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:09.743 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:09.743 TRACE    Found bean property 'milestoneIds' of type [java.util.List]
+16/01/12 13:25:09.743 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:09.743 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:25:09.743 TRACE    Found bean property 'projectId' of type [long]
+16/01/12 13:25:09.743 TRACE    Found bean property 'responsiblePeople' of type [java.util.List]
+16/01/12 13:25:09.743 TRACE    Found bean property 'responsiblePersonService' of type [com.topcoder.direct.services.project.milestone.ResponsiblePersonService]
+16/01/12 13:25:09.743 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:25:09.743 DEBUG    Creating shared instance of singleton bean 'updateMilestonesAction'
+16/01/12 13:25:09.743 DEBUG    Creating instance of bean 'updateMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:09.743 DEBUG    Eagerly caching bean 'updateMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:25:09.743 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:25:09.743 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction]
+16/01/12 13:25:09.758 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction]
+16/01/12 13:25:09.758 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:09.758 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:09.758 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:09.758 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:09.758 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:09.758 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:09.758 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:09.758 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:09.758 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:09.758 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:09.758 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:09.758 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:25:09.758 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:25:09.758 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:25:09.758 DEBUG    Returning cached instance of singleton bean 'responsiblePersonService'
+16/01/12 13:25:09.758 DEBUG    Publishing event in context [org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e]: org.springframework.context.event.ContextRefreshedEvent[source=org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e: display name [org.springframework.context.support.ClassPathXmlApplicationContext@18aaa1e]; startup date [Mon Jan 16 13:25:09 CST 2012]; root of context hierarchy]
+16/01/12 13:25:09.758 DEBUG    Returning cached instance of singleton bean 'updateMilestonesAction'
+16/01/12 13:25:09.758 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.758 DEBUG    Exit com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012, the duration time is 0.
+16/01/12 13:25:09.758 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.758 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.758 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.868 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.868 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.868 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.868 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.977 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.977 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.977 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:09.977 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:09 CST 2012.
+16/01/12 13:25:10.086 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.086 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.086 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.086 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.304 DEBUG    Returning cached instance of singleton bean 'createMilestonesAction'
+16/01/12 13:25:10.304 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.304 DEBUG    Exit com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012, the duration time is 0.
+16/01/12 13:25:10.304 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.304 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.414 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.414 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.414 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.414 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.523 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.523 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.523 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.538 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.632 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.632 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.632 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.632 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.741 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.850 DEBUG    Returning cached instance of singleton bean 'deleteMilestonesAction'
+16/01/12 13:25:10.850 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.850 DEBUG    Exit com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012, the duration time is 0.
+16/01/12 13:25:10.850 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.850 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.850 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.960 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.960 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:10.960 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:10 CST 2012.
+16/01/12 13:25:11.178 DEBUG    Returning cached instance of singleton bean 'getAllMilestonesInMonthAction'
+16/01/12 13:25:11.178 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.178 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012, the duration time is 0.
+16/01/12 13:25:11.287 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.287 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.287 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.287 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.615 DEBUG    Returning cached instance of singleton bean 'getAllMilestonesAction'
+16/01/12 13:25:11.615 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.615 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012, the duration time is 0.
+16/01/12 13:25:11.724 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.724 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.942 DEBUG    Returning cached instance of singleton bean 'loadMilestonesAction'
+16/01/12 13:25:11.942 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:11.942 DEBUG    Exit com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012, the duration time is 0.
+16/01/12 13:25:11.942 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:11 CST 2012.
+16/01/12 13:25:12.052 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.052 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.052 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.410 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.410 DEBUG    Exit com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012, the duration time is 0.
+16/01/12 13:25:12.410 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.410 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.410 DEBUG    Exit com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012, the duration time is 0.
+16/01/12 13:25:12.410 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.488 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.488 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012, the duration time is 0.
+16/01/12 13:25:12.488 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.488 DEBUG    Exit com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012, the duration time is 0.
+16/01/12 13:25:12.488 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.488 DEBUG    Exit com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012, the duration time is 0.
+16/01/12 13:25:12.504 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.504 DEBUG    Exit com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012, the duration time is 0.
+16/01/12 13:25:12.598 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.613 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.613 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.707 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.707 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.707 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.707 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.722 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.816 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.816 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.816 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.816 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.816 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.925 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.941 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:12.941 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.CreateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:12 CST 2012.
+16/01/12 13:25:13.034 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.034 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.034 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.034 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.034 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.144 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.144 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.144 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.253 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.253 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.253 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.GetAllMilestonesInMonthAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.362 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.362 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.471 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.471 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.LoadMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.471 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.580 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.580 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.580 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.580 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.596 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.690 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.690 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.690 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.705 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.705 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.705 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.705 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.705 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:13.814 DEBUG    Enter into com.topcoder.direct.actions.project.milestone.UpdateMilestonesAction#executeAction method, the timeStamp is Mon Jan 16 13:25:13 CST 2012.
+16/01/12 13:25:17.374 DEBUG    Enter into test method, the timeStamp is Mon Jan 16 13:25:17 CST 2012.
+16/01/12 13:25:17.390 DEBUG    Exit test method, the timeStamp is Mon Jan 16 13:25:17 CST 2012, the duration time is 0.
+16/01/12 13:25:17.624 INFO     Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@ae506e: display name [org.springframework.context.support.ClassPathXmlApplicationContext@ae506e]; startup date [Mon Jan 16 13:25:17 CST 2012]; root of context hierarchy
+16/01/12 13:25:17.655 DEBUG    Class [org.apache.commons.collections.map.CaseInsensitiveMap] or one of its dependencies is not present: java.lang.ClassNotFoundException: org.apache.commons.collections.map.CaseInsensitiveMap
+16/01/12 13:25:17.655 DEBUG    Class [edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap] or one of its dependencies is not present: java.lang.ClassNotFoundException: edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap
+16/01/12 13:25:17.655 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:17.655 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:17.655 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:17.655 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:17.655 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:17.655 TRACE    Creating [java.util.concurrent.ConcurrentHashMap]
+16/01/12 13:25:17.686 INFO     Loading XML bean definitions from class path resource [beans.xml]
+16/01/12 13:25:17.686 DEBUG    Using JAXP provider [com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl]
+16/01/12 13:25:17.733 TRACE    Trying to resolve XML entity with public id [null] and system id [http://www.springframework.org/schema/beans/spring-beans.xsd]
+16/01/12 13:25:17.733 DEBUG    Loading schema mappings from [META-INF/spring.schemas]
+16/01/12 13:25:17.733 DEBUG    Loaded schema mappings: {http://www.springframework.org/schema/lang/spring-lang-2.5.xsd=org/springframework/scripting/config/spring-lang-2.5.xsd, http://www.springframework.org/schema/lang/spring-lang.xsd=org/springframework/scripting/config/spring-lang-2.5.xsd, http://www.springframework.org/schema/context/spring-context-2.5.xsd=org/springframework/context/config/spring-context-2.5.xsd, http://www.springframework.org/schema/jms/spring-jms-2.5.xsd=org/springframework/jms/config/spring-jms-2.5.xsd, http://www.springframework.org/schema/context/spring-context.xsd=org/springframework/context/config/spring-context-2.5.xsd, http://www.springframework.org/schema/aop/spring-aop.xsd=org/springframework/aop/config/spring-aop-2.5.xsd, http://www.springframework.org/schema/util/spring-util-2.0.xsd=org/springframework/beans/factory/xml/spring-util-2.0.xsd, http://www.springframework.org/schema/util/spring-util-2.5.xsd=org/springframework/beans/factory/xml/spring-util-2.5.xsd, http://www.springframework.org/schema/tool/spring-tool-2.0.xsd=org/springframework/beans/factory/xml/spring-tool-2.0.xsd, http://www.springframework.org/schema/tx/spring-tx-2.0.xsd=org/springframework/transaction/config/spring-tx-2.0.xsd, http://www.springframework.org/schema/tool/spring-tool-2.5.xsd=org/springframework/beans/factory/xml/spring-tool-2.5.xsd, http://www.springframework.org/schema/tx/spring-tx-2.5.xsd=org/springframework/transaction/config/spring-tx-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans-2.0.xsd=org/springframework/beans/factory/xml/spring-beans-2.0.xsd, http://www.springframework.org/schema/jms/spring-jms.xsd=org/springframework/jms/config/spring-jms-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans-2.5.xsd=org/springframework/beans/factory/xml/spring-beans-2.5.xsd, http://www.springframework.org/schema/beans/spring-beans.xsd=org/springframework/beans/factory/xml/spring-beans-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee.xsd=org/springframework/ejb/config/spring-jee-2.5.xsd, http://www.springframework.org/schema/tool/spring-tool.xsd=org/springframework/beans/factory/xml/spring-tool-2.5.xsd, http://www.springframework.org/schema/tx/spring-tx.xsd=org/springframework/transaction/config/spring-tx-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee-2.0.xsd=org/springframework/ejb/config/spring-jee-2.0.xsd, http://www.springframework.org/schema/aop/spring-aop-2.0.xsd=org/springframework/aop/config/spring-aop-2.0.xsd, http://www.springframework.org/schema/aop/spring-aop-2.5.xsd=org/springframework/aop/config/spring-aop-2.5.xsd, http://www.springframework.org/schema/jee/spring-jee-2.5.xsd=org/springframework/ejb/config/spring-jee-2.5.xsd, http://www.springframework.org/schema/lang/spring-lang-2.0.xsd=org/springframework/scripting/config/spring-lang-2.0.xsd, http://www.springframework.org/schema/util/spring-util.xsd=org/springframework/beans/factory/xml/spring-util-2.5.xsd}
+16/01/12 13:25:17.733 DEBUG    Found XML schema [http://www.springframework.org/schema/beans/spring-beans.xsd] in classpath: org/springframework/beans/factory/xml/spring-beans-2.5.xsd
+16/01/12 13:25:17.811 DEBUG    Loading bean definitions
+16/01/12 13:25:17.842 DEBUG    Loaded 8 bean definitions from location pattern [beans.xml]
+16/01/12 13:25:17.842 INFO     Bean factory for application context [org.springframework.context.support.ClassPathXmlApplicationContext@ae506e]: org.springframework.beans.factory.support.DefaultListableBeanFactory@ee7a14
+16/01/12 13:25:17.842 DEBUG    8 beans defined in org.springframework.context.support.ClassPathXmlApplicationContext@ae506e: display name [org.springframework.context.support.ClassPathXmlApplicationContext@ae506e]; startup date [Mon Jan 16 13:25:17 CST 2012]; root of context hierarchy
+16/01/12 13:25:17.858 DEBUG    Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@b01d43]
+16/01/12 13:25:17.858 DEBUG    Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@c4fe76]
+16/01/12 13:25:17.873 INFO     Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@ee7a14: defining beans [createMilestonesAction,deleteMilestonesAction,getAllMilestonesAction,getAllMilestonesInMonthAction,loadMilestonesAction,updateMilestonesAction,milestoneService,responsiblePersonService]; root of factory hierarchy
+16/01/12 13:25:17.873 DEBUG    Creating shared instance of singleton bean 'createMilestonesAction'
+16/01/12 13:25:17.873 DEBUG    Creating instance of bean 'createMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:17.889 DEBUG    Eagerly caching bean 'createMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:25:17.889 DEBUG    Creating shared instance of singleton bean 'milestoneService'
+16/01/12 13:25:17.889 DEBUG    Creating instance of bean 'milestoneService' with merged definition [Root bean: class [com.topcoder.direct.services.project.milestone.mock.MockMilestoneService]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:17.889 DEBUG    Eagerly caching bean 'milestoneService' to allow for resolving potential circular references
+16/01/12 13:25:17.889 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]
+16/01/12 13:25:17.905 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.CreateMilestonesAction]
+16/01/12 13:25:17.905 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:17.905 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:17.905 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:17.905 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:17.905 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:17.905 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:17.905 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:17.905 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:17.905 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:17.905 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:17.905 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:17.905 TRACE    Found bean property 'milestones' of type [java.util.List]
+16/01/12 13:25:17.905 TRACE    Found bean property 'texts' of type [java.util.ResourceBundle]
+16/01/12 13:25:17.905 DEBUG    Creating shared instance of singleton bean 'deleteMilestonesAction'
+16/01/12 13:25:17.905 DEBUG    Creating instance of bean 'deleteMilestonesAction' with merged definition [Root bean: class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]; scope=singleton; abstract=false; lazyInit=false; autowireCandidate=true; autowireMode=0; dependencyCheck=0; factoryBeanName=null; factoryMethodName=null; initMethodName=afterPropertiesSet; destroyMethodName=null; defined in class path resource [beans.xml]]
+16/01/12 13:25:17.905 DEBUG    Eagerly caching bean 'deleteMilestonesAction' to allow for resolving potential circular references
+16/01/12 13:25:17.905 DEBUG    Returning cached instance of singleton bean 'milestoneService'
+16/01/12 13:25:17.905 TRACE    Getting BeanInfo for class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]
+16/01/12 13:25:17.920 TRACE    Caching PropertyDescriptors for class [com.topcoder.direct.actions.project.milestone.DeleteMilestonesAction]
+16/01/12 13:25:17.920 TRACE    Found bean property 'action' of type [java.lang.String]
+16/01/12 13:25:17.920 TRACE    Found bean property 'actionErrors' of type [java.util.Collection]
+16/01/12 13:25:17.920 TRACE    Found bean property 'actionMessages' of type [java.util.Collection]
+16/01/12 13:25:17.920 TRACE    Found bean property 'class' of type [java.lang.Class]
+16/01/12 13:25:17.920 TRACE    Found bean property 'container' of type [com.opensymphony.xwork2.inject.Container]
+16/01/12 13:25:17.920 TRACE    Found bean property 'currentUser' of type [com.topcoder.security.TCSubject]
+16/01/12 13:25:17.920 TRACE    Found bean property 'errorMessages' of type [java.util.Collection]
+16/01/12 13:25:17.920 TRACE    Found bean property 'errors' of type [java.util.Map]
+16/01/12 13:25:17.920 TRACE    Found bean property 'fieldErrors' of type [java.util.Map]
+16/01/12 13:25:17.920 TRACE    Found bean property 'locale' of type [java.util.Locale]
+16/01/12 13:25:17.920 TRACE    Found bean property 'milestoneIds' of type [java.util.List]
+16/01/12 13:25:17.920 TRACE    Found bean property 'milestoneService' of type [com.topcoder.direct.services.project.milestone.MilestoneService]
+16/01/12 13:25:17.920 TRACE    Found bean property 'projectId' of type [long]
