@@ -14,11 +14,12 @@
 
 	<!-- 3rd party dependencies -->
 	<property name="junit.jar" value="${ext_libdir}/junit/4.6/junit-4.6.jar" />
-    <property name="spring.jar" value="${testfiles}/lib/spring.jar"/>
-	<property name="struts2-core.jar" value="${testfiles}/lib/struts2-core-2.2.3.jar" />
-	<property name="xwork-core.jar" value="${testfiles}/lib/xwork-core-2.2.3.jar" />
-	<property name="log4j.jar" value="${testfiles}/lib/log4j-1.2.16.jar"/>
-    <property name="commons-logging.jar" value="${testfiles}/lib/commons-logging-1.1.1.jar"/>
+	<property name="spring.jar" value="${ext_libdir}/spring/2.5.6/dist/spring.jar"/>
+	<property name="struts2-core.jar" value="${ext_libdir}/struts/2.2.3/lib/struts2-core-2.2.3.jar" />
+	<property name="xwork-core.jar" value="${ext_libdir}/struts/2.2.3/lib/xwork-core-2.2.3.jar" />
+	<property name="log4j.jar" value="${ext_libdir}/log4j/1.2.16/log4j-1.2.16.jar"/>
+	<property name="easymock.jar" value="${ext_libdir}/easymock/3.0/easymock-3.0.jar"/>
+	<property name="commons-logging.jar" value="${ext_libdir}/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>
 	
 	<path id="component.tcs-dependencies">
 		<pathelement location="${base_exception.jar}" />
@@ -30,10 +31,11 @@
 	</path>
 
 	<path id="component.3rdParty-dependencies">
-	    <pathelement location="${xwork-core.jar}" />
+		<pathelement location="${xwork-core.jar}" />
 		<pathelement location="${spring.jar}" />
 		<pathelement location="${struts2-core.jar}" />
 		<pathelement location="${log4j.jar}" />
+		<pathelement location="${easymock.jar}" />
 	</path>
 
 	<path id="component.test.3rdParty-dependencies">
