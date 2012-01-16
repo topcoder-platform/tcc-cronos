@@ -5,7 +5,7 @@
         <path refid="component.test.3rdParty-dependencies"/>
     </path>
 
-    <property name="tomcat.dir" value="E:\DEV\Programs\apache-tomcat-6.0.33" />
+    <property name="tomcat.dir" value="${ext_libdir}/tomcat/6.0.33" />
     <property name="demo" value="demo.war" />
     <target name="demo_war" depends="compile_tests">
         <delete file="${demo}" />
