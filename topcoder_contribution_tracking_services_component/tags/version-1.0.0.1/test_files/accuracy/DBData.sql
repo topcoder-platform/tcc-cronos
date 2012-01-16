@@ -1,0 +1,18 @@
+insert into project values (1, 1, 1, 1, 'user', CURRENT, 'user', CURRENT, 2);
+insert into project values (2, 1, 1, 1, 'user', CURRENT, 'user', CURRENT, 1);
+insert into project values (3, 1, 1, 1, 'user', CURRENT, 'user', CURRENT, 4);
+insert into project values (4, 1, 1, 1, 'user', CURRENT, 'user', CURRENT, 3);
+insert into tc_direct_project values (1, 'direct1', 'description1', 1, 1, CURRENT, CURRENT);
+insert into tc_direct_project values (2, 'direct2', 'description2', 1, 1, CURRENT, CURRENT);
+insert into tc_direct_project values (3, 'direct3', 'description3', 1, 1, CURRENT, CURRENT);
+insert into tc_direct_project values (4, 'direct4', 'description4', 1, 1, CURRENT, CURRENT);
+insert into project_contest_cp_config values (1, 1);
+insert into project_contest_cp_config values (2, 2);
+insert into project_contest_cp_config values (3, 3);
+insert into member_contribution_points values (1, 1, 1, 50, 'type1');
+insert into member_contribution_points values (2, 1, 1, 100, 'type2');
+insert into member_contribution_points values (3, 1, 2, 50, 'type3');
+insert into member_contribution_points values (4, 1, 2, 100, 'type4');
+insert into member_contribution_points values (5, 1, 2, 50, 'type5');
+insert into member_contribution_points values (6, 1, 3, 100, 'type6');
+insert into member_contribution_points values (7, 1, 3, 50, 'type7');

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.topcoder.utilities.cp.entities">
+  <class name="OriginalPayment" table="original_payment">
+    <id name="contestId" column="contest_id"/>
+    <property name="prize1st" column="prize_1st"/>
+    <property name="prize2nd" column="prize_2nd"/>
+    <property name="prize3rd" column="prize_3rd"/>
+    <property name="prize4th" column="prize_4th"/>
+    <property name="prize5th" column="prize_5th"/>
+    <property name="prizeCopilot" column="prize_copilot"/>
+    <property name="prizeMilestone" column="prize_milestone"/>
+    <property name="specReviewCost" column="spec_review_cost"/>
+    <property name="reviewCost" column="review_cost"/>
+  </class>
+</hibernate-mapping>
