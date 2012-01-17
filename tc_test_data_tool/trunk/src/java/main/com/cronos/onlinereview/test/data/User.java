@@ -8,9 +8,16 @@ import java.util.Map;
 
 /**
  * <p>An enumeration over the pre-defined user accounts.</p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #COPILOT_CANDIDATES} array.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum User {
 
@@ -52,7 +59,9 @@ public enum User {
 
     APPLICATIONS(22770213, "Applications", 100000),
     
-    COMPONENTS(22719217, "Components", 100000);
+    COMPONENTS(22719217, "Components", 100000),
+    
+    LCSUPPORT(22873364, "LCSUPPORT", 100000);
     
     public static final User[] SPECIFICATION_REVIEWER_CANDIDATES = new User[] {SUPER, YOSHI};
     
@@ -62,6 +71,9 @@ public enum User {
     public static final User[] REVIEWER_CANDIDATES = new User[] {CHELSEASIMON, WYZMO, CARTAJS, KSMITH};
     
     public static final User[] PRIMARY_REVIEWER_CANDIDATES = new User[] {REASSEMBLER, ANNEJ9NY, PLINEHAN};
+    
+    public static final User[] COPILOT_CANDIDATES = new User[] {HEFFAN, USER, SUPER, REASSEMBLER, TWIGHT, WYZMO, 
+                                                                LIGHTSPEED};
 
     /**
      * <p>A <code>long</code> providing the ID of this user.</p>

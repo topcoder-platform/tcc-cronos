@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.test.data.generator.project;
 
+import com.cronos.onlinereview.test.data.ProjectPhaseTemplate;
 import com.cronos.onlinereview.test.data.User;
 import com.cronos.onlinereview.test.data.corporateoltp.TcDirectProject;
 import com.cronos.onlinereview.test.data.generator.IdGenerator;
@@ -18,9 +19,22 @@ import java.io.Serializable;
 
 /**
  * <p>A class holding the parameters to be used for generating test data for a single project.</p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #copilot} property.</li>
+ *     <li>Added {@link #phasesTemplate} property.</li>
+ *     <li>Added {@link #submissionDeclarationIdGenerator} property.</li>
+ *     <li>Added {@link #studioSpecificationIdGenerator} property.</li>
+ *     <li>Added {@link #milestoneReviewer} property.</li>
+ *     <li>Added {@link #prizeIdGenerator} property.</li>
+ *     <li>Added {@link #startDateOffset} property.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class ProjectGeneratorConfig implements Serializable {
 
@@ -106,6 +120,13 @@ public class ProjectGeneratorConfig implements Serializable {
     private User approver;
 
     /**
+     * <p>A <code>User</code> providing the user to be set as copilot for the generated project.</p>
+     * 
+     * @since 1.1
+     */
+    private User copilot;
+
+    /**
      * <p>A <code>Long</code> providing the forum ID for the generated project.</p>
      */
     private Long forumId;
@@ -114,6 +135,13 @@ public class ProjectGeneratorConfig implements Serializable {
      * <p>A <code>CostLevel</code> providing the cost level for project.</p>
      */
     private CostLevel costLevel;
+
+    /**
+     * <p>A <code>ProjectPhaseTemplate</code> providing the project phases template.</p>
+     * 
+     * @since 1.1
+     */
+    private ProjectPhaseTemplate phasesTemplate;
 
     /**
      * <p>A <code>IdGenerator</code> providing the generator for project IDs..</p>
@@ -199,6 +227,41 @@ public class ProjectGeneratorConfig implements Serializable {
      * <p>A <code>IdGenerator</code> providing the generator for screening task IDs.</p>
      */
     private IdGenerator screeningTaskIdGenerator;
+
+    /**
+     * <p>A <code>IdGenerator</code> providing the generator for prize IDs.</p>
+     * 
+     * @since 1.1
+     */
+    private IdGenerator prizeIdGenerator;
+
+    /**
+     * <p>A <code>IdGenerator</code> providing the generator for Studio specification IDs.</p>
+     * 
+     * @since 1.1
+     */
+    private IdGenerator studioSpecificationIdGenerator;
+
+    /**
+     * <p>A <code>IdGenerator</code> providing the generator for IDs for submission declarations.</p>
+     * 
+     * @since 1.1
+     */
+    private IdGenerator submissionDeclarationIdGenerator;
+
+    /**
+     * <p>A <code>User</code> providing the details for user responsible for doing milestone screening and reviews.</p>
+     * 
+     * @since 1.1
+     */
+    private User milestoneReviewer;
+
+    /**
+     * <p>A <code>long</code> providing the offset for project to start (in minutes).</p>
+     *
+     * @since 1.1
+     */
+    private long startDateOffset;
 
     /**
      * <p>Constructs new <code>ProjectGeneratorConfig</code> instance.</p>
@@ -834,5 +897,149 @@ public class ProjectGeneratorConfig implements Serializable {
      */
     public void setScreeningTaskIdGenerator(IdGenerator screeningTaskIdGenerator) {
         this.screeningTaskIdGenerator = screeningTaskIdGenerator;
+    }
+
+    /**
+     * <p>Gets the user to be set as copilot for the generated project.</p>
+     *
+     * @return a <code>User</code> providing the user to be set as copilot for the generated project.
+     * @since 1.1
+     */
+    public User getCopilot() {
+        return this.copilot;
+    }
+
+    /**
+     * <p>Sets the user to be set as copilot for the generated project.</p>
+     *
+     * @param copilot a <code>User</code> providing the user to be set as copilot for the generated project.
+     * @since 1.1
+     */
+    public void setCopilot(User copilot) {
+        this.copilot = copilot;
+    }
+
+    /**
+     * <p>Gets the project phases template.</p>
+     *
+     * @return a <code>ProjectPhaseTemplate</code> providing the project phases template.
+     * @since 1.1
+     */
+    public ProjectPhaseTemplate getPhasesTemplate() {
+        return this.phasesTemplate;
+    }
+
+    /**
+     * <p>Sets the project phases template.</p>
+     *
+     * @param phasesTemplate a <code>ProjectPhaseTemplate</code> providing the project phases template.
+     * @since 1.1
+     */
+    public void setPhasesTemplate(ProjectPhaseTemplate phasesTemplate) {
+        this.phasesTemplate = phasesTemplate;
+    }
+
+    /**
+     * <p>Gets the generator for prize IDs.</p>
+     *
+     * @return a <code>IdGenerator</code> providing the generator for prize IDs.
+     * @since 1.1
+     */
+    public IdGenerator getPrizeIdGenerator() {
+        return this.prizeIdGenerator;
+    }
+
+    /**
+     * <p>Sets the generator for prize IDs.</p>
+     *
+     * @param prizeIdGenerator a <code>IdGenerator</code> providing the generator for prize IDs.
+     * @since 1.1
+     */
+    public void setPrizeIdGenerator(IdGenerator prizeIdGenerator) {
+        this.prizeIdGenerator = prizeIdGenerator;
+    }
+
+    /**
+     * <p>Gets the generator for Studio specification IDs.</p>
+     *
+     * @return a <code>IdGenerator</code> providing the generator for Studio specification IDs.
+     * @since 1.1
+     */
+    public IdGenerator getStudioSpecificationIdGenerator() {
+        return this.studioSpecificationIdGenerator;
+    }
+
+    /**
+     * <p>Sets the generator for Studio specification IDs.</p>
+     *
+     * @param studioSpecificationIdGenerator a <code>IdGenerator</code> providing the generator for Studio specification
+     *                                       IDs.
+     * @since 1.1
+     */
+    public void setStudioSpecificationIdGenerator(IdGenerator studioSpecificationIdGenerator) {
+        this.studioSpecificationIdGenerator = studioSpecificationIdGenerator;
+    }
+
+    /**
+     * <p>Gets the details for user responsible for doing milestone screening and reviews.</p>
+     *
+     * @return a <code>User</code> providing the details for user responsible for doing milestone screening and
+     *         reviews.
+     * @since 1.1
+     */
+    public User getMilestoneReviewer() {
+        return this.milestoneReviewer;
+    }
+
+    /**
+     * <p>Sets the details for user responsible for doing milestone screening and reviews.</p>
+     *
+     * @param milestoneReviewer a <code>User</code> providing the details for user responsible for doing milestone
+     *                          screening and reviews.
+     * @since 1.1
+     */
+    public void setMilestoneReviewer(User milestoneReviewer) {
+        this.milestoneReviewer = milestoneReviewer;
+    }
+
+    /**
+     * <p>Gets the generator for IDs for submission declarations.</p>
+     *
+     * @return a <code>IdGenerator</code> providing the generator for IDs for submission declarations.
+     * @since 1.1
+     */
+    public IdGenerator getSubmissionDeclarationIdGenerator() {
+        return this.submissionDeclarationIdGenerator;
+    }
+
+    /**
+     * <p>Sets the generator for IDs for submission declarations.</p>
+     *
+     * @param submissionDeclarationIdGenerator
+     *         a <code>IdGenerator</code> providing the generator for IDs for submission declarations.
+     * @since 1.1
+     */
+    public void setSubmissionDeclarationIdGenerator(IdGenerator submissionDeclarationIdGenerator) {
+        this.submissionDeclarationIdGenerator = submissionDeclarationIdGenerator;
+    }
+
+    /**
+     * <p>Gets the offset for project to start (in minutes).</p>
+     *
+     * @return a <code>long</code> providing the offset for project to start (in minutes).
+     * @since 1.1
+     */
+    public long getStartDateOffset() {
+        return this.startDateOffset;
+    }
+
+    /**
+     * <p>Sets the offset for project to start (in minutes).</p>
+     *
+     * @param startDateOffset a <code>long</code> providing the offset for project to start (in minutes).
+     * @since 1.1
+     */
+    public void setStartDateOffset(long startDateOffset) {
+        this.startDateOffset = startDateOffset;
     }
 }

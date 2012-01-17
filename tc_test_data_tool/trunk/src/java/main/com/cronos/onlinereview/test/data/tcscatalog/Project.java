@@ -18,8 +18,18 @@ import java.util.List;
  *   </ol>
  * </p>
  *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1) Change notes:
+ *   <ol>
+ *     <li>Added {@link #prizes} property.</li>
+ *     <li>Added {@link #fileTypes} property.</li>
+ *     <li>Added {@link #studioSpecification} property.</li>
+ *     <li>Added {@link #copilotCost} property.</li>
+ *   </ol>
+ * </p>
+ *
  * @author isv
- * @version 1.1
+ * @version 1.2
  */
 public class Project implements Serializable {
 
@@ -210,16 +220,16 @@ public class Project implements Serializable {
     private boolean memberPaymentsEligible;
 
     /**
-     * <p>A <code>boolean</code> providing the flag indicating if tracking late deliverables is required for this
+     * <p>A <code>Boolean</code> providing the flag indicating if tracking late deliverables is required for this
      * project.</p>
      */
-    private boolean trackLateDeliverables;
+    private Boolean trackLateDeliverables;
 
     /**
      * <p>A <code>boolean</code> providing the flag indicating whether the phase dependencies are editable for project
      * or not.</p>
      */
-    private boolean phaseDependenciesEditable;
+    private Boolean phaseDependenciesEditable;
 
     /**
      * <p>A <code>Long</code> providing the Id of a billing account associated with this project.</p>
@@ -252,6 +262,34 @@ public class Project implements Serializable {
      * @since 1.1
      */
     private Date completionDate;
+
+    /**
+     * <p>A <code>Double</code> providing the cost for project copiloting.</p>
+     * 
+     * @since 1.2
+     */
+    private Double copilotCost;
+
+    /**
+     * <p>A <code>List<Prize></code> providing the prizes set for project.</p>
+     * 
+     * @since 1.2
+     */
+    private List<Prize> prizes;
+
+    /**
+     * <p>A <code>List<FileType></code> providing the list of file types set for project.</p>
+     * 
+     * @since 1.2
+     */
+    private List<FileType> fileTypes;
+
+    /**
+     * <p>A <code>StudioProjectConfig</code> providing the specification for Studio project.</p>
+     * 
+     * @since 1.2
+     */
+    private StudioProjectConfig studioSpecification;
 
     /**
      * <p>Constructs new <code>Project</code> instance. This implementation does nothing.</p>
@@ -669,7 +707,7 @@ public class Project implements Serializable {
      * @return a <code>boolean</code> providing the flag indicating if tracking late deliverables is required for this
      *         project.
      */
-    public boolean getTrackLateDeliverables() {
+    public Boolean getTrackLateDeliverables() {
         return this.trackLateDeliverables;
     }
 
@@ -679,7 +717,7 @@ public class Project implements Serializable {
      * @param trackLateDeliverables a <code>boolean</code> providing the flag indicating if tracking late deliverables
      *                              is required for this project.
      */
-    public void setTrackLateDeliverables(boolean trackLateDeliverables) {
+    public void setTrackLateDeliverables(Boolean trackLateDeliverables) {
         this.trackLateDeliverables = trackLateDeliverables;
     }
 
@@ -984,7 +1022,7 @@ public class Project implements Serializable {
      * @return a <code>boolean</code> providing the flag indicating whether the phase dependencies are editable for
      *         project or not.
      */
-    public boolean getPhaseDependenciesEditable() {
+    public Boolean getPhaseDependenciesEditable() {
         return this.phaseDependenciesEditable;
     }
 
@@ -994,7 +1032,7 @@ public class Project implements Serializable {
      * @param phaseDependenciesEditable a <code>boolean</code> providing the flag indicating whether the phase
      *                                  dependencies are editable for project or not.
      */
-    public void setPhaseDependenciesEditable(boolean phaseDependenciesEditable) {
+    public void setPhaseDependenciesEditable(Boolean phaseDependenciesEditable) {
         this.phaseDependenciesEditable = phaseDependenciesEditable;
     }
 
@@ -1070,5 +1108,85 @@ public class Project implements Serializable {
      */
     public void setCompletionDate(Date completionDate) {
         this.completionDate = completionDate;
+    }
+
+    /**
+     * <p>Gets the cost for project copiloting.</p>
+     *
+     * @return a <code>Double</code> providing the cost for project copiloting.
+     * @since 1.2
+     */
+    public Double getCopilotCost() {
+        return this.copilotCost;
+    }
+
+    /**
+     * <p>Sets the cost for project copiloting.</p>
+     *
+     * @param copilotCost a <code>Double</code> providing the cost for project copiloting.
+     * @since 1.2
+     */
+    public void setCopilotCost(Double copilotCost) {
+        this.copilotCost = copilotCost;
+    }
+
+    /**
+     * <p>Gets the prizes set for project.</p>
+     *
+     * @return a <code>List<Prize></code> providing the prizes set for project.
+     * @since 1.2
+     */
+    public List<Prize> getPrizes() {
+        return this.prizes;
+    }
+
+    /**
+     * <p>Sets the prizes set for project.</p>
+     *
+     * @param prizes a <code>List<Prize></code> providing the prizes set for project.
+     * @since 1.2
+     */
+    public void setPrizes(List<Prize> prizes) {
+        this.prizes = prizes;
+    }
+
+    /**
+     * <p>Gets the list of file types set for project.</p>
+     *
+     * @return a <code>List<FileType></code> providing the list of file types set for project.
+     * @since 1.2
+     */
+    public List<FileType> getFileTypes() {
+        return this.fileTypes;
+    }
+
+    /**
+     * <p>Sets the list of file types set for project.</p>
+     *
+     * @param fileTypes a <code>List<FileType></code> providing the list of file types set for project.
+     * @since 1.2
+     */
+    public void setFileTypes(List<FileType> fileTypes) {
+        this.fileTypes = fileTypes;
+    }
+
+    /**
+     * <p>Gets the specification for Studio project.</p>
+     *
+     * @return a <code>StudioProjectConfig</code> providing the specification for Studio project.
+     * @since 1.2
+     */
+    public StudioProjectConfig getStudioSpecification() {
+        return this.studioSpecification;
+    }
+
+    /**
+     * <p>Sets the specification for Studio project.</p>
+     *
+     * @param studioSpecification a <code>StudioProjectConfig</code> providing the specification for Studio project.
+     * @since 1.2
+     */
+    public void setStudioSpecification(StudioProjectConfig studioSpecification) {
+        this.studioSpecification = studioSpecification;
     }
 }

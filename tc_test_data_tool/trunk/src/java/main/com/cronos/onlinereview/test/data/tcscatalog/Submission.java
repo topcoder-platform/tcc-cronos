@@ -8,9 +8,16 @@ import java.io.Serializable;
 /**
  * <p>A DTO for single submission to be generated. Corresponds to <code>tcs_catalog.submission</code> database table.
  * </p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #declaration} property.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class Submission implements Serializable {
 
@@ -58,6 +65,13 @@ public class Submission implements Serializable {
      * <p>A <code>ScreeningTask</code> providing the screening task associated with this submission.</p>
      */
     private ScreeningTask screeningTask;
+
+    /**
+     * <p>A <code>SubmissionDeclaration</code> providing the details for submission declaration.</p>
+     * 
+     * @since 1.1
+     */
+    private SubmissionDeclaration declaration;
 
     /**
      * <p>Constructs new <code>Submission</code> instance. This implementation does nothing.</p>
@@ -225,5 +239,25 @@ public class Submission implements Serializable {
      */
     public void setScreeningTask(ScreeningTask screeningTask) {
         this.screeningTask = screeningTask;
+    }
+
+    /**
+     * <p>Gets the details for submission declaration.</p>
+     *
+     * @return a <code>SubmissionDeclaration</code> providing the details for submission declaration.
+     * @since 1.1
+     */
+    public SubmissionDeclaration getDeclaration() {
+        return this.declaration;
+    }
+
+    /**
+     * <p>Sets the details for submission declaration.</p>
+     *
+     * @param declaration a <code>SubmissionDeclaration</code> providing the details for submission declaration.
+     * @since 1.1
+     */
+    public void setDeclaration(SubmissionDeclaration declaration) {
+        this.declaration = declaration;
     }
 }

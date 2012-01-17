@@ -7,8 +7,21 @@ package com.cronos.onlinereview.test.data.tcscatalog;
  * <p>An enumeration over the project info types. Corresponds to <code>tcs_catalog.project_info_type_lu</code> database
  * table.</p>
  *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #COPILOT_COST} item.</li>
+ *     <li>Added {@link #OLD_STUDIO_CONTEST_ID} item.</li>
+ *     <li>Added {@link #VIEWABLE_SUBMISSIONS_FLAG} item.</li>
+ *     <li>Added {@link #VIEWABLE_SUBMITTERS} item.</li>
+ *     <li>Added {@link #MAXIMUM_SUBMISSIONS} item.</li>
+ *     <li>Added {@link #ALLOW_STOCK_ART} item.</li>
+ *     <li>Added {@link #TOURNAMENT_POINTS} item.</li>
+ *   </ol>
+ * </p>
+ *
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum ProjectInfoType {
 
@@ -106,7 +119,21 @@ public enum ProjectInfoType {
     
     PHASE_DEPENDENCIES_EDITABLE(47, "Phase Dependencies Editable", false),
     
-    TRACK_LATE_DELIVERABLES(48, "Track Late Deliverables", true);
+    TRACK_LATE_DELIVERABLES(48, "Track Late Deliverables", true),
+    
+    COPILOT_COST(49, "Copilot Cost", true),
+    
+    OLD_STUDIO_CONTEST_ID(50, "Old Studio Contest Id", true),
+    
+    MAXIMUM_SUBMISSIONS(51, "Maximum Submissions", true),
+    
+    ALLOW_STOCK_ART(52, "Allow Stock Art", true), 
+    
+    VIEWABLE_SUBMISSIONS_FLAG(53, "Viewable Submissions Flag", true), 
+    
+    VIEWABLE_SUBMITTERS(54, "Viewable Submitters", true), 
+    
+    TOURNAMENT_POINTS(55, "Tournament points", true);
 
     /**
      * <p>A <code>ProjectInfoType</code> array listing the info types of boolean type which have their values set either
@@ -115,7 +142,9 @@ public enum ProjectInfoType {
     public static final ProjectInfoType[] TRUE_FALSE_VALUES = {APPROVAL_REQUIRED, PHASE_DEPENDENCIES_EDITABLE, 
                                                                MEMBER_PAYMENTS_ELIGIBLE, RELIABILITY_BONUS_ELIGIBLE,
                                                                POST_MORTEM_REQUIRED, SEND_WINNER_EMAILS, 
-                                                               REQUIRES_OTHER_FIXES}; 
+                                                               REQUIRES_OTHER_FIXES, TRACK_LATE_DELIVERABLES, 
+                                                               ALLOW_STOCK_ART, VIEWABLE_SUBMISSIONS_FLAG, 
+                                                               VIEWABLE_SUBMITTERS}; 
 
     /**
      * <p>A <code>ProjectInfoType</code> array listing the info types of boolean type which have their values set either

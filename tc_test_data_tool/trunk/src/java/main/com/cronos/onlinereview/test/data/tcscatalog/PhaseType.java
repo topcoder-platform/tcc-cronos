@@ -3,12 +3,26 @@
  */
 package com.cronos.onlinereview.test.data.tcscatalog;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 /**
  * <p>An enumeration of the project phase types. Corresponds to <code>tcs_catalog.phase_type_lu</code> database table.
  * </p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #MILESTONE_SUBMISSION} item.</li>
+ *     <li>Added {@link #MILESTONE_SCREENING} item.</li>
+ *     <li>Added {@link #MILESTONE_REVIEW} item.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum PhaseType {
 
@@ -17,7 +31,13 @@ public enum PhaseType {
     SPECIFICATION_REVIEW(14, "Specification Review", SPECIFICATION_SUBMISSION),
     
     REGISTRATION(1, "Registration", SPECIFICATION_REVIEW),
+    
+    MILESTONE_SUBMISSION(15, "Milestone Submission", REGISTRATION),
 
+    MILESTONE_SCREENING(16, "Milestone Screening", MILESTONE_SUBMISSION),
+
+    MILESTONE_REVIEW(17, "Milestone Review", MILESTONE_SCREENING),
+    
     SUBMISSION(2, "Submission", REGISTRATION),
 
     SCREENING(3, "Screening", SUBMISSION),
@@ -32,13 +52,15 @@ public enum PhaseType {
     
     AGGREGATION_REVIEW(8, "Aggregation Review", AGGREGATION),
 
-    FINAL_FIX(9, "Final Fix", AGGREGATION_REVIEW),
+    FINAL_FIX(9, "Final Fix", AGGREGATION),
 
     FINAL_REVIEW(10, "Final Review", FINAL_FIX),
 
     APPROVAL(11, "Approval", FINAL_REVIEW),
 
     POST_MORTEM(12, "Post-Mortem", null);
+    
+    private static List<PhaseType> CANDIDATES_FOR_RANDOM_SELECTION = new ArrayList<PhaseType>();
 
     /**
      * <p>A <code>long</code> providing the ID of this project phase type.</p>
@@ -72,7 +94,7 @@ public enum PhaseType {
         this.phaseTypeId = phaseTypeId;
         this.name = name;
         this.mainPhaseType = mainPhaseType;
-        if (phaseTypeId == 2) {
+        if ((phaseTypeId == 2) || (phaseTypeId == 15)) {
             this.startsWhenDependencyStarts = true;
         }
     }
@@ -128,5 +150,34 @@ public enum PhaseType {
             }
         }
         return 0;
+    }
+
+    /**
+     * <p>Gets the randmly selected value.</p>
+     * 
+     * @return a <code>PhaseType</code> randomly selected. 
+     */
+    public static PhaseType getRandomValue() {
+        if (CANDIDATES_FOR_RANDOM_SELECTION.isEmpty()) {
+            CANDIDATES_FOR_RANDOM_SELECTION.addAll(Arrays.asList(PhaseType.values()));
+        }
+        int n = getRandomInt(0, CANDIDATES_FOR_RANDOM_SELECTION.size() - 1);
+        return CANDIDATES_FOR_RANDOM_SELECTION.remove(n);
+    }
+    
+    /**
+     * <p>Generates a random value in specified range (inclusive).</p>
+     *
+     * @param min an <code>int</code> providing the minimum range value.
+     * @param max an <code>int</code> providing the maximum range value.
+     * @return an <code>int</code> providing the generated value.
+     */
+    private static int getRandomInt(int min, int max) {
+        Random random = new Random();
+        int result;
+        do {
+            result = random.nextInt(max + 1);
+        } while ((result < min) || (result > max));
+        return result;
     }
 }

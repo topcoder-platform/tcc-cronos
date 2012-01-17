@@ -3,6 +3,7 @@
  */
 package com.cronos.onlinereview.test.data.generator.project;
 
+import com.cronos.onlinereview.test.data.ProjectPhaseTemplate;
 import com.cronos.onlinereview.test.data.User;
 import com.cronos.onlinereview.test.data.corporateoltp.TcDirectProject;
 import com.cronos.onlinereview.test.data.generator.IdGenerator;
@@ -12,15 +13,19 @@ import com.cronos.onlinereview.test.data.tcscatalog.Component;
 import com.cronos.onlinereview.test.data.tcscatalog.ComponentVersion;
 import com.cronos.onlinereview.test.data.tcscatalog.ContestSale;
 import com.cronos.onlinereview.test.data.tcscatalog.CostLevel;
+import com.cronos.onlinereview.test.data.tcscatalog.FileType;
 import com.cronos.onlinereview.test.data.tcscatalog.Phase;
 import com.cronos.onlinereview.test.data.tcscatalog.PhaseCriteriaType;
 import com.cronos.onlinereview.test.data.tcscatalog.PhaseStatus;
 import com.cronos.onlinereview.test.data.tcscatalog.PhaseType;
+import com.cronos.onlinereview.test.data.tcscatalog.Prize;
+import com.cronos.onlinereview.test.data.tcscatalog.PrizeType;
 import com.cronos.onlinereview.test.data.tcscatalog.Project;
 import com.cronos.onlinereview.test.data.tcscatalog.ProjectCategory;
 import com.cronos.onlinereview.test.data.tcscatalog.ProjectInfoType;
 import com.cronos.onlinereview.test.data.tcscatalog.ProjectSpec;
 import com.cronos.onlinereview.test.data.tcscatalog.ProjectStatus;
+import com.cronos.onlinereview.test.data.tcscatalog.ProjectType;
 import com.cronos.onlinereview.test.data.tcscatalog.Resource;
 import com.cronos.onlinereview.test.data.tcscatalog.ResourceRole;
 import com.cronos.onlinereview.test.data.tcscatalog.Review;
@@ -32,7 +37,9 @@ import com.cronos.onlinereview.test.data.tcscatalog.SaleType;
 import com.cronos.onlinereview.test.data.tcscatalog.Scorecard;
 import com.cronos.onlinereview.test.data.tcscatalog.ScreeningStatus;
 import com.cronos.onlinereview.test.data.tcscatalog.ScreeningTask;
+import com.cronos.onlinereview.test.data.tcscatalog.StudioProjectConfig;
 import com.cronos.onlinereview.test.data.tcscatalog.Submission;
+import com.cronos.onlinereview.test.data.tcscatalog.SubmissionDeclaration;
 import com.cronos.onlinereview.test.data.tcscatalog.SubmissionStatus;
 import com.cronos.onlinereview.test.data.tcscatalog.SubmissionType;
 import com.cronos.onlinereview.test.data.tcscatalog.TechnologyType;
@@ -59,9 +66,16 @@ import java.util.Random;
  *     contests.</li>
  *   </ol>
  * </p>
+ *
+ * <p>
+ * Version 1.2 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added the logic for generating SQL statements for Studio contests and milestone phases.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.1
+ * @version 1.2
  */
 public class ProjectDataGenerator {
 
@@ -98,6 +112,7 @@ public class ProjectDataGenerator {
         ProjectCategory projectCategory = this.config.getProjectCategory();
         ProjectStatus projectStatus = this.config.getProjectStatus();
         Catalog catalog = this.config.getCatalog();
+        ProjectPhaseTemplate phasesTemplate = this.config.getPhasesTemplate();
         
         // Basic project data
         Project project = new Project();
@@ -118,6 +133,52 @@ public class ProjectDataGenerator {
         project.setProjectVersion("1.0");
         project.setSvnModule("");
         project.setNotes("");
+        
+        // Studio-specific properties
+        boolean isStudio = projectCategory.getProjectType() == ProjectType.STUDIO;
+        if (isStudio) {
+            // File Types
+            project.setFileTypes(getRandomItems(FileType.values(), getRandomInt(1, 5)));
+
+            // Studio specification
+            StudioProjectConfig studioSpec = new StudioProjectConfig();
+            studioSpec.setStudioSpecificationId(this.config.getStudioSpecificationIdGenerator().getNextId());
+            studioSpec.setGoals("");
+            studioSpec.setTargetAudience("");
+            studioSpec.setBrandingGuidelines("");
+            studioSpec.setDislikedDesignWebsites("");
+            studioSpec.setOtherInstructions("");
+            studioSpec.setWinningCriteria("");
+            studioSpec.setSubmittersLockedBetweenRounds(false);
+            if (phasesTemplate.contains(PhaseType.MILESTONE_SUBMISSION)) {
+                studioSpec.setRound1Introduction("<p>Round 1 introduction for " + project.getProjectName() + "</p>");
+                studioSpec.setRound2Introduction("<p>Round 2 introduction for " + project.getProjectName() + "</p>");
+            } else {
+                studioSpec.setRound1Introduction("");
+                studioSpec.setRound2Introduction("");
+            }
+            studioSpec.setColors("");
+            studioSpec.setFonts("");
+            studioSpec.setLayoutAndSize("");
+            studioSpec.setContestIntroduction("<p>Contest Introduction for " + project.getProjectName() + "</p>");
+            studioSpec.setContestDescription("<p>Contest Description for " + project.getProjectName() + "</p>");
+            studioSpec.setViewableSubmissions(true);
+            studioSpec.setAllowStockArt(true);
+            studioSpec.setMaximumSubmissions(5);
+            project.setStudioSpecification(studioSpec);
+        } else {
+            // Project specification
+            ProjectSpec projectSpec = new ProjectSpec();
+            projectSpec.setProjectSpecId(this.config.getProjectSpecIdGenerator().getNextId());
+            projectSpec.setProjectId(projectId);
+            projectSpec.setVersion(1);
+            projectSpec.setDetailedRequirements("Detailed requirements for " + project.getProjectName());
+            projectSpec.setSubmissionDeliverables("");
+            projectSpec.setEnvironmentSetupInstructions("");
+            projectSpec.setFinalSubmissionGuidelines("Final submission guidelines for " + project.getProjectName());
+            projectSpec.setPrivateDescription("");
+            project.setProjectSpec(projectSpec);
+        }
         
         // Project info flag properties 
         ProjectInfoType[] flagsToBeSet = this.config.getFlagsToBeSet();
@@ -152,6 +213,12 @@ public class ProjectDataGenerator {
                 project.setMemberPaymentsEligible(true);
             } else if (ProjectInfoType.TRACK_LATE_DELIVERABLES == projectInfoType) {
                 project.setTrackLateDeliverables(true);
+            } else if (ProjectInfoType.ALLOW_STOCK_ART == projectInfoType) {
+                project.getStudioSpecification().setAllowStockArt(true);
+            } else if (ProjectInfoType.VIEWABLE_SUBMISSIONS_FLAG == projectInfoType) {
+                project.getStudioSpecification().setViewableSubmissions(true);
+            } else if (ProjectInfoType.VIEWABLE_SUBMITTERS == projectInfoType) {
+                project.getStudioSpecification().setViewableSubmitters(true);
             }
         }
         ProjectInfoType[] flagsToBeUnSet = this.config.getFlagsToBeUnSet();
@@ -186,6 +253,12 @@ public class ProjectDataGenerator {
                 project.setMemberPaymentsEligible(false);
             } else if (ProjectInfoType.TRACK_LATE_DELIVERABLES == projectInfoType) {
                 project.setTrackLateDeliverables(false);
+            } else if (ProjectInfoType.ALLOW_STOCK_ART == projectInfoType) {
+                project.getStudioSpecification().setAllowStockArt(false);
+            } else if (ProjectInfoType.VIEWABLE_SUBMISSIONS_FLAG == projectInfoType) {
+                project.getStudioSpecification().setViewableSubmissions(false);
+            } else if (ProjectInfoType.VIEWABLE_SUBMITTERS == projectInfoType) {
+                project.getStudioSpecification().setViewableSubmitters(false);
             }
         }
 
@@ -195,8 +268,11 @@ public class ProjectDataGenerator {
             project.setBillingProjectId(billingProject.getBillingProjectId());
         }
 
-        // Cost
+        // Cost and prizes
+        boolean costSet = false;
         CostLevel costLevel = this.config.getCostLevel();
+        List<Prize> contestPrizes = new ArrayList<Prize>();
+        project.setPrizes(contestPrizes);
         if (costLevel != null) {
             project.setCostLevel(costLevel.getCode());
             project.setAdminFee(costLevel.getAdminFee());
@@ -212,13 +288,45 @@ public class ProjectDataGenerator {
             }
             project.setMilestoneBonusCost(0D);
             project.setPrice(costLevel.getFirstPlaceCost());
+            costSet = true;
+            
+            contestPrizes.add(createPrize(project.getFirstPlaceCost(), 1, 1, PrizeType.CONTEST_PRIZE));
+            contestPrizes.add(createPrize(project.getSecondPlaceCost(), 1, 2, PrizeType.CONTEST_PRIZE));
+        } else {
+            if (isStudio) {
+                int numberOfPrizes = getRandomInt(2, 5);
+                for (int i = 1; i <= numberOfPrizes; i++) {
+                    Prize prize = createPrize(2000 - i * 300, 1, i, PrizeType.CONTEST_PRIZE);
+                    contestPrizes.add(prize);
+                    if (i == 1) {
+                        project.setPrice(prize.getAmount());
+                    }
+                }
 
-            // Contest sale
+                project.setAdminFee(375D);
+                project.setReviewCost(200D);
+                project.setSpecReviewCost(150D);
+                project.setFirstPlaceCost(project.getPrizes().get(0).getAmount());
+                project.setSecondPlaceCost(project.getPrizes().get(1).getAmount());
+                if (project.isDigitalRunEnabled()) {
+                    project.setDigitalRunPoints(project.getFirstPlaceCost() * 0.30);
+                }
+                project.setPrice(project.getFirstPlaceCost());
+                costSet = true;
+            }
+        }
+        if (phasesTemplate.contains(PhaseType.MILESTONE_SUBMISSION)) {
+            Prize milestonePrize = createPrize(getRandomInt(50, 100), getRandomInt(1, 5), 1, PrizeType.MILESTONE_PRIZE);
+            contestPrizes.add(milestonePrize);
+        }
+        
+        // Contest sale
+        if (costSet) {
             if ((projectStatus != ProjectStatus.DELETED) && (projectStatus != ProjectStatus.INACTIVE)) {
-                double salePrice = project.getAdminFee() + project.getFirstPlaceCost() + project.getSecondPlaceCost() 
-                                     + project.getReviewCost() + project.getSpecReviewCost() 
-                                     + project.getMilestoneBonusCost();
-                if (project.isReliabilityBonusEligible()) {
+                double salePrice = project.getAdminFee() + project.getFirstPlaceCost() + project.getSecondPlaceCost()
+                                   + project.getReviewCost() + project.getSpecReviewCost()
+                                   + (project.getMilestoneBonusCost() == null ? 0 : project.getMilestoneBonusCost());
+                if (project.isReliabilityBonusEligible() && project.getReliabilityBonusCost() != null) {
                     salePrice += project.getReliabilityBonusCost();
                 }
                 if (project.isDigitalRunEnabled()) {
@@ -243,19 +351,7 @@ public class ProjectDataGenerator {
         if (forumId != null) {
             project.setForumId(forumId);
         }
-
-        // Project specification
-        ProjectSpec projectSpec = new ProjectSpec();
-        projectSpec.setProjectSpecId(this.config.getProjectSpecIdGenerator().getNextId());
-        projectSpec.setProjectId(projectId);
-        projectSpec.setVersion(1);
-        projectSpec.setDetailedRequirements("Detailed requirements for " + project.getProjectName());
-        projectSpec.setSubmissionDeliverables("");
-        projectSpec.setEnvironmentSetupInstructions("");
-        projectSpec.setFinalSubmissionGuidelines("Final submission guidelines for " + project.getProjectName());
-        projectSpec.setPrivateDescription("");
-        project.setProjectSpec(projectSpec);
-                        
+        
         // Component version
         List<ComponentVersion> componentVersions = new ArrayList<ComponentVersion>();
         ComponentVersion version = new ComponentVersion();
@@ -278,6 +374,7 @@ public class ProjectDataGenerator {
 
         // Component
         Component component = new Component();
+        component.setCatalogId(this.config.getCatalog().getCatalogId());
         component.setComponentId(this.config.getComponentIdGenerator().getNextId());
         component.setComponentName(project.getProjectName());
         component.setCurrentVersionId(version.getVersionNumber());
@@ -290,6 +387,7 @@ public class ProjectDataGenerator {
         } else {
             component.setStatusId(1);
         }
+        
         component.setVersions(componentVersions);
         component.setVisible(project.isVisible());
         project.setComponent(component);
@@ -298,43 +396,122 @@ public class ProjectDataGenerator {
         PhaseType currentOpenPhaseType = this.config.getCurrentPhaseType();
         IdGenerator phaseIdGenerator = this.config.getPhaseIdGenerator();
         List<Phase> phases = new ArrayList<Phase>();
-        
+
         Phase specSubmissionPhase = null;
-        if (projectCategory.getSpecReviewRespId() > 0) {
-            specSubmissionPhase = createPhase(project, PhaseType.SPECIFICATION_SUBMISSION, currentOpenPhaseType,
-                                              phases, phaseIdGenerator.getNextId(), 24);
+        if (phasesTemplate.contains(PhaseType.SPECIFICATION_SUBMISSION)) {
+            if (projectCategory.getSpecReviewRespId() > 0) {
+                specSubmissionPhase = createPhase(project, PhaseType.SPECIFICATION_SUBMISSION, currentOpenPhaseType,
+                                                  phases, phaseIdGenerator.getNextId(), 
+                                                  phasesTemplate.getItem(PhaseType.SPECIFICATION_SUBMISSION).getDuration());
+            }
         }
 
         Phase specReviewPhase = null;
-        if ((projectCategory.getSpecReviewRespId() > 0)) {
-            specReviewPhase = createPhase(project, PhaseType.SPECIFICATION_REVIEW, currentOpenPhaseType, phases,
-                                          phaseIdGenerator.getNextId(), 24);
+        if (phasesTemplate.contains(PhaseType.SPECIFICATION_REVIEW)) {
+            if ((projectCategory.getSpecReviewRespId() > 0)) {
+                specReviewPhase = createPhase(project, PhaseType.SPECIFICATION_REVIEW, currentOpenPhaseType, phases,
+                                              phaseIdGenerator.getNextId(), 
+                                              phasesTemplate.getItem(PhaseType.SPECIFICATION_REVIEW).getDuration());
+            }
         }
 
-        Phase registrationPhase = createPhase(project, PhaseType.REGISTRATION, currentOpenPhaseType, phases,
-                                              phaseIdGenerator.getNextId(), 48);
-        registrationPhase.setFixedStartTimeOffset(registrationPhase.getScheduledStartTimeOffset());
-        
-        Phase submissionPhase = createPhase(project, PhaseType.SUBMISSION, currentOpenPhaseType, phases,
-                                            phaseIdGenerator.getNextId(), 120);
-        Phase screeningPhase = createPhase(project, PhaseType.SCREENING, currentOpenPhaseType, phases,
-                                           phaseIdGenerator.getNextId(), 24);
-        Phase reviewPhase = createPhase(project, PhaseType.REVIEW, currentOpenPhaseType, phases,
-                                        phaseIdGenerator.getNextId(), 48);
-        Phase appealsPhase = createPhase(project, PhaseType.APPEALS, currentOpenPhaseType, phases,
-                                         phaseIdGenerator.getNextId(), 24);
-        Phase appealsResponsePhase = createPhase(project, PhaseType.APPEALS_RESPONSE, currentOpenPhaseType,
-                                                 phases, phaseIdGenerator.getNextId(), 12);
-        Phase aggregationPhase = createPhase(project, PhaseType.AGGREGATION, currentOpenPhaseType, phases,
-                                             phaseIdGenerator.getNextId(), 12);
-        Phase aggregationReviewPhase = createPhase(project, PhaseType.AGGREGATION_REVIEW, currentOpenPhaseType,
-                                                   phases, phaseIdGenerator.getNextId(), 6);
-        Phase finalFixPhase = createPhase(project, PhaseType.FINAL_FIX, currentOpenPhaseType, phases,
-                                          phaseIdGenerator.getNextId(), 24);
-        Phase finalReviewPhase = createPhase(project, PhaseType.FINAL_REVIEW, currentOpenPhaseType, phases,
-                                             phaseIdGenerator.getNextId(), 24);
-        Phase approvalPhase = createPhase(project, PhaseType.APPROVAL, currentOpenPhaseType, phases,
-                                          phaseIdGenerator.getNextId(), 120);
+        Phase registrationPhase = null;
+        if (phasesTemplate.contains(PhaseType.REGISTRATION)) {
+            registrationPhase = createPhase(project, PhaseType.REGISTRATION, currentOpenPhaseType, phases,
+                                            phaseIdGenerator.getNextId(),
+                                            phasesTemplate.getItem(PhaseType.REGISTRATION).getDuration());
+            registrationPhase.setFixedStartTimeOffset(registrationPhase.getScheduledStartTimeOffset());
+        }
+
+        Phase milestoneSubmissionPhase = null;
+        if (phasesTemplate.contains(PhaseType.MILESTONE_SUBMISSION)) {
+            milestoneSubmissionPhase = createPhase(project, PhaseType.MILESTONE_SUBMISSION, currentOpenPhaseType, 
+                                                   phases, phaseIdGenerator.getNextId(),
+                                                   phasesTemplate.getItem(PhaseType.MILESTONE_SUBMISSION).getDuration());
+        }
+
+        Phase milestoneScreeningPhase = null;
+        if (phasesTemplate.contains(PhaseType.MILESTONE_SCREENING)) {
+            milestoneScreeningPhase = createPhase(project, PhaseType.MILESTONE_SCREENING, currentOpenPhaseType, phases,
+                                                  phaseIdGenerator.getNextId(),
+                                                  phasesTemplate.getItem(PhaseType.MILESTONE_SCREENING).getDuration());
+        }
+
+        Phase milestoneReviewPhase = null;
+        if (phasesTemplate.contains(PhaseType.MILESTONE_REVIEW)) {
+            milestoneReviewPhase = createPhase(project, PhaseType.MILESTONE_REVIEW, currentOpenPhaseType, phases,
+                                               phaseIdGenerator.getNextId(),
+                                               phasesTemplate.getItem(PhaseType.MILESTONE_REVIEW).getDuration());
+        }
+
+        Phase submissionPhase = null;
+        if (phasesTemplate.contains(PhaseType.SUBMISSION)) {
+            submissionPhase = createPhase(project, PhaseType.SUBMISSION, currentOpenPhaseType, phases,
+                                          phaseIdGenerator.getNextId(),
+                                          phasesTemplate.getItem(PhaseType.SUBMISSION).getDuration());
+        }
+
+        Phase screeningPhase = null;
+        if (phasesTemplate.contains(PhaseType.SCREENING)) {
+            screeningPhase = createPhase(project, PhaseType.SCREENING, currentOpenPhaseType, phases,
+                                         phaseIdGenerator.getNextId(), 
+                                         phasesTemplate.getItem(PhaseType.SCREENING).getDuration());
+        }
+
+        Phase reviewPhase = null;
+        if (phasesTemplate.contains(PhaseType.REVIEW)) {
+            reviewPhase = createPhase(project, PhaseType.REVIEW, currentOpenPhaseType, phases,
+                                      phaseIdGenerator.getNextId(), 
+                                      phasesTemplate.getItem(PhaseType.REVIEW).getDuration());
+        }
+
+        if (phasesTemplate.contains(PhaseType.APPEALS)) {
+            createPhase(project, PhaseType.APPEALS, currentOpenPhaseType, phases, phaseIdGenerator.getNextId(),
+                        phasesTemplate.getItem(PhaseType.APPEALS).getDuration());
+        }
+
+        Phase appealsResponsePhase = null;
+        if (phasesTemplate.contains(PhaseType.APPEALS_RESPONSE)) {
+            appealsResponsePhase = createPhase(project, PhaseType.APPEALS_RESPONSE, currentOpenPhaseType,
+                                               phases, phaseIdGenerator.getNextId(), 
+                                               phasesTemplate.getItem(PhaseType.APPEALS_RESPONSE).getDuration());
+        }
+
+        Phase aggregationPhase = null;
+        if (phasesTemplate.contains(PhaseType.AGGREGATION)) {
+            aggregationPhase = createPhase(project, PhaseType.AGGREGATION, currentOpenPhaseType, phases,
+                                           phaseIdGenerator.getNextId(), 
+                                           phasesTemplate.getItem(PhaseType.AGGREGATION).getDuration());
+        }
+
+        Phase aggregationReviewPhase = null;
+        if (phasesTemplate.contains(PhaseType.AGGREGATION_REVIEW)) {
+            aggregationReviewPhase = createPhase(project, PhaseType.AGGREGATION_REVIEW, currentOpenPhaseType,
+                                                 phases, phaseIdGenerator.getNextId(), 
+                                                 phasesTemplate.getItem(PhaseType.AGGREGATION_REVIEW).getDuration());
+        }
+
+        Phase finalFixPhase = null;
+        if (phasesTemplate.contains(PhaseType.FINAL_FIX)) {
+            finalFixPhase = createPhase(project, PhaseType.FINAL_FIX, currentOpenPhaseType, phases,
+                                        phaseIdGenerator.getNextId(), 
+                                        phasesTemplate.getItem(PhaseType.FINAL_FIX).getDuration());
+        }
+
+        Phase finalReviewPhase = null;
+        if (phasesTemplate.contains(PhaseType.FINAL_REVIEW)) {
+            finalReviewPhase = createPhase(project, PhaseType.FINAL_REVIEW, currentOpenPhaseType, phases,
+                                           phaseIdGenerator.getNextId(), 
+                                           phasesTemplate.getItem(PhaseType.FINAL_REVIEW).getDuration());
+        }
+
+        Phase approvalPhase = null;
+        if (phasesTemplate.contains(PhaseType.APPROVAL)) {
+            approvalPhase = createPhase(project, PhaseType.APPROVAL, currentOpenPhaseType, phases,
+                                        phaseIdGenerator.getNextId(), 
+                                        phasesTemplate.getItem(PhaseType.APPROVAL).getDuration());
+        }
+
         project.setPhases(phases.toArray(new Phase[phases.size()]));
 
         // Project resources
@@ -493,7 +670,8 @@ public class ProjectDataGenerator {
                 
                 // Submitter submissions
                 if ((submissionPhase.isOpen() || submissionPhase.isClosed()) 
-                    && (projectStatus != ProjectStatus.CANCELLED_ZERO_SUBMISSIONS)) {
+                    && (projectStatus != ProjectStatus.CANCELLED_ZERO_SUBMISSIONS) 
+                    && this.config.getSubmissionIdGenerator().isAvailable()) {
                     Upload upload = new Upload();
                     upload.setUploadId(this.config.getUploadIdGenerator().getNextId());
                     upload.setProjectId(projectId);
@@ -515,14 +693,136 @@ public class ProjectDataGenerator {
                     contestSubmission.setType(SubmissionType.CONTEST_SUBMISSION);
                     contestSubmission.setUpload(upload);
                     contestSubmission.setScreeningTask(screeningTask);
+                    
+                    if (isStudio) {
+                        SubmissionDeclaration declaration = new SubmissionDeclaration();
+                        declaration.setComment("Submission declaration for submission " 
+                                               + contestSubmission.getSubmissionId());
+                        declaration.setHasExternalContent(false);
+                        declaration.setSubmissionDeclarationId(
+                            this.config.getSubmissionDeclarationIdGenerator().getNextId());
+                        contestSubmission.setDeclaration(declaration);
+                    }
 
                     submitter.setSubmissions(new Submission[]{contestSubmission});
+                }
+                
+                if ((milestoneSubmissionPhase != null) 
+                    && (milestoneSubmissionPhase.isOpen() || milestoneSubmissionPhase.isClosed())
+                    && (projectStatus != ProjectStatus.CANCELLED_ZERO_SUBMISSIONS)
+                    && this.config.getSubmissionIdGenerator().isAvailable()) {
+                    Upload upload = new Upload();
+                    upload.setUploadId(this.config.getUploadIdGenerator().getNextId());
+                    upload.setProjectId(projectId);
+                    upload.setResourceId(submitter.getResourceId());
+                    upload.setStatus(UploadStatus.ACTIVE);
+                    upload.setType(UploadType.SUBMISSION);
+                    upload.setParameter(projectId + "_" + submitter.getResourceId() + "_" + upload.getUploadId()
+                                        + ".zip");
+                    upload.setCreationTimestamp(submitter.getRegistrationDate());
+
+                    Submission milestoneSubmission = new Submission();
+                    milestoneSubmission.setSubmissionId(this.config.getSubmissionIdGenerator().getNextId());
+                    milestoneSubmission.setStatus(SubmissionStatus.ACTIVE);
+                    milestoneSubmission.setType(SubmissionType.MILESTONE_SUBMISSION);
+                    milestoneSubmission.setUpload(upload);
+
+                    if (isStudio) {
+                        SubmissionDeclaration declaration = new SubmissionDeclaration();
+                        declaration.setComment("Submission declaration for submission "
+                                               + milestoneSubmission.getSubmissionId());
+                        declaration.setHasExternalContent(false);
+                        declaration.setSubmissionDeclarationId(this.config.getSubmissionDeclarationIdGenerator().getNextId());
+                        milestoneSubmission.setDeclaration(declaration);
+                    }
+
+                    submitter.setMilestoneSubmissions(new Submission[]{milestoneSubmission});
                 }
             }
         }
         
-        List<Resource> allReviewers = new ArrayList<Resource>(); 
+        List<Resource> allReviewers = new ArrayList<Resource>();
         
+        User milestoneReviewerUser = this.config.getMilestoneReviewer();
+
+        // Milestone Screener
+        if (milestoneReviewerUser != null && milestoneScreeningPhase != null) {
+            if (!registrationPhase.isScheduled() || milestoneScreeningPhase.isOpen() 
+                || milestoneScreeningPhase.isClosed()) {
+                Resource milestoneScreener = createResource(milestoneReviewerUser, ResourceRole.MILESTONE_SCREENER,
+                                                            resourceIdGenerator.getNextId(), milestoneScreeningPhase, 
+                                                            resources);
+                if (milestoneScreeningPhase.isOpen() || milestoneScreeningPhase.isClosed()) {
+                    List<Review> milestoneScreeningReviews = new ArrayList<Review>();
+                    for (Resource contestSubmitter : contestSubmitters) {
+                        Submission[] contestSubmissions = contestSubmitter.getSubmissions();
+                        if (contestSubmissions != null) {
+                            for (Submission contestSubmission : contestSubmissions) {
+                                int score = getRandomInt(3, 4);
+
+                                Review screeningReview = new Review();
+                                screeningReview.setReviewId(this.config.getReviewIdGenerator().getNextId());
+                                screeningReview.setResourceId(milestoneScreener.getResourceId());
+                                screeningReview.setSubmissionId(contestSubmission.getSubmissionId());
+                                screeningReview.setScorecardId(
+                                    milestoneScreeningPhase.getReviewScorecard().getScorecardId());
+                                screeningReview.setCommitted(milestoneScreeningPhase.isClosed());
+                                if (milestoneScreeningPhase.isClosed()) {
+                                    screeningReview.setInitialScore(score / 4D * 100);
+                                    screeningReview.setScore(screeningReview.getInitialScore());
+                                    contestSubmission.setScreeningScore(screeningReview.getInitialScore());
+                                    if (screeningReview.getScore()
+                                        < milestoneScreeningPhase.getReviewScorecard().getMinScore()) {
+                                        contestSubmission.setStatus(SubmissionStatus.FAILED_SCREENING);
+                                    } else {
+//                                        addResourceSql(contestSubmitter,
+//                                                       "UPDATE project_result SET rating_ind = 1, valid_submission_ind = 1 "
+//                                                       + "WHERE user_id = " + contestSubmitter.getUser().getUserId()
+//                                                       + " AND project_id = " + projectId + ";");
+                                    }
+                                }
+                                milestoneScreeningReviews.add(screeningReview);
+
+                                ReviewItem reviewItem = new ReviewItem();
+                                reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
+                                reviewItem.setReviewId(screeningReview.getReviewId());
+                                reviewItem.setAnswer(score + "/4");
+                                reviewItem.setScorecardQuestionId(
+                                    milestoneScreeningPhase.getReviewScorecard().getScorecardQuestionId());
+                                reviewItem.setSortOrder(0);
+                                screeningReview.setItems(new ReviewItem[]{reviewItem});
+
+                                ReviewItemComment reviewItemComment = new ReviewItemComment();
+                                reviewItemComment.setReviewItemCommentId(
+                                    this.config.getReviewItemCommentIdGenerator().getNextId());
+                                reviewItemComment.setResourceId(milestoneScreener.getResourceId());
+                                reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
+                                reviewItemComment.setContent("Ok");
+                                reviewItemComment.setType(CommentType.COMMENT);
+                                reviewItemComment.setSortOrder(0);
+                                reviewItem.setComments(new ReviewItemComment[]{reviewItemComment});
+                            }
+                        }
+                    }
+                    milestoneScreener.setReviews(milestoneScreeningReviews.toArray(
+                        new Review[milestoneScreeningReviews.size()]));
+                }
+            }
+        }
+
+        // Milestone Reviewer
+        if (milestoneReviewerUser != null && milestoneReviewPhase != null) {
+            if (!registrationPhase.isScheduled() || milestoneReviewPhase.isOpen()
+                || milestoneReviewPhase.isClosed()) {
+                Resource milestoneReviewer = createResource(milestoneReviewerUser, ResourceRole.MILESTONE_REVIEWER,
+                                                            resourceIdGenerator.getNextId(), milestoneReviewPhase,
+                                                            resources);
+                if (milestoneReviewPhase.isOpen() || milestoneReviewPhase.isClosed()) {
+                    generateMilestoneReviews(milestoneReviewPhase, contestSubmitters, milestoneReviewer);
+                }
+            }
+        }    
+
         // Primary Reviewer - screener, reviewer, aggregator, final reviewer
         long[] reviewRespIds = projectCategory.getReviewRespIds();
         User primaryReviewerUser = this.config.getPrimaryReviewer();
@@ -684,7 +984,7 @@ public class ProjectDataGenerator {
         Submission winningSubmission = null;
         Resource winningSubmitter = null;
         
-        if (appealsResponsePhase.isClosed()) {
+        if (appealsResponsePhase != null && appealsResponsePhase.isClosed()) {
             List<Submission> allPassingSubmissions = new ArrayList<Submission>();
             for (Resource contestSubmitter : contestSubmitters) {
                 Submission[] contestSubmissions = contestSubmitter.getSubmissions();
@@ -769,344 +1069,383 @@ public class ProjectDataGenerator {
 
         // Aggregator
         Resource aggregator = null;
-        if (!registrationPhase.isScheduled()) {
-            aggregator = createResource(primaryReviewerUser, ResourceRole.AGGREGATOR,
-                                                 resourceIdGenerator.getNextId(), aggregationPhase, resources);
-        }
         Review aggregation = null;
-        if ((aggregator != null) && (winningSubmission != null) 
-            && (aggregationPhase.isOpen() || aggregationPhase.isClosed())) {
-            aggregation = new Review();
-            aggregation.setReviewId(this.config.getReviewIdGenerator().getNextId());
-            aggregation.setResourceId(aggregator.getResourceId());
-            aggregation.setSubmissionId(winningSubmission.getSubmissionId());
-            aggregation.setScorecardId(reviewPhase.getReviewScorecard().getScorecardId());
-            aggregation.setCommitted(reviewPhase.isClosed());
-            
-            // Aggregation Review comments from remaining reviewers and winning submitters
-            List<ReviewComment> reviewComments = new ArrayList<ReviewComment>();
-            int reviewCommentSortIndex = 0;
-            for (Resource reviewer : allReviewers) {
-                if (reviewer.getUser().getUserId() != aggregator.getUser().getUserId()) {
-                    ReviewComment reviewComment = new ReviewComment();
-                    reviewComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
-                    reviewComment.setReviewId(aggregation.getReviewId());
-                    reviewComment.setResourceId(reviewer.getResourceId());
-                    reviewComment.setContent("");
-                    reviewComment.setType(CommentType.AGGREGATION_REVIEW_COMMENT);
-                    reviewComment.setSortOrder(reviewCommentSortIndex++);
-                    if (aggregationReviewPhase.isClosed()) {
-                        reviewComment.setExtraInfo("Approved");
+        if (aggregationPhase != null) {
+            if (primaryReviewerUser != null && !registrationPhase.isScheduled()) {
+                aggregator = createResource(primaryReviewerUser, ResourceRole.AGGREGATOR,
+                                                     resourceIdGenerator.getNextId(), aggregationPhase, resources);
+            }
+            aggregation = null;
+            if ((aggregator != null) && (winningSubmission != null) 
+                && (aggregationPhase.isOpen() || aggregationPhase.isClosed())) {
+                aggregation = new Review();
+                aggregation.setReviewId(this.config.getReviewIdGenerator().getNextId());
+                aggregation.setResourceId(aggregator.getResourceId());
+                aggregation.setSubmissionId(winningSubmission.getSubmissionId());
+                aggregation.setScorecardId(reviewPhase.getReviewScorecard().getScorecardId());
+                aggregation.setCommitted(reviewPhase.isClosed());
+                
+                // Aggregation Review comments from remaining reviewers and winning submitters
+                List<ReviewComment> reviewComments = new ArrayList<ReviewComment>();
+                int reviewCommentSortIndex = 0;
+                for (Resource reviewer : allReviewers) {
+                    if (reviewer.getUser().getUserId() != aggregator.getUser().getUserId()) {
+                        ReviewComment reviewComment = new ReviewComment();
+                        reviewComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
+                        reviewComment.setReviewId(aggregation.getReviewId());
+                        reviewComment.setResourceId(reviewer.getResourceId());
+                        reviewComment.setContent("");
+                        reviewComment.setType(CommentType.AGGREGATION_REVIEW_COMMENT);
+                        reviewComment.setSortOrder(reviewCommentSortIndex++);
+                        if (aggregationReviewPhase != null && aggregationReviewPhase.isClosed()) {
+                            reviewComment.setExtraInfo("Approved");
+                        }
+                        reviewComments.add(reviewComment);
                     }
-                    reviewComments.add(reviewComment);
                 }
-            }
-            ReviewComment submitterAggregationComment = new ReviewComment();
-            submitterAggregationComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
-            submitterAggregationComment.setReviewId(aggregation.getReviewId());
-            submitterAggregationComment.setResourceId(winningSubmitter.getResourceId());
-            submitterAggregationComment.setContent("");
-            submitterAggregationComment.setType(CommentType.SUBMITTER_COMMENT);
-            submitterAggregationComment.setSortOrder(reviewCommentSortIndex++);
-            if (aggregationReviewPhase.isClosed()) {
-                submitterAggregationComment.setExtraInfo("Approved");
-            }
-            reviewComments.add(submitterAggregationComment);
-            
-            aggregation.setComments(reviewComments.toArray(new ReviewComment[reviewComments.size()]));
-            
-            // Review items from review scorecards for winning submission
-            List<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
-            for (Resource reviewer : allReviewers) {
-                Review[] reviews = reviewer.getReviews();
-                int reviewItemSortingIndex = 0;
-                for (Review review : reviews) {
-                    if (review.getSubmissionId() == winningSubmission.getSubmissionId()) {
-                        ReviewItem[] originalReviewItems = review.getItems();
-                        for (ReviewItem originalReviewItem : originalReviewItems) {
-                            ReviewItem reviewItem = new ReviewItem();
-                            reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
-                            reviewItem.setReviewId(aggregation.getReviewId());
-                            reviewItem.setAnswer(originalReviewItem.getAnswer());
-                            reviewItem.setScorecardQuestionId(originalReviewItem.getScorecardQuestionId());
-                            reviewItem.setSortOrder(reviewItemSortingIndex++);
-                            reviewItems.add(reviewItem);
-
-                            List<ReviewItemComment> reviewItemComments = new ArrayList<ReviewItemComment>();
-                            ReviewItemComment[] originalReviewItemComments = originalReviewItem.getComments();
-                            for (ReviewItemComment originalReviewItemComment : originalReviewItemComments) {
-                                ReviewItemComment reviewItemComment = new ReviewItemComment();
-                                reviewItemComment.setReviewItemCommentId(
+                ReviewComment submitterAggregationComment = new ReviewComment();
+                submitterAggregationComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
+                submitterAggregationComment.setReviewId(aggregation.getReviewId());
+                submitterAggregationComment.setResourceId(winningSubmitter.getResourceId());
+                submitterAggregationComment.setContent("");
+                submitterAggregationComment.setType(CommentType.SUBMITTER_COMMENT);
+                submitterAggregationComment.setSortOrder(reviewCommentSortIndex++);
+                if (aggregationReviewPhase != null && aggregationReviewPhase.isClosed()) {
+                    submitterAggregationComment.setExtraInfo("Approved");
+                }
+                reviewComments.add(submitterAggregationComment);
+                
+                aggregation.setComments(reviewComments.toArray(new ReviewComment[reviewComments.size()]));
+                
+                // Review items from review scorecards for winning submission
+                List<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
+                for (Resource reviewer : allReviewers) {
+                    Review[] reviews = reviewer.getReviews();
+                    int reviewItemSortingIndex = 0;
+                    for (Review review : reviews) {
+                        if (review.getSubmissionId() == winningSubmission.getSubmissionId()) {
+                            ReviewItem[] originalReviewItems = review.getItems();
+                            for (ReviewItem originalReviewItem : originalReviewItems) {
+                                ReviewItem reviewItem = new ReviewItem();
+                                reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
+                                reviewItem.setReviewId(aggregation.getReviewId());
+                                reviewItem.setAnswer(originalReviewItem.getAnswer());
+                                reviewItem.setScorecardQuestionId(originalReviewItem.getScorecardQuestionId());
+                                reviewItem.setSortOrder(reviewItemSortingIndex++);
+                                reviewItems.add(reviewItem);
+    
+                                List<ReviewItemComment> reviewItemComments = new ArrayList<ReviewItemComment>();
+                                ReviewItemComment[] originalReviewItemComments = originalReviewItem.getComments();
+                                for (ReviewItemComment originalReviewItemComment : originalReviewItemComments) {
+                                    ReviewItemComment reviewItemComment = new ReviewItemComment();
+                                    reviewItemComment.setReviewItemCommentId(
+                                        this.config.getReviewItemCommentIdGenerator().getNextId());
+                                    reviewItemComment.setResourceId(originalReviewItemComment.getResourceId());
+                                    reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
+                                    reviewItemComment.setContent(originalReviewItemComment.getContent());
+                                    reviewItemComment.setType(originalReviewItemComment.getType());
+                                    reviewItemComment.setExtraInfo("Accept");
+                                    reviewItemComment.setSortOrder(0);
+                                    reviewItemComments.add(reviewItemComment);
+                                }
+                                
+                                // Aggregation comments from Aggregator
+                                ReviewItemComment aggregatorReviewItemComment = new ReviewItemComment();
+                                aggregatorReviewItemComment.setReviewItemCommentId(
                                     this.config.getReviewItemCommentIdGenerator().getNextId());
-                                reviewItemComment.setResourceId(originalReviewItemComment.getResourceId());
-                                reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
-                                reviewItemComment.setContent(originalReviewItemComment.getContent());
-                                reviewItemComment.setType(originalReviewItemComment.getType());
-                                reviewItemComment.setExtraInfo("Accept");
-                                reviewItemComment.setSortOrder(0);
-                                reviewItemComments.add(reviewItemComment);
-                            }
+                                aggregatorReviewItemComment.setResourceId(aggregator.getResourceId());
+                                aggregatorReviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
+                                aggregatorReviewItemComment.setContent("");
+                                aggregatorReviewItemComment.setType(CommentType.AGGREATION_COMMENT);
+                                aggregatorReviewItemComment.setSortOrder(1);
+                                reviewItemComments.add(aggregatorReviewItemComment);
+    
+                                reviewItem.setComments(
+                                    reviewItemComments.toArray(new ReviewItemComment[reviewItemComments.size()]));
                             
-                            // Aggregation comments from Aggregator
-                            ReviewItemComment aggregatorReviewItemComment = new ReviewItemComment();
-                            aggregatorReviewItemComment.setReviewItemCommentId(
-                                this.config.getReviewItemCommentIdGenerator().getNextId());
-                            aggregatorReviewItemComment.setResourceId(aggregator.getResourceId());
-                            aggregatorReviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
-                            aggregatorReviewItemComment.setContent("");
-                            aggregatorReviewItemComment.setType(CommentType.AGGREATION_COMMENT);
-                            aggregatorReviewItemComment.setSortOrder(1);
-                            reviewItemComments.add(aggregatorReviewItemComment);
-
-                            reviewItem.setComments(
-                                reviewItemComments.toArray(new ReviewItemComment[reviewItemComments.size()]));
-                        
+                            }
                         }
                     }
                 }
+                
+                aggregation.setItems(reviewItems.toArray(new ReviewItem[reviewItems.size()]));
+                aggregator.setReviews(new Review[] {aggregation});
             }
-            
-            aggregation.setItems(reviewItems.toArray(new ReviewItem[reviewItems.size()]));
-            aggregator.setReviews(new Review[] {aggregation});
         }
-        
+
         // Final Fix
-        Upload finalFixUpload = null;
-        if (winningSubmitter != null) {
-            if ((finalFixPhase.isOpen() || finalFixPhase.isClosed()) 
-                && (projectStatus != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE)) {
-                finalFixUpload = new Upload();
-                finalFixUpload.setUploadId(this.config.getUploadIdGenerator().getNextId());
-                finalFixUpload.setProjectId(projectId);
-                finalFixUpload.setResourceId(winningSubmitter.getResourceId());
-                finalFixUpload.setType(UploadType.FINAL_FIX);
-                finalFixUpload.setStatus(UploadStatus.ACTIVE);
-                finalFixUpload.setParameter(projectId + "_" + winningSubmitter.getResourceId() + "_" 
-                                            + finalFixUpload.getUploadId() + "_final_fix.zip");
-                finalFixUpload.setCreationTimestamp(new Date());
-                addResourceUpload(winningSubmitter, finalFixUpload);
+        if (finalFixPhase != null) {
+            Upload finalFixUpload;
+            if (winningSubmitter != null) {
+                if ((finalFixPhase.isOpen() || finalFixPhase.isClosed()) 
+                    && (projectStatus != ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE)) {
+                    finalFixUpload = new Upload();
+                    finalFixUpload.setUploadId(this.config.getUploadIdGenerator().getNextId());
+                    finalFixUpload.setProjectId(projectId);
+                    finalFixUpload.setResourceId(winningSubmitter.getResourceId());
+                    finalFixUpload.setType(UploadType.FINAL_FIX);
+                    finalFixUpload.setStatus(UploadStatus.ACTIVE);
+                    finalFixUpload.setParameter(projectId + "_" + winningSubmitter.getResourceId() + "_" 
+                                                + finalFixUpload.getUploadId() + "_final_fix.zip");
+                    finalFixUpload.setCreationTimestamp(new Date());
+                    addResourceUpload(winningSubmitter, finalFixUpload);
+                }
             }
         }
 
         // Final Reviewer
-        Resource finalReviewer = null;
-        if (!registrationPhase.isScheduled()) {
-            finalReviewer = createResource(primaryReviewerUser, ResourceRole.FINAL_REVIEWER,
-                                                    resourceIdGenerator.getNextId(), finalReviewPhase, resources);
-        }
-        if ((finalReviewer != null) && (winningSubmission != null) 
-            && (finalFixPhase.isOpen() || finalFixPhase.isClosed())) {
-            List<ReviewItemComment> aggregationReviewItemComments = new ArrayList<ReviewItemComment>();
-            ReviewItem[] aggregationReviewItems = aggregation.getItems();
-            for (ReviewItem aggregationReviewItem : aggregationReviewItems) {
-                ReviewItemComment[] comments = aggregationReviewItem.getComments();
-                for (ReviewItemComment comment : comments) {
-                    if (comment.getType() == CommentType.AGGREATION_COMMENT) {
-                        aggregationReviewItemComments.add(comment);
+        if (finalReviewPhase != null) {
+            Resource finalReviewer = null;
+            if (primaryReviewerUser != null && !registrationPhase.isScheduled()) {
+                finalReviewer = createResource(primaryReviewerUser, ResourceRole.FINAL_REVIEWER,
+                                               resourceIdGenerator.getNextId(), finalReviewPhase, resources);
+            }
+            if ((finalReviewer != null) && (winningSubmission != null) 
+                && (finalFixPhase.isOpen() || finalFixPhase.isClosed())) {
+                List<ReviewItemComment> aggregationReviewItemComments = new ArrayList<ReviewItemComment>();
+                ReviewItem[] aggregationReviewItems = aggregation.getItems();
+                for (ReviewItem aggregationReviewItem : aggregationReviewItems) {
+                    ReviewItemComment[] comments = aggregationReviewItem.getComments();
+                    for (ReviewItemComment comment : comments) {
+                        if (comment.getType() == CommentType.AGGREATION_COMMENT) {
+                            aggregationReviewItemComments.add(comment);
+                        }
                     }
                 }
-            }
-
-            Review finalReview = new Review();
-            finalReview.setReviewId(this.config.getReviewIdGenerator().getNextId());
-            finalReview.setResourceId(finalReviewer.getResourceId());
-            finalReview.setSubmissionId(winningSubmission.getSubmissionId());
-            finalReview.setScorecardId(reviewPhase.getReviewScorecard().getScorecardId());
-            finalReview.setCommitted(finalReviewPhase.isClosed());
-            
-            // Aggregation Review comments from remaining reviewers and winning submitters
-            List<ReviewComment> reviewComments = new ArrayList<ReviewComment>();
-            int reviewCommentSortIndex = 0;
-            for (Resource reviewer : allReviewers) {
-                if (reviewer.getUser().getUserId() != aggregator.getUser().getUserId()) {
-                    ReviewComment reviewComment = new ReviewComment();
-                    reviewComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
-                    reviewComment.setReviewId(finalReview.getReviewId());
-                    reviewComment.setResourceId(reviewer.getResourceId());
-                    reviewComment.setContent("");
-                    reviewComment.setType(CommentType.AGGREGATION_REVIEW_COMMENT);
-                    reviewComment.setSortOrder(reviewCommentSortIndex++);
-                    reviewComments.add(reviewComment);
+    
+                Review finalReview = new Review();
+                finalReview.setReviewId(this.config.getReviewIdGenerator().getNextId());
+                finalReview.setResourceId(finalReviewer.getResourceId());
+                finalReview.setSubmissionId(winningSubmission.getSubmissionId());
+                finalReview.setScorecardId(reviewPhase.getReviewScorecard().getScorecardId());
+                finalReview.setCommitted(finalReviewPhase.isClosed());
+                
+                // Aggregation Review comments from remaining reviewers and winning submitters
+                List<ReviewComment> reviewComments = new ArrayList<ReviewComment>();
+                int reviewCommentSortIndex = 0;
+                for (Resource reviewer : allReviewers) {
+                    if (reviewer.getUser().getUserId() != aggregator.getUser().getUserId()) {
+                        ReviewComment reviewComment = new ReviewComment();
+                        reviewComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
+                        reviewComment.setReviewId(finalReview.getReviewId());
+                        reviewComment.setResourceId(reviewer.getResourceId());
+                        reviewComment.setContent("");
+                        reviewComment.setType(CommentType.AGGREGATION_REVIEW_COMMENT);
+                        reviewComment.setSortOrder(reviewCommentSortIndex++);
+                        reviewComments.add(reviewComment);
+                    }
                 }
-            }
-            ReviewComment submitterAggregationComment = new ReviewComment();
-            submitterAggregationComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
-            submitterAggregationComment.setReviewId(finalReview.getReviewId());
-            submitterAggregationComment.setResourceId(winningSubmitter.getResourceId());
-            submitterAggregationComment.setContent("");
-            submitterAggregationComment.setType(CommentType.SUBMITTER_COMMENT);
-            submitterAggregationComment.setSortOrder(reviewCommentSortIndex++);
-            reviewComments.add(submitterAggregationComment);
-            
-            if (finalReviewPhase.isClosed()) {
-                ReviewComment finalReviewerComment = new ReviewComment();
-                finalReviewerComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
-                finalReviewerComment.setReviewId(finalReview.getReviewId());
-                finalReviewerComment.setResourceId(finalReviewer.getResourceId());
-                finalReviewerComment.setContent("");
-                finalReviewerComment.setExtraInfo("Approved");
-                finalReviewerComment.setType(CommentType.FINAL_REVIEW_COMMENT);
-                finalReviewerComment.setSortOrder(reviewCommentSortIndex++);
-                reviewComments.add(finalReviewerComment);
-            }
-            
-            finalReview.setComments(reviewComments.toArray(new ReviewComment[reviewComments.size()]));
-            
-            // Review items from review scorecards for winning submission
-            List<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
-            for (Resource reviewer : allReviewers) {
-                Review[] reviews = reviewer.getReviews();
-                int reviewItemSortingIndex = 0;
-                for (Review review : reviews) {
-                    if (review.getSubmissionId() == winningSubmission.getSubmissionId()) {
-                        ReviewItem[] originalReviewItems = review.getItems();
-                        int index = 0;
-                        for (ReviewItem originalReviewItem : originalReviewItems) {
-                            ReviewItem reviewItem = new ReviewItem();
-                            reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
-                            reviewItem.setReviewId(finalReview.getReviewId());
-                            reviewItem.setAnswer(originalReviewItem.getAnswer());
-                            reviewItem.setScorecardQuestionId(originalReviewItem.getScorecardQuestionId());
-                            reviewItem.setSortOrder(reviewItemSortingIndex++);
-                            reviewItems.add(reviewItem);
-                            
-                            int sortIndex = 0;
-                            List<ReviewItemComment> reviewItemComments = new ArrayList<ReviewItemComment>();
-                            ReviewItemComment[] originalReviewItemComments = originalReviewItem.getComments();
-                            for (ReviewItemComment originalReviewItemComment : originalReviewItemComments) {
+                ReviewComment submitterAggregationComment = new ReviewComment();
+                submitterAggregationComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
+                submitterAggregationComment.setReviewId(finalReview.getReviewId());
+                submitterAggregationComment.setResourceId(winningSubmitter.getResourceId());
+                submitterAggregationComment.setContent("");
+                submitterAggregationComment.setType(CommentType.SUBMITTER_COMMENT);
+                submitterAggregationComment.setSortOrder(reviewCommentSortIndex++);
+                reviewComments.add(submitterAggregationComment);
+                
+                if (finalReviewPhase.isClosed()) {
+                    ReviewComment finalReviewerComment = new ReviewComment();
+                    finalReviewerComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
+                    finalReviewerComment.setReviewId(finalReview.getReviewId());
+                    finalReviewerComment.setResourceId(finalReviewer.getResourceId());
+                    finalReviewerComment.setContent("");
+                    finalReviewerComment.setExtraInfo("Approved");
+                    finalReviewerComment.setType(CommentType.FINAL_REVIEW_COMMENT);
+                    finalReviewerComment.setSortOrder(reviewCommentSortIndex++);
+                    reviewComments.add(finalReviewerComment);
+                }
+                
+                finalReview.setComments(reviewComments.toArray(new ReviewComment[reviewComments.size()]));
+                
+                // Review items from review scorecards for winning submission
+                List<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
+                for (Resource reviewer : allReviewers) {
+                    Review[] reviews = reviewer.getReviews();
+                    int reviewItemSortingIndex = 0;
+                    for (Review review : reviews) {
+                        if (review.getSubmissionId() == winningSubmission.getSubmissionId()) {
+                            ReviewItem[] originalReviewItems = review.getItems();
+                            int index = 0;
+                            for (ReviewItem originalReviewItem : originalReviewItems) {
+                                ReviewItem reviewItem = new ReviewItem();
+                                reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
+                                reviewItem.setReviewId(finalReview.getReviewId());
+                                reviewItem.setAnswer(originalReviewItem.getAnswer());
+                                reviewItem.setScorecardQuestionId(originalReviewItem.getScorecardQuestionId());
+                                reviewItem.setSortOrder(reviewItemSortingIndex++);
+                                reviewItems.add(reviewItem);
+                                
+                                int sortIndex = 0;
+                                List<ReviewItemComment> reviewItemComments = new ArrayList<ReviewItemComment>();
+                                ReviewItemComment[] originalReviewItemComments = originalReviewItem.getComments();
+                                for (ReviewItemComment originalReviewItemComment : originalReviewItemComments) {
+                                    ReviewItemComment reviewItemComment = new ReviewItemComment();
+                                    reviewItemComment.setReviewItemCommentId(
+                                        this.config.getReviewItemCommentIdGenerator().getNextId());
+                                    reviewItemComment.setResourceId(originalReviewItemComment.getResourceId());
+                                    reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
+                                    reviewItemComment.setType(originalReviewItemComment.getType());
+                                    reviewItemComment.setContent(originalReviewItemComment.getContent());
+                                    reviewItemComment.setSortOrder(sortIndex++);
+                                    reviewItemComments.add(reviewItemComment);
+                                    if (finalReviewPhase.isClosed()) {
+                                        reviewItemComment.setExtraInfo("Fixed");
+                                    }
+                                }
+                                ReviewItemComment aggregationReviewItemComment = aggregationReviewItemComments.get(index++);
                                 ReviewItemComment reviewItemComment = new ReviewItemComment();
                                 reviewItemComment.setReviewItemCommentId(
                                     this.config.getReviewItemCommentIdGenerator().getNextId());
-                                reviewItemComment.setResourceId(originalReviewItemComment.getResourceId());
+                                reviewItemComment.setResourceId(aggregationReviewItemComment.getResourceId());
                                 reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
-                                reviewItemComment.setType(originalReviewItemComment.getType());
-                                reviewItemComment.setContent(originalReviewItemComment.getContent());
+                                reviewItemComment.setType(aggregationReviewItemComment.getType());
+                                reviewItemComment.setContent(aggregationReviewItemComment.getContent());
                                 reviewItemComment.setSortOrder(sortIndex++);
                                 reviewItemComments.add(reviewItemComment);
+    
                                 if (finalReviewPhase.isClosed()) {
-                                    reviewItemComment.setExtraInfo("Fixed");
+                                    ReviewItemComment finalReviewItemComment = new ReviewItemComment();
+                                    finalReviewItemComment.setReviewItemCommentId(
+                                        this.config.getReviewItemCommentIdGenerator().getNextId());
+                                    finalReviewItemComment.setResourceId(finalReviewer.getResourceId());
+                                    finalReviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
+                                    finalReviewItemComment.setType(CommentType.FINAL_REVIEW_COMMENT);
+                                    finalReviewItemComment.setContent("");
+                                    finalReviewItemComment.setSortOrder(sortIndex++);
+                                    reviewItemComments.add(finalReviewItemComment);
                                 }
+    
+                                reviewItem.setComments(
+                                    reviewItemComments.toArray(new ReviewItemComment[reviewItemComments.size()]));
                             }
-                            ReviewItemComment aggregationReviewItemComment = aggregationReviewItemComments.get(index++);
-                            ReviewItemComment reviewItemComment = new ReviewItemComment();
-                            reviewItemComment.setReviewItemCommentId(
-                                this.config.getReviewItemCommentIdGenerator().getNextId());
-                            reviewItemComment.setResourceId(aggregationReviewItemComment.getResourceId());
-                            reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
-                            reviewItemComment.setType(aggregationReviewItemComment.getType());
-                            reviewItemComment.setContent(aggregationReviewItemComment.getContent());
-                            reviewItemComment.setSortOrder(sortIndex++);
-                            reviewItemComments.add(reviewItemComment);
+                        }
+                    }
+                }
+                finalReview.setItems(reviewItems.toArray(new ReviewItem[reviewItems.size()]));
+                finalReviewer.setReviews(new Review[]{finalReview});
+            }
+        }
 
-                            if (finalReviewPhase.isClosed()) {
-                                ReviewItemComment finalReviewItemComment = new ReviewItemComment();
-                                finalReviewItemComment.setReviewItemCommentId(
-                                    this.config.getReviewItemCommentIdGenerator().getNextId());
-                                finalReviewItemComment.setResourceId(finalReviewer.getResourceId());
-                                finalReviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
-                                finalReviewItemComment.setType(CommentType.FINAL_REVIEW_COMMENT);
-                                finalReviewItemComment.setContent("");
-                                finalReviewItemComment.setSortOrder(sortIndex++);
-                                reviewItemComments.add(finalReviewItemComment);
-                            }
+        // Copilot
+        if (this.config.getCopilot() != null) {
+            createResource(this.config.getCopilot(), ResourceRole.COPILOT, resourceIdGenerator.getNextId(), null, 
+                           resources);
+            project.setCopilotCost(500D);
+        } else {
+            project.setCopilotCost(0D);
+        }
 
-                            reviewItem.setComments(
-                                reviewItemComments.toArray(new ReviewItemComment[reviewItemComments.size()]));
+        // Approver
+        if (this.config.getApprover() != null) {
+            Resource approver = createResource(this.config.getApprover(), ResourceRole.APPROVER,
+                                               resourceIdGenerator.getNextId(), null, resources);
+            if ((winningSubmission != null) && (approvalPhase.isOpen() || approvalPhase.isClosed())) {
+                Review approval = new Review();
+                approval.setReviewId(this.config.getReviewIdGenerator().getNextId());
+                approval.setResourceId(approver.getResourceId());
+                approval.setSubmissionId(winningSubmission.getSubmissionId());
+                approval.setScorecardId(approvalPhase.getReviewScorecard().getScorecardId());
+                approval.setCommitted(approvalPhase.isClosed());
+                if (approvalPhase.isClosed()) {
+                    approval.setInitialScore(100D);
+                    approval.setScore(approval.getInitialScore());
+                }
+                
+                ReviewComment approvalComment = new ReviewComment();
+                approvalComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
+                approvalComment.setReviewId(approval.getReviewId());
+                approvalComment.setResourceId(approver.getResourceId());
+                approvalComment.setContent("");
+                approvalComment.setExtraInfo("Approved");
+                approvalComment.setType(CommentType.APPROVAL_REVIEW_COMMENT);
+                approvalComment.setSortOrder(0);
+                
+                ReviewComment approvalCommentOtherFixes = new ReviewComment();
+                approvalCommentOtherFixes.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
+                approvalCommentOtherFixes.setReviewId(approval.getReviewId());
+                approvalCommentOtherFixes.setResourceId(approver.getResourceId());
+                approvalCommentOtherFixes.setContent("");
+                approvalCommentOtherFixes.setExtraInfo("");
+                approvalCommentOtherFixes.setType(CommentType.APPROVAL_REVIEW_COMMENT_OTHER_FIXES);
+                approvalCommentOtherFixes.setSortOrder(1);
+    
+                approval.setComments(new ReviewComment[] {approvalComment, approvalCommentOtherFixes}); 
+    
+                ReviewItem reviewItem = new ReviewItem();
+                reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
+                reviewItem.setReviewId(approval.getReviewId());
+                reviewItem.setAnswer("4/4");
+                reviewItem.setScorecardQuestionId(approvalPhase.getReviewScorecard().getScorecardQuestionId());
+                reviewItem.setSortOrder(0);
+                approval.setItems(new ReviewItem[]{reviewItem});
+                            
+                ReviewItemComment reviewItemComment = new ReviewItemComment();
+                reviewItemComment.setReviewItemCommentId(
+                    this.config.getReviewItemCommentIdGenerator().getNextId());
+                reviewItemComment.setResourceId(approver.getResourceId());
+                reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
+                reviewItemComment.setContent("Ok");
+                reviewItemComment.setType(CommentType.COMMENT);
+                reviewItemComment.setSortOrder(0);
+                reviewItem.setComments(new ReviewItemComment[] {reviewItemComment});
+                
+                approver.setReviews(new Review[] {approval});
+            }
+        }
+
+        // Completion date (for cancelled, deleted, completed statuses only)
+        if (projectStatus != ProjectStatus.ACTIVE && projectStatus != ProjectStatus.INACTIVE) {
+            Long lastPhaseEndTimeOffset = null;
+            if ((projectStatus == ProjectStatus.COMPLETED) 
+                || (projectStatus == ProjectStatus.CANCELLED_CLIENT_REQUEST)
+                || (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW)
+                || (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW)
+                || (projectStatus == ProjectStatus.CANCELLED_FAILED_SCREENING)
+                || (projectStatus == ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE)
+                || (projectStatus == ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE)
+                || (projectStatus == ProjectStatus.CANCELLED_ZERO_REGISTRATIONS)
+                || (projectStatus == ProjectStatus.CANCELLED_ZERO_SUBMISSIONS)
+                || (projectStatus == ProjectStatus.DELETED)) {
+                Phase[] projectPhases = project.getPhases();
+                for (int i = 0; i < projectPhases.length; i++) {
+                    Phase projectPhase = projectPhases[i];
+                    Long actualEndTimeOffset = projectPhase.getActualEndTimeOffset();
+                    if (actualEndTimeOffset != null) {
+                        if ((lastPhaseEndTimeOffset == null) 
+                            || (lastPhaseEndTimeOffset.compareTo(actualEndTimeOffset) < 0)) {
+                            lastPhaseEndTimeOffset = actualEndTimeOffset;
                         }
                     }
                 }
             }
-            finalReview.setItems(reviewItems.toArray(new ReviewItem[reviewItems.size()]));
-            finalReviewer.setReviews(new Review[]{finalReview});
-        }
-        
-        // Approver
-        Resource approver = createResource(this.config.getApprover(), ResourceRole.APPROVER,
-                                           resourceIdGenerator.getNextId(), null, resources);
-        if ((winningSubmission != null) && (approvalPhase.isOpen() || approvalPhase.isClosed())) {
-            Review approval = new Review();
-            approval.setReviewId(this.config.getReviewIdGenerator().getNextId());
-            approval.setResourceId(approver.getResourceId());
-            approval.setSubmissionId(winningSubmission.getSubmissionId());
-            approval.setScorecardId(approvalPhase.getReviewScorecard().getScorecardId());
-            approval.setCommitted(approvalPhase.isClosed());
-            if (approvalPhase.isClosed()) {
-                approval.setInitialScore(100D);
-                approval.setScore(approval.getInitialScore());
+            if (lastPhaseEndTimeOffset == null) {
+                lastPhaseEndTimeOffset = 0L;
             }
-            
-            ReviewComment approvalComment = new ReviewComment();
-            approvalComment.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
-            approvalComment.setReviewId(approval.getReviewId());
-            approvalComment.setResourceId(approver.getResourceId());
-            approvalComment.setContent("");
-            approvalComment.setExtraInfo("Approved");
-            approvalComment.setType(CommentType.APPROVAL_REVIEW_COMMENT);
-            approvalComment.setSortOrder(0);
-            
-            ReviewComment approvalCommentOtherFixes = new ReviewComment();
-            approvalCommentOtherFixes.setReviewCommentId(this.config.getReviewCommentIdGenerator().getNextId());
-            approvalCommentOtherFixes.setReviewId(approval.getReviewId());
-            approvalCommentOtherFixes.setResourceId(approver.getResourceId());
-            approvalCommentOtherFixes.setContent("");
-            approvalCommentOtherFixes.setExtraInfo("");
-            approvalCommentOtherFixes.setType(CommentType.APPROVAL_REVIEW_COMMENT_OTHER_FIXES);
-            approvalCommentOtherFixes.setSortOrder(1);
-
-            approval.setComments(new ReviewComment[] {approvalComment, approvalCommentOtherFixes}); 
-
-            ReviewItem reviewItem = new ReviewItem();
-            reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
-            reviewItem.setReviewId(approval.getReviewId());
-            reviewItem.setAnswer("4/4");
-            reviewItem.setScorecardQuestionId(approvalPhase.getReviewScorecard().getScorecardQuestionId());
-            reviewItem.setSortOrder(0);
-            approval.setItems(new ReviewItem[]{reviewItem});
-                        
-            ReviewItemComment reviewItemComment = new ReviewItemComment();
-            reviewItemComment.setReviewItemCommentId(
-                this.config.getReviewItemCommentIdGenerator().getNextId());
-            reviewItemComment.setResourceId(approver.getResourceId());
-            reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
-            reviewItemComment.setContent("Ok");
-            reviewItemComment.setType(CommentType.COMMENT);
-            reviewItemComment.setSortOrder(0);
-            reviewItem.setComments(new ReviewItemComment[] {reviewItemComment});
-            
-            approver.setReviews(new Review[] {approval});
+            Date now = new Date();
+            project.setCompletionDate(new Date(now.getTime() + lastPhaseEndTimeOffset * 60 * 1000));
         }
-        
-        // Completion date
-        Long lastPhaseEndTimeOffset = null;
-        if ((projectStatus == ProjectStatus.COMPLETED) 
-            || (projectStatus == ProjectStatus.CANCELLED_CLIENT_REQUEST)
-            || (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW)
-            || (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW)
-            || (projectStatus == ProjectStatus.CANCELLED_FAILED_SCREENING)
-            || (projectStatus == ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE)
-            || (projectStatus == ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE)
-            || (projectStatus == ProjectStatus.CANCELLED_ZERO_REGISTRATIONS)
-            || (projectStatus == ProjectStatus.CANCELLED_ZERO_SUBMISSIONS)
-            || (projectStatus == ProjectStatus.DELETED)) {
-            Phase[] projectPhases = project.getPhases();
-            for (int i = 0; i < projectPhases.length; i++) {
-                Phase projectPhase = projectPhases[i];
-                Long actualEndTimeOffset = projectPhase.getActualEndTimeOffset();
-                if (actualEndTimeOffset != null) {
-                    if ((lastPhaseEndTimeOffset == null) 
-                        || (lastPhaseEndTimeOffset.compareTo(actualEndTimeOffset) < 0)) {
-                        lastPhaseEndTimeOffset = actualEndTimeOffset;
-                    }
-                }
-            }
-        }
-        if (lastPhaseEndTimeOffset == null) {
-            lastPhaseEndTimeOffset = 0L;
-        }
-        Date now = new Date();
-        project.setCompletionDate(new Date(now.getTime() + lastPhaseEndTimeOffset * 60 * 1000));
 
         return project;
+    }
+
+    /**
+     * <p>Creates new prize instance with specified parameters.</p>
+     *  
+     * @param amount a <code>double</code> providing the prize amount. 
+     * @param numberOfSubmissions an <code>int</code> providing the number of submissions for prize.
+     * @param placement an <code>int</code> providing the placement for prize.
+     * @param prizeType a <code>PrizeType</code> specifying the type of prize. 
+     * @return a <code>Prize</code> representing a single prize. 
+     */
+    private Prize createPrize(double amount, int numberOfSubmissions, int placement, PrizeType prizeType) {
+        Prize prize = new Prize();
+        prize.setAmount(amount);
+        prize.setNumberOfSubmissions(numberOfSubmissions);
+        prize.setPlacement(placement);
+        prize.setPrizeId(this.config.getPrizeIdGenerator().getNextId());
+        prize.setType(prizeType);
+        return prize;
     }
 
     /**
@@ -1189,6 +1528,58 @@ public class ProjectDataGenerator {
     }
 
     /**
+     * <p>Generates the milestone reviews for contest submissions from specified project of specified status.</p>
+     *
+     * @param milestoneReviewPhase a <code>Phase</code> providing the review phase.
+     * @param contestSubmitters a <code>List</code> of submitters for contest.
+     * @param milestoneReviewerResource  a <code>Resource</code> representing the reviewer.
+     */
+    private void generateMilestoneReviews(Phase milestoneReviewPhase, List<Resource> contestSubmitters, 
+                                          Resource milestoneReviewerResource) {
+        List<Review> reviews = new ArrayList<Review>();
+        for (Resource contestSubmitter : contestSubmitters) {
+            Submission[] milestoneSubmissions = contestSubmitter.getMilestoneSubmissions();
+            if (milestoneSubmissions != null) {
+                for (Submission milestoneSubmission : milestoneSubmissions) {
+                    int score = getRandomInt(3, 4);
+
+                    Review review = new Review();
+                    review.setReviewId(this.config.getReviewIdGenerator().getNextId());
+                    review.setResourceId(milestoneReviewerResource.getResourceId());
+                    review.setSubmissionId(milestoneSubmission.getSubmissionId());
+                    review.setScorecardId(milestoneReviewPhase.getReviewScorecard().getScorecardId());
+                    review.setCommitted(milestoneReviewPhase.isClosed());
+                    if (milestoneReviewPhase.isClosed()) {
+                        review.setInitialScore(score / 4D * 100);
+                        review.setScore(review.getInitialScore());
+                    }
+                    reviews.add(review);
+
+                    ReviewItem reviewItem = new ReviewItem();
+                    reviewItem.setReviewItemId(this.config.getReviewItemIdGenerator().getNextId());
+                    reviewItem.setReviewId(review.getReviewId());
+                    reviewItem.setAnswer(score + "/4");
+                    reviewItem.setScorecardQuestionId(
+                        milestoneReviewPhase.getReviewScorecard().getScorecardQuestionId());
+                    reviewItem.setSortOrder(0);
+                    review.setItems(new ReviewItem[]{reviewItem});
+
+                    ReviewItemComment reviewItemComment = new ReviewItemComment();
+                    reviewItemComment.setReviewItemCommentId(
+                        this.config.getReviewItemCommentIdGenerator().getNextId());
+                    reviewItemComment.setResourceId(milestoneReviewerResource.getResourceId());
+                    reviewItemComment.setReviewItemId(reviewItem.getReviewItemId());
+                    reviewItemComment.setContent("Ok");
+                    reviewItemComment.setType(CommentType.COMMENT);
+                    reviewItemComment.setSortOrder(0);
+                    reviewItem.setComments(new ReviewItemComment[]{reviewItemComment});
+                }
+            }
+        }
+        milestoneReviewerResource.setReviews(reviews.toArray(new Review[reviews.size()]));
+    }
+
+    /**
      * <p>Generates a random value in specified range (inclusive).</p>
      * 
      * @param min an <code>int</code> providing the minimum range value. 
@@ -1212,13 +1603,13 @@ public class ProjectDataGenerator {
     private void schedule(Phase phase, List<Phase> phases) {
         Phase prevPhase = null;
         for (Phase p : phases) {
-            if (p.getPhaseType().getOrdinal() < phase.getPhaseType().getOrdinal()) {
+            if (p.getPhaseType() == phase.getPhaseType().getMainPhaseType()) {
                 prevPhase = p;
             }
         }
         phase.setPhaseStatus(PhaseStatus.SCHEDULED);
         if (prevPhase == null) {
-            phase.setScheduledStartTimeOffset(12 * 60L);
+            phase.setScheduledStartTimeOffset(getRandomInt(10, 500) * 60L);
         } else {
             if (phase.getPhaseType().getStartsWhenDependencyStarts()) {
                 phase.setScheduledStartTimeOffset(prevPhase.getScheduledStartTimeOffset());
@@ -1245,13 +1636,13 @@ public class ProjectDataGenerator {
     private void open(Phase phase, List<Phase> phases) {
         Phase prevPhase = null;
         for (Phase p : phases) {
-            if (p.getPhaseType().getOrdinal() < phase.getPhaseType().getOrdinal()) {
+            if (p.getPhaseType() == phase.getPhaseType().getMainPhaseType()) {
                 prevPhase = p;
             }
         }
         phase.setPhaseStatus(PhaseStatus.OPEN);
         if (prevPhase == null) {
-            phase.setScheduledStartTimeOffset(12 * 60L * (-1));
+            phase.setScheduledStartTimeOffset((phase.getDuration() / 1000 / 60 / 2) * 60L * (-1));
         } else {
             if (phase.getPhaseType().getStartsWhenDependencyStarts()) {
                 phase.setScheduledStartTimeOffset(prevPhase.getActualStartTimeOffset());
@@ -1278,13 +1669,13 @@ public class ProjectDataGenerator {
     private void close(Phase phase, List<Phase> phases) {
         Phase prevPhase = null;
         for (Phase p : phases) {
-            if (p.getPhaseType().getOrdinal() < phase.getPhaseType().getOrdinal()) {
+            if (p.getPhaseType() == phase.getPhaseType().getMainPhaseType()) {
                 prevPhase = p;
             }
         }
         phase.setPhaseStatus(PhaseStatus.CLOSED);
         if (prevPhase == null) {
-            phase.setScheduledStartTimeOffset(40 * 24 * 60L * (-1));
+            phase.setScheduledStartTimeOffset(getRandomInt(30, 80) * 24 * 60L * (-1));
         } else {
             if (phase.getPhaseType().getStartsWhenDependencyStarts()) {
                 phase.setScheduledStartTimeOffset(prevPhase.getActualStartTimeOffset());
@@ -1315,6 +1706,8 @@ public class ProjectDataGenerator {
      */
     private Phase createPhase(Project project, PhaseType phaseType, PhaseType currentOpenPhaseType,
                               List<Phase> phases, long phaseId, long duration) {
+
+        boolean isStudio = project.getProjectCategory().getProjectType() == ProjectType.STUDIO;
         Phase phase = new Phase();
         phases.add(phase);
 
@@ -1387,8 +1780,10 @@ public class ProjectDataGenerator {
                 close(phase, phases);
             }
         } else if (phaseType == PhaseType.REGISTRATION) {
-            phase.addCriteria(PhaseCriteriaType.REGISTRATION_NUMBER, "0");
-            phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
+            if (!isStudio) {
+                phase.addCriteria(PhaseCriteriaType.REGISTRATION_NUMBER, "0");
+                phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
+            }
 
             if (projectStatus == ProjectStatus.ACTIVE) {
             } else if (projectStatus == ProjectStatus.INACTIVE) {
@@ -1412,9 +1807,102 @@ public class ProjectDataGenerator {
             } else if (projectStatus == ProjectStatus.COMPLETED) {
                 close(phase, phases);
             }
+        } else if (phaseType == PhaseType.MILESTONE_SUBMISSION) {
+            if (!isStudio) {
+                phase.addCriteria(PhaseCriteriaType.SUBMISSION_NUMBER, "0");
+                phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "Yes");
+            }
+
+            if (projectStatus == ProjectStatus.ACTIVE) {
+            } else if (projectStatus == ProjectStatus.INACTIVE) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.DELETED) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_CLIENT_REQUEST) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_ZERO_REGISTRATIONS) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_ZERO_SUBMISSIONS) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_FAILED_SCREENING) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.COMPLETED) {
+                close(phase, phases);
+            }
+        } else if (phaseType == PhaseType.MILESTONE_SCREENING) {
+            phase.setReviewScorecard(Scorecard.DEFAULT_MILESTONE_SCREENING_SCORECARD);
+            phase.addCriteria(PhaseCriteriaType.SCORECARD_ID,
+                              String.valueOf(phase.getReviewScorecard().getScorecardId()));
+            if (!isStudio) {
+                phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
+            }
+
+            if (projectStatus == ProjectStatus.ACTIVE) {
+            } else if (projectStatus == ProjectStatus.INACTIVE) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.DELETED) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_CLIENT_REQUEST) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_ZERO_REGISTRATIONS) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_ZERO_SUBMISSIONS) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_FAILED_SCREENING) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.COMPLETED) {
+                close(phase, phases);
+            }
+        } else if (phaseType == PhaseType.MILESTONE_REVIEW) {
+            phase.setReviewScorecard(Scorecard.DEFAULT_MILESTONE_REVIEW_SCORECARD);
+            phase.addCriteria(PhaseCriteriaType.SCORECARD_ID,
+                              String.valueOf(phase.getReviewScorecard().getScorecardId()));
+            if (!isStudio) {
+                phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
+                phase.addCriteria(PhaseCriteriaType.REVIEWER_NUMBER, "3");
+            } else {
+                phase.addCriteria(PhaseCriteriaType.REVIEWER_NUMBER, "1");
+            }
+
+            if (projectStatus == ProjectStatus.ACTIVE) {
+            } else if (projectStatus == ProjectStatus.INACTIVE) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.DELETED) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_CLIENT_REQUEST) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_REQUIREMENTS_INFEASIBLE) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_WINNER_UNRESPONSIVE) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_ZERO_REGISTRATIONS) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_ZERO_SUBMISSIONS) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_FAILED_SCREENING) {
+                schedule(phase, phases);
+            } else if (projectStatus == ProjectStatus.CANCELLED_FAILED_REVIEW) {
+                close(phase, phases);
+            } else if (projectStatus == ProjectStatus.COMPLETED) {
+                close(phase, phases);
+            }
         } else if (phaseType == PhaseType.SUBMISSION) {
-            phase.addCriteria(PhaseCriteriaType.SUBMISSION_NUMBER, "0");
-            phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "Yes");
+            if (!isStudio) {
+                phase.addCriteria(PhaseCriteriaType.SUBMISSION_NUMBER, "0");
+                phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "Yes");
+            }
 
             if (projectStatus == ProjectStatus.ACTIVE) {
             } else if (projectStatus == ProjectStatus.INACTIVE) {
@@ -1439,7 +1927,9 @@ public class ProjectDataGenerator {
                 close(phase, phases);
             }
         } else if (phaseType == PhaseType.SCREENING) {
-            if (project.getProjectCategory() == ProjectCategory.DESIGN) {
+            if (isStudio) {
+                phase.setReviewScorecard(Scorecard.DEFAULT_APPLICATION_SCREENING_SCORECARD);
+            } else if (project.getProjectCategory() == ProjectCategory.DESIGN) {
                 phase.setReviewScorecard(Scorecard.DEFAULT_DESIGN_SCREENING_SCORECARD);
             } else if (project.getProjectCategory() == ProjectCategory.DEVELOPMENT) {
                 phase.setReviewScorecard(Scorecard.DEFAULT_DEVELOPMENT_SCREENING_SCORECARD);
@@ -1452,7 +1942,9 @@ public class ProjectDataGenerator {
             }
             phase.addCriteria(PhaseCriteriaType.SCORECARD_ID,
                               String.valueOf(phase.getReviewScorecard().getScorecardId()));
-            phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
+            if (!isStudio) {
+                phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
+            }
 
             if (projectStatus == ProjectStatus.ACTIVE) {
             } else if (projectStatus == ProjectStatus.INACTIVE) {
@@ -1477,7 +1969,9 @@ public class ProjectDataGenerator {
                 close(phase, phases);
             }
         } else if (phaseType == PhaseType.REVIEW) {
-            if (project.getProjectCategory() == ProjectCategory.DESIGN) {
+            if (isStudio) {
+                phase.setReviewScorecard(Scorecard.DEFAULT_STUDIO_REVIEW_SCORECARD);
+            } else if (project.getProjectCategory() == ProjectCategory.DESIGN) {
                 phase.setReviewScorecard(Scorecard.DEFAULT_DESIGN_REVIEW_SCORECARD);
             } else if (project.getProjectCategory() == ProjectCategory.DEVELOPMENT) {
                 phase.setReviewScorecard(Scorecard.DEFAULT_DEVELOPMENT_REVIEW_SCORECARD);
@@ -1490,8 +1984,12 @@ public class ProjectDataGenerator {
             }
             phase.addCriteria(PhaseCriteriaType.SCORECARD_ID,
                               String.valueOf(phase.getReviewScorecard().getScorecardId()));
-            phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
-            phase.addCriteria(PhaseCriteriaType.REVIEWER_NUMBER, "3");
+            if (!isStudio) {
+                phase.addCriteria(PhaseCriteriaType.MANUAL_SCREENING, "No");
+                phase.addCriteria(PhaseCriteriaType.REVIEWER_NUMBER, "3");
+            } else {
+                phase.addCriteria(PhaseCriteriaType.REVIEWER_NUMBER, "1");
+            }
 
             if (projectStatus == ProjectStatus.ACTIVE) {
             } else if (projectStatus == ProjectStatus.INACTIVE) {
@@ -1744,6 +2242,9 @@ public class ProjectDataGenerator {
         resources.add(resource);
         resource.setResourceId(resourceId);
         resource.setRole(role);
+        if (user == null) {
+            System.out.println("User is null for " + role.getName());
+        }
         resource.setUser(user);
         resource.setPhase(phase);
         resource.setPaymentStatus("N/A");

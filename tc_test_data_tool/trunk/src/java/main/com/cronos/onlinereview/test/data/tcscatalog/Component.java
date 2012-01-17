@@ -10,8 +10,15 @@ import java.util.List;
  * <p>A DTO for a component from the catalog which may be associated with the project. Corresponds to 
  * <code>tcs_catalog.comp_catalog</code> database table.</p>
  *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #catalogId} property.</li>
+ *   </ol>
+ * </p>
+ *
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class Component implements Serializable {
 
@@ -64,6 +71,13 @@ public class Component implements Serializable {
      * <p>A <code>List</code> providing the versions for this component.</p>
      */
     private List<ComponentVersion> versions;
+
+    /**
+     * <p>A <code>long</code> providing the ID of a catalog for this component.</p>
+     * 
+     * @since 1.1
+     */
+    private long catalogId;
 
     /**
      * <p>Constructs new <code>Component</code> instance. This implementation does nothing.</p>
@@ -261,11 +275,31 @@ public class Component implements Serializable {
     public ComponentVersion getCurrentVersion() {
         if (this.versions != null) {
             for (ComponentVersion version : this.versions) {
-                if (version.getVersionId() == getCurrentVersionId()) {
+                if (version.getVersionNumber() == getCurrentVersionId()) {
                     return version;
                 }
             }
         }
         return null;
+    }
+
+    /**
+     * <p>Gets the ID of a catalog for this component.</p>
+     *
+     * @return a <code>long</code> providing the ID of a catalog for this component.
+     * @since 1.1
+     */
+    public long getCatalogId() {
+        return this.catalogId;
+    }
+
+    /**
+     * <p>Sets the ID of a catalog for this component.</p>
+     *
+     * @param catalogId a <code>long</code> providing the ID of a catalog for this component.
+     * @since 1.1
+     */
+    public void setCatalogId(long catalogId) {
+        this.catalogId = catalogId;
     }
 }

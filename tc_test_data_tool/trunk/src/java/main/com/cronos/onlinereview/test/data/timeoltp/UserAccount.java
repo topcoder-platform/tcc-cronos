@@ -7,9 +7,16 @@ import java.io.Serializable;
 
 /**
  * <p>A DTO for a single user account. Corresponds to <code>time_oltp.user_account</code> table.</p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #companyId} property.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class UserAccount implements Serializable {
 
@@ -32,6 +39,13 @@ public class UserAccount implements Serializable {
      * <p>A <code>String</code> providing the password for this user account.</p>
      */
     private String password;
+
+    /**
+     * <p>A <code>long</code> providing the ID of a company user account belongs to.</p>
+     * 
+     * @since 1.1
+     */
+    private long companyId;
 
     /**
      * <p>Constructs new <code>UserAccount</code> instance. This implementation does nothing.</p>
@@ -109,5 +123,25 @@ public class UserAccount implements Serializable {
      */
     public void setUserAccountId(long userAccountId) {
         this.userAccountId = userAccountId;
+    }
+
+    /**
+     * <p>Gets the ID of a company user account belongs to.</p>
+     *
+     * @return a <code>long</code> providing the ID of a company user account belongs to.
+     * @since 1.1
+     */
+    public long getCompanyId() {
+        return this.companyId;
+    }
+
+    /**
+     * <p>Sets the ID of a company user account belongs to.</p>
+     *
+     * @param companyId a <code>long</code> providing the ID of a company user account belongs to.
+     * @since 1.1
+     */
+    public void setCompanyId(long companyId) {
+        this.companyId = companyId;
     }
 }

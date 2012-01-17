@@ -6,16 +6,21 @@ package com.cronos.onlinereview.test.data.corporateoltp;
 /**
  * <p>An enumeration over the exiting statuses for TC Direct projects. Corresponds to 
  * <code>corporate_oltp.tc_direct_project_status_lu</code> database table.</p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Removed <code>INACTIVE</code> item.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum TcDirectProjectStatus {
     
-    ACTIVE(1, "Active"),
+    ACTIVE(1, "Active");
     
-    INACTIVE(2, "Inactive");
-
     /**
      * <p>A <code>long</code> providing the ID of this client status.</p>
      */

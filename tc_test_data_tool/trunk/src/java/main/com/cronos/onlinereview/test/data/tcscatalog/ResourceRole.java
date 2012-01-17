@@ -7,8 +7,16 @@ package com.cronos.onlinereview.test.data.tcscatalog;
  * <p>An enumeration over the existing resource roles. Corresponds to <code>tcs_catalog.resource_role_lu</code> database
  * table.</p>
  *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #MILESTONE_SCREENER} item.</li>
+ *     <li>Added {@link #MILESTONE_REVIEWER} item.</li>
+ *   </ol>
+ * </p>
+ *
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum ResourceRole {
 
@@ -46,7 +54,11 @@ public enum ResourceRole {
     
     SPECIFICATION_SUBMITTER(17, "Specification Submitter", null),
     
-    SPECIFICATION_REVIEWER(18, "Specification Reviewer", PhaseType.SPECIFICATION_REVIEW);
+    SPECIFICATION_REVIEWER(18, "Specification Reviewer", PhaseType.SPECIFICATION_REVIEW),
+    
+    MILESTONE_SCREENER(19, "Milestone Screener", PhaseType.MILESTONE_SCREENING),
+    
+    MILESTONE_REVIEWER(20, "Milestone Reviewer", PhaseType.MILESTONE_REVIEW);
 
     /**
      * <p>A <code>long</code> providing the ID of this resource role.</p>

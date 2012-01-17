@@ -6,9 +6,17 @@ package com.cronos.onlinereview.test.data.tcscatalog;
 /**
  * <p>An enumeration over the scorecard types. Corresponds to <code>tcs_catalog.scorecard_type_Lu</code> database table.
  * </p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #MILESTONE_SCREENING} item.</li>
+ *     <li>Added {@link #MILESTONE_REVIEW} item.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum ScorecardType {
     
@@ -20,7 +28,11 @@ public enum ScorecardType {
     
     POST_MORTEM(4, "Post-Mortem"),
     
-    SPECIFICATION_REVIEW(5, "Specification Review");
+    SPECIFICATION_REVIEW(5, "Specification Review"),
+    
+    MILESTONE_SCREENING(6, "Milestone Screening"),
+    
+    MILESTONE_REVIEW(7, "Milestone Review");
 
     /**
      * <p>A <code>long</code> providing the ID of this scorecard type.</p>

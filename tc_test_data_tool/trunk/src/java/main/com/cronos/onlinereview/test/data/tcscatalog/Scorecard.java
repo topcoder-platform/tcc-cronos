@@ -5,9 +5,18 @@ package com.cronos.onlinereview.test.data.tcscatalog;
 
 /**
  * <p>An enumeration over the project statuses. Corresponds to <code>tcs_catalog.scorecard</code> database table.</p>
+ *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #DEFAULT_MILESTONE_SCREENING_SCORECARD} item.</li>
+ *     <li>Added {@link #DEFAULT_MILESTONE_REVIEW_SCORECARD} item.</li>
+ *     <li>Added {@link #DEFAULT_STUDIO_REVIEW_SCORECARD} item.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum Scorecard {
     
@@ -41,7 +50,18 @@ public enum Scorecard {
                                                   ScorecardType.SCREENING, 75, 100, 30003110),
     
     DEFAULT_COPILOT_SELECTION_REVIEW_SCORECARD(30000871, "Default Copilot Selection Review Scorecard", 
-                                               ScorecardType.REVIEW, 80, 100, 30003111);
+                                               ScorecardType.REVIEW, 80, 100, 30003111),
+
+    DEFAULT_STUDIO_REVIEW_SCORECARD(30000418, "Default Studio Review Scorecard", 
+                                               ScorecardType.REVIEW, 10, 100, 30003114),
+    
+    DEFAULT_MILESTONE_SCREENING_SCORECARD(30000416, "Default Milestone Screening Scorecard",
+                                          ScorecardType.MILESTONE_SCREENING, 100, 100, 30003112),
+    
+        
+    DEFAULT_MILESTONE_REVIEW_SCORECARD(30000417, "Default Milestone Review Scorecard",
+                                       ScorecardType.MILESTONE_REVIEW, 10, 100, 30003113);
+    
 
     /**
      * <p>A <code>long</code> providing the ID for the scorecard.</p>

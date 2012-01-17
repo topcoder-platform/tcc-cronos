@@ -13,8 +13,15 @@ import java.util.Date;
  * <p>A DTO for a single resource which may be associated with the project's phase. Corresponds to 
  * <code>tcs_catalog.resource</code> and <code>tcs_catalog.resource_info</code> database tables.</p>
  *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #milestoneSubmissions} property.</li>
+ *   </ol>
+ * </p>
+ *
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public class Resource implements Serializable {
 
@@ -108,6 +115,13 @@ public class Resource implements Serializable {
      * <p>A <code>Review[]</code> providing the reviews associated with this resource.</p>
      */
     private Review[] reviews;
+
+    /**
+     * <p>A <code>Submission[]</code> providing the milestone submissions for this resource.</p>
+     * 
+     * @since 1.1
+     */
+    private Submission[] milestoneSubmissions;
 
     /**
      * <p>Constructs new <code>Resource</code> instance. This implementation does nothing.</p>
@@ -463,5 +477,25 @@ public class Resource implements Serializable {
      */
     public void setReviews(Review[] reviews) {
         this.reviews = reviews;
+    }
+
+    /**
+     * <p>Gets the milestone submissions for this resource.</p>
+     *
+     * @return a <code>Submission[]</code> providing the milestone submissions for this resource.
+     * @since 1.1
+     */
+    public Submission[] getMilestoneSubmissions() {
+        return this.milestoneSubmissions;
+    }
+
+    /**
+     * <p>Sets the milestone submissions for this resource.</p>
+     *
+     * @param milestoneSubmissions a <code>Submission[]</code> providing the milestone submissions for this resource.
+     * @since 1.1
+     */
+    public void setMilestoneSubmissions(Submission[] milestoneSubmissions) {
+        this.milestoneSubmissions = milestoneSubmissions;
     }
 }

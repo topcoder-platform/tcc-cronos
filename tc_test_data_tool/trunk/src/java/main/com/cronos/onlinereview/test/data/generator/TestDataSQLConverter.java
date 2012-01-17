@@ -11,12 +11,15 @@ import com.cronos.onlinereview.test.data.tcscatalog.Catalog;
 import com.cronos.onlinereview.test.data.tcscatalog.Component;
 import com.cronos.onlinereview.test.data.tcscatalog.ComponentVersion;
 import com.cronos.onlinereview.test.data.tcscatalog.ContestSale;
+import com.cronos.onlinereview.test.data.tcscatalog.FileType;
 import com.cronos.onlinereview.test.data.tcscatalog.Phase;
 import com.cronos.onlinereview.test.data.tcscatalog.PhaseCriteriaType;
 import com.cronos.onlinereview.test.data.tcscatalog.PhaseType;
+import com.cronos.onlinereview.test.data.tcscatalog.Prize;
 import com.cronos.onlinereview.test.data.tcscatalog.Project;
 import com.cronos.onlinereview.test.data.tcscatalog.ProjectInfoType;
 import com.cronos.onlinereview.test.data.tcscatalog.ProjectSpec;
+import com.cronos.onlinereview.test.data.tcscatalog.ProjectType;
 import com.cronos.onlinereview.test.data.tcscatalog.Resource;
 import com.cronos.onlinereview.test.data.tcscatalog.ResourceInfoType;
 import com.cronos.onlinereview.test.data.tcscatalog.Review;
@@ -24,7 +27,9 @@ import com.cronos.onlinereview.test.data.tcscatalog.ReviewComment;
 import com.cronos.onlinereview.test.data.tcscatalog.ReviewItem;
 import com.cronos.onlinereview.test.data.tcscatalog.ReviewItemComment;
 import com.cronos.onlinereview.test.data.tcscatalog.ScreeningTask;
+import com.cronos.onlinereview.test.data.tcscatalog.StudioProjectConfig;
 import com.cronos.onlinereview.test.data.tcscatalog.Submission;
+import com.cronos.onlinereview.test.data.tcscatalog.SubmissionDeclaration;
 import com.cronos.onlinereview.test.data.tcscatalog.TechnologyType;
 import com.cronos.onlinereview.test.data.tcscatalog.Upload;
 import com.cronos.onlinereview.test.data.timeoltp.BillingProject;
@@ -37,9 +42,7 @@ import com.cronos.onlinereview.test.data.timeoltp.UserAccount;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
+import java.text.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -57,9 +60,16 @@ import java.util.Set;
  *     set.</li>
  *   </ol>
  * </p>
+ *
+ * <p>
+ * Version 1.2 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added the logic for generating SQL statements for Studio contests and milestone phases.</li>
+ *   </ol>
+ * </p>
  * 
  * @author isv
- * @version 1.1
+ * @version 1.2
  */
 public class TestDataSQLConverter {
 
@@ -254,11 +264,12 @@ public class TestDataSQLConverter {
      */
     public void generateSQLStatements(UserAccount userAccount, PrintWriter out) {
         final String SQL_TEMPLATE
-            = "INSERT INTO user_account (user_account_id, account_status_id, user_name, password, creation_date, "
-              + "creation_user, modification_date, modification_user) "
-              + "VALUES ({0}, {1}, ''{2}'', ''{3}'', CURRENT, {4}, CURRENT, {5});";
+            = "INSERT INTO user_account (user_account_id, company_id, account_status_id, user_name, password, "
+              + "creation_date, creation_user, modification_date, modification_user) "
+              + "VALUES ({0}, {1}, {2}, ''{3}'', ''{4}'', CURRENT, {5}, CURRENT, {6});";
         String sql = MessageFormat.format(SQL_TEMPLATE,
                                           String.valueOf(userAccount.getUserAccountId()),
+                                          String.valueOf(userAccount.getCompanyId()),
                                           String.valueOf(userAccount.getStatus().getId()),
                                           userAccount.getUsername(),
                                           userAccount.getPassword(),
@@ -324,13 +335,16 @@ public class TestDataSQLConverter {
      *
      * @param contest a <code>Project</code> providing the specification of the contest to generate SQL statements for.
      * @param out a <code>PrintWriter</code> to write the generated SQL statements to.
+     * @param submissionDeclarationsOut a <code>PrintWriter</code> to write the generated SQL statements to.
      */
-    public void generateSQLStatements(Project contest, PrintWriter out) {
+    public void generateSQLStatements(Project contest, PrintWriter out, PrintWriter submissionDeclarationsOut) 
+        throws IOException {
         insertCompCatalog(contest, out);
         insertCompCategories(contest, out);
         insertCompVersions(contest, out);
         insertCompVersionDates(contest, out);
         insertCompTechnology(contest, out);
+        insertStudioSpecification(contest, out);
         insertProject(contest, out);
         insertProjectInfos(contest, out);
         insertProjectSpec(contest, out);
@@ -340,10 +354,12 @@ public class TestDataSQLConverter {
         insertProjectResources(contest, out);
         insertProjectResourceInfos(contest, out);
         insertUploads(contest, out);
-        insertSubmissions(contest, out);
+        insertSubmissions(contest, out, submissionDeclarationsOut);
         insertReviews(contest, out);
         insertTimelineNotifications(contest, out);
         insertContestSales(contest, out);
+        insertPrizes(contest, out);
+        insertFileTypes(contest, out);
         out.flush();
     }
 
@@ -503,27 +519,32 @@ public class TestDataSQLConverter {
      */
     private void insertProject(Project project, PrintWriter out) {
         String sql;
+        StudioProjectConfig studioSpecification = project.getStudioSpecification();
         if (project.getTcDirectProjectId() > 0) {
             final String SQL_TEMPLATE
                     = "INSERT INTO project (project_id, project_status_id, project_category_id, create_user, " +
-                      "create_date, modify_user, modify_date, tc_direct_project_id) " +
-                      "VALUES ({0}, {1}, {2}, {3}, CURRENT, {4}, CURRENT, {5});";
+                      "create_date, modify_user, modify_date, tc_direct_project_id, project_studio_spec_id) " +
+                      "VALUES ({0}, {1}, {2}, {3}, CURRENT, {4}, CURRENT, {5}, {6});";
             sql = MessageFormat.format(SQL_TEMPLATE,
                                        String.valueOf(project.getProjectId()),
                                        String.valueOf(project.getProjectStatus().getProjectStatusId()),
                                        String.valueOf(project.getProjectCategory().getProjectCategoryId()),
                                        DEFAULT_PROJECT_AUTHOR, DEFAULT_PROJECT_AUTHOR,
-                                       String.valueOf(project.getTcDirectProjectId()));
+                                       String.valueOf(project.getTcDirectProjectId()), 
+                                       studioSpecification == null 
+                                       ? "NULL" : String.valueOf(studioSpecification.getStudioSpecificationId()));
         } else {
             final String SQL_TEMPLATE
                     = "INSERT INTO project (project_id, project_status_id, project_category_id, create_user, " +
-                      "create_date, modify_user, modify_date) " +
-                      "VALUES ({0}, {1}, {2}, {3}, CURRENT, {4}, CURRENT);";
+                      "create_date, modify_user, modify_date, project_studio_spec_id) " +
+                      "VALUES ({0}, {1}, {2}, {3}, CURRENT, {4}, CURRENT, {5});";
             sql = MessageFormat.format(SQL_TEMPLATE,
                                        String.valueOf(project.getProjectId()),
                                        String.valueOf(project.getProjectStatus().getProjectStatusId()),
                                        String.valueOf(project.getProjectCategory().getProjectCategoryId()),
-                                       DEFAULT_PROJECT_AUTHOR, DEFAULT_PROJECT_AUTHOR);
+                                       DEFAULT_PROJECT_AUTHOR, DEFAULT_PROJECT_AUTHOR, 
+                                       studioSpecification == null ? 
+                                       "NULL" : String.valueOf(studioSpecification.getStudioSpecificationId()));
         }
         out.println(sql);
     }
@@ -537,6 +558,7 @@ public class TestDataSQLConverter {
      */
     private void insertProjectInfos(Project project, PrintWriter out) {
         DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm z");
+        NumberFormat numberFormat = new DecimalFormat("###0");
         Component component = project.getComponent();
         if (component != null) {
             insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.EXTERNAL_REFERENCE_ID,
@@ -554,7 +576,7 @@ public class TestDataSQLConverter {
         Catalog catalog = project.getCatalog();
         if (catalog != null) {
             insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.ROOT_CATALOG_ID,
-                                    String.valueOf(catalog.getCatalogId()), out);
+                                    String.valueOf(catalog.getRootCategoryId()), out);
         }
         insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.PROJECT_NAME, project.getProjectName(), out);
         insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.PROJECT_VERSION, project.getProjectVersion(),
@@ -598,14 +620,18 @@ public class TestDataSQLConverter {
                                 String.valueOf(project.getSecondPlaceCost()), out);
         insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.RELIABILITY_BONUS_ELIGIBLE,
                                 project.isReliabilityBonusEligible() ? "true" : "false", out);
-        insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.PHASE_DEPENDENCIES_EDITABLE,
-                                project.getPhaseDependenciesEditable() ? "true" : "false", out);
-        if (project.isReliabilityBonusEligible()) {
+        if (project.getPhaseDependenciesEditable() != null) {
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.PHASE_DEPENDENCIES_EDITABLE,
+                                    project.getPhaseDependenciesEditable() ? "true" : "false", out);
+        }
+        if (project.isReliabilityBonusEligible() && project.getReliabilityBonusCost() != null) {
             insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.RELIABILITY_BONUS_COST,
                                     String.valueOf(project.getReliabilityBonusCost()), out);
         }
-        insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.MILESTONE_BONUS_COST,
-                                String.valueOf(project.getMilestoneBonusCost()), out);
+        if (project.getMilestoneBonusCost() != null) {
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.MILESTONE_BONUS_COST,
+                                    String.valueOf(project.getMilestoneBonusCost()), out);
+        }
         insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.COST_LEVEL, project.getCostLevel(), out);
         insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.CONFIDENTIALITY_TYPE, 
                                 project.getConfidentialityType(), out);
@@ -621,8 +647,10 @@ public class TestDataSQLConverter {
                                 project.isPostMortemRequired() ? "true" : "false", out);
         insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.MEMBER_PAYMENTS_ELIGIBLE,
                                 project.getMemberPaymentsEligible() ? "true" : "false", out);
-        insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.TRACK_LATE_DELIVERABLES,
-                                project.getTrackLateDeliverables() ? "true" : "false", out);
+        if (project.getTrackLateDeliverables() != null) {
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.TRACK_LATE_DELIVERABLES,
+                                    project.getTrackLateDeliverables() ? "true" : "false", out);
+        }
         if (project.getWinnerUserId() != null) {
             insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.WINNER_EXTERNAL_REFERENCE_ID, 
                                     String.valueOf(project.getWinnerUserId()), out);
@@ -634,6 +662,18 @@ public class TestDataSQLConverter {
         if (project.getCompletionDate() != null) {
             insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.COMPLETION_TIMESTAMP, 
                                     dateFormat.format(project.getCompletionDate()), out);
+        }
+        if (project.getCopilotCost() != null) {
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.COPILOT_COST,
+                                    numberFormat.format(project.getCopilotCost()), out);
+        }
+        if (project.getProjectCategory().getProjectType() == ProjectType.STUDIO) {
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.ALLOW_STOCK_ART,
+                                    project.getStudioSpecification().getAllowStockArt() ? "true" : "false", out);
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.VIEWABLE_SUBMISSIONS_FLAG,
+                                    project.getStudioSpecification().getViewableSubmissions() ? "true" : "false", out);
+            insertSingleProjectInfo(project.getProjectId(), ProjectInfoType.MAXIMUM_SUBMISSIONS, 
+                                    String.valueOf(project.getStudioSpecification().getMaximumSubmissions()), out);
         }
     }
 
@@ -754,12 +794,12 @@ public class TestDataSQLConverter {
                     }
                 }
                 if (mainPhase != null) {
-//                    boolean isSubmission = (phase.getPhaseType() == PhaseType.SUBMISSION);
+                    boolean isSubmission = (phase.getPhaseType() == PhaseType.SUBMISSION);
+                    boolean isMilestoneSubmission = (phase.getPhaseType() == PhaseType.MILESTONE_SUBMISSION);
                     String sql = MessageFormat.format(SQL_TEMPLATE,
                                                       String.valueOf(mainPhase.getPhaseId()),
                                                       String.valueOf(phase.getPhaseId()),
-//                                                      isSubmission ? "1" : "0", "1", "0",
-                                                      "0", "1", "0",
+                                                      isSubmission || isMilestoneSubmission ? "1" : "0", "1", "0",
                                                       DEFAULT_PROJECT_AUTHOR, DEFAULT_PROJECT_AUTHOR);
                     out.println(sql);
                 }
@@ -850,10 +890,12 @@ public class TestDataSQLConverter {
                     insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.EMAIL, user.getEmail(), out);
                 } else {
                     TopCoderUser user = resource.getTopCoderUser();
-                    insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.EXTERNAL_REFERENCE_ID,
-                                            String.valueOf(user.getUserId()), out);
-                    insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.HANDLE, user.getHandle(), out);
-                    insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.EMAIL, "test@test.com", out);
+                    if (user != null) {
+                        insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.EXTERNAL_REFERENCE_ID,
+                                                String.valueOf(user.getUserId()), out);
+                        insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.HANDLE, user.getHandle(), out);
+                        insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.EMAIL, "test@test.com", out);
+                    }
                 }
                 insertSingleResourceInfo(resource.getResourceId(), ResourceInfoType.RATING,
                                          toString(resource.getRating()), out);
@@ -1012,6 +1054,23 @@ public class TestDataSQLConverter {
                         out.println(sql);
                     }
                 }
+
+                Submission[] mileStoneSubmissions = resource.getMilestoneSubmissions();
+                if (mileStoneSubmissions != null) {
+                    for (Submission milestoneSubmission : mileStoneSubmissions) {
+                        Upload upload = milestoneSubmission.getUpload();
+                        String sql = MessageFormat.format(SQL_TEMPLATE,
+                                                          String.valueOf(upload.getUploadId()),
+                                                          String.valueOf(contest.getProjectId()),
+                                                          String.valueOf(resource.getResourceId()),
+                                                          String.valueOf(upload.getType().getUploadTypeId()),
+                                                          String.valueOf(upload.getStatus().getUploadStatusId()),
+                                                          sqlString(upload.getParameter()),
+                                                          String.valueOf(resource.getUser().getUserId()),
+                                                          toString(upload.getCreationTimestamp()));
+                        out.println(sql);
+                    }
+                }
             }
         }
     }
@@ -1022,57 +1081,15 @@ public class TestDataSQLConverter {
      *
      * @param contest a <code>Project</code> providing the specification of the project to generate SQL statements for.
      * @param out a <code>PrintWriter</code> to write the generated SQL statements to.
+     * @param submissionDeclarationsOut a <code>PrintWriter</code> to write the generated SQL statements to.
      */
-    private void insertSubmissions(Project contest, PrintWriter out) {
+    private void insertSubmissions(Project contest, PrintWriter out, PrintWriter submissionDeclarationsOut) 
+        throws IOException {
         List<Resource> resources = contest.getResources();
         if (resources != null) {
-            final String SQL_TEMPLATE
-                = "INSERT INTO submission (submission_id, upload_id, submission_status_id, screening_score, " +
-                  "initial_score, final_score, placement, submission_type_id, " +
-                  "create_user, create_date, modify_user, modify_date) " +
-                  "VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, CURRENT, {8}, CURRENT);";
-            final String SQL_TEMPLATE2
-                = "INSERT INTO resource_submission (resource_id, submission_id, " +
-                  "create_user, create_date, modify_user, modify_date) " +
-                  "VALUES ({0}, {1}, {2}, CURRENT, {2}, CURRENT);";
-            final String SQL_TEMPLATE3
-                = "INSERT INTO screening_task (screening_task_id, upload_id, screening_status_id, screener_id, " +
-                  "start_timestamp, create_user, create_date, modify_user, modify_date) " +
-                  "VALUES ({0}, {1}, {2}, {3}, {4}, {5}, CURRENT, {5}, CURRENT);";
             for (Resource resource : resources) {
-                Submission[] submissions = resource.getSubmissions();
-                if (submissions != null) {
-                    for (Submission submission : submissions) {
-                        String sql = MessageFormat.format(SQL_TEMPLATE,
-                                                          String.valueOf(submission.getSubmissionId()),
-                                                          String.valueOf(submission.getUpload().getUploadId()),
-                                                          String
-                                                              .valueOf(submission.getStatus().getSubmissionStatusId()),
-                                                          toString(submission.getScreeningScore()),
-                                                          toString(submission.getInitialScore()),
-                                                          toString(submission.getFinalScore()),
-                                                          toString(submission.getPlacement()),
-                                                          String.valueOf(submission.getType().getSubmissionTypeId()),
-                                                          String.valueOf(resource.getUser().getUserId()));
-                        out.println(sql);
-                        sql = MessageFormat.format(SQL_TEMPLATE2,
-                                                   String.valueOf(resource.getResourceId()),
-                                                   String.valueOf(submission.getSubmissionId()),
-                                                   String.valueOf(resource.getUser().getUserId()));
-                        out.println(sql);
-                        ScreeningTask screeningTask = submission.getScreeningTask();
-                        if (screeningTask != null) {
-                            sql = MessageFormat.format(SQL_TEMPLATE3,
-                                                       String.valueOf(screeningTask.getScreeningTaskId()),
-                                                       String.valueOf(screeningTask.getUploadId()),
-                                                       String.valueOf(screeningTask.getStatus().getScreeningStatusId()),
-                                                       toString(screeningTask.getScreenerId()),
-                                                       toString(screeningTask.getStartTimestamp()),
-                                                       String.valueOf(resource.getUser().getUserId()));
-                            out.println(sql);
-                        }
-                    }
-                }
+                insertSubmissionsData(out, submissionDeclarationsOut, resource, resource.getSubmissions());
+                insertSubmissionsData(out, submissionDeclarationsOut, resource, resource.getMilestoneSubmissions());
             }
         }
     }
@@ -1167,6 +1184,167 @@ public class TestDataSQLConverter {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * <p>Generates the SQL statements for inserting the test data into database 
+     * <code>project_studio_specification</code> table to represent specified project and outputs them to specified 
+     * destination.</p>
+     *
+     * @param contest a <code>Project</code> providing the specification of the project to generate SQL statements for.
+     * @param out a <code>PrintWriter</code> to write the generated SQL statements to.
+     */
+    private void insertStudioSpecification(Project contest, PrintWriter out) {
+        StudioProjectConfig studioSpecification = contest.getStudioSpecification();
+        if (studioSpecification != null) {
+                final String SQL_TEMPLATE
+                    = "INSERT INTO project_studio_specification " +
+                      "(project_studio_spec_id, goals, target_audience, branding_guidelines, " +
+                      "disliked_design_websites, other_instructions, winning_criteria, " +
+                      "submitters_locked_between_rounds, round_one_introduction, " +
+                      "round_two_introduction, colors, fonts, layout_and_size, contest_introduction, " +
+                      "contest_description, content_requirements, general_feedback, create_user, create_date, " +
+                      "modify_user, modify_date) " +
+                      "VALUES ({0}, ''{1}'', ''{2}'', ''{3}'', ''{4}'', ''{5}'', ''{6}'', ''{7}'', ''{8}'', ''{9}''," +
+                      " ''{10}'', ''{11}'', ''{12}'', ''{13}'', ''{14}'', ''{15}'', ''{16}'', " +
+                      "{17}, CURRENT, {18}, CURRENT);";
+            String sql = MessageFormat.format(SQL_TEMPLATE,
+                                              String.valueOf(studioSpecification.getStudioSpecificationId()),
+                                              String.valueOf(studioSpecification.getGoals()),
+                                              String.valueOf(studioSpecification.getTargetAudience()),
+                                              String.valueOf(studioSpecification.getBrandingGuidelines()),
+                                              String.valueOf(studioSpecification.getDislikedDesignWebsites()),
+                                              String.valueOf(studioSpecification.getOtherInstructions()),
+                                              String.valueOf(studioSpecification.getWinningCriteria()),
+                                              studioSpecification.getSubmittersLockedBetweenRounds() ? "t" : "f",
+                                              String.valueOf(studioSpecification.getRound1Introduction()),
+                                              String.valueOf(studioSpecification.getRound2Introduction()),
+                                              String.valueOf(studioSpecification.getColors()),
+                                              String.valueOf(studioSpecification.getFonts()),
+                                              String.valueOf(studioSpecification.getLayoutAndSize()),
+                                              String.valueOf(studioSpecification.getContestIntroduction()),
+                                              String.valueOf(studioSpecification.getContestDescription()),
+                                              String.valueOf(studioSpecification.getContentRequirements()),
+                                              String.valueOf(studioSpecification.getGeneralFeedback()),
+                                              DEFAULT_PROJECT_AUTHOR, DEFAULT_PROJECT_AUTHOR);
+            out.println(sql);
+        }
+    }
+
+    /**
+     * <p>Generates the SQL statements for inserting the test data into database <code>project_file_type_xref</code> 
+     * table to represent specified project and outputs them to specified destination.</p>
+     *
+     * @param contest a <code>Project</code> providing the specification of the project to generate SQL statements for.
+     * @param out a <code>PrintWriter</code> to write the generated SQL statements to.
+     */
+    private void insertFileTypes(Project contest, PrintWriter out) {
+        List<FileType> fileTypes = contest.getFileTypes();
+        if (fileTypes != null) {
+            final String SQL_TEMPLATE
+                = "INSERT INTO project_file_type_xref (project_id, file_type_id) VALUES ({0}, {1});";
+            for (FileType fileType : fileTypes) {
+                String sql = MessageFormat.format(SQL_TEMPLATE,
+                                                  String.valueOf(contest.getProjectId()),
+                                                  String.valueOf(fileType.getFileTypeId()));
+                out.println(sql);
+            }
+        }
+    }
+
+    /**
+     * <p>Generates the SQL statements for inserting the test data into database <code>prize</code>,
+     * <code>project_prize_xref</code> tables to represent specified project and outputs them to specified destination.
+     * </p>
+     *
+     * @param contest a <code>Project</code> providing the specification of the project to generate SQL statements for.
+     * @param out a <code>PrintWriter</code> to write the generated SQL statements to.
+     */
+    private void insertPrizes(Project contest, PrintWriter out) {
+        List<Prize> prizes = contest.getPrizes();
+        if (prizes != null) {
+            final String SQL_TEMPLATE1
+                = "INSERT INTO prize (prize_id, place, prize_amount, prize_type_id, number_of_submissions, " +
+                  "                   create_user, create_date, modify_user, modify_date) " +
+                  "VALUES ({0}, {1}, {2}, {3}, {4}, {5}, CURRENT, {6}, CURRENT);";
+            for (Prize prize : prizes) {
+                String sql = MessageFormat.format(SQL_TEMPLATE1,
+                                                  String.valueOf(prize.getPrizeId()),
+                                                  String.valueOf(prize.getPlacement()),
+                                                  String.valueOf(prize.getAmount()),
+                                                  String.valueOf(prize.getType().getPrizeTypeId()),
+                                                  String.valueOf(prize.getNumberOfSubmissions()), 
+                                                  DEFAULT_PROJECT_AUTHOR, DEFAULT_PROJECT_AUTHOR);
+                out.println(sql);
+            }
+
+            final String SQL_TEMPLATE2
+                = "INSERT INTO project_prize_xref (project_id, prize_id) VALUES ({0}, {1});";
+            for (Prize prize : prizes) {
+                String sql = MessageFormat.format(SQL_TEMPLATE2,
+                                                  String.valueOf(contest.getProjectId()),
+                                                  String.valueOf(prize.getPrizeId()));
+                out.println(sql);
+            }
+        }
+    }
+
+    private void insertSubmissionsData(PrintWriter out, PrintWriter submissionDeclarationsOut, 
+                                       Resource resource, Submission[] submissions)
+        throws IOException {
+        final String SQL_TEMPLATE
+            = "INSERT INTO submission (submission_id, upload_id, submission_status_id, screening_score, " +
+              "initial_score, final_score, placement, submission_type_id, " +
+              "create_user, create_date, modify_user, modify_date) " +
+              "VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, CURRENT, {8}, CURRENT);";
+        final String SQL_TEMPLATE2
+            = "INSERT INTO resource_submission (resource_id, submission_id, " +
+              "create_user, create_date, modify_user, modify_date) " +
+              "VALUES ({0}, {1}, {2}, CURRENT, {2}, CURRENT);";
+        final String SQL_TEMPLATE3
+            = "INSERT INTO screening_task (screening_task_id, upload_id, screening_status_id, screener_id, " +
+              "start_timestamp, create_user, create_date, modify_user, modify_date) " +
+              "VALUES ({0}, {1}, {2}, {3}, {4}, {5}, CURRENT, {5}, CURRENT);";
+
+        if (submissions != null) {
+            for (Submission submission : submissions) {
+                String sql = MessageFormat.format(SQL_TEMPLATE,
+                                                  String.valueOf(submission.getSubmissionId()),
+                                                  String.valueOf(submission.getUpload().getUploadId()),
+                                                  String
+                                                      .valueOf(submission.getStatus().getSubmissionStatusId()),
+                                                  toString(submission.getScreeningScore()),
+                                                  toString(submission.getInitialScore()),
+                                                  toString(submission.getFinalScore()),
+                                                  toString(submission.getPlacement()),
+                                                  String.valueOf(submission.getType().getSubmissionTypeId()),
+                                                  String.valueOf(resource.getUser().getUserId()));
+                out.println(sql);
+                sql = MessageFormat.format(SQL_TEMPLATE2,
+                                           String.valueOf(resource.getResourceId()),
+                                           String.valueOf(submission.getSubmissionId()),
+                                           String.valueOf(resource.getUser().getUserId()));
+                out.println(sql);
+                ScreeningTask screeningTask = submission.getScreeningTask();
+                if (screeningTask != null) {
+                    sql = MessageFormat.format(SQL_TEMPLATE3,
+                                               String.valueOf(screeningTask.getScreeningTaskId()),
+                                               String.valueOf(screeningTask.getUploadId()),
+                                               String.valueOf(screeningTask.getStatus().getScreeningStatusId()),
+                                               toString(screeningTask.getScreenerId()),
+                                               toString(screeningTask.getStartTimestamp()),
+                                               String.valueOf(resource.getUser().getUserId()));
+                    out.println(sql);
+                }
+                SubmissionDeclaration declaration = submission.getDeclaration();
+                if (declaration != null) {
+                    submissionDeclarationsOut.println(declaration.getSubmissionDeclarationId() + "|" 
+                                                      + submission.getSubmissionId() + "|" 
+                                                      + declaration.getComment() + "|" 
+                                                      + (declaration.getHasExternalContent() ? "t" : "f"));
                 }
             }
         }

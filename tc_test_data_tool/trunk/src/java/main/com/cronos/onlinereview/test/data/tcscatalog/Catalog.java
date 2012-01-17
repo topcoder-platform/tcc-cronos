@@ -7,8 +7,15 @@ package com.cronos.onlinereview.test.data.tcscatalog;
  * <p>An enumeration over existing component catalog types. Corresponds to <code>tcs_catalog.catalog</code> database
  * table.</p>
  *
+ * <p>
+ * Version 1.1 (Release Assembly - TopCoder System Test Data Generator Update 1 Assembly 1.0) Change notes:
+ *   <ol>
+ *     <li>Added {@link #NOT_SET} item.</li>
+ *   </ol>
+ * </p>
+ *
  * @author isv
- * @version 1.0
+ * @version 1.1
  */
 public enum Catalog {
 
@@ -34,7 +41,9 @@ public enum Catalog {
 
     JAVASCRIPT(11, "Javascript", 27202913),
 
-    PYTHON(13, "Python", 27355736);
+    PYTHON(13, "Python", 27355736),
+    
+    NOT_SET(12, "Not Set", 27202915);
 
     /**
      * <p>A <code>long</code> providing the ID of this catalog type.</p>

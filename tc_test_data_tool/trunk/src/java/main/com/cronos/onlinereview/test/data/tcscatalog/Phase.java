@@ -307,4 +307,19 @@ public class Phase implements Serializable {
     public void setReviewScorecard(Scorecard reviewScorecard) {
         this.reviewScorecard = reviewScorecard;
     }
+
+    @Override
+    public String toString() {
+        return "Phase{" +
+               "phaseType=" + phaseType +
+               ", phaseStatus=" + phaseStatus +
+               ", scheduledStartTimeOffset=" + scheduledStartTimeOffset +
+               ", scheduledEndTimeOffset=" + scheduledEndTimeOffset +
+               ", fixedStartTimeOffset=" + fixedStartTimeOffset +
+               ", actualStartTimeOffset=" + actualStartTimeOffset +
+               ", actualEndTimeOffset=" + actualEndTimeOffset +
+               ", duration=" + duration +
+               ", phaseId=" + phaseId +
+               '}';
+    }
 }
