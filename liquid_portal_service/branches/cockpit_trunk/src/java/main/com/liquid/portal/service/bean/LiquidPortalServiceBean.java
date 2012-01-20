@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2010 - 2012 TopCoder Inc., All Rights Reserved.
  */
 package com.liquid.portal.service.bean;
 
@@ -30,6 +30,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.topcoder.service.facade.permission.PermissionServiceFacade;
 import org.jboss.ws.annotation.EndpointConfig;
 
 import com.liquid.portal.service.ActionNotPermittedException;
@@ -127,8 +128,14 @@ import com.topcoder.util.log.LogManager;
  * container, it is thread-safe.
  * </p>
  *
+ * <p>
+ *     Version 1.1 (Release Assembly - TC Cockpit Create Project Refactoring Assembly Part One) Update notes:
+ *     <li>Introduce the dependency to Permission Service Facade. All permission related methods calls have been
+ *     moved from contest service facade to permission service facade.</li>
+ * </p>
+ *
  * @author argolite, TCSDEVELOPER
- * @version 1.0
+ * @version 1.1
  */
 @Stateless
 @WebService(endpointInterface = "com.liquid.portal.service.LiquidPortalService")
@@ -218,6 +225,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      */
     @EJB(name = "ejb/PermissionService")
     private PermissionService permissionService = null;
+
+    /**
+     * <p>
+     * A <code>PermissionServiceFacade</code> providing access to available
+     * <code>Permission Service Facade EJB</code>.
+     * </p>
+     *
+     * @since 1.1
+     */
+    @EJB(name = "ejb/PermissionServiceFacadeBean")
+    private PermissionServiceFacade permissionServiceFacade = null;
 
     /**
      * <p>
@@ -1011,6 +1029,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * competitions as needed. Returns the non-null result of the action.
      * </p>
      *
+     * <p>
+     *     Version 1.1 updates: change call of getPermissions and updatePermissions from contest service facade
+     *     to permission service facade.
+     * </p>
+     *
      * @param hasAccountAccess
      *            flag whether the user has account level access
      * @param cockpitProjectNames
@@ -1124,7 +1147,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                             permissions.add(getPermission(userInfo, project, type));
                         } else {
                             // the project is not in the submitted list, remove the user's permission
-                            List<Permission> perms = contestServiceFacade.getPermissions(tcSubject, userInfo.getUserId(), project
+                            List<Permission> perms = permissionServiceFacade.getPermissions(tcSubject, userInfo.getUserId(), project
                                     .getProjectId());
                             for (Permission perm : perms) {
                                 // set PermissionType to null to remove the permission
@@ -1137,7 +1160,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 }
             }
             
-            contestServiceFacade.updatePermissions(tcSubject, permissions.toArray(new Permission[0]));
+            permissionServiceFacade.updatePermissions(tcSubject, permissions.toArray(new Permission[0]));
 
             // get billing projects
             List<Project> billingProjects = billingProjectDAO.getProjectsByClientId(notusClientId);
@@ -1410,7 +1433,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 {
                     for (ProjectData pjj :  tcProjects)
                     {
-                        if (checkPermission(contestServiceFacade
+                        if (checkPermission(permissionServiceFacade
                             .getPermissions(tcSubject, requestorInfo.getUserId(), pjj.getProjectId())))
                         {
                             proj = pjj;
@@ -1425,7 +1448,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
 
             if (proj != null) {
                 // ensure the requestor has the cockpit project permissions
-                if (!checkPermission(contestServiceFacade
+                if (!checkPermission(permissionServiceFacade
                         .getPermissions(tcSubject, requestorInfo.getUserId(), proj.getProjectId()))) {
                     sessionContext.setRollbackOnly();
                     throw logError(new LiquidPortalServiceException(String.format(
@@ -2551,7 +2574,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             // get software competition
             SoftwareCompetition comp = contestServiceFacade.getSoftwareContestByProjectId(tcSubject, contestId);
             // check permission
-            if (!checkPermission(contestServiceFacade.getPermissions(tcSubject, requestorInfo.getUserId(), comp.getProject()
+            if (!checkPermission(permissionServiceFacade.getPermissions(tcSubject, requestorInfo.getUserId(), comp.getProject()
                     .getProjectId()))) {
                 sessionContext.setRollbackOnly();
                 throw logError(new LiquidPortalServiceException(String.format(
@@ -2578,6 +2601,11 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
     /**
      * <p>
      * Removes the user with the given handle.
+     * </p>
+     *
+     * <p>
+     *     Version 1.1 updates: change call of getPermissions and updatePermissions from contest service facade
+     *     to permission service facade.
      * </p>
      *
      * @param requestorHandle
@@ -2642,7 +2670,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
             List<Permission> permList = new ArrayList<Permission>();
             for (ProjectData proj : cockpitProjects) {
                 // get all the permissions that the user own for a given project
-                List<Permission> permissions = contestServiceFacade.getPermissions(tcSubject, userInfo.getUserId(), proj
+                List<Permission> permissions = permissionServiceFacade.getPermissions(tcSubject, userInfo.getUserId(), proj
                         .getProjectId());
                 for (Permission perm : permissions) {
                     // set PermissionType to null to remove the premission
@@ -2652,7 +2680,7 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
                 permList.addAll(permissions);
             }
             // remove permissions for userHandle
-            contestServiceFacade.updatePermissions(tcSubject, permList.toArray(new Permission[0]));
+            permissionServiceFacade.updatePermissions(tcSubject, permList.toArray(new Permission[0]));
 
             // get billing projects
             List<Project> billingProjects = billingProjectDAO.getProjectsByClientId(notusClientId);
@@ -3564,13 +3592,17 @@ public class LiquidPortalServiceBean implements LiquidPortalServiceLocal, Liquid
      * to the warning list.
      * </p>
      *
+     * <p>
+     *     Version 1.1 updates: change call of updatePermissions from contest service facade
+     *     to permission service facade.
+     * </p>
      * @param permission the Permission needed to be updated
      * @param userInfo the user info
      * @param warnings the warning list
      */
     private void updatePermission(TCSubject tcSubject, Permission permission, UserInfo userInfo, List<Warning> warnings) {
         try {
-            contestServiceFacade.updatePermissions(tcSubject, new Permission[] { permission });
+            permissionServiceFacade.updatePermissions(tcSubject, new Permission[] { permission });
         } catch (PermissionServiceException e) {
             warnings.add(getWarning(String.format("Failed to assign permission to user <{0}>",
                     userInfo.getHandle()), LiquidPortalServiceException.EC_FAIL_TO_ASSIGN_PERMISSION, e));

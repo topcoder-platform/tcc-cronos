@@ -13,6 +13,11 @@
                <ejb-ref-name>ejb/PermissionService</ejb-ref-name>
                 <jndi-name>PermissionServiceBean/remote</jndi-name>
        </ejb-ref>
+       <ejb-ref>
+               <ejb-ref-name>ejb/PermissionServiceFacadeBean</ejb-ref-name>
+                <jndi-name>PermissionServiceFacadeBean/remote</jndi-name>
+       </ejb-ref>
+       
 
         <port-component>
 				<port-component-name>LiquidPortalServiceBean</port-component-name>

@@ -55,6 +55,11 @@
         	 <ejb-ref-type>Session</ejb-ref-type>
         	 <remote>com.topcoder.service.facade.user.UserServiceFacadeRemote</remote>
        	</ejb-ref>
+        <ejb-ref>
+            <ejb-ref-name>ejb/PermissionServiceFacadeBean</ejb-ref-name>
+            <ejb-ref-type>Session</ejb-ref-type>
+            <remote>com.topcoder.service.facade.permission.ejb.PermissionServiceFacadeRemote</remote>
+        </ejb-ref>
      
     </session>
   </enterprise-beans>
