@@ -7,8 +7,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.topcoder.service.facade.contest.failuretests.FailureTests;
-
 
 /**
  * <p>This test case aggregates all test cases.</p>
@@ -22,7 +20,7 @@ public class AllTests extends TestCase {
 
         //unit tests
         suite.addTest(UnitTests.suite());
-        suite.addTest(FailureTests.suite());
+        // suite.addTest(FailureTests.suite());
         //suite.addTest(AccuracyTests.suite());
         //suite.addTest(StressTests.suite());
 

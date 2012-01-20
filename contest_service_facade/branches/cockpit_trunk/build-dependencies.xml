@@ -135,6 +135,11 @@
     <property name="user_service.path" value="user_service/${user_service.version}" />
     <property name="user_service.jar" value="${tcs_libdir}/${user_service.path}/${user_service.jar.name}" />
 	
+    <property name="permission_service_facade.version" value="1.0.0" />
+    <property name="permission_service_facade.jar.name" value="permission_service_facade.jar" />
+    <property name="permission_service_facade.path" value="permission_service_facade/${permission_service_facade.version}" />
+    <property name="permission_service_facade.jar" value="${tcs_libdir}/${permission_service_facade.path}/${permission_service_facade.jar.name}" />
+	
     <property name="cockpit_facade_util.version" value="1.0.0" />
     <property name="cockpit_facade_util.jar.name" value="cockpit_facade_util.jar" />
     <property name="cockpit_facade_util.path" value="cockpit_facade_util/${cockpit_facade_util.version}" />
@@ -288,6 +293,7 @@
         <pathelement location="${User.jar}"/>
         <pathelement location="${Project.jar}"/>
         <pathelement location="${user_service.jar}" />
+        <pathelement location="${permission_service_facade.jar}" />
 		<pathelement location="${cockpit_facade_util.jar}" />		
         
         <pathelement location="${shared.jar}"/>

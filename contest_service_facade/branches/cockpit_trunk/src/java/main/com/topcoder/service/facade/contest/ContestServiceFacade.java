@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2012 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 
@@ -28,12 +28,8 @@ import com.topcoder.search.builder.SearchBuilderException;
 import com.topcoder.security.TCSubject;
 import com.topcoder.service.facade.contest.notification.ProjectNotification;
 import com.topcoder.service.payment.CreditCardPaymentData;
-import com.topcoder.service.payment.PaymentException;
-import com.topcoder.service.payment.PaymentResult;
 import com.topcoder.service.payment.TCPurhcaseOrderPaymentData;
-import com.topcoder.service.permission.Permission;
 import com.topcoder.service.permission.PermissionServiceException;
-import com.topcoder.service.permission.PermissionType;
 import com.topcoder.service.permission.ProjectPermission;
 import com.topcoder.service.project.SoftwareCompetition;
 import com.topcoder.service.specreview.SpecReview;
@@ -184,7 +180,12 @@ import com.topcoder.service.user.Registrant;
  *   </ol>
  * </p>
  *
- * @author pulky, murphydog, waits, BeBetter, hohosky, isv, lmmortal
+ * <p>
+ * Version 1.7.0 (Release Assembly - TC Cockpit Create Project Refactoring Assembly Part One) change notes:
+ *      Refactor all the permission related API to Permission Service Facade.
+ * </p>
+ *
+ * @author pulky, murphydog, waits, BeBetter, hohosky, isv, lmmortal, TCSDEVELOPER
  * @version 1.6.8
  */
 public interface ContestServiceFacade {
@@ -201,7 +202,7 @@ public interface ContestServiceFacade {
      *
      * @return a <code>List</code> listing all existing contests. Empty list is
      *         returned if there are no contests found.
-     * @throws PersistenceException
+     * @throws ContestServiceException
      *             if any error occurs when getting contest.
      */
     public List<CommonProjectContestData> getCommonProjectContestData(TCSubject tcSubject)
@@ -218,150 +219,6 @@ public interface ContestServiceFacade {
      * @since 1.6
      */
     public List<ProjectSummaryData> getProjectData(TCSubject tcSubject) throws ContestServiceException;
-
-    /**
-     * <p>
-     * This method retrieve all the permissions that the user owned for any
-     * projects. Returns empty list if no permission found.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     *
-     * @param userid
-     *            user id to look for
-     *
-     * @return all the permissions that the user owned for any projects.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permissions.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public List<Permission> getPermissionsByUser(TCSubject tcSubject,long userid)
-        throws PermissionServiceException;
-
-    /**
-     * <p>
-     * This method retrieve all the permissions that various users own for a
-     * given project. Returns empty list if no permission found.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     *
-     * @param projectid
-     *            project id to look for
-     *
-     * @return all the permissions that various users own for a given project.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permissions.
-     *
-     * @since Cockpit Share Submission Integration
-     */
-    public List<Permission> getPermissionsByProject(TCSubject tcSubject,long projectid)
-        throws PermissionServiceException;
-
-    /**
-     * <p>
-     * This method retrieve all the permissions that the user own for a given
-     * project. Returns empty list if no permission found.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     *
-     * @param userid
-     *            user id to look for
-     * @param projectid
-     *            project id to look for
-     *
-     * @return all the permissions that the user own for a given project.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permissions.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public List<Permission> getPermissions(TCSubject tcSubject,long userid, long projectid)
-        throws PermissionServiceException;
-
-    /**
-     * <p>
-     * This method retrieve all the permission types.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     *
-     * @return all the permission types.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when getting permission types.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public List<PermissionType> getAllPermissionType(TCSubject tcSubject)
-        throws PermissionServiceException;
-
-    /**
-     * <p>
-     * This method will add a permission type, and return the added type entity.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     *
-     * @param type
-     *            the permission type to add.
-     *
-     * @return the added permission type entity
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when adding the permission type.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public PermissionType addPermissionType(TCSubject tcSubject,PermissionType type)
-        throws PermissionServiceException;
-
-    /**
-     * <p>
-     * This method will update permission type data.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     *
-     * @param type
-     *            the permission type to update.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when updating the permission type.
-     *
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public void updatePermissionType(TCSubject tcSubject,PermissionType type)
-        throws PermissionServiceException;
 
     /**
      * <p>
@@ -912,29 +769,6 @@ public interface ContestServiceFacade {
         throws ContestServiceException;
     
     /**
-     * <p>
-     * This method updates array of permissions to the persistence.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     *
-     * @param permissions
-     *            the permissions to update.
-     *
-     * @throws IllegalArgumentWSException
-     *             if the argument is invalid
-     * @throws PermissionServiceException
-     *             if any error occurs when updating the permission.
-     *
-     * @since Cockpit Project Admin Release Assembly.
-     */
-    public void updatePermissions(TCSubject tcSubject,Permission[] permissions)
-        throws PermissionServiceException;
-
-	 
-    /**
      * Gets all contest fees by billing project id.
      * <p>
      * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
@@ -1329,31 +1163,6 @@ public interface ContestServiceFacade {
     public List<Registrant> getRegistrantsForProject(TCSubject tcSubject, long ProjectId)
             throws ContestServiceException;
 
-    /**
-     * <p>Gets the permissions set for projects which specified user has <code>Full Access</code> permission set for.
-     * </p>
-     *
-     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
-     * @return a <code>List</code> listing the project permissions set for projects which specified user has <code>Full
-     *         Access</code> permission set for.
-     * @throws PermissionServiceException if an unexpected error occurs.
-     * @since 1.6.2
-     */
-    public List<ProjectPermission> getProjectPermissions(TCSubject tcSubject)
-        throws PermissionServiceException;
-
-    /**
-     * <p>Updates the permissions for specified user for accessing the projects.</p>
-     *
-     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
-     * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
-     *        projects.
-     * @param role the role id to add
-     * @throws PermissionServiceException if an unexpected error occurs.
-     * @since 1.6.2
-     */
-    public void updateProjectPermissions(TCSubject tcSubject, List<ProjectPermission> projectPermissions, long role)
-        throws PermissionServiceException;
     
     /**
      * Adds the given user as a new reviewer to the given project id.

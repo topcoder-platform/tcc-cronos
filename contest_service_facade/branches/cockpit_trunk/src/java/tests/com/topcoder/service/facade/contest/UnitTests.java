@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2008 - 2012 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 

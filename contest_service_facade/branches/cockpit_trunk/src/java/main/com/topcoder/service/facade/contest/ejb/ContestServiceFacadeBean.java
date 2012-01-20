@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009-2011 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009-2012 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest.ejb;
 
@@ -41,6 +41,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.topcoder.service.facade.permission.PermissionServiceFacade;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.jboss.logging.Logger;
@@ -123,7 +124,6 @@ import com.topcoder.service.contest.eligibility.dao.ContestEligibilityPersistenc
 import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManager;
 import com.topcoder.service.contest.eligibilityvalidation.ContestEligibilityValidationManagerException;
 import com.topcoder.service.facade.contest.CommonProjectContestData;
-import com.topcoder.service.facade.contest.CommonProjectPermissionData;
 import com.topcoder.service.facade.contest.ContestServiceException;
 import com.topcoder.service.facade.contest.ContestServiceFacade;
 import com.topcoder.service.facade.contest.ProjectStatusData;
@@ -430,8 +430,16 @@ import com.topcoder.shared.util.DBMS;
  *   </ol>
  * </p>
  * 
- * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, GreatKevin, lmmortal
- * @version 1.7.5
+ * <p>
+ * Version 1.8.0 (Release Assembly - TC Cockpit Create Project Refactoring Assembly Part One) Change notes:
+ *    <ul>
+ *        <li>Refactor all the permission related methods to permission service facade</li>
+ *        <li>Change the invokes of permission related methods to call permission service facade</li>
+ *    </ul>
+ * </p>
+ * 
+ * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, GreatKevin, lmmortal, TCSDEVELOPER
+ * @version 1.8.0
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
@@ -567,13 +575,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * Private constant specifying administrator role.
      */
     private static final String ADMIN_ROLE = "Cockpit Administrator";
-
-    /**
-     * Private constant specifying liquid administrator role.
-     */
-    private static final String LIQUID_ADMIN_ROLE = "Liquid Administrator";
-
-
 
     /**
      * Private constant specifying project submission phase name.
@@ -758,8 +759,18 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     @EJB(name = "ejb/ProjectDAOBean")
     private ProjectDAO billingProjectDAO = null;
 
+    /**
+     * <p>A <code>ProjectService</code> providing access to project service.</p>
+     */
     @EJB(name = "ejb/ProjectService")
     private ProjectService projectService = null;
+
+    /**
+     * <p>A <code>PermissionServiceFacade</code> providing access to permission related methods.</p>
+     * @since 1.8
+     */
+    @EJB(name = "ejb/PermissionServiceFacadeBean")
+    private PermissionServiceFacade permissionServiceFacade = null;
 
     /**
      * Global object factory config manager specification namespace.
@@ -1193,128 +1204,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch(Exception e) {
             throw new ContestServiceException("Fail to get the user-name by user-id" + tcSubject.getUserId(), e);
         }
-    }
-
-    /**
-     * <p>
-     * This method retrieve all the permissions that the user owned for any projects. Returns empty list if no
-     * permission found.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param userid user id to look for
-     * @return all the permissions that the user owned for any projects.
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when getting permissions.
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public List<Permission> getPermissionsByUser(TCSubject tcSubject, long userid) throws PermissionServiceException {
-        logger.debug("getPermissionsByUser");
-
-        return this.permissionService.getPermissionsByUser(userid);
-    }
-
-    /**
-     * <p>
-     * This method retrieve all the permissions that various users own for a given project. Returns empty list if no
-     * permission found.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param projectid project id to look for
-     * @return all the permissions that various users own for a given project.
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when getting permissions.
-     * @since Cockpit Share Submission Integration
-     */
-    public List<Permission> getPermissionsByProject(TCSubject tcSubject, long projectid)
-            throws PermissionServiceException {
-        logger.debug("getPermissionsByProject");
-
-        return this.permissionService.getPermissionsByProject(projectid);
-    }
-
-    /**
-     * <p>
-     * This method retrieve all the permissions that the user own for a given project. Returns empty list if no
-     * permission found.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param userid user id to look for
-     * @param projectid project id to look for
-     * @return all the permissions that the user own for a given project.
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when getting permissions.
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public List<Permission> getPermissions(TCSubject tcSubject, long userid, long projectid)
-            throws PermissionServiceException {
-        logger.debug("getPermissions");
-
-        return this.permissionService.getPermissions(userid, projectid);
-    }
-
-    /**
-     * <p>
-     * This method retrieve all the permission types.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @return all the permission types.
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when getting permission types.
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public List<PermissionType> getAllPermissionType(TCSubject tcSubject) throws PermissionServiceException {
-        logger.debug("getAllPermissionType");
-
-        return this.permissionService.getAllPermissionType();
-    }
-
-    /**
-     * <p>
-     * This method will add a permission type, and return the added type entity.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param type the permission type to add.
-     * @return the added permission type entity
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when adding the permission type.
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public PermissionType addPermissionType(TCSubject tcSubject, PermissionType type) throws PermissionServiceException {
-        return this.permissionService.addPermissionType(type);
-    }
-
-    /**
-     * <p>
-     * This method will update permission type data.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param type the permission type to update.
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when updating the permission type.
-     * @since Module Cockpit Contest Service Enhancement Assembly
-     */
-    public void updatePermissionType(TCSubject tcSubject, PermissionType type) throws PermissionServiceException {
-        logger.debug("updatePermissionType");
-        this.permissionService.updatePermissionType(type);
-        logger.debug("Exit updatePermissionType");
     }
 
     /**
@@ -2686,7 +2575,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
 
         // add users has permission on cockpit project as observers
-        List<Permission> permissions = this.getPermissionsByProject(tcSubject, contest.getProjectHeader().getTcDirectProjectId());
+        List<Permission> permissions = this.permissionService.getPermissionsByProject(contest.getProjectHeader().getTcDirectProjectId());
 
         List<com.topcoder.management.resource.Resource> allResources = new ArrayList<com.topcoder.management.resource.Resource>();
         Set<Long> existingResourceIds = new HashSet<Long>();
@@ -3684,234 +3573,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             sessionContext.setRollbackOnly();
             throw new ContestServiceException("Fail to get project asset.", e);
         }
-    }
-
-    /**
-     * <p>
-     * Gets the list of project and their permissions (including permissions for the parent tc project)
-     * </p>
-     * <p>
-     * Updated for Cockpit Project Admin Release Assembly v1.0 - software projects also included.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param createdUser user for which to get the permissions
-     * @return list of project and their permissions.
-     * @since TCCC-1329
-     */
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<CommonProjectPermissionData> getCommonProjectPermissionDataForUser(TCSubject tcSubject, long createdUser) {
-        logger.debug("getCommonProjectPermissionDataForUser (tcSubject = " + tcSubject.getUserId() + ", " + createdUser + ")");
-
-        List<com.topcoder.management.project.SimpleProjectPermissionData> softwarePermissions =
-            projectServices.getSimpleProjectPermissionDataForUser(tcSubject, createdUser);
-
-        List<CommonProjectPermissionData> ret = new ArrayList<CommonProjectPermissionData>();
-
-        for (com.topcoder.management.project.SimpleProjectPermissionData data : softwarePermissions) {
-            CommonProjectPermissionData newdata = new CommonProjectPermissionData();
-            newdata.setContestId(data.getContestId());
-            newdata.setProjectId(data.getProjectId());
-            newdata.setCfull(data.getCfull());
-            newdata.setCname(data.getCname());
-            newdata.setCread(data.getCread());
-            newdata.setCwrite(data.getCwrite());
-            newdata.setPfull(data.getPfull());
-            newdata.setPname(data.getPname());
-            newdata.setPread(data.getPread());
-            newdata.setPwrite(data.getPwrite());
-            newdata.setStudio(data.isStudio());
-            ret.add(newdata);
-        }
-
-        logger.debug("Exit getCommonProjectPermissionDataForUser (" +
-            createdUser + ")");
-
-        return ret;
-    }
-
-    /**
-     * <p>
-     * This method updates array of permissions to the persistence.
-     * </p>
-     * <p>
-     * Update in v1.5.1: add parameter TCSubject which contains the security info for current user.
-     * </p>
-     * @param tcSubject TCSubject instance contains the login security info for the current user
-     * @param permissions the permissions to update.
-     * @throws IllegalArgumentWSException if the argument is invalid
-     * @throws PermissionServiceException if any error occurs when updating the permission.
-     * @since Cockpit Project Admin Release Assembly.
-     */
-    public void updatePermissions(TCSubject tcSubject, Permission[] permissions) throws PermissionServiceException {
-        logger.debug("updatePermissions");
-
-        try
-        {
-            if (!isRole(tcSubject, ADMIN_ROLE) && !isRole(tcSubject, LIQUID_ADMIN_ROLE)) {
-                long userId = tcSubject.getUserId();
-
-                List<CommonProjectPermissionData> userPermissions =
-                    getCommonProjectPermissionDataForUser(tcSubject, userId);
-
-                for (Permission p : permissions)
-                {
-                    boolean hasFullPermission = false;
-
-                    for (CommonProjectPermissionData data :  userPermissions)
-                    {
-
-                        if (p.getResourceId().longValue() == data.getProjectId())
-                        {
-                            if (data.getPfull() > 0)
-                            {
-                                hasFullPermission = true;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            if (p.getResourceId().longValue() == data.getContestId() && (p.isStudio() == data.isStudio()))
-                            {
-                                if (data.getPfull() > 0 || data.getCfull() > 0)
-                                {
-                                    hasFullPermission = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if (!hasFullPermission)
-                    {
-                        throw new PermissionServiceException("No full permission on resource "+p.getResourceId());
-                    }
-                }
-           }
-
-            // when add/remove permission, we need to add/remvoe observer
-            for (Permission per : permissions) {
-                // if add permission
-                if ((per.getPermissionId() == null || per.getPermissionId() <= 0)
-                      && per.getPermissionType() != null && per.getPermissionType().getName() != null
-                      && !per.getPermissionType().getName().equals(""))
-                {
-
-                    List<Long> projectIds = new ArrayList<Long>();
-
-                    // if permission is project, get its OR projects
-                    if (per.getPermissionType().getPermissionTypeId() >= PermissionType.PERMISSION_TYPE_PROJECT_READ
-                         && per.getPermissionType().getPermissionTypeId() <= PermissionType.PERMISSION_TYPE_PROJECT_FULL)
-                    {
-                        projectIds = projectServices.getProjectIdByTcDirectProject(per.getResourceId());
-                    }
-                    else if (!per.isStudio())
-                    {
-                        projectIds.add(per.getResourceId());
-                    }
-
-                    if (projectIds != null && projectIds.size() >0)
-                    {
-                        // for each OR project, find all observers
-                        for (Long pid : projectIds)
-                        {
-                            // delegate to new method added in BUGR-3731
-                            this.assginRole(tcSubject, pid.longValue(), ResourceRole.RESOURCE_ROLE_OBSERVER_ID, per.getUserId().longValue());
-
-                        }
-
-                    }
-
-
-                }
-                // if remove permission, we need to remove observer
-                else if (per.getPermissionType() == null || per.getPermissionType().getName() == null
-                                          || per.getPermissionType().getName().equals(""))
-                {
-
-                    List<Permission> ps = this.getPermissions(tcSubject, per.getUserId(), per.getResourceId());
-                    Permission toDelete = null;
-                    if (ps != null && ps.size() > 0)
-                    {
-                        toDelete = ps.get(0);
-                    }
-
-                    if (toDelete != null)
-                    {
-                        List<Long> projectIds = new ArrayList<Long>();
-                        boolean isTCProject = false;
-
-                        // if permission is project, get its OR projects
-                        if (toDelete.getPermissionType().getPermissionTypeId() >= PermissionType.PERMISSION_TYPE_PROJECT_READ
-                             && toDelete.getPermissionType().getPermissionTypeId() <= PermissionType.PERMISSION_TYPE_PROJECT_FULL)
-                        {
-                            projectIds = projectServices.getProjectIdByTcDirectProject(per.getResourceId());
-                            isTCProject = true;
-                        }
-                        else if (!toDelete.isStudio())
-                        {
-                            projectIds.add(per.getResourceId());
-                        }
-
-                        if (projectIds != null && projectIds.size() >0)
-                        {
-                            for (Long pid : projectIds)
-                            {
-                                // if we are removing project permission but user still has contest permission,
-                                // or if we are removing contest permission but user still has project permission
-                                // we will not remove observer
-                                if ((!projectServices.hasContestPermission(pid, toDelete.getUserId()) && isTCProject)
-                                     || (!projectServices.checkProjectPermission(projectServices.getTcDirectProject(pid), true, toDelete.getUserId()) && !isTCProject))
-                                {
-                                    com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(pid, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
-
-                                    com.topcoder.management.resource.Resource delRes = null;
-
-                                    // check if user is already a observer
-                                    if (resources != null && resources.length > 0)
-                                    {
-                                        for (com.topcoder.management.resource.Resource resource : resources )
-                                        {
-                                            if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
-                                                 && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID).equals(String.valueOf(toDelete.getUserId())))
-                                            {
-                                                delRes = resource;
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                    if (delRes != null)
-                                    {
-                                        projectServices.removeResource(delRes, String.valueOf(tcSubject.getUserId()));
-                                        projectServices.removeNotifications(delRes.getId(), new long[]{pid.longValue()}, String.valueOf(delRes.getId()));
-                                    }
-
-                                    // delete forum watch
-                                    long forumId = projectServices.getForumId(pid);
-                                    if (forumId > 0 && createForum && !per.isStudio())
-                                    {
-                                        deleteSoftwareForumWatchAndRole(forumId, per.getUserId());
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            this.permissionService.updatePermissions(permissions);
-        }
-        catch (ContestServiceException e)
-        {
-            sessionContext.setRollbackOnly();
-            throw new PermissionServiceException(e.getMessage(), e);
-        }
-
-        logger.debug("Exit updatePermissions");
     }
 
     /**
@@ -5834,182 +5495,6 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     }
 
     /**
-     * <p>Gets the permissions set for projects which specified user has <code>Full Access</code> permission set for.
-     * </p>
-     *
-     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
-     * @return a <code>List</code> listing the project permissions set for projects which specified user has <code>Full
-     *         Access</code> permission set for.
-     * @throws PermissionServiceException if an unexpected error occurs.
-     * @since 1.6.2
-     */
-    public List<ProjectPermission> getProjectPermissions(TCSubject tcSubject)
-        throws PermissionServiceException {
-        logger.debug("getProjectPermissions(" + tcSubject + ")");
-        return this.permissionService.getProjectPermissions(tcSubject.getUserId());
-    }
-
-    /**
-     * <p>Updates the permissions for specified user for accessing the projects.</p>
-     *
-     * @param tcSubject a <code>TCSubject</code> instance contains the login security info for the current user.
-     * @param projectPermissions a <code>List</code> listing the permissions to be set for specified user for accessing
-     *        projects.
-     * @param role the role id to add
-     * @throws PermissionServiceException if an unexpected error occurs.
-     * @since 1.6.2
-     */
-     public void updateProjectPermissions(TCSubject tcSubject,
-            List<ProjectPermission> projectPermissions, long role)
-            throws PermissionServiceException {
-        logger.debug("contest service facade bean #updateProjectPermissions("
-                + tcSubject + ", " + projectPermissions + ", " + role + ")");
-
-        try {
-            if (!isRole(tcSubject, ADMIN_ROLE)
-                    && !isRole(tcSubject, LIQUID_ADMIN_ROLE)) {
-                // retrieve full access project id set
-                Set<Long> fullAccessProjectIds = new HashSet<Long>();
-                List<ProjectPermission> allPermissions = getProjectPermissions(tcSubject);
-                for (ProjectPermission permission : allPermissions) {
-                    if (permission.getUserId() == tcSubject.getUserId()
-                            && "full".equals(permission.getPermission())) {
-                        fullAccessProjectIds.add(permission.getProjectId());
-                    }
-                }
-
-                // check permissions
-                for (ProjectPermission permission : projectPermissions) {
-                    if (!fullAccessProjectIds.contains(permission
-                            .getProjectId())) {
-                        throw new PermissionServiceException("User "
-                                + tcSubject.getUserId()
-                                + " is not granted FULL permission for "
-                                + "project " + permission.getProjectId());
-                    }
-                }
-            }
-
-            // when add/remove permission, we need to add/remove observer
-            for (ProjectPermission permission : projectPermissions) {
-                // add permission
-                if (permission.getUserPermissionId() < 0
-                        && permission.getPermission() != null
-                        && permission.getPermission().length() > 0) {
-                    
-                    boolean addNotification;
-                    boolean addForumWatch;
-                    
-                    List<Integer> preferenceIds = new ArrayList<Integer>();
-                    // notification preference
-                    preferenceIds.add(GLOBAL_TIMELINE_NOTIFICATION);
-                    // forum preference
-                    preferenceIds.add(GLOBAL_FORUM_WATCH);
-                    
-                    Map<Integer, String> preferences = getUserPreferenceMaps(permission.getUserId(), preferenceIds);
-                    
-                    addNotification = Boolean.parseBoolean(preferences.get(GLOBAL_TIMELINE_NOTIFICATION));
-                    addForumWatch = Boolean.parseBoolean(preferences.get(GLOBAL_FORUM_WATCH));
-                    
-                    // grant user to project level forum 
-                    ProjectData cockpitProj = projectService.getProject(tcSubject, permission.getProjectId());
-                    if (cockpitProj.getForumCategoryId() != null && !cockpitProj.getForumCategoryId().equals(""))
-                    {
-                        Long projForumId = Long.parseLong(cockpitProj.getForumCategoryId());
-                         createSoftwareForumWatchAndRole(projForumId, permission.getUserId(), addForumWatch);
-
-                    }
-                    List<Long> projectIds = projectServices
-                            .getProjectIdByTcDirectProject(permission
-                                    .getProjectId());
-
-                    // for each OR project, find all observers
-                    for (Long pid : projectIds) {
-                        this.assignRole(tcSubject, pid.longValue(), role,
-                                permission.getUserId(), null, addNotification,
-                                addForumWatch, permission.getStudio(), true);
-                    }
-                } else if (permission.getPermission() == null
-                        || "".equals(permission.getPermission())) {
-                    List<Permission> ps = getPermissions(tcSubject, permission
-                            .getUserId(), permission.getProjectId());
-                    Permission toDelete = null;
-                    if (ps != null && ps.size() > 0) {
-                        toDelete = ps.get(0);
-                    }
-
-                    if (toDelete != null) {
-
-                        // remove user to project level forum 
-                        ProjectData cockpitProj = projectService.getProject(tcSubject, permission.getProjectId());
-                        if (cockpitProj.getForumCategoryId() != null && !cockpitProj.getForumCategoryId().equals(""))
-                        {
-                            Long projForumId = Long.parseLong(cockpitProj.getForumCategoryId());
-                            deleteSoftwareForumWatchAndRole(projForumId, permission.getUserId());
-
-                        }
-
-                        List<Long> projectIds = projectServices
-                                .getProjectIdByTcDirectProject(permission
-                                        .getProjectId());
-
-                        for (Long pid : projectIds) {
-                            // if we are removing project permission but user
-                            // still has contest permission,
-                            // we will not remove observer
-                            if ((!projectServices.hasContestPermission(pid,
-                                    toDelete.getUserId()))) {
-                                com.topcoder.management.resource.Resource[] resources = projectServices
-                                        .searchResources(pid, role);
-
-                                com.topcoder.management.resource.Resource delRes = null;
-
-                                // check if user is already a observer
-                                if (resources != null && resources.length > 0) {
-                                    for (com.topcoder.management.resource.Resource resource : resources) {
-                                        if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
-                                                && resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)
-                                                        .equals(String.valueOf(toDelete.getUserId()))) {
-                                            delRes = resource;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (delRes != null) {
-                                    projectServices.removeResource(delRes,
-                                            String.valueOf(tcSubject.getUserId()));
-                                    projectServices.removeNotifications(toDelete.getUserId(), new long[] { pid
-                                            .longValue() }, String.valueOf(tcSubject.getUserId()));
-                                }
-
-                                // delete forum watch
-                                long forumId = projectServices.getForumId(pid);
-                                if (forumId > 0 && createForum && !permission.getStudio()) {
-                                    deleteSoftwareForumWatchAndRole(forumId, permission
-                                            .getUserId());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // update project permissions
-            this.permissionService.updateProjectPermissions(projectPermissions,
-                    tcSubject.getUserId());
-        } catch (ContestServiceException e) {
-            sessionContext.setRollbackOnly();
-            throw new PermissionServiceException(e.getMessage(), e);
-        } catch (Exception e) {
-            sessionContext.setRollbackOnly();
-            throw new PermissionServiceException(e.getMessage(), e);
-        }  
-
-        logger.debug("Exit updateProjectPermissions");
-    }
-
-    /**
      * Adds the given user as a new reviewer to the given project id.
      *
      * @param tcSubject TCSubject instance contains the login security info for the current user.
@@ -6248,7 +5733,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 // update project permissions
                 List<ProjectPermission> permissionsToAdd = new ArrayList<ProjectPermission>();
                 permissionsToAdd.add(permission);
-                updateProjectPermissions(currentUser,
+                permissionServiceFacade.updateProjectPermissions(currentUser,
                         permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);                
             }
 
@@ -6433,7 +5918,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
             // update project permissions
-            updateProjectPermissions(currentUser,
+            permissionServiceFacade.updateProjectPermissions(currentUser,
                     permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
             
             return copilotProjects;
@@ -6678,7 +6163,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private Map<Long, Map<Long, Long>> getUserPermissionMaps(
             TCSubject currentUser) throws PermissionServiceException {
-        List<ProjectPermission> permissions = getProjectPermissions(currentUser);
+        List<ProjectPermission> permissions = this.permissionService.getProjectPermissions(currentUser.getUserId());
         Map<Long, Map<Long, Long>> userPermissionMaps = new HashMap<Long, Map<Long, Long>>();
         for (ProjectPermission permission : permissions) {
             if (!userPermissionMaps.containsKey(permission.getProjectId())) {

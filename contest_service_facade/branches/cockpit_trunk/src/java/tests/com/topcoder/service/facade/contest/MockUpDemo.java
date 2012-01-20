@@ -1,13 +1,9 @@
 /*
- * Copyright (C) 2009 TopCoder Inc., All Rights Reserved.
+ * Copyright (C) 2009 - 2012 TopCoder Inc., All Rights Reserved.
  */
 package com.topcoder.service.facade.contest;
 
-import java.util.List;
-
 import com.topcoder.service.facade.contest.ejb.ContestServiceFacadeBean;
-import com.topcoder.service.project.StudioCompetition;
-import com.topcoder.service.studio.SubmissionData;
 
 
 /**
@@ -32,29 +28,6 @@ public class MockUpDemo {
         /* Init service */
         this.contestServiceFacadeBean = new ContestServiceFacadeBean();
 
-        MockUpStudioServiceBean mo = new MockUpStudioServiceBean();
-        java.lang.reflect.Field f = ContestServiceFacadeBean.class.getDeclaredField(
-                "studioService");
-        f.setAccessible(true);
-        f.set(contestServiceFacadeBean, mo);
-        // assume that the submission id and milestone prize id has been created
-        // in the persistence.
-        // set submission milestone prize
-        contestServiceFacadeBean.setSubmissionMilestonePrize(1, 1);
 
-        // get user contests
-        List<StudioCompetition> contestsForUser = contestServiceFacadeBean.getUserContests(
-                "tom");
-
-        // get milestone submissions for contest
-        List<SubmissionData> milestoneSubmissions = contestServiceFacadeBean.getMilestoneSubmissionsForContest(1);
-
-        // get final submissions for contest
-        List<SubmissionData> finalSubmissions = contestServiceFacadeBean.getFinalSubmissionsForContest(1);
-
-        // check the final submission
-        for (SubmissionData data : finalSubmissions) {
-            // do some action here
-        }
     }
 }
