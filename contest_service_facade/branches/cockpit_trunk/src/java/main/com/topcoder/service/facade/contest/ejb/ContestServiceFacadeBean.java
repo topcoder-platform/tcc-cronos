@@ -388,7 +388,7 @@ import com.topcoder.shared.util.DBMS;
  * support searching the active submissions for a specified submission type.</li>
  * </ul>
  * </p>
- * 
+ *
  * <p>
  * Version 1.6.11 (TCCC-3153) Change notes:
  * <ul>
@@ -408,14 +408,14 @@ import com.topcoder.shared.util.DBMS;
  *     <li>Added {@link #createProjectForums} property.</li>
  *   </ol>
  * </p>
- * 
+ *
  * <p>
  * Version 1.7.3 (TCCC-3658) Change notes:
  *   <ol>
  *     <li>Removed dependencies to studio components</li>
  *   </ol>
  * </p>
- * 
+ *
  * <p>
  * Version 1.7.4 (Add Reporting Contest Type) Change notes:
  *   <ol>
@@ -429,7 +429,7 @@ import com.topcoder.shared.util.DBMS;
  *     <li>Add project creation date to {@link #getProjectData(com.topcoder.security.TCSubject)}</li>
  *   </ol>
  * </p>
- * 
+ *
  * <p>
  * Version 1.8.0 (Release Assembly - TC Cockpit Create Project Refactoring Assembly Part One) Change notes:
  *    <ul>
@@ -437,7 +437,7 @@ import com.topcoder.shared.util.DBMS;
  *        <li>Change the invokes of permission related methods to call permission service facade</li>
  *    </ul>
  * </p>
- * 
+ *
  * @author snow01, pulky, murphydog, waits, BeBetter, hohosky, isv, tangzx, GreatKevin, lmmortal, TCSDEVELOPER
  * @version 1.8.0
  */
@@ -672,7 +672,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     private final static int GLOBAL_TIMELINE_NOTIFICATION = 29;
 
     private final static int GLOBAL_FORUM_WATCH = 30;
-    
+
 
     /**
      * <p>
@@ -806,7 +806,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
     /**
      * studioForumBeanProviderUrl is used in the jndi context to get the forum bean in
      * the createStudioForum method. It's injected, non-null and non-empty after set.
-     * 
+     *
      * @since 1.6.6
      */
     @Resource(name = "studioForumBeanProviderUrl")
@@ -1003,7 +1003,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>The copilot project DAO.</p>
      */
     private CopilotProjectDAO copilotProjectDAO;
-    
+
     private CopilotProfileDAO copilotProfileDAO;
 
     /**
@@ -1138,7 +1138,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         c.setLoggerName("copilotBaseDAO");
         c.setSessionFactory(configuration.buildSessionFactory());
         copilotProjectDAO = c;
-        
+
         CopilotProfileDAOImpl cp = new CopilotProfileDAOImpl();
         cp.setLoggerName("copilotBaseDAO");
         cp.setSessionFactory(configuration.buildSessionFactory());
@@ -1254,7 +1254,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             return null;
         }
     }
-    
+
     /**
      * <p>
      * Processes the contest sale.
@@ -1276,7 +1276,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         return processContestSaleInternal(tcSubject, competition, paymentData, null, null);
     }
-    
+
     /**
      * <p>
      * Processes the contest sale.
@@ -1322,7 +1322,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         return processContestSaleInternal(tcSubject, competition, paymentData, null, null);
     }
-    
+
     /**
      * <p>
      * Processes the contest sale.
@@ -1442,12 +1442,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.REVIEW_COSTS_PROJECT_PROPERTY_KEY))
                     + Double.parseDouble((String) contest.getProperty(ProjectPropertyType.SPEC_REVIEW_COSTS_PROJECT_PROPERTY_KEY));
                 // milestone prizes
-		 	if (competition.getProjectHeader().getPrizes() != null && competition.getProjectHeader().getPrizes().size() > 0) {
+             if (competition.getProjectHeader().getPrizes() != null && competition.getProjectHeader().getPrizes().size() > 0) {
                 for (Prize prize : competition.getProjectHeader().getPrizes()) {
                     if (prize.getPrizeType().getId() == MILESTONE_PRIZE_TYPE_ID) {
                         totalFee += prize.getPrizeAmount() * prize.getNumberOfSubmissions();
                     }
-		   	}
+               }
                 }
             } else {
                 // studio competition
@@ -2016,7 +2016,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
         return createSoftwareContest(tcSubject, contest, tcDirectProjectId, null, null);
     }
-    
+
     /**
      * <p>
      * Creates a new <code>SoftwareCompetition</code> in the persistence.
@@ -2093,13 +2093,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             }
 
             String adminRole = getEligibilityAdminRole(tcSubject, billingProjectId).trim();
-            
+
             for (com.topcoder.management.resource.Resource r : contest.getProjectResources()) {
                 long roleId = r.getResourceRole().getId();
                 long uid = Long.parseLong(r.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID));
 
 
-                if (r.getProperty(RESOURCE_INFO_HANDLE).equals(RESOURCE_INFO_HANDLE_COMPONENTS) 
+                if (r.getProperty(RESOURCE_INFO_HANDLE).equals(RESOURCE_INFO_HANDLE_COMPONENTS)
                     || r.getProperty(RESOURCE_INFO_HANDLE).equals(RESOURCE_INFO_HANDLE_APPLICATIONS)
                     || r.getProperty(RESOURCE_INFO_HANDLE).equals(adminRole))
                 {
@@ -2107,15 +2107,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 }
                 boolean addNotification;
                 boolean addForumWatch;
-        
+
                 List<Integer> preferenceIds = new ArrayList<Integer>();
                 // notification preference
                 preferenceIds.add(GLOBAL_TIMELINE_NOTIFICATION);
                 // forum preference
                 preferenceIds.add(GLOBAL_FORUM_WATCH);
-                
+
                 Map<Integer, String> preferences = getUserPreferenceMaps(uid, preferenceIds);
-                
+
                 addNotification = Boolean.parseBoolean(preferences.get(GLOBAL_TIMELINE_NOTIFICATION));
                 addForumWatch = Boolean.parseBoolean(preferences.get(GLOBAL_FORUM_WATCH));
                 if(forumId > 0 && createForum) {
@@ -2140,7 +2140,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                             {
                                 createStudioForumWatchAndRole(forumId, uid, true);
                             }
-      
+
                         }
                 }
 
@@ -2154,7 +2154,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
             // set timeline notification
             projectServices.addNotifications(tcSubject.getUserId(), new long[]{projectData.getProjectHeader().getId()}, String.valueOf(tcSubject.getUserId()));
-           
+
 
             //preparing the result
             com.topcoder.project.phases.Phase[] allPhases = projectData.getAllPhases();
@@ -2339,7 +2339,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.SEND_WINNDER_EMAILS_PROJECT_PROPERTY_KEY, "true");
             }
-            
+
 
             if (isDevContest && !hasEligibility && billingProjectId > 0)
             {
@@ -2362,13 +2362,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             if (isStudio(contest)) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
             }
-            
-            if (contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.REPORTING.getId()) 
+
+            if (contest.getProjectHeader().getProjectCategory().getId() == ProjectCategory.REPORTING.getId())
             {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DIGITAL_RRUN_FLAG_PROJECT_PROPERTY_KEY, "Off");
                 contest.getProjectHeader().setProperty(ProjectPropertyType.RATED_PROJECT_PROPERTY_KEY, "No");
             }
-            
+
             if (forumId > 0) {
                 contest.getProjectHeader().setProperty(ProjectPropertyType.DEVELOPER_FORUM_ID_PROJECT_PROPERTY_KEY, String.valueOf(forumId));
             }
@@ -2621,7 +2621,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             long tcDirectProjectId) throws ContestServiceException, PermissionServiceException {
         return updateSoftwareContest(tcSubject, contest, tcDirectProjectId, null, null);
     }
-    
+
     /**
      * <p>
      * Updates a <code>SoftwareCompetition</code> in the persistence.
@@ -3025,19 +3025,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
     /**
      * <p>Creates the forum for the specified <code>TC Direct</code> project.</p>
-     * 
-     * @param currentUser a <code>TCSubject</code> representing the current user. 
-     * @param projectId a <code>long</code> providing the ID of <code>TC Direct</code> project to create forum for. 
-     * @param tcDirectProjectTypeId a <code>Long</code> referencing the type of <code>TC Direct</code> project. 
-     *        May be <code>null</code>.   
+     *
+     * @param currentUser a <code>TCSubject</code> representing the current user.
+     * @param projectId a <code>long</code> providing the ID of <code>TC Direct</code> project to create forum for.
+     * @param tcDirectProjectTypeId a <code>Long</code> referencing the type of <code>TC Direct</code> project.
+     *        May be <code>null</code>.
      * @return a <code>long</code> providing the ID of created forum.
      * @throws ContestServiceException if an unexpected error occurs.
      * @since 1.7.2
      */
-    public long createTopCoderDirectProjectForum(TCSubject currentUser, long projectId, Long tcDirectProjectTypeId) 
+    public long createTopCoderDirectProjectForum(TCSubject currentUser, long projectId, Long tcDirectProjectTypeId)
         throws ContestServiceException {
         long userId = currentUser.getUserId();
-        logger.debug("createTopCoderDirectProjectForum (projectId = " + projectId + ", userId = " + userId 
+        logger.debug("createTopCoderDirectProjectForum (projectId = " + projectId + ", userId = " + userId
                      + ", createProjectForum = )" + createForum);
         if (!createForum) {
             return System.currentTimeMillis();
@@ -3050,43 +3050,54 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     throw new Exception("createTopCoderDirectProjectForum returned negative forum ID: " + forumId);
                 }
 
+                // Always add create user. Note: it is ok to add the same user multiple times and Forum EJB service
+                // will take care of it.
+                assignToForumWithWatch(userId, forumId);
+
                 // All project users must have permission for accessing the project's forum
                 List<Permission> projectPermissions = permissionService.getPermissionsByProject(projectId);
                 for (Permission permission : projectPermissions) {
-                    forums.assignRole(permission.getUserId(), "Software_Moderators_" + forumId);
-                }
-                
-                // All project co-pilots must have forum moderation permission and forum watches added
-                com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, 14);
-                if (resources != null) {
-                    for (com.topcoder.management.resource.Resource resource : resources) {
-                        if (resource.hasProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID)) {
-                            long resourceUserId 
-                                = Long.parseLong(resource.getProperty(RESOURCE_INFO_EXTERNAL_REFERENCE_ID));
-                            forums.assignRole(resourceUserId, "Software_Moderators_" + forumId);
-                            forums.createCategoryWatch(resourceUserId, forumId);
-                        }
-                    }
+                    assignToForumWithWatch(permission.getUserId(), forumId);
                 }
 
                 return forumId;
             } catch (Exception e) {
-                logger.error("*** Could not create a TC Direct project forum for project " + projectId);
-                logger.error(e);
+                String msg = "Error when creating a TC Direct project forum for project " + projectId;
+                logger.error(msg, e);
+                throw (e instanceof ContestServiceException)? (ContestServiceException)e: new ContestServiceException(msg, e);
             }
-            return -1;
+        }
+    }
+
+    /**
+     * <p>
+     *  Assigns the user to the forum and also adds the user to watch list automatically.
+     * </p>
+     *
+     * @param resourceUserId resource user id or user id
+     * @param forumId the forum id
+     * @throws ContestServiceException if any error occurs
+     */
+    private void assignToForumWithWatch(long resourceUserId, long forumId) throws ContestServiceException {
+        try {
+            Forums forums = getSoftwareForums();
+            forums.assignRole(resourceUserId, "Software_Moderators_" + forumId);
+            forums.createCategoryWatch(resourceUserId, forumId);
+        } catch (Exception e) {
+            throw new ContestServiceException("Error when assign " + resourceUserId + " to the forum of " + forumId,
+                e);
         }
     }
 
     /**
      * Get the EJB handler for Forum EJB service.
-     * 
+     *
      * @param url the EJB bean url
      * @return the forum EJB service handler.
      * @throws NamingException if a naming exception is encountered.
      * @throws RemoteException if remote error occurs.
      * @throws CreateException if error occurs when creating EJB handler
-     * 
+     *
      * @since 1.6.6
      */
     private Forums getForumsEJBFromJNDI(String url) throws NamingException, CreateException, RemoteException {
@@ -3097,45 +3108,45 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             "org.jboss.naming:org.jnp.interfaces");
 
         p.put(Context.PROVIDER_URL, url);
-        
+
         Context c = new InitialContext(p);
         ForumsHome forumsHome = (ForumsHome) c.lookup(ForumsHome.EJB_REF_NAME);
-        
+
         return forumsHome.create();
     }
-    
+
     /**
      * Get the Software Forum EJB service for Software competitions.
-     * 
+     *
      * @return the forums EJB service handler.
      * @throws NamingException if a naming exception is encountered.
      * @throws RemoteException if remote error occurs.
      * @throws CreateException if error occurs when creating EJB handler
-     * 
+     *
      * @since 1.6.11
      */
     private Forums getSoftwareForums() throws RemoteException, NamingException, CreateException {
-    	return getForumsEJBFromJNDI(softwareForumBeanProviderUrl);
+        return getForumsEJBFromJNDI(softwareForumBeanProviderUrl);
     }
-    
+
     /**
      * Get the Studio Forum EJB service for Studio competitions.
-     * 
+     *
      * @return the forums EJB service handler.
      * @throws NamingException if a naming exception is encountered.
      * @throws RemoteException if remote error occurs.
      * @throws CreateException if error occurs when creating EJB handler
-     * 
+     *
      * @since 1.6.11
      */
     private Forums getStudioForums() throws RemoteException, NamingException, CreateException {
-    	return getForumsEJBFromJNDI(studioForumBeanProviderUrl);
+        return getForumsEJBFromJNDI(studioForumBeanProviderUrl);
     }
 
     /**
      * Create studio forum with given parameters. It will lookup the ForumsHome interface, and create the studio forum
      * by the ejb home interface.
-     * 
+     *
      * @param name the forum name
      * @param userId the user id to user
      * @return the long id of the create fourm
@@ -3143,7 +3154,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      */
     private long createStudioForum(String name, long userId) {
         logger.debug("createStudioForm (name = " + name + ", userId = " + userId + ")");
-        
+
         try {
             Forums forums = getStudioForums();
             long forumId = forums.createStudioForum(name);
@@ -3158,7 +3169,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         }
         return -1;
     }
-    
+
     /**
      * create forum with given parameters. It will lookup the ForumsHome interface, and ceate the forum by the ejb home
      * interface. In the old version, this method misses the document, it's added in the version 1.1
@@ -3266,7 +3277,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         List<CommonProjectContestData> ret = new ArrayList<CommonProjectContestData>();
 
-       
+
         for (com.topcoder.management.project.SimpleProjectContestData data : projectServices.getSimpleProjectContestData(
                 pid)) {
             CommonProjectContestData newData = new CommonProjectContestData();
@@ -3808,7 +3819,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             {
                 sb.append("Client Name:").append(po.getClientName());
             }
-            
+
             sb.append("\n    ");
 
             if (po.getProjectName() != null)
@@ -3819,7 +3830,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             {
                 sb.append("Billing Project Name:").append(po.getProjectName());
             }
-            
+
             sb.append("\n    ");
             sb.append("PO #:").append(po.getPoNumber());
         } else if (paymentData instanceof CreditCardPaymentData) {
@@ -4470,14 +4481,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.debug("createSoftwareForumWatchAndRole (" + forumId + ", " + userId + ")");
 
         try {
-        	Forums forums = getSoftwareForums();
+            Forums forums = getSoftwareForums();
 
             String roleId = "Software_Moderators_" + forumId;
             if (watch)
             {
                 forums.createCategoryWatch(userId, forumId);
             }
-            
+
             forums.assignRole(userId, roleId);
 
             logger.debug("Exit createSoftwareForumWatchAndRole (" + forumId + ", " + userId + ")");
@@ -4506,14 +4517,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.debug("createStudioForumWatchAndRole (" + forumId + ", " + userId + ")");
 
         try {
-        	Forums forums = getStudioForums();
+            Forums forums = getStudioForums();
 
             String roleId = "Software_Moderators_" + forumId;
             if (watch)
             {
                 forums.createForumWatch(userId, forumId);
             }
-            
+
             forums.assignRole(userId, roleId);
 
             logger.debug("Exit createStudioForumWatchAndRole (" + forumId + ", " + userId + ")");
@@ -4539,12 +4550,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.info("deleteForumWatch (" + forumId + ", " + userId + ")");
 
         try {
-        	Forums forums = getSoftwareForums();
+            Forums forums = getSoftwareForums();
 
             String roleId = "Software_Moderators_" + forumId;
             forums.deleteCategoryWatch(userId, forumId);
             forums.removeRole(userId, roleId);
-            logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");    	
+            logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");
 
         } catch (Exception e) {
             logger.error("*** Could not delete forum watch for " + forumId + ", " + userId );
@@ -4567,12 +4578,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.info("deleteForumWatch (" + forumId + ", " + userId + ")");
 
         try {
-        	Forums forums = getStudioForums();
+            Forums forums = getStudioForums();
 
             String roleId = "Software_Moderators_" + forumId;
             forums.deleteForumWatch(userId, forumId);
             forums.removeRole(userId, roleId);
-            logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");    	
+            logger.debug("Exit deleteForumWatch (" + forumId + ", " + userId + ")");
 
         } catch (Exception e) {
             logger.error("*** Could not delete forum watch for " + forumId + ", " + userId );
@@ -4593,10 +4604,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         logger.info("updateForumName (" + forumId + ", " + name + ")");
 
         try {
-        	Forums forums = getSoftwareForums();
+            Forums forums = getSoftwareForums();
 
             forums.updateComponentName(forumId, name);
-            
+
             logger.debug("Exit updateForumName (" + forumId + ", " + name + ")");
 
         } catch (Exception e) {
@@ -4965,7 +4976,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @param isStudio whether assign to studio contest.
      * @since 1.6.9
      */
-    private void assignRole(TCSubject tcSubject, long projectId, long roleId, long userId, com.topcoder.project.phases.Phase phase, 
+    private void assignRole(TCSubject tcSubject, long projectId, long roleId, long userId, com.topcoder.project.phases.Phase phase,
             boolean addNotification, boolean addForumWatch, 	boolean isStudio, boolean checkTerm)
         throws ContestServiceException {
         logger.debug("enter methods assignRole");
@@ -5017,14 +5028,14 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 newRes.setProperty(RESOURCE_INFO_REGISTRATION_DATE, DATE_FORMAT.format(new Date()));
 
                 projectServices.updateResource(newRes, String.valueOf(tcSubject.getUserId()));
-                
+
                 // only check notification setting for observer, else always addd
                 if (roleId != ResourceRole.RESOURCE_ROLE_OBSERVER_ID || addNotification) {
                     projectServices.addNotifications(userId,
                             new long[] { projectId },
                             String.valueOf(tcSubject.getUserId()));
                 }
-                
+
 
                 // create forum watch
                 long forumId = projectServices.getForumId(projectId);
@@ -5037,8 +5048,8 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
                 if (forumId > 0 && createForum && !isStudio) {
                     createSoftwareForumWatchAndRole(forumId, userId, addForumWatch);
-                }                    
-                
+                }
+
             }
 
         } catch (UserServiceException use) {
@@ -5222,7 +5233,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 {
                     cn.setForumNotification(watchedSwForumsSet.contains(cn.getForumId()));
                 }
-                
+
                 cn.setProjectNotification(notifiedContestsSet.contains(cn.getContestId()));
 
                 cn.setIsStudio(c.isStudio());
@@ -5595,7 +5606,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         data.get(0).setReview(null);
         return data.get(0);
     }
-    
+
     /**
      * <p>Gets the screening for specified submission.</p>
      *
@@ -5639,10 +5650,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         Filter andfilter = SearchBundle.buildAndFilter(filter, filter2);
         return uploadManager.searchSubmissions(andfilter);
     }
-    
+
     /**
      * <p>Gets the active submissions for specified project with the specified submission type.</p>
-     * 
+     *
      * @param projectId a <code>long</code> providing the ID of a project.
      * @param submissionType a <code>int</code> providing the id of the submission type.
      * @return a <code>List</code> listing the milestone submissions for project.
@@ -5702,9 +5713,9 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 insertCopilotProject(tcDirectProjectId, profileId, currentUser);
 
                 // retrieve user id
-                CopilotProfile copilotProfile = copilotProfileDAO.retrieve(profileId);   
+                CopilotProfile copilotProfile = copilotProfileDAO.retrieve(profileId);
                 long userId = copilotProfile.getUserId();
-                
+
                 // create project permission
                 ProjectPermission permission = new ProjectPermission();
                 permission.setPermission(COPILOT_PERMISSION);
@@ -5712,7 +5723,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 permission.setUserId(userId);
                 permission.setStudio(false);
                 permission.setHandle(userService.getUserHandle(userId));
-                
+
                 // set project name
                 permission.setProjectName(projectService.getProject(
                         currentUser, tcDirectProjectId).getName());
@@ -5729,12 +5740,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     // add permission
                     permission.setUserPermissionId(-1L);
                 }
-                
+
                 // update project permissions
                 List<ProjectPermission> permissionsToAdd = new ArrayList<ProjectPermission>();
                 permissionsToAdd.add(permission);
                 permissionServiceFacade.updateProjectPermissions(currentUser,
-                        permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);                
+                        permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
             }
 
             //TO REMOVE, handle existing copilot postings that have screening
@@ -5755,7 +5766,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     }
                 }
             }
-                
+
 
 
             // Find the Reviewer resource for current user; if there is none then create one
@@ -5816,12 +5827,12 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             sessionContext.setRollbackOnly();
             logger.error(e.getMessage());
             throw new ContestServiceException("Failed to select copilot", e);
-        }   
+        }
     }
 
     /**
      * Update copilot projects and related permissions.
-     * 
+     *
      * @param currentUser
      *            current user
      * @param copilotProjects
@@ -5842,7 +5853,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             checkSoftwareProjectPermission(currentUser,
                     copilotProject.getTcDirectProjectId(), false);
         }
-        
+
         try {
             // retrieve user permissions
             Map<Long, Map<Long, Long>> userPermissionMaps = getUserPermissionMaps(currentUser);
@@ -5850,19 +5861,19 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             // generate project permissions
             Map<Long, String> projectNames = new HashMap<Long, String>();
             List<ProjectPermission> permissionsToAdd = new ArrayList<ProjectPermission>();
-            
+
             // update copilot project
             for (int i = 0; i < copilotProjects.size(); i++) {
                 CopilotProject copilotProject = copilotProjects.get(i);
                 Boolean removeFlag = removeFlags.get(i);
-                
-                CopilotProfile copilotProfile = copilotProfileDAO.retrieve(copilotProject.getCopilotProfileId());   
+
+                CopilotProfile copilotProfile = copilotProfileDAO.retrieve(copilotProject.getCopilotProfileId());
                 long userId = copilotProfile.getUserId();
-                
+
                 if (removeFlag) {
                     // remove copilot project
                     copilotProjectDAO.delete(copilotProject.getId());
-                    
+
                     // set project permission
                     if (userPermissionMaps.containsKey(copilotProject.getTcDirectProjectId())
                             && userPermissionMaps.get(copilotProject.getTcDirectProjectId())
@@ -5873,7 +5884,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         permission.setUserId(userId);
                         permission.setUserPermissionId(userPermissionMaps.get(copilotProject.getTcDirectProjectId()).get(userId));
                         permission.setStudio(false);
-                        
+
                         permissionsToAdd.add(permission);
                     } else {
                         // ignore, the copilot has no permission on this project
@@ -5884,7 +5895,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                             copilotProject.getCopilotProfileId(), currentUser);
                     copilotProject.setId(cProject.getId());
                     copilotProject.setCopilotType(cProject.getCopilotType());
-                    
+
                     // set project permission
                     ProjectPermission permission = new ProjectPermission();
                     permission.setPermission(COPILOT_PERMISSION);
@@ -5892,13 +5903,13 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                     permission.setUserId(userId);
                     permission.setStudio(false);
                     permission.setHandle(userService.getUserHandle(userId));
-                    
+
                     // set project name
                     if (!projectNames.containsKey(copilotProject.getTcDirectProjectId())) {
                         projectNames.put(copilotProject.getTcDirectProjectId(),
                                 projectService.getProject(currentUser,
                                         copilotProject.getTcDirectProjectId()).getName());
-                        
+
                     }
                     permission.setProjectName(projectNames.get(copilotProject.getTcDirectProjectId()));
 
@@ -5912,15 +5923,15 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         // add permission
                         permission.setUserPermissionId(-1L);
                     }
-                    
-                    permissionsToAdd.add(permission);                
+
+                    permissionsToAdd.add(permission);
                 }
             }
 
             // update project permissions
             permissionServiceFacade.updateProjectPermissions(currentUser,
                     permissionsToAdd, ResourceRole.RESOURCE_ROLE_OBSERVER_ID);
-            
+
             return copilotProjects;
         } catch (CopilotDAOException e) {
             sessionContext.setRollbackOnly();
@@ -5976,7 +5987,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         return false;
 
     }
-    
+
     /**
      * Gets all FileType entities.
      *
@@ -6003,7 +6014,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * @throws UserServiceException if any exception occurs when retrieving user handle.
      * @throws CopilotDAOException if any exception occurs when performing DB operation.
      */
-    private CopilotProject insertCopilotProject(long tcDirectProjectId, long profileId, TCSubject tcSubject) 
+    private CopilotProject insertCopilotProject(long tcDirectProjectId, long profileId, TCSubject tcSubject)
         throws UserServiceException, CopilotDAOException {
         CopilotProject copilotProject = new CopilotProject();
 
@@ -6030,7 +6041,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         // insert into DB
         copilotProjectDAO.create(copilotProject);
-        
+
         return copilotProject;
     }
 
@@ -6151,10 +6162,10 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         review.setItems(items);
         createReview(review);
     }
-    
+
     /**
      * Get user permission maps.
-     * 
+     *
      * @param currentUser
      *            current user
      * @return retrieved user permission map
@@ -6176,7 +6187,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
 
         return userPermissionMaps;
     }
-    
+
     private Map<Integer, String> getUserPreferenceMaps(long userId,
             List<Integer> preferenceIds) throws Exception {
         Properties p = new Properties();
@@ -6186,26 +6197,26 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         p.put(Context.PROVIDER_URL, userBeanProviderUrl);
 
         Context c = new InitialContext(p);
-        
+
         UserPreferenceHome userPreferenceHome = (UserPreferenceHome) c
                 .lookup("com.topcoder.web.ejb.user.UserPreferenceHome");
         UserPreference userPreference = userPreferenceHome.create();
         Map<Integer, String> ret = new HashMap<Integer, String>();
-        
+
         for (int preferenceId : preferenceIds) {
             String value;
-            
+
             try {
                 value = userPreference.getValue(userId, preferenceId,
                         DBMS.COMMON_OLTP_DATASOURCE_NAME);
 
             } catch (RowNotFoundException e) {
-                value = "false";  
+                value = "false";
             }
-            
+
             ret.put(preferenceId, value);
         }
-        
+
         return ret;
     }
 
@@ -6213,17 +6224,17 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>Gets the client feedback of the specified studio submission. The client feedback is the comment in the review board
      * of the submission.</p>
      *
-     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     * @param currentUser a <code>TCSubject</code> representing the current user.
      * @param projectId a <code>long</code> providing the ID of a project.
      * @param submissionId a <code>long</code> providing the ID of the submission.
-     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to.
      * @return a <code>String</code> providing the client feedback of the submission.
      * @throws ContestServiceException if any error occurs.
      * @since 1.6.9
      */
     public String getStudioSubmissionFeedback(TCSubject tcSubject, long projectId, long submissionId, PhaseType phaseType)
         throws ContestServiceException {
-        
+
         // gets the reviewer resource role id based on the phase type
         long resourceRoleId;
         if (phaseType.getId() == PhaseType.MILESTONE_REVIEW_PHASE.getId()) {
@@ -6233,7 +6244,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } else {
             throw new ContestServiceException("The phaseType can only be Milestone Review phase or Review phase.");
         }
-        
+
         // gets the reviewer resource, the user of reviewer resource must be current user
         com.topcoder.management.resource.Resource reviewerResource = null;
 
@@ -6264,20 +6275,20 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
      * <p>save the rank and client feedback for a specified submission. The reviewer is the current user. And the review board is assumed only have one
      * question rating from 1 to 10. The client feedback is the comment in the review board.</p>
      *
-     * @param tcSubject a <code>TCSubject</code> representing the current user. 
+     * @param tcSubject a <code>TCSubject</code> representing the current user.
      * @param projectId a <code>long</code> providing the ID of a project.
      * @param submissionId a <code>long</code> providing the ID of the submission.
      * @param placement a <code>int</code> providing the placement of the submission.
      * @param feedback a <code>String</code> providing the client feedback of the submission. Feedback will not changed if it is null.
      * @param committed a <code>boolean</code> representing whether to commit the review board.
-     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to. 
+     * @param phaseType a <code>PhaseType</code> providing the phase type which the submission belongs to.
      * @throws ContestServiceException if any error occurs.
      * @since 1.6.9
      */
     public void saveStudioSubmisionWithRankAndFeedback(TCSubject tcSubject, long projectId, long submissionId,
             int placement, String feedback, Boolean committed, PhaseType phaseType)
         throws ContestServiceException {
-        
+
         try {
             // gets the reviewer resoruce role id based on the phase type
             long resourceRoleId;
@@ -6288,7 +6299,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             } else {
                 throw new ContestServiceException("The phaseType can only be Milestone Review phase or Review phase.");
             }
-            
+
             // gets the reviewer resource, the user of reviewer resource must be current user
             com.topcoder.management.resource.Resource reviewerResource = null;
             com.topcoder.management.resource.Resource[] resources = projectServices.searchResources(projectId, resourceRoleId);
@@ -6340,7 +6351,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                 review.setModificationTimestamp(new Date());
                 review.setSubmission(submissionId);
                 review.setScorecard(scorecard.getId());
-    
+
                 List<Item> items = new ArrayList<Item>();
                 int rate = 11 - placement;
                 for (Group group : scorecard.getAllGroups()) {
@@ -6358,7 +6369,7 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
                         }
                     }
                 }
-    
+
                 review.setItems(items);
                 review.setInitialScore(10.0f * rate);
                 review.setScore(10.0f * rate);
@@ -6392,11 +6403,11 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
             throw new ContestServiceException("Error occurs when saving the review.", e);
         }
     }
-    
+
     /**
      * <p>Update the software submissions.</p>
-     * 
-     * @param currentUser a <code>TCSubject</code> representing the current user. 
+     *
+     * @param currentUser a <code>TCSubject</code> representing the current user.
      * @param submissions a <code>List</code> providing the submissions to be updated.
      * @throws ContestServiceException if any error occurs.
      * @since 1.6.9
@@ -6409,5 +6420,5 @@ public class ContestServiceFacadeBean implements ContestServiceFacadeLocal, Cont
         } catch (UploadPersistenceException e) {
             throw new ContestServiceException("Error occurs when updating submission.", e);
         }
-    }    
+    }
 }
