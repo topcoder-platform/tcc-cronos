@@ -572,11 +572,11 @@ public class PermissionServiceFacadeBean implements PermissionServiceFacadeLocal
                     addNotification = Boolean.parseBoolean(preferences.get(GLOBAL_TIMELINE_NOTIFICATION));
                     addForumWatch = Boolean.parseBoolean(preferences.get(GLOBAL_FORUM_WATCH));
 
-                    // grant user to project level forum
+                    // grant user to project level forum, always watch project forum
                     ProjectData cockpitProj = projectService.getProject(tcSubject, permission.getProjectId());
                     if (cockpitProj.getForumCategoryId() != null && !cockpitProj.getForumCategoryId().equals("")) {
                         Long projForumId = Long.parseLong(cockpitProj.getForumCategoryId());
-                        createSoftwareForumWatchAndRole(projForumId, permission.getUserId(), addForumWatch);
+                        createSoftwareForumWatchAndRole(projForumId, permission.getUserId(), true);
 
                     }
                     List<Long> projectIds = projectServices
