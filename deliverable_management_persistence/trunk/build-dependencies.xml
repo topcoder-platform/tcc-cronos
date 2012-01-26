@@ -19,7 +19,7 @@
 	<property name="object_factory_config_manager_plugin.jar" value="${tcs_libdir}/object_factory_config_manager_plugin/1.0.0/object_factory_config_manager_plugin.jar"/>
 	<property name="object_formatter.jar" value="${tcs_libdir}/object_formatter/1.0.0/object_formatter.jar"/>
 	<property name="typesafe_enum.jar" value="${tcs_libdir}/typesafe_enum/1.1.0/typesafe_enum.jar"/>	
-	<property name="deliverable_management.jar" value="${tcs_libdir}/deliverable_management/1.1.1/deliverable_management.jar"/>	
+	<property name="deliverable_management.jar" value="${tcs_libdir}/deliverable_management/1.2.2/deliverable_management.jar"/>	
 	<!--3rd party dependencies-->
 	<property name="informix.jar" value="${ext_libdir}/informix/1.4.1/ifxjdbc.jar" />
 	<property name="junit.jar" value="${ext_libdir}/junit/3.8.2/junit.jar" />

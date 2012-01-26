@@ -315,30 +315,88 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
      * @return The loaded deliverables
      * @throws IllegalArgumentException
      *             if deliverableIds or resourceIds is null or any id is <= 0
-     * @throws IllegalArgumentException
      *             If the two arguments do not have the same number of elements
      * @throws DeliverablePersistenceException
      *             if there is an error when reading the persistence data
      */
     public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] phaseIds)
         throws DeliverablePersistenceException {
+        return loadDeliverablesHelper(deliverableIds, resourceIds, phaseIds, null);
+    }
+
+    /**
+     * <p>
+     * Loads the deliverables associated with the given submissions and resource. The deliverables must be
+     * "per submission" deliverables and the given submissions must be "Active". Pairs of ids not meeting this
+     * requirement will not be returned.
+     * </p>
+     *
+     * @param deliverableIds
+     *            The ids of deliverables to load
+     * @param resourceIds
+     *            The resource ids of deliverables to load
+     * @param phaseIds
+     *            The phase ids of deliverables to load
+     * @param submissionIds
+     *            The ids of the submission for each deliverable
+     * @return The loaded deliverables
+     * @throws IllegalArgumentException
+     *             if any array is null or any id (in either array) is <= 0
+     *             If the three arguments do not have the same number of elements
+     * @throws DeliverablePersistenceException
+     *             if there is an error when reading the persistence data
+     */
+    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] phaseIds,
+        long[] submissionIds) throws DeliverablePersistenceException {
+        return loadDeliverablesHelper(deliverableIds, resourceIds, phaseIds, submissionIds);
+    }
+
+    /**
+     * <p>
+     * Loads the deliverables associated with the given IDs, resource and (optionally) submissions.
+     * </p>
+     *
+     * @param deliverableIds
+     *            The ids of deliverables to load
+     * @param resourceIds
+     *            The resource ids of deliverables to load, should not be null
+     * @param phaseIds
+     *            The phase ids of deliverables to load, should not be null
+     * @param submissionIds
+     *            The ids of the submission for each deliverable, can be null
+     * @return The loaded deliverables
+     * @throws IllegalArgumentException
+     *             If any array is null or any id (in either array) is <= 0 (submissionIds is allowed to be null)
+     *             If the three arguments do not have the same number of elements
+     * @throws DeliverablePersistenceException
+     *             if there is an error when reading the persistence data
+     */
+    private Deliverable[] loadDeliverablesHelper(long[] deliverableIds, long[] resourceIds, long[] phaseIds,
+            long[] submissionIds) throws DeliverablePersistenceException {        
         Helper.assertLongArrayNotNullAndOnlyHasPositive(deliverableIds, "deliverableIds", LOGGER);
         Helper.assertLongArrayNotNullAndOnlyHasPositive(resourceIds, "resourceIds", LOGGER);
-        Helper.assertLongArrayNotNullAndOnlyHasPositive(phaseIds, "phaseIds", LOGGER);
-
+        Helper.assertLongArrayNotNullAndOnlyHasPositive(phaseIds, "phaseIds", LOGGER);        
+        
         if (deliverableIds.length != resourceIds.length || deliverableIds.length != phaseIds.length) {
             throw new IllegalArgumentException("deliverableIds, resourceIds and phaseIds should have"
                     + " the same number of elements.");
         }
-
+        if (submissionIds != null) {
+            Helper.assertLongArrayNotNullAndOnlyHasPositive(submissionIds, "submissionIds", LOGGER);
+            if (deliverableIds.length != submissionIds.length) {
+               throw new IllegalArgumentException(
+                       "deliverableIds and submissionIds should have the same number of elements");
+            }
+        }
+        
         // simply return an empty Deliverable array if deliverableIds is empty
         if (deliverableIds.length == 0) {
             return new Deliverable[0];
         }
 
         LOGGER.log(Level.INFO, new LogMessage("Deliverable", null, null, "load Deliverables with deliverableIds:"
-                + Helper.getIdString(deliverableIds) + ", resourceId:" + Helper.getIdString(resourceIds)
-                + " and phaseId:" + Helper.getIdString(phaseIds)));
+                + Helper.getIdString(deliverableIds) + ", resourceId:" + Helper.getIdString(resourceIds) + ",phaseId:"
+                + Helper.getIdString(phaseIds) + " and submissionIds:" + Helper.getIdString(submissionIds)));
 
         Set<Long> distinctDeliverableIds = new HashSet<Long>();
         for (long deliverableId : deliverableIds) {
@@ -346,7 +404,7 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         }
 
         // build the match condition string.
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         stringBuffer.append('(');
 
         // To reduce size of the string we move the equality check for deliverable_id out of the braces.
@@ -376,6 +434,11 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                 firstCondition = false;
 
                 stringBuffer.append("(");
+                if (submissionIds != null) {
+                    stringBuffer.append("s.submission_id=");
+                    stringBuffer.append(submissionIds[i]);
+                    stringBuffer.append(" AND ");
+                }
                 stringBuffer.append("r.resource_id=");
                 stringBuffer.append(resourceIds[i]);
                 stringBuffer.append(" AND ");
@@ -393,10 +456,13 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
         Connection conn = null;
         try {
             try {
-                // since two queries are needed, auto-commit mode is
-                // disabled to ensure that the database snapshot does not change
-                // during the two queries.
-                conn = Helper.createConnection(connectionFactory, connectionName, true, true, LOGGER);
+                // since two queries may be needed, auto-commit mode is
+                // disabled to ensure that the database snapshot does not change during the two queries.
+                conn = Helper.createConnection(connectionFactory, connectionName, false, true, LOGGER);
+
+                if (submissionIds != null) {
+                    return loadDeliverablesWithSubmission(conn, matchCondition);
+                }
 
                 // get the non-"per submission" deliverables
                 Deliverable[] deliverablesWithoutSubmission = loadDeliverablesWithoutSubmission(conn, matchCondition);
@@ -413,126 +479,7 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
 
                 return deliverables;
 
-                // since the connection is read-only, no commit or rollback
-                // operations are needed.
-            } finally {
-                Helper.closeConnection(conn);
-            }
-        } catch (PersistenceException e) {
-            LOGGER.log(Level.ERROR, new LogMessage("Deliverable", null, null,
-                    "Fail to load Deliverables with deliverableIds:" + Helper.getIdString(deliverableIds)
-                            + ", resourceId:" + Helper.getIdString(resourceIds) + " and phaseId:"
-                            + Helper.getIdString(phaseIds), e));
-            // wrap PersistenceException
-            throw new DeliverablePersistenceException(
-                    "Unable to load deliverables without submission from the database.", e);
-        }
-    }
-
-    /**
-     * <p>
-     * Loads the deliverables associated with the given submissions and resource. The deliverables must be
-     * "per submission" deliverables and the given submissions must be "Active". Pairs of ids not meeting this
-     * requirement will not be returned.
-     * </p>
-     *
-     * @param deliverableIds
-     *            The ids of deliverables to load
-     * @param resourceIds
-     *            The resource ids of deliverables to load
-     * @param phaseIds
-     *            The phase ids of deliverables to load
-     * @param submissionIds
-     *            The ids of the submission for each deliverable
-     * @return The loaded deliverables
-     * @throws IllegalArgumentException
-     *             if any array is null or any id (in either array) is <= 0
-     * @throws IllegalArgumentException
-     *             If the three arguments do not have the same number of elements
-     * @throws DeliverablePersistenceException
-     *             if there is an error when reading the persistence data
-     */
-    public Deliverable[] loadDeliverables(long[] deliverableIds, long[] resourceIds, long[] phaseIds,
-            long[] submissionIds) throws DeliverablePersistenceException {
-        Helper.assertLongArrayNotNullAndOnlyHasPositive(deliverableIds, "deliverableIds", LOGGER);
-        Helper.assertLongArrayNotNullAndOnlyHasPositive(resourceIds, "resourceIds", LOGGER);
-        Helper.assertLongArrayNotNullAndOnlyHasPositive(phaseIds, "phaseIds", LOGGER);
-        Helper.assertLongArrayNotNullAndOnlyHasPositive(submissionIds, "submissionIds", LOGGER);
-        if (deliverableIds.length != submissionIds.length || deliverableIds.length != phaseIds.length
-                || deliverableIds.length != resourceIds.length) {
-            throw new IllegalArgumentException(
-                    "deliverableIds, resourceIds, phaseIds and submissionIds should have the same number of elements");
-        }
-
-        // simply return an empty Deliverable array if deliverableIds is empty
-        if (deliverableIds.length == 0) {
-            return new Deliverable[0];
-        }
-
-        LOGGER.log(Level.INFO, new LogMessage("Deliverable", null, null, "load Deliverables with deliverableIds:"
-                + Helper.getIdString(deliverableIds) + ", resourceId:" + Helper.getIdString(resourceIds) + ",phaseId:"
-                + Helper.getIdString(phaseIds) + " and submissionIds:" + Helper.getIdString(submissionIds)));
-
-        Set<Long> distinctDeliverableIds = new HashSet<Long>();
-        for (long deliverableId : deliverableIds) {
-            distinctDeliverableIds.add(deliverableId);
-        }
-
-        // build the match condition string.
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append('(');
-
-        // To reduce size of the string we move the equality check for deliverable_id out of the braces.
-        // We do that by several linear traversal through the arrays each time picking up the only items with
-        // a certain deliverable ID.
-        boolean firstDeliverable = true;
-        for (Long deliverableId : distinctDeliverableIds) {
-            if (!firstDeliverable) {
-                stringBuffer.append(" OR ");
-            }
-            firstDeliverable = false;
-
-            stringBuffer.append("(");
-            stringBuffer.append("d.deliverable_id=");
-            stringBuffer.append(deliverableId);
-            stringBuffer.append(" AND ");
-            stringBuffer.append("(");
-
-            boolean firstCondition = true;
-            for (int i = 0; i < deliverableIds.length; ++i) {
-                if (deliverableIds[i] != deliverableId) {
-                    continue;
-                }
-                if (!firstCondition) {
-                    stringBuffer.append(" OR ");
-                }
-                firstCondition = false;
-
-                stringBuffer.append('(');
-                stringBuffer.append("s.submission_id=");
-                stringBuffer.append(submissionIds[i]);
-                stringBuffer.append(" AND ");
-                stringBuffer.append("r.resource_id=");
-                stringBuffer.append(resourceIds[i]);
-                stringBuffer.append(" AND ");
-                stringBuffer.append("p.project_phase_id=");
-                stringBuffer.append(phaseIds[i]);
-                stringBuffer.append(")");
-            }
-            stringBuffer.append(")");
-            stringBuffer.append(")");
-        }
-
-        stringBuffer.append(')');
-        String matchCondition = stringBuffer.toString();
-
-        Connection conn = null;
-        try {
-            try {
-                // since only one query is needed, auto-commit mode is enabled.
-                conn = Helper.createConnection(connectionFactory, connectionName, true, true, LOGGER);
-
-                return loadDeliverablesWithSubmission(conn, matchCondition);
+                // since the connection is read-only, no commit or rollback operations are needed.
             } finally {
                 Helper.closeConnection(conn);
             }
@@ -543,8 +490,8 @@ public class SqlDeliverablePersistence implements DeliverablePersistence {
                             + Helper.getIdString(phaseIds) + " and submissionIds:" + Helper.getIdString(submissionIds),
                     e));
             // wrap PersistenceException
-            throw new DeliverablePersistenceException("Unable to load deliverables with submission from the database.",
-                    e);
+            throw new DeliverablePersistenceException(
+                    "Unable to load deliverables from the database.", e);
         }
     }
 

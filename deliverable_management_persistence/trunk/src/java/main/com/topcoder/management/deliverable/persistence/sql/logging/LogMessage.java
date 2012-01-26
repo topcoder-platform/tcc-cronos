@@ -187,7 +187,7 @@ public class LogMessage {
      */
     public String getLogMessage() {
         if (logMessage == null) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
 
             buffer.append("type: ").append((type == null) ? "Unknown" : type).append(" id: ").append(
                     (id == null) ? "Unknown" : id.toString()).append(" operator:").append(

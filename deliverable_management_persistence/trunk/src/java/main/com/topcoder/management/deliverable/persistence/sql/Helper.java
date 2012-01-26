@@ -351,7 +351,7 @@ public final class Helper {
             if (resultSet.wasNull()) {
                 return null;
             }
-            return new Integer(ret);
+            return ret;
         }
 
         /**
@@ -376,7 +376,7 @@ public final class Helper {
             Helper.assertObjectNullOrIsInstance(value, Integer.class, "value " + index, LOGGER);
 
             if (value != null) {
-                preparedStatement.setInt(index, ((Integer) value).intValue());
+                preparedStatement.setInt(index, (Integer) value);
             } else {
                 preparedStatement.setNull(index, Types.INTEGER);
             }
@@ -418,7 +418,7 @@ public final class Helper {
             if (resultSet.wasNull()) {
                 return null;
             }
-            return new Double(ret);
+            return ret;
         }
 
         /**
@@ -443,7 +443,7 @@ public final class Helper {
             Helper.assertObjectNullOrIsInstance(value, Double.class, "value " + index, LOGGER);
 
             if (value != null) {
-                preparedStatement.setDouble(index, ((Double) value).doubleValue());
+                preparedStatement.setDouble(index, (Double) value);
             } else {
                 preparedStatement.setNull(index, Types.DOUBLE);
             }
@@ -484,7 +484,7 @@ public final class Helper {
             if (resultSet.wasNull()) {
                 return null;
             }
-            return new Boolean(ret);
+            return ret;
         }
 
         /**
@@ -509,7 +509,7 @@ public final class Helper {
             Helper.assertObjectNullOrIsInstance(value, Boolean.class, "value " + index, LOGGER);
 
             if (value != null) {
-                preparedStatement.setBoolean(index, ((Boolean) value).booleanValue());
+                preparedStatement.setBoolean(index, (Boolean) value);
             } else {
                 preparedStatement.setNull(index, Types.BOOLEAN);
             }
@@ -620,13 +620,9 @@ public final class Helper {
      *         columnTypes array (or null in case the resultSet value was null)
      * @throws IllegalArgumentException
      *             if connection is null
-     * @throws IllegalArgumentException
      *             if queryString is null or empty (trimmed)
-     * @throws IllegalArgumentException
      *             if argumentTypes is null or contains null
-     * @throws IllegalArgumentException
      *             if queryArgs is null or the length of it is different from that of argumentTypes
-     * @throws IllegalArgumentException
      *             if columnTypes is null or contains null or the the number of columns returned is different from that
      *             of columnTypes
      * @throws PersistenceException
@@ -673,7 +669,7 @@ public final class Helper {
                 }
                 ret.add(rowData);
             }
-            return ret.toArray(new Object[0][]);
+            return ret.toArray(new Object[ret.size()][]);
         } catch (SQLException e) {
             throw new PersistenceException("Error occurs while executing query [" + queryString
                     + "] using the query arguments " + Arrays.asList(queryArgs).toString() + ".", e);
@@ -727,13 +723,9 @@ public final class Helper {
      *         columnTypes array (or null in case the resultSet value was null)
      * @throws IllegalArgumentException
      *             if connectionFactory is null
-     * @throws IllegalArgumentException
      *             if queryString is null or empty (trimmed)
-     * @throws IllegalArgumentException
      *             if argumentTypes is null or contains null
-     * @throws IllegalArgumentException
      *             if queryArgs is null or the length of it is different from that of argumentTypes
-     * @throws IllegalArgumentException
      *             if columnTypes is null or contains null or the the number of columns returned is different from that
      *             of columnTypes
      * @throws PersistenceException
@@ -906,8 +898,8 @@ public final class Helper {
     static void assertArrayNotNullNorHasNull(Object[] array, String name, Log logger) {
         assertObjectNotNull(array, name, logger);
 
-        for (int i = 0; i < array.length; ++i) {
-            if (array[i] == null) {
+        for (Object value : array) {
+            if (value == null) {
                 throw logException(logger, new IllegalArgumentException(name + " should not contain null."));
             }
         }
@@ -989,8 +981,8 @@ public final class Helper {
     static void assertLongArrayNotNullAndOnlyHasPositive(long[] values, String name, Log logger) {
         Helper.assertObjectNotNull(values, name, logger);
 
-        for (int i = 0; i < values.length; ++i) {
-            if (values[i] <= 0) {
+        for (long value : values) {
+            if (value <= 0) {
                 throw logException(logger,
                         new IllegalArgumentException(name + " should only contain positive values."));
             }
