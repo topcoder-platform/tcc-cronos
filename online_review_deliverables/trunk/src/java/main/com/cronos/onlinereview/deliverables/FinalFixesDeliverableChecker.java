@@ -22,7 +22,7 @@ import com.topcoder.management.deliverable.Deliverable;
  *
  * @author aubergineanode
  * @author kr00tki
- * @version 1.0
+ * @version 1.0.4
  */
 public class FinalFixesDeliverableChecker extends SingleQuerySqlDeliverableChecker {
 
@@ -60,13 +60,14 @@ public class FinalFixesDeliverableChecker extends SingleQuerySqlDeliverableCheck
      * @throws SQLException if error occurs while filling the statement.
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, deliverable.getResource());
+        statement.setLong(1, deliverable.getPhase());
+        statement.setLong(2, deliverable.getResource());
     }
 
     /**
      * <p>
      * Gets the SQL query string to select the last final fixes upload date. The returned query will have 2
-     * placholders for the project_id and resource_id values.
+     * placeholders for the project_phase_id and resource_id values.
      * </p>
      *
      * @return The SQL query string to execute.
@@ -74,8 +75,7 @@ public class FinalFixesDeliverableChecker extends SingleQuerySqlDeliverableCheck
     protected String getSqlQuery() {
         return "SELECT MAX(upload.modify_date) FROM upload "
                 + "INNER JOIN upload_type_lu ON upload.upload_type_id = upload_type_lu.upload_type_id "
-                + "INNER JOIN upload_status_lu ON upload.upload_status_id = upload_status_lu.upload_status_id "
-                + "WHERE upload_type_lu.name = 'Final Fix' AND upload_status_lu.name = 'Active' "
-                + "AND upload.resource_id = ?";
+                + "WHERE upload_type_lu.name = 'Final Fix' "
+                + "AND upload.project_phase_id = ? AND upload.resource_id = ?";
     }
 }

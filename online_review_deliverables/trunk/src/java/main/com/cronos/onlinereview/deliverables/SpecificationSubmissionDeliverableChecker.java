@@ -17,7 +17,7 @@ import java.sql.SQLException;
  * <p>This class is immutable.</p>
  *
  * @author isv
- * @version 1.0.2
+ * @version 1.0.4
  * @since 1.0.2
  */
 public class SpecificationSubmissionDeliverableChecker extends SingleQuerySqlDeliverableChecker {
@@ -35,7 +35,7 @@ public class SpecificationSubmissionDeliverableChecker extends SingleQuerySqlDel
 
     /**
      * <p>Gets the SQL query string to select the last modification date for the specification submission for the
-     * project phase. Returned query will have 2 placeholders for the project_id and project_phase_id values.</p>
+     * project phase. Returned query will have 2 placeholders for the resource_id and project_phase_id values.</p>
      *
      * @return The SQL query string to execute.
      */
@@ -46,26 +46,13 @@ public class SpecificationSubmissionDeliverableChecker extends SingleQuerySqlDel
                "INNER JOIN upload u ON s.upload_id = u.upload_id " +
                "WHERE s.submission_status_id <> 5 " +
                "AND s.submission_type_id = 2 " +
-               "AND u.project_id = ? " +
                "AND u.resource_id = ? " +
-               "AND ((SELECT COUNT(*) " +
-               "      FROM project_phase pp " +
-               "      WHERE pp.phase_type_id = 13 " +
-               "      AND pp.project_id = ? " +
-               "      AND pp.scheduled_start_time <= (SELECT pp2.scheduled_start_time FROM project_phase pp2 WHERE pp2.project_phase_id = ?)) " +
-               "     = " +
-               "     (SELECT COUNT(*) " +
-               "      FROM submission s2 " +
-               "      INNER JOIN upload u2 ON s2.upload_id = u2.upload_id " +
-               "      WHERE s2.submission_status_id <> 5 " +
-               "      AND s2.submission_type_id = 2 " +
-               "      AND s2.create_date <= s.create_date " +
-               "      AND u2.project_id = ?))";
+               "AND u.project_phase_id = ?";
     }
 
     /**
      * <p>Given a PreparedStatement representation of the SQL query returned by the getSqlQuery method, this method
-     * extracts phase_id and project_id values from the deliverable and sets them as parameters of the
+     * extracts resource_id and project_phase_id values from the deliverable and sets them as parameters of the
      * PreparedStatement.</p>
      *
      * @param deliverable The deliverable from which to get any needed parameters to set on the PreparedStatement.
@@ -73,10 +60,7 @@ public class SpecificationSubmissionDeliverableChecker extends SingleQuerySqlDel
      * @throws SQLException if any error occurs while setting the values to statement.
      */
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, deliverable.getProject());
-        statement.setLong(2, deliverable.getResource());
-        statement.setLong(3, deliverable.getProject());
-        statement.setLong(4, deliverable.getPhase());
-        statement.setLong(5, deliverable.getProject());
+        statement.setLong(1, deliverable.getResource());
+        statement.setLong(2, deliverable.getPhase());
     }
 }

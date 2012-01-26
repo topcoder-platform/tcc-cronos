@@ -9,7 +9,7 @@
 	<property name="configuration_manager.jar" value="${tcs_libdir}/configuration_manager/2.1.4/configuration_manager.jar" />
 	<property name="database_abstraction.jar" value="${tcs_libdir}/database_abstraction/1.1/database_abstraction.jar" />
 	<property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.0/db_connection_factory.jar" />
-	<property name="deliverable_management.jar" value="${tcs_libdir}/deliverable_management/1.0.4/deliverable_management.jar" />
+	<property name="deliverable_management.jar" value="${tcs_libdir}/deliverable_management/1.2.2/deliverable_management.jar" />
 	<property name="db_connection_factory.jar" value="${tcs_libdir}/db_connection_factory/1.0/db_connection_factory.jar" />
 	<property name="search_builder.jar" value="${tcs_libdir}/search_builder/1.3.1/search_builder.jar" />
 	<property name="base_exception.jar" value="${tcs_libdir}/base_exception/1.0/base_exception.jar" />

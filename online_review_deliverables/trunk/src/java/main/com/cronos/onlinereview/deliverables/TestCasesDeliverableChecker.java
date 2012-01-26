@@ -51,7 +51,7 @@ public class TestCasesDeliverableChecker extends SingleQuerySqlDeliverableChecke
     /**
      * <p>
      * Given a PreparedStatement representation of the SQL query returned by the getSqlQuery method, this method
-     * extracts projet_id and resource_id values from the deliverable and sets them as
+     * extracts project_id and resource_id values from the deliverable and sets them as
      * parameters of the PreparedStatement.
      * </p>
      *

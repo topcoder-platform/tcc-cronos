@@ -71,7 +71,7 @@ public class SubmitterCommentDeliverableChecker extends SingleQuerySqlDeliverabl
 
     /**
      * <p>
-     * Gets the SQL query string to check that a submitter comment has been made. The retunred query will have
+     * Gets the SQL query string to check that a submitter comment has been made. The returned query will have
      * two placeholders for the submission_id and resource_id values.
      * </p>
      *

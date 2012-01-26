@@ -76,7 +76,7 @@ public class ApprovalDeliverableChecker extends SingleQuerySqlDeliverableChecker
     protected void fillInQueryParameters(Deliverable deliverable, PreparedStatement statement)
             throws SQLException, DeliverableCheckingException {
         statement.setLong(1, deliverable.getResource());
-        statement.setLong(2, deliverable.getSubmission().longValue());
+        statement.setLong(2, deliverable.getSubmission());
         statement.setLong(3, deliverable.getPhase());
     }
 }

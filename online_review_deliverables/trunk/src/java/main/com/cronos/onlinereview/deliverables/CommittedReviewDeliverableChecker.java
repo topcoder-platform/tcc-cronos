@@ -89,7 +89,7 @@ public class CommittedReviewDeliverableChecker extends SingleQuerySqlDeliverable
                 throw new DeliverableCheckingException("The deliverable is not per submission and cannot be checked.");
             }
             statement.setLong(1, deliverable.getResource());
-            statement.setLong(2, deliverable.getSubmission().longValue());
+            statement.setLong(2, deliverable.getSubmission());
         } else {
             if (deliverable.isPerSubmission()) {
                 throw new DeliverableCheckingException("The deliverable is per submission and cannot be checked.");

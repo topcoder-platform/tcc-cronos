@@ -95,7 +95,7 @@ public abstract class SingleQuerySqlDeliverableChecker extends SqlDeliverableChe
                     deliverable.setCompletionDate(date);
                 }
                 if (rs.getMetaData().getColumnCount() > 1) {
-                    deliverable.setSubmission(new Long(rs.getLong(2)));
+                    deliverable.setSubmission(rs.getLong(2));
                 }
             }
         } catch (SQLException ex) {
