@@ -215,8 +215,8 @@ public class SubmissionPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException if any error occurs during processing.
      */
     private boolean hasAnySubmission(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
-        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            phase.getProject().getId(), Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
+        Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
 
         // for stop phase, we are going to support more information now from version 1.2
         if (values != null) {

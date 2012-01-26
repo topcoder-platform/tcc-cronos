@@ -3,15 +3,14 @@
  */
 package com.cronos.onlinereview.phases;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.text.DecimalFormat;
 
 import com.topcoder.management.deliverable.Submission;
 import com.topcoder.management.deliverable.Upload;
+import com.topcoder.management.deliverable.UploadManager;
 import com.topcoder.management.deliverable.persistence.UploadPersistenceException;
+import com.topcoder.management.deliverable.search.UploadFilterBuilder;
 import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.project.PersistenceException;
@@ -21,8 +20,8 @@ import com.topcoder.management.resource.persistence.ResourcePersistenceException
 import com.topcoder.management.review.data.Review;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.search.builder.SearchBuilderException;
+import com.topcoder.search.builder.filter.AndFilter;
 import com.topcoder.search.builder.filter.Filter;
-import com.topcoder.search.builder.filter.InFilter;
 
 /**
  * <p>
@@ -155,8 +154,8 @@ abstract class BaseReviewPhaseHandler extends AbstractPhaseHandler {
             }
 
             // Search all "Active" submissions for current project with contest submission type
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-                phase.getProject().getId(), submissionTypeName);
+            Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                    phase.getProject().getId(), submissionTypeName);
             if (subs.length > 0) {
                 return OperationCheckResult.SUCCESS;
             } else {
@@ -238,8 +237,8 @@ abstract class BaseReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private void putPhaseStartInfoValues(Phase phase, Map<String, Object> values) throws PhaseHandlingException {
         // Search all "Active" submissions for current project with contest submission type
-        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            phase.getProject().getId(), submissionTypeName);
+        Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), submissionTypeName);
         values.put("SUBMITTER", PhasesHelper.constructSubmitterValues(subs,
             getManagerHelper().getResourceManager(), false));
         // Search the reviewIds
@@ -327,8 +326,8 @@ abstract class BaseReviewPhaseHandler extends AbstractPhaseHandler {
      */
     private OperationCheckResult allReviewsDone(Phase phase) throws PhaseHandlingException {
         // Search all "Active" submissions for current project
-        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            phase.getProject().getId(), submissionTypeName);
+        Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), submissionTypeName);
 
         // Search the reviewIds
         Resource[] reviewers = PhasesHelper.searchResourcesForRoleNames(getManagerHelper(),
@@ -355,7 +354,7 @@ abstract class BaseReviewPhaseHandler extends AbstractPhaseHandler {
         // for each submission
         for (Submission submission : subs) {
             long subId = submission.getId();
-            int nunmberOfReviews = 0;
+            int numberOfReviews = 0;
 
             // Match the submission with its reviews
             for (Review review : reviews) {
@@ -364,16 +363,16 @@ abstract class BaseReviewPhaseHandler extends AbstractPhaseHandler {
                     return new OperationCheckResult("There are uncommitted reviews.");
                 }
                 if (subId == review.getSubmission()) {
-                    nunmberOfReviews++;
+                    numberOfReviews++;
                 }
             }
 
             // if number of reviews does not match number of reviewers
-            if (nunmberOfReviews < reviewers.length) {
+            if (numberOfReviews < reviewers.length) {
                 return new OperationCheckResult("Not all reviewers submitted their reviews for submission " + subId);
             }
 
-            if (nunmberOfReviews > reviewers.length) {
+            if (numberOfReviews > reviewers.length) {
                 throw new PhaseHandlingException("There are extra reviews for submission " + subId);
             }
         }
@@ -405,15 +404,18 @@ abstract class BaseReviewPhaseHandler extends AbstractPhaseHandler {
             return OperationCheckResult.SUCCESS;
         }
 
-        List<Long> reviewerIds = new ArrayList<Long>();
-
-        for (Resource reviewer : reviewers) {
-            reviewerIds.add(reviewer.getId());
-        }
-
         try {
-            Filter resourceIdFilter = new InFilter("resource_id", reviewerIds);
-            Upload[] uploads = getManagerHelper().getUploadManager().searchUploads(resourceIdFilter);
+            UploadManager uploadManager = getManagerHelper().getUploadManager();            
+            long uploadTypeId = LookupHelper.getUploadType(uploadManager, Constants.UPLOAD_TYPE_TEST_CASE).getId();
+            Filter uploadTypeFilter = UploadFilterBuilder.createUploadTypeIdFilter(uploadTypeId);
+            
+            long uploadStatusId = LookupHelper.getUploadStatus(uploadManager, Constants.UPLOAD_STATUS_ACTIVE).getId();
+            Filter uploadStatusFilter = UploadFilterBuilder.createUploadStatusIdFilter(uploadStatusId);
+            
+            Filter phaseFilter = UploadFilterBuilder.createProjectPhaseIdFilter(phase.getId());
+
+            Upload[] uploads = uploadManager.searchUploads(
+                    new AndFilter(Arrays.asList(uploadTypeFilter, uploadStatusFilter, phaseFilter)));
 
             for (Resource reviewer : reviewers) {
                 // match reviewer with test case upload

@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -937,38 +936,71 @@ final class PhasesHelper {
     }
 
     /**
+     * Retrieves all submissions for the given phase id, submission type and submission statuses.
+     * @param uploadManager
+     *            UploadManager instance to use for searching.
+     * @param projectPhaseId
+     *            project phase id.
+     * @param typeName
+     *            the submission type name.
+     * @param statusName
+     *            the submission status name.
+     * @return all active submissions for the given project id.
+     * @throws PhaseHandlingException
+     *             if an error occurs during retrieval.
+     */
+    static Submission[] getPhaseSubmissions(UploadManager uploadManager,
+        long projectPhaseId, String typeName, String statusName) throws PhaseHandlingException {
+
+        try {
+            long statusId = LookupHelper.getSubmissionStatus(uploadManager, statusName).getId();
+            Filter statusFilter = SubmissionFilterBuilder.createSubmissionStatusIdFilter(statusId);
+
+            long typeId = LookupHelper.getSubmissionType(uploadManager, typeName).getId();
+            Filter typeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(typeId);
+
+            Filter phaseIdFilter = SubmissionFilterBuilder.createProjectPhaseIdFilter(projectPhaseId);
+
+            Filter fullFilter = new AndFilter(Arrays.asList(phaseIdFilter, statusFilter, typeFilter));
+            return uploadManager.searchSubmissions(fullFilter);
+        } catch (UploadPersistenceException e) {
+            throw new PhaseHandlingException("There was a submission retrieval error", e);
+        } catch (SearchBuilderException e) {
+            throw new PhaseHandlingException("There was a search builder error", e);
+        }
+    }
+
+    /**
      * Retrieves all submissions for the given project id, submission type and submission statuses.
      * @param uploadManager
      *            UploadManager instance to use for searching.
      * @param projectId
      *            project id.
-     * @param submissionStatusNames
-     *            the submission status names.
      * @param submissionTypeName
      *            the submission type name.
+     * @param submissionStatusNames
+     *            the submission status names.
      * @return all active submissions for the given project id.
      * @throws PhaseHandlingException
      *             if an error occurs during retrieval.
      */
-    static Submission[] searchSubmissions(UploadManager uploadManager,
-        long projectId, String[] submissionStatusNames, String submissionTypeName) throws PhaseHandlingException {
+    static Submission[] getProjectSubmissions(UploadManager uploadManager,
+        long projectId, String submissionTypeName, String[] submissionStatusNames) throws PhaseHandlingException {
 
         try {
             List<Filter> statusFilters = new ArrayList<Filter>();
-            for(String statuseName : submissionStatusNames) {
-                long statusId = LookupHelper.getSubmissionStatus(uploadManager, statuseName).getId();
+            for(String statusName : submissionStatusNames) {
+                long statusId = LookupHelper.getSubmissionStatus(uploadManager, statusName).getId();
                 statusFilters.add(SubmissionFilterBuilder.createSubmissionStatusIdFilter(statusId));
             }
 
-            // then get submission type id for given type
             long submissionTypeId = LookupHelper.getSubmissionType(uploadManager, submissionTypeName).getId();
-
-            // search for submissions
-            Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
             Filter submissionTypeFilter = SubmissionFilterBuilder.createSubmissionTypeIdFilter(submissionTypeId);
 
-            Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {projectIdFilter,
-                new OrFilter(statusFilters), submissionTypeFilter }));
+            Filter projectIdFilter = SubmissionFilterBuilder.createProjectIdFilter(projectId);
+
+            Filter fullFilter = new AndFilter(Arrays.asList(projectIdFilter,
+                new OrFilter(statusFilters), submissionTypeFilter));
 
             return uploadManager.searchSubmissions(fullFilter);
         } catch (UploadPersistenceException e) {
@@ -990,9 +1022,9 @@ final class PhasesHelper {
      * @throws PhaseHandlingException
      *             if an error occurs during retrieval.
      */
-    static Submission[] searchActiveSubmissions(UploadManager uploadManager,
+    static Submission[] getActiveProjectSubmissions(UploadManager uploadManager,
         long projectId, String submissionTypeName) throws PhaseHandlingException {
-        return searchSubmissions(uploadManager, projectId, new String[] {Constants.SUBMISSION_STATUS_ACTIVE}, submissionTypeName);
+        return getProjectSubmissions(uploadManager, projectId, submissionTypeName, new String[]{Constants.SUBMISSION_STATUS_ACTIVE});
     }
 
     /**
@@ -1673,8 +1705,8 @@ final class PhasesHelper {
         Submission[] submissions;
 
          // changes in version 1.4
-         submissions = PhasesHelper.searchActiveSubmissions(helper.getUploadManager(),
-             projectId, Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
+         submissions = PhasesHelper.getActiveProjectSubmissions(helper.getUploadManager(),
+                 projectId, Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
 
         // for each submission, get the submitter and its scores
         try {
@@ -1856,7 +1888,7 @@ final class PhasesHelper {
             }
 
             // check all submitters with active submission statuses (this will leave out failed screening and deleted)
-            Submission[] activeSubmissions = searchActiveSubmissions(uploadManager, projectId, Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
+            Submission[] activeSubmissions = getActiveProjectSubmissions(uploadManager, projectId, Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
 
             for (Submission s : activeSubmissions) {
                 if (!earlyAppealResourceIds.contains(s.getUpload().getOwner())) {
@@ -2021,9 +2053,9 @@ final class PhasesHelper {
     }
 
     /**
-     * Searches the specification submission for the project.
+     * Searches the specification submission for the specified phase.
      * @param phase
-     *            the phase.
+     *            the specification submission phase.
      * @param managerHelper
      *            the manager helper.
      * @param log
@@ -2034,11 +2066,13 @@ final class PhasesHelper {
      *             submission exist.
      * @since 1.4
      */
-    static Submission hasOneSpecificationSubmission(Phase phase, ManagerHelper managerHelper,
-        Log log) throws PhaseHandlingException {
-        // Check if one specification submission exists
-        Submission[] submissions = PhasesHelper.searchActiveSubmissions(
-            managerHelper.getUploadManager(), phase.getProject().getId(), Constants.SUBMISSION_TYPE_SPECIFICATION_SUBMISSION);
+    static Submission getSpecificationSubmission(Phase phase, ManagerHelper managerHelper,
+                                                 Log log) throws PhaseHandlingException {
+        PhasesHelper.checkNull(phase, "phase");
+        PhasesHelper.checkPhaseType(phase, Constants.PHASE_SPECIFICATION_SUBMISSION);
+        
+        Submission[] submissions = getPhaseSubmissions(managerHelper.getUploadManager(), phase.getId(),
+            Constants.SUBMISSION_TYPE_SPECIFICATION_SUBMISSION, Constants.SUBMISSION_STATUS_ACTIVE);
 
         if (submissions.length > 1) {
             log.log(Level.ERROR, "Multiple specification submissions exist.");
@@ -2229,13 +2263,13 @@ final class PhasesHelper {
             // Search all reviewed submissions for current project.
             // We also consider submissions with the failed review status because this method is also called directly
             // from within the Online Review application when a manager edits a review scorecard.
-            subs = searchSubmissions(uploadManager, phase.getProject().getId(),
-                new String[] {
-                    Constants.SUBMISSION_STATUS_ACTIVE,
-                    Constants.SUBMISSION_STATUS_FAILED_REVIEW,
-                    Constants.SUBMISSION_STATUS_FAILED_MILESTONE_REVIEW,
-                    Constants.SUBMISSION_STATUS_COMPLETED_WITHOUT_WIN},
-                isMilestone ? Constants.SUBMISSION_TYPE_MILESTONE_SUBMISSION : Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
+            subs = getProjectSubmissions(uploadManager, phase.getProject().getId(),
+                    isMilestone ? Constants.SUBMISSION_TYPE_MILESTONE_SUBMISSION : Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION,
+                    new String[]{
+                            Constants.SUBMISSION_STATUS_ACTIVE,
+                            Constants.SUBMISSION_STATUS_FAILED_REVIEW,
+                            Constants.SUBMISSION_STATUS_FAILED_MILESTONE_REVIEW,
+                            Constants.SUBMISSION_STATUS_COMPLETED_WITHOUT_WIN});
 
             // Search the reviewIds.
             Resource[] reviewers = searchResourcesForRoleNames(managerHelper,
@@ -2417,7 +2451,7 @@ final class PhasesHelper {
             
             int maxAllowedSubs = Integer.parseInt(maxSubmissions.toString());
 
-            Submission[] subs = searchActiveSubmissions(helper.getUploadManager(), project.getId(), submissionsType);
+            Submission[] subs = getActiveProjectSubmissions(helper.getUploadManager(), project.getId(), submissionsType);
 
             UploadStatus deletedUploadStatus = LookupHelper.getUploadStatus(helper.getUploadManager(), Constants.UPLOAD_STATUS_DELETED);
             SubmissionStatus deletedSubmissionStatus = LookupHelper.getSubmissionStatus(helper.getUploadManager(), Constants.SUBMISSION_STATUS_DELETED);

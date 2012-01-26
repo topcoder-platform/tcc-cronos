@@ -206,8 +206,8 @@ public class MilestoneSubmissionPhaseHandler extends AbstractPhaseHandler {
      */
     void populateProperties(Phase phase, Map<String, Object> values)
         throws PhaseHandlingException {
-        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            phase.getProject().getId(), Constants.SUBMISSION_TYPE_MILESTONE_SUBMISSION);
+        Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), Constants.SUBMISSION_TYPE_MILESTONE_SUBMISSION);
 
         // for stop phase, we are going to support more information.
         if (values != null) {

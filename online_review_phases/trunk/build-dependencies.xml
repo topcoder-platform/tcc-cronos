@@ -54,8 +54,8 @@
     <property name="scorecard_management.jar" value="${tcs_libdir}/scorecard_management/1.0.1/scorecard_management.jar" />
     <property name="scorecard_management_persistence.jar" value="${tcs_libdir}/scorecard_management_persistence/1.0.1/scorecard_management_persistence.jar" />
 
-    <property name="deliverable_management.jar" value="${tcs_libdir}/deliverable_management/1.1/deliverable_management.jar" />
-    <property name="deliverable_management_persistence.jar" value="${tcs_libdir}/deliverable_management_persistence/1.1/deliverable_management_persistence.jar" />
+    <property name="deliverable_management.jar" value="${tcs_libdir}/deliverable_management/1.2.2/deliverable_management.jar" />
+    <property name="deliverable_management_persistence.jar" value="${tcs_libdir}/deliverable_management_persistence/1.2.2/deliverable_management_persistence.jar" />
 
     <property name="command_line_utility.jar" value="${tcs_libdir}/command_line_utility/1.0/command_line_utility.jar" />
 

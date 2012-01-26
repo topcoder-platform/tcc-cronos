@@ -14,6 +14,7 @@ import com.topcoder.management.phase.OperationCheckResult;
 import com.topcoder.management.phase.PhaseHandlingException;
 import com.topcoder.management.review.data.Comment;
 import com.topcoder.management.review.data.Review;
+import com.topcoder.project.phases.Dependency;
 import com.topcoder.project.phases.Phase;
 import com.topcoder.util.log.Level;
 import com.topcoder.util.log.Log;
@@ -145,7 +146,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
             }
 
             // can start if one active submission with "Specification Submission" type exists
-            if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(), LOG) != null) {
+            if (PhasesHelper.getSpecificationSubmission(getSpecSubmissionPhase(phase), getManagerHelper(), LOG) != null) {
                 return OperationCheckResult.SUCCESS;
             } else {
                 return new OperationCheckResult("Specification submission doesn't exist.");
@@ -164,6 +165,24 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
+     * Returns the dependency Specification Submission phase for the specified Specification Review phase.
+     * @param specReviewPhase
+     *            the Specification Review phase
+     * @return Corresponding Specification Submission phase or null if not present.
+     * @throws PhaseHandlingException
+     *             if any error occurred.
+     */
+    private Phase getSpecSubmissionPhase(Phase specReviewPhase) throws PhaseHandlingException {
+        for(Dependency dep : specReviewPhase.getAllDependencies()) {
+            if (dep.getDependent() == specReviewPhase &&
+                    dep.getDependency().getPhaseType().getName().equals(Constants.PHASE_SPECIFICATION_SUBMISSION)) {
+                return dep.getDependency();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Checks whether the specification review is committed.
      * @param phase
      *            the current phase
@@ -172,12 +191,12 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      *             if any error occurred.
      */
     private boolean isSpecificationReviewCommitted(Phase phase) throws PhaseHandlingException {
-        Submission submission = PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(), LOG);
+        Submission submission = PhasesHelper.getSpecificationSubmission(getSpecSubmissionPhase(phase), getManagerHelper(), LOG);
         if (null == submission) {
             return false;
         }
 
-        Review review = getSpecificationReview(phase, submission);
+        Review review = getSpecificationReview(phase);
         return (review != null) && review.isCommitted();
     }
 
@@ -185,14 +204,12 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      * Searches the Specification Review worksheet.
      * @param phase
      *            the phase.
-     * @param submission
-     *            the submission.
      * @return the review or null if no review worksheet exists.
      * @throws PhaseHandlingException
      *             if there is any error occurred while searching reviews.
      */
-    private Review getSpecificationReview(Phase phase, Submission submission)
-        throws PhaseHandlingException {
+    private Review getSpecificationReview(Phase phase) throws PhaseHandlingException {
+        Submission submission = PhasesHelper.getSpecificationSubmission(getSpecSubmissionPhase(phase), getManagerHelper(), LOG);
         Review[] reviews = PhasesHelper.searchReviewsForResourceRoles(
             getManagerHelper(), phase.getId(), new String[] {Constants.ROLE_SPECIFICATION_REVIEWER }, submission.getId());
 
@@ -276,18 +293,17 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
      * @throws PhaseHandlingException
      *             if an error occurs when retrieving/saving data.
      */
-    private boolean checkSpecificationReview(Phase phase, String operator)
-        throws PhaseHandlingException {
+    private boolean checkSpecificationReview(Phase phase, String operator) throws PhaseHandlingException {
         ManagerHelper managerHelper = getManagerHelper();
 
-        Submission submission = PhasesHelper.hasOneSpecificationSubmission(phase, managerHelper, LOG);
+        Submission submission = PhasesHelper.getSpecificationSubmission(getSpecSubmissionPhase(phase), managerHelper, LOG);
 
         if (null == submission) {
             LOG.log(Level.ERROR, "The specification submission does not exist.");
             throw new PhaseHandlingException("No specification submission exists.");
         }
 
-        boolean rejected = wasSpecificationReviewRejected(submission, phase);
+        boolean rejected = wasSpecificationReviewRejected(phase);
 
         if (rejected) {
             // update specification submission status
@@ -303,8 +319,7 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
                 throw new PhaseHandlingException("Fails to update submission.", e);
             }
 
-            // use helper method to insert Specification submission/Specification
-            // review phases
+            // use helper method to insert Specification submission/Specification review phases
             int currentPhaseIndex = PhasesHelper.insertSpecSubmissionSpecReview(phase,
                 managerHelper.getPhaseManager(), operator);
 
@@ -320,16 +335,14 @@ public class SpecificationReviewPhaseHandler extends AbstractPhaseHandler {
     /**
      * Finds out if the specification review is rejected. Note if the specification review
      * is found being rejected, the extra info will be reset here.
-     * @param submission
-     *            the submission.
      * @param phase
      *            the phase.
      * @return true if the specification review is rejected, false otherwise.
      * @throws PhaseHandlingException
      *             if any error occurred.
      */
-    private boolean wasSpecificationReviewRejected(Submission submission, Phase phase) throws PhaseHandlingException {
-        Review review = getSpecificationReview(phase, submission);
+    private boolean wasSpecificationReviewRejected(Phase phase) throws PhaseHandlingException {
+        Review review = getSpecificationReview(phase);
 
         if (null == review) {
             LOG.log(Level.ERROR, "The review for the specification does not exist.");

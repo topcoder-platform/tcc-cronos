@@ -154,7 +154,6 @@ public class FinalReviewPhaseHandler extends AbstractPhaseHandler {
             // return true if all dependencies have stopped and start time has been reached
             return PhasesHelper.checkPhaseCanStart(phase);
         } else {
-
             OperationCheckResult result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
             if (!result.isSuccess()) {
                 return result;

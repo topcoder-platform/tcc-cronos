@@ -140,7 +140,7 @@ public class SpecificationSubmissionPhaseHandler extends AbstractPhaseHandler {
             result = PhasesHelper.checkPhaseDependenciesMet(phase, false);
 
             if (result.isSuccess()) {
-                if (PhasesHelper.hasOneSpecificationSubmission(phase, getManagerHelper(), LOG) != null) {
+                if (PhasesHelper.getSpecificationSubmission(phase, getManagerHelper(), LOG) != null) {
                     return OperationCheckResult.SUCCESS;
                 } else {
                     return new OperationCheckResult("Specification submission doesn't exist");

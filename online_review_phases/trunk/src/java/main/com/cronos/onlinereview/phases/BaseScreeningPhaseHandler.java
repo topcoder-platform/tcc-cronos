@@ -154,8 +154,8 @@ abstract class BaseScreeningPhaseHandler extends AbstractPhaseHandler {
             }
 
             // Search all active submissions of the respective type
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-                phase.getProject().getId(), submissionTypeName);
+            Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                    phase.getProject().getId(), submissionTypeName);
             if (subs.length > 0) {
                 return OperationCheckResult.SUCCESS;
             } else {
@@ -227,8 +227,8 @@ abstract class BaseScreeningPhaseHandler extends AbstractPhaseHandler {
             putPhaseStartInfos(phase, values);
         } else {
             // Search all submissions for current project
-            Submission[] submissions = PhasesHelper.searchActiveSubmissions(
-                getManagerHelper().getUploadManager(), phase.getProject().getId(), submissionTypeName);
+            Submission[] submissions = PhasesHelper.getActiveProjectSubmissions(
+                    getManagerHelper().getUploadManager(), phase.getProject().getId(), submissionTypeName);
 
             // Search all screening scorecard for the current phase
             Review[] screenReviews = PhasesHelper.searchReviewsForResourceRoles(
@@ -285,8 +285,8 @@ abstract class BaseScreeningPhaseHandler extends AbstractPhaseHandler {
             new String[] {screenerRoleName}, phase.getId());
         values.put(isMilestone ? "NEED_MILESTONE_SCREENER" : "NEED_PRIMARY_SCREENER", screeners.length == 0 ? 1 : 0);
         // get submissions
-        Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-            phase.getProject().getId(), submissionTypeName);
+        Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                phase.getProject().getId(), submissionTypeName);
         // put the submitter info into the map
         values.put("SUBMITTER",
             PhasesHelper.constructSubmitterValues(subs, getManagerHelper().getResourceManager(), false));
@@ -375,8 +375,8 @@ abstract class BaseScreeningPhaseHandler extends AbstractPhaseHandler {
             phase.getId(), new String[] {screenerRoleName}, null);
 
         // get the submissions for the project
-        Submission[] submissions = PhasesHelper.searchActiveSubmissions(
-            getManagerHelper().getUploadManager(), phase.getProject().getId(), submissionTypeName);
+        Submission[] submissions = PhasesHelper.getActiveProjectSubmissions(
+                getManagerHelper().getUploadManager(), phase.getProject().getId(), submissionTypeName);
 
         // If the number of reviews doesn't match the number of submissions it means that
         // not all screening scorecards have been committed yet.

@@ -211,7 +211,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
 
         if (toStart) {
             checkFinalReviewWorksheet(phase, operator);
-            deletePreviousFinalFix(phase, operator);
         }
 
         sendEmail(phase);
@@ -229,7 +228,7 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         // Get nearest Final Review phase
         Phase finalReviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_FINAL_REVIEW, true, true);
         Phase previousFinalReviewPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_FINAL_REVIEW, false, false);
-        Phase previousAprovalPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_APPROVAL, false, false);
+        Phase previousApprovalPhase = PhasesHelper.locatePhase(phase, Constants.PHASE_APPROVAL, false, false);
 
         try {
             // Sometimes phase management framework fails to open the final fix phase (e.g. due to a DB error)
@@ -251,12 +250,12 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
             }
 
             Review finalWorksheet = null;
-            if (previousAprovalPhase != null) {
+            if (previousApprovalPhase != null) {
                 Review[] approvalWorksheets = PhasesHelper.searchProjectReviewsForResourceRoles(
                     getManagerHelper(), phase.getProject().getId(),
                     new String[] {Constants.ROLE_APPROVER }, null);
 
-                approvalWorksheets = PhasesHelper.getApprovalPhaseReviews(approvalWorksheets, previousAprovalPhase);
+                approvalWorksheets = PhasesHelper.getApprovalPhaseReviews(approvalWorksheets, previousApprovalPhase);
 
                 if (approvalWorksheets == null || approvalWorksheets.length == 0) {
                     throw new PhaseHandlingException("Approval worksheets do not exist.");
@@ -376,27 +375,6 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
     }
 
     /**
-     * This method is called from perform method when phase is starting.
-     * The method deletes previous final fix upload if present.
-     * @param phase phase instance.
-     * @param operator operator name.
-     * @throws PhaseHandlingException if an error occurs when retrieving/saving data.
-     */
-    private void deletePreviousFinalFix(Phase phase, String operator) throws PhaseHandlingException {
-        try {
-            // delete the earlier final fix if it exists.
-            Upload finalFix = getFinalFix(phase);
-            if (finalFix != null) {
-                finalFix.setUploadStatus(LookupHelper.getUploadStatus(
-                    getManagerHelper().getUploadManager(), Constants.UPLOAD_STATUS_DELETED));
-                getManagerHelper().getUploadManager().updateUpload(finalFix, operator);
-            }
-        } catch (UploadPersistenceException e) {
-            throw new PhaseHandlingException("Problem when persisting upload", e);
-        }
-    }
-
-    /**
      * This retrieves the final fix upload. It returns null if none exist.
      * @param phase phase instance.
      * @return the final fix upload, null if none exist.
@@ -406,19 +384,16 @@ public class FinalFixPhaseHandler extends AbstractPhaseHandler {
         UploadManager uploadManager = getManagerHelper().getUploadManager();
 
         try {
-            long uploadTypeId = LookupHelper.getUploadType(uploadManager, Constants.UPLOAD_TYPE_FINAL_FIX).getId();
-            long uploadStatusId = LookupHelper.getUploadStatus(uploadManager, Constants.UPLOAD_STATUS_ACTIVE).getId();
-
-            // get final fix upload based on "Final Fix" type, "Active" status
+            // get final fix upload based on the project phase ID, "Final Fix" type
             // and winning submitter resource id filters.
+            long uploadTypeId = LookupHelper.getUploadType(uploadManager, Constants.UPLOAD_TYPE_FINAL_FIX).getId();
             Filter uploadTypeFilter = UploadFilterBuilder.createUploadTypeIdFilter(uploadTypeId);
-            Filter uploadStatusFilter = UploadFilterBuilder.createUploadStatusIdFilter(uploadStatusId);
+            Filter uploadStatusFilter = UploadFilterBuilder.createProjectPhaseIdFilter(phase.getId());
             Resource winningSubmitter = PhasesHelper.getWinningSubmitter(
                 getManagerHelper(),  phase.getProject().getId());
             Filter resourceIdFilter = UploadFilterBuilder.createResourceIdFilter(winningSubmitter.getId());
-            Filter fullFilter = new AndFilter(Arrays.asList(new Filter[] {uploadTypeFilter,
-                uploadStatusFilter, resourceIdFilter }));
 
+            Filter fullFilter = new AndFilter(Arrays.asList(uploadTypeFilter, uploadStatusFilter, resourceIdFilter));
             Upload[] uploads = uploadManager.searchUploads(fullFilter);
 
             if (uploads.length == 0) {

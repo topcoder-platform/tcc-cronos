@@ -249,8 +249,8 @@ public class AppealsResponsePhaseHandler extends AbstractPhaseHandler {
             // and put the scores into the values after calculation
             updateSubmissions(phase, operator, values);
             
-            Submission[] subs = PhasesHelper.searchActiveSubmissions(getManagerHelper().getUploadManager(),
-                phase.getProject().getId(), Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
+            Submission[] subs = PhasesHelper.getActiveProjectSubmissions(getManagerHelper().getUploadManager(),
+                    phase.getProject().getId(), Constants.SUBMISSION_TYPE_CONTEST_SUBMISSION);
             
             if (subs==null || subs.length == 0) {
                 // if there is no active submissions after appeal response, insert the post-mortem phase
