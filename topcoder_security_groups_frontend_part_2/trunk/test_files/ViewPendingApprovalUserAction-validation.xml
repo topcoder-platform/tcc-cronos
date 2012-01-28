@@ -1,0 +1,15 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+       "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+
+  <field name="clientId">
+      <field-validator type="required">
+			<message>Client ID must be specified.</message>
+      </field-validator>
+      <field-validator type="long">
+			<param name="min">1</param>
+			<message>ClientId ID must be long.</message>
+      </field-validator>
+  </field>
+
+</validators>

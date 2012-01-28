@@ -1,0 +1,26 @@
+<project>
+ 
+    <property name="tomcat.dir" value="E:\DEV\Programs\apache-tomcat-6.0.33" />
+    <property name="demo" value="demo.war" />
+    <target name="demo_war" depends="compile_tests">
+        <delete file="${demo}" />
+		<copy todir="${build_classdir}/${component.packagedir}" flatten="true">
+            <fileset dir="${testfiles}">
+                <include name="**/*.xml" />
+            </fileset>
+        </copy>
+        <copy todir="${testfiles}/WebDemo/WEB-INF/lib" flatten="true">
+            <fileset dir="${test_reflib}">
+                <include name="**/*.jar" />
+            </fileset>
+        </copy>
+        <war warfile="${demo}">
+            <fileset dir="${testfiles}/WebDemo"/>
+            <classes dir="${build_classdir}" includes="**" />
+        </war>
+        <delete dir="${testfiles}/WebDemo/WEB-INF/lib"/>
+    </target>
+    <target name="deployDemo" depends="demo_war">
+        <copy todir="${tomcat.dir}/webapps" file="${demo}"/>
+    </target>
+</project>
