@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+   <bean id="authorizationService" class="com.topcoder.security.groups.services.mock.MockAuthorizationService">
+   </bean>
+   <bean id="billingAccountService" class="com.topcoder.security.groups.services.mock.MockBillingAccountService">
+   </bean>
+
+   <bean id="directProjectService" class="com.topcoder.security.groups.services.mock.MockDirectProjectService">
+   </bean>
+
+   <bean id="groupInvitationService" class="com.topcoder.security.groups.services.mock.MockGroupInvitationService">
+   </bean>
+   <bean id="groupMemberService" class="com.topcoder.security.groups.services.mock.MockGroupMemberService">
+   </bean>
+   <bean id="groupService" class="com.topcoder.security.groups.services.mock.MockGroupService">
+   </bean>
+   
+   <bean id="auditService" class="com.topcoder.security.groups.services.mock.MockGroupAuditService">
+   </bean>
+   <bean id="userService" class="com.topcoder.security.groups.actions.MockUserServiceImpl">
+   </bean>
+   <bean id="clientService" class="com.topcoder.security.groups.actions.MockClientServiceImpl">
+   </bean>
+   <bean id="customerAdministratorService" class="com.topcoder.security.groups.services.mock.MockCustomerAdministratorService">
+   </bean>
+   
+   
+   <bean id="logger" class="com.topcoder.util.log.log4j.Log4jLog">
+   		<constructor-arg type="java.lang.String" value="com.topcoder.security.groups.actions.DemoLog"/>
+   		<constructor-arg type="boolean" value="false"/>
+   </bean>
+   
+  
+  <bean id="CreateCustomerAdminAction" class="com.topcoder.security.groups.actions.CreateCustomerAdminAction" init-method="checkInit">
+ 	 <property name="clientId" value="1"/>
+    <property name="logger" ref="logger"/>
+    <property name="auditService" ref="auditService"/>
+    <property name="userService" ref="userService"/>
+    <property name="customerAdministratorService" ref="customerAdministratorService"/>
+    <property name="clientService" ref="clientService"/>
+    <property name="authorizationService" ref="authorizationService"/>
+  </bean>
+
+
+</beans>
