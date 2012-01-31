@@ -312,8 +312,8 @@ public class SqlUploadPersistence implements UploadPersistence {
      */
     private static final String ADD_UPLOAD_SQL = "INSERT INTO upload "
             + "(upload_id, create_user, create_date, modify_user, modify_date, "
-            + "project_id, resource_id, upload_type_id, upload_status_id, parameter, upload_desc) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "project_id, project_phase_id, resource_id, upload_type_id, upload_status_id, parameter, upload_desc) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * <p>
@@ -324,7 +324,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * </p>
      */
     private static final DataType[] ADD_UPLOAD_ARGUMENT_TYPES = new DataType[] {Helper.LONG_TYPE, Helper.STRING_TYPE,
-        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
+        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE,
         Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
 
     /**
@@ -336,7 +336,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * </p>
      */
     private static final String UPDATE_UPLOAD_SQL = "UPDATE upload " + "SET modify_user=?, modify_date=?, "
-            + "project_id=?, resource_id=?, upload_type_id=?, upload_status_id=?, parameter=?, upload_desc=? "
+            + "project_id=?, project_phase_id=?, resource_id=?, upload_type_id=?, upload_status_id=?, parameter=?, upload_desc=? "
             + "WHERE upload_id=?";
 
     /**
@@ -348,7 +348,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * </p>
      */
     private static final DataType[] UPDATE_UPLOAD_ARGUMENT_TYPES = new DataType[] {Helper.STRING_TYPE,
-        Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.STRING_TYPE, Helper.LONG_TYPE};
 
     /**
@@ -464,7 +464,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      */
     private static final String LOAD_UPLOADS_SQL = "SELECT "
             + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
-            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
+            + "upload.project_id, upload.project_phase_id, upload.resource_id, upload.parameter, upload.upload_desc, "
             + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
             + "upload_type_lu.modify_user, upload_type_lu.modify_date, "
             + "upload_type_lu.name, upload_type_lu.description, "
@@ -483,7 +483,7 @@ public class SqlUploadPersistence implements UploadPersistence {
      * </p>
      */
     private static final DataType[] LOAD_UPLOADS_COLUMN_TYPES = new DataType[] {Helper.LONG_TYPE, Helper.STRING_TYPE,
-        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
         Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE};
@@ -524,7 +524,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
             + "prize_type_lu.prize_type_desc, "
             + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
-            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
+            + "upload.project_id, upload.project_phase_id, upload.resource_id, upload.parameter, upload.upload_desc, "
             + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
             + "upload_type_lu.modify_user, upload_type_lu.modify_date, "
             + "upload_type_lu.name, upload_type_lu.description, "
@@ -565,7 +565,7 @@ public class SqlUploadPersistence implements UploadPersistence {
         Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
         
         Helper.LONG_TYPE, Helper.STRING_TYPE,
-        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
+        Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE,
         Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE, Helper.LONG_TYPE, Helper.STRING_TYPE,
         Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.DATE_TYPE, Helper.STRING_TYPE, Helper.STRING_TYPE
@@ -589,7 +589,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
             + "prize_type_lu.prize_type_desc, "
             + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
-            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
+            + "upload.project_id, upload.project_phase_id, upload.resource_id, upload.parameter, upload.upload_desc, "
             + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
             + "upload_type_lu.modify_user, upload_type_lu.modify_date, "
             + "upload_type_lu.name, upload_type_lu.description, "
@@ -623,7 +623,7 @@ public class SqlUploadPersistence implements UploadPersistence {
             + "prize.create_user, prize.create_date, prize.modify_user, prize.modify_date, "
             + "prize_type_lu.prize_type_desc, "
             + "upload.upload_id, upload.create_user, upload.create_date, upload.modify_user, upload.modify_date, "
-            + "upload.project_id, upload.resource_id, upload.parameter, upload.upload_desc, "
+            + "upload.project_id, upload.project_phase_id, upload.resource_id, upload.parameter, upload.upload_desc, "
             + "upload_type_lu.upload_type_id, upload_type_lu.create_user, upload_type_lu.create_date, "
             + "upload_type_lu.modify_user, upload_type_lu.modify_date, "
             + "upload_type_lu.name, upload_type_lu.description, "
@@ -1354,7 +1354,7 @@ public class SqlUploadPersistence implements UploadPersistence {
 
         // build arguments
         Object[] queryArgs = new Object[] {upload.getId(), upload.getCreationUser(), upload.getCreationTimestamp(),
-            upload.getModificationUser(), upload.getModificationTimestamp(), upload.getProject(), upload.getOwner(),
+            upload.getModificationUser(), upload.getModificationTimestamp(), upload.getProject(), upload.getProjectPhase(), upload.getOwner(),
             upload.getUploadType().getId(), upload.getUploadStatus().getId(), upload.getParameter(),
             upload.getDescription()};
 
@@ -1389,7 +1389,7 @@ public class SqlUploadPersistence implements UploadPersistence {
 
         // build arguments
         Object[] queryArgs = new Object[] {upload.getModificationUser(), upload.getModificationTimestamp(),
-            upload.getProject(), upload.getOwner(), upload.getUploadType().getId(), upload.getUploadStatus().getId(),
+            upload.getProject(), upload.getProjectPhase(), upload.getOwner(), upload.getUploadType().getId(), upload.getUploadStatus().getId(),
             upload.getParameter(), upload.getDescription(), upload.getId()};
 
         // update upload to database
@@ -2219,6 +2219,7 @@ public class SqlUploadPersistence implements UploadPersistence {
         startIndex = Helper.loadEntityFieldsSequentially(upload, row, startIndex);
 
         upload.setProject((Long) row[startIndex++]);
+        upload.setProjectPhase((Long) row[startIndex++]);
         upload.setOwner((Long) row[startIndex++]);
         upload.setParameter((String) row[startIndex++]);
         upload.setDescription((String) row[startIndex++]);
