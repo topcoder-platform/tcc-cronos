@@ -691,6 +691,7 @@ public class DefaultUploadServices implements UploadServices {
                 submission.setSubmissionType(getSubmissionTypeByName("Specification Submission"));
 
                 Upload upload = createUpload(projectId, resource.getId(), filename, "Submission");
+                upload.setProjectPhase(specPhase.getId());
                 Helper.logFormat(LOG, Level.INFO,
                         "Upload created for the  projectId {0}, userId {1} with filename {2}.",
                         new Object[]{projectId, userId, filename});
