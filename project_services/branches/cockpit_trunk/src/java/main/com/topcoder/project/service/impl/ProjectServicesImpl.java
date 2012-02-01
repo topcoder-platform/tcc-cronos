@@ -4691,6 +4691,15 @@ public class ProjectServicesImpl implements ProjectServices {
                     p.setAttribute("Reviewer Number", "3");
                 }
             }
+			else if (p.getPhaseType().getName().equals("Secondary Reviewer Review"))
+            {
+                p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(reviewTemplateId));
+                p.setAttribute("Reviewer Number", "2");    
+            }
+			else if (p.getPhaseType().getName().equals("Primary Review Evaluation"))
+            {
+                p.setAttribute("Reviewer Number", "1");
+            }
             else if (p.getPhaseType().getName().equals("Milestone Review")) 
             {
                 p.setAttribute(SCORECARD_ID_PHASE_ATTRIBUTE_KEY, String.valueOf(milestoneReviewTemplateId));
